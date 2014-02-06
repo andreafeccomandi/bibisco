@@ -1,0 +1,20 @@
+<!ENTITY cutCmd.label "Cut">
+<!ENTITY cutCmd.accesskey "t">
+<!ENTITY copyCmd.label "Copy">
+<!ENTITY copyCmd.accesskey "c">
+<!ENTITY pasteCmd.label "Paste">
+<!ENTITY pasteCmd.accesskey "p">
+<!ENTITY undoCmd.label "Undo">
+<!ENTITY undoCmd.accesskey "u">
+<!ENTITY selectAllCmd.label "Select All">
+<!ENTITY selectAllCmd.accesskey "a">
+<!ENTITY deleteCmd.label "Delete">
+<!ENTITY deleteCmd.accesskey "d">
+
+<!ENTITY spellAddToDictionary.label "Add to Dictionary">
+<!ENTITY spellAddToDictionary.accesskey "o">
+<!ENTITY spellCheckEnable.label "Check Spelling">
+<!ENTITY spellCheckEnable.accesskey "S">
+<!ENTITY spellNoSuggestions.label "(No Spelling Suggestions)">
+<!ENTITY spellDictionaries.label "Languages">
+<!ENTITY spellDictionaries.accesskey "l">

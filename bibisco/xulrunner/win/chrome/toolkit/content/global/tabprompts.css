@@ -1,0 +1,29 @@
+/* Tab Modal Prompt boxes */
+tabmodalprompt {
+  width: 100%;
+  height: 100%;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
+}
+
+.mainContainer {
+  min-width: 20em;
+  min-height: 12em;
+}
+
+.info\.title {
+  margin-bottom: 1em !important;
+  font-weight: bold;
+}
+
+.info\.body {
+  margin: 0 !important;
+  -moz-user-focus: normal;
+  -moz-user-select: text;
+  cursor: text !important;
+  white-space: pre-wrap;
+}
+
+label[value=""] {
+  visibility: collapse;
+}

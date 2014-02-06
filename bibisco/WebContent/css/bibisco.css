@@ -1,0 +1,114 @@
+.thumbnailTagHover {
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.thumbnailTagMove {
+	background-color: #FCF8E3;
+	cursor: move;
+}
+
+.loading { 
+	background: url(../img/bibisco-spinner.gif) center no-repeat !important;
+}
+
+.loadingImage { 
+	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
+}
+
+.carouselImageBackground { 
+	background-color: #555555 !important;
+}
+
+
+.sceneTagsExplains {
+	font-size: 13px;
+	font-style: italic;
+	margin-bottom: 5px;
+}
+
+.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .notSelectableText, .bibiscoSuggestions {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+.btn:focus {
+	outline: 0;
+}
+
+
+.bibiscoRichTextEditor-bodyClass-courierbig {
+	font-family: courier new, courier, monospace; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-couriermedium {
+	font-family: courier new, courier, monospace; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-couriersmall {
+	font-family: courier new, courier, monospace; 
+	font-size: 16px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timesbig {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timesmedium {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timessmall {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 16px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialbig {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialmedium {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialsmall {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 16px; 
+}
+
+.bibiscoSuggestions {
+	margin-top: 10px; 
+	margin-left: 10px; 
+	width: 450px;
+}
+
+div.bibiscoSuggestions p {
+	text-align: justify;
+}
+
+div.bibiscoSuggestions h4 {
+	margin-bottom: 10px;
+}
+
+.defaultBrowserUrl {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.bibiscoAnalysisNoInfoAvailable {
+	margin-top: 10px; 
+	margin-left: 10px; 
+	font-size: 16px;
+	line-height: 1.5em;
+}

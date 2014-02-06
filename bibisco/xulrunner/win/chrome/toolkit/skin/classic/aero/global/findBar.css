@@ -1,0 +1,112 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+.findbar-closebutton {
+  border: none;
+  padding: 3px 5px;
+  list-style-image: url("chrome://global/skin/icons/close.png");
+  -moz-appearance: none;
+  -moz-image-region: rect(0, 16px, 16px, 0);
+}
+
+.findbar-closebutton:hover {
+  -moz-image-region: rect(0, 32px, 16px, 16px);
+}
+
+.findbar-closebutton:hover:active {
+  -moz-image-region: rect(0, 48px, 16px, 32px);
+}
+
+findbar {
+  padding-top: 1px;
+  background-image: -moz-linear-gradient(rgba(0,0,0,.15) 1px, rgba(255,255,255,.15) 1px);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  min-width: 1px;
+}
+
+/* find-next button */
+
+.findbar-find-next {
+  list-style-image: url("chrome://global/skin/icons/find.png");
+  -moz-image-region: rect(0px 16px 16px 0px);
+}
+
+.findbar-find-next:hover {
+  -moz-image-region: rect(16px 16px 32px 0px);
+}
+
+.findbar-find-next[disabled="true"] {
+  -moz-image-region: rect(32px 16px 48px 0px) !important;
+}
+
+/* find-previous button */
+
+.findbar-find-previous {
+  list-style-image: url("chrome://global/skin/icons/find.png");
+  -moz-image-region: rect(0px 32px 16px 16px);
+}
+
+.findbar-find-previous:hover {
+  -moz-image-region: rect(16px 32px 32px 16px);
+}
+
+.findbar-find-previous[disabled="true"] {
+  -moz-image-region: rect(32px 32px 48px 16px) !important;
+}
+
+/* highlight button */
+
+.findbar-highlight {
+  list-style-image: url("chrome://global/skin/icons/find.png");
+  -moz-image-region: rect(0px 48px 16px 32px);
+}
+
+.findbar-highlight:hover {
+  -moz-image-region: rect(16px 48px 32px 32px);
+}
+
+.findbar-highlight[disabled="true"] {
+  -moz-image-region: rect(32px 48px 48px 32px) !important;
+}
+
+.findbar-highlight:active, .findbar-highlight[checked="true"] {
+  -moz-image-region: rect(48px 48px 64px 32px);
+}
+
+.findbar-highlight[checked="true"]:hover {
+  -moz-image-region: rect(64px 48px 80px 32px);
+}
+
+.find-status-icon {
+  list-style-image: none;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  -moz-margin-start: 12px;
+  -moz-margin-end: 0px;
+  width: 16px;
+  height: 16px;
+}
+
+.findbar-find-status {
+  margin: 0 !important;
+  -moz-margin-start: 3px !important;
+  padding: 2px !important;
+}
+
+.find-status-icon[status="notfound"] {
+  list-style-image: url("chrome://global/skin/icons/notfound.png");
+}
+
+.findbar-textbox[status="notfound"] {
+  box-shadow: 0 0 0 1em #f66 inset;
+  color: white;
+}
+
+.findbar-textbox[flash="true"] {
+  box-shadow: 0 0 0 1em yellow inset;
+  color: black;
+}
+
+.find-status-icon[status="wrapped"] {
+  list-style-image: url("chrome://global/skin/icons/wrap.png");
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://global/locale/dialogOverlay.dtd">
+
+<overlay id="dialogOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/javascript" src="chrome://global/content/dialogOverlay.js"/>
+
+  <hbox id="okCancelButtons">
+    <spacer flex="1"/>
+    <button class="right exit-dialog" id="ok" label="&okButton.label;" default="true" oncommand="doOKButton();"/> 
+    <button class="exit-dialog" id="Button2" label="&cancelButton.label;" collapsed="true" oncommand="doButton2();"/> 
+    <button class="exit-dialog" id="Button3" label="&cancelButton.label;" collapsed="true" oncommand="doButton3();"/> 
+    <button class="exit-dialog" id="cancel" label="&cancelButton.label;" oncommand="doCancelButton();"/>
+    <spacer flex="1"/>
+  </hbox>
+
+  <hbox id="okCancelHelpButtons">
+    <spacer flex="1"/>
+    <button class="right exit-dialog" id="ok" label="&okButton.label;" default="true" oncommand="doOKButton();"/>
+    <button class="exit-dialog" id="Button2" label="&cancelButton.label;" collapsed="true" oncommand="doButton2();"/>
+    <button class="exit-dialog" id="Button3" label="&cancelButton.label;" collapsed="true" oncommand="doButton3();"/>
+    <button class="exit-dialog" id="cancel" label="&cancelButton.label;" oncommand="doCancelButton();"/>
+    <button class="exit-dialog" id="help" label="&helpButton.label;" oncommand="doHelpButton();"/>
+    <spacer flex="1"/>
+  </hbox>
+
+  <hbox id="okCancelButtonsRight">
+    <spacer flex="1"/>
+    <button class="right exit-dialog" id="ok" label="&okButton.label;" default="true" oncommand="doOKButton();"/> 
+    <button class="exit-dialog" id="Button2" label="&cancelButton.label;" collapsed="true" oncommand="doButton2();"/> 
+    <button class="exit-dialog" id="Button3" label="&cancelButton.label;" collapsed="true" oncommand="doButton3();"/> 
+    <button class="exit-dialog" id="cancel" label="&cancelButton.label;" oncommand="doCancelButton();"/>
+  </hbox>
+
+  <hbox id="okCancelHelpButtonsRight">
+    <spacer flex="1"/>
+    <button class="right exit-dialog" id="ok" label="&okButton.label;" default="true" oncommand="doOKButton();"/>
+    <button class="exit-dialog" id="Button2" label="&cancelButton.label;" collapsed="true" oncommand="doButton2();"/>
+    <button class="exit-dialog" id="Button3" label="&cancelButton.label;" collapsed="true" oncommand="doButton3();"/>
+    <button class="exit-dialog" id="cancel" label="&cancelButton.label;" oncommand="doCancelButton();"/>
+    <button class="exit-dialog" id="help" label="&helpButton.label;" oncommand="doHelpButton();"/>
+  </hbox>
+
+  <keyset id="dialogKeys">
+    <key keycode="VK_ENTER" oncommand="if (!document.getElementById('ok').disabled) doOKButton();"/>
+    <key keycode="VK_RETURN" oncommand="if (!document.getElementById('ok').disabled) doOKButton();"/>
+    <key keycode="VK_ESCAPE" oncommand="doCancelButton();"/>
+  </keyset>
+
+</overlay>

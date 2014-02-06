@@ -1,0 +1,4 @@
+installitem {
+  -moz-binding: url("chrome://mozapps/content/xpinstall/xpinstallItem.xml#installitem");
+  display: -moz-box;
+}

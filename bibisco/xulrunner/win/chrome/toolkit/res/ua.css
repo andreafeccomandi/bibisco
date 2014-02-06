@@ -1,0 +1,303 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is mozilla.org code.
+ *
+ * The Initial Developer of the Original Code is
+ * Netscape Communications Corporation.
+ * Portions created by the Initial Developer are Copyright (C) 1998
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Mats Palmgren <matspal@gmail.com>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either of the GNU General Public License Version 2 or later (the "GPL"),
+ * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+@import url(resource://gre-resources/html.css);
+@import url(chrome://global/content/xul.css);
+
+@namespace parsererror url(http://www.mozilla.org/newlayout/xml/parsererror.xml);
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+/* magic -- some of these rules are important to keep pages from overriding
+            them
+*/
+
+/* Tables */
+
+*|*::-moz-table {
+  display: table !important;
+  -moz-box-sizing: border-box; /* XXX do we really want this? */
+}
+
+*|*::-moz-inline-table {
+  display: inline-table !important;
+  -moz-box-sizing: border-box; /* XXX do we really want this? */
+}
+
+*|*::-moz-table-outer {
+  display: inherit !important; /* table or inline-table */
+  margin: inherit ! important;
+  padding: 0 ! important;
+  border: none ! important;
+  float: inherit;
+  clear: inherit;
+  position: inherit;
+  top: inherit;
+  right: inherit;
+  bottom: inherit;
+  left: inherit;
+  z-index: inherit;
+  page-break-before: inherit;
+  page-break-after: inherit;
+  vertical-align: inherit; /* needed for inline-table */
+  line-height: inherit; /* needed for vertical-align on inline-table */
+}
+
+*|*::-moz-table-row {
+  display: table-row !important;
+}
+
+/* The ::-moz-table-column pseudo-element is for extra columns at the end 
+   of a table. */
+*|*::-moz-table-column {
+  display: table-column !important;
+}
+
+*|*::-moz-table-column-group {
+  display: table-column-group !important;
+}
+ 
+*|*::-moz-table-row-group {
+  display: table-row-group !important;
+}
+
+*|*::-moz-table-cell {
+  display: table-cell !important;
+  white-space: inherit;
+}
+
+/* Lists */
+
+*|*::-moz-list-bullet, *|*::-moz-list-number {
+  display: inline;
+  vertical-align: baseline;
+  -moz-margin-end: 8px;
+}
+
+/* Links */
+
+*|*:-moz-any-link {
+  cursor: pointer;
+}
+
+*|*:-moz-any-link:-moz-focusring {
+  /* Don't specify the outline-color, we should always use initial value. */
+  outline: 1px dotted;
+}
+
+/* Miscellaneous */
+
+*|*::-moz-anonymous-block, *|*::-moz-cell-content {
+  display: block !important;
+  position: static !important;
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+}
+
+*|*::-moz-anonymous-block, *|*::-moz-anonymous-positioned-block {
+  /* we currently inherit from the inline that is split */
+  outline: inherit;
+  outline-offset: inherit;
+  clip-path: inherit;
+  filter: inherit;
+  mask: inherit;
+  opacity: inherit;
+  text-decoration: inherit;
+  -moz-box-ordinal-group: inherit !important;
+}
+
+*|*::-moz-xul-anonymous-block {
+  display: block ! important;
+  position: static ! important;
+  float: none ! important;
+  -moz-box-ordinal-group: inherit !important;
+}
+
+*|*::-moz-scrolled-content, *|*::-moz-scrolled-canvas,
+*|*::-moz-scrolled-page-sequence {
+  /* e.g., text inputs, select boxes */
+  padding: inherit;
+  /* The display doesn't affect the kind of frame constructed here.  This just
+     affects auto-width sizing of the block we create. */
+  display: block;
+  -moz-box-orient: inherit;
+  /* make unicode-bidi inherit, otherwise it has no effect on text inputs and
+     blocks with overflow: scroll; */
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+  -moz-column-count: inherit;
+  -moz-column-width: inherit;
+  -moz-column-gap: inherit;
+  -moz-column-rule: inherit;
+  /* Do not change these. nsCSSFrameConstructor depends on them to create a good
+     frame tree. */
+  position: static !important;
+  float: none !important;
+}
+
+*|*::-moz-viewport, *|*::-moz-viewport-scroll, *|*::-moz-canvas, *|*::-moz-scrolled-canvas {
+  display: block !important;
+  background-color: inherit;
+}
+
+*|*::-moz-viewport-scroll {
+  overflow: auto;
+  resize: both;
+}
+
+*|*::-moz-column-content { 
+  /* the column boxes inside a column-flowed block */
+  /* make unicode-bidi inherit, otherwise it has no effect on column boxes */
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+  /* inherit the outer frame's display, otherwise we turn into an inline */
+  display: inherit !important;
+  /* Carry through our parent's height so that %-height children get
+  their heights set */
+  height: 100%;
+}
+
+*|*::-moz-page-sequence, *|*::-moz-scrolled-page-sequence {
+  /* Collection of pages in print/print preview. Visual styles may only appear
+   * in print preview. */
+  display: block !important;
+  background: -moz-linear-gradient(top, #606060, #8a8a8a) fixed;
+  height: 100%;
+}
+
+*|*::-moz-page {
+  /* Individual page in print/print preview. Visual styles may only appear
+   * in print preview. */
+  display: block !important;
+  background: white;
+  box-shadow: 5px 5px 8px #202020;
+  margin: 0.125in 0.25in;
+}
+
+*|*::-moz-pagecontent {
+  display: block !important;
+}
+
+*|*::-moz-pagebreak {
+  display: block !important;
+}
+
+*|*::-moz-anonymous-positioned-block {
+  display: block !important;
+  position: relative;
+  top: inherit; 
+  left: inherit;
+  bottom: inherit;
+  right: inherit;
+  z-index: inherit;
+  clip: inherit;
+  opacity: inherit;
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+}
+
+/* Printing */
+
+@media print {
+
+  * {
+    cursor: default !important;
+  }
+
+}
+
+*|*:-moz-full-screen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 2147483647 !important;
+  background: black;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* If there is a full-screen element that is not the root then
+   we should hide the viewport scrollbar. We exclude the chrome
+   document to prevent reframing of contained plugins. */
+:not(xul|*):root:-moz-full-screen-ancestor {
+  overflow: hidden !important;
+}
+
+*|*:-moz-full-screen-ancestor {
+  /* Ancestors of a full-screen element should not induce stacking contexts
+     that would prevent the full-screen element from being on top. */
+  z-index:auto !important;
+  /* Ancestors of a full-screen element should not be partially transparent,
+     since that would apply to the full-screen element and make the page visible
+     behind it. It would also create a pseudo-stacking-context that would let content
+     draw on top of the full-screen element. */
+  opacity:1 !important;
+  /* Ancestors of a full-screen element should not apply SVG masking, clipping, or
+     filtering, since that would affect the full-screen element and create a pseudo-
+     stacking context. */
+  mask:none !important;
+  clip:none !important;
+  filter:none !important;
+}
+
+/* XML parse error reporting */
+
+parsererror|parsererror {
+  display: block;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: pre;
+  margin: 1em;
+  padding: 1em;
+  border-width: thin;
+  border-style: inset;
+  border-color: red;
+  font-size: 14pt;
+  background-color: lightyellow;
+}
+
+parsererror|sourcetext {
+  display: block;
+  white-space: pre;
+  font-family: -moz-fixed;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: red;
+  font-weight: bold;
+  font-size: 12pt;
+}

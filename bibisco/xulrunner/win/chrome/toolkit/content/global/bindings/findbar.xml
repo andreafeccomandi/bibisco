@@ -1,0 +1,1764 @@
+<?xml version="1.0"?>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is mozilla.org viewsource frontend.
+   -
+   - The Initial Developer of the Original Code is
+   - Netscape Communications Corporation.
+   - Portions created by the Initial Developer are Copyright (C) 2003
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -     Blake Ross <blake@cs.stanford.edu> (Original Author)
+   -     Masayuki Nakano <masayuki@d-toybox.com>
+   -     Ben Basson <contact@cusser.net>
+   -     Jason Barnabe <jason_barnabe@fastmail.fm>
+   -     Asaf Romano <mano@mozilla.com>
+   -     Ehsan Akhgari <ehsan.akhgari@gmail.com>
+   -     Graeme McCutcheon <graememcc_firefox@graeme-online.co.uk>
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the GPL or the LGPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<!DOCTYPE bindings [
+<!ENTITY % findBarDTD SYSTEM "chrome://global/locale/findbar.dtd" >
+%findBarDTD;
+]>
+
+<bindings id="findbarBindings"
+   xmlns="http://www.mozilla.org/xbl"
+   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <!-- Private binding -->
+  <binding id="findbar-textbox"
+           extends="chrome://global/content/bindings/textbox.xml#textbox">
+    <implementation>
+
+      <field name="_findbar">null</field>
+      <property name="findbar" readonly="true">
+        <getter>
+          return this._findbar ?
+                 this._findbar : this._findbar = document.getBindingParent(this);
+        </getter>
+      </property>
+
+      <method name="_handleEnter">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          if (this.findbar._findMode == this.findbar.FIND_NORMAL) {
+            var findString = this.findbar._findField;
+            if (!findString.value)
+              return;
+            if (aEvent.ctrlKey) {
+              this.findbar.getElement("highlight").click();
+              return;
+            }
+
+            this.findbar.onFindAgainCommand(aEvent.shiftKey);
+          }
+          else {
+            // We need to keep a reference to _foundLink because
+            // _finishFAYT resets it to null.
+            var tmpLink = this._findbar._foundLink;
+            if (tmpLink && this.findbar._finishFAYT(aEvent))
+              this.findbar._dispatchKeypressEvent(tmpLink, aEvent);
+          }
+        ]]></body>
+      </method>
+
+      <method name="_handleTab">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          var shouldHandle = !aEvent.altKey && !aEvent.ctrlKey &&
+                             !aEvent.metaKey;
+          if (shouldHandle &&
+              this.findbar._findMode != this.findbar.FIND_NORMAL &&
+              this.findbar._finishFAYT(aEvent)) {
+            if (aEvent.shiftKey)
+              document.commandDispatcher.rewindFocus();
+            else
+              document.commandDispatcher.advanceFocus();
+          }
+        ]]></body>
+      </method>
+    </implementation>
+
+    <handlers>
+      <handler event="input"><![CDATA[
+        this.findbar._find(this.value);
+      ]]></handler>
+
+      <handler event="keypress"><![CDATA[
+        var win = this.findbar._currentWindow ||
+                  this.findbar.browser.contentWindow;
+
+        var shouldHandle = !event.altKey && !event.ctrlKey &&
+                           !event.metaKey && !event.shiftKey;
+
+        switch (event.keyCode) {
+          case KeyEvent.DOM_VK_RETURN:
+            this._handleEnter(event);
+            break;
+          case KeyEvent.DOM_VK_TAB:
+            this._handleTab(event);
+            break;
+          case KeyEvent.DOM_VK_PAGE_UP:
+            if (shouldHandle) {
+              win.scrollByPages(-1);
+              event.preventDefault();
+            }
+            break;
+          case KeyEvent.DOM_VK_PAGE_DOWN:
+            if (shouldHandle) {
+              win.scrollByPages(1);
+              event.preventDefault();
+            }
+            break;
+          case KeyEvent.DOM_VK_UP:
+            win.scrollByLines(-1);
+            event.preventDefault();
+            break;
+          case KeyEvent.DOM_VK_DOWN:
+            win.scrollByLines(1);
+            event.preventDefault();
+            break;
+        }
+      ]]></handler>
+
+      <handler event="blur"><![CDATA[
+        var findbar = this.findbar;
+        var fastFind = findbar.browser.fastFind;
+        if (findbar._foundEditable)
+          fastFind.collapseSelection();
+        else {
+          fastFind.setSelectionModeAndRepaint
+            (findbar.nsISelectionController.SELECTION_ON);
+        }
+        findbar._setFoundLink(null);
+        findbar._foundEditable = null;
+        findbar._currentWindow = null;
+      ]]></handler>
+
+      <handler event="compositionstart"><![CDATA[
+        // Don't close the find toolbar while IME is composing.
+        var findbar = this.findbar;
+        findbar._isIMEComposing = true;
+        if (findbar._quickFindTimeout) {
+          clearTimeout(findbar._quickFindTimeout);
+          findbar._quickFindTimeout = null;
+        }
+      ]]></handler>
+
+      <handler event="compositionend"><![CDATA[
+        var findbar = this.findbar;
+        findbar._isIMEComposing = false;
+        if (findbar._findMode != findbar.FIND_NORMAL &&
+            !findbar.hidden)
+          findbar._setFindCloseTimeout();
+      ]]></handler>
+
+      <handler event="dragover"><![CDATA[
+        if (event.dataTransfer.types.contains("text/plain"))
+          event.preventDefault();
+      ]]></handler>
+
+      <handler event="drop"><![CDATA[
+        var value = event.dataTransfer.getData("text/plain");
+        this.value = value;
+        this.findbar._find(value);
+        event.stopPropagation();
+        event.preventDefault();
+      ]]></handler>
+    </handlers>
+  </binding>
+
+  <binding id="findbar"
+           extends="chrome://global/content/bindings/toolbar.xml#toolbar">
+    <resources>
+      <stylesheet src="chrome://global/skin/findBar.css"/>
+    </resources>
+
+    <content hidden="true">
+    <xul:hbox anonid="findbar-container" class="findbar-container" flex="1" align="center">
+      <xul:toolbarbutton anonid="find-closebutton"
+                         class="findbar-closebutton"
+                         tooltiptext="&findCloseButton.tooltip;"
+                         oncommand="close();"/>
+      <xul:label anonid="find-label" class="findbar-find-fast" control="findbar-textbox"/>
+      <xul:textbox class="findbar-textbox findbar-find-fast" anonid="findbar-textbox"
+                   xbl:inherits="flash"/>
+      <xul:toolbarbutton anonid="find-next"
+                         class="findbar-find-next tabbable"
+                         label="&next.label;"
+                         accesskey="&next.accesskey;"
+                         tooltiptext="&next.tooltip;"
+                         oncommand="onFindAgainCommand(false);"
+                         disabled="true"
+                         xbl:inherits="accesskey=findnextaccesskey"/>
+      <xul:toolbarbutton anonid="find-previous"
+                         class="findbar-find-previous tabbable"
+                         label="&previous.label;"
+                         accesskey="&previous.accesskey;"
+                         tooltiptext="&previous.tooltip;"
+                         oncommand="onFindAgainCommand(true);"
+                         disabled="true"
+                         xbl:inherits="accesskey=findpreviousaccesskey"/>
+      <xul:toolbarbutton anonid="highlight"
+                         class="findbar-highlight tabbable"
+                         label="&highlight.label;"
+                         accesskey="&highlight.accesskey;"
+                         tooltiptext="&highlight.tooltiptext;"
+                         oncommand="toggleHighlight(this.checked);"
+                         type="checkbox"
+                         disabled="true"
+                         xbl:inherits="accesskey=highlightaccesskey"/>
+      <xul:checkbox anonid="find-case-sensitive"
+                    oncommand="_setCaseSensitivity(this.checked);"
+                    label="&caseSensitiveCheckbox.label;"
+                    accesskey="&caseSensitiveCheckbox.accesskey;"
+                    xbl:inherits="accesskey=matchcaseaccesskey"/>
+      <xul:label anonid="match-case-status" class="findbar-find-fast"/>
+      <xul:image anonid="find-status-icon" class="findbar-find-fast find-status-icon"/>
+      <xul:description anonid="find-status" class="findbar-find-fast findbar-find-status"
+                       control="findbar-textbox">
+      <!-- Do not use value, first child is used because it provides a11y with text change events -->
+      </xul:description>
+    </xul:hbox>
+    </content>
+
+    <implementation implements="nsIDOMEventListener, nsIEditActionListener">
+      <field name="FIND_NORMAL">0</field>
+      <field name="FIND_TYPEAHEAD">1</field>
+      <field name="FIND_LINKS">2</field>
+
+      <field name="_findMode">0</field>
+      <field name="_tmpOutline">null</field>
+      <field name="_tmpOutlineOffset">"0"</field>
+      <field name="_drawOutline">false</field>
+      <field name="_foundLink">null</field>
+      <field name="_editors">null</field>
+      <field name="_stateListeners">null</field>
+
+      <field name="_flashFindBar">0</field>
+      <field name="_initialFlashFindBarCount">6</field>
+
+      <property name="prefillWithSelection"
+                onget="return this.getAttribute('prefillwithselection') != 'false'"
+                onset="this.setAttribute('prefillwithselection', val); return val;"/>
+      <field name="_selectionMaxLen">150</field>
+
+      <method name="getElement">
+        <parameter name="aAnonymousID"/>
+        <body><![CDATA[
+          return document.getAnonymousElementByAttribute(this,
+                                                         "anonid",
+                                                         aAnonymousID)
+        ]]></body>
+      </method>
+
+      <property name="findMode"
+                readonly="true"
+                onget="return this._findMode;"/>
+
+      <field name="_browser">null</field>
+      <property name="browser">
+        <getter><![CDATA[
+          if (!this._browser) {
+            this._browser =
+              document.getElementById(this.getAttribute("browserid"));
+          }
+          return this._browser;
+        ]]></getter>
+        <setter><![CDATA[
+          if (this._browser) {
+            this._browser.removeEventListener("keypress", this, false);
+            this._browser.removeEventListener("mouseup", this, false);
+            this._foundLink = null;
+            this._foundEditable = null;
+            this._currentWindow = null;
+          }
+
+          this._browser = val;
+          if (this._browser) {
+            this._browser.addEventListener("keypress", this, false);
+            this._browser.addEventListener("mouseup", this, false);
+            this._findField.value = this._browser.fastFind.searchString;
+          }
+          return val;
+        ]]></setter>
+      </property>
+
+      <field name="_observer"><![CDATA[({
+        _self: this,
+
+        QueryInterface: function(aIID) {
+          if (aIID.equals(Components.interfaces.nsIObserver) ||
+              aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+              aIID.equals(Components.interfaces.nsISupports))
+            return this;
+
+          throw Components.results.NS_ERROR_NO_INTERFACE;
+        },
+
+        observe: function(aSubject, aTopic, aPrefName) {
+          if (aTopic != "nsPref:changed")
+            return;
+
+          var prefsvc =
+            aSubject.QueryInterface(Components.interfaces.nsIPrefBranch2);
+
+          switch (aPrefName) {
+            case "accessibility.typeaheadfind":
+              this._self._useTypeAheadFind = prefsvc.getBoolPref(aPrefName);
+              break;
+            case "accessibility.typeaheadfind.linksonly":
+              this._self._typeAheadLinksOnly = prefsvc.getBoolPref(aPrefName);
+              break;
+            case "accessibility.typeaheadfind.casesensitive":
+              this._self._typeAheadCaseSensitive = prefsvc.getIntPref(aPrefName);
+              this._self._updateCaseSensitivity();
+              if (this._self.getElement("highlight").checked)
+                this._self._setHighlightTimeout();
+              break;
+          }
+        }
+      })]]></field>
+
+      <field name="_destroyed">false</field>
+
+      <constructor><![CDATA[
+        // These elements are accessed frequently and are therefore cached
+        this._findField = this.getElement("findbar-textbox");
+        this._findStatusIcon = this.getElement("find-status-icon");
+        this._findStatusDesc = this.getElement("find-status");
+
+        var prefsvc =
+          Components.classes["@mozilla.org/preferences-service;1"]
+                    .getService(Components.interfaces.nsIPrefBranch2);
+
+        this._quickFindTimeoutLength =
+          prefsvc.getIntPref("accessibility.typeaheadfind.timeout");
+        this._flashFindBar =
+          prefsvc.getIntPref("accessibility.typeaheadfind.flashBar");
+
+        prefsvc.addObserver("accessibility.typeaheadfind",
+                            this._observer, false);
+        prefsvc.addObserver("accessibility.typeaheadfind.linksonly",
+                            this._observer, false);
+        prefsvc.addObserver("accessibility.typeaheadfind.casesensitive",
+                            this._observer, false);
+
+        this._useTypeAheadFind =
+          prefsvc.getBoolPref("accessibility.typeaheadfind");
+        this._typeAheadLinksOnly =
+          prefsvc.getBoolPref("accessibility.typeaheadfind.linksonly");
+        this._typeAheadCaseSensitive =
+          prefsvc.getIntPref("accessibility.typeaheadfind.casesensitive");
+
+        // Convenience
+        this.nsITypeAheadFind = Components.interfaces.nsITypeAheadFind;
+        this.nsISelectionController = Components.interfaces.nsISelectionController;
+        this._findSelection = this.nsISelectionController.SELECTION_FIND;
+
+        this._findResetTimeout = -1;
+
+        // Make sure the FAYT keypress listener is attached by initializing the
+        // browser property
+        if (this.getAttribute("browserid"))
+          setTimeout(function(aSelf) { aSelf.browser = aSelf.browser; }, 0, this);
+      ]]></constructor>
+
+      <destructor><![CDATA[
+        this.destroy();
+      ]]></destructor>
+
+      <!-- This is necessary because the destructor isn't called when
+           we are removed from a document that is not destroyed. This
+           needs to be explicitly called in this case -->
+      <method name="destroy">
+        <body><![CDATA[
+          if (this._destroyed)
+            return;
+          this._destroyed = true;
+
+          // It is possible that the findbar may be destroyed before any
+          // documents it is listening to (see nsIEditActionListener code below).
+          // Thus, to avoid leaking, if we are listening to any editors, unhook
+          // ourselves now, and remove our cached copies
+          if (this._editors) {
+            for (var x = this._editors.length - 1; x >= 0; --x)
+              this._unhookListenersAtIndex(x);
+          }
+
+          this.browser = null;
+
+          var prefsvc =
+            Components.classes["@mozilla.org/preferences-service;1"]
+                      .getService(Components.interfaces.nsIPrefBranch2);
+          prefsvc.removeObserver("accessibility.typeaheadfind",
+                                 this._observer);
+          prefsvc.removeObserver("accessibility.typeaheadfind.linksonly",
+                                 this._observer);
+          prefsvc.removeObserver("accessibility.typeaheadfind.casesensitive",
+                                 this._observer);
+        ]]></body>
+      </method>
+
+      <method name="_setFindCloseTimeout">
+        <body><![CDATA[
+          if (this._quickFindTimeout)
+            clearTimeout(this._quickFindTimeout);
+
+          // Don't close the find toolbar while IME is composing.
+          if (this._isIMEComposing) {
+            this._quickFindTimeout = null;
+            return;
+          }
+
+          this._quickFindTimeout =
+            setTimeout(function(aSelf) {
+                         if (aSelf._findMode != aSelf.FIND_NORMAL)
+                           aSelf.close();
+                       }, this._quickFindTimeoutLength, this);
+        ]]></body>
+      </method>
+
+      <!--
+        - Gets the selection controller for the current browser
+        -->
+      <method name="_getSelectionController">
+        <parameter name="aWindow"/>
+        <body><![CDATA[
+          // display: none iframes don't have a selection controller, see bug 493658
+          if (!aWindow.innerWidth || !aWindow.innerHeight)
+            return null;
+
+          // Yuck. See bug 138068.
+          var Ci = Components.interfaces;
+          var docShell = aWindow.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShell);
+
+          var controller = docShell.QueryInterface(Ci.nsIInterfaceRequestor)
+                                   .getInterface(Ci.nsISelectionDisplay)
+                                   .QueryInterface(Ci.nsISelectionController);
+          return controller;
+        ]]></body>
+      </method>
+
+      <!--
+        - For a given node, walk up it's parent chain, to try and find an
+        - editable node.
+        -
+        - @param aNode the node we want to check
+        - @returns the first node in the parent chain that is editable,
+        -          null if there is no such node
+        -->
+      <method name="_getEditableNode">
+        <parameter name="aNode"/>
+        <body><![CDATA[
+          while (aNode) {
+            if (aNode instanceof Components.interfaces.nsIDOMNSEditableElement) {
+              return aNode.editor ? aNode : null;
+            }
+            aNode = aNode.parentNode;
+          }
+          return null;
+        ]]></body>
+      </method>
+
+      <!--
+        - Helper method to unhook listeners, remove cached editors
+        - and keep the relevant arrays in sync
+        -
+        - @param aIndex the index into the array of editors/state listeners
+        -        we wish to remove
+        -->
+      <method name="_unhookListenersAtIndex">
+        <parameter name="aIndex"/>
+        <body><![CDATA[
+          this._editors[aIndex].removeEditActionListener(this);
+          this._editors[aIndex]
+              .removeDocumentStateListener(this._stateListeners[aIndex]);
+          this._editors.splice(aIndex, 1);
+          this._stateListeners.splice(aIndex, 1);
+          if (this._editors.length == 0) {
+            delete this._editors;
+            delete this._stateListeners;
+          }
+        ]]></body>
+      </method>
+
+      <!--
+        - Remove ourselves as an nsIEditActionListener and
+        - nsIDocumentStateListener from a given cached editor
+        -
+        - @param aEditor the editor we no longer wish to listen to
+        -->
+      <method name="_removeEditorListeners">
+        <parameter name="aEditor"/>
+        <body><![CDATA[
+          // aEditor is an editor that we listen to, so therefore must be
+          // cached. Find the index of this editor
+          var idx = 0;
+          while (this._editors[idx] != aEditor)
+            idx++;
+
+          // Now unhook ourselves, and remove our cached copy
+          this._unhookListenersAtIndex(idx);
+        ]]></body>
+      </method>
+
+      <!--
+        - nsIEditActionListener logic follows
+        -
+        - We implement this interface to allow us to catch the case where
+        - the findbar found a match in a HTML <input> or <textarea>. If the
+        - user adjusts the text in some way, it will no longer match, so we
+        - want to remove the highlight, rather than have it expand/contract
+        - when letters are added or removed.
+        -->
+
+      <!--
+        - Helper method used to check whether a selection intersects with
+        - some highlighting
+        -
+        - @param aSelectionRange the range from the selection to check
+        - @param aFindRange the highlighted range to check against
+        - @returns true if they intersect, false otherwise
+        -->
+      <method name="_checkOverlap">
+        <parameter name="aSelectionRange"/>
+        <parameter name="aFindRange"/>
+        <body><![CDATA[
+          // The ranges overlap if one of the following is true:
+          // 1) At least one of the endpoints of the deleted selection
+          //    is in the find selection
+          // 2) At least one of the endpoints of the find selection
+          //    is in the deleted selection
+          if (aFindRange.isPointInRange(aSelectionRange.startContainer,
+                                        aSelectionRange.startOffset))
+            return true;
+          if (aFindRange.isPointInRange(aSelectionRange.endContainer,
+                                        aSelectionRange.endOffset))
+            return true;
+          if (aSelectionRange.isPointInRange(aFindRange.startContainer,
+                                             aFindRange.startOffset))
+            return true;
+          if (aSelectionRange.isPointInRange(aFindRange.endContainer,
+                                             aFindRange.endOffset))
+            return true;
+
+          return false;
+        ]]></body>
+      </method>
+
+      <!--
+        - Helper method to determine if an edit occurred within a highlight
+        -
+        - @param aSelection the selection we wish to check
+        - @param aNode the node we want to check is contained in aSelection
+        - @param aOffset the offset into aNode that we want to check
+        - @returns the range containing (aNode, aOffset) or null if no ranges
+        -          in the selection contain it
+        -->
+      <method name="_findRange">
+        <parameter name="aSelection"/>
+        <parameter name="aNode"/>
+        <parameter name="aOffset"/>
+        <body><![CDATA[
+          var rangeCount = aSelection.rangeCount;
+          var rangeidx = 0;
+          var foundContainingRange = false;
+          var range = null;
+
+          // Check to see if this node is inside one of the selection's ranges
+          while (!foundContainingRange && rangeidx < rangeCount) {
+            range = aSelection.getRangeAt(rangeidx);
+            if (range.isPointInRange(aNode, aOffset)) {
+              foundContainingRange = true;
+              break;
+            }
+            rangeidx++;
+          }
+
+          if (foundContainingRange)
+            return range;
+
+          return null;
+        ]]></body>
+      </method>
+
+      <!-- Start of nsIEditActionListener implementations -->
+
+      <method name="WillDeleteText">
+        <parameter name="aTextNode"/>
+        <parameter name="aOffset"/>
+        <parameter name="aLength"/>
+        <body><![CDATA[
+          var editor = this._getEditableNode(aTextNode).editor;
+          var controller = editor.selectionController;
+          var fSelection = controller.getSelection(this._findSelection);
+          var range = this._findRange(fSelection, aTextNode, aOffset);
+
+          if (range) {
+            // Don't remove the highlighting if the deleted text is at the
+            // end of the range
+            if (aTextNode != range.endContainer ||
+                aOffset != range.endOffset) {
+              // Text within the highlight is being removed - the text can
+              // no longer be a match, so remove the highlighting
+              fSelection.removeRange(range);
+              if (fSelection.rangeCount == 0)
+                this._removeEditorListeners(editor);
+            }
+          }
+        ]]></body>
+      </method>
+
+      <method name="DidInsertText">
+        <parameter name="aTextNode"/>
+        <parameter name="aOffset"/>
+        <parameter name="aString"/>
+        <body><![CDATA[
+          var editor = this._getEditableNode(aTextNode).editor;
+          var controller = editor.selectionController;
+          var fSelection = controller.getSelection(this._findSelection);
+          var range = this._findRange(fSelection, aTextNode, aOffset);
+
+          if (range) {
+            // If the text was inserted before the highlight
+            // adjust the highlight's bounds accordingly
+            if (aTextNode == range.startContainer &&
+                       aOffset == range.startOffset)
+              range.setStart(range.startContainer,
+                             range.startOffset+aString.length);
+            else if (aTextNode != range.endContainer ||
+                     aOffset != range.endOffset) {
+              // The edit occurred within the highlight - any addition of text
+              // will result in the text no longer being a match,
+              // so remove the highlighting
+              fSelection.removeRange(range);
+              if (fSelection.rangeCount == 0)
+                this._removeEditorListeners(editor);
+            }
+          }
+        ]]></body>
+      </method>
+
+      <method name="WillDeleteSelection">
+        <parameter name="aSelection"/>
+        <body><![CDATA[
+          var editor = this._getEditableNode(aSelection.getRangeAt(0)
+                                                       .startContainer).editor;
+          var controller = editor.selectionController;
+          var fSelection = controller.getSelection(this._findSelection);
+
+          var selectionIndex = 0;
+          var findSelectionIndex = 0;
+          var shouldDelete = {};
+          var numberOfDeletedSelections = 0;
+          var numberOfMatches = fSelection.rangeCount;
+
+          // We need to test if any ranges in the deleted selection (aSelection)
+          // are in any of the ranges of the find selection
+          // Usually both selections will only contain one range, however
+          // either may contain more than one.
+
+          for (var fIndex = 0; fIndex < numberOfMatches; fIndex++) {
+            shouldDelete[fIndex] = false;
+            var fRange = fSelection.getRangeAt(fIndex);
+
+            for (var index = 0; index < aSelection.rangeCount; index++) {
+              if (!shouldDelete[fIndex]) {
+                var selRange = aSelection.getRangeAt(index);
+                var doesOverlap = this._checkOverlap(selRange, fRange);
+                if (doesOverlap) {
+                  shouldDelete[fIndex] = true;
+                  numberOfDeletedSelections++;
+                }
+              }
+            }
+          }
+
+          // OK, so now we know what matches (if any) are in the selection
+          // that is being deleted. Time to remove them.
+          if (numberOfDeletedSelections == 0)
+            return;
+
+          for (var i = numberOfMatches - 1; i >= 0; i--) {
+            if (shouldDelete[i]) {
+              var r = fSelection.getRangeAt(i);
+              fSelection.removeRange(r);
+            }
+          }
+
+          // Remove listeners if no more highlights left
+          if (fSelection.rangeCount == 0)
+            this._removeEditorListeners(editor);
+        ]]></body>
+      </method>
+
+      <method name="WillInsertText">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidCreateNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidDeleteNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidDeleteSelection">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidDeleteText">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidInsertNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidJoinNodes">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="DidSplitNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="WillCreateNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="WillDeleteNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="WillInsertNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="WillJoinNodes">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <method name="WillSplitNode">
+        <body><![CDATA[
+          // Unimplemented
+        ]]></body>
+      </method>
+
+      <!-- End of nsIEditActionListener implementations -->
+
+      <!--
+        - nsIDocumentStateListener logic follows
+        -
+        - When attaching nsIEditActionListeners, there are no guarantees
+        - as to whether the findbar or the documents in the browser will get
+        - destructed first. This leads to the potential to either leak, or to
+        - hold on to a reference an editable element's editor for too long,
+        - preventing it from being destructed.
+        -
+        - However, when an editor's owning node is being destroyed, the editor
+        - sends out a DocumentWillBeDestroyed notification. We can use this to
+        - clean up our references to the object, to allow it to be destroyed in a
+        - timely fashion.
+        -->
+
+      <!--
+        - Unhook ourselves when one of our state listeners has been called.
+        - This can happen in 4 cases:
+        -  1) The document the editor belongs to is navigated away from, and
+        -     the document is not being cached
+        -
+        -  2) The document the editor belongs to is expired from the cache
+        -
+        -  3) The tab containing the owning document is closed
+        -
+        -  4) The <input> or <textarea> that owns the editor is explicitly
+        -     removed from the DOM
+        -
+        - @param the listener that was invoked
+        -->
+      <method name="_onEditorDestruction">
+        <parameter name="aListener"/>
+        <body><![CDATA[
+          // First find the index of the editor the given listener listens to.
+          // The listeners and editors arrays must always be in sync.
+          // The listener will be in our array of cached listeners, as this
+          // method could not have been called otherwise.
+          var idx = 0;
+          while (this._stateListeners[idx] != aListener)
+            idx++;
+
+          // Unhook both listeners
+          this._unhookListenersAtIndex(idx);
+        ]]></body>
+      </method>
+
+      <!--
+        - Creates a unique document state listener for an editor.
+        -
+        - It is not possible to simply have the findbar implement the
+        - listener interface itself, as it wouldn't have sufficient information
+        - to work out which editor was being destroyed. Therefore, we create new
+        - listeners on the fly, and cache them in sync with the editors they
+        - listen to.
+        -->
+      <method name="_createStateListener">
+        <body><![CDATA[
+          return ({
+            findbar: this,
+
+            QueryInterface: function(aIID) {
+              if (aIID.equals(Components.interfaces.nsIDocumentStateListener) ||
+                  aIID.equals(Components.interfaces.nsISupports))
+                return this;
+
+              throw Components.results.NS_ERROR_NO_INTERFACE;
+            },
+
+            NotifyDocumentWillBeDestroyed: function() {
+              this.findbar._onEditorDestruction(this);
+            },
+
+            // Unimplemented
+            notifyDocumentCreated: function() {},
+            notifyDocumentStateChanged: function(aDirty) {}
+          });
+        ]]></body>
+      </method>
+
+      <!--
+        - Turns highlight on or off.
+        - @param aHighlight (boolean)
+        -        Whether to turn the highlight on or off
+        -->
+      <method name="toggleHighlight">
+        <parameter name="aHighlight"/>
+        <body><![CDATA[
+          var word = this._findField.value;
+
+          // Bug 429723. Don't attempt to highlight ""
+          if (aHighlight && !word)
+            return;
+
+          // We have to update the status because we might still have the status
+          // of another tab
+          if (this._highlightDoc(aHighlight, word))
+            this._updateStatusUI(this.nsITypeAheadFind.FIND_FOUND);
+          else
+            this._updateStatusUI(this.nsITypeAheadFind.FIND_NOTFOUND);
+        ]]></body>
+      </method>
+
+      <!--
+        - (Un)highlights each instance of the searched word in the passed
+        - window's content.
+        - @param aHighlight (boolean)
+        -        Whether to turn on highlight
+        - @param aWord
+        -        the word to search for
+        - @param aWindow
+        -        the window to search in. Passing undefined will search the
+        -        current content window.
+        - @returns true if aWord was found
+        -->
+      <method name="_highlightDoc">
+        <parameter name="aHighlight"/>
+        <parameter name="aWord"/>
+        <parameter name="aWindow"/>
+        <body><![CDATA[
+          var win = aWindow || this.browser.contentWindow;
+
+          var textFound = false;
+
+          for (var i = 0; win.frames && i < win.frames.length; i++) {
+            if (this._highlightDoc(aHighlight, aWord, win.frames[i]))
+              textFound = true;
+          }
+
+          var controller = this._getSelectionController(win);
+          if (!controller) {
+            // Without the selection controller,
+            // we are unable to (un)highlight any matches
+            return textFound;
+          }
+
+          var doc = win.document;
+          if (!doc || !(doc instanceof HTMLDocument))
+            return textFound;
+
+          if (aHighlight) {
+            this._searchRange = doc.createRange();
+            this._searchRange.selectNodeContents(doc.body);
+
+            this._startPt = this._searchRange.cloneRange();
+            this._startPt.collapse(true);
+
+            this._endPt = this._searchRange.cloneRange();
+            this._endPt.collapse(false);
+
+            var retRange = null;
+            var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
+                                   .createInstance()
+                                   .QueryInterface(Components.interfaces.nsIFind);
+
+            finder.caseSensitive = this._shouldBeCaseSensitive(aWord);
+
+            while ((retRange = finder.Find(aWord, this._searchRange,
+                                          this._startPt, this._endPt))) {
+              this._highlight(retRange, controller);
+              this._startPt = retRange.cloneRange();
+              this._startPt.collapse(false);
+
+              textFound = true;
+            }
+          } else {
+            // First, attempt to remove highlighting from main document
+            var sel = controller.getSelection(this._findSelection);
+            sel.removeAllRanges();
+
+            // Next, check our editor cache, for editors belonging to this
+            // document
+            if (this._editors) {
+              for (var x = this._editors.length - 1; x >= 0; --x) {
+                if (this._editors[x].document == doc) {
+                  sel = this._editors[x].selectionController
+                                        .getSelection(this._findSelection);
+                  sel.removeAllRanges();
+                  // We don't need to listen to this editor any more
+                  this._unhookListenersAtIndex(x);
+                }
+              }
+            }
+            return true;
+          }
+
+          return textFound;
+        ]]></body>
+      </method>
+
+     <!--
+       - Highlights the word in the passed range.
+       -
+       - @param aRange
+       -        the range that contains the word to highlight
+       - @param aController
+       -        the current document's selection controller
+       -->
+      <method name="_highlight">
+        <parameter name="aRange"/>
+        <parameter name="aController"/>
+        <body><![CDATA[
+          var node = aRange.startContainer;
+          var controller = aController;
+          var editableNode = this._getEditableNode(node);
+          if (editableNode)
+            controller = editableNode.editor.selectionController;
+
+          var findSelection = controller.getSelection(this._findSelection);
+          findSelection.addRange(aRange);
+
+          if (editableNode) {
+            // Highlighting added, so cache this editor, and hook up listeners
+            // to ensure we deal properly with edits within the highlighting
+            if (!this._editors) {
+              this._editors = [];
+              this._stateListeners = [];
+            }
+
+            var existingIndex = this._editors.indexOf(editableNode.editor);
+            if (existingIndex == -1) {
+              var x = this._editors.length;
+              this._editors[x] = editableNode.editor;
+              this._stateListeners[x] = this._createStateListener();
+              this._editors[x].addEditActionListener(this);
+              this._editors[x].addDocumentStateListener(this._stateListeners[x]);
+            }
+          }
+        ]]></body>
+      </method>
+
+      <!--
+        - Updates the case-sensitivity mode of the findbar and its UI.
+        - @param [optional] aString
+        -        The string for which case sensitivity might be turned on.
+        -        This only used when case-sensitivity is in auto mode,
+        -        @see _shouldBeCaseSensitive. The default value for this
+        -        parameter is the find-field value.
+        -->
+      <method name="_updateCaseSensitivity">
+        <parameter name="aString"/>
+        <body><![CDATA[
+          var val = aString || this._findField.value;
+
+          var caseSensitive = this._shouldBeCaseSensitive(val);
+          var checkbox = this.getElement("find-case-sensitive");
+          var statusLabel = this.getElement("match-case-status");
+          checkbox.checked = caseSensitive;
+
+          statusLabel.value = caseSensitive ? this._caseSensitiveStr : "";
+
+          // Show the checkbox on the full Find bar in non-auto mode.
+          // Show the label in all other cases.
+          var hideCheckbox = this._findMode != this.FIND_NORMAL ||
+            (this._typeAheadCaseSensitive != 0 &&
+             this._typeAheadCaseSensitive != 1);
+          checkbox.hidden = hideCheckbox;
+          statusLabel.hidden = !hideCheckbox;
+
+          var fastFind = this.browser.fastFind;
+          fastFind.caseSensitive = caseSensitive;
+        ]]></body>
+      </method>
+
+      <!--
+        - Sets the findbar case-sensitivity mode
+        - @param aCaseSensitive (boolean)
+        -        Whether or not case-sensitivity should be turned on.
+        -->
+      <method name="_setCaseSensitivity">
+        <parameter name="aCaseSensitive"/>
+        <body><![CDATA[
+          var prefsvc =
+            Components.classes["@mozilla.org/preferences-service;1"]
+                      .getService(Components.interfaces.nsIPrefBranch2);
+
+          // Just set the pref; our observer will change the find bar behavior
+          prefsvc.setIntPref("accessibility.typeaheadfind.casesensitive",
+                             aCaseSensitive ? 1 : 0);
+        ]]></body>
+      </method>
+
+      <!--
+        - Opens and displays the find bar.
+        -
+        - @param aMode
+        -        the find mode to be used, which is either FIND_NORMAL,
+        -        FIND_TYPEAHEAD or FIND_LINKS. If not passed, the last
+        -        find mode if any or FIND_NORMAL.
+        - @returns true if the find bar wasn't previously open, false otherwise.
+        -->
+      <method name="open">
+        <parameter name="aMode"/>
+        <body><![CDATA[
+          if (aMode != undefined)
+            this._findMode = aMode;
+
+          if (!this._notFoundStr) {
+            var stringsBundle =
+              Components.classes["@mozilla.org/intl/stringbundle;1"]
+                        .getService(Components.interfaces.nsIStringBundleService)
+                        .createBundle("chrome://global/locale/findbar.properties");
+            this._notFoundStr = stringsBundle.GetStringFromName("NotFound");
+            this._wrappedToTopStr =
+              stringsBundle.GetStringFromName("WrappedToTop");
+            this._wrappedToBottomStr =
+              stringsBundle.GetStringFromName("WrappedToBottom");
+            this._normalFindStr =
+              stringsBundle.GetStringFromName("NormalFindLabel");
+            this._fastFindStr =
+              stringsBundle.GetStringFromName("FastFindLabel");
+            this._fastFindLinksStr =
+              stringsBundle.GetStringFromName("FastFindLinksLabel");
+            this._caseSensitiveStr =
+              stringsBundle.GetStringFromName("CaseSensitive");
+          }
+
+          this._findFailedString = null;
+
+          this._updateFindUI();
+          if (this.hidden) {
+            this.hidden = false;
+
+            this._updateStatusUI(this.nsITypeAheadFind.FIND_FOUND);
+
+            let event = document.createEvent("Events");
+            event.initEvent("findbaropen", true, false);
+            this.dispatchEvent(event);
+
+            return true;
+          }
+          return false;
+        ]]></body>
+      </method>
+
+      <!--
+        - Closes the findbar.
+        -->
+      <method name="close">
+        <body><![CDATA[
+          if (this.hidden)
+            return;
+
+          var fm =
+            Components.classes["@mozilla.org/focus-manager;1"]
+                      .getService(Components.interfaces.nsIFocusManager);
+          if (window == fm.focusedWindow) {
+            var focusedElement = fm.focusedElement;
+            if (focusedElement) {
+              var bindingParent = document.getBindingParent(focusedElement);
+              if (bindingParent == this || bindingParent == this._findField) {
+                // block scrolling on focus since find already scrolls, further
+                // scrolling is due to user action, so don't override this
+                var element = this._foundLink || this._foundEditable;
+                if (element)
+                  fm.setFocus(element, fm.FLAG_NOSCROLL);
+                else if (this._currentWindow)
+                    this._currentWindow.focus();
+                else
+                  this.browser.contentWindow.focus();
+              }
+            }
+          }
+
+          this.hidden = true;
+          var fastFind = this.browser.fastFind;
+          fastFind.setSelectionModeAndRepaint
+            (this.nsISelectionController.SELECTION_ON);
+          this._setFoundLink(null);
+          this._foundEditable = null;
+          this._currentWindow = null;
+          if (this._quickFindTimeout) {
+            clearTimeout(this._quickFindTimeout);
+            this._quickFindTimeout = null;
+          }
+
+          this._findFailedString = null;
+        ]]></body>
+      </method>
+
+      <method name="_dispatchKeypressEvent">
+        <parameter name="aTarget"/>
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          if (!aTarget)
+            return;
+
+          var event = document.createEvent("KeyEvents");
+          event.initKeyEvent(aEvent.type, aEvent.bubbles, aEvent.cancelable,
+                             aEvent.view, aEvent.ctrlKey, aEvent.altKey,
+                             aEvent.shiftKey, aEvent.metaKey, aEvent.keyCode,
+                             aEvent.charCode);
+          aTarget.dispatchEvent(event);
+        ]]></body>
+      </method>
+
+      <field name="_xulBrowserWindow">null</field>
+      <method name="_updateStatusUIBar">
+        <body><![CDATA[
+          if (!this._xulBrowserWindow) {
+            try {
+              this._xulBrowserWindow =
+                window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                      .getInterface(Components.interfaces.nsIWebNavigation)
+                      .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+                      .treeOwner
+                      .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                      .getInterface(Components.interfaces.nsIXULWindow)
+                      .XULBrowserWindow;
+            }
+            catch(ex) { }
+            if (!this._xulBrowserWindow)
+              return false;
+          }
+
+          if (!this._foundLink || !this._foundLink.href ||
+              this._foundLink.href == "") {
+            this._xulBrowserWindow.setOverLink("", null);
+            return true;
+          }
+
+          var docCharset = "";
+          var ownerDoc = this._foundLink.ownerDocument;
+          if (ownerDoc)
+            docCharset = ownerDoc.characterSet;
+
+          if (!this._textToSubURIService) {
+            this._textToSubURIService =
+              Components.classes["@mozilla.org/intl/texttosuburi;1"]
+                        .getService(Components.interfaces.nsITextToSubURI);
+          }
+          var url =
+            this._textToSubURIService.unEscapeURIForUI(docCharset,
+                                                       this._foundLink.href);
+          this._xulBrowserWindow.setOverLink(url, null);
+
+          return true;
+        ]]></body>
+      </method>
+
+      <method name="_setFoundLink">
+        <parameter name="aFoundLink"/>
+        <body><![CDATA[
+          if (this._foundLink == aFoundLink)
+            return;
+
+          if (this._foundLink && this._drawOutline) {
+            // restore original outline
+            this._foundLink.style.outline = this._tmpOutline;
+            this._foundLink.style.outlineOffset = this._tmpOutlineOffset;
+          }
+          this._drawOutline = (aFoundLink && this._findMode != this.FIND_NORMAL);
+          if (this._drawOutline) {
+            // backup original outline
+            this._tmpOutline = aFoundLink.style.outline;
+            this._tmpOutlineOffset = aFoundLink.style.outlineOffset;
+
+            // draw pseudo focus rect
+            // XXX Should we change the following style for FAYT pseudo focus?
+            // XXX Shouldn't we change default design if outline is visible
+            //     already?
+            // Don't set the outline-color, we should always use initial value.
+            aFoundLink.style.outline = "1px dotted";
+            aFoundLink.style.outlineOffset = "0";
+          }
+
+          this._foundLink = aFoundLink;
+
+          // If the mouse cursor is on the document, the status bar text is
+          // changed by a mouse event which is dispatched by a scroll event.
+          // Thus we should change it only after the mouse event is dispatched.
+          if (this._findMode != this.FIND_NORMAL)
+            setTimeout(function(aSelf) { aSelf._updateStatusUIBar(); }, 0, this);
+        ]]></body>
+      </method>
+
+      <method name="_finishFAYT">
+        <parameter name="aKeypressEvent"/>
+        <body><![CDATA[
+          try {
+            if (this._foundLink)
+              this._foundLink.focus();
+            else if (this._foundEditable) {
+              this._foundEditable.focus();
+              var fastFind = this.browser.fastFind;
+              fastFind.collapseSelection();
+            }
+            else if (this._currentWindow)
+              this._currentWindow.focus();
+            else
+              return false;
+          }
+          catch(e) {
+            return false;
+          }
+
+          if (aKeypressEvent)
+            aKeypressEvent.preventDefault();
+
+          this.close();
+          return true;
+        ]]></body>
+      </method>
+
+      <!--
+        - Returns true if |aMimeType| is text-based, or false otherwise.
+        -
+        - @param aMimeType
+        -        The MIME type to check.
+        -
+        - if adding types to this function, please see the similar function
+        - in browser/base/content/browser.js
+        -->
+      <method name="_mimeTypeIsTextBased">
+        <parameter name="aMimeType"/>
+        <body><![CDATA[
+          return /^text\/|\+xml$/.test(aMimeType) ||
+                 aMimeType == "application/x-javascript" ||
+                 aMimeType == "application/javascript" ||
+                 aMimeType == "application/xml";
+        ]]></body>
+      </method>
+
+      <!--
+        - Returns whether FAYT can be used for the given event in
+        - the current content state.
+        -->
+      <method name="_shouldFastFind">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          if (aEvent.ctrlKey || aEvent.altKey || aEvent.metaKey ||
+              aEvent.getPreventDefault())
+            return false;
+
+          var elt = document.commandDispatcher.focusedElement;
+          if (elt) {
+            if (elt instanceof HTMLInputElement && elt.mozIsTextField(false))
+              return false;
+
+            if (elt instanceof HTMLTextAreaElement ||
+                elt instanceof HTMLSelectElement ||
+                elt instanceof HTMLObjectElement ||
+                elt instanceof HTMLEmbedElement)
+              return false;
+          }
+
+          var win = document.commandDispatcher.focusedWindow;
+          if (win && !this._mimeTypeIsTextBased(win.document.contentType))
+              return false;
+
+          // disable FAYT in about:blank to prevent FAYT opening unexpectedly.
+          var url = this.browser.currentURI;
+          if (url.spec == "about:blank")
+            return false;
+
+          // disable FAYT in documents that ask for it to be disabled.
+          if ((url.schemeIs("about") || url.schemeIs("chrome")) &&
+              (win.document.documentElement &&
+               win.document.documentElement.getAttribute("disablefastfind") == "true"))
+            return false;
+
+          if (win) {
+            try {
+              var editingSession = win.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                   .getInterface(Components.interfaces.nsIWebNavigation)
+                                   .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                   .getInterface(Components.interfaces.nsIEditingSession);
+              if (editingSession.windowIsEditable(win))
+                return false;
+            }
+            catch (e) {
+              // If someone built with composer disabled, we can't get an editing session.
+            }
+         }
+
+          return true;
+        ]]></body>
+      </method>
+
+      <method name="_shouldBeCaseSensitive">
+        <parameter name="aString"/>
+        <body><![CDATA[
+          if (this._typeAheadCaseSensitive == 0)
+            return false;
+          if (this._typeAheadCaseSensitive == 1)
+            return true;
+
+          return aString != aString.toLowerCase();
+        ]]></body>
+      </method>
+
+      <method name="_onBrowserKeypress">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          const TAF_LINKS_KEY = "'";
+          const TAF_TEXT_KEY = "/";
+
+          if (!this._shouldFastFind(aEvent))
+            return;
+
+          if (this._findMode != this.FIND_NORMAL && this._quickFindTimeout) {
+            if (!aEvent.charCode)
+              return;
+
+            this._findField.select();
+            this._findField.focus();
+            this._dispatchKeypressEvent(this._findField.inputField, aEvent);
+            aEvent.preventDefault();
+            return;
+          }
+
+          var key = aEvent.charCode ? String.fromCharCode(aEvent.charCode) : null;
+          var manualstartFAYT = (key == TAF_LINKS_KEY || key == TAF_TEXT_KEY);
+          var autostartFAYT = !manualstartFAYT && this._useTypeAheadFind &&
+                              key && key != " ";
+          if (manualstartFAYT || autostartFAYT) {
+            var mode = (key == TAF_LINKS_KEY ||
+                        (autostartFAYT && this._typeAheadLinksOnly)) ?
+              this.FIND_LINKS : this.FIND_TYPEAHEAD;
+
+            // Clear bar first, so that when openFindBar() calls setCaseSensitivity()
+            // it doesn't get confused by a lingering value
+            this._findField.value = "";
+
+            this.open(mode);
+            this._setFindCloseTimeout();
+            this._findField.select();
+            this._findField.focus();
+
+            if (autostartFAYT)
+              this._dispatchKeypressEvent(this._findField.inputField, aEvent);
+            else
+              this._updateStatusUI(this.nsITypeAheadFind.FIND_FOUND);
+
+            aEvent.preventDefault();
+          }
+        ]]></body>
+      </method>
+
+      <!-- See nsIDOMEventListener -->
+      <method name="handleEvent">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          switch (aEvent.type) {
+            case "mouseup":
+              if (!this.hidden && this._findMode != this.FIND_NORMAL)
+                this.close();
+
+              break;
+            case "keypress":
+              this._onBrowserKeypress(aEvent);
+              break;
+          }
+        ]]></body>
+      </method>
+
+      <method name="_enableFindButtons">
+        <parameter name="aEnable"/>
+        <body><![CDATA[
+          this.getElement("find-next").disabled =
+            this.getElement("find-previous").disabled =
+            this.getElement("highlight").disabled = !aEnable;
+        ]]></body>
+      </method>
+
+      <!--
+        - Determines whether minimalist or general-purpose search UI is to be
+        - displayed when the find bar is activated.
+        -->
+      <method name="_updateFindUI">
+        <body><![CDATA[
+          var showMinimalUI = this._findMode != this.FIND_NORMAL;
+
+          var nodes = this.getElement("findbar-container").childNodes;
+          for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].className.indexOf("findbar-find-fast") != -1)
+               continue;
+
+            nodes[i].hidden = showMinimalUI;
+          }
+          this._updateCaseSensitivity();
+
+          if (this._findMode == this.FIND_TYPEAHEAD)
+            this.getElement("find-label").value = this._fastFindStr;
+          else if (this._findMode == this.FIND_LINKS)
+            this.getElement("find-label").value = this._fastFindLinksStr;
+          else
+            this.getElement("find-label").value = this._normalFindStr;
+        ]]></body>
+      </method>
+
+      <method name="_updateFoundLink">
+        <parameter name="res"/>
+        <body><![CDATA[
+          var val = this._findField.value;
+          if (res == this.nsITypeAheadFind.FIND_NOTFOUND || !val) {
+            this._setFoundLink(null);
+            this._foundEditable = null;
+            this._currentWindow = null;
+          }
+          else {
+            this._setFoundLink(this.browser.fastFind.foundLink);
+            this._foundEditable = this.browser.fastFind.foundEditable;
+            this._currentWindow = this.browser.fastFind.currentWindow;
+          }
+        ]]></body>
+      </method>
+
+      <method name="_find">
+        <parameter name="aValue"/>
+        <body><![CDATA[
+          var val = aValue || this._findField.value;
+          var res = this.nsITypeAheadFind.FIND_NOTFOUND;
+
+          // Only search on input if we don't have a last-failed string,
+          // or if the current search string doesn't start with it.
+          if (this._findFailedString == null ||
+              val.indexOf(this._findFailedString) != 0)
+          {
+            this._enableFindButtons(val);
+            if (this.getElement("highlight").checked)
+              this._setHighlightTimeout();
+
+            this._updateCaseSensitivity(val);
+
+            var fastFind = this.browser.fastFind;
+            res = fastFind.find(val, this._findMode == this.FIND_LINKS);
+
+            this._updateFoundLink(res);
+            this._updateStatusUI(res, false);
+
+            if (res == this.nsITypeAheadFind.FIND_NOTFOUND)
+              this._findFailedString = val;
+            else
+              this._findFailedString = null;
+          }
+
+          if (this._findMode != this.FIND_NORMAL)
+            this._setFindCloseTimeout();
+
+          if (this._findResetTimeout != -1)
+            clearTimeout(this._findResetTimeout);
+
+          // allow a search to happen on input again after a second has
+          // expired since the previous input, to allow for dynamic
+          // content and/or page loading
+          this._findResetTimeout = setTimeout(function(self) {
+						  self._findFailedString = null;
+						  self._findResetTimeout = -1; },
+					      1000, this);
+
+          return res;
+        ]]></body>
+      </method>
+
+      <method name="_flash">
+        <body><![CDATA[
+          if (this._flashFindBarCount === undefined)
+            this._flashFindBarCount = this._initialFlashFindBarCount;
+
+          if (this._flashFindBarCount-- == 0) {
+            clearInterval(this._flashFindBarTimeout);
+            this.removeAttribute("flash");
+            this._flashFindBarCount = 6;
+            return;
+          }
+
+          this.setAttribute("flash",
+                            (this._flashFindBarCount % 2 == 0) ?
+                            "false" : "true");
+        ]]></body>
+      </method>
+
+      <method name="_setHighlightTimeout">
+        <body><![CDATA[
+          if (this._highlightTimeout)
+            clearTimeout(this._highlightTimeout);
+          this._highlightTimeout =
+            setTimeout(function(aSelf) {
+                         aSelf.toggleHighlight(false);
+                         aSelf.toggleHighlight(true);
+                       }, 500, this);
+        ]]></body>
+      </method>
+
+      <method name="_findAgain">
+        <parameter name="aFindPrevious"/>
+        <body><![CDATA[
+          var fastFind = this.browser.fastFind;
+          var res = fastFind.findAgain(aFindPrevious,
+                                       this._findMode == this.FIND_LINKS);
+          this._updateFoundLink(res);
+          this._updateStatusUI(res, aFindPrevious);
+
+          if (this._findMode != this.FIND_NORMAL && !this.hidden)
+            this._setFindCloseTimeout();
+
+          return res;
+        ]]></body>
+      </method>
+
+      <method name="_updateStatusUI">
+        <parameter name="res"/>
+        <parameter name="aFindPrevious"/>
+        <body><![CDATA[
+          switch (res) {
+            case this.nsITypeAheadFind.FIND_WRAPPED:
+              this._findStatusIcon.setAttribute("status", "wrapped");
+              this._findStatusDesc.textContent =
+                aFindPrevious ? this._wrappedToBottomStr : this._wrappedToTopStr;
+              this._findField.removeAttribute("status");
+              break;
+            case this.nsITypeAheadFind.FIND_NOTFOUND:
+              this._findStatusIcon.setAttribute("status", "notfound");
+              this._findStatusDesc.textContent = this._notFoundStr;
+              this._findField.setAttribute("status", "notfound");
+              break;
+            case this.nsITypeAheadFind.FIND_FOUND:
+            default:
+              this._findStatusIcon.removeAttribute("status");
+              this._findStatusDesc.textContent = "";
+              this._findField.removeAttribute("status");
+              break;
+          }
+        ]]></body>
+      </method>
+
+      <method name="_getInitialSelection">
+        <body><![CDATA[
+          var focusedElement = document.commandDispatcher.focusedElement;
+          var selText;
+
+          if (focusedElement instanceof Components.interfaces.nsIDOMNSEditableElement &&
+              focusedElement.editor &&
+              focusedElement.ownerDocument.defaultView.top == this._browser.contentWindow)
+          {
+            // The user may have a selection in an input or textarea
+            selText = focusedElement.editor.selectionController
+              .getSelection(Components.interfaces.nsISelectionController.SELECTION_NORMAL)
+              .toString();
+          }
+          else {
+            // Look for any selected text on the actual page
+            var focusedWindow = document.commandDispatcher.focusedWindow;
+            if (focusedWindow.top == this._browser.contentWindow)
+              selText = focusedWindow.getSelection().toString();
+          }
+
+          if (!selText)
+            return "";
+
+          // Process our text to get rid of unwanted characters
+          if (selText.length > this._selectionMaxLen) {
+            var pattern = new RegExp("^(?:\\s*.){0," + this._selectionMaxLen + "}");
+            pattern.test(selText);
+            selText = RegExp.lastMatch;
+          }
+          return selText.replace(/^\s+/, "")
+                        .replace(/\s+$/, "")
+                        .replace(/\s+/g, " ")
+                        .substr(0, this._selectionMaxLen);
+        ]]></body>
+      </method>
+
+      <!--
+        - Opens the findbar, focuses the findfield and selects its contents.
+        - Also flashes the findbar the first time it's used.
+        - @param aMode
+        -        the find mode to be used, which is either FIND_NORMAL,
+        -        FIND_TYPEAHEAD or FIND_LINKS. If not passed, the last
+        -        find mode if any or FIND_NORMAL.
+        -->
+      <method name="startFind">
+        <parameter name="aMode"/>
+        <body><![CDATA[
+          var prefsvc =
+            Components.classes["@mozilla.org/preferences-service;1"]
+                      .getService(Components.interfaces.nsIPrefBranch2);
+          var userWantsPrefill = true;
+          this.open(aMode);
+
+          if (this._flashFindBar) {
+            this._flashFindBarTimeout =
+              setInterval(function(aSelf) { aSelf._flash(); }, 500, this);
+            prefsvc.setIntPref("accessibility.typeaheadfind.flashBar",
+                               --this._flashFindBar);
+          }
+
+          if (this.prefillWithSelection)
+            userWantsPrefill =
+              prefsvc.getBoolPref("accessibility.typeaheadfind.prefillwithselection");
+
+          var initialString = (this.prefillWithSelection && userWantsPrefill) ?
+                              this._getInitialSelection() : null;
+          if (initialString) {
+            this._findField.value = initialString;
+            this._enableFindButtons(true);
+          }
+          else if (!this._findField.value)
+            this._enableFindButtons(false);
+
+          this._findField.select();
+          this._findField.focus();
+        ]]></body>
+      </method>
+
+      <!--
+        - Convenient alias to startFind(gFindBar.FIND_NORMAL);
+        -
+        - You should generally map the window's find command to this method.
+        -   e.g. <command name="cmd_find" oncommand="gFindBar.onFindCommand();"/>
+        -->
+      <method name="onFindCommand">
+        <body><![CDATA[
+          this.startFind(this.FIND_NORMAL);
+        ]]></body>
+      </method>
+
+      <!--
+        - Stub for find-next and find-previous commands
+        - @param aFindPrevious
+        -        true for find-previous, false otherwise.
+        -->
+      <method name="onFindAgainCommand">
+        <parameter name="aFindPrevious"/>
+        <body><![CDATA[
+          var findString = this._browser.fastFind.searchString || this._findField.value;
+          if (!findString) {
+            this.startFind();
+            return;
+          }
+
+          // user explicitly requested another search, so do it even if we think it'll fail
+          this._findFailedString = null;
+
+          var res;
+          // Ensure the stored SearchString is in sync with what we want to find
+          if (this._findField.value != this._browser.fastFind.searchString)
+            res = this._find(this._findField.value);
+          else
+            res = this._findAgain(aFindPrevious);
+
+          if (res == this.nsITypeAheadFind.FIND_NOTFOUND) {
+            if (this.open()) {
+              if (this._findMode != this.FIND_NORMAL)
+                this._setFindCloseTimeout();
+              this._findField.focus();
+              this._findField.focus();
+              this._updateStatusUI(res, aFindPrevious);
+            }
+          }
+        ]]></body>
+      </method>
+    </implementation>
+
+    <handlers>
+      <handler event="keypress" keycode="VK_ESCAPE" phase="capturing" action="this.close();" preventdefault="true"/>
+    </handlers>
+  </binding>
+</bindings>

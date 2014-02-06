@@ -1,0 +1,7 @@
+.hardBlockedAddon {
+  -moz-binding: url("chrome://mozapps/content/extensions/blocklist.xml#hardblockedaddon");
+}
+
+.softBlockedAddon {
+  -moz-binding: url("chrome://mozapps/content/extensions/blocklist.xml#softblockedaddon");
+}

@@ -1,0 +1,694 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is mozilla.org code.
+ *
+ * The Initial Developer of the Original Code is
+ * Netscape Communications Corporation.
+ * Portions created by the Initial Developer are Copyright (C) 1998
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Mats Palmgren <matspal@gmail.com>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either of the GNU General Public License Version 2 or later (the "GPL"),
+ * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+/** 
+  Styles for old GFX form widgets
+ **/ 
+ 
+
+@namespace url(http://www.w3.org/1999/xhtml); /* set default namespace to HTML */
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+*|*::-moz-fieldset-content {
+  display: block;
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+  height: 100%;   /* Need this so percentage heights of kids work right */
+}
+
+/* miscellaneous form elements */
+
+fieldset > legend {
+  padding-left: 2px;
+  padding-right: 2px;
+  width: -moz-fit-content;
+}
+
+legend {
+  display: block;
+}
+
+fieldset {
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding: 0.35em 0.625em 0.75em;
+  border: 2px groove ThreeDFace;
+}
+
+label {
+  cursor: default;
+}
+
+/* default inputs, text inputs, and selects */
+
+/* Note: Values in nsNativeTheme IsWidgetStyled function 
+   need to match textfield background/border values here */
+
+input {
+  -moz-appearance: textfield;
+  /* The sum of border-top, border-bottom, padding-top, padding-bottom
+     must be the same here, for buttons, and for <select> (including its
+     internal padding magic) */
+  padding: 1px 0 1px 0;
+  border: 2px inset ThreeDFace;
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+  font: -moz-field;
+  text-rendering: optimizeLegibility;
+  line-height: normal !important;
+  text-align: start;
+  text-transform: none;
+  word-spacing: normal;
+  letter-spacing: normal;
+  cursor: text;
+  -moz-binding: url("chrome://global/content/platformHTMLBindings.xml#inputFields");
+  text-indent: 0;
+  -moz-user-select: text;
+  text-shadow: none;
+}
+
+input > .anonymous-div {
+  word-wrap: normal !important;
+  /* Make the line-height equal to the available height */
+  line-height: -moz-block-height;
+}
+
+/* Make sure that the location bar's alignment in RTL mode changes according
+   to the input box direction if the user switches the text direction using
+   cmd_switchTextDirection (which applies a dir attribute to the input box's
+   anonymous div. */
+@-moz-document url-prefix(chrome://) {
+  input.uri-element-right-align:-moz-locale-dir(rtl) > .anonymous-div {
+    text-align: right !important;
+  }
+
+  input.uri-element-right-align:-moz-locale-dir(rtl) > .anonymous-div[dir=ltr] {
+    text-align: left !important;
+  }
+}
+
+textarea {
+  margin: 1px 0 1px 0;
+  border: 2px inset ThreeDFace;
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+  font: medium -moz-fixed;
+  text-rendering: optimizeLegibility;
+  text-align: start;
+  text-transform: none;
+  word-spacing: normal;
+  letter-spacing: normal;
+  vertical-align: text-bottom;
+  cursor: text;
+  resize: both;
+  -moz-binding: url("chrome://global/content/platformHTMLBindings.xml#textAreas");
+  -moz-appearance: textfield-multiline;
+  text-indent: 0;
+  -moz-user-select: text;
+  text-shadow: none;
+  word-wrap: break-word;
+}
+
+textarea > scrollbar {
+  cursor: default;
+}
+
+textarea > .anonymous-div,
+input > .anonymous-div {
+  white-space: pre;
+  overflow: auto;
+  border: 0px !important;
+  /* The 1px horizontal padding is for parity with Win/IE */
+  padding: 0px 1px;
+  margin: 0px;
+  text-decoration: inherit;
+  -moz-text-decoration-color: inherit;
+  -moz-text-decoration-style: inherit;
+  display: inline-block;
+  ime-mode: inherit;
+  resize: inherit;
+}
+
+textarea > .anonymous-div.wrap,
+input > .anonymous-div.wrap {
+  white-space: pre-wrap;
+}
+textarea > .anonymous-div.inherit-overflow,
+input > .anonymous-div.inherit-overflow {
+  overflow: inherit;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: GrayText;
+}
+
+input > .placeholder,
+textarea > .placeholder {
+  overflow: hidden;
+  pointer-events: none;
+  resize: none;
+}
+
+textarea > .placeholder {
+  white-space: pre-wrap;
+}
+
+input > .placeholder.hidden,
+textarea > .placeholder.hidden {
+  visibility: hidden;
+}
+
+input:-moz-read-write,
+textarea:-moz-read-write {
+  -moz-user-modify: read-write !important;
+}
+
+select {
+  margin: 0;
+  border-color: ThreeDFace;
+  background-color: -moz-Combobox;
+  color: -moz-ComboboxText;
+  font: -moz-list;
+  /*
+   * Note that the "UA !important" tests in
+   * layout/style/test/test_animations.html depend on this rule, because
+   * they need some UA !important rule to test.  If this changes, use a
+   * different one there.
+   */
+  line-height: normal !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  text-align: start; 
+  cursor: default;
+  -moz-box-sizing: border-box;
+  -moz-user-select: none;
+  -moz-appearance: menulist;
+  border-width: 2px;
+  border-style: inset;
+  text-indent: 0;
+  overflow: -moz-hidden-unscrollable;
+  text-shadow: none;
+}
+
+/* Need the "select[size][multiple]" selector to override the settings on
+   'select[size="1"]', eg if one has <select size="1" multiple> */
+   
+select[size],
+select[multiple],
+select[size][multiple] {
+  /* Different alignment and padding for listbox vs combobox */
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+  vertical-align: text-bottom;
+  padding: 1px 0 1px 0;
+  -moz-appearance: listbox;
+}
+
+select[size="0"],
+select[size="1"] {
+  /* Except this is not a listbox */
+  background-color: -moz-Combobox;
+  color: -moz-ComboboxText;
+  vertical-align: baseline;
+  padding: 0;
+  -moz-appearance: menulist;
+}
+
+select > button {
+  width: 12px;
+  height: 12px;
+  white-space: nowrap;
+  position: static !important;
+  background-image: url("arrow.gif") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  -moz-appearance: menulist-button;
+
+  /* Make sure to size correctly if the combobox has a non-auto height. */
+  height: 100% ! important;
+  -moz-box-sizing: border-box ! important;
+
+  /*
+    Make sure to align properly with the display frame.  Note that we
+    want the baseline of the combobox to match the baseline of the
+    display frame, so the dropmarker is what gets the vertical-align.
+  */
+  vertical-align: top !important;
+}
+
+select > button:active {
+  background-image: url("arrowd.gif") !important;
+}
+
+select:empty {
+  width: 2.5em;
+}
+
+*|*::-moz-display-comboboxcontrol-frame {
+  overflow: -moz-hidden-unscrollable;
+  /* This top/bottom padding plus the combobox top/bottom border need to
+     add up to the top/bottom borderpadding of text inputs and buttons */ 
+  padding-top: 1px;
+  padding-bottom: 1px;
+  -moz-padding-start: 4px;
+  -moz-padding-end: 0;
+  color: inherit;
+  white-space: nowrap;
+  text-align: inherit;
+  -moz-user-select: none;
+  /* Make sure to size correctly if the combobox has a non-auto height. */
+  height: 100% ! important;
+  -moz-box-sizing: border-box ! important;
+}
+
+option {
+  display: block;
+  float: none !important;
+  position: static !important;
+  min-height: 1em;
+  line-height: normal !important;
+  -moz-user-select: none;
+  text-indent: 0;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+}
+
+select > option {
+  padding-top : 0;
+  padding-bottom: 0;
+  -moz-padding-start: 3px;
+  -moz-padding-end: 5px;
+}
+
+option:checked {
+  background-color: -moz-html-cellhighlight !important;
+  color: -moz-html-cellhighlighttext !important;
+}
+
+select:focus > option:checked,
+select:focus > optgroup > option:checked {
+  background-color: Highlight ! important;
+  color: HighlightText ! important;
+}
+
+optgroup {
+  display: block;
+  float: none !important;
+  position: static !important;
+  font: -moz-list;
+  line-height: normal !important;
+  font-style: italic;
+  font-weight: bold;
+  font-size: inherit;
+  -moz-user-select: none;
+  text-indent: 0;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+}
+
+optgroup > option {
+  -moz-padding-start: 20px;
+  font-style: normal;
+  font-weight: normal;
+}
+
+optgroup:before {
+  display: block;
+  content: attr(label);
+}
+
+*|*::-moz-dropdown-list {
+  z-index: 2147483647;
+  background-color: inherit;
+  -moz-user-select: none;
+  position: static !important;
+  float: none !important;
+
+  /*
+   * We can't change the padding here, because that would affect our
+   * intrinsic width, since we scroll.  But at the same time, we want
+   * to make sure that our left border+padding matches the left
+   * border+padding of a combobox so that our scrollbar will line up
+   * with the dropmarker.  So set our left border to 2px.
+   */
+  border: 1px outset black !important;
+  border-left-width: 2px ! important;
+} 
+
+input:disabled,
+textarea:disabled,
+option:disabled,
+optgroup:disabled,
+select:disabled:disabled /* Need the pseudo-class twice to have the specificity
+                            be at least the same as select[size][multiple] above */
+{
+  -moz-user-input: disabled;
+  -moz-user-focus: ignore;
+  color: GrayText;
+  background-color: ThreeDFace;
+  cursor: inherit;
+}
+
+option:disabled,
+optgroup:disabled {
+  background-color: transparent;
+}
+
+/* hidden inputs */
+input[type="hidden"] {
+  -moz-appearance: none;
+  display: none !important;
+  padding: 0;
+  border: 0;
+  cursor: auto;
+  -moz-user-focus: ignore;
+  -moz-binding: none;
+}
+
+/* image buttons */
+input[type="image"] {
+  -moz-appearance: none;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-family: sans-serif;
+  font-size: small;
+  cursor: pointer;
+  -moz-binding: none;
+}
+
+input[type="image"]:disabled {
+  cursor: inherit;
+}
+
+input[type="image"]:-moz-focusring {
+  /* Don't specify the outline-color, we should always use initial value. */
+  outline: 1px dotted;
+}
+
+/* file selector */
+input[type="file"] {
+  -moz-appearance: none;
+  white-space: nowrap;
+  cursor: default;
+  -moz-binding: none;
+
+  padding: 0 !important;
+  border-style: none !important;
+}
+
+input[type="file"] > input[type="text"] {
+  border-color: inherit;
+  background-color: inherit;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+/* button part of file selector */
+input[type="file"] > input[type="button"] {
+  height: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  cursor: inherit;
+}
+
+/* radio buttons */
+input[type="radio"] {
+  -moz-appearance: radio;
+  margin: 3px 3px 0px 5px;
+  border-radius: 100% !important;
+}
+
+/* check boxes */
+input[type="checkbox"] {
+  -moz-appearance: checkbox;
+  margin: 3px 3px 3px 4px;
+  border-radius: 0 !important;
+}
+
+/* common features of radio buttons and check boxes */
+
+/* NOTE: The width, height, border-width, and padding here must all
+   add up the way nsFormControlFrame::GetIntrinsic(Width|Height)
+   expects them to, or they will not come out with total width equal
+   to total height on sites that set their 'width' or 'height' to 'auto'.
+   (Should we maybe set !important on width and height, then?)  */
+input[type="radio"],
+input[type="checkbox"] {
+  -moz-box-sizing: border-box;
+  width: 13px;
+  height: 13px;
+  cursor: default;
+  padding: 0 !important;
+  -moz-binding: none;
+  /* same colors as |input| rule, but |!important| this time. */
+  background-color: -moz-Field ! important;
+  color: -moz-FieldText ! important;
+  border: 2px inset ThreeDFace ! important;
+}
+
+input[type="radio"]:disabled,
+input[type="radio"]:disabled:active,
+input[type="radio"]:disabled:hover,
+input[type="radio"]:disabled:hover:active,
+input[type="checkbox"]:disabled,
+input[type="checkbox"]:disabled:active,
+input[type="checkbox"]:disabled:hover,
+input[type="checkbox"]:disabled:hover:active {
+  padding: 1px;
+  border: 1px inset ThreeDShadow ! important;
+  /* same as above, but !important */
+  color: GrayText ! important;
+  background-color: ThreeDFace ! important;
+  cursor: inherit; 
+}
+
+input[type="checkbox"]:-moz-focusring,
+input[type="radio"]:-moz-focusring {
+  border-style: groove !important;
+}
+
+input[type="checkbox"]:hover:active,
+input[type="radio"]:hover:active {
+  background-color: ThreeDFace ! important;
+  border-style: inset !important;
+}
+
+/* buttons */
+
+/* Note: Values in nsNativeTheme IsWidgetStyled function 
+   need to match button background/border values here */
+
+button, 
+input[type="reset"],
+input[type="button"],
+input[type="submit"] { 
+  -moz-appearance: button;
+  /* The sum of border-top, border-bottom, padding-top, padding-bottom
+     must be the same here, for text inputs, and for <select>.  For
+     buttons, make sure to include the -moz-focus-inner border/padding. */
+  padding: 0px 6px 0px 6px;
+  border: 2px outset ButtonFace;
+  background-color: ButtonFace;
+  color: ButtonText; 
+  font: -moz-button;
+  line-height: normal;
+  white-space: pre;
+  cursor: default;
+  -moz-box-sizing: border-box;
+  -moz-user-select: none;
+  -moz-binding: none;
+  text-align: center;
+  text-shadow: none;
+}
+
+button {
+  /* Buttons should lay out like "normal" html, mostly */
+  white-space: inherit;
+  text-indent: 0;
+}
+
+*|*::-moz-button-content {
+  display: block;
+}
+
+button:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background-color: -moz-buttonhoverface;
+  color: -moz-buttonhovertext;
+}
+
+button:active:hover,
+input[type="reset"]:active:hover,
+input[type="button"]:active:hover,
+input[type="submit"]:active:hover {
+  padding: 0px 5px 0px 7px;
+  border-style: inset;
+  background-color: ButtonFace;
+  color: ButtonText;
+}
+
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+  padding: 0px 2px 0px 2px;
+  border: 1px dotted transparent;
+}
+
+button:-moz-focusring::-moz-focus-inner,
+input[type="reset"]:-moz-focusring::-moz-focus-inner,
+input[type="button"]:-moz-focusring::-moz-focus-inner,
+input[type="submit"]:-moz-focusring::-moz-focus-inner,
+input[type="file"] > input[type="button"]:-moz-focusring::-moz-focus-inner {
+  border-color: ButtonText;
+}
+
+button:disabled:active, button:disabled,
+input[type="reset"]:disabled:active,
+input[type="reset"]:disabled,
+input[type="button"]:disabled:active,
+input[type="button"]:disabled,
+select:disabled > button,
+select:disabled > button,
+input[type="submit"]:disabled:active,
+input[type="submit"]:disabled {
+  /* The sum of border-top, border-bottom, padding-top, padding-bottom
+     must be the same here and for text inputs */
+  padding: 0px 6px 0px 6px;
+  border: 2px outset ButtonFace;
+  color: GrayText;
+  cursor: inherit; 
+}
+
+ /*
+  * Make form controls inherit 'unicode-bidi' transparently as required by
+  *  their various anonymous descendants and pseudo-elements:
+  *
+  * <textarea> and <input type="text">:
+  *  inherit into the XULScroll frame with class 'anonymous-div' which is a
+  *  child of the text control.
+  *
+  * Buttons (either <button>, <input type="submit">, <input type="button">
+  *          or <input type="reset">)
+  *  inherit into the ':-moz-button-content' pseudo-element.
+  *
+  * <select>:
+  *  inherit into the ':-moz-display-comboboxcontrol-frame' pseudo-element and
+  *  the <optgroup>'s ':before' pseudo-element, which is where the label of
+  *  the <optgroup> gets displayed. The <option>s don't use anonymous boxes,
+  *  so they need no special rules.
+  */
+textarea > .anonymous-div,
+input > .anonymous-div,
+*|*::-moz-button-content,
+*|*::-moz-display-comboboxcontrol-frame,
+optgroup:before {
+  unicode-bidi: inherit;
+  text-overflow: inherit;
+}
+
+ /*
+  * Force the text control child of file input controls to have left-to-right
+  * directionality. Otherwise filenames containing right-to-left characters
+  * will be reordered with chaotic results.
+  */
+input[type="file"] > input[type="text"] {
+  direction: ltr !important;
+  text-align: inherit;
+}
+
+/**
+ * Set default style for invalid elements.
+ */
+:not(output):-moz-ui-invalid {
+  box-shadow: 0 0 1.5px 1px red;
+}
+
+:not(output):-moz-ui-invalid:-moz-focusring {
+  box-shadow: 0 0 2px 2px rgba(255,0,0,0.4);
+}
+
+output:-moz-ui-invalid {
+  color: red;
+}
+
+@media print {
+  input, textarea, select, button {
+    -moz-user-input: none !important;
+  }
+
+  input[type="file"] { height: 2em; }
+}
+
+progress {
+  -moz-appearance: progressbar;
+  display: inline-block;
+  vertical-align: -0.2em;
+
+  /* Default style in case of there is -moz-appearance: none; */
+  border: 2px solid;
+  /* #e6e6e6 is a light gray. */
+  -moz-border-top-colors: ThreeDShadow #e6e6e6;
+  -moz-border-right-colors: ThreeDHighlight #e6e6e6;
+  -moz-border-bottom-colors: ThreeDHighlight #e6e6e6;
+  -moz-border-left-colors: ThreeDShadow #e6e6e6;
+  background-color: #e6e6e6;
+}
+
+::-moz-progress-bar {
+  /* Block styles that would change the type of frame we construct. */
+  display: inline-block ! important;
+  float: none ! important;
+  position: static ! important;
+  overflow: visible ! important;
+  -moz-box-sizing: border-box ! important;
+
+  -moz-appearance: progresschunk;
+  height: 100%;
+  width: 100%;
+
+  /* Default style in case of there is -moz-appearance: none; */
+  background-color: #0064b4; /* blue */
+}
+

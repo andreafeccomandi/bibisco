@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" [
+<!ENTITY % aboutAboutDTD SYSTEM "chrome://global/locale/aboutAbout.dtd" >
+%aboutAboutDTD;
+<!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd">
+%globalDTD;
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>&aboutAbout.title;</title>
+  <link rel="stylesheet" href="chrome://global/skin/about.css" type="text/css"/>
+  <script type="application/javascript"><![CDATA[
+    const Cc = Components.classes;
+    const Ci = Components.interfaces;
+    var gProtocols = [];
+    var gContainer;
+    window.onload = function () {
+      gContainer = document.getElementById("abouts");
+      findAbouts();
+    }
+
+    function findAbouts() {
+      var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+      for (var cid in Cc) {
+        var result = cid.match(/@mozilla.org\/network\/protocol\/about;1\?what\=(.*)$/);
+        if (result) {
+          var aboutType = result[1];
+          var contract = "@mozilla.org/network/protocol/about;1?what=" + aboutType;
+          try {
+            var am = Cc[contract].getService(Ci.nsIAboutModule);
+            var uri = ios.newURI("about:"+aboutType, null, null);
+            var flags = am.getURIFlags(uri);
+            if (!(flags & Ci.nsIAboutModule.HIDE_FROM_ABOUTABOUT)) {
+              gProtocols.push(aboutType);
+            }
+          } catch (e) {
+            // getService might have thrown if the component doesn't actually
+            // implement nsIAboutModule
+          }
+        }
+      }
+      gProtocols.sort().forEach(createProtocolListing);
+    }
+
+    function createProtocolListing(aProtocol) {
+      var uri = "about:" + aProtocol;
+      var li = document.createElement("li");
+      var link = document.createElement("a");
+      var text = document.createTextNode(uri);
+
+      link.href = uri;
+      link.appendChild(text);
+      li.appendChild(link);
+      gContainer.appendChild(li);
+    }
+  ]]></script>
+</head>
+
+<body dir="&locale.dir;">
+  <h1>&aboutAbout.title;</h1>
+  <p><em>&aboutAbout.note;</em></p>
+  <ul id="abouts" class="columns"></ul>
+</body>
+</html>

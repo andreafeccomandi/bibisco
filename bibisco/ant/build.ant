@@ -1,0 +1,70 @@
+<project name="bibisco" basedir="../" default="build_win">
+	
+	<property name="build.dir" value="${basedir}/build/bibisco" />
+	<property name="db.source.dir" value="${basedir}/db" />
+	<property name="db.target.dir" value="${build.dir}/db" />
+	<property name="dictionaries.source.dir" value="${basedir}/dictionaries" />
+	<property name="dictionaries.target.dir" value="${build.dir}/dictionaries" />
+	<property name="product.source.dir" value="${basedir}/product" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="WebContent.source.dir" value="${basedir}/WebContent" />
+	<property name="WebContent.target.dir" value="${build.dir}/WebContent" />
+	<property name="xulrunner.source.dir" value="" />
+	<property name="xulrunner.target.dir" value="" />   
+	<tstamp />
+	
+	<target name="build_win">
+		<antcall target="build">
+			<param name="product.file" value="${product.source.dir}/bibisco_win.product"/>
+			<param name="xulrunner.source.dir" value="${basedir}/xulrunner/win"/>
+			<param name="xulrunner.target.dir" value="${build.dir}/xulrunner/win" />   
+		</antcall>
+	</target>
+	<target name="build_linux">
+        <antcall target="build">
+        	<param name="product.file" value="${product.source.dir}/bibisco_linux.product"/>
+        	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux"/>
+            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux" />   
+        </antcall>
+    </target>
+
+
+	<target name="build">
+		<delete dir="${build.dir}" />
+        <mkdir dir="${build.dir}" /> 
+		<mkdir dir="${db.target.dir}" />
+		<mkdir dir="${build.dir}/export" />
+		<mkdir dir="${WebContent.target.dir}" />
+		<copy file="${db.source.dir}/install/bibisco.h2.db" tofile="${db.target.dir}/bibisco.h2.db" overwrite="true"/>
+		<copy file="${db.source.dir}/template_project.h2.db" tofile="${db.target.dir}/template_project.h2.db" overwrite="true"/>
+		<copy todir="${dictionaries.target.dir}">
+            <fileset dir="${dictionaries.source.dir}"/>
+        </copy>
+		<copy todir="${WebContent.target.dir}">
+            <fileset dir="${WebContent.source.dir}"/>
+        </copy>
+		<copy todir="${WebContent.target.dir}">
+            <fileset dir="${WebContent.source.dir}"/>
+        </copy>
+		<copy todir="${xulrunner.target.dir}">
+            <fileset dir="${xulrunner.source.dir}"/>
+        </copy>
+		<copy file="${product.file}" tofile="${basedir}/bibisco.product"/>
+	    <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_svil.xml"/>
+		<move file="${src.dir}/bibiscoConfig_prod.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+	</target>  
+
+	<target name="restore_svil_environment_win">
+		<copy file="${product.source.dir}/bibisco_win.product" tofile="${basedir}/bibisco.product"/>
+		<move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
+		<move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+	</target>
+
+	<target name="restore_svil_environment_linux">
+        <copy file="${product.source.dir}/bibisco_linux.product" tofile="${basedir}/bibisco.product"/>
+        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
+        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+	</target>
+
+	
+</project>

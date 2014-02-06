@@ -1,0 +1,12 @@
+nspr4.dll
+plc4.dll
+plds4.dll
+mozalloc.dll
+mozsqlite3.dll
+nssutil3.dll
+softokn3.dll
+nss3.dll
+ssl3.dll
+smime3.dll
+mozjs.dll
+xul.dll

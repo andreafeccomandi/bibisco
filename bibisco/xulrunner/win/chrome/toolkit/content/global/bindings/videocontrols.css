@@ -1,0 +1,96 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+.scrubber,
+.volumeControl {
+  -moz-binding: url("chrome://global/content/bindings/videocontrols.xml#suppressChangeEvent");
+}
+
+.scrubber .scale-thumb {
+  -moz-binding: url("chrome://global/content/bindings/videocontrols.xml#timeThumb");
+}
+
+.playButton,
+.muteButton,
+.scrubber .scale-slider,
+.volumeControl .scale-slider {
+  -moz-user-focus: none;
+}
+
+.mediaControlsFrame {
+  direction: ltr;
+  /* Prevent unwanted style inheritance. See bug 554717. */
+  list-style-image: none !important;
+  font: normal normal normal 100%/normal sans-serif !important;
+  text-decoration: none !important;
+}
+
+/* CSS Transitions
+ *
+ * These are overriden by the default theme; the rules here just 
+ * provide a fallback to drive the required transitionend event
+ * (in case a 3rd party theme does not provide transitions).
+ */
+.controlBar:not([immediate]) {
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 1ms;
+}
+.controlBar[fadeout] {
+  opacity: 0;
+}
+.volumeStack:not([immediate]) {
+  -moz-transition-property: opacity, margin-top;
+  -moz-transition-duration: 1ms, 1ms;
+}
+.volumeStack[fadeout] {
+  opacity: 0;
+  margin-top: 0;
+}
+.statusOverlay:not([immediate]) {
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 1ms;
+  -moz-transition-delay: 750ms;
+}
+.statusOverlay[fadeout] {
+  opacity: 0;
+}
+
+/* Statistics formatting */
+html|td.statLabel {
+  font-weight: bold;
+  max-width: 20%;
+  white-space: nowrap;
+}
+html|td.statValue {
+  max-width: 30%;
+}
+html|td.filename {
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+html|span.statActivity > html|span {
+  display: none;
+}
+html|span.statActivity[activity="paused"] > html|span.statActivityPaused,
+html|span.statActivity[activity="playing"] > html|span.statActivityPlaying,
+html|span.statActivity[activity="ended"] > html|span.statActivityEnded,
+html|span.statActivity[seeking] > html|span.statActivitySeeking {
+  display: inline;
+}
+
+.controlBar[size="hidden"],
+.controlBar[size="small"] .durationBox,
+.controlBar[size="small"] .durationLabel,
+.controlBar[size="small"] .positionLabel {
+  visibility: collapse;
+}
+
+.controlBar[size="small"] .scrubberStack,
+.controlBar[size="small"] .backgroundBar,
+.controlBar[size="small"] .bufferBar,
+.controlBar[size="small"] .progressBar,
+.controlBar[size="small"] .scrubber {
+  visibility: hidden;
+}

@@ -1,0 +1,141 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+notification {
+  background-color: InfoBackground;
+  color: InfoText;
+  text-shadow: none;
+}
+
+notification[type="info"] {
+  background-color: -moz-Dialog;
+  color: -moz-DialogText;
+}
+
+notification[type="critical"] {
+  background-color: red;
+  color: white;
+}
+
+.messageImage {
+  width: 16px;
+  height: 16px;
+  -moz-margin-start: 6px;
+  -moz-margin-end: 1px;
+}
+
+/* Default icons for notifications */
+
+notification[type="info"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/information-16.png");
+}
+
+notification[type="warning"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/warning-16.png");
+}
+
+notification[type="critical"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/error-16.png");
+}
+
+.messageCloseButton {
+  list-style-image: url("chrome://global/skin/icons/close.png");
+  -moz-appearance: none;
+  -moz-image-region: rect(0, 16px, 16px, 0);
+  padding: 4px 2px;
+  border: none !important;
+}
+
+.messageCloseButton:hover {
+  -moz-image-region: rect(0, 32px, 16px, 16px);
+}
+
+.messageCloseButton:hover:active {
+  -moz-image-region: rect(0, 48px, 16px, 32px);
+}
+
+.messageCloseButton > .toolbarbutton-icon {
+  -moz-margin-end: 5px;
+}
+
+/* Popup notification */
+
+.popup-notification-description {
+  max-width: 24em;
+}
+
+.popup-notification-button-container {
+  margin-top: 17px;
+}
+
+/*
+XXX: apply styles to all themes until bug 509642 is fixed
+@media all and (-moz-windows-default-theme) {
+*/
+  .popup-notification-menubutton[type="menu-button"] {
+    -moz-appearance: none;
+    border-radius: 3px;
+    padding: 0;
+    background-color: rgba(250,250,250,.3);
+  }
+
+  .popup-notification-menubutton[type="menu-button"]:hover:active {
+    border-color: rgba(0,0,0,.5);
+  }
+
+  .popup-notification-menubutton > .button-menubutton-button,
+  .popup-notification-menubutton > .button-menubutton-dropmarker {
+    -moz-appearance: none;
+    margin: 0;
+    border: 1px solid rgba(0,0,0,.35);
+    box-shadow: 0 1px 0 rgba(255,255,255,.5) inset,
+                0 2px 2px rgba(255,255,255,.35) inset,
+                0 -1px 2px rgba(0,0,0,.1) inset,
+                0 1px 0 rgba(255,255,255,.35);
+  }
+
+  .popup-notification-menubutton > .button-menubutton-button {
+    background-color: transparent;
+    padding: 1px;
+    -moz-border-end: none;
+  }
+
+  .popup-notification-menubutton > .button-menubutton-button > .button-box {
+    -moz-padding-start: 8px;
+    -moz-padding-end: 5px;
+  }
+
+  .popup-notification-menubutton > .button-menubutton-dropmarker {
+    padding: 9px 5px 8px;
+    width: auto;
+    height: auto;
+    list-style-image: url("chrome://global/skin/arrow/arrow-dn-sharp.gif");
+  }
+
+  .popup-notification-menubutton:-moz-focusring > .button-menubutton-dropmarker {
+    outline: 1px dotted ThreeDDarkShadow;
+    outline-offset: -3px;
+  }
+
+
+  .popup-notification-menubutton > .button-menubutton-button:hover,
+  .popup-notification-menubutton > .button-menubutton-dropmarker:hover {
+    background-color: rgba(250,250,250,.6);
+  }
+
+  .popup-notification-menubutton > .button-menubutton-button:hover:active,
+  .popup-notification-menubutton > .button-menubutton-dropmarker:hover:active,
+  .popup-notification-menubutton[open="true"] > .button-menubutton-dropmarker {
+    background-color: rgba(0,0,0,.05);
+    box-shadow: 0 0 2px rgba(0,0,0,.65) inset;
+  }
+/*}*/
+
+.popup-notification-closebutton {
+  -moz-margin-end: -14px;
+  margin-top: -10px;
+}
+
+.popup-notification-closeitem {
+  list-style-image: url("chrome://global/skin/icons/close.png");
+  -moz-image-region: rect(0, 16px, 16px, 0);
+}

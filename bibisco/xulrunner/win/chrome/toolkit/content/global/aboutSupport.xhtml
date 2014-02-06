@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE html [
+  <!ENTITY % htmlDTD PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd"> %htmlDTD;
+  <!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd"> %globalDTD;
+  <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd"> %brandDTD;
+  <!ENTITY % aboutSupportDTD SYSTEM "chrome://global/locale/aboutSupport.dtd"> %aboutSupportDTD;
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>&aboutSupport.pageTitle;</title>
+
+    <link rel="stylesheet" href="chrome://global/skin/aboutSupport.css"
+          type="text/css"/>
+
+    <script type="application/javascript;version=1.7"
+            src="chrome://global/content/aboutSupport.js"/>
+  </head>
+
+  <body dir="&locale.dir;">
+
+    <h1>
+      &aboutSupport.pageTitle;
+    </h1>
+
+    <div class="page-subtitle">
+        &aboutSupport.pageSubtitle;
+    </div>
+
+    <div>
+      <button onclick="copyContentsToClipboard()">
+        &aboutSupport.copyToClipboard.label;
+      </button>
+    </div>
+
+    <div id="contents">
+
+      <!-- - - - - - - - - - - - - - - - - - - - - -->
+
+      <h2 class="major-section">
+        &aboutSupport.appBasicsTitle;
+      </h2>
+
+      <table>
+        <tbody>
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsName;
+            </th>
+
+            <td id="application-box">
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsVersion;
+            </th>
+
+            <td id="version-box">
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsUserAgent;
+            </th>
+
+            <td id="useragent-box">
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsProfileDir;
+            </th>
+
+            <td>
+              <button onclick="openProfileDirectory()">
+                &aboutSupport.show.label;
+               </button>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsEnabledPlugins;
+            </th>
+
+            <td>
+              <a href="about:plugins">about:plugins</a>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsBuildConfig;
+            </th>
+
+            <td>
+              <a href="about:buildconfig">about:buildconfig</a>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsCrashIDs;
+            </th>
+
+            <td>
+              <a href="about:crashes">about:crashes</a>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="column">
+              &aboutSupport.appBasicsMemoryUse;
+            </th>
+
+            <td>
+              <a href="about:memory">about:memory</a>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <!-- - - - - - - - - - - - - - - - - - - - - -->
+
+      <h2 class="major-section">
+        &aboutSupport.extensionsTitle;
+      </h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>
+              &aboutSupport.extensionName;
+            </th>
+            <th>
+              &aboutSupport.extensionVersion;
+            </th>
+            <th>
+              &aboutSupport.extensionEnabled;
+            </th>
+            <th>
+              &aboutSupport.extensionId;
+            </th>
+          </tr>
+        </thead>
+        <tbody id="extensions-tbody">
+        </tbody>
+      </table>
+
+      <!-- - - - - - - - - - - - - - - - - - - - - -->
+
+      <h2 class="major-section">
+        &aboutSupport.modifiedPrefsTitle;
+      </h2>
+
+      <table class="prefs-table">
+        <thead>
+          <th class="name">
+            &aboutSupport.modifiedPrefsName;
+          </th>
+
+          <th class="value">
+            &aboutSupport.modifiedPrefsValue;
+          </th>
+        </thead>
+
+        <tbody id="prefs-tbody">
+        </tbody>
+      </table>
+
+      <!-- - - - - - - - - - - - - - - - - - - - - -->
+      <h2 class="major-section">
+        &aboutSupport.graphicsTitle;
+      </h2>
+
+      <table>
+        <tbody id="graphics-tbody">
+        </tbody>
+      </table>
+
+      <table>
+        <tbody id="graphics-failures-tbody">
+        </tbody>
+      </table>
+
+    </div>
+
+  </body>
+
+</html>

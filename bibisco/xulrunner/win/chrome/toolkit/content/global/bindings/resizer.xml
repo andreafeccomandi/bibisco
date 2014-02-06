@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<bindings id="resizerBindings"
+   xmlns="http://www.mozilla.org/xbl">
+
+  <binding id="resizer">
+    <resources>
+      <stylesheet src="chrome://global/skin/resizer.css"/>
+    </resources>
+    <implementation>
+      <constructor>
+      <![CDATA[
+        // don't do this for viewport resizers; causes a crash related to
+        // bugs 563665 and 581536 otherwise
+        if (this.parentNode == this.ownerDocument.documentElement)
+          return;
+
+        // if the direction is rtl, set the rtl attribute so that the
+        // stylesheet can use this to make the cursor appear properly
+        var direction = window.getComputedStyle(this, "").direction;
+        if (direction == "rtl") {
+          this.setAttribute("rtl", "true");
+        }
+      ]]>
+      </constructor>
+    </implementation>
+  </binding>
+
+</bindings>

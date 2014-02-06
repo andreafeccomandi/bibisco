@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+				<property name="poolMaximumActiveConnections" value="1" />		
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/bibisco/dao/sqlMap/ChaptersMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/CharacterInfosMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/CharactersMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/ImagesMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/LocationsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/MessagesMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/ProjectMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/ProjectsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/PropertiesMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/SceneRevisionsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/SceneRevisionCharactersMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/SceneRevisionStrandsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/ScenesMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/StrandsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VChaptersMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VCharacterOccurencesMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VCharacterSceneMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VPointOfView4AnalysisMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VSceneTagsMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VSelectedSceneRevisionsMapper.xml" />
+	</mappers>
+</configuration>
