@@ -1,7 +1,7 @@
 <config cacheEnabled="true">
 	<test enabled="Y" >
 	   <win basePath="D:\progetti\bibisco\" />
-	   <linux  basePath="/media/progettilinux/bibisco/" />
+	   <linux  basePath="/home/andrea/git/bibisco/bibisco/" />
 	   <mac  basePath="/media/progettimac/bibisco/" />
 	</test>
 	<web uri="http://localhost:8080/bibiscoWeb" />
