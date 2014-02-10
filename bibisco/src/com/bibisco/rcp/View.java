@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Method;
 
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.MenuDetectEvent;
@@ -25,7 +27,11 @@ public class View extends ViewPart {
 	
 	@Override
 	public void createPartControl(Composite pCmpParent) {
+
+		// cancel Workbench Auto-Save Job: without workspace cause bibisco crash!
+		cancelWorkbenchAutoSaveJob();
 		
+		// create Browser instance
 		String lStrXulRunnerPath = getXulRunnerPath();
 		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
 		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
@@ -105,5 +111,18 @@ public class View extends ViewPart {
 			// suffocated exception: bibisco start with clipboard capabilities disabled.
 			mLog.error(e);
 		} 
+	}
+	
+	private void cancelWorkbenchAutoSaveJob() {
+		
+		IJobManager lJobManager= Job.getJobManager();
+		Job[] lJobs= lJobManager.find(null);
+		
+		for (int i= 0; i < lJobs.length; i++) {
+			if ("Workbench Auto-Save Job".equals(lJobs[i].getName())) {
+				lJobs[i].cancel();
+				break;
+			}
+		}
 	}
 }

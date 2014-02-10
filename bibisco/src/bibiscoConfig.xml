@@ -1,6 +1,6 @@
 <config cacheEnabled="true">
 	<test enabled="Y" >
-	   <win basePath="D:\progetti\bibisco\" />
+	   <win basePath="C:\users\Andrea\git\bibisco\bibisco\" />
 	   <linux  basePath="/home/andrea/git/bibisco/bibisco/" />
 	   <mac  basePath="/media/progettimac/bibisco/" />
 	</test>
