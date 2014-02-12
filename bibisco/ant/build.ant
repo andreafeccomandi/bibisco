@@ -27,6 +27,13 @@
             <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux" />   
         </antcall>
     </target>
+	<target name="build_mac">
+        <antcall target="build">
+            <param name="product.file" value="${product.source.dir}/bibisco_mac.product"/>
+            <param name="xulrunner.source.dir" value="${basedir}/xulrunner/mac"/>
+            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/mac" />   
+        </antcall>
+    </target>
 
 
 	<target name="build">
@@ -65,6 +72,12 @@
         <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
         <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
 	</target>
+	
+	<target name="restore_svil_environment_mac">
+        <copy file="${product.source.dir}/bibisco_mac.product" tofile="${basedir}/bibisco.product"/>
+        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
+        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+    </target>
 
 	
 </project>
