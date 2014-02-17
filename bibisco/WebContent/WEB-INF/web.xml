@@ -56,6 +56,9 @@
 		<servlet-name>BibiscoServlet</servlet-name>
 		<url-pattern>/BibiscoServlet</url-pattern>
 	</servlet-mapping>
+	<session-config>
+        <session-timeout>-1</session-timeout>
+    </session-config>
 	<jsp-config>
 		<taglib>
 			<taglib-uri>/jstl/core</taglib-uri>
