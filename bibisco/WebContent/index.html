@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>bibisco</title>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css" type="text/css" media="print, projection, screen" />
+
+<script type="text/javascript">
+$(function() {
+    
+	setInterval(function() {
+		var progress = parseInt($('#bibiscoDivProgessBar').data('progress')) + 2;
+		$('#bibiscoDivProgessBar').attr('style', 'height: 50px; width: ' + progress + '%;');
+		$('#bibiscoDivProgessBar').data('progress',progress);
+		
+	},125);
+	
+	// the ajax call is used to ask Jetty to compile jsp
+	// on success call to get start page
+	$.ajax({
+        type: 'GET',
+        url : 'BibiscoServlet',
+        success:function(data){
+        	window.location.href='BibiscoServlet?action=start';
+        },
+        error:function(){
+           
+        }
+  });
+	
+});
+
+</script>
+
+
+</head>
+
+<body>
+<div style="margin-top: 300px; margin-left: 150px; margin-right: 150px;">
+<div class="progress" style="height: 50px;  border-radius: 20px;">
+  <div id="bibiscoDivProgessBar" class="bar" style="height: 50px; width: 0%;" data-progress="0"></div>
+</div>
+</div>
+</body>
+</html>

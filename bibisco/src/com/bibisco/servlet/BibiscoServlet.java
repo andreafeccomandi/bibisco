@@ -116,7 +116,7 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("requested action=", lStrAction);
 
 		if (StringUtils.isBlank(lStrAction)) {
-			start(pRequest, pResponse);
+			precompileIndexJsp(pRequest, pResponse);
 		} else {
 			try {
 				Method lMethod = BibiscoServlet.class.getMethod(lStrAction, HttpServletRequest.class, HttpServletResponse.class);
@@ -134,18 +134,7 @@ public class BibiscoServlet extends HttpServlet {
 	public void start(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
 		
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
-
-		// get language
-		pRequest.getSession().getServletContext().setAttribute("language", LocaleManager.getInstance().getLocale().getLanguage());
-
-		// get rich text editor settings
-		RichTextEditorSettings lRichTextEditorSettings = RichTextEditorSettingsManager.load();
-		pRequest.getSession().getServletContext().setAttribute("richTextEditorSettings", lRichTextEditorSettings);
-
-		// get projects
-		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
-		pRequest.getSession().getServletContext().setAttribute("projectList", lListProjectDTO);
-
+		
 		// get messages from bibisco.com
 		WebMessage lWebMessage = WebMessageManager.getMessage();
 		pRequest.setAttribute("webMessage", lWebMessage);
@@ -153,6 +142,15 @@ public class BibiscoServlet extends HttpServlet {
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
 		mLog.debug("End start(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void precompileIndexJsp(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
+
+		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
+
+		mLog.debug("End precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void selectProject(HttpServletRequest pRequest,
@@ -1452,6 +1450,20 @@ public class BibiscoServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		mLog.debug("BibiscoServlet initialized");
+		
+		mLog.debug("Start init()");
+		
+		// get language
+		getServletContext().setAttribute("language", LocaleManager.getInstance().getLocale().getLanguage());
+
+		// get rich text editor settings
+		RichTextEditorSettings lRichTextEditorSettings = RichTextEditorSettingsManager.load();
+		getServletContext().setAttribute("richTextEditorSettings", lRichTextEditorSettings);
+
+		// get projects
+		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
+		getServletContext().setAttribute("projectList", lListProjectDTO);
+		
+		mLog.debug("End init()");
 	}
 }

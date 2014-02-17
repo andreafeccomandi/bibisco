@@ -89,7 +89,7 @@ public class WebMessageManager {
     		Messages lMessages = lMessagesMapper.selectByPrimaryKey(pWebMessage.getIdMessage());
     		
     		if (lMessages != null) {
-    			// message already read: check if i can show anopther time
+    			// message already read: check if i can show another time
     			if (lMessages.getNumberOfViews() < pWebMessage.getNumberOfViewsAllowed()) {
     				lMessages.setNumberOfViews(lMessages.getNumberOfViews()+1);
     				lMessagesMapper.updateByPrimaryKey(lMessages);

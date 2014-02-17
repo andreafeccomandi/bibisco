@@ -15,6 +15,9 @@ public final class Constants {
 	// servlets
 	public static final String SERVLET_BIBISCO = "/BibiscoServlet";
 	
+	// index page
+	public static final String INDEX_PAGE = "/index.html";
+	
 	// perspectives ID
 	public static final String PERSPECTIVE_ID = "bibisco.perspective"; //$NON-NLS-1$;
 }
