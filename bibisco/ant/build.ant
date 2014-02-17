@@ -59,25 +59,29 @@
 		<copy file="${product.file}" tofile="${basedir}/bibisco.product"/>
 	    <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_svil.xml"/>
 		<move file="${src.dir}/bibiscoConfig_prod.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_svil.xml"/>
+		<move file="${src.dir}/log4j_prod.xml" tofile="${src.dir}/log4j.xml"/>
 	</target>  
 
 	<target name="restore_svil_environment_win">
 		<copy file="${product.source.dir}/bibisco_win.product" tofile="${basedir}/bibisco.product"/>
-		<move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
-		<move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+		<antcall target="restore_svil_environment" />
 	</target>
 
 	<target name="restore_svil_environment_linux">
         <copy file="${product.source.dir}/bibisco_linux.product" tofile="${basedir}/bibisco.product"/>
-        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
-        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+		<antcall target="restore_svil_environment" />
 	</target>
 	
 	<target name="restore_svil_environment_mac">
         <copy file="${product.source.dir}/bibisco_mac.product" tofile="${basedir}/bibisco.product"/>
-        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
-        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+		<antcall target="restore_svil_environment" />
     </target>
 
-	
+	<target name="restore_svil_environment">
+        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
+        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
+		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_prod.xml"/>
+		<move file="${src.dir}/log4j_svil.xml" tofile="${src.dir}/log4j.xml"/>
+    </target>
 </project>
