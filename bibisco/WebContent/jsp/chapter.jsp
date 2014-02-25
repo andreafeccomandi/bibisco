@@ -88,7 +88,7 @@ function bibiscoCreateScene(configScene) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoChapterACreateScene',
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position+'&idParent=${chapter.idChapter}',
-			  title: '<fmt:message key="jsp.chapter.a.createScene" />', 
+			  title: '<fmt:message key="jsp.chapter.dialog.title.createScene" />', 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configScene); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
