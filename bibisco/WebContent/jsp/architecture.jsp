@@ -15,8 +15,8 @@ $(function() {
 			titleMinlength: 2,
 			titleMaxlength: 50,
 			titleValue: function() {
-				return $('#bibiscoCharacterSpanTitle').html();	
-			}, 
+                return $.trim($('#bibiscoStrandDialogTitle').text());
+            },
 			updateTitle: function(title,id,config, position) {
 				$('#bibiscoStrandDialogTitle').html(title);
 				bibiscoStrandButtonUpdateTitleInit(config, id, position);
@@ -129,7 +129,7 @@ function bibiscoSelectStrand(position,config) {
 <div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="emptyThumbnailListElements">
 	<tags:bibiscoEmptyThumbnailListBox text="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text" createButtonText="jsp.strands.a.createFirstStrand" createButtonId="bibiscoStrandsACreateFirstStrand"  />
 </div>
-<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="strand" style="width: 100%; height: 600px; overflow: scroll;">
+<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="strand" style="width: 100%; height: 350px; overflow: scroll;">
 	    	<c:forEach items="${project.architecture.strandList}" var="strand" varStatus="strandNumber">
 	    		
 	    		<c:if test="${strandNumber.count % 4 == 1}">

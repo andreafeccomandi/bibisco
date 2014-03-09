@@ -7,7 +7,7 @@ import com.bibisco.ResourceBundleManager;
 
 public enum CharacterInfoQuestions {
 	
-	PERSONAL_DATA(12), PHYSIONOMY(23), PSYCHOLOGY(63), BEHAVIORS(12), SOCIOLOGY(10), IDEAS(19);
+	PERSONAL_DATA(12), PHYSIONOMY(23), PSYCHOLOGY(62), BEHAVIORS(12), SOCIOLOGY(10), IDEAS(18);
 
 	private static final String RESOURCE_BUNDLE_PREFIX = "characterInfo.question.";
 	private int mIntTotalQuestions;

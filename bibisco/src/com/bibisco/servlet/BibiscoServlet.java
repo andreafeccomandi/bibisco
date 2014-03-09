@@ -735,6 +735,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		SceneRevisionDTO lSceneRevisionDTO = new SceneRevisionDTO();
 		lSceneRevisionDTO.setIdScene(Integer.parseInt(pRequest.getParameter("idScene")));
+		lSceneRevisionDTO.setRevision(Integer.parseInt(pRequest.getParameter("revision")));
 		lSceneRevisionDTO.setIdRevision(Integer.parseInt(pRequest.getParameter("idRevision")));
 		lSceneRevisionDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
 		lSceneRevisionDTO.setText(pRequest.getParameter("text"));
@@ -1096,7 +1097,6 @@ public class BibiscoServlet extends HttpServlet {
 		ChapterDTO lChapter = new ChapterDTO();
 		lChapter.setIdChapter(Integer.valueOf(pRequest.getParameter("id")));
 		lChapter.setNote(pRequest.getParameter("text"));
-		lChapter.setReasonTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
 		
 		ChapterManager.save(lChapter);
 		

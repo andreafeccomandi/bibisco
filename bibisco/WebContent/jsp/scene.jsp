@@ -16,6 +16,7 @@
     	
     	// id scene
     	$('#bibiscoSceneIdScene').val(scene.idScene);
+    	$('#bibiscoSceneRevision').val(scene.revision);
     	
     	// point of view
     	$('button.scenePointOfView').removeClass('active');
@@ -159,6 +160,7 @@
       		  type: 'POST',
       		  url: 'BibiscoServlet?action=saveScene',
       		  data: { 	idScene: $('#bibiscoSceneIdScene').val(),
+      		            revision: $('#bibiscoSceneRevision').val(),
       			  		idRevision: $("#bibiscoSceneSelectRevision").attr('data-actualRevision'),
       			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
       			  		text: bibiscoRichTextEditor.getText(),
@@ -340,6 +342,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <input type="hidden" id="bibiscoSceneIdScene" />
+<input type="hidden" id="bibiscoSceneRevision" />
 <div class="bibiscoDialogContent">
 	<div id="bibiscoSceneDivRichTextEditor">
 		<tags:bibiscoRichTextEditor />

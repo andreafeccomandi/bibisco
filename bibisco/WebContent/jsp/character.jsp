@@ -40,6 +40,8 @@ function bibiscoCharacterInitCallback(config) {
 		openThumbnailUpdateTitle('bibiscoCharacterButtonUpdateTitle', config, ${character.idCharacter}, ${character.position});
 	});
 	$('#bibiscoCharacterButtonUpdateTitle').tooltip();
+	
+	$('.bibiscoTagTaskStatusDiv span').tooltip();
 }
 
 </script>

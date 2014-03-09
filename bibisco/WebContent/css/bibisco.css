@@ -27,7 +27,7 @@
 	margin-bottom: 5px;
 }
 
-.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .notSelectableText, .bibiscoSuggestions {
+.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog, .notSelectableText, .bibiscoSuggestions {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;

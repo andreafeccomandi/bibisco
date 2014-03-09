@@ -13,7 +13,7 @@ $(function() {
 		 var ajaxDialogContent = { 
 				  idCaller: 'bibiscoSettingsALanguage',
 				  url : 'jsp/language.jsp',
-				  title: '<fmt:message key="jsp.settings.a.language"/>',  
+				  title: '<fmt:message key="jsp.settings.dialog.title.language"/>',  
 				  init: function (idAjaxDialog, idCaller) { return bibiscoLanguageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 
@@ -28,7 +28,7 @@ $(function() {
 		 var ajaxDialogContent = { 
 				  idCaller: 'bibiscoSettingsARichTextEditorSettings',
 				  url : 'jsp/richTextEditorSettings.jsp',
-				  title: '<fmt:message key="jsp.settings.a.richTextEditorSettings"/>', 
+				  title: '<fmt:message key="jsp.settings.dialog.title.richTextEditorSettings"/>', 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },

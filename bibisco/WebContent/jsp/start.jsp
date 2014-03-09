@@ -64,7 +64,7 @@ $(function() {
 		 var ajaxDialogContent = { 
 				  idCaller: 'start',
 				  url : 'jsp/language.jsp',
-				  title: '<fmt:message key="jsp.start.button.changeLanguage"/>',  
+				  title: '<fmt:message key="jsp.projects.dialog.title.changeLanguage"/>',  
 				  init: function (idAjaxDialog, idCaller) { return bibiscoLanguageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 

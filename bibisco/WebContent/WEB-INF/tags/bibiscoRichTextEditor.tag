@@ -80,6 +80,14 @@
 			}
 			$('#bibiscoTagRichTextEditorTextarea').val(text);
 		}
+		
+		// set initial text           
+        if (bibiscoRichTextEditorConfig.text) {
+            bibiscoRichTextEditor.setText(bibiscoRichTextEditorConfig.text);    
+        } else {
+            bibiscoRichTextEditor.setText('');
+        }
+        
 
 		// on instance ready initialize buttons
 		bibiscoRichTextEditor.on('instanceReady', function(ev) {
@@ -119,12 +127,6 @@
 			});
 			$('#bibiscoTagRichTextEditorButtonSettings').tooltip();
 			
-			// set initial text			
-			if (bibiscoRichTextEditorConfig.text) {
-				bibiscoRichTextEditor.setText(bibiscoRichTextEditorConfig.text);	
-			} else {
-				bibiscoRichTextEditor.setText('');
-			}
 			
 			// set allowed tag on paste
 			ev.editor.on('paste', function(evt) {
@@ -224,7 +226,7 @@
 	   var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
 	      commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
 	     
-	   var styleAttribute = /style="[a-zA-Z0-9=:_!?&%'/;\.\s\(\)\-\,]*"/gi;   
+	   var styleAttribute = /style="[a-zA-Z0-9=:@_!?&%'/;\.\s\(\)\-\,]*"/gi;   
 	      
 	   return input.replace(commentsAndPhpTags, '').replace(styleAttribute, '').replace(tags, function ($0, $1) {
 	      return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';

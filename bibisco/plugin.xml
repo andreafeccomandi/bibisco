@@ -72,5 +72,12 @@
             </property>
          </product>
       </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               schemeId="bibisco"
+               sequence="M1+N">
+         </key>
+      </extension>
 
 </plugin>

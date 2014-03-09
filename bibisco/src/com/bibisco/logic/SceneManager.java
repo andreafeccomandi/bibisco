@@ -516,22 +516,23 @@ public class SceneManager {
 		Scenes lScenes = new Scenes();
 		lScenes.setIdScene(pSceneRevisionDTO.getIdScene().longValue());
 		lScenes.setPosition(pSceneRevisionDTO.getPosition());
-		/*lScenes.setDescription(pSceneRevisionDTO.getDescription());
-		lScenes.setIdChapter(pSceneRevisionDTO.getIdChapter());*/
 		lScenes.setTaskStatus(pSceneRevisionDTO.getTaskStatus() != null ? pSceneRevisionDTO.getTaskStatus().getValue() : null);
 		
 		ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
 		lScenesMapper.updateByPrimaryKeySelective(lScenes);
 		
 		SceneRevisions lSceneRevisions = new SceneRevisions();
+		lSceneRevisions.setIdScene(pSceneRevisionDTO.getIdScene());
 		lSceneRevisions.setIdSceneRevision(pSceneRevisionDTO.getIdRevision().longValue());
+		lSceneRevisions.setRevisionNumber(pSceneRevisionDTO.getRevision());
+		lSceneRevisions.setSelected("Y");
 		lSceneRevisions.setIdLocation(pSceneRevisionDTO.getIdLocation());
 		lSceneRevisions.setPointOfView(pSceneRevisionDTO.getPointOfView() != null ? pSceneRevisionDTO.getPointOfView().getValue(): null);
 		lSceneRevisions.setPointOfViewIdCharacter(pSceneRevisionDTO.getIdCharacterPointOfView());
 		lSceneRevisions.setScene(pSceneRevisionDTO.getText());
 		lSceneRevisions.setSceneDate(pSceneRevisionDTO.getSceneDate());
 		SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
-		lSceneRevisionsMapper. updateByPrimaryKeySelective(lSceneRevisions);
+		lSceneRevisionsMapper.updateByPrimaryKeyWithBLOBs(lSceneRevisions);
 		
 		// save characters
 		SceneRevisionCharactersMapper lSceneRevisionCharactersMapper = lSqlSession.getMapper(SceneRevisionCharactersMapper.class);

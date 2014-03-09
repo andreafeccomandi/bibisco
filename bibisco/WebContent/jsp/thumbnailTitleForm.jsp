@@ -41,6 +41,9 @@
 		// init title value
 		$('#bibiscoThumbnailTitleFormInputTitle').val(config.titleForm.titleValue());
 		$('#bibiscoThumbnailTitleFormInputTitle').focus();
+		
+		// set maxlength
+		$('#bibiscoThumbnailTitleFormInputTitle').attr('maxlength', config.titleForm.titleMaxlength);
 	}
 	
 	
@@ -144,7 +147,7 @@
 		<div class="control-group">
 			<label id="bibiscoThumbnailTitleFormInputTitleLabel" class="control-label" for="bibiscoThumbnailTitleFormInputTitle"></label>
 			<div class="controls">
-				<input type="text" class="span5" name="bibiscoThumbnailTitleFormInputTitle" id="bibiscoThumbnailTitleFormInputTitle">
+				<input type="text" class="span5" name="bibiscoThumbnailTitleFormInputTitle" id="bibiscoThumbnailTitleFormInputTitle" maxlength="">
 			</div>
 		</div>
 	</form>
