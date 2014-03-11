@@ -6,3 +6,7 @@
 /bibiscoConfig_prod.xml
 /test
 /Copy of ApplicationResources_en.properties
+/dbConfiguration.xml
+/log4j.dtd
+/log4j.xml
+/log4j_prod.xml

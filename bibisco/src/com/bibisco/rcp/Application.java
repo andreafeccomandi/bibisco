@@ -82,6 +82,7 @@ public class Application implements IApplication {
 			SqlSession lSqlSession = lSqlSessionFactory.openSession();
 			lSqlSession.close();
 		} catch (Throwable t) {
+			mLog.error(t);
 			lBlnResult = true;
 		} 
 		

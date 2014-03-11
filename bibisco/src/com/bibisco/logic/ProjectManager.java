@@ -367,7 +367,7 @@ public class ProjectManager {
 		return lStringBuilder.toString(); 
 	}
 	
-	private static String getDBProjectDirectory(String pStrIdProject) {
+	public static String getDBProjectDirectory(String pStrIdProject) {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		

@@ -2,8 +2,8 @@ package com.bibisco.servlet;
 
 import java.awt.Desktop;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Method;
@@ -556,7 +556,7 @@ public class BibiscoServlet extends HttpServlet {
 		if (lFileItem.getName() == null || lFileItem.getName().length() == 0) {
 			lFileItem = null;
 		} else {
-			lImageDTO.setImage(lFileItem.get());
+			lImageDTO.setFileItem(lFileItem);
 			mLog.debug("FileItem " + lFileItem.getName());
 		}
 		lImageDTO.setDescription(pRequest.getParameter("bibiscoAddImageDescription"));
@@ -624,19 +624,19 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start getImage(HttpServletRequest, HttpServletResponse)");
 		
-		byte[] lBytesImage = ImageManager.load(Integer.valueOf(pRequest.getParameter("idImage")));
+		String lStrFileName = ImageManager.load(Integer.valueOf(pRequest.getParameter("idImage")));
 		
 		pResponse.setHeader("Content-Type", getServletContext().getMimeType("img/png"));
-		pResponse.setHeader("Content-Length", String.valueOf(lBytesImage.length));
 		pResponse.setHeader("Content-Disposition", "inline");
 
-		ByteArrayInputStream lByteArrayInputStream = new ByteArrayInputStream(lBytesImage);
 		BufferedOutputStream lBufferedOutputStream = null;
+		
+		FileInputStream lFileInputStream = new FileInputStream(new File(ProjectManager.getDBProjectDirectory(ContextManager.getInstance().getIdProject())+System.getProperty("file.separator")+lStrFileName));
 
 		try {
 		    lBufferedOutputStream = new BufferedOutputStream(pResponse.getOutputStream());
 		    byte[] lBytesBuffer = new byte[8192];
-		    for (int lIntLength = 0; (lIntLength = lByteArrayInputStream.read(lBytesBuffer)) > 0;) {
+		    for (int lIntLength = 0; (lIntLength = lFileInputStream.read(lBytesBuffer)) > 0;) {
 		        lBufferedOutputStream.write(lBytesBuffer, 0, lIntLength);
 		    }
 		} finally {
@@ -648,9 +648,9 @@ public class BibiscoServlet extends HttpServlet {
 		    		throw new BibiscoException(e, BibiscoException.IO_EXCEPTION);
 		    	}
 		    }
-		    if (lByteArrayInputStream != null) {
+		    if (lFileInputStream != null) {
 		    	try { 
-		    		lByteArrayInputStream.close(); 
+		    		lFileInputStream.close(); 
 		    	}
 		    	catch (IOException e) {
 		    		mLog.error(e);

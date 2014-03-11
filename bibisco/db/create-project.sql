@@ -42,10 +42,10 @@ PRIMARY KEY(id_strand));
 
 CREATE TABLE images (
   id_image SERIAL  NOT NULL ,
-  image BLOB   NOT NULL ,
   description VARCHAR(50)   NOT NULL ,
   id_element INTEGER   NOT NULL ,
-  element_type INTEGER   NOT NULL   ,
+  element_type INTEGER   NOT NULL ,
+  file_name VARCHAR(50)   NOT NULL   ,
 PRIMARY KEY(id_image));
 
 

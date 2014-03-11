@@ -1,25 +1,21 @@
 package com.bibisco.ui.bean;
 
+import org.apache.commons.fileupload.FileItem;
+
 import com.bibisco.ElementType;
 
 public class ImageDTO {
 	private Integer idImage;
 	private String description;
-	private byte[] image;
 	private Integer idElement;
 	private ElementType elementType;
+	private FileItem fileItem;
 	
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public byte[] getImage() {
-		return image;
-	}
-	public void setImage(byte[] image) {
-		this.image = image;
 	}
 	public ElementType getElementType() {
 		return elementType;
@@ -38,5 +34,11 @@ public class ImageDTO {
 	}
 	public void setIdElement(Integer idElement) {
 		this.idElement = idElement;
+	}
+	public FileItem getFileItem() {
+		return fileItem;
+	}
+	public void setFileItem(FileItem pFileItem) {
+		this.fileItem = pFileItem;
 	}
 }

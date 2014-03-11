@@ -2,8 +2,8 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration >
   <context id="bibisco" >
-    <!--<jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2://D:/progetti/bibisco/db/template_project" userId="root" password="password" />-->                                                         
-    <jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2://D:/progetti/bibisco/db/install/bibisco" userId="root" password="password" /> 
+    <jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2://C:/Users/andrea/git/bibisco/bibisco/db/template_project" userId="root" password="password" />                                                       
+    <!--<jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2://D:/progetti/bibisco/db/install/bibisco" userId="root" password="password" /> -->  
     <javaModelGenerator targetPackage="com.bibisco.dao.model" targetProject="bibisco" />
     <sqlMapGenerator targetPackage="com.bibisco.dao.sqlMap" targetProject="bibisco" />
     <javaClientGenerator targetPackage="com.bibisco.dao.client" targetProject="bibisco" type="XMLMAPPER" />
@@ -17,7 +17,7 @@
     <table schema="public" tableName="character_infos" />
     <table schema="public" tableName="v_character_occurences" /> 
     <table schema="public" tableName="locations" />
-    <table schema="public" tableName="images" />
+    
     <table schema="public" tableName="strands" />
     <table schema="public" tableName="scenes" />
     <table schema="public" tableName="scene_revision_strands" />
@@ -31,10 +31,10 @@
     <table schema="public" tableName="v_point_of_view_4_analysis" />
     <table schema="public" tableName="v_character_scene" />
     <table schema="public" tableName="project" />
-    -->
-    <table schema="public" tableName="messages" />
     
+    <table schema="public" tableName="messages" />-->
     
+    <table schema="public" tableName="images" />
     
     
   </context>
