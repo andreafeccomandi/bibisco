@@ -1,4 +1,4 @@
-<%@tag import="com.bibisco.LocaleManager"%>
+<%@tag import="com.bibisco.manager.LocaleManager"%>
 <%@ attribute name="id" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="title" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="type" required="true" type="java.lang.String" rtexprvalue="true" %>
@@ -7,7 +7,7 @@
 <%@ attribute name="positionTop" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="width" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="height" required="true" type="java.lang.String" rtexprvalue="true" %>
-<%@ attribute name="taskStatus" required="true" type="com.bibisco.TaskStatus" rtexprvalue="true" %>
+<%@ attribute name="taskStatus" required="true" type="com.bibisco.enums.TaskStatus" rtexprvalue="true" %>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>

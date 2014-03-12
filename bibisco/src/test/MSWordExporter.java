@@ -10,9 +10,9 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import com.bibisco.BibiscoException;
+import com.bibisco.export.ParagraphAligment;
+import com.bibisco.export.TextFormatting;
 import com.bibisco.log.Log;
-import com.bibisco.logic.export.ParagraphAligment;
-import com.bibisco.logic.export.TextFormatting;
 
 public class MSWordExporter  {
 

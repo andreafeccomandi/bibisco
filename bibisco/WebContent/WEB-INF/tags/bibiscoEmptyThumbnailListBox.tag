@@ -1,4 +1,4 @@
-<%@tag import="com.bibisco.LocaleManager"%>
+<%@tag import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ attribute name="text" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="createButtonId" required="true" type="java.lang.String" rtexprvalue="true" %>

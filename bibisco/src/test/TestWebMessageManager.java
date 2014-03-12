@@ -1,7 +1,7 @@
 package test;
 
-import com.bibisco.logic.WebMessage;
-import com.bibisco.logic.WebMessageManager;
+import com.bibisco.bean.WebMessage;
+import com.bibisco.manager.WebMessageManager;
 
 public class TestWebMessageManager {
 

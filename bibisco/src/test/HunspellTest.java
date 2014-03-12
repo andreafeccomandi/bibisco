@@ -3,7 +3,7 @@ package test;
 import java.util.List;
 import java.util.Locale;
 
-import com.bibisco.SpellCheckManager;
+import com.bibisco.manager.SpellCheckManager;
 
 public class HunspellTest {
 

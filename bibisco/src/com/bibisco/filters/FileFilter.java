@@ -1,4 +1,15 @@
-/**
+/*
+ * Copyright (C) 2014 Andrea Feccomandi
+ *
+ * Licensed under the terms of GNU GPL License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY. 
+ * See the GNU General Public License for more details.
  * 
  */
 package com.bibisco.filters;
@@ -26,14 +37,16 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.bibisco.BibiscoException;
-import com.bibisco.ContextManager;
 import com.bibisco.log.Log;
+import com.bibisco.manager.ContextManager;
 
 /**
  * 
  * Handling of "file upload requests", aka forms with file(s) to be
  * uploaded.
  * Handling multipart-content requests (RFC 1867)
+ * 
+ * @author Andrea Feccomandi
  *
  */
 public final class FileFilter implements Filter {

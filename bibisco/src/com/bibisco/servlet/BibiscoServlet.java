@@ -1,3 +1,17 @@
+/*
+ * Copyright (C) 2014 Andrea Feccomandi
+ *
+ * Licensed under the terms of GNU GPL License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY. 
+ * See the GNU General Public License for more details.
+ * 
+ */
 package com.bibisco.servlet;
 
 import java.awt.Desktop;
@@ -29,50 +43,56 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bibisco.BibiscoException;
-import com.bibisco.ContextManager;
-import com.bibisco.ElementType;
-import com.bibisco.ExportType;
-import com.bibisco.LocaleManager;
-import com.bibisco.PointOfView;
-import com.bibisco.ResourceBundleManager;
-import com.bibisco.TaskStatus;
-import com.bibisco.VersionManager;
+import com.bibisco.bean.ArchitectureItem;
+import com.bibisco.bean.ChapterDTO;
+import com.bibisco.bean.CharacterDTO;
+import com.bibisco.bean.CharacterInfoQuestionsDTO;
+import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
+import com.bibisco.bean.CharacterSceneDTO;
+import com.bibisco.bean.ImageDTO;
+import com.bibisco.bean.ImportProjectArchiveDTO;
+import com.bibisco.bean.LocationDTO;
+import com.bibisco.bean.MainCharacterDTO;
+import com.bibisco.bean.PointOfView4AnalysisDTO;
+import com.bibisco.bean.ProjectDTO;
+import com.bibisco.bean.RichTextEditorSettings;
+import com.bibisco.bean.RichTextEditorTaskStatusBean;
+import com.bibisco.bean.SceneDTO;
+import com.bibisco.bean.SceneRevisionDTO;
+import com.bibisco.bean.SecondaryCharacterDTO;
+import com.bibisco.bean.StrandDTO;
+import com.bibisco.bean.WebMessage;
+import com.bibisco.enums.CharacterInfoQuestions;
+import com.bibisco.enums.CharacterInfoWithoutQuestions;
+import com.bibisco.enums.ElementType;
+import com.bibisco.enums.ExportType;
+import com.bibisco.enums.PointOfView;
+import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
-import com.bibisco.logic.ArchitectureItemManager;
-import com.bibisco.logic.ArchitectureItemManager.ArchitectureItemType;
-import com.bibisco.logic.ChapterManager;
-import com.bibisco.logic.CharacterInfoQuestions;
-import com.bibisco.logic.CharacterInfoWithoutQuestions;
-import com.bibisco.logic.CharacterManager;
-import com.bibisco.logic.ImageManager;
-import com.bibisco.logic.LocationManager;
-import com.bibisco.logic.ProjectManager;
-import com.bibisco.logic.RichTextEditorSettingsManager;
-import com.bibisco.logic.SceneManager;
-import com.bibisco.logic.SceneTagsManager;
-import com.bibisco.logic.SpellCheck;
-import com.bibisco.logic.StrandManager;
-import com.bibisco.logic.WebMessage;
-import com.bibisco.logic.WebMessageManager;
-import com.bibisco.ui.bean.ArchitectureItem;
-import com.bibisco.ui.bean.ChapterDTO;
-import com.bibisco.ui.bean.CharacterDTO;
-import com.bibisco.ui.bean.CharacterInfoQuestionsDTO;
-import com.bibisco.ui.bean.CharacterInfoWithoutQuestionsDTO;
-import com.bibisco.ui.bean.CharacterSceneDTO;
-import com.bibisco.ui.bean.ImageDTO;
-import com.bibisco.ui.bean.ImportProjectArchiveDTO;
-import com.bibisco.ui.bean.LocationDTO;
-import com.bibisco.ui.bean.MainCharacterDTO;
-import com.bibisco.ui.bean.PointOfView4AnalysisDTO;
-import com.bibisco.ui.bean.ProjectDTO;
-import com.bibisco.ui.bean.RichTextEditorSettings;
-import com.bibisco.ui.bean.RichTextEditorTaskStatusBean;
-import com.bibisco.ui.bean.SceneDTO;
-import com.bibisco.ui.bean.SceneRevisionDTO;
-import com.bibisco.ui.bean.SecondaryCharacterDTO;
-import com.bibisco.ui.bean.StrandDTO;
+import com.bibisco.manager.ArchitectureItemManager;
+import com.bibisco.manager.ChapterManager;
+import com.bibisco.manager.CharacterManager;
+import com.bibisco.manager.ContextManager;
+import com.bibisco.manager.ImageManager;
+import com.bibisco.manager.LocaleManager;
+import com.bibisco.manager.LocationManager;
+import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.ResourceBundleManager;
+import com.bibisco.manager.RichTextEditorSettingsManager;
+import com.bibisco.manager.SceneManager;
+import com.bibisco.manager.SceneTagsManager;
+import com.bibisco.manager.SpellCheckManager;
+import com.bibisco.manager.StrandManager;
+import com.bibisco.manager.VersionManager;
+import com.bibisco.manager.WebMessageManager;
+import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 
+/**
+ * This servlet handles all operations.
+ * 
+ * @author Andrea Feccomandi
+ *
+ */
 public class BibiscoServlet extends HttpServlet {
 	private static final long serialVersionUID = -5786169245095217631L;
 	private static final Log mLog = Log.getInstance(BibiscoServlet.class);
@@ -147,9 +167,7 @@ public class BibiscoServlet extends HttpServlet {
 	public void precompileIndexJsp(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
 		
 		mLog.debug("Start precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
-
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
-
 		mLog.debug("End precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
 	}
 	
@@ -283,7 +301,7 @@ public class BibiscoServlet extends HttpServlet {
 		List<StrandDTO> lListStrand = StrandManager.loadAll();
 		pRequest.setAttribute("strands", lListStrand);
 		
-		List<com.bibisco.ui.bean.CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
+		List<com.bibisco.bean.CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
 		pRequest.setAttribute("characters", lListCharacterDTO);
 		
 		List<LocationDTO> lListLocationDTO = LocationManager.loadAll();
@@ -338,7 +356,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("title=",lStrTitle);
 		
-		com.bibisco.ui.bean.CharacterDTO lCharacterDTO = new com.bibisco.ui.bean.CharacterDTO();
+		com.bibisco.bean.CharacterDTO lCharacterDTO = new com.bibisco.bean.CharacterDTO();
 		lCharacterDTO.setName(lStrTitle);
 		lCharacterDTO.setPosition(lIntPosition);
 		lCharacterDTO.setMainCharacter(pBlnMainCharacter);
@@ -897,7 +915,7 @@ public class BibiscoServlet extends HttpServlet {
 
 		mLog.debug("Start openAnalysisCharactersChapters(HttpServletRequest, HttpServletResponse)");
 				
-		List<com.bibisco.ui.bean.CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
+		List<com.bibisco.bean.CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
 		pRequest.setAttribute("items", lListCharacterDTO);
 		
 		List<ChapterDTO> lListChapters = ChapterManager.loadAll();
@@ -918,7 +936,7 @@ public class BibiscoServlet extends HttpServlet {
 
 		mLog.debug("Start openAnalysisLocationsChapters(HttpServletRequest, HttpServletResponse)");
 				
-		List<com.bibisco.ui.bean.LocationDTO> lListLocationDTO = LocationManager.loadAll();
+		List<com.bibisco.bean.LocationDTO> lListLocationDTO = LocationManager.loadAll();
 		pRequest.setAttribute("items", lListLocationDTO);
 		
 		List<ChapterDTO> lListChapters = ChapterManager.loadAll();
@@ -939,7 +957,7 @@ public class BibiscoServlet extends HttpServlet {
 
 		mLog.debug("Start openAnalysisStrandsChapters(HttpServletRequest, HttpServletResponse)");
 				
-		List<com.bibisco.ui.bean.StrandDTO> lListStrandDTO = StrandManager.loadAll();
+		List<com.bibisco.bean.StrandDTO> lListStrandDTO = StrandManager.loadAll();
 		pRequest.setAttribute("items", lListStrandDTO);
 		
 		List<ChapterDTO> lListChapters = ChapterManager.loadAll();
@@ -1126,7 +1144,7 @@ public class BibiscoServlet extends HttpServlet {
 		String lStrText = pRequest.getParameter("text");
 		mLog.debug("text= ", lStrText);
 		
-		JSONObject lJSONObjectResult = SpellCheck.execute(lStrText);
+		JSONObject lJSONObjectResult = SpellCheckManager.spell(lStrText);
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();
 		lWriter.write(lJSONObjectResult.toString());

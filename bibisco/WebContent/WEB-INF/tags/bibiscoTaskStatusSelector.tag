@@ -1,4 +1,4 @@
-<%@tag import="com.bibisco.LocaleManager"%>
+<%@tag import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 

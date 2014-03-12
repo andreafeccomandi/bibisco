@@ -1,5 +1,5 @@
-<%@tag import="com.bibisco.LocaleManager"%>
-<%@ attribute name="bibiscoTaskStatus" required="true" type="com.bibisco.TaskStatus" rtexprvalue="true" %>
+<%@tag import="com.bibisco.manager.LocaleManager"%>
+<%@ attribute name="bibiscoTaskStatus" required="true" type="com.bibisco.enums.TaskStatus" rtexprvalue="true" %>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>

@@ -1,3 +1,17 @@
+/*
+ * Copyright (C) 2014 Andrea Feccomandi
+ *
+ * Licensed under the terms of GNU GPL License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY. 
+ * See the GNU General Public License for more details.
+ * 
+ */
 package com.bibisco.rcp;
 
 import org.eclipse.core.runtime.jobs.IJobManager;
@@ -11,9 +25,15 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.bibisco.BibiscoException;
 import com.bibisco.Constants;
-import com.bibisco.JettyManager;
 import com.bibisco.log.Log;
+import com.bibisco.manager.JettyManager;
 
+/**
+ * Main view of application.
+ * 
+ * @author Andrea Feccomandi
+ *
+ */
 public class View extends ViewPart {
 	public static final String ID = "bibisco.view";
 	private Browser mBrowser;

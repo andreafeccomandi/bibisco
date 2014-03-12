@@ -1,3 +1,17 @@
+/*
+ * Copyright (C) 2014 Andrea Feccomandi
+ *
+ * Licensed under the terms of GNU GPL License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY. 
+ * See the GNU General Public License for more details.
+ * 
+ */
 package com.bibisco.rcp;
 
 import java.io.BufferedWriter;
@@ -17,14 +31,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import com.bibisco.ContextManager;
-import com.bibisco.JettyManager;
-import com.bibisco.LocaleManager;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.log.Log;
+import com.bibisco.manager.ContextManager;
+import com.bibisco.manager.JettyManager;
+import com.bibisco.manager.LocaleManager;
 
 /**
  * This class controls all aspects of the application's execution
+ *
+ * @author Andrea Feccomandi
  */
 public class Application implements IApplication {
 
