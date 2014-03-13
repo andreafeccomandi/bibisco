@@ -18,7 +18,7 @@
       startupProgressRect="5,275,445,15"
       startupMessageRect="7,15,445,20"
       startupForegroundColor="FFFFFF" />
-   <launcher>
+   <launcher name="bibisco">
       <solaris/>
       <win useIco="false">
          <bmp

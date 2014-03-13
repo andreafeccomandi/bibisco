@@ -5,6 +5,8 @@
 	<property name="db.target.dir" value="${build.dir}/db" />
 	<property name="dictionaries.source.dir" value="${basedir}/dictionaries" />
 	<property name="dictionaries.target.dir" value="${build.dir}/dictionaries" />
+	<property name="license.source.dir" value="${basedir}/license" />
+	<property name="license.target.dir" value="${build.dir}/license" />
 	<property name="product.source.dir" value="${basedir}/product" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="WebContent.source.dir" value="${basedir}/WebContent" />
@@ -56,6 +58,9 @@
 		<copy todir="${xulrunner.target.dir}">
             <fileset dir="${xulrunner.source.dir}"/>
         </copy>
+		<copy todir="${license.target.dir}">
+		    <fileset dir="${license.source.dir}"/>
+		</copy>
 		<copy file="${product.file}" tofile="${basedir}/bibisco.product"/>
 	    <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_svil.xml"/>
 		<move file="${src.dir}/bibiscoConfig_prod.xml" tofile="${src.dir}/bibiscoConfig.xml"/>

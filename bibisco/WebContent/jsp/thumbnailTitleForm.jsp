@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page import="com.bibisco.manager.LocaleManager>
-<%@ taglib prefix="fmt" uri="/jstl/fmt"%>
+<%@ page import="com.bibisco.manager.LocaleManager" %>
+<%@ taglib prefix="fmt" uri="/jstl/fmt" %>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 

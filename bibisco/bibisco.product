@@ -3,7 +3,6 @@
 
 <product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -16,10 +15,10 @@
 
    <splash
       location="bibisco"
-      startupProgressRect="0,0,0,0"
-      startupMessageRect="0,0,0,0"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,15,445,20"
       startupForegroundColor="FFFFFF" />
-   <launcher>
+   <launcher name="bibisco">
       <solaris/>
       <win useIco="false">
          <bmp
@@ -30,7 +29,6 @@
             winLargeLow="/bibisco/icons/launching/logo48x48-8bit.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
       <windows include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</windows>
