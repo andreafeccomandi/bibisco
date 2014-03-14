@@ -19,7 +19,10 @@ import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.eclipse.core.runtime.Platform;
+
+import com.bibisco.log.Log;
 
 
 /**
@@ -30,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class ContextManager {
 	
+	private static Log mLog = Log.getInstance(ContextManager.class);
 	private static ContextManager mContextManager;
 	
 	private boolean mBlnTest;
@@ -131,5 +135,24 @@ public class ContextManager {
 
 	public URI getURIWeb() {
 		return mURIWeb;
+	}
+
+	public static String getUserHomeBibiscoDbDirectoryPath() {
+		
+		mLog.debug("Start getUserHomeBibiscoDbDirectoryPath()");
+		
+		ContextManager lContextManager = getInstance();
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append(SystemUtils.getUserHome().getAbsolutePath());
+		lStringBuilder.append(lContextManager.getPathSeparator());
+		lStringBuilder.append(".bibisco");
+		lStringBuilder.append(lContextManager.getPathSeparator());		
+		lStringBuilder.append("db");
+		
+		String lStrUserHomeBibiscoDbDirectoryPath = lStringBuilder.toString();
+		
+		mLog.debug("End getUserHomeBibiscoDbDirectoryPath(): ", lStrUserHomeBibiscoDbDirectoryPath);
+		
+		return lStrUserHomeBibiscoDbDirectoryPath;
 	}
 }

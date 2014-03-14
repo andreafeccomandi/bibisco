@@ -17,10 +17,13 @@ package com.bibisco.rcp;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.eclipse.equinox.app.IApplication;
@@ -31,6 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import com.bibisco.BibiscoException;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ContextManager;
@@ -49,6 +53,9 @@ public class Application implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 				
 		Display display = PlatformUI.createDisplay();
+		
+		// check if db exists and if db needs to be updated
+		checkDB();
 		
 		if (anotherBibiscoInstanceIsRunning()) {
 			// use default locale, because I can't read Locale from db: is locked!!
@@ -87,6 +94,67 @@ public class Application implements IApplication {
     		}
         }
 		
+	}
+	
+	private void checkDB() {
+		
+		mLog.debug("Start checkDB()");
+		
+		try {
+			// check if bibisco db exists in user home
+			if (getUserHomeBibiscoDbFile().exists()) {
+				// check if db needs to be updated
+				checkBibiscoVersion();
+			} 
+			// db doesn't exist: let'create!
+			else {
+				mLog.info("db doesn't exist: let'create at position: ", ContextManager.getUserHomeBibiscoDbDirectoryPath());
+				FileUtils.copyFileToDirectory(getBibiscoDBFile(), new File(ContextManager.getUserHomeBibiscoDbDirectoryPath()));
+			}
+		} catch (IOException e) {
+			mLog.error(e);
+			throw new BibiscoException(e, BibiscoException.IO_EXCEPTION);
+		}
+		
+		mLog.debug("End checkDB()");
+	}
+
+	private void checkBibiscoVersion() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private File getUserHomeBibiscoDbFile() {
+		
+		mLog.debug("Start getUserHomeBibiscoDbFile()");
+		
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append(ContextManager.getUserHomeBibiscoDbDirectoryPath());
+		lStringBuilder.append(ContextManager.getInstance().getPathSeparator());
+		lStringBuilder.append("bibisco.h2.db");
+		
+		mLog.debug("End getUserHomeBibiscoDbFile()");
+		
+		return new File(lStringBuilder.toString());
+	}
+
+	private File getBibiscoDBFile() {
+		
+		mLog.debug("Start getBibiscoDBFile()");
+		
+		ContextManager lContextManager = ContextManager.getInstance();
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append(lContextManager.getAbsolutePath());
+		lStringBuilder.append(lContextManager.getPathSeparator());
+		lStringBuilder.append("db");
+		lStringBuilder.append(lContextManager.getPathSeparator());		
+		lStringBuilder.append("install");
+		lStringBuilder.append(lContextManager.getPathSeparator());
+		lStringBuilder.append("bibisco.h2.db");
+		
+		mLog.debug("End getBibiscoDBFile(): ", lStringBuilder.toString());
+		
+		return new File(lStringBuilder.toString());
 	}
 
 	private boolean anotherBibiscoInstanceIsRunning() {

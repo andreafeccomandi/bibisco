@@ -392,7 +392,7 @@ public class ProjectManager {
 		ContextManager lContextManager = ContextManager.getInstance();
 		
 		// create db directory path
-		String lStrDbDirectory = getDBDirectoryPath();
+		String lStrDbDirectory = ContextManager.getUserHomeBibiscoDbDirectoryPath();
 		
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
