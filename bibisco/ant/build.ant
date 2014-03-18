@@ -44,7 +44,7 @@
 		<mkdir dir="${db.target.dir}" />
 		<mkdir dir="${build.dir}/export" />
 		<mkdir dir="${WebContent.target.dir}" />
-		<copy file="${db.source.dir}/install/bibisco.h2.db" tofile="${db.target.dir}/bibisco.h2.db" overwrite="true"/>
+		<copy file="${db.source.dir}/bibisco.h2.db" tofile="${db.target.dir}/bibisco.h2.db" overwrite="true"/>
 		<copy file="${db.source.dir}/template_project.h2.db" tofile="${db.target.dir}/template_project.h2.db" overwrite="true"/>
 		<copy todir="${dictionaries.target.dir}">
             <fileset dir="${dictionaries.source.dir}"/>

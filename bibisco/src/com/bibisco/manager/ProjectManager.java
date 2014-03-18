@@ -315,39 +315,15 @@ public class ProjectManager {
 			throw new BibiscoException(e, BibiscoException.IO_EXCEPTION);
 		}
 	}
-	
-	private static String getDBDirectoryPath() {
 		
-		ContextManager lContextManager = ContextManager.getInstance();
-		
-		// create db directory path
-		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lContextManager.getAbsolutePath());
-		lStringBuilder.append("db");
-		
-		return lStringBuilder.toString();
-	}
-	
-	private static String getTempDirectoryPath() {
-		
-		ContextManager lContextManager = ContextManager.getInstance();
-		
-		// create db directory path
-		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lContextManager.getAbsolutePath());
-		lStringBuilder.append("temp");
-		
-		return lStringBuilder.toString();
-	}
 	
 	private static String getProjectExportFilePath(ExportType pExportType, String pStrType, String pStrTimestamp) {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
-		
-		// create db directory path
+			
+		// create export file path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lContextManager.getAbsolutePath());
-		lStringBuilder.append("export");
+		lStringBuilder.append(lContextManager.getExportDirectoryPath());
 		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append(pStrType);
 		lStringBuilder.append("_");
@@ -361,12 +337,9 @@ public class ProjectManager {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		
-		// create db directory path
-		String lStrDbDirectory = getDBDirectoryPath();
-		
 		// create template db file path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lStrDbDirectory);
+		lStringBuilder.append(lContextManager.getTemplateDbDirectoryPath());
 		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append("template_project.h2.db");
 		
@@ -392,7 +365,7 @@ public class ProjectManager {
 		ContextManager lContextManager = ContextManager.getInstance();
 		
 		// create db directory path
-		String lStrDbDirectory = ContextManager.getUserHomeBibiscoDbDirectoryPath();
+		String lStrDbDirectory = lContextManager.getUserHomeBibiscoDbDirectoryPath();
 		
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
@@ -782,7 +755,10 @@ public class ProjectManager {
 		}
 		
 		// close last chapter
-		lExporter.endChapter();
+		if (lStrLastChapterTitle!=null) {
+			// close last chapter
+			lExporter.endChapter();
+		}
 		
 		// write file
 		File lFile = lExporter.end();
@@ -825,8 +801,10 @@ public class ProjectManager {
 		mLog.debug("Start exportProject(String)");
 		try {
 			
+			ContextManager lContextManager = ContextManager.getInstance();
+			
 			// get temp directory
-			String lStrTempDirectory = getTempDirectoryPath();
+			String lStrTempDirectory = lContextManager.getTempDirectoryPath();
 			
 			// if there is already a directory for the project, delete it	
 			if (pImportProjectArchiveDTO.isAlreadyPresent()) {
@@ -835,7 +813,7 @@ public class ProjectManager {
 			
 			// copy files to db project directory
 			FileUtils.copyDirectoryToDirectory(new File(lStrTempDirectory + ContextManager.getInstance().getPathSeparator() + pImportProjectArchiveDTO.getIdProject()), 
-					new File(getDBDirectoryPath()));
+					new File(lContextManager.getUserHomeBibiscoDbDirectoryPath()));
 			    
 			// set project name to context
 	    	ContextManager.getInstance().setIdProject(pImportProjectArchiveDTO.getIdProject());
@@ -869,8 +847,10 @@ public class ProjectManager {
 		
 		mLog.debug("Start zipIt(String)");
 		
-		String lStrDBDirectoryPath = getDBDirectoryPath();
-		String lStrDbProjectDirectory = getDBProjectDirectory(ContextManager.getInstance().getIdProject());
+		ContextManager lContextManager = ContextManager.getInstance();
+		
+		String lStrDBDirectoryPath = lContextManager.getUserHomeBibiscoDbDirectoryPath();
+		String lStrDbProjectDirectory = getDBProjectDirectory(lContextManager.getIdProject());
 		List<String> lFileList = getDirectoryFileList(new File(lStrDbProjectDirectory));
 		
 		try {
@@ -935,14 +915,17 @@ public class ProjectManager {
 		mLog.debug("Start importProjectArchiveFile(String, byte[])");
 		
 		try {
+			
+			ContextManager lContextManager = ContextManager.getInstance();
+			
 			// get temp directory
-			String lStrTempDirectory = getTempDirectoryPath();
+			String lStrTempDirectory = lContextManager.getTempDirectoryPath();
 			
 			// delete temp directory content
 			FileUtils.cleanDirectory(new File(lStrTempDirectory));
 			
 			// get archive file path
-			String lStrFilePath = lStrTempDirectory + ContextManager.getInstance().getPathSeparator() + pStrFileName;
+			String lStrFilePath = lStrTempDirectory + lContextManager.getPathSeparator() + pStrFileName;
 			
 			// copy archive file to temp directory
 			File lFile = new File(lStrFilePath);
@@ -976,7 +959,7 @@ public class ProjectManager {
 		mLog.debug("Start checkIfProjectAlreadyExists(String)");
 		
 		String lStrIdProject = null;
-		File[] lFiles = new File(getTempDirectoryPath()).listFiles();
+		File[] lFiles = new File(ContextManager.getInstance().getTempDirectoryPath()).listFiles();
 	    
 		// search file with extensions h2.db
 		boolean lBlnIsProjectValid = false;
@@ -1036,7 +1019,7 @@ public class ProjectManager {
 
 		try {
 			// get temp directory path
-			String lStrTempDirectory = getTempDirectoryPath();
+			String lStrTempDirectory = ContextManager.getInstance().getTempDirectoryPath();
 
 			// get the zip file content
 			ZipInputStream lZipInputStream = new ZipInputStream(new FileInputStream(pStrZipFile));

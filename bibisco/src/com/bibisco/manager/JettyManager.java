@@ -141,9 +141,7 @@ class JettyThread extends Thread {
 	private String getWebAppContextDescriptor() {
 		
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(mContextManager.getAbsolutePath());
-		lStringBuilder.append(mContextManager.getPathSeparator());
-		lStringBuilder.append("WebContent");
+		lStringBuilder.append(getWebAppResourceBase());
 		lStringBuilder.append(mContextManager.getPathSeparator());
 		lStringBuilder.append("WEB-INF");
 		lStringBuilder.append(mContextManager.getPathSeparator());

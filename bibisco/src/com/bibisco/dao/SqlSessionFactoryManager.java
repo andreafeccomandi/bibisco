@@ -96,7 +96,7 @@ public class SqlSessionFactoryManager {
 		lStringBuilder.append("jdbc:h2:file:");
 		
 		lStringBuilder.append(lContextManager.getPathSeparator());
-		lStringBuilder.append(ContextManager.getUserHomeBibiscoDbDirectoryPath());
+		lStringBuilder.append(lContextManager.getUserHomeBibiscoDbDirectoryPath());
 		lStringBuilder.append(lContextManager.getPathSeparator());
 		
 		if(pStrDBName.equalsIgnoreCase(BIBISCO_DB_URL)) {

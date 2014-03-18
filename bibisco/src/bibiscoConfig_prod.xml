@@ -1,4 +1,4 @@
 <config cacheEnabled="true">
-	<test enabled="N" basePath="" />
+	<test enabled="N" />
 	<web uri="http://www.bibisco.com" />
 </config>

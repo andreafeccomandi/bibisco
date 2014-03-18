@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.eclipse.equinox.app.IApplication;
@@ -75,7 +74,7 @@ public class Application implements IApplication {
         	LocaleManager.getInstance();
         	
         	// init xulrunner path
-    		String lStrXulRunnerPath = getXulRunnerPath();
+    		String lStrXulRunnerPath = ContextManager.getInstance().getXulRunnerDirectoryPath();
     		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
     		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
     		
@@ -100,6 +99,8 @@ public class Application implements IApplication {
 		
 		mLog.debug("Start checkDB()");
 		
+		ContextManager lContextManager = ContextManager.getInstance();
+		
 		try {
 			// check if bibisco db exists in user home
 			if (getUserHomeBibiscoDbFile().exists()) {
@@ -108,8 +109,10 @@ public class Application implements IApplication {
 			} 
 			// db doesn't exist: let'create!
 			else {
-				mLog.info("db doesn't exist: let'create at position: ", ContextManager.getUserHomeBibiscoDbDirectoryPath());
-				FileUtils.copyFileToDirectory(getBibiscoDBFile(), new File(ContextManager.getUserHomeBibiscoDbDirectoryPath()));
+				mLog.info("db doesn't exist: let'create at position: ", 
+						lContextManager.getUserHomeBibiscoDbDirectoryPath(),
+						" from ", getBibiscoDBFile().getAbsolutePath());
+				FileUtils.copyFileToDirectory(getBibiscoDBFile(), new File(lContextManager.getUserHomeBibiscoDbDirectoryPath()));
 			}
 		} catch (IOException e) {
 			mLog.error(e);
@@ -128,9 +131,10 @@ public class Application implements IApplication {
 		
 		mLog.debug("Start getUserHomeBibiscoDbFile()");
 		
+		ContextManager lContextManager = ContextManager.getInstance();
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(ContextManager.getUserHomeBibiscoDbDirectoryPath());
-		lStringBuilder.append(ContextManager.getInstance().getPathSeparator());
+		lStringBuilder.append(lContextManager.getUserHomeBibiscoDbDirectoryPath());
+		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append("bibisco.h2.db");
 		
 		mLog.debug("End getUserHomeBibiscoDbFile()");
@@ -144,11 +148,7 @@ public class Application implements IApplication {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lContextManager.getAbsolutePath());
-		lStringBuilder.append(lContextManager.getPathSeparator());
-		lStringBuilder.append("db");
-		lStringBuilder.append(lContextManager.getPathSeparator());		
-		lStringBuilder.append("install");
+		lStringBuilder.append(lContextManager.getTemplateDbDirectoryPath());
 		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append("bibisco.h2.db");
 		
@@ -187,17 +187,6 @@ public class Application implements IApplication {
 					workbench.close();
 			}
 		});
-	}
-	
-	private String getXulRunnerPath() {
-		
-		ContextManager lContextManager = ContextManager.getInstance();
-		StringBuilder lStringBuilder = new StringBuilder(lContextManager.getAbsolutePath());
-		lStringBuilder.append("xulrunner");
-		lStringBuilder.append(lContextManager.getPathSeparator());
-		lStringBuilder.append(lContextManager.getOS());
-		
-		return lStringBuilder.toString();
 	}
 	
 	private void enableClipboardOperationOnXulrunner() {

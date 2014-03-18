@@ -201,7 +201,7 @@ public final class FileFilter implements Filter {
 		
 		mIntRejectThreshold = Integer.parseInt(pFilterConfig.getInitParameter("REJECT_THRESHOLD"));
 		mIntDiskThreshold = Integer.parseInt(pFilterConfig.getInitParameter("DISK_THRESHOLD"));
-		mStrTmpDir = ContextManager.getInstance().getAbsolutePath()+"temp";
+		mStrTmpDir = ContextManager.getInstance().getTempDirectoryPath();
 		mBlnWrapperOnlyIfNeeded = true;
 	}
 

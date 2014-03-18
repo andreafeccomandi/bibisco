@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page import="com.bibisco.manager.LocaleManager>
+<%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="/jstl/functions"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
