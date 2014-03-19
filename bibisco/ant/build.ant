@@ -89,4 +89,8 @@
 		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_prod.xml"/>
 		<move file="${src.dir}/log4j_svil.xml" tofile="${src.dir}/log4j.xml"/>
     </target>
+	
+	<target name="fix_linux_app_label">
+	    <copy file="${product.source.dir}/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" tofile="${build.dir}/plugins/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" overwrite="true"/>
+	</target>
 </project>
