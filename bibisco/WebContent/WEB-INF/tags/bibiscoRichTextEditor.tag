@@ -20,7 +20,7 @@
 			removePlugins : 'elementspath,resize,scayt,liststyle',
 			height : bibiscoRichTextEditorConfig.height,
 			width : bibiscoRichTextEditorConfig.width,
-			extraPlugins : 'onchange,highlightText,bibiscospell', 
+			extraPlugins : 'onchange,highlightText,bibiscospell,angledbracketleft,angledbracketright', 
 			keystrokes : [
 			    [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
 			    [ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
@@ -95,6 +95,8 @@
 			initializeButton('underline', 'bibiscoTagRichTextEditorButtonUnderline');
 			initializeButton('strike', 'bibiscoTagRichTextEditorButtonStrikethrough');
 			initializeButton('highlightText', 'bibiscoTagRichTextEditorButtonHighlightText');
+			initializeButton('angledbracketleft', 'bibiscoTagRichTextEditorButtonAngledbracketleft');
+			initializeButton('angledbracketright', 'bibiscoTagRichTextEditorButtonAngledbracketright');
 			initializeButton('justifyleft', 'bibiscoTagRichTextEditorButtonAlignLeft');
 			initializeButton('justifycenter', 'bibiscoTagRichTextEditorButtonAlignCenter');
 			initializeButton('justifyright', 'bibiscoTagRichTextEditorButtonAlignRight');
@@ -273,6 +275,14 @@
 		<button class="btn" id="bibiscoTagRichTextEditorButtonHighlightText" title="<fmt:message key="tag.bibiscoRichTextEditor.highlightText"/>">
 			<i class="icon-pencil"></i>
 		</button>
+	</div>
+	<div class="btn-group">
+	   <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="Caporale sinistro" style="font-size: 1.2em;">
+           <strong>&laquo;</strong>
+        </button>
+        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="Caporale sinistro" style="font-size: 1.2em;">
+           <strong>&raquo;</strong>
+        </button>
 	</div>
 	<div class="btn-group" data-toggle="buttons-checkbox">
 		<button class="btn" id="bibiscoTagRichTextEditorButtonNumberList" title="<fmt:message key="tag.bibiscoRichTextEditor.numberedlist"/>">
