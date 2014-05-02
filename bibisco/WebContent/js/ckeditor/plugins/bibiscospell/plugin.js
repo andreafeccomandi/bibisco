@@ -10,6 +10,7 @@ CKEDITOR.plugins.add('bibiscospell', {
 		if (editor.contextMenu) {
 			// Register new context menu groups.
 			editor.addMenuGroup('bibiscospellSuggestionGroup', 2);
+			editor.addMenuGroup('bibiscospellIgnore', 3);
 			
 			// Enable the context menu only for an <spellerror> element with
 			// attribute ignore <> true
@@ -73,7 +74,7 @@ CKEDITOR.plugins.add('bibiscospell', {
 					editor.addMenuItem(suggestionId, {
 						label : suggestions[m],
 						command : suggestionId,
-						group : 'form' // reuse unused menu group at position 2: see http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.menu_groups
+						group : 'bibiscospellSuggestionGroup'
 					});
 					
 					// add property to result
@@ -96,7 +97,7 @@ CKEDITOR.plugins.add('bibiscospell', {
 				editor.addMenuItem('bibiscospell_command_ignore', {
 					label : jsPluginBibiscospellCkeditor,
 					command : 'bibiscospell_command_ignore', 
-					group : 'tablecell' // reuse unused menu group at position 3: see http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.menu_groups
+					group : 'bibiscospellIgnore' 
 				});
 				
 				// show ignore command
