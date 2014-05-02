@@ -277,10 +277,10 @@
 		</button>
 	</div>
 	<div class="btn-group">
-	   <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="Caporale sinistro" style="font-size: 1.2em;">
+	   <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketleft"/>" style="font-size: 1.2em;">
            <strong>&laquo;</strong>
         </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="Caporale sinistro" style="font-size: 1.2em;">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" style="font-size: 1.2em;">
            <strong>&raquo;</strong>
         </button>
 	</div>
