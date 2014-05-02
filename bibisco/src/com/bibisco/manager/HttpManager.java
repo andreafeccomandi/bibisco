@@ -33,22 +33,42 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
- * Manager of web message from bibisco site.
+ * Manager of http messages.
  * 
- * @author andrea
+ * @author Andrea Feccomandi
  *
  */
-public class WebMessageManager {
+public class HttpManager {
 
-	private static Log mLog = Log.getInstance(WebMessageManager.class);
+	private static Log mLog = Log.getInstance(HttpManager.class);
 	
-	public static WebMessage getMessage() {
+	
+	public static void precompileLoadingPage(String lStrURL) {
+		
+		mLog.debug("Start precompileLoadingPage()");
+		
+		try {
+			ClientConfig lClientConfig = new DefaultClientConfig();
+			Client lClient = Client.create(lClientConfig);
+			WebResource lWebResource = lClient.resource(lStrURL);
+			WebResource.Builder lBuilder = lWebResource.accept(MediaType.TEXT_HTML);
+			lBuilder.get(String.class);
+		} catch (Throwable t) {
+			// Maybe we Jetty is not started...
+			mLog.error(t);
+		} 
+		
+		mLog.debug("End precompileLoadingPage()");
+	}
+	
+	
+	public static WebMessage getMessageFromBibiscoWebSite() {
 		
 		WebMessage lWebMessage = null;
 		
-		mLog.debug("Start getMessage()");
+		mLog.debug("Start getMessageFromBibiscoWebSite()");
 		
-		String lStrJson = getMessagesFromWeb();
+		String lStrJson = getMessagesFromBibiscoWebSite();
 		if (StringUtils.isNotEmpty(lStrJson)) {
 			Gson lGson = new Gson();
 			WebMessage[] lWebMessages = lGson.fromJson(lStrJson, WebMessage[].class);
@@ -62,16 +82,16 @@ public class WebMessageManager {
 	 		}
 		}
 		
-	   mLog.debug("End getMessage() return: ", lWebMessage != null ? lWebMessage.getMessage() : "null" );
+	   mLog.debug("End getMessageFromBibiscoWebSite() return: ", lWebMessage != null ? lWebMessage.getMessage() : "null" );
 	   
 		return lWebMessage;
 	}
 	
-	private static String getMessagesFromWeb() {
+	private static String getMessagesFromBibiscoWebSite() {
 		
 		String lStrJsonMessages = null;
 		
-		mLog.debug("Start getMessagesFromWeb()");
+		mLog.debug("Start getMessagesFromBibiscoWebSite()");
 		
 		String lStrVersion = VersionManager.getInstance().getVersion();
 		String lStrLanguage = LocaleManager.getInstance().getLocale().getLanguage();
@@ -88,7 +108,7 @@ public class WebMessageManager {
 			mLog.error(t);
 		} 
 	    
-	    mLog.debug("End getMessagesFromWeb()");
+	    mLog.debug("End getMessagesFromBibiscoWebSite()");
 	    
 	    return lStrJsonMessages;
 	}

@@ -1,8 +1,10 @@
+<%@page import="com.bibisco.manager.VersionManager"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
+<%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
-
+<c:set var="versionNumber" value="<%=VersionManager.getInstance().getVersion()%>" scope="request"/>
 <script type="text/javascript">
 $(function() {
     
@@ -43,7 +45,7 @@ $(function() {
      <div class="span3">   
      <h3><fmt:message key="jsp.info.h3.about"/></h3>
      <h5><fmt:message key="jsp.info.h5.version"/></h5>
-     <p><fmt:message key="jsp.info.p.versionnumber"/></p>
+     <p>${versionNumber}</p>
      <h5><fmt:message key="jsp.info.h5.author"/></h5>
      <p><fmt:message key="jsp.info.p.author"/></p>
      <h5><fmt:message key="jsp.info.h5.credits"/></h5>

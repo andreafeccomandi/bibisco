@@ -324,7 +324,6 @@ public class ProjectManager {
 		// create export file path
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(lContextManager.getExportDirectoryPath());
-		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append(pStrType);
 		lStringBuilder.append("_");
 		lStringBuilder.append(pStrTimestamp);
@@ -340,20 +339,16 @@ public class ProjectManager {
 		// create template db file path
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(lContextManager.getTemplateDbDirectoryPath());
-		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append("template_project.h2.db");
 		
 		return lStringBuilder.toString(); 
 	}
 	
 	private static String getDBProjectFilePath(String pStrIdProject) {
-		
-		ContextManager lContextManager = ContextManager.getInstance();
-		
+				
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(getDBProjectDirectory(pStrIdProject));
-		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append(pStrIdProject);
 		lStringBuilder.append(".h2.db");
 		
@@ -365,13 +360,13 @@ public class ProjectManager {
 		ContextManager lContextManager = ContextManager.getInstance();
 		
 		// create db directory path
-		String lStrDbDirectory = lContextManager.getUserHomeBibiscoDbDirectoryPath();
+		String lStrDbDirectory = lContextManager.getDbDirectoryPath();
 		
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(lStrDbDirectory);
-		lStringBuilder.append(lContextManager.getPathSeparator());
 		lStringBuilder.append(pStrIdProject);
+		lStringBuilder.append(ContextManager.getPathSeparator());
 		
 		return lStringBuilder.toString(); 
 	}
@@ -812,8 +807,8 @@ public class ProjectManager {
 			}
 			
 			// copy files to db project directory
-			FileUtils.copyDirectoryToDirectory(new File(lStrTempDirectory + ContextManager.getInstance().getPathSeparator() + pImportProjectArchiveDTO.getIdProject()), 
-					new File(lContextManager.getUserHomeBibiscoDbDirectoryPath()));
+			FileUtils.copyDirectoryToDirectory(new File(lStrTempDirectory + pImportProjectArchiveDTO.getIdProject()), 
+					new File(lContextManager.getDbDirectoryPath()));
 			    
 			// set project name to context
 	    	ContextManager.getInstance().setIdProject(pImportProjectArchiveDTO.getIdProject());
@@ -849,7 +844,7 @@ public class ProjectManager {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		
-		String lStrDBDirectoryPath = lContextManager.getUserHomeBibiscoDbDirectoryPath();
+		String lStrDBDirectoryPath = lContextManager.getDbDirectoryPath();
 		String lStrDbProjectDirectory = getDBProjectDirectory(lContextManager.getIdProject());
 		List<String> lFileList = getDirectoryFileList(new File(lStrDbProjectDirectory));
 		
@@ -863,7 +858,7 @@ public class ProjectManager {
 			byte[] buffer = new byte[1024];
 			for (String lStrFile : lFileList) {
 
-				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrDBDirectoryPath.length()+1, lStrFile.length()));
+				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrDBDirectoryPath.length(), lStrFile.length()));
 				lZipOutputStream.putNextEntry(lZipEntry);
 
 				FileInputStream lFileInputStream = new FileInputStream(lStrFile);
@@ -925,7 +920,7 @@ public class ProjectManager {
 			FileUtils.cleanDirectory(new File(lStrTempDirectory));
 			
 			// get archive file path
-			String lStrFilePath = lStrTempDirectory + lContextManager.getPathSeparator() + pStrFileName;
+			String lStrFilePath = lStrTempDirectory + pStrFileName;
 			
 			// copy archive file to temp directory
 			File lFile = new File(lStrFilePath);

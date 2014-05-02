@@ -57,9 +57,9 @@ public class SpellCheckManager {
 			ContextManager lContextManager = ContextManager.getInstance();
 			StringBuilder lStringBuilder = new StringBuilder(lContextManager.getAbsolutePath());
 			lStringBuilder.append("dictionaries");
-			lStringBuilder.append(lContextManager.getPathSeparator());
+			lStringBuilder.append(ContextManager.getPathSeparator());
 			lStringBuilder.append(pStrLocale);
-			lStringBuilder.append(lContextManager.getPathSeparator());
+			lStringBuilder.append(ContextManager.getPathSeparator());
 			lStringBuilder.append(pStrLocale);
 			
 			mHunspellDictionary = Hunspell.getInstance().getDictionary(lStringBuilder.toString());

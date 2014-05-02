@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   <appender name="file" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="${user.home}/.bibisco/log/bibisco.log"/>
+    <param name="File" value="${bibiscoLogDirectory}/log/bibisco.log"/>
     <param name="Append" value="true"/>
     <param name="maxFileSize" value="1000KB" />
     <param name="maxBackupIndex" value="5" />

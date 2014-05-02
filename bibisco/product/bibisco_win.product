@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.0.0" useFeatures="false" includeLaunchers="true">
+<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.1.0" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -26,7 +26,9 @@
             winSmallLow="/bibisco/icons/launching/logo16x16-8-bit.bmp"
             winMediumHigh="/bibisco/icons/launching/logo32x32-32-bit.bmp"
             winMediumLow="/bibisco/icons/launching/logo32x32-8-bit.bmp"
-            winLargeLow="/bibisco/icons/launching/logo48x48-8bit.bmp"/>
+            winLargeHigh="/bibisco/icons/launching/logo48x48-32bit.bmp"
+            winLargeLow="/bibisco/icons/launching/logo48x48-8bit.bmp"
+            winExtraLargeHigh="/bibisco/icons/launching/logo256x256-32bit .bmp"/>
       </win>
    </launcher>
 

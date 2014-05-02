@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <title>bibisco</title>
-<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css" type="text/css" media="print, projection, screen" />
+<c:set var="version" value="<%=new java.util.Date().getTime()%>" scope="request"/>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js?version=${version}"></script>
+<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css?version=${version}" type="text/css" media="print, projection, screen" />
 
 <script type="text/javascript">
 $(function() {
@@ -19,7 +20,7 @@ $(function() {
 	// on success call to get start page
 	$.ajax({
         type: 'GET',
-        url : 'BibiscoServlet',
+        url : 'jsp/index.jsp',
         success:function(data){
         	window.location.href='BibiscoServlet?action=start';
         },

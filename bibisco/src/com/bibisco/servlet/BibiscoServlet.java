@@ -84,7 +84,7 @@ import com.bibisco.manager.SceneTagsManager;
 import com.bibisco.manager.SpellCheckManager;
 import com.bibisco.manager.StrandManager;
 import com.bibisco.manager.VersionManager;
-import com.bibisco.manager.WebMessageManager;
+import com.bibisco.manager.HttpManager;
 import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 
 /**
@@ -136,7 +136,8 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("requested action=", lStrAction);
 
 		if (StringUtils.isBlank(lStrAction)) {
-			precompileIndexJsp(pRequest, pResponse);
+			mLog.error("Called BibiscoServlet without action!");
+			throw new BibiscoException(BibiscoException.FATAL);
 		} else {
 			try {
 				Method lMethod = BibiscoServlet.class.getMethod(lStrAction, HttpServletRequest.class, HttpServletResponse.class);
@@ -156,19 +157,12 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
 		
 		// get messages from bibisco.com
-		WebMessage lWebMessage = WebMessageManager.getMessage();
+		WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
 		pRequest.setAttribute("webMessage", lWebMessage);
 
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
 		mLog.debug("End start(HttpServletRequest, HttpServletResponse)");
-	}
-	
-	public void precompileIndexJsp(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
-		
-		mLog.debug("Start precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
-		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
-		mLog.debug("End precompileIndexJsp(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void selectProject(HttpServletRequest pRequest,

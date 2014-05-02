@@ -6,12 +6,8 @@
 		<param-value>ApplicationResources</param-value>
 	</context-param>
 	<context-param>
-		<param-name>applicationMode</param-name>
-		<param-value>development</param-value>
-	</context-param>
-	<context-param>
 		<param-name>applicationVersion</param-name>
-		<param-value>0.1</param-value>
+		<param-value>1.1.0</param-value>
 	</context-param>
 	<filter id="CharsetFilter">
 		<filter-name>CharsetFilter</filter-name>

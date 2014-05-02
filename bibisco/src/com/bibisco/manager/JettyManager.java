@@ -142,9 +142,9 @@ class JettyThread extends Thread {
 		
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(getWebAppResourceBase());
-		lStringBuilder.append(mContextManager.getPathSeparator());
+		lStringBuilder.append(ContextManager.getPathSeparator());
 		lStringBuilder.append("WEB-INF");
-		lStringBuilder.append(mContextManager.getPathSeparator());
+		lStringBuilder.append(ContextManager.getPathSeparator());
 		lStringBuilder.append("web.xml");
 		
 		return lStringBuilder.toString();
@@ -154,7 +154,6 @@ class JettyThread extends Thread {
 		
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(mContextManager.getAbsolutePath());
-		lStringBuilder.append(mContextManager.getPathSeparator());
 		lStringBuilder.append("WebContent");
 		
 		return lStringBuilder.toString();

@@ -14,6 +14,8 @@
  */
 package com.bibisco.rcp;
 
+import java.util.Date;
+
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
@@ -27,6 +29,7 @@ import com.bibisco.BibiscoException;
 import com.bibisco.Constants;
 import com.bibisco.log.Log;
 import com.bibisco.manager.JettyManager;
+import com.bibisco.manager.HttpManager;
 
 /**
  * Main view of application.
@@ -71,7 +74,12 @@ public class View extends ViewPart {
 		lStringBuilder.append("http://localhost:");
 		lStringBuilder.append(JettyManager.getInstance().getUsedPort());
 		lStringBuilder.append(Constants.WEB_UI_CONTEXT_PATH);
-		lStringBuilder.append(Constants.INDEX_PAGE);
+		lStringBuilder.append(Constants.LOADING_PAGE);
+		lStringBuilder.append("?version=");
+		lStringBuilder.append((new Date()).getTime());
+		
+		// precompile index.jsp to avoid delay on startup
+		HttpManager.precompileLoadingPage(lStringBuilder.toString());
 		
 		mBrowser.setUrl(lStringBuilder.toString(), null, new String[] { "Cache-Control: no-cache" });
 	}

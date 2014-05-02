@@ -20,7 +20,6 @@ import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.eclipse.core.runtime.Platform;
 
 import com.bibisco.log.Log;
@@ -39,8 +38,7 @@ public class ContextManager {
 	
 	private boolean mBlnTest;
 	private String mStrAbsolutePath;
-	private String mStrUserHomeBibiscoPath;
-	private String mStrUserHomeBibiscoDbDirectoryPath;
+	private String mStrDbDirectoryPath;
 	private String mStrExportDirectoryPath;
 	private String mStrTempDirectoryPath;
 	private String mStrTemplateDbDirectoryPath;
@@ -93,46 +91,38 @@ public class ContextManager {
 		mURIWeb = UriBuilder.fromUri(lConfigManager.getMandatoryProperty("web/@uri")).build();
 		
 		// file separator
-		mStrPathSeparator = System.getProperty("file.separator");
+		mStrPathSeparator = getPathSeparator();
 		
-		// user home .bibisco directory path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(SystemUtils.getUserHome().getAbsolutePath());
-		lStringBuilder.append(mStrPathSeparator);
-		lStringBuilder.append(".bibisco");
-		mStrUserHomeBibiscoPath = lStringBuilder.toString();
 		
-		// user home .bibisco db directory path
+		// db directory path
 		lStringBuilder = new StringBuilder();
-		lStringBuilder.append(mStrUserHomeBibiscoPath);
-		lStringBuilder.append(mStrPathSeparator);		
+		lStringBuilder.append(mStrAbsolutePath);
 		lStringBuilder.append("db");
-		mStrUserHomeBibiscoDbDirectoryPath = lStringBuilder.toString();
-
-		// user home .bibisco temp directory path
-		lStringBuilder = new StringBuilder();
-		lStringBuilder.append(mStrUserHomeBibiscoPath);
 		lStringBuilder.append(mStrPathSeparator);		
+		mStrDbDirectoryPath = lStringBuilder.toString();
+
+		// temp directory path
+		lStringBuilder = new StringBuilder();
+		lStringBuilder.append(mStrAbsolutePath);
 		lStringBuilder.append("temp");
+		lStringBuilder.append(mStrPathSeparator);		
 		mStrTempDirectoryPath = lStringBuilder.toString();
 		
 		// export directory path
 		lStringBuilder = new StringBuilder();
-		lStringBuilder.append(SystemUtils.getUserHome().getAbsolutePath());
-		lStringBuilder.append(mStrPathSeparator);		
-		if ("win".equalsIgnoreCase(mStrOS)) {
-			lStringBuilder.append("Documents");
-		} else {
-			lStringBuilder.append("documents");
-		}
-		lStringBuilder.append(mStrPathSeparator);	
-		lStringBuilder.append("bibisco");
+		lStringBuilder.append(mStrAbsolutePath);	
+		lStringBuilder.append("export");
+		lStringBuilder.append(mStrPathSeparator);
 		mStrExportDirectoryPath = lStringBuilder.toString();
 		
 		// template db directory path
 		lStringBuilder = new StringBuilder();
 		lStringBuilder.append(mStrAbsolutePath);
 		lStringBuilder.append("db");
+		lStringBuilder.append(mStrPathSeparator);
+		lStringBuilder.append("template");
+		lStringBuilder.append(mStrPathSeparator);
 		mStrTemplateDbDirectoryPath = lStringBuilder.toString();
 		
 		// xulrunner directory path
@@ -145,10 +135,9 @@ public class ContextManager {
 				
 		mLog.info("*** OS: ", mStrOS);		
 		mLog.info("*** Absolute path: ", mStrAbsolutePath);
-		mLog.info("*** User home .bibisco: ", mStrUserHomeBibiscoPath);
-		mLog.info("*** User home .bibisco db: ", mStrUserHomeBibiscoDbDirectoryPath);
-		mLog.info("*** User home .bibisco export: ", mStrExportDirectoryPath);
-		mLog.info("*** User home .bibisco temp: ", mStrTempDirectoryPath);
+		mLog.info("*** db: ", mStrDbDirectoryPath);
+		mLog.info("*** export: ", mStrExportDirectoryPath);
+		mLog.info("*** temp: ", mStrTempDirectoryPath);
 		mLog.info("*** Template db directory path: ", mStrTemplateDbDirectoryPath);
 		mLog.info("*** Xulrunner directory path: ", mStrXulRunnerDirectoryPath);
 	}
@@ -157,7 +146,7 @@ public class ContextManager {
 		return mStrOS;
 	}
 
-	private String calculateOSName() {
+	public static String calculateOSName() {
 		String lStrOS = System.getProperty("os.name").toLowerCase();
 		if (lStrOS.indexOf("win") >= 0) {
 			return "win";
@@ -183,8 +172,8 @@ public class ContextManager {
 		return mBlnTest;
 	}
 
-	public String getPathSeparator() {
-		return mStrPathSeparator;
+	public static String getPathSeparator() {
+		return System.getProperty("file.separator");
 	}
 	
 	public String getIdProject() {
@@ -199,14 +188,14 @@ public class ContextManager {
 		return mURIWeb;
 	}
 
-	public String getUserHomeBibiscoDbDirectoryPath() {
-		File lFileUserHomeBibiscoDbDirectory = new File(mStrUserHomeBibiscoDbDirectoryPath);
-		if (!lFileUserHomeBibiscoDbDirectory.exists()) {
-			lFileUserHomeBibiscoDbDirectory.mkdirs();
+	public String getDbDirectoryPath() {
+		File lFileDbDirectory = new File(mStrDbDirectoryPath);
+		if (!lFileDbDirectory.exists()) {
+			lFileDbDirectory.mkdirs();
 		}
-		return mStrUserHomeBibiscoDbDirectoryPath;
+		return mStrDbDirectoryPath;
 	}
-
+	
 	public String getExportDirectoryPath() {
 		File lFileExportDirectory = new File(mStrExportDirectoryPath);
 		if (!lFileExportDirectory.exists()) {
