@@ -1,4 +1,4 @@
-﻿CKEDITOR.plugins.add( 'angledbrackets',
+﻿CKEDITOR.plugins.add( 'dialogsymbols',
 {
 	
 	init: function( editor )
@@ -16,6 +16,14 @@
 			{
 				exec : function( editor ) {    
 					editor.insertHtml( '&raquo;' );
+				}
+			});
+		
+		// angledbracketright command
+		editor.addCommand( 'longdash',
+			{
+				exec : function( editor ) {    
+					editor.insertHtml( '&mdash;' );
 				}
 			});
 	}

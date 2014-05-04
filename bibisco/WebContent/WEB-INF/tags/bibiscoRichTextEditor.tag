@@ -20,7 +20,7 @@
 			removePlugins : 'elementspath,resize,scayt,liststyle',
 			height : bibiscoRichTextEditorConfig.height,
 			width : bibiscoRichTextEditorConfig.width,
-			extraPlugins : 'onchange,highlightText,bibiscospell,angledbrackets', 
+			extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols', 
 			keystrokes : [
 			    [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
 			    [ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
@@ -33,6 +33,7 @@
 			    [ CKEDITOR.CTRL + 72 /*H*/, 'highlightText' ],
 			    [ CKEDITOR.CTRL + 49 /*1*/, 'angledbracketleft' ],
 			    [ CKEDITOR.CTRL + 50 /*2*/, 'angledbracketright' ],
+			    [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
 			],
 			toolbar : [],
 			bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}', 
@@ -102,6 +103,7 @@
 			initializeButton('highlightText', 'bibiscoTagRichTextEditorButtonHighlightText');
 			initializeButton('angledbracketleft', 'bibiscoTagRichTextEditorButtonAngledbracketleft');
 			initializeButton('angledbracketright', 'bibiscoTagRichTextEditorButtonAngledbracketright');
+			initializeButton('longdash', 'bibiscoTagRichTextEditorButtonLongdash');
 			initializeButton('justifyleft', 'bibiscoTagRichTextEditorButtonAlignLeft');
 			initializeButton('justifycenter', 'bibiscoTagRichTextEditorButtonAlignCenter');
 			initializeButton('justifyright', 'bibiscoTagRichTextEditorButtonAlignRight');
@@ -287,6 +289,9 @@
         </button>
         <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" style="font-size: 1.2em;">
            <strong>&raquo;</strong>
+        </button>
+        <button class="btn" id="bibiscoTagRichTextEditorButtonLongdash" title="<fmt:message key="tag.bibiscoRichTextEditor.longdash"/>" style="font-size: 1.2em;">
+           <strong>&mdash;</strong>
         </button>
 	</div>
 	<div class="btn-group" data-toggle="buttons-checkbox">

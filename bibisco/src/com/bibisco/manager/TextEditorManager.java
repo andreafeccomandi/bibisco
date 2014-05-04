@@ -110,6 +110,9 @@ public class TextEditorManager {
 		String lStrNodeText = pNode.toString();
 		
 		lStrNodeText = StringUtils.replace(lStrNodeText, "&nbsp;", "");
+		lStrNodeText = StringUtils.replace(lStrNodeText, "&laquo;", "");
+		lStrNodeText = StringUtils.replace(lStrNodeText, "&raquo;", "");
+		lStrNodeText = StringUtils.replace(lStrNodeText, "&mdash;", "");
 		lStrNodeText = StringEscapeUtils.unescapeHtml(lStrNodeText);
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 33, 38);
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 40, 47);
@@ -119,6 +122,7 @@ public class TextEditorManager {
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 161, 191);		
 		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '“', ' ');
 		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '”', ' ');	
+		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '—', ' ');
 		
 		lStrNodeText = lStrNodeText.trim();
 		

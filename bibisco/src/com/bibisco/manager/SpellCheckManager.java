@@ -133,7 +133,7 @@ public class SpellCheckManager {
 	
 		JSONObject lJSONObjectResult;
 	
-		SpellCheck.mLog.debug("Start spell(String)");
+		mLog.debug("Start spell(String)");
 	
 		SpellCheckManager lSpellCheckManager = getInstance(ContextManager.getInstance().getProjectLanguage());
 		Map<String, Integer> lMapWordOccurences = TextEditorManager.getWordsOccurrencesMap(pStrText, true);
@@ -162,11 +162,11 @@ public class SpellCheckManager {
 				}
 			}
 		} catch (JSONException e) {
-			SpellCheck.mLog.error(e);
+			mLog.error(e);
 			throw new BibiscoException(e, BibiscoException.FATAL);
 		}
 	
-		SpellCheck.mLog.debug("End spell(String)");
+		mLog.debug("End spell(String)");
 		
 		return lJSONObjectResult;
 	}
