@@ -294,6 +294,9 @@ function bibiscoGetWordsToCheck(pRichTextEditor) {
 }
 
 function bibiscoRichTextEditorKeyDownListener(pRichTextEditor, event) {
+	if (keyCode == '13' || keyCode == '32') {
+		
+	}
 
 }
 
@@ -303,8 +306,9 @@ function bibiscoRichTextEditorKeyUpListener(pRichTextEditor, event) {
 	if (keyCode == '13' || keyCode == '32') {
 		bibiscoRichTextEditorSpellCheck(pRichTextEditor);
 	}
-
+	bibiscoCharacterWordCount();
 }
+
 
 function bibiscoRichTextEditorSpellCheck(pRichTextEditor, pSync) {
 	

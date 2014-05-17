@@ -26,6 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
 
+import com.bibisco.bean.CharacterWordCount;
 import com.bibisco.log.Log;
 
 /**
@@ -38,6 +39,24 @@ public class TextEditorManager {
 	
 	private static Log mLog = Log.getInstance(TextEditorManager.class);
 	
+	public static CharacterWordCount getCharacterWordCount(String pStrText) {
+		
+		Integer lIntWordsCount = 0;
+		
+		mLog.debug("Start getCharacterWordCount(String)");
+		
+		mLog.debug("*** ", pStrText);
+		
+		HtmlParsingResult lHtmlParsingResult = parseHtml(pStrText, false);
+
+		CharacterWordCount lCharacterWordCount = new CharacterWordCount();
+		lCharacterWordCount.setCharacters(lHtmlParsingResult.characterCount);
+		lCharacterWordCount.setWords(lHtmlParsingResult.words.size());
+		
+		mLog.debug("End getCharacterWordCount(String): return " + lIntWordsCount);
+		
+		return lCharacterWordCount;
+	}
 	
 	public static Map<String,Integer> getWordsOccurrencesMap(String pStrText, boolean pBlnExcludeSpellCheck) {
 		
@@ -46,7 +65,8 @@ public class TextEditorManager {
 		mLog.debug("Start getWordsOccurrencesMap(String, boolean)");
 		
 		lMapWordsOccurrences = new HashMap<String, Integer>();
-		List<String> lListWords = getWordsFromText(pStrText, pBlnExcludeSpellCheck);
+		HtmlParsingResult lHtmlParsingResult = parseHtml(pStrText, pBlnExcludeSpellCheck);
+		List<String> lListWords = lHtmlParsingResult.words;
 		for (String lStrWord : lListWords) {
 			Integer lIntOccurences;
 			if (lMapWordsOccurrences.containsKey(lStrWord)) {
@@ -62,53 +82,84 @@ public class TextEditorManager {
 		return lMapWordsOccurrences;
 	}
 	
-	public static List<String> getWordsFromText(String pStrText, boolean pBlnExcludeSpellCheck) {
+	private static HtmlParsingResult parseHtml(String pStrText, boolean pBlnExcludeSpellCheck) {
 		
-		List<String> lListWords = new ArrayList<String>();
-		
-		mLog.debug("Start getWordsFromText(String, boolean)");
+		mLog.debug("Start parseHtml(String, boolean)");
 		
 		Document lDocument = Jsoup.parse(pStrText);
-	    
+		
+		HtmlParsingResult lHtmlParsingResult = new HtmlParsingResult();
 		for (Node lNode : lDocument.childNodes()) {
-    		lListWords.addAll(getWordsFromNode(lNode, pBlnExcludeSpellCheck));
+    		parseNode(lHtmlParsingResult, lNode, pBlnExcludeSpellCheck);
 	    }
 		
-		mLog.debug("End getWordsFromText(String, boolean)");
+		mLog.debug("End parseHtml(String, boolean)");
 		
-		return lListWords;
+		return lHtmlParsingResult;
 		
 	}
 	
-	private static List<String> getWordsFromNode(Node pNode, boolean pBlnExcludeSpellCheck) {
+	private static void parseNode(HtmlParsingResult pHtmlParsingResult, Node pNode, boolean pBlnExcludeSpellCheck) {
 		
-		List<String> lListWords = new ArrayList<String>();	
-		
-		mLog.debug("Start getWordsFromNode(Node, boolean): ", pNode.nodeName());
+		mLog.debug("Start parseNode(HtmlParsingResult, Node, boolean): ", pNode.nodeName());
 		
 		if ("#text".equals(pNode.nodeName())) {
-        	lListWords.addAll(getWordsFromTextNode(pNode));
+        	parseTextNode(pHtmlParsingResult, pNode);
         } else if ("spellerror".equals(pNode.nodeName()) && pBlnExcludeSpellCheck) {
         	// Do nothing
+        } else if ("span".equals(pNode.nodeName()) && pNode.attr("style").equals("display: none;")){
+        	// Do nothing
         } else {
+        	if ("ul".equals(pNode.nodeName())) {
+        		pHtmlParsingResult.ulOpen=true;
+        	}
+        	if ("ol".equals(pNode.nodeName())) {
+        		pHtmlParsingResult.olOpen=true;
+        	}
+        	if ("li".equals(pNode.nodeName())) {
+        		if (pHtmlParsingResult.ulOpen) {
+        			pHtmlParsingResult.characterCount += 1;
+        		} else if (pHtmlParsingResult.olOpen) {
+        			pHtmlParsingResult.characterCount += 1;
+        			pHtmlParsingResult.olLiPosition += 1;
+        			pHtmlParsingResult.characterCount += String.valueOf(pHtmlParsingResult.olLiPosition).length();
+        		}
+        	}
         	for (Node lNode : pNode.childNodes()) {
-        		lListWords.addAll(getWordsFromNode(lNode, pBlnExcludeSpellCheck));
+        		parseNode(pHtmlParsingResult, lNode, pBlnExcludeSpellCheck);
     	    }
+        	if ("ul".equals(pNode.nodeName())) {
+        		pHtmlParsingResult.ulOpen=false;
+        	}
+        	if ("ol".equals(pNode.nodeName())) {
+        		pHtmlParsingResult.olOpen=false;
+        		pHtmlParsingResult.olLiPosition = 0;
+        	}
         }
 		
-		mLog.debug("End getWordsFromNode(Node, boolean)");
-		
-		return lListWords;
+		mLog.debug("End parseNode(HtmlParsingResult, Node, boolean)");
 	}	
 	
-	private static List<String> getWordsFromTextNode(Node pNode) {
+	private static void parseTextNode(HtmlParsingResult pHtmlParsingResult, Node pNode) {
 		
 		List<String> lListWords = new ArrayList<String>();	
 		
-		mLog.debug("Start getWordsFromTextNode(Node): ", pNode.toString());
+		mLog.debug("Start parseTextNode(HtmlParsingResult, Node): ", pNode.toString());
 		
-		String lStrNodeText = pNode.toString();
+		// character count
+		String lStrNodeText =  StringUtils.replace(pNode.toString(), "&nbsp;", " ");
+		lStrNodeText = StringEscapeUtils.unescapeHtml(lStrNodeText);
+		int lIntCharacterCount;
+		if (lStrNodeText.trim().length() == 0) {
+			 lIntCharacterCount = 0;
+		} else {
+			lIntCharacterCount =  lStrNodeText.length();
+		}
 		
+		pHtmlParsingResult.characterCount += lIntCharacterCount;
+		
+		// extract words
+		lStrNodeText = pNode.toString();
 		lStrNodeText = StringUtils.replace(lStrNodeText, "&nbsp;", "");
 		lStrNodeText = StringUtils.replace(lStrNodeText, "&laquo;", "");
 		lStrNodeText = StringUtils.replace(lStrNodeText, "&raquo;", "");
@@ -123,7 +174,6 @@ public class TextEditorManager {
 		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '“', ' ');
 		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '”', ' ');	
 		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '—', ' ');
-		
 		lStrNodeText = lStrNodeText.trim();
 		
 		if (StringUtils.isNotBlank(lStrNodeText)) {
@@ -132,10 +182,9 @@ public class TextEditorManager {
 	    		lListWords.add(lStringTokenizer.nextToken());
 	    	}
 		}
+		pHtmlParsingResult.words.addAll(lListWords);
 		
-    	mLog.debug("End getWordsFromTextNode(Node)");
-    	
-    	return lListWords;
+    	mLog.debug("End parseTextNode(HtmlParsingResult, Node)");
 	}
 	
 	private static String replaceCharIntervalWithWhiteSpace(String pStr, int pIntFrom, int pIntTo) {
@@ -147,4 +196,12 @@ public class TextEditorManager {
 		
 		return pStr;
 	}
+}
+
+class HtmlParsingResult {
+	List<String> words = new ArrayList<String>();
+	int characterCount = 0;
+	boolean ulOpen = false;
+	boolean olOpen = false;
+	int olLiPosition = 0;
 }

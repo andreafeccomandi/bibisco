@@ -184,7 +184,7 @@
     	// rich text editor	
     	var bibiscoRichTextEditorVerticalPadding = 300;
     	var bibiscoRichTextEditorHeight = (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding);
-    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: initialText, height: bibiscoRichTextEditorHeight+'px', width: jsBibiscoRichTextEditorWidth+'px', changeCallback: function() {setActualQuestionChange();}});
+    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: initialText, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth, changeCallback: function() {setActualQuestionChange();}});
     	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: characterInfoBean.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     
     }     

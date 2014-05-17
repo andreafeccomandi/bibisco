@@ -49,6 +49,7 @@ import com.bibisco.bean.CharacterDTO;
 import com.bibisco.bean.CharacterInfoQuestionsDTO;
 import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
 import com.bibisco.bean.CharacterSceneDTO;
+import com.bibisco.bean.CharacterWordCount;
 import com.bibisco.bean.ImageDTO;
 import com.bibisco.bean.ImportProjectArchiveDTO;
 import com.bibisco.bean.LocationDTO;
@@ -83,6 +84,7 @@ import com.bibisco.manager.SceneManager;
 import com.bibisco.manager.SceneTagsManager;
 import com.bibisco.manager.SpellCheckManager;
 import com.bibisco.manager.StrandManager;
+import com.bibisco.manager.TextEditorManager;
 import com.bibisco.manager.VersionManager;
 import com.bibisco.manager.HttpManager;
 import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
@@ -1144,6 +1146,22 @@ public class BibiscoServlet extends HttpServlet {
 		lWriter.write(lJSONObjectResult.toString());
 		
 		mLog.debug("End spellCheck(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void characterWordCount(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws IOException {
+		
+		mLog.debug("Start characterWordCount(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrText = pRequest.getParameter("text");
+		mLog.debug("text= ", lStrText);		
+		CharacterWordCount lCharacterWordCount = TextEditorManager.getCharacterWordCount(lStrText);
+		
+		pResponse.setContentType("application/json; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lCharacterWordCount.toJSONObject().toString());
+		
+		mLog.debug("End characterWordCount(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void sceneRevisionChange(HttpServletRequest pRequest, HttpServletResponse pResponse) throws IOException {

@@ -64,7 +64,7 @@
 			bibiscoRichTextEditor.setText(scene.text);
 		} else {
 			// first open of scene dialog
-			bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: scene.text, height: bibiscoRichTextEditorHeight+'px', width: jsBibiscoRichTextEditorWidth+'px'});	
+			bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: scene.text, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});	
 		}
 		
 		bibiscoRichTextEditor.unSaved = false;

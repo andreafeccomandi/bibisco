@@ -14,7 +14,7 @@
     	
     	var richTextEditorTaskStatus = ${richTextEditorTaskStatus};
     	var bibiscoRichTextEditorVerticalPadding = 250;
-    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: richTextEditorTaskStatus.text, height: (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding)+'px', width: jsBibiscoRichTextEditorWidth+'px'});
+    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: richTextEditorTaskStatus.text, height: (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding), width: jsBibiscoRichTextEditorWidth});
     	
     	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: richTextEditorTaskStatus.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	$('#bibiscoRichTextEditorTaskStatusDialogEmDescription').html(richTextEditorTaskStatus.description);
