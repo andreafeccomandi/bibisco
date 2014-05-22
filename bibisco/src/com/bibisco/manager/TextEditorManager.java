@@ -43,10 +43,8 @@ public class TextEditorManager {
 		
 		Integer lIntWordsCount = 0;
 		
-		mLog.debug("Start getCharacterWordCount(String)");
-		
-		mLog.debug("*** ", pStrText);
-		
+		mLog.debug("Start getCharacterWordCount(String): HTML: [", pStrText,"]");
+				
 		HtmlParsingResult lHtmlParsingResult = parseHtml(pStrText, false);
 
 		CharacterWordCount lCharacterWordCount = new CharacterWordCount();
@@ -148,15 +146,9 @@ public class TextEditorManager {
 		
 		// character count
 		String lStrNodeText =  StringUtils.replace(pNode.toString(), "&nbsp;", " ");
-		lStrNodeText = StringEscapeUtils.unescapeHtml(lStrNodeText);
-		int lIntCharacterCount;
-		if (lStrNodeText.trim().length() == 0) {
-			 lIntCharacterCount = 0;
-		} else {
-			lIntCharacterCount =  lStrNodeText.length();
-		}
-		
-		pHtmlParsingResult.characterCount += lIntCharacterCount;
+		lStrNodeText = StringUtils.replace(lStrNodeText, "\n", "");
+		lStrNodeText = StringEscapeUtils.unescapeHtml(lStrNodeText);	
+		pHtmlParsingResult.characterCount += lStrNodeText.length();
 		
 		// extract words
 		lStrNodeText = pNode.toString();
