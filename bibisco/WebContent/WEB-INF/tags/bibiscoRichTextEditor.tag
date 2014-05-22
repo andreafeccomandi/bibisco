@@ -65,7 +65,7 @@
                     if (keyCode == '13' || keyCode == '32') {
                         bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor);
                     }
-                    bibiscoCharacterWordCount();
+                    bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
                 });
                 
                 bibiscoRichTextEditor.document.on('keydown', function(e) {
@@ -136,11 +136,14 @@
             $('#bibiscoTagRichTextEditorButtonSettings').tooltip();
             
             // set initial text         
+            var initialText = '';
             if (bibiscoRichTextEditorConfig.text) {
-                bibiscoRichTextEditor.setText(bibiscoRichTextEditorConfig.text);    
-            } else {
-                bibiscoRichTextEditor.setText('');
-            }
+            	initialText = bibiscoRichTextEditorConfig.text;
+            } 
+            bibiscoRichTextEditor.setText(initialText);
+            
+            // set initial word and character count
+            bibiscoCharacterWordCount(initialText);
             
             // <p> settings             
             ev.editor.dataProcessor.writer.setRules( 'p',
@@ -220,7 +223,7 @@
             
             // character word count after every command exec
             ev.editor.on('afterCommandExec', function(evt) {
-            	bibiscoCharacterWordCount();
+            	bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
             });  
              
             // editor is initialized: let's show it!
@@ -316,13 +319,14 @@
        });
     }
     
-    function bibiscoCharacterWordCount() {
+    function bibiscoCharacterWordCount(text2parse) {
+    	    	
         $.ajax({
             type: 'POST',
             async: true,
             url: 'BibiscoServlet?action=characterWordCount',
             data: { 
-              text: bibiscoRichTextEditor.getText()
+              text: text2parse
             },
             error:function(jqXHR, textStatus, errorThrown) {},
             success:function(characterWordCount){
