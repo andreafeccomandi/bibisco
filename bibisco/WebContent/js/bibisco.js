@@ -293,22 +293,6 @@ function bibiscoGetWordsToCheck(pRichTextEditor) {
 	return wordsToCheck;
 }
 
-function bibiscoRichTextEditorKeyDownListener(pRichTextEditor, event) {
-	if (keyCode == '13' || keyCode == '32') {
-		
-	}
-
-}
-
-function bibiscoRichTextEditorKeyUpListener(pRichTextEditor, event) {
-
-	var keyCode = event.data.$.keyCode;
-	if (keyCode == '13' || keyCode == '32') {
-		bibiscoRichTextEditorSpellCheck(pRichTextEditor);
-	}
-	bibiscoCharacterWordCount();
-}
-
 
 function bibiscoRichTextEditorSpellCheck(pRichTextEditor, pSync) {
 	

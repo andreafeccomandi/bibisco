@@ -57,14 +57,19 @@
                         bibiscoRichTextEditorConfig.changeCallback();
                     }
                 }
-            });
+            });            
+            
             $(element).bind('setData.ckeditor', function() {
-                bibiscoRichTextEditor.document.on('keyup', function(e) {
-                    bibiscoRichTextEditorKeyUpListener(bibiscoRichTextEditor,e);
+                bibiscoRichTextEditor.document.on('keyup', function(event) {
+                    var keyCode = event.data.$.keyCode;
+                    if (keyCode == '13' || keyCode == '32') {
+                        bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor);
+                    }
+                    bibiscoCharacterWordCount();
                 });
                 
                 bibiscoRichTextEditor.document.on('keydown', function(e) {
-                    bibiscoRichTextEditorKeyDownListener(bibiscoRichTextEditor,e);
+                   
                 });
             });
         });
@@ -110,12 +115,7 @@
             initializeButton('justifyblock', 'bibiscoTagRichTextEditorButtonAlignJustify');
             initializeButton('numberedlist', 'bibiscoTagRichTextEditorButtonNumberList');
             initializeButton('bulletedlist', 'bibiscoTagRichTextEditorButtonBulletList');
-                        
-            // dialog button 
-            $('.bibiscoCharacterWordCountTriggerBtn').click(function() {
-                bibiscoCharacterWordCount();
-            });
-            
+                                    
             // editor settings button
             $('#bibiscoTagRichTextEditorButtonSettings').click(function() {
                  var ajaxDialogContent = { 
@@ -187,6 +187,24 @@
                 breakBeforeClose : false,
                 breakAfterClose : false
             });
+            // <spellerror> settings
+            ev.editor.dataProcessor.writer.setRules( 'spellerror',
+            {
+                indent : false,
+                breakBeforeOpen : false,
+                breakAfterOpen : false,
+                breakBeforeClose : false,
+                breakAfterClose : false
+            });
+            // <span> settings
+            ev.editor.dataProcessor.writer.setRules( 'span',
+            {
+                indent : false,
+                breakBeforeOpen : false,
+                breakAfterOpen : false,
+                breakBeforeClose : false,
+                breakAfterClose : false
+            });
             
             // set allowed tag on paste
             ev.editor.on('paste', function(evt) {
@@ -200,11 +218,16 @@
                 bibiscoRichTextEditorSpellCheck(evt.editor, false);
             });    
             
+            // character word count after every command exec
+            ev.editor.on('afterCommandExec', function(evt) {
+            	bibiscoCharacterWordCount();
+            });  
+             
             // editor is initialized: let's show it!
             $('#bibiscoTagRichTextEditorTextareaContainer').show();
             $('#bibiscoTagRichTextEditorDivToolbar').show();
         });
-
+        
         return bibiscoRichTextEditor;
     }
 
@@ -308,15 +331,14 @@
             },
           });
     }
-
         
 </script>
 <div id="bibiscoTagRichTextEditorDivToolbar" class="btn-toolbar notSelectableText" style="display: none; margin-top: 0px; margin-bottom: 0px; margin-left: 9px;">
     <div class="btn-group">
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonUndo" title="<fmt:message key="tag.bibiscoRichTextEditor.undo"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonUndo" title="<fmt:message key="tag.bibiscoRichTextEditor.undo"/>">
             <i class="icon-undo"></i>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonRepeat" title="<fmt:message key="tag.bibiscoRichTextEditor.redo"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonRepeat" title="<fmt:message key="tag.bibiscoRichTextEditor.redo"/>">
             <i class="icon-repeat"></i>
         </button>
     </div>
@@ -329,10 +351,10 @@
         <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
             <i class="icon-copy"></i>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
             <i class="icon-cut"></i>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
             <i class="icon-paste"></i>
         </button>
     </div>
@@ -354,21 +376,21 @@
         </button>
     </div>
     <div class="btn-group">
-       <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketleft"/>" style="font-size: 1.2em;">
+       <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketleft"/>" style="font-size: 1.2em;">
            <strong>&laquo;</strong>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" style="font-size: 1.2em;">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" style="font-size: 1.2em;">
            <strong>&raquo;</strong>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonLongdash" title="<fmt:message key="tag.bibiscoRichTextEditor.longdash"/>" style="font-size: 1.2em;">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonLongdash" title="<fmt:message key="tag.bibiscoRichTextEditor.longdash"/>" style="font-size: 1.2em;">
            <strong>&mdash;</strong>
         </button>
     </div>
     <div class="btn-group" data-toggle="buttons-checkbox">
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonNumberList" title="<fmt:message key="tag.bibiscoRichTextEditor.numberedlist"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonNumberList" title="<fmt:message key="tag.bibiscoRichTextEditor.numberedlist"/>">
             <i class="icon-list-ol"></i>
         </button>
-        <button class="btn bibiscoCharacterWordCountTriggerBtn" id="bibiscoTagRichTextEditorButtonBulletList" title="<fmt:message key="tag.bibiscoRichTextEditor.bulletedlist"/>">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonBulletList" title="<fmt:message key="tag.bibiscoRichTextEditor.bulletedlist"/>">
             <i class="icon-list"></i>
         </button>
     </div>
