@@ -143,7 +143,9 @@ CREATE TABLE scene_revisions (
   scene_date TIMESTAMP    ,
   selected CHAR(1)   NOT NULL ,
   point_of_view INTEGER    ,
-  tense VARCHAR(20)      ,
+  tense VARCHAR(20)    ,
+  words INTEGER  DEFAULT 0 NOT NULL ,
+  characters INTEGER  DEFAULT 0 NOT NULL   ,
 PRIMARY KEY(id_scene_revision)      ,
   FOREIGN KEY(id_scene)
     REFERENCES scenes(id_scene),

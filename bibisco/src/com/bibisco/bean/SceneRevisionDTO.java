@@ -50,7 +50,9 @@ public class SceneRevisionDTO {
 	private List<Integer> strands;
 	private Date sceneDate;
 	private List<Integer> revisions;
-	 
+	private Integer wordCount;
+	private Integer characterCount;
+	
 	public List<Integer> getRevisions() {
 		return revisions;
 	}
@@ -141,6 +143,8 @@ public class SceneRevisionDTO {
 			lJSONObject.put("taskStatus", taskStatus);
 			lJSONObject.put("text", text);
 			lJSONObject.put("title", title);
+			lJSONObject.put("wordCount", wordCount);
+			lJSONObject.put("characterCount", characterCount);
 			
 			int i = 0;
 			JSONArray lJSONArrayCharacters = new JSONArray();
@@ -194,5 +198,17 @@ public class SceneRevisionDTO {
 	}
 	public void setIdRevision(Integer idRevision) {
 		this.idRevision = idRevision;
+	}
+	public Integer getWordCount() {
+		return wordCount;
+	}
+	public void setWordCount(Integer words) {
+		this.wordCount = words;
+	}
+	public Integer getCharacterCount() {
+		return characterCount;
+	}
+	public void setCharacterCount(Integer chars) {
+		this.characterCount = chars;
 	}
 }

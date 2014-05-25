@@ -10,7 +10,7 @@
           
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
-	var bibiscoRichTextEditorVerticalPadding = 200;
+	var bibiscoRichTextEditorVerticalPadding = 210;
     
     function populate(scene, changeRevision) {
     	
@@ -164,6 +164,8 @@
       			  		idRevision: $("#bibiscoSceneSelectRevision").attr('data-actualRevision'),
       			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
       			  		text: bibiscoRichTextEditor.getText(),
+      			  		wordCount: bibiscoRichTextEditor.getWordCount(),
+      			        characterCount: bibiscoRichTextEditor.getCharacterCount(),
       			  		pointOfView: $('button.scenePointOfView.active').attr('data-id'),
       			  		pointOfViewCharacter: $('button.scenePointOfViewCharacter.active').attr('data-id'),
       			  		characters: characters,

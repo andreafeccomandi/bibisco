@@ -101,7 +101,9 @@ public class SceneManager {
 		lSceneRevisionDTO.setPointOfView(lSceneRevisionsSelected.getPointOfView() != null ? PointOfView.getPointOfViewFromValue(lSceneRevisionsSelected.getPointOfView()) : null);
 		lSceneRevisionDTO.setIdCharacterPointOfView(lSceneRevisionsSelected.getPointOfViewIdCharacter());
 		lSceneRevisionDTO.setSceneDate(lSceneRevisionsSelected.getSceneDate());
-
+        lSceneRevisionDTO.setWordCount(lSceneRevisionsSelected.getWords());
+        lSceneRevisionDTO.setCharacterCount(lSceneRevisionsSelected.getCharacters());
+		
 		// load revisions
 		SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
 		lSceneRevisionsExample.createCriteria()
@@ -394,8 +396,6 @@ public class SceneManager {
 			lSqlSession.close();
 		} 
 		
-
-		
 		mLog.debug("End changeRevision(" + pIntIdScene, "," + pIntNewRevision , ")");
 		
 		return lSceneRevisionDTO;
@@ -426,6 +426,8 @@ public class SceneManager {
 			lSceneRevisions.setIdScene(lScenes.getIdScene().intValue());
 			lSceneRevisions.setRevisionNumber(1);
 			lSceneRevisions.setSelected("Y");
+			lSceneRevisions.setWords(0);
+			lSceneRevisions.setCharacters(0);
 			
 			SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
 			lSceneRevisionsMapper.insert(lSceneRevisions);
@@ -551,6 +553,8 @@ public class SceneManager {
 		lSceneRevisions.setPointOfViewIdCharacter(pSceneRevisionDTO.getIdCharacterPointOfView());
 		lSceneRevisions.setScene(pSceneRevisionDTO.getText());
 		lSceneRevisions.setSceneDate(pSceneRevisionDTO.getSceneDate());
+		lSceneRevisions.setWords(pSceneRevisionDTO.getWordCount());
+		lSceneRevisions.setCharacters(pSceneRevisionDTO.getCharacterCount());
 		SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
 		lSceneRevisionsMapper.updateByPrimaryKeyWithBLOBs(lSceneRevisions);
 		

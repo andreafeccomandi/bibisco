@@ -756,6 +756,8 @@ public class BibiscoServlet extends HttpServlet {
 		lSceneRevisionDTO.setPointOfView(pRequest.getParameter("pointOfView") != null ? PointOfView.valueOf(pRequest.getParameter("pointOfView")) : null);
 		lSceneRevisionDTO.setIdCharacterPointOfView(pRequest.getParameter("pointOfViewCharacter")!=null ? Integer.parseInt(pRequest.getParameter("pointOfViewCharacter")) : null);
 		lSceneRevisionDTO.setIdLocation(pRequest.getParameter("location")!=null ? Integer.parseInt(pRequest.getParameter("location")) : null);
+		lSceneRevisionDTO.setWordCount(Integer.parseInt(pRequest.getParameter("wordCount")));
+		lSceneRevisionDTO.setCharacterCount(Integer.parseInt(pRequest.getParameter("characterCount")));
 		
 		if(StringUtils.isNotEmpty(pRequest.getParameter("time"))) {
 			String lStrPattern = ResourceBundleManager.getString("pattern.timestamp");

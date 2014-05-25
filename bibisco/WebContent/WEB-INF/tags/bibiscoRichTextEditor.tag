@@ -84,6 +84,16 @@
             return contentWithStyle;
         }
         
+        // create function for get words counts
+        bibiscoRichTextEditor.getWordCount = function() {
+            return $('#bibiscoTagRichTextEditorSpanWordCount').text();
+        }
+        
+        // create function for get characters counts
+        bibiscoRichTextEditor.getCharacterCount = function() {
+            return $('#bibiscoTagRichTextEditorSpanCharacterCount').text();
+        }
+          
         // create function for set text into rich text editor
         bibiscoRichTextEditor.setText = function(text) {
             if (!text) {
