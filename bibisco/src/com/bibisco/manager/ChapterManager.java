@@ -28,13 +28,15 @@ import com.bibisco.dao.client.ChaptersMapper;
 import com.bibisco.dao.client.SceneRevisionsMapper;
 import com.bibisco.dao.client.ScenesMapper;
 import com.bibisco.dao.client.VChaptersMapper;
+import com.bibisco.dao.client.VScenesMapper;
 import com.bibisco.dao.model.Chapters;
 import com.bibisco.dao.model.ChaptersExample;
 import com.bibisco.dao.model.ChaptersWithBLOBs;
-import com.bibisco.dao.model.Scenes;
-import com.bibisco.dao.model.ScenesExample;
 import com.bibisco.dao.model.VChapters;
 import com.bibisco.dao.model.VChaptersExample;
+import com.bibisco.dao.model.VChaptersWithBLOBs;
+import com.bibisco.dao.model.VScenes;
+import com.bibisco.dao.model.VScenesExample;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 
@@ -91,8 +93,10 @@ public class ChapterManager {
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
 		try {
 
-			ChaptersMapper lChaptersMapper = lSqlSession.getMapper(ChaptersMapper.class);
-			ChaptersWithBLOBs lChaptersWithBLOBs = lChaptersMapper.selectByPrimaryKey(pIntIdChapter.longValue());
+			VChaptersMapper lChaptersMapper = lSqlSession.getMapper(VChaptersMapper.class);
+			VChaptersExample lVChaptersExample = new VChaptersExample();
+			lVChaptersExample.createCriteria().andIdChapterEqualTo(pIntIdChapter.longValue());
+			VChaptersWithBLOBs lChaptersWithBLOBs = lChaptersMapper.selectByExampleWithBLOBs(lVChaptersExample).get(0);
 
 			lChapterDTO = new ChapterDTO();
 			lChapterDTO.setIdChapter(lChaptersWithBLOBs.getIdChapter().intValue());
@@ -101,7 +105,10 @@ public class ChapterManager {
 			lChapterDTO.setReason(lChaptersWithBLOBs.getReason());
 			lChapterDTO.setReasonTaskStatus(TaskStatus.getTaskStatusFromValue(lChaptersWithBLOBs.getReasonTaskStatus()));
 			lChapterDTO.setNote(lChaptersWithBLOBs.getNote());
+			lChapterDTO.setWordCount(lChaptersWithBLOBs.getWords());
+			lChapterDTO.setCharacterCount(lChaptersWithBLOBs.getCharacters());
 			lChapterDTO.setSceneList(loadScenes(lSqlSession, pIntIdChapter));
+			lChapterDTO.setTaskStatus(calculateChapterTaskStatus(lChaptersWithBLOBs));
 
 		} catch (Throwable t) {
 			mLog.error(t);
@@ -115,29 +122,52 @@ public class ChapterManager {
 		return lChapterDTO;
 	}
 	
+	private static TaskStatus calculateChapterTaskStatus(VChapters lVChapters) {
+		
+		TaskStatus lTaskStatusMaxScene = TaskStatus.getTaskStatusFromValue(lVChapters.getMaxScenesTaskStatus());
+		TaskStatus lTaskStatusMinScene = TaskStatus.getTaskStatusFromValue(lVChapters.getMinScenesTaskStatus());
+		TaskStatus lTaskStatusReason = TaskStatus.getTaskStatusFromValue(lVChapters.getReasonTaskStatus());
+		
+		TaskStatus lTaskStatusChapter;
+		if(lTaskStatusMaxScene == TaskStatus.TODO 
+				&& lTaskStatusMinScene == TaskStatus.TODO
+				&& lTaskStatusReason == TaskStatus.TODO) {
+			lTaskStatusChapter = TaskStatus.TODO;
+		} else if(lTaskStatusMaxScene == TaskStatus.COMPLETED 
+				&& lTaskStatusMinScene == TaskStatus.COMPLETED
+				&& lTaskStatusReason == TaskStatus.COMPLETED) {
+			lTaskStatusChapter = TaskStatus.COMPLETED;
+		} else {
+			lTaskStatusChapter = TaskStatus.TOCOMPLETE;
+		}
+		
+		return lTaskStatusChapter;
+	}
+	
 	private static List<SceneDTO> loadScenes(SqlSession pSqlSession, Integer pIntIdChapter) {
 
 		List<SceneDTO> lListSceneRevision = null;
 
 		mLog.debug("Start loadScenes(SqlSession, Integer)");
 
-		ScenesMapper lScenesMapper = pSqlSession.getMapper(ScenesMapper.class);
-		ScenesExample lScenesExample = new ScenesExample();
-		lScenesExample.createCriteria().andIdChapterEqualTo(pIntIdChapter);
-		lScenesExample.setOrderByClause("position");
-		List<Scenes> lListScenes = lScenesMapper.selectByExample(lScenesExample);
+		VScenesMapper lVScenesMapper = pSqlSession.getMapper(VScenesMapper.class);
+		VScenesExample lVScenesExample = new VScenesExample();
+		lVScenesExample.createCriteria().andIdChapterEqualTo(pIntIdChapter);
+		lVScenesExample.setOrderByClause("position");
+		List<VScenes> lListVScenes = lVScenesMapper.selectByExample(lVScenesExample);
 
-		if (lListScenes != null && lListScenes.size() > 0) {
+		if (lListVScenes != null && lListVScenes.size() > 0) {
 			lListSceneRevision = new ArrayList<SceneDTO>();
-			for (Scenes lScenes : lListScenes) {
+			for (VScenes lVScenes : lListVScenes) {
 
 				SceneDTO lSceneDTO = new SceneDTO();
-				lSceneDTO.setIdScene(lScenes.getIdScene().intValue());
-				lSceneDTO.setIdChapter(lScenes.getIdChapter());
-				lSceneDTO.setPosition(lScenes.getPosition());
-				lSceneDTO.setDescription(lScenes.getDescription());
-				lSceneDTO.setTaskStatus(TaskStatus.getTaskStatusFromValue(lScenes.getTaskStatus()));
-				
+				lSceneDTO.setIdScene(lVScenes.getIdScene().intValue());
+				lSceneDTO.setIdChapter(lVScenes.getIdChapter());
+				lSceneDTO.setPosition(lVScenes.getPosition());
+				lSceneDTO.setDescription(lVScenes.getDescription());
+				lSceneDTO.setTaskStatus(TaskStatus.getTaskStatusFromValue(lVScenes.getTaskStatus()));
+				lSceneDTO.setWordCount(lVScenes.getWords());
+				lSceneDTO.setCharacterCount(lVScenes.getCharacters());
 				lListSceneRevision.add(lSceneDTO);
 			}
 		}
@@ -170,27 +200,11 @@ public class ChapterManager {
 					ChapterDTO lChapterDTO = new ChapterDTO();
 					lChapterDTO.setIdChapter(lVChapters.getIdChapter().intValue());
 					lChapterDTO.setPosition(lVChapters.getPosition());
-					lChapterDTO.setTitle(lVChapters.getTitle());
-					
-					TaskStatus lTaskStatusMaxScene = TaskStatus.getTaskStatusFromValue(lVChapters.getMaxScenesTaskStatus());
-					TaskStatus lTaskStatusMinScene = TaskStatus.getTaskStatusFromValue(lVChapters.getMinScenesTaskStatus());
-					TaskStatus lTaskStatusReason = TaskStatus.getTaskStatusFromValue(lVChapters.getReasonTaskStatus());
-					
-					TaskStatus lTaskStatusChapter;
-					if(lTaskStatusMaxScene == TaskStatus.TODO 
-							&& lTaskStatusMinScene == TaskStatus.TODO
-							&& lTaskStatusReason == TaskStatus.TODO) {
-						lTaskStatusChapter = TaskStatus.TODO;
-					} else if(lTaskStatusMaxScene == TaskStatus.COMPLETED 
-							&& lTaskStatusMinScene == TaskStatus.COMPLETED
-							&& lTaskStatusReason == TaskStatus.COMPLETED) {
-						lTaskStatusChapter = TaskStatus.COMPLETED;
-					} else {
-						lTaskStatusChapter = TaskStatus.TOCOMPLETE;
-					}
-					lChapterDTO.setTaskStatus(lTaskStatusChapter);
-					
-					lChapterDTO.setReasonTaskStatus(lTaskStatusReason);
+					lChapterDTO.setTitle(lVChapters.getTitle());	
+					lChapterDTO.setTaskStatus(calculateChapterTaskStatus(lVChapters));
+					lChapterDTO.setReasonTaskStatus(TaskStatus.getTaskStatusFromValue(lVChapters.getReasonTaskStatus()));
+					lChapterDTO.setWordCount(lVChapters.getWords());
+					lChapterDTO.setCharacterCount(lVChapters.getCharacters());
 					
 					lListChapter.add(lChapterDTO);
 				}

@@ -196,6 +196,22 @@ public class BibiscoServlet extends HttpServlet {
 		
 	}
 	
+	public void getChapterWordCountTaskStatus(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start getChapterWordCountTaskStatus(HttpServletRequest, HttpServletResponse)");
+		
+		Integer lIntIdChapter = Integer.valueOf(pRequest.getParameter("idChapter"));
+		mLog.debug("idChapter = "+ lIntIdChapter);
+		ChapterDTO lChapterDTO = ChapterManager.load(lIntIdChapter);
+	
+		pResponse.setContentType("application/json; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lChapterDTO.getWordCountTaskStatusAsJSONObject().toString());
+		
+		mLog.debug("End getChapterWordCountTaskStatus(HttpServletRequest, HttpServletResponse)");
+		
+	}
+	
 	public void openMainCharacter(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
 		
 		mLog.debug("Start openMainCharacter(HttpServletRequest, HttpServletResponse)");

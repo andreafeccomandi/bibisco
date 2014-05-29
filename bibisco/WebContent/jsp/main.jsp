@@ -10,9 +10,7 @@
 			$('#bibiscoMainDivLocations').hide();
 			$('#bibiscoMainDivSettings').hide();
 			$('#bibiscoMainDivInfo').hide();
-			
-			$('.bibiscoTagTaskStatusDiv span').tooltip();
-			
+						
 			// set body height: this is necessary to avoid strange behaviours of dialog dragged outside body height
 			$('body').css('height', window.innerHeight-50);
 			

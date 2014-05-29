@@ -430,6 +430,7 @@
 </div>
 <div id="bibiscoTagRichTextEditorTextareaContainer" style="display: none;">
 <textarea id="bibiscoTagRichTextEditorTextarea"></textarea>
-<p style="text-align: right; margin-right: 12px;"><fmt:message key="tag.bibiscoRichTextEditor.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span>, <fmt:message key="tag.bibiscoRichTextEditor.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span></p>
+<p style="text-align: right; margin-right: 12px;">
+<fmt:message key="jsp.common.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span>, <fmt:message key="jsp.common.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span></p>
 </div>
 

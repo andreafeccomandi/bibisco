@@ -11,27 +11,26 @@ function bibiscoChapterInitCallback(configChapter) {
 	
 	// back to chapter list button
 	$('#bibiscoChapterABackToChapterList').click(function() {
-		
-		var bibiscoTaskStatusTodo = $('div .bibiscoChapter .bibiscoTaskStatusTodo').size();
-		var bibiscoTaskStatusToComplete = $('div .bibiscoChapter .bibiscoTaskStatusToComplete').size();
-		var bibiscoTaskStatusCompleted = $('div .bibiscoChapter .bibiscoTaskStatusCompleted').size(); 
-		var bibiscoTaskStatusValue;
-		
-		if (bibiscoTaskStatusTodo>0 && bibiscoTaskStatusToComplete==0 && bibiscoTaskStatusCompleted==0) {
-			bibiscoTaskStatusValue= 'TODO';
-		} else if(bibiscoTaskStatusCompleted>0 && bibiscoTaskStatusToComplete==0 && bibiscoTaskStatusTodo==0 ) {
-			bibiscoTaskStatusValue= 'COMPLETED';
-		} else {
-			bibiscoTaskStatusValue='TOCOMPLETE';
-		}
-	
-		var chapterThumbnail = bibiscoGetThumbnailFromPosition('chapter', ${chapter.position});	
-		chapterThumbnail.find('div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusValue));
-		chapterThumbnail.find('div.bibiscoTagTaskStatusDiv span').tooltip();
-		
-		$('#bibiscoChaptersDivChapterList').show();
-		$('#bibiscoChaptersDivChapterDetail').html('');
-		$('#bibiscoChaptersDivChapterDetail').hide();
+				
+		$.ajax({
+            type: 'GET',
+            async: true,
+            url: 'BibiscoServlet?action=getChapterWordCountTaskStatus',
+            data: { 
+            	idChapter: ${chapter.idChapter}
+            },
+            error:function(jqXHR, textStatus, errorThrown) {},
+            success:function(chapter){
+            	
+            	var chapterThumbnail = bibiscoGetThumbnailFromPosition('chapter', ${chapter.position}); 
+                chapterThumbnail.find('div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(chapter.taskStatus, chapter.wordCount, chapter.characterCount));
+                chapterThumbnail.find('div.bibiscoTagTaskStatusDiv span').tooltip();
+                
+                $('#bibiscoChaptersDivChapterList').show();
+                $('#bibiscoChaptersDivChapterDetail').html('');
+                $('#bibiscoChaptersDivChapterDetail').hide();
+            },
+          });
 	});
 	
 	// update character name button
@@ -186,7 +185,10 @@ function bibiscoSelectScene(position,configScene) {
 	    		</c:if>
 	    		
 	    		<div class="span3 thumbnailSlot" data-thumbnailFamily="scene" data-slotPosition="${scene.position}">
-					<tags:bibiscoThumbnailScene title="${scene.description}" position="${scene.position}" taskStatus="${scene.taskStatus}" id="${scene.idScene}" />
+					<tags:bibiscoThumbnailScene title="${scene.description}" 
+					position="${scene.position}" taskStatus="${scene.taskStatus}" 
+				    wordCount="${scene.wordCount}" characterCount="${scene.characterCount}"
+					id="${scene.idScene}"/>
 				</div>
 	    		
 	    		<c:if test="${sceneNumber.count % 4 == 0 || sceneNumber.count == fn:length(chapter.sceneList)}">

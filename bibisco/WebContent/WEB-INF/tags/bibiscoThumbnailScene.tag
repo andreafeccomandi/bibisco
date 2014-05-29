@@ -3,6 +3,9 @@
 <%@ attribute name="position" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="title" required="true" type="java.lang.String" rtexprvalue="true" %>
 <%@ attribute name="taskStatus" required="true" type="com.bibisco.enums.TaskStatus" rtexprvalue="true" %>
+<%@ attribute name="wordCount" required="true" type="java.lang.Integer" rtexprvalue="true" %>
+<%@ attribute name="characterCount" required="true" type="java.lang.Integer" rtexprvalue="true" %>
+
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
@@ -13,7 +16,7 @@
 		<table style="width: 100%">
 		<tr><td style="text-align: left;"><strong class="bibiscoThumbnailPosition"></strong></td>
 		<td style="text-align: right;">
-		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
+		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" bibiscoWordCount="${wordCount}" bibiscoCharacterCount="${characterCount}"/>
 		</td></tr>
 		<tr><td colspan="2" style="height: 10px;"></td></tr>
 		<tr><td colspan="2" style="height: 40px; vertical-align: top;" class="bibiscoThumbnailTitle">${title}</td></tr>

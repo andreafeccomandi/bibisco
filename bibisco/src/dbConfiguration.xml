@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="com/bibisco/dao/sqlMap/VCharacterOccurencesMapper.xml" />
 		<mapper resource="com/bibisco/dao/sqlMap/VCharacterSceneMapper.xml" />
 		<mapper resource="com/bibisco/dao/sqlMap/VPointOfView4AnalysisMapper.xml" />
+		<mapper resource="com/bibisco/dao/sqlMap/VScenesMapper.xml" />
 		<mapper resource="com/bibisco/dao/sqlMap/VSceneTagsMapper.xml" />
 		<mapper resource="com/bibisco/dao/sqlMap/VSelectedSceneRevisionsMapper.xml" />
 	</mappers>

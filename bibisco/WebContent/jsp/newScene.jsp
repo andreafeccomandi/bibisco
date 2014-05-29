@@ -12,7 +12,8 @@
    		</c:if>
    		
    		<div class="span3 thumbnailSlot" data-thumbnailFamily="scene" data-slotPosition="${scene.position}">
-			<tags:bibiscoThumbnailScene title="${scene.description}" position="${scene.position}" taskStatus="${scene.taskStatus}" id="${scene.idScene}" />
+			<tags:bibiscoThumbnailScene title="${scene.description}" position="${scene.position}" taskStatus="${scene.taskStatus}"
+			characterCount="0" wordCount="0" id="${scene.idScene}" />
 		</div>
    		
    		<c:if test="${scene.position>1 && scene.position % 4 == 1}">

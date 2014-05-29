@@ -236,14 +236,22 @@ function bibiscoCloseLoadingBannerWithoutMessage() {
 
 
 /* Create task status banner */
-function bibiscoGetBibiscoTaskStatus(taskStatus) {
-	if (taskStatus == 'TODO') {
-		return '<span class="badge badge-important bibiscoTaskStatusTodo" data-original-title="'+ jsBibiscoTaskStatusTodoDescription +'">' + jsBibiscoTaskStatusTodo + '</span>';
-	} else if (taskStatus == 'TOCOMPLETE') {
-		return '<span class="badge badge-warning bibiscoTaskStatusToComplete" data-original-title="'+ jsBibiscoTaskStatusToCompleteDescription +'">' + jsBibiscoTaskStatusToComplete + '</span>';
-	} else if (taskStatus == 'COMPLETED') {
-		return '<span class="badge badge-success bibiscoTaskStatusCompleted" data-original-title="'+ jsBibiscoTaskStatusCompletedDescription +'">' + jsBibiscoTaskStatusCompleted + '</span>';
+function bibiscoGetBibiscoTaskStatus(taskStatus, wordCount, characterCount) {
+	
+	var result = '';
+	if (!(wordCount === 'undefined' && characterCount === 'undefined')) {
+		result = result + '<span class="label label-info" title="' + jsBibiscoTaskStatusWords +  ' (' + jsBibiscoTaskStatusCharacters + ')">'+ wordCount + ' (' +  characterCount + ')</span>&nbsp;';
 	}
+	
+	if (taskStatus == 'TODO') {
+		result = result + '<span class="badge badge-important bibiscoTaskStatusTodo" data-original-title="'+ jsBibiscoTaskStatusTodoDescription +'">' + jsBibiscoTaskStatusTodo + '</span>';
+	} else if (taskStatus == 'TOCOMPLETE') {
+		result = result + '<span class="badge badge-warning bibiscoTaskStatusToComplete" data-original-title="'+ jsBibiscoTaskStatusToCompleteDescription +'">' + jsBibiscoTaskStatusToComplete + '</span>';
+	} else if (taskStatus == 'COMPLETED') {
+		result = result + '<span class="badge badge-success bibiscoTaskStatusCompleted" data-original-title="'+ jsBibiscoTaskStatusCompletedDescription +'">' + jsBibiscoTaskStatusCompleted + '</span>';
+	}
+	
+	return result;
 }
 
 /* Get array of word from text node */
@@ -424,6 +432,8 @@ function bibiscoInitAllThumbnail(config) {
 	for ( var i = 1; i <= thumbnailCount; i++) {
 		bibiscoInitThumbnail(i, config);
 	}
+	
+	bibiscoSetTooltipOnThumbnailFamily(config.family)
 }
 
 // count all thumbnails of a family
@@ -542,6 +552,7 @@ function bibiscoInitThumbnail(position, config) {
 						bibiscoInitAllThumbnail(config);
 						bibiscoCloseLoadingBannerSuccess();
 						$('.thumbnailSlot[data-thumbnailFamily="' + family + '"] .thumbnail ').removeClass("thumbnailTagHover");
+						
 					},
 					error : function() {
 						bibiscoCloseLoadingBannerError();
@@ -550,6 +561,11 @@ function bibiscoInitThumbnail(position, config) {
 			}
 		});
 	}
+}
+
+// set tooltip on thumbnail family
+function bibiscoSetTooltipOnThumbnailFamily(family) {
+	$('.bibiscoThumbnailPages[data-thumbnailFamily="' + family + '"] .bibiscoTagTaskStatusDiv span').tooltip();
 }
 
 // get thumbnailSlot of a family at specified position

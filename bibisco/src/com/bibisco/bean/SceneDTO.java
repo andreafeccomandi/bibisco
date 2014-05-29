@@ -28,6 +28,10 @@ public class SceneDTO {
 	private Integer position;
 	private String description;
 	private TaskStatus taskStatus;
+	private Integer wordCount;
+	private Integer characterCount;
+	
+	
 	public Integer getIdScene() {
 		return idScene;
 	}
@@ -57,6 +61,18 @@ public class SceneDTO {
 	}
 	public void setTaskStatus(TaskStatus taskStatus) {
 		this.taskStatus = taskStatus;
+	}
+	public Integer getWordCount() {
+		return wordCount;
+	}
+	public void setWordCount(Integer wordsCount) {
+		this.wordCount = wordsCount;
+	}
+	public Integer getCharacterCount() {
+		return characterCount;
+	}
+	public void setCharacterCount(Integer characterCount) {
+		this.characterCount = characterCount;
 	}
 	
 }

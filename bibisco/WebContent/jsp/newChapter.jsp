@@ -12,7 +12,9 @@
    		</c:if>
    		
    		<div class="span3 thumbnailSlot" data-thumbnailFamily="chapter" data-slotPosition="${chapter.position}">
-			<tags:bibiscoThumbnailChapter title="${chapter.title}" position="${chapter.position}" taskStatus="${chapter.taskStatus}" id="${chapter.idChapter}" />
+			<tags:bibiscoThumbnailChapter title="${chapter.title}" position="${chapter.position}" 
+			taskStatus="${chapter.taskStatus}" id="${chapter.idChapter}" 
+			characterCount="0" wordCount="0"/>
 		</div>
    		
    		<c:if test="${chapter.position>1 && chapter.position % 4 == 1}">

@@ -26,6 +26,9 @@ jsBibiscoTaskStatusCompleted = "<fmt:message key="tag.bibiscothumbnail.taskstatu
 jsBibiscoTaskStatusTodoDescription = "<fmt:message key="tag.bibiscothumbnail.taskstatus.todo.description" />";
 jsBibiscoTaskStatusToCompleteDescription = "<fmt:message key="tag.bibiscothumbnail.taskstatus.tocomplete.description" />";
 jsBibiscoTaskStatusCompletedDescription = "<fmt:message key="tag.bibiscothumbnail.taskstatus.completed.description"/>";
+jsBibiscoTaskStatusWords = "<fmt:message key="jsp.common.span.words"/>";
+jsBibiscoTaskStatusCharacters = "<fmt:message key="jsp.common.span.characters"/>";
+
 
 jsPluginBibiscospellCkeditor = "<fmt:message key="js.plugin.bibiscospell.ckeditor" />";
 

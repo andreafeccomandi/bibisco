@@ -41,6 +41,8 @@ $(function() {
 	$('#bibiscoStrandsACreateFirstStrand').click(function() {
 		bibiscoCreateStrand(config);
 	});
+	
+    $('.bibiscoArchitectureItems span').tooltip();
 });
 
 function bibiscoCreateStrand(config) {
@@ -89,7 +91,7 @@ function bibiscoSelectStrand(position,config) {
     			<h1><fmt:message key="jsp.architecture.h1"/></h1>
     		</div>
     	</div>
-    	<div class="row-fluid">
+    	<div class="row-fluid bibiscoArchitectureItems">
 			<div class="span3">
 				<tags:bibiscoThumbnail 
 					description="jsp.architecture.thumbnail.premise.description" 

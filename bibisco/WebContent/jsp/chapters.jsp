@@ -113,7 +113,9 @@ function bibiscoSelectChapter(position,config) {
 	    		</c:if>
 	    		
 	    		<div class="span3 thumbnailSlot" data-thumbnailFamily="chapter" data-slotPosition="${chapter.position}">
-					<tags:bibiscoThumbnailChapter title="${chapter.title}" position="${chapter.position}" taskStatus="${chapter.taskStatus}" id="${chapter.idChapter}" />
+					<tags:bibiscoThumbnailChapter title="${chapter.title}" position="${chapter.position}" 
+					taskStatus="${chapter.taskStatus}" id="${chapter.idChapter}" 
+					wordCount="${chapter.wordCount}" characterCount="${chapter.characterCount}" />
 				</div>
 	    		
 	    		<c:if test="${chapterNumber.count % 4 == 0 || chapterNumber.count == fn:length(project.chapterList)}">

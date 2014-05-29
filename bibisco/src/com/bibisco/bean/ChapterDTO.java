@@ -17,7 +17,12 @@ package com.bibisco.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.bibisco.BibiscoException;
 import com.bibisco.enums.TaskStatus;
+import com.bibisco.log.Log;
 
 /**
  * Chapter DTO.
@@ -27,6 +32,8 @@ import com.bibisco.enums.TaskStatus;
  */
 public class ChapterDTO {
 	
+	private static Log mLog = Log.getInstance(ChapterDTO.class);
+	
 	private Integer idChapter;
 	private Integer position;
 	private String title;
@@ -35,6 +42,8 @@ public class ChapterDTO {
 	private String reason;
 	private TaskStatus reasonTaskStatus;
 	private String note;
+	private Integer wordCount;
+	private Integer characterCount;
 	
 	public ChapterDTO() {
 		sceneList = new ArrayList<SceneDTO>();
@@ -97,6 +106,42 @@ public class ChapterDTO {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public Integer getWordCount() {
+		return wordCount;
+	}
+
+	public void setWordCount(Integer wordCount) {
+		this.wordCount = wordCount;
+	}
+
+	public Integer getCharacterCount() {
+		return characterCount;
+	}
+
+	public void setCharacterCount(Integer characterCount) {
+		this.characterCount = characterCount;
+	}
+
+	public Object getWordCountTaskStatusAsJSONObject() {
+		
+		JSONObject lJSONObject;
+
+		try {
+			lJSONObject = new JSONObject();
+			lJSONObject.put("idChapter", idChapter);
+			lJSONObject.put("position", position);
+			lJSONObject.put("taskStatus", taskStatus);
+			lJSONObject.put("wordCount", wordCount);
+			lJSONObject.put("characterCount", characterCount);
+			
+		} catch (JSONException e) {
+			mLog.error(e);
+			throw new BibiscoException(e, BibiscoException.FATAL);
+		}
+
+		return lJSONObject;
 	}
 	
 	

@@ -177,7 +177,7 @@
       			  
       		  },
       		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
+      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected(), bibiscoRichTextEditor.getWordCount(), bibiscoRichTextEditor.getCharacterCount()));
       			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
       			  bibiscoCloseLoadingBannerSuccess();
       			  bibiscoRichTextEditor.unSaved = false;
