@@ -100,6 +100,9 @@
                 text = '';
             }
             $('#bibiscoTagRichTextEditorTextarea').val(text);
+            
+            // set  word and character count
+            bibiscoCharacterWordCount(text);
         }
 
         // on instance ready initialize buttons
@@ -151,9 +154,6 @@
             	initialText = bibiscoRichTextEditorConfig.text;
             } 
             bibiscoRichTextEditor.setText(initialText);
-            
-            // set initial word and character count
-            bibiscoCharacterWordCount(initialText);
             
             // <p> settings             
             ev.editor.dataProcessor.writer.setRules( 'p',

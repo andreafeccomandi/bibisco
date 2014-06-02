@@ -2,8 +2,11 @@ package com.bibisco.dao.client;
 
 import com.bibisco.dao.model.Project;
 import com.bibisco.dao.model.ProjectExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.ProjectWithBLOBs;
 
 public interface ProjectMapper {
@@ -91,4 +94,8 @@ public interface ProjectMapper {
 	 * @mbggenerated  Tue Sep 24 07:44:55 CEST 2013
 	 */
 	int updateByPrimaryKey(Project record);
+	
+	void updateFrom_1_0_0_to_1_1_0();
+	
+	String getProjectVersion(String idProject);
 }

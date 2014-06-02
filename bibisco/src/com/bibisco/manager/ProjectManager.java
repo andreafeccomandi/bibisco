@@ -40,6 +40,7 @@ import com.bibisco.bean.ChapterDTO;
 import com.bibisco.bean.CharacterDTO;
 import com.bibisco.bean.CharacterInfoQuestionsDTO;
 import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
+import com.bibisco.bean.CharacterWordCount;
 import com.bibisco.bean.ImportProjectArchiveDTO;
 import com.bibisco.bean.LocationDTO;
 import com.bibisco.bean.MainCharacterDTO;
@@ -49,11 +50,14 @@ import com.bibisco.bean.StrandDTO;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.dao.client.ProjectMapper;
 import com.bibisco.dao.client.ProjectsMapper;
+import com.bibisco.dao.client.SceneRevisionsMapper;
 import com.bibisco.dao.client.VSelectedSceneRevisionsMapper;
 import com.bibisco.dao.model.Project;
 import com.bibisco.dao.model.ProjectWithBLOBs;
 import com.bibisco.dao.model.Projects;
 import com.bibisco.dao.model.ProjectsExample;
+import com.bibisco.dao.model.SceneRevisions;
+import com.bibisco.dao.model.SceneRevisionsExample;
 import com.bibisco.dao.model.VSelectedSceneRevisions;
 import com.bibisco.dao.model.VSelectedSceneRevisionsExample;
 import com.bibisco.enums.CharacterInfoQuestions;
@@ -110,7 +114,7 @@ public class ProjectManager {
 			lProject = lProjectMapper.selectByPrimaryKey(ContextManager.getInstance().getIdProject());
 			
     	} catch(Throwable t) {
-			mLog.error(t);
+    		mLog.error(t);
 			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
 		} finally {
 			lSqlSession.close();
@@ -813,6 +817,9 @@ public class ProjectManager {
 			// set project name to context
 	    	ContextManager.getInstance().setIdProject(pImportProjectArchiveDTO.getIdProject());
 	    	
+	    	// check if project is created with previuos version of bibisco and update it
+	    	checkProjectVersionAndUpdateIfNecessary(pImportProjectArchiveDTO.getIdProject());
+	    	
 	    	// load project
 	    	lProjectDTO = load();
 	    		
@@ -1122,4 +1129,54 @@ public class ProjectManager {
 		
     	mLog.debug("End save(ProjectDTO)");
 	}
+	
+	private static void checkProjectVersionAndUpdateIfNecessary(String pStrIdProject) {
+
+		mLog.debug("Start checkProjectVersionAndUpdateIfNecessary(String)");
+
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			String lStrBibiscoVersion = lProjectMapper.getProjectVersion(pStrIdProject);
+
+			// update version if necessary
+			if (lStrBibiscoVersion.equals("1.0.0")) {
+
+				// run ddl script
+				lProjectMapper.updateFrom_1_0_0_to_1_1_0();
+
+				// update character and word count
+				SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
+				List<SceneRevisions> lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(new SceneRevisionsExample());
+				if (lListSceneRevisions != null && lListSceneRevisions.size() > 0) {
+					for (SceneRevisions lSceneRevisions : lListSceneRevisions) {
+						String lStrSceneText = lSceneRevisions.getScene();
+						CharacterWordCount lCharacterWordCount = TextEditorManager.getCharacterWordCount(lStrSceneText);
+						lSceneRevisions.setCharacters(lCharacterWordCount.getCharacters());
+						lSceneRevisions.setWords(lCharacterWordCount.getWords());
+						lSceneRevisionsMapper.updateByPrimaryKey(lSceneRevisions);
+					}
+				}
+
+				// update project version
+				ProjectWithBLOBs lProjectWithBLOBs = new ProjectWithBLOBs();
+				lProjectWithBLOBs.setIdProject(pStrIdProject);
+				lProjectWithBLOBs.setBibiscoVersion(VersionManager.getInstance().getVersion());
+				lProjectMapper.updateByPrimaryKeySelective(lProjectWithBLOBs);
+			}
+
+			lSqlSession.commit();
+
+		} catch (Throwable t) {
+			lSqlSession.rollback();
+			mLog.error(t);
+			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
+		} finally {
+			lSqlSession.close();
+		}
+
+		mLog.debug("End checkProjectVersionAndUpdateIfNecessary(String)");
+	}
+	
 }
