@@ -63,7 +63,7 @@
 					  init: function (idAjaxDialog, idCaller) { return bibisco${type}Init(idAjaxDialog, idCaller); },
 					  close: function (idAjaxDialog, idCaller) { return bibisco${type}Close(idAjaxDialog, idCaller); },
 					  beforeClose: function (idAjaxDialog, idCaller) { return bibisco${type}BeforeClose(idAjaxDialog, idCaller); },
-					  resizable: false, 
+					  resizable: false, modal: true, 
 					  width: 500, height: 500, positionTop: 100
 			  };
 			  

@@ -87,7 +87,7 @@
 				  init: function (idAjaxDialog, idCaller) { return bibiscoAddImageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoAddImageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoAddImageBeforeClose(idAjaxDialog, idCaller); },
-				  resizable: false, 
+				  resizable: false, modal: true, 
 				  width: 500, height: 300, positionTop: 100
   		};
 

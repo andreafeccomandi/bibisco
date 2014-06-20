@@ -91,7 +91,7 @@ function bibiscoCreateScene(configScene) {
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configScene); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 500, height: 210, positionTop: 100
 	};
 	  
@@ -116,8 +116,8 @@ function bibiscoSelectScene(position,configScene) {
 			  init: function (idAjaxDialog, idCaller, type, id) { return bibiscoSceneInitCallback(idAjaxDialog, idCaller, type, id, configScene); },
 			  close: function (idAjaxDialog, idCaller, type, id) { return bibiscoSceneCloseCallback(idAjaxDialog, idCaller, type, id); },
 			  beforeClose: function (idAjaxDialog, idCaller, type, id) { return bibiscoSceneBeforeCloseCallback(idAjaxDialog, idCaller, type, id); },
-			  resizable: false, 
-			  width: 810, height: window.innerHeight - 75, positionTop: 25
+			  resizable: false, modal: true, 
+			  width: 810, height: window.innerHeight - 100, positionTop: 25
 	  };
 
 	  bibiscoOpenAjaxDialog(ajaxDialogContent);

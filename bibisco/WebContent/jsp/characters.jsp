@@ -90,7 +90,7 @@ function bibiscoCreateMainCharacter(config) {
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 500, height: 210, positionTop: 100
 	  };
 	  
@@ -151,7 +151,7 @@ function bibiscoSelectSecondaryCharacter(position,config) {
 			  init: function (idAjaxDialog, idCaller, type, id) { return bibiscoSecondaryCharacterInitCallback(idAjaxDialog, idCaller, type, id, config); },
 			  close: function (idAjaxDialog, idCaller, type, id) { return bibiscoSecondaryCharacterCloseCallback(idAjaxDialog, idCaller, type, id); },
 			  beforeClose: function (idAjaxDialog, idCaller, type, id) { return bibiscoSecondaryCharacterBeforeCloseCallback(idAjaxDialog, idCaller, type, id); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 810, height: window.innerHeight - 75, positionTop: 25
 	  };
 

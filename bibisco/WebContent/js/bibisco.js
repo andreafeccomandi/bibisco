@@ -36,6 +36,10 @@ function bibiscoSelectTopMenuItem(item) {
 	div2Show.show();
 }
 
+function bibiscoCloseDialog(idDialog) {
+	$('#'+idDialog).closest('.ui-dialog').find(".ui-dialog-titlebar-close").click();
+}
+
 /* Open modal ajax dialog */
 function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 
@@ -76,7 +80,7 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 			// remove div
 			dialog.remove();
 		},
-		modal : true,
+		modal : ajaxDialogContent.modal,
 		width : width,
 		height : height,
 		position : [ positionLeft, positionTop ],
@@ -167,8 +171,8 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		return dialog.closest('.ui-dialog').position();
 	}
 
-	// prevent the browser to follow the link
-	return false;
+	// return dialog id
+	return idDialog;
 
 }
 
@@ -677,7 +681,7 @@ function openThumbnailUpdateTitle(idCaller, config, id, position) {
 		  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 		  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 		  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-		  resizable: false, 
+		  resizable: false, modal: true,
 		  width: 500, height: 210, positionTop: 100
 	};
 

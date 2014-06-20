@@ -17,7 +17,7 @@ $(function() {
                 init: function (idAjaxDialog, idCaller) { return bibiscoLicenseInit(idAjaxDialog, idCaller); },
                 close: function (idAjaxDialog, idCaller) { },
                 beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLicenseBeforeClose(idAjaxDialog, idCaller); },
-                resizable: false, 
+                resizable: false, modal: true, 
                 width: 500, height: 450, positionTop: 100
           };
 

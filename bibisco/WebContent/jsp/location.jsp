@@ -70,7 +70,7 @@
   				  init: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageInitCallback(idAjaxDialog, idCaller); },
   				  close: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageCloseCallback(idAjaxDialog, idCaller); },
   				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageBeforeCloseCallback(idAjaxDialog, idCaller); },
-  				  resizable: false, 
+  				  resizable: false, modal: true, 
   				  width: 810, height: 650, positionTop: 40
       		};
 
@@ -97,7 +97,7 @@
   				  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
   				  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
   				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-  				  resizable: false, 
+  				  resizable: false, modal: true, 
   				  width: 500, height: 430, positionTop: 100
   		  };
   		  

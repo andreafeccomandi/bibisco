@@ -20,7 +20,7 @@ $(function() {
 				  init: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormBeforeClose(idAjaxDialog, idCaller); },
-				  resizable: false, 
+				  resizable: false,  modal: true,
 				  width: 500, height: 300, positionTop: 100
 		  };
 		  
@@ -37,7 +37,7 @@ $(function() {
 				  init: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectBeforeClose(idAjaxDialog, idCaller); },
-				  resizable: false, 
+				  resizable: false,  modal: true,
 				  width: 530, height: 375, positionTop: 100
 		  };
 		  
@@ -52,7 +52,7 @@ $(function() {
 				  init: function (idAjaxDialog, idCaller) { return bibiscoImportProjectInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoImportProjectClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoImportProjectBeforeClose(idAjaxDialog, idCaller); },
-				  resizable: false, 
+				  resizable: false, modal: true, 
 				  width: 500, height: 260, positionTop: 100
 		  };
 		  
@@ -68,7 +68,7 @@ $(function() {
 				  init: function (idAjaxDialog, idCaller) { return bibiscoLanguageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 
-				  resizable: false, 
+				  resizable: false, modal: true,
 				  width: 600, height: 240
 		  };
 		  

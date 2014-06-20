@@ -52,7 +52,7 @@ function bibiscoCreateChapter(config) {
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 500, height: 210, positionTop: 100
 	  };
 	  

@@ -37,7 +37,7 @@
 					  init: function (idAjaxDialog, idCaller, type, id) { return bibiscoThumbnailInitCallback(idAjaxDialog, idCaller, type, id); },
 					  close: function (idAjaxDialog, idCaller, type, id) { return bibiscoThumbnailCloseCallback(idAjaxDialog, idCaller, type, id); },
 					  beforeClose: function (idAjaxDialog, idCaller, type, id) { return bibiscoThumbnailBeforeCloseCallback(idAjaxDialog, idCaller, type, id); },
-					  resizable: false, 
+					  resizable: false, modal: true, 
 					  width: ${width}, height: ${height}, positionTop: ${positionTop}
 			  };
 			  

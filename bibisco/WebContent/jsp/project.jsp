@@ -42,7 +42,7 @@ $(function() {
 			  init: function (idAjaxDialog, idCaller) { return bibiscoChangeProjectNameInit(idAjaxDialog, idCaller, actualProjectName); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoChangeProjectNameClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoChangeProjectNameBeforeClose(idAjaxDialog, idCaller); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 500, height: 210, positionTop: 100
 		};
 
@@ -58,7 +58,7 @@ $(function() {
 				  init: function (idAjaxDialog, idCaller) { return bibiscoSuggestionsInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSuggestionsBeforeClose(idAjaxDialog, idCaller); },
-				  resizable: false, 
+				  resizable: false, modal: true, 
 				  width: 500, height: 450, positionTop: 100
 			};
 
