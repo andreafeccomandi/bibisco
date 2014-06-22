@@ -36,10 +36,6 @@ function bibiscoSelectTopMenuItem(item) {
 	div2Show.show();
 }
 
-function bibiscoCloseDialog(idDialog) {
-	$('#'+idDialog).closest('.ui-dialog').find(".ui-dialog-titlebar-close").click();
-}
-
 /* Open modal ajax dialog */
 function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 
@@ -56,9 +52,19 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 	if (ajaxDialogContent.positionTop) {
 		positionTop = ajaxDialogContent.positionTop;
 	}
-
-	var positionLeft = (window.innerWidth - width) / 2;
-
+	
+	var horizontalPosition = 'center';
+	if (ajaxDialogContent.horizontalPosition) {
+		 horizontalPosition = ajaxDialogContent.horizontalPosition;
+	}
+	if (horizontalPosition == 'center') {
+		var positionLeft = (window.innerWidth - width) / 2;
+	} else if (horizontalPosition == 'left') {
+		var positionLeft = 10;
+	} else if (horizontalPosition == 'right'){
+		var positionLeft = window.innerWidth - width - 10;
+	}
+	
 	// create a dialog div
 	var idDialog = 'bibiscoDivDialog' + $.now();
 	var dialog = $('<div id="' + idDialog + '" style="display:none" class="bibiscoAjaxDialog loading"></div>').appendTo('body');
@@ -172,7 +178,7 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 	}
 
 	// return dialog id
-	return idDialog;
+	return dialog;
 
 }
 

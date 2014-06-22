@@ -11,6 +11,8 @@
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
     var bibiscoRichTextEditorVerticalPadding = 210;
+    var sceneDialog;
+    var characterSectionDialog;
     
     function populate(scene, changeRevision) {
         
@@ -102,6 +104,11 @@
     function bibiscoSceneInitCallback(ajaxDialog, idCaller, type, id, config) {
                 
         var idDialog = $(ajaxDialog).attr('id');
+        sceneDialog = ajaxDialog;
+        var sceneDialogWidth = 810;
+        var padding = 10;
+        var slideRight = ((window.innerWidth - sceneDialogWidth) / 2) - padding;
+        var characterLocationSectionWidth = window.innerWidth - sceneDialogWidth - padding * 3;
         
         $('#bibiscoSceneDivTags').hide();       
         $('#bibiscoSceneDivCharacters').hide();
@@ -222,7 +229,9 @@
             
             // character section is active
             if (active) {
-            	bibiscoCloseDialog($('#bibiscoSceneIdCharacterSection').val());
+            	characterSectionDialog.close();
+            	
+            	ajaxDialog.dialog("option", { position: { my: "center", at: "center", of: window } });
             	
             	// return false is necessary because character section close callback already
             	// changes this button status
@@ -232,7 +241,7 @@
             // character section is not active
             else {
             	$('.ui-dialog').animate({
-                    left: "+=200"
+                    left: "+=" + slideRight
                   }, 1000, function() {
                     // Animation complete.
                   });
@@ -247,11 +256,11 @@
                         	  $('#bibiscoSceneACharacters').removeClass('active');  
                           },
                           resizable: true, modal: false,
-                          width: 400, height: window.innerHeight - 100, positionTop: 25
+                          width: characterLocationSectionWidth, height: window.innerHeight - 75, positionTop: 25,
+                          horizontalPosition: 'left'
                 };
                   
-                var idCharacterSectionDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
-                $('#bibiscoSceneIdCharacterSection').val(idCharacterSectionDialog);
+                characterSectionDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
             }
               
             return true;
@@ -313,16 +322,16 @@
             bibiscoConfirm(jsCommonMessageConfirmExitWithoutSave, function(result) {
                 if (result) {
                     bibiscoRichTextEditor.unSaved = false;
-                    if ($('#bibiscoSceneIdCharacterSection').val()) {
-                    	bibiscoCloseDialog($('#bibiscoSceneIdCharacterSection').val());
+                    if (characterSectionDialog) {
+                    	characterSectionDialog.close();
                     }
                     ajaxDialog.close();
                 } 
             });
             return false;
         } else {
-        	if ($('#bibiscoSceneIdCharacterSection').val()) {
-                bibiscoCloseDialog($('#bibiscoSceneIdCharacterSection').val());
+        	if (characterSectionDialog) {
+                characterSectionDialog.close();
             }
             return true;    
         }
@@ -401,8 +410,6 @@
 
 <input type="hidden" id="bibiscoSceneIdScene" />
 <input type="hidden" id="bibiscoSceneRevision" />
-<input type="hidden" id="bibiscoSceneCharacterAjaxDialog" />
-<input type="hidden" id="bibiscoSceneIdCharacterSection" />
 
 <div class="bibiscoDialogContent">
     <div id="bibiscoSceneDivRichTextEditor">
