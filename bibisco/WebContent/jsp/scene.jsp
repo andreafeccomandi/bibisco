@@ -11,7 +11,6 @@
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
     var bibiscoRichTextEditorVerticalPadding = 210;
-    var sceneDialog;
     var characterSectionDialog;
     
     function populate(scene, changeRevision) {
@@ -104,11 +103,12 @@
     function bibiscoSceneInitCallback(ajaxDialog, idCaller, type, id, config) {
                 
         var idDialog = $(ajaxDialog).attr('id');
-        sceneDialog = ajaxDialog;
         var sceneDialogWidth = 810;
         var padding = 10;
-        var slideRight = ((window.innerWidth - sceneDialogWidth) / 2) - padding;
         var characterLocationSectionWidth = window.innerWidth - sceneDialogWidth - padding * 3;
+        if (characterLocationSectionWidth > sceneDialogWidth) {
+        	characterLocationSectionWidth = sceneDialogWidth;
+        }
         
         $('#bibiscoSceneDivTags').hide();       
         $('#bibiscoSceneDivCharacters').hide();
@@ -230,7 +230,6 @@
             // character section is active
             if (active) {
             	characterSectionDialog.close();
-            	
             	ajaxDialog.dialog("option", { position: { my: "center", at: "center", of: window } });
             	
             	// return false is necessary because character section close callback already
@@ -240,11 +239,7 @@
             
             // character section is not active
             else {
-            	$('.ui-dialog').animate({
-                    left: "+=" + slideRight
-                  }, 1000, function() {
-                    // Animation complete.
-                  });
+            	ajaxDialog.dialog("option", { position: { my: "center", at: "right center", of: window } });
                 
                 var ajaxDialogContent = { 
                           idCaller: 'bibiscoSceneACharacters',
@@ -254,10 +249,11 @@
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
                         	  $('#bibiscoSceneACharacters').removeClass('active');  
+                        	  ajaxDialog.dialog("option", { position: { my: "center", at: "center", of: window } });
                           },
                           resizable: true, modal: false,
                           width: characterLocationSectionWidth, height: window.innerHeight - 75, positionTop: 25,
-                          horizontalPosition: 'left'
+                          position: { my: "center", at: "left center", of: window }
                 };
                   
                 characterSectionDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	

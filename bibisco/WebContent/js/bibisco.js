@@ -48,7 +48,7 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		height = ajaxDialogContent.height;
 	}
 	
-	var positionTop = 100;
+	/*var positionTop = 100;
 	if (ajaxDialogContent.positionTop) {
 		positionTop = ajaxDialogContent.positionTop;
 	}
@@ -63,8 +63,13 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		var positionLeft = 10;
 	} else if (horizontalPosition == 'right'){
 		var positionLeft = window.innerWidth - width - 10;
-	}
+	}*/
 	
+	var position = { my: "center", at: "center", of: window };
+	if (ajaxDialogContent.position) {
+		position = ajaxDialogContent.position;
+	}
+
 	// create a dialog div
 	var idDialog = 'bibiscoDivDialog' + $.now();
 	var dialog = $('<div id="' + idDialog + '" style="display:none" class="bibiscoAjaxDialog loading"></div>').appendTo('body');
@@ -89,10 +94,11 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		modal : ajaxDialogContent.modal,
 		width : width,
 		height : height,
-		position : [ positionLeft, positionTop ],
 		title : ajaxDialogContent.title,
 		resizable : ajaxDialogContent.resizable,
-		closeOnEscape : false
+		closeOnEscape : false,
+		//draggable: false,
+		dialogClass: 'dialog-no-close'
 
 		// create FAKE_BUTTON only to force dialog to show footer
 		,
@@ -125,6 +131,8 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		var bibiscoDialogFooter = dialog.find('.bibiscoDialogFooter');
 		dialog.next().append(bibiscoDialogFooter);
 
+		dialog.dialog("option", { position: position });
+		
 		// callback to init function
 		ajaxDialogContent.init(dialog, ajaxDialogContent.idCaller, ajaxDialogContent.type, ajaxDialogContent.id);
 

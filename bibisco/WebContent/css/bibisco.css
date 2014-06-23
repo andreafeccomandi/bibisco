@@ -112,3 +112,7 @@ div.bibiscoSuggestions h4 {
 	font-size: 16px;
 	line-height: 1.5em;
 }
+
+.dialog-no-close .ui-dialog-titlebar-close {
+  display: none;
+}
