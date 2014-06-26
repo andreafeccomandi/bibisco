@@ -98,17 +98,46 @@
         
     }
     
+    function calculateDialogsPositionAndWidth() {
+    	
+    	var minPadding = 10;
+    	var sceneWidth = 810 + 5; //sceneDialogWidth declared + 5px on render
+    	var positionTop = 25;
+    	var maxSize = sceneWidth + minPadding*3 + sceneWidth;
+    	var characterWidth;
+    
+    	if (window.innerWidth > maxSize) {
+    		console.log('window.innerWidth > maxSize');
+    		characterWidth = sceneWidth;
+            characterPositionLeft = ((window.innerWidth - maxSize) / 2);
+    	}
+
+    	else {
+    		console.log('window.innerWidth <= maxSize');
+    		characterWidth = window.innerWidth - (minPadding + minPadding*3 + sceneWidth + minPadding);
+            characterPositionLeft = minPadding;
+    	}
+    	
+    	var scenePositionLeftWithCharacter = characterPositionLeft + characterWidth + minPadding*3;
+    	var scenePositionLeftSingle = (window.innerWidth - sceneWidth) / 2;
+    	
+    	var positions = {
+    		scenePositionLeftWithCharacter: scenePositionLeftWithCharacter,
+    		scenePositionLeftSingle: scenePositionLeftSingle,
+    		characterPositionLeft: characterPositionLeft,
+    		characterWidth: characterWidth,
+    		positionTop: positionTop
+    	}
+    	
+    	return positions;
+    }
+    
            
     <!-- START INIT DIALOG CALLBACK -->
     function bibiscoSceneInitCallback(ajaxDialog, idCaller, type, id, config) {
                 
         var idDialog = $(ajaxDialog).attr('id');
-        var sceneDialogWidth = 810;
-        var padding = 10;
-        var characterLocationSectionWidth = window.innerWidth - sceneDialogWidth - padding * 3;
-        if (characterLocationSectionWidth > sceneDialogWidth) {
-        	characterLocationSectionWidth = sceneDialogWidth;
-        }
+        var positions = calculateDialogsPositionAndWidth();
         
         $('#bibiscoSceneDivTags').hide();       
         $('#bibiscoSceneDivCharacters').hide();
@@ -230,7 +259,7 @@
             // character section is active
             if (active) {
             	characterSectionDialog.close();
-            	ajaxDialog.dialog("option", { position: { my: "center", at: "center", of: window } });
+            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
             	
             	// return false is necessary because character section close callback already
             	// changes this button status
@@ -239,7 +268,7 @@
             
             // character section is not active
             else {
-            	ajaxDialog.dialog("option", { position: { my: "center", at: "right center", of: window } });
+            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithCharacter, positions.positionTop] });
                 
                 var ajaxDialogContent = { 
                           idCaller: 'bibiscoSceneACharacters',
@@ -249,11 +278,11 @@
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
                         	  $('#bibiscoSceneACharacters').removeClass('active');  
-                        	  ajaxDialog.dialog("option", { position: { my: "center", at: "center", of: window } });
+                        	  ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
                           },
-                          resizable: true, modal: false,
-                          width: characterLocationSectionWidth, height: window.innerHeight - 75, positionTop: 25,
-                          position: { my: "center", at: "left center", of: window }
+                          resizable: false, modal: false,
+                          width: positions.characterWidth, height: window.innerHeight - 94,
+                          position: [positions.characterPositionLeft, positions.positionTop]
                 };
                   
                 characterSectionDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
