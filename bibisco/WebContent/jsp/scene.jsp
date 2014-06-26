@@ -11,7 +11,7 @@
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
     var bibiscoRichTextEditorVerticalPadding = 210;
-    var characterSectionDialog;
+    var architectureCharactersLocationsDialog;
     
     function populate(scene, changeRevision) {
         
@@ -104,28 +104,28 @@
     	var sceneWidth = 810 + 5; //sceneDialogWidth declared + 5px on render
     	var positionTop = 25;
     	var maxSize = sceneWidth + minPadding*3 + sceneWidth;
-    	var characterWidth;
+    	var architectureCharactersLocationsWidth;
     
     	if (window.innerWidth > maxSize) {
     		console.log('window.innerWidth > maxSize');
-    		characterWidth = sceneWidth;
-            characterPositionLeft = ((window.innerWidth - maxSize) / 2);
+    		architectureCharactersLocationsWidth = sceneWidth;
+            architectureCharactersLocationsPositionLeft = ((window.innerWidth - maxSize) / 2);
     	}
 
     	else {
     		console.log('window.innerWidth <= maxSize');
-    		characterWidth = window.innerWidth - (minPadding + minPadding*3 + sceneWidth + minPadding);
-            characterPositionLeft = minPadding;
+    		architectureCharactersLocationsWidth = window.innerWidth - (minPadding + minPadding*3 + sceneWidth + minPadding);
+            architectureCharactersLocationsPositionLeft = minPadding;
     	}
     	
-    	var scenePositionLeftWithCharacter = characterPositionLeft + characterWidth + minPadding*3;
+    	var scenePositionLeftWithArchitectureCharactersLocations = architectureCharactersLocationsPositionLeft + architectureCharactersLocationsWidth + minPadding*3;
     	var scenePositionLeftSingle = (window.innerWidth - sceneWidth) / 2;
     	
     	var positions = {
-    		scenePositionLeftWithCharacter: scenePositionLeftWithCharacter,
+    		scenePositionLeftWithArchitectureCharactersLocations: scenePositionLeftWithArchitectureCharactersLocations,
     		scenePositionLeftSingle: scenePositionLeftSingle,
-    		characterPositionLeft: characterPositionLeft,
-    		characterWidth: characterWidth,
+    		architectureCharactersLocationsPositionLeft: architectureCharactersLocationsPositionLeft,
+    		architectureCharactersLocationsWidth: architectureCharactersLocationsWidth,
     		positionTop: positionTop
     	}
     	
@@ -251,14 +251,14 @@
         });
         
         // characters
-        $("#bibiscoSceneACharacters").tooltip();
-        $('#bibiscoSceneACharacters').click(function() {
+        $("#bibiscoSceneAArchitectureCharactersLocations").tooltip();
+        $('#bibiscoSceneAArchitectureCharactersLocations').click(function() {
             
-            var active = $('#bibiscoSceneACharacters').hasClass('active');
+            var active = $('#bibiscoSceneAArchitectureCharactersLocations').hasClass('active');
             
             // character section is active
             if (active) {
-            	characterSectionDialog.close();
+            	architectureCharactersLocationsDialog.close();
             	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
             	
             	// return false is necessary because character section close callback already
@@ -268,24 +268,24 @@
             
             // character section is not active
             else {
-            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithCharacter, positions.positionTop] });
+            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithArchitectureCharactersLocations, positions.positionTop] });
                 
                 var ajaxDialogContent = { 
-                          idCaller: 'bibiscoSceneACharacters',
-                          url: 'jsp/charactersFromScene.jsp',
-                          title: 'Schede Personaggi', 
+                          idCaller: 'bibiscoSceneAArchitectureCharactersLocations',
+                          url: 'jsp/architectureCharactersLocationsFromScene.jsp',
+                          title: '<fmt:message key="jsp.scene.architectureCharactersLocationsFromScene.dialog.title" />', 
                           init: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneInitCallback(idAjaxDialog, idCaller); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
-                        	  $('#bibiscoSceneACharacters').removeClass('active');  
+                        	  $('#bibiscoSceneAArchitectureCharactersLocations').removeClass('active');  
                         	  ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
                           },
                           resizable: false, modal: false,
-                          width: positions.characterWidth, height: window.innerHeight - 94,
-                          position: [positions.characterPositionLeft, positions.positionTop]
+                          width: positions.architectureCharactersLocationsWidth, height: window.innerHeight - 94,
+                          position: [positions.architectureCharactersLocationsPositionLeft, positions.positionTop]
                 };
                   
-                characterSectionDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
+                architectureCharactersLocationsDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
             }
               
             return true;
@@ -347,16 +347,16 @@
             bibiscoConfirm(jsCommonMessageConfirmExitWithoutSave, function(result) {
                 if (result) {
                     bibiscoRichTextEditor.unSaved = false;
-                    if (characterSectionDialog) {
-                    	characterSectionDialog.close();
+                    if (architectureCharactersLocationsDialog) {
+                    	architectureCharactersLocationsDialog.close();
                     }
                     ajaxDialog.close();
                 } 
             });
             return false;
         } else {
-        	if (characterSectionDialog) {
-                characterSectionDialog.close();
+        	if (architectureCharactersLocationsDialog) {
+                architectureCharactersLocationsDialog.close();
             }
             return true;    
         }
@@ -542,7 +542,7 @@
         <tr>
             <td style="text-align: left;"><tags:bibiscoTaskStatusSelector/></td>
             <td style="text-align: right;">
-                <a id="bibiscoSceneACharacters" data-toggle="button" title="schede personaggi" class="btn" href="#"><i class="icon-group"></i></a>           
+                <a id="bibiscoSceneAArchitectureCharactersLocations" data-toggle="button" title="<fmt:message key="jsp.scene.button.viewArchitectureCharactersLocations" />" class="btn" href="#"><i class="icon-external-link"></i></a>           
                 <select data-totalRevisions="" data-actualRevision="" class="selectpicker" style="width:200px; margin-left: 5px;s" id="bibiscoSceneSelectRevision"></select>            
                 <a id="bibiscoSceneATextEditor" title="<fmt:message key="jsp.scene.button.showTextScene" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-edit"></i></a> 
                 <a id="bibiscoSceneATags" title="<fmt:message key="jsp.scene.button.tags" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-tags"></i></a> 
