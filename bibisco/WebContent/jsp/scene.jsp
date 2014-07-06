@@ -270,11 +270,12 @@
             else {
             	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithProjectFromScene, positions.positionTop] });
                 
+            	var projectFromSceneDialogHeight = window.innerHeight - 94;
                 var ajaxDialogContent = { 
                           idCaller: 'bibiscoSceneAProjectFromScene',
                           url: 'BibiscoServlet?action=openProjectFromScene&idScene=' + $('#bibiscoSceneIdScene').val(),
                           title: '<fmt:message key="jsp.scene.projectFromScene.dialog.title" />', 
-                          init: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneInitCallback(idAjaxDialog, idCaller, positions.projectFromSceneWidth); },
+                          init: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneInitCallback(idAjaxDialog, idCaller, positions.projectFromSceneWidth, projectFromSceneDialogHeight); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
                         	  $('#bibiscoSceneAProjectFromScene').removeClass('active');  
@@ -282,7 +283,7 @@
                         	  return bibiscoProjectFromSceneCloseCallback(idAjaxDialog, idCaller);
                           },
                           resizable: false, modal: false,
-                          width: positions.projectFromSceneWidth, height: window.innerHeight - 94,
+                          width: positions.projectFromSceneWidth, height: projectFromSceneDialogHeight,
                           position: [positions.projectFromScenePositionLeft, positions.positionTop]
                 };
                   
@@ -420,7 +421,7 @@
           error:function(){
               bibiscoCloseLoadingBannerError();
           }
-    });
+        });
     }
     
     function setSceneRevisionSelectToActualRevision() {

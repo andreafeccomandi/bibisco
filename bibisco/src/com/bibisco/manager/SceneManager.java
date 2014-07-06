@@ -28,7 +28,6 @@ import com.bibisco.dao.client.SceneRevisionCharactersMapper;
 import com.bibisco.dao.client.SceneRevisionStrandsMapper;
 import com.bibisco.dao.client.SceneRevisionsMapper;
 import com.bibisco.dao.client.ScenesMapper;
-import com.bibisco.dao.client.VSelectedSceneRevisionsMapper;
 import com.bibisco.dao.model.SceneRevisionCharactersExample;
 import com.bibisco.dao.model.SceneRevisionCharactersKey;
 import com.bibisco.dao.model.SceneRevisionStrandsExample;
@@ -37,7 +36,6 @@ import com.bibisco.dao.model.SceneRevisions;
 import com.bibisco.dao.model.SceneRevisionsExample;
 import com.bibisco.dao.model.Scenes;
 import com.bibisco.dao.model.ScenesExample;
-import com.bibisco.dao.model.VSelectedSceneRevisions;
 import com.bibisco.enums.PointOfView;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
@@ -362,40 +360,6 @@ public class SceneManager {
 		
 		mLog.debug("End deleteByPosition(Integer)");
 
-	}
-	
-	public static List<SceneRevisionDTO> loadChapterScenesByIdScene(Integer pIntIdScene) {
-		
-		List<SceneRevisionDTO> lListSceneRevisionDTO = null;
-	
-		mLog.debug("Start loadChapterScenesByIdScene("+pIntIdScene+")");
-		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
-		SqlSession lSqlSession = lSqlSessionFactory.openSession();
-		try {
-			VSelectedSceneRevisionsMapper lVSelectedSceneRevisionsMapper = lSqlSession.getMapper(VSelectedSceneRevisionsMapper.class);
-			List<VSelectedSceneRevisions> lListVSelectedSceneRevisions = lVSelectedSceneRevisionsMapper.selectChapterScenesByIdScene(pIntIdScene);
-			lListSceneRevisionDTO = new ArrayList<SceneRevisionDTO>();
-			for (VSelectedSceneRevisions lVSelectedSceneRevisions : lListVSelectedSceneRevisions) {
-				SceneRevisionDTO lSceneRevisionDTO = new SceneRevisionDTO();
-				lSceneRevisionDTO.setIdScene(lVSelectedSceneRevisions.getIdScene().intValue());
-				lSceneRevisionDTO.setTitle(lVSelectedSceneRevisions.getSceneDescription());
-				lSceneRevisionDTO.setText(lVSelectedSceneRevisions.getScene());
-				lSceneRevisionDTO.setPosition(lVSelectedSceneRevisions.getScenePosition());
-				lSceneRevisionDTO.setTaskStatus(TaskStatus.getTaskStatusFromValue(lVSelectedSceneRevisions.getSceneTaskStatus()));
-				lSceneRevisionDTO.setIdChapter(lVSelectedSceneRevisions.getIdChapter().intValue());
-				lListSceneRevisionDTO.add(lSceneRevisionDTO);
-			}
-			
-		} catch(Throwable t) {
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}	
-		mLog.debug("End loadChapterScenesByIdScene("+pIntIdScene+")");
-		
-		return lListSceneRevisionDTO;
 	}
 	
 	public static SceneRevisionDTO changeRevision(Integer pIntIdScene, Integer pIntNewRevision) {

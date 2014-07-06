@@ -56,6 +56,7 @@ import com.bibisco.bean.LocationDTO;
 import com.bibisco.bean.MainCharacterDTO;
 import com.bibisco.bean.PointOfView4AnalysisDTO;
 import com.bibisco.bean.ProjectDTO;
+import com.bibisco.bean.ProjectFromSceneChapterDTO;
 import com.bibisco.bean.RichTextEditorSettings;
 import com.bibisco.bean.RichTextEditorTaskStatusBean;
 import com.bibisco.bean.SceneDTO;
@@ -77,6 +78,7 @@ import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.ImageManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
+import com.bibisco.manager.ProjectFromSceneManager;
 import com.bibisco.manager.ProjectManager;
 import com.bibisco.manager.ResourceBundleManager;
 import com.bibisco.manager.RichTextEditorSettingsManager;
@@ -1015,17 +1017,18 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start openProjectFromScene(HttpServletRequest, HttpServletResponse)");
 				
 		Integer lIntIdScene = Integer.parseInt(pRequest.getParameter("idScene"));
+		pRequest.setAttribute("idActualScene", lIntIdScene);
+		
+		// load ProjectFromSceneChapterDTO
+		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.getProjectFromSceneChapterByIdScene(lIntIdScene);
+		pRequest.setAttribute("projectFromSceneChapter", lProjectFromSceneChapterDTO.toJSONObject());
 		
 		// load chapters
 		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
 		pRequest.setAttribute("chapters", lListChapterDTO);
 		
-		// load scenes in the same chapters
-		List<SceneRevisionDTO> lListSceneRevisionDTO = SceneManager.loadChapterScenesByIdScene(lIntIdScene);
-		pRequest.setAttribute("scenes", lListSceneRevisionDTO);
-		
 		// set actual chapter
-		pRequest.setAttribute("idActualChapter", lListSceneRevisionDTO.get(0).getIdChapter());
+		pRequest.setAttribute("idActualChapter", lProjectFromSceneChapterDTO.getSceneRevisionDTOList().get(0).getIdChapter());
 		
 		// load characters
 		List<CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
@@ -1038,6 +1041,22 @@ public class BibiscoServlet extends HttpServlet {
 		pRequest.getRequestDispatcher(PROJECT_FROM_SCENE).forward(pRequest, pResponse);
 	
 		mLog.debug("End openProjectFromScene(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void changeChapterInProjectFromScene(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+
+		mLog.debug("Start changeChapterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+				
+		Integer lIntIdChapter = Integer.parseInt(pRequest.getParameter("idChapter"));
+
+		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.getProjectFromSceneChapterByIdChapter(lIntIdChapter);
+		
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lProjectFromSceneChapterDTO.toJSONObject().toString());
+	
+		mLog.debug("End changeChapterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void openAnalysisCharacterScene(HttpServletRequest pRequest,

@@ -9,7 +9,7 @@
 //<![CDATA[
             
     <!-- INIT DIALOG CALLBACK -->
-    function bibiscoProjectFromSceneInitCallback(ajaxDialog, idCaller, dialogWidth) {
+    function bibiscoProjectFromSceneInitCallback(ajaxDialog, idCaller, dialogWidth, projectFromSceneDialogHeight) {
     	$('#bibiscoProjectFromSceneULMainMenu a').click(function (e) {
    		  e.preventDefault();
    		  $(this).tab('show');
@@ -22,9 +22,81 @@
     	$("#bibiscoProjectFromSceneSelectArchitecture").select2({
             escapeMarkup: function(m) { return m; }
         });
+    	
+    	console.log('projectFromSceneDialogHeight='+projectFromSceneDialogHeight);
+    	$('#bibiscoProjectFromSceneDivChapterContent').css("height", projectFromSceneDialogHeight-225);
+    	
     	$("#bibiscoProjectFromSceneSelectChapter").select2({
             escapeMarkup: function(m) { return m; }
         });
+    	$("#bibiscoProjectFromSceneSelectChapter").on("change", function(e) { 
+    		var selectedChapter = $('#bibiscoProjectFromSceneSelectChapter option:selected').data('idchapter');
+    		$.ajax({
+    	          type: 'POST',
+    	          url: 'BibiscoServlet?action=changeChapterInProjectFromScene',
+    	          dataType: 'json',
+    	          data: {   
+    	        	  idChapter: selectedChapter
+    	          },
+    	          beforeSend:function(){
+    	              bibiscoOpenLoadingBanner();
+    	          },
+    	          success:function(projectFromSceneChapter){
+    	        	  populateProjectFromSceneChapter(projectFromSceneChapter, projectFromSceneDialogHeight);
+    	              bibiscoCloseLoadingBannerSuccess();
+    	          },
+    	          error:function(){
+    	              bibiscoCloseLoadingBannerError();
+    	          }
+    	        });
+        });
+    	
+    	populateProjectFromSceneChapter(${projectFromSceneChapter});
+    }
+    
+    function populateProjectFromSceneChapter(projectFromSceneChapter) {
+    	
+    	var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
+    	
+    	// clean div
+    	chapterDiv.html('');
+    	
+    	// chapter reason
+    	chapterDiv.append('<h4>'+'Motivazione'+'</h4>');
+    	if (projectFromSceneChapter.chapterReason) {
+            chapterDiv.append(projectFromSceneChapter.chapterReason);
+        } else {
+            chapterDiv.append('<em>'+'La motivazione del capitolo non è stata specificata'+'</em>');
+        }
+    	chapterDiv.append('<p></p>');
+    	
+    	// chapter notes
+    	chapterDiv.append('<h4>'+'Appunti'+'</h4>');
+    	if (projectFromSceneChapter.chapterNotes) {
+            chapterDiv.append(projectFromSceneChapter.chapterNotes);
+        } else {
+            chapterDiv.append('<em>'+'Non sono stati specificati appunti per il capitolo'+'</em>');
+        }
+    	chapterDiv.append('<hr>');
+    	
+    	// chapter scenes
+	   	for (i=0;i<projectFromSceneChapter.scenes.length;i++) {
+	   	   chapterDiv.append('<h4>'+projectFromSceneChapter.scenes[i].sceneTitle+'</h4>');
+	   	   if (projectFromSceneChapter.scenes[i].idScene == ${idActualScene}) {
+	   			 chapterDiv.append('<em>Scena attualmente in composizione</em>');
+	   	   } else {
+	   			 if (projectFromSceneChapter.scenes[i].sceneText) {
+	   				 chapterDiv.append(projectFromSceneChapter.scenes[i].sceneText);
+	   			 } else {
+	   				 chapterDiv.append('<em>Scena ancora da comporre</em>');
+	   			 }
+	   		}
+	   		chapterDiv.append('<p></p>');
+	    }
+    	
+	   	chapterDiv.jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
     }
     
     <!-- CLOSE DIALOG CALLBACK -->
@@ -62,23 +134,22 @@
 		   </div>
 	   </div>
 	   
+	   <!-- CHAPTER -->
 	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiChapter">
 	       <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapter">
 		   <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
 		      <c:choose>
 			      <c:when test="${chapter.idChapter == idActualChapter}">
-			         <option selected="selected">${chapter.title}</option>
+			         <option selected="selected" data-idchapter="${chapter.idChapter}">${chapter.title}</option>
 			      </c:when>
 			      <c:otherwise>
-				     <option>${chapter.title}</option>
+				     <option data-idchapter="${chapter.idChapter}">${chapter.title}</option>
 				  </c:otherwise>
 			  </c:choose>
 		   </c:forEach>	   
 		   </select>
-		   <hr/>
-		   <div id="bibiscoProjectFromSceneDivChapterContent">
-           
-           </div>
+		   <hr style="margin-top: 10px;" />
+		   <div id="bibiscoProjectFromSceneDivChapterContent" style="text-align: justify; width: 100%; overflow: scroll;"></div>
 	   </div>
 	   
 	   <div style="margin-top: 10px;" class="tab-pane" id="messages">Personaggi...</div>
