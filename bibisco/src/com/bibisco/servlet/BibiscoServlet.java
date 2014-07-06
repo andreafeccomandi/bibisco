@@ -117,6 +117,7 @@ public class BibiscoServlet extends HttpServlet {
 	private static final String NEW_LOCATION = "/jsp/newLocation.jsp";
 	private static final String NEW_SCENE = "/jsp/newScene.jsp";
 	private static final String NEW_STRAND = "/jsp/newStrand.jsp";
+	private static final String PROJECT_FROM_SCENE = "/jsp/projectFromScene.jsp";
 	private static final String RICH_TEXT_EDITOR_TASK_STATUS_DIALOG = "/jsp/richTextEditorTaskStatusDialog.jsp";
 	private static final String SECONDARY_CHARACTER = "/jsp/secondaryCharacter.jsp";
 	private static final String SELECT_PROJECT = "/jsp/selectProject.jsp";
@@ -1006,6 +1007,37 @@ public class BibiscoServlet extends HttpServlet {
 		pRequest.getRequestDispatcher(ANALYSIS_ITEMS_CHAPTERS).forward(pRequest, pResponse);
 	
 		mLog.debug("End openAnalysisPointOfViewsChapters(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void openProjectFromScene(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+
+		mLog.debug("Start openProjectFromScene(HttpServletRequest, HttpServletResponse)");
+				
+		Integer lIntIdScene = Integer.parseInt(pRequest.getParameter("idScene"));
+		
+		// load chapters
+		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
+		pRequest.setAttribute("chapters", lListChapterDTO);
+		
+		// load scenes in the same chapters
+		List<SceneRevisionDTO> lListSceneRevisionDTO = SceneManager.loadChapterScenesByIdScene(lIntIdScene);
+		pRequest.setAttribute("scenes", lListSceneRevisionDTO);
+		
+		// set actual chapter
+		pRequest.setAttribute("idActualChapter", lListSceneRevisionDTO.get(0).getIdChapter());
+		
+		// load characters
+		List<CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
+		pRequest.setAttribute("characters", lListCharacterDTO);
+		
+		// load locations
+		List<LocationDTO> lListLocationDTO = LocationManager.loadAll();
+		pRequest.setAttribute("locations", lListLocationDTO);
+		
+		pRequest.getRequestDispatcher(PROJECT_FROM_SCENE).forward(pRequest, pResponse);
+	
+		mLog.debug("End openProjectFromScene(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void openAnalysisCharacterScene(HttpServletRequest pRequest,

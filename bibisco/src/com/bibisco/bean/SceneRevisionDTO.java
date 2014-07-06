@@ -52,6 +52,7 @@ public class SceneRevisionDTO {
 	private List<Integer> revisions;
 	private Integer wordCount;
 	private Integer characterCount;
+	private Integer idChapter;
 	
 	public List<Integer> getRevisions() {
 		return revisions;
@@ -210,5 +211,11 @@ public class SceneRevisionDTO {
 	}
 	public void setCharacterCount(Integer chars) {
 		this.characterCount = chars;
+	}
+	public Integer getIdChapter() {
+		return idChapter;
+	}
+	public void setIdChapter(Integer idChapter) {
+		this.idChapter = idChapter;
 	}
 }

@@ -11,7 +11,7 @@
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
     var bibiscoRichTextEditorVerticalPadding = 210;
-    var architectureCharactersLocationsDialog;
+    var projectFromSceneDialog;
     
     function populate(scene, changeRevision) {
         
@@ -104,28 +104,28 @@
     	var sceneWidth = 810 + 5; //sceneDialogWidth declared + 5px on render
     	var positionTop = 25;
     	var maxSize = sceneWidth + minPadding*3 + sceneWidth;
-    	var architectureCharactersLocationsWidth;
+    	var projectFromSceneWidth;
     
     	if (window.innerWidth > maxSize) {
     		console.log('window.innerWidth > maxSize');
-    		architectureCharactersLocationsWidth = sceneWidth;
-            architectureCharactersLocationsPositionLeft = ((window.innerWidth - maxSize) / 2);
+    		projectFromSceneWidth = sceneWidth;
+            projectFromScenePositionLeft = ((window.innerWidth - maxSize) / 2);
     	}
 
     	else {
     		console.log('window.innerWidth <= maxSize');
-    		architectureCharactersLocationsWidth = window.innerWidth - (minPadding + minPadding*3 + sceneWidth + minPadding);
-            architectureCharactersLocationsPositionLeft = minPadding;
+    		projectFromSceneWidth = window.innerWidth - (minPadding + minPadding*3 + sceneWidth + minPadding);
+            projectFromScenePositionLeft = minPadding;
     	}
     	
-    	var scenePositionLeftWithArchitectureCharactersLocations = architectureCharactersLocationsPositionLeft + architectureCharactersLocationsWidth + minPadding*3;
+    	var scenePositionLeftWithProjectFromScene = projectFromScenePositionLeft + projectFromSceneWidth + minPadding*3;
     	var scenePositionLeftSingle = (window.innerWidth - sceneWidth) / 2;
     	
     	var positions = {
-    		scenePositionLeftWithArchitectureCharactersLocations: scenePositionLeftWithArchitectureCharactersLocations,
+    		scenePositionLeftWithProjectFromScene: scenePositionLeftWithProjectFromScene,
     		scenePositionLeftSingle: scenePositionLeftSingle,
-    		architectureCharactersLocationsPositionLeft: architectureCharactersLocationsPositionLeft,
-    		architectureCharactersLocationsWidth: architectureCharactersLocationsWidth,
+    		projectFromScenePositionLeft: projectFromScenePositionLeft,
+    		projectFromSceneWidth: projectFromSceneWidth,
     		positionTop: positionTop
     	}
     	
@@ -251,14 +251,14 @@
         });
         
         // characters
-        $("#bibiscoSceneAArchitectureCharactersLocations").tooltip();
-        $('#bibiscoSceneAArchitectureCharactersLocations').click(function() {
+        $("#bibiscoSceneAProjectFromScene").tooltip();
+        $('#bibiscoSceneAProjectFromScene').click(function() {
             
-            var active = $('#bibiscoSceneAArchitectureCharactersLocations').hasClass('active');
+            var active = $('#bibiscoSceneAProjectFromScene').hasClass('active');
             
             // character section is active
             if (active) {
-            	architectureCharactersLocationsDialog.close();
+            	projectFromSceneDialog.close();
             	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
             	
             	// return false is necessary because character section close callback already
@@ -268,24 +268,25 @@
             
             // character section is not active
             else {
-            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithArchitectureCharactersLocations, positions.positionTop] });
+            	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithProjectFromScene, positions.positionTop] });
                 
                 var ajaxDialogContent = { 
-                          idCaller: 'bibiscoSceneAArchitectureCharactersLocations',
-                          url: 'jsp/architectureCharactersLocationsFromScene.jsp',
-                          title: '<fmt:message key="jsp.scene.architectureCharactersLocationsFromScene.dialog.title" />', 
-                          init: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneInitCallback(idAjaxDialog, idCaller); },
-                          beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCharactersFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
+                          idCaller: 'bibiscoSceneAProjectFromScene',
+                          url: 'BibiscoServlet?action=openProjectFromScene&idScene=' + $('#bibiscoSceneIdScene').val(),
+                          title: '<fmt:message key="jsp.scene.projectFromScene.dialog.title" />', 
+                          init: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneInitCallback(idAjaxDialog, idCaller, positions.projectFromSceneWidth); },
+                          beforeClose: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
-                        	  $('#bibiscoSceneAArchitectureCharactersLocations').removeClass('active');  
+                        	  $('#bibiscoSceneAProjectFromScene').removeClass('active');  
                         	  ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
+                        	  return bibiscoProjectFromSceneCloseCallback(idAjaxDialog, idCaller);
                           },
                           resizable: false, modal: false,
-                          width: positions.architectureCharactersLocationsWidth, height: window.innerHeight - 94,
-                          position: [positions.architectureCharactersLocationsPositionLeft, positions.positionTop]
+                          width: positions.projectFromSceneWidth, height: window.innerHeight - 94,
+                          position: [positions.projectFromScenePositionLeft, positions.positionTop]
                 };
                   
-                architectureCharactersLocationsDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
+                projectFromSceneDialog = bibiscoOpenAjaxDialog(ajaxDialogContent);	
             }
               
             return true;
@@ -347,16 +348,16 @@
             bibiscoConfirm(jsCommonMessageConfirmExitWithoutSave, function(result) {
                 if (result) {
                     bibiscoRichTextEditor.unSaved = false;
-                    if (architectureCharactersLocationsDialog) {
-                    	architectureCharactersLocationsDialog.close();
+                    if (projectFromSceneDialog) {
+                    	projectFromSceneDialog.close();
                     }
                     ajaxDialog.close();
                 } 
             });
             return false;
         } else {
-        	if (architectureCharactersLocationsDialog) {
-                architectureCharactersLocationsDialog.close();
+        	if (projectFromSceneDialog) {
+                projectFromSceneDialog.close();
             }
             return true;    
         }
@@ -542,7 +543,7 @@
         <tr>
             <td style="text-align: left;"><tags:bibiscoTaskStatusSelector/></td>
             <td style="text-align: right;">
-                <a id="bibiscoSceneAArchitectureCharactersLocations" data-toggle="button" title="<fmt:message key="jsp.scene.button.viewArchitectureCharactersLocations" />" class="btn" href="#"><i class="icon-external-link"></i></a>           
+                <a id="bibiscoSceneAProjectFromScene" data-toggle="button" title="<fmt:message key="jsp.scene.button.viewProjectFromScene" />" class="btn" href="#"><i class="icon-external-link"></i></a>           
                 <select data-totalRevisions="" data-actualRevision="" class="selectpicker" style="width:200px; margin-left: 5px;s" id="bibiscoSceneSelectRevision"></select>            
                 <a id="bibiscoSceneATextEditor" title="<fmt:message key="jsp.scene.button.showTextScene" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-edit"></i></a> 
                 <a id="bibiscoSceneATags" title="<fmt:message key="jsp.scene.button.tags" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-tags"></i></a> 

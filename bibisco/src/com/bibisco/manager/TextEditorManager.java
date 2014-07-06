@@ -45,11 +45,18 @@ public class TextEditorManager {
 		
 		mLog.debug("Start getCharacterWordCount(String): HTML: [", pStrText,"]");
 				
-		HtmlParsingResult lHtmlParsingResult = parseHtml(pStrText, false);
-
 		CharacterWordCount lCharacterWordCount = new CharacterWordCount();
-		lCharacterWordCount.setCharacters(lHtmlParsingResult.characterCount);
-		lCharacterWordCount.setWords(lHtmlParsingResult.words.size());
+		
+		if (StringUtils.isNotBlank(pStrText)) {
+			HtmlParsingResult lHtmlParsingResult = parseHtml(pStrText, false);
+			lCharacterWordCount.setCharacters(lHtmlParsingResult.characterCount);
+			lCharacterWordCount.setWords(lHtmlParsingResult.words.size());
+		} else {
+			lCharacterWordCount.setCharacters(0);
+			lCharacterWordCount.setWords(0);
+		}
+		
+		
 		
 		mLog.debug("End getCharacterWordCount(String): return " + lIntWordsCount);
 		

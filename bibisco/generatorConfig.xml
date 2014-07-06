@@ -26,7 +26,6 @@
     <table schema="public" tableName="properties" />
     <table schema="public" tableName="projects" />
     
-    <table schema="public" tableName="v_selected_scene_revisions" />
     <table schema="public" tableName="v_scene_tags" />
     <table schema="public" tableName="v_point_of_view_4_analysis" />
     <table schema="public" tableName="v_character_scene" />
@@ -34,10 +33,11 @@
     
     <table schema="public" tableName="messages" />
     
-    <table schema="public" tableName="images" />-->
+    <table schema="public" tableName="images" />
     <table schema="public" tableName="v_chapters" />
     <table schema="public" tableName="v_scenes" />
-    <table schema="public" tableName="scene_revisions" /> 
+    <table schema="public" tableName="scene_revisions" /> -->
     
+    <table schema="public" tableName="v_selected_scene_revisions" />
   </context>
 </generatorConfiguration>
