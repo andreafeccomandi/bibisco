@@ -15,17 +15,23 @@
    		  $(this).tab('show');
    		});
     	
+    	// set select option width
     	var selectWidth = dialogWidth - 150;
     	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", selectWidth);
     	$("#bibiscoProjectFromSceneSelectChapter").css("width", selectWidth);
+    	$("#bibiscoProjectFromSceneSelectChapterSection").css("width", selectWidth);
+    	
+    	// hide chapter's section not visible at startup   
+    	$('bibiscoProjectFromSceneDivChapterReason').hide();
+    	$('bibiscoProjectFromSceneDivChapterNotes').hide();
     	
     	$("#bibiscoProjectFromSceneSelectArchitecture").select2({
             escapeMarkup: function(m) { return m; }
         });
     	
-    	console.log('projectFromSceneDialogHeight='+projectFromSceneDialogHeight);
-    	$('#bibiscoProjectFromSceneDivChapterContent').css("height", projectFromSceneDialogHeight-225);
+    	$('#bibiscoProjectFromSceneDivChapterContent').css("height", projectFromSceneDialogHeight-250);
     	
+    	// select chapter
     	$("#bibiscoProjectFromSceneSelectChapter").select2({
             escapeMarkup: function(m) { return m; }
         });
@@ -43,7 +49,7 @@
     	          },
     	          success:function(projectFromSceneChapter){
     	        	  populateProjectFromSceneChapter(projectFromSceneChapter, projectFromSceneDialogHeight);
-    	              bibiscoCloseLoadingBannerSuccess();
+    	        	  bibiscoCloseLoadingBannerSuccess();
     	          },
     	          error:function(){
     	              bibiscoCloseLoadingBannerError();
@@ -51,50 +57,72 @@
     	        });
         });
     	
-    	populateProjectFromSceneChapter(${projectFromSceneChapter});
+    	// select chapter sections
+        $('#bibiscoProjectFromSceneSelectChapterSection').select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        $('#bibiscoProjectFromSceneSelectChapterSection').on("change", function(e) { 
+            
+        	var selectedChapterSection = $('#bibiscoProjectFromSceneSelectChapterSection option:selected').data('idchaptersection');
+            
+            if (selectedChapterSection=='text') {
+            	$('#bibiscoProjectFromSceneDivChapterText').show();
+            	$('#bibiscoProjectFromSceneDivChapterReason').hide();
+                $('#bibiscoProjectFromSceneDivChapterNotes').hide();
+            } else if (selectedChapterSection=='reason') {
+            	$('#bibiscoProjectFromSceneDivChapterText').hide();
+            	$('#bibiscoProjectFromSceneDivChapterReason').show();
+                $('#bibiscoProjectFromSceneDivChapterNotes').hide();
+            } else if (selectedChapterSection=='notes') {
+            	$('#bibiscoProjectFromSceneDivChapterText').hide();
+            	$('#bibiscoProjectFromSceneDivChapterReason').hide();
+                $('#bibiscoProjectFromSceneDivChapterNotes').show();
+            }
+        });
+    	
+        // populate hapter section
+        populateProjectFromSceneChapter(${projectFromSceneChapter});
     }
     
     function populateProjectFromSceneChapter(projectFromSceneChapter) {
     	
-    	var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
-    	
-    	// clean div
-    	chapterDiv.html('');
-    	
-    	// chapter reason
-    	chapterDiv.append('<h4>'+'Motivazione'+'</h4>');
-    	if (projectFromSceneChapter.chapterReason) {
-            chapterDiv.append(projectFromSceneChapter.chapterReason);
-        } else {
-            chapterDiv.append('<em>'+'La motivazione del capitolo non è stata specificata'+'</em>');
-        }
-    	chapterDiv.append('<p></p>');
-    	
-    	// chapter notes
-    	chapterDiv.append('<h4>'+'Appunti'+'</h4>');
-    	if (projectFromSceneChapter.chapterNotes) {
-            chapterDiv.append(projectFromSceneChapter.chapterNotes);
-        } else {
-            chapterDiv.append('<em>'+'Non sono stati specificati appunti per il capitolo'+'</em>');
-        }
-    	chapterDiv.append('<hr>');
-    	
-    	// chapter scenes
-	   	for (i=0;i<projectFromSceneChapter.scenes.length;i++) {
-	   	   chapterDiv.append('<h4>'+projectFromSceneChapter.scenes[i].sceneTitle+'</h4>');
+    	// chapter text
+    	var chapterText = $('#bibiscoProjectFromSceneDivChapterText');
+    	chapterText.html('');
+    	for (i=0;i<projectFromSceneChapter.scenes.length;i++) {
+	   		chapterText.append('<h4>'+projectFromSceneChapter.scenes[i].sceneTitle+'</h4>');
 	   	   if (projectFromSceneChapter.scenes[i].idScene == ${idActualScene}) {
-	   			 chapterDiv.append('<em>Scena attualmente in composizione</em>');
+	   		  chapterText.append('<em>Scena attualmente in composizione</em>');
 	   	   } else {
 	   			 if (projectFromSceneChapter.scenes[i].sceneText) {
-	   				 chapterDiv.append(projectFromSceneChapter.scenes[i].sceneText);
+	   				chapterText.append(projectFromSceneChapter.scenes[i].sceneText);
 	   			 } else {
-	   				 chapterDiv.append('<em>Scena ancora da comporre</em>');
+	   				chapterText.append('<em>Scena ancora da comporre</em>');
 	   			 }
 	   		}
-	   		chapterDiv.append('<p></p>');
+	   	   chapterText.append('<p></p>');
 	    }
+    
+    	// chapter reason
+    	var chapterReason = $('#bibiscoProjectFromSceneDivChapterReason');
+    	chapterReason.html('');    	
+    	if (projectFromSceneChapter.chapterReason) {
+    		chapterReason.append(projectFromSceneChapter.chapterReason);
+        } else {
+        	chapterReason.append('<em>'+'La motivazione del capitolo non è stata specificata'+'</em>');
+        }
     	
-	   	chapterDiv.jScrollPane({
+    	// chapter notes
+    	var chapterNotes = $('#bibiscoProjectFromSceneDivChapterNotes');
+    	chapterNotes.html('');
+    	if (projectFromSceneChapter.chapterNotes) {
+    		chapterNotes.append(projectFromSceneChapter.chapterNotes);
+        } else {
+        	chapterNotes.append('<em>'+'Non sono stati specificati appunti per il capitolo'+'</em>');
+        }
+    	
+    	var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
+    	chapterDiv.jScrollPane({
             autoReinitialise: true, animateScroll: true, verticalGutter: 30
         }).data('jsp');
     }
@@ -148,8 +176,17 @@
 			  </c:choose>
 		   </c:forEach>	   
 		   </select>
+		   <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapterSection">
+              <option selected="selected" data-idchaptersection="text">Testo</option>
+              <option data-idchaptersection="reason">Motivazione</option>  
+              <option data-idchaptersection="notes">Appunti</option>  
+           </select>
 		   <hr style="margin-top: 10px;" />
-		   <div id="bibiscoProjectFromSceneDivChapterContent" style="text-align: justify; width: 100%; overflow: scroll;"></div>
+		   <div id="bibiscoProjectFromSceneDivChapterContent" style="text-align: justify; width: 100%; overflow: scroll;">
+		      <div id="bibiscoProjectFromSceneDivChapterText"></div>
+		      <div id="bibiscoProjectFromSceneDivChapterReason"></div>
+		      <div id="bibiscoProjectFromSceneDivChapterNotes"></div>
+	       </div>
 	   </div>
 	   
 	   <div style="margin-top: 10px;" class="tab-pane" id="messages">Personaggi...</div>
