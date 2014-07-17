@@ -27,6 +27,7 @@ import com.bibisco.bean.CharacterInfoQuestionsDTO;
 import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
 import com.bibisco.bean.MainCharacterDTO;
 import com.bibisco.bean.ProjectFromSceneMainCharacterDTO;
+import com.bibisco.bean.ProjectFromSceneSecondaryCharacterDTO;
 import com.bibisco.bean.SecondaryCharacterDTO;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.dao.client.CharacterInfosMapper;
@@ -445,6 +446,26 @@ public class CharacterManager {
 		}
 			
 		mLog.debug("End move(Integer, Integer, boolean)");
+	}
+	
+	public static ProjectFromSceneSecondaryCharacterDTO loadProjectFromSceneSecondaryCharacter(Integer pIntIdCharacter) {
+		
+		ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO;
+		
+		mLog.debug("Start loadProjectFromSceneSecondaryCharacter(",pIntIdCharacter.toString(),")");
+		
+		SecondaryCharacterDTO lSecondaryCharacterDTO = loadSecondaryCharacter(pIntIdCharacter);
+		lProjectFromSceneSecondaryCharacterDTO = new ProjectFromSceneSecondaryCharacterDTO();
+		lProjectFromSceneSecondaryCharacterDTO.setIdCharacter(lSecondaryCharacterDTO.getIdCharacter());
+		lProjectFromSceneSecondaryCharacterDTO.setName(lSecondaryCharacterDTO.getName());
+		lProjectFromSceneSecondaryCharacterDTO.setDescription(lSecondaryCharacterDTO.getDescription());
+		lProjectFromSceneSecondaryCharacterDTO.setPosition(lSecondaryCharacterDTO.getPosition());
+		lProjectFromSceneSecondaryCharacterDTO.setMainCharacter(lSecondaryCharacterDTO.isMainCharacter());
+		
+		mLog.debug("Start loadProjectFromSceneSecondaryCharacter(",pIntIdCharacter.toString(),")");
+		
+		return lProjectFromSceneSecondaryCharacterDTO;
+	
 	}
 
 	public static ProjectFromSceneMainCharacterDTO loadProjectFromSceneMainCharacter(Integer pIntIdCharacter) {

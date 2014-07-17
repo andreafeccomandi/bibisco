@@ -18,36 +18,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bibisco.BibiscoException;
-import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 
 /**
- * Secondary character DTO.
+ * ProjectFromSceneSecondaryCharacterDTO
  * 
  * @author Andrea Feccomandi
  *
  */
-public class SecondaryCharacterDTO extends CharacterDTO {
+public class ProjectFromSceneSecondaryCharacterDTO extends SecondaryCharacterDTO {
 	
-	private static Log mLog = Log.getInstance(SecondaryCharacterDTO.class);
+	private static Log mLog = Log.getInstance(ProjectFromSceneSecondaryCharacterDTO.class);
+
 	
-	TaskStatus taskStatus;
-	String description;
-	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String secondaryCharacterDescription) {
-		this.description = secondaryCharacterDescription;
-	}
-	public TaskStatus getTaskStatus() {
-		return taskStatus;
-	}
-	public void setTaskStatus(TaskStatus taskStatus) {
-		this.taskStatus = taskStatus;
-	}
-	
-public JSONObject toJSONObject() {
+	public JSONObject toJSONObject() {
 		
 		JSONObject lJSONObject;
 		
@@ -56,8 +40,8 @@ public JSONObject toJSONObject() {
 			lJSONObject.put("idCharacter", idCharacter);
 			lJSONObject.put("name", name);
 			lJSONObject.put("position", position);
+			lJSONObject.put("mainCharacter", mainCharacter);
 			lJSONObject.put("description", description);
-			lJSONObject.put("taskStatus", taskStatus);
 			
 		} catch (JSONException e) {
 			mLog.error(e);
