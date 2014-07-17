@@ -20,6 +20,9 @@
     	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", selectWidth);
     	$("#bibiscoProjectFromSceneSelectChapter").css("width", selectWidth);
     	$("#bibiscoProjectFromSceneSelectChapterSection").css("width", selectWidth);
+    	$("#bibiscoProjectFromSceneSelectCharacter").css("width", selectWidth);
+    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").css("width", selectWidth);
+    	$("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").css("width", selectWidth);
     	
     	// hide chapter's section not visible at startup   
     	$('bibiscoProjectFromSceneDivChapterReason').hide();
@@ -80,8 +83,28 @@
             }
         });
     	
-        // populate hapter section
+        // populate chapter section
         populateProjectFromSceneChapter(${projectFromSceneChapter});
+        
+        // select character
+        $("#bibiscoProjectFromSceneSelectCharacter").select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        
+        // select main character sections
+        /*$("#bibiscoProjectFromSceneSelectMainCharacterSection").select2({
+            escapeMarkup: function(m) { return m; }
+        });*/
+        $("#bibiscoProjectFromSceneSelectMainCharacterSection").hide();
+        
+        // select secondary character sections
+        /*$("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").select2({
+            escapeMarkup: function(m) { return m; }
+        });*/
+        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").hide();
+        
+        $('#bibiscoProjectFromSceneDivMainCharacterContent').hide();
+        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').hide();
     }
     
     function populateProjectFromSceneChapter(projectFromSceneChapter) {
@@ -144,9 +167,9 @@
 <div style="margin-top: 10px;">
 	<ul id="bibiscoProjectFromSceneULMainMenu" class="nav nav-tabs">
 	  <li class="active"><a href="#bibiscoProjectFromSceneTabLiArchitecture" data-toggle="tab">Architettura</a></li>
-	  <li><a href="#bibiscoProjectFromSceneTabLiChapter" data-toggle="tab">Capitoli</a></li>
-	  <li><a href="#messages" data-toggle="tab">Personaggi</a></li>
-	  <li><a href="#settings" data-toggle="tab">Luoghi</a></li>
+	  <li><a href="#bibiscoProjectFromSceneTabLiChapters" data-toggle="tab">Capitoli</a></li>
+	  <li><a href="#bibiscoProjectFromSceneTabLiCharacters" data-toggle="tab">Personaggi</a></li>
+	  <li><a href="#bibiscoProjectFromSceneTabLiLocations" data-toggle="tab">Luoghi</a></li>
 	</ul>
 	<div class="tab-content">
 	   <!-- ARCHITECTURE -->
@@ -163,7 +186,7 @@
 	   </div>
 	   
 	   <!-- CHAPTER -->
-	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiChapter">
+	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiChapters">
 	       <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapter">
 		   <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
 		      <c:choose>
@@ -189,8 +212,78 @@
 	       </div>
 	   </div>
 	   
-	   <div style="margin-top: 10px;" class="tab-pane" id="messages">Personaggi...</div>
-	   <div style="margin-top: 10px;" class="tab-pane" id="settings">Luoghi...</div>
+	   <!-- CHARACTERS -->
+	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiCharacters">
+	   <c:choose>
+          <c:when test="${fn:length(characters) > 0}">
+             <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacter">
+                <c:forEach items="${characters}" var="character" varStatus="characterNumber">
+                    <c:choose>
+                        <c:when test="${characterNumber.count == 1}">
+                            <option selected="selected" data-idcharacter="${character.idCharacter}" data-mainCharacter="${character.mainCharacter}">${character.name}</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option data-idcharacter="${character.idCharacter}" data-mainCharacter="${character.mainCharacter}">${character.name}</option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+             </select>
+             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectMainCharacterSection">
+                <option selected="selected" data-idmaincharactersection="personaldata">Dati personali</option>
+                <option data-idmaincharactersection="physionomy">Aspetto fisico</option>  
+                <option data-idmaincharactersection="behaviors">Modi di fare</option>
+                <option data-idmaincharactersection="psychology">Psicologia</option>  
+                <option data-idmaincharactersection="ideas">Idee e passioni</option>
+                <option data-idmaincharactersection="sociology">Sociologia</option>
+                <option data-idmaincharactersection="lifebeforestorybeginning">Vita precedente alla storia</option>
+                <option data-idmaincharactersection="conflict">Conflitto</option>
+                <option data-idmaincharactersection="evolutionduringthestory">Evoluzione</option>
+                <option data-idmaincharactersection="images">Immagini</option>
+            </select>
+            <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectSecondaryCharacterSection">
+                <option selected="selected" data-idsecondarycharactersection="description">Descrizione</option>
+                <option data-idsecondarycharactersection="images">Immagini</option>
+            </select>
+          </c:when>
+          <c:otherwise>
+             <em>Non sono ancora stati creati personaggi</em>
+          </c:otherwise>
+	   </c:choose>
+	   <hr style="margin-top: 10px;" />
+           <div id="bibiscoProjectFromSceneDivMainCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
+              <div id="bibiscoProjectFromSceneDivMainCharacterPersonaldata"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterPhysionomy"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterBehaviors"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterPsychology"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterIdeas"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterSociology"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterLifebeforestorybeginning"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterConflict"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterEvolutionduringthestory"></div>
+              <div id="bibiscoProjectFromSceneDivMainCharacterImages"></div>
+           </div>
+           <div id="bibiscoProjectFromSceneDivSecondaryCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
+              <div id="bibiscoProjectFromSceneDivSecondaryCharacterDescription"></div>
+              <div id="bibiscoProjectFromSceneDivSecondaryCharacterImages"></div>
+           </div>
+	   </div>
+	   
+	   
+	   <!-- LOCATIONS -->
+	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiLocations">
+	   <c:choose>
+          <c:when test="${fn:length(locations) > 0}">
+             <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocation">
+                <option selected="selected" data-idchapter="${chapter.idChapter}">${chapter.title}</option>
+             </select>
+          </c:when>
+          <c:otherwise>
+             <em>Non sono ancora stati creati personaggi</em>
+          </c:otherwise>
+       </c:choose>
+       
+       
+	   </div>
     </div>
 </div>
 

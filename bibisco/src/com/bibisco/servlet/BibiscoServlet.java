@@ -57,6 +57,7 @@ import com.bibisco.bean.MainCharacterDTO;
 import com.bibisco.bean.PointOfView4AnalysisDTO;
 import com.bibisco.bean.ProjectDTO;
 import com.bibisco.bean.ProjectFromSceneChapterDTO;
+import com.bibisco.bean.ProjectFromSceneMainCharacterDTO;
 import com.bibisco.bean.RichTextEditorSettings;
 import com.bibisco.bean.RichTextEditorTaskStatusBean;
 import com.bibisco.bean.SceneDTO;
@@ -1033,6 +1034,19 @@ public class BibiscoServlet extends HttpServlet {
 		// load characters
 		List<CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
 		pRequest.setAttribute("characters", lListCharacterDTO);
+		
+		// load first character
+		if(lListCharacterDTO!=null && lListCharacterDTO.size()>0) {
+			CharacterDTO lCharacterDTO = lListCharacterDTO.get(0);
+			if (lCharacterDTO.isMainCharacter()) {
+				ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = CharacterManager.loadProjectFromSceneMainCharacter(lCharacterDTO.getIdCharacter());
+				pRequest.setAttribute("projectFromSceneMainCharacter", lProjectFromSceneMainCharacterDTO.toJSONObject().toString());				
+				mLog.debug("******************* ", lProjectFromSceneMainCharacterDTO.toJSONObject().toString());
+			} else {
+				//ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneMainCharacterDTO = CharacterManager.loadProjectFromSceneMainCharacter(.getIdCharacter());
+				//pRequest.setAttribute("projectFromSceneMainCharacter", lProjectFromSceneMainCharacterDTO.toJSONObject());
+			}
+		}
 		
 		// load locations
 		List<LocationDTO> lListLocationDTO = LocationManager.loadAll();

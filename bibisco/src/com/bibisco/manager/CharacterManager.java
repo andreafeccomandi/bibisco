@@ -26,6 +26,7 @@ import com.bibisco.bean.CharacterDTO;
 import com.bibisco.bean.CharacterInfoQuestionsDTO;
 import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
 import com.bibisco.bean.MainCharacterDTO;
+import com.bibisco.bean.ProjectFromSceneMainCharacterDTO;
 import com.bibisco.bean.SecondaryCharacterDTO;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.dao.client.CharacterInfosMapper;
@@ -446,11 +447,46 @@ public class CharacterManager {
 		mLog.debug("End move(Integer, Integer, boolean)");
 	}
 
+	public static ProjectFromSceneMainCharacterDTO loadProjectFromSceneMainCharacter(Integer pIntIdCharacter) {
+		
+		ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO;
+		
+		mLog.debug("Start loadProjectFromSceneMainCharacter(",pIntIdCharacter.toString(),")");
+		lProjectFromSceneMainCharacterDTO = new ProjectFromSceneMainCharacterDTO();
+		
+		// basic info
+		MainCharacterDTO lMainCharacterDTO = loadMainCharacter(pIntIdCharacter);
+		
+		// character info questions
+		List<CharacterInfoQuestionsDTO> lListCharacterInfoQuestionsDTO = new ArrayList<CharacterInfoQuestionsDTO>();
+		for (CharacterInfoQuestions lCharacterInfoQuestions : CharacterInfoQuestions.values()) {
+			lListCharacterInfoQuestionsDTO.add(loadCharacterInfoQuestions(lCharacterInfoQuestions, pIntIdCharacter));
+		}
+		
+		// character info without questions
+		List<CharacterInfoWithoutQuestionsDTO> lListCharacterInfoWithoutQuestionsDTO = new ArrayList<CharacterInfoWithoutQuestionsDTO>();
+		for (CharacterInfoWithoutQuestions lCharacterInfoWithoutQuestions : CharacterInfoWithoutQuestions.values()) {
+			lListCharacterInfoWithoutQuestionsDTO.add(loadCharacterInfoWithoutQuestions(lCharacterInfoWithoutQuestions, pIntIdCharacter));
+		}
+		
+		lProjectFromSceneMainCharacterDTO.setIdCharacter(pIntIdCharacter);
+		lProjectFromSceneMainCharacterDTO.setName(lMainCharacterDTO.getName());
+		lProjectFromSceneMainCharacterDTO.setPosition(lMainCharacterDTO.getPosition());
+		lProjectFromSceneMainCharacterDTO.setMainCharacter(true);
+		lProjectFromSceneMainCharacterDTO.setCharacterInfoQuestionsDTOList(lListCharacterInfoQuestionsDTO);
+		lProjectFromSceneMainCharacterDTO.setCharacterInfoWithoutQuestionsDTOList(lListCharacterInfoWithoutQuestionsDTO);
+		
+		mLog.debug("End loadProjectFromSceneMainCharacter(",pIntIdCharacter.toString(),")");
+		
+		return lProjectFromSceneMainCharacterDTO;
+	}
+	
 	public static CharacterInfoQuestionsDTO loadCharacterInfoQuestions(CharacterInfoQuestions pCharacterInfoQuestions, Integer lIntIdCharacter) {
 
 		CharacterInfoQuestionsDTO lCharacterInfoQuestionsDTO;
 		
 		mLog.debug("Start loadCharacterInfo(CharacterInfoQuestions, Integer)");
+		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
 		try {
