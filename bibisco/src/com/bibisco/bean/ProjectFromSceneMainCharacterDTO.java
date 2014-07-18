@@ -81,8 +81,8 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 			
 			// character info without questions
 			if (characterInfoWithoutQuestionsDTOList != null) {
-				JSONObject lJSONObjectCharacterInfoWithoutQuestion = new JSONObject();								
 				for (CharacterInfoWithoutQuestionsDTO lCharacterInfoWithoutQuestionsDTO : characterInfoWithoutQuestionsDTOList) {
+					JSONObject lJSONObjectCharacterInfoWithoutQuestion = new JSONObject();								
 					lJSONObjectCharacterInfoWithoutQuestion.put("info", StringUtils.defaultString(lCharacterInfoWithoutQuestionsDTO.getInfo()));
 					lJSONObject.put(lCharacterInfoWithoutQuestionsDTO.getCharacterInfoWithoutQuestions().name(), lJSONObjectCharacterInfoWithoutQuestion);				
 				}
@@ -94,6 +94,7 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 			throw new BibiscoException(e, BibiscoException.FATAL);
 		}
 		
+		mLog.debug("******************* ", lJSONObject.toString());
 		return lJSONObject;
 	}
 
