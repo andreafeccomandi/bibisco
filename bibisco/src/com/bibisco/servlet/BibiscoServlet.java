@@ -1057,6 +1057,40 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("End openProjectFromScene(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void changeMainCharacterInProjectFromScene(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+
+		mLog.debug("Start changeMainCharacterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+		
+		Integer lIntIdCharacter = Integer.valueOf(pRequest.getParameter("idCharacter"));
+		
+		// load ProjectFromSceneChapterDTO
+		ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = CharacterManager.loadProjectFromSceneMainCharacter(lIntIdCharacter);
+								
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lProjectFromSceneMainCharacterDTO.toJSONObject().toString());
+		
+		mLog.debug("End changeMainCharacterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void changeSecondaryCharacterInProjectFromScene(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+
+		mLog.debug("Start changeSecondaryCharacterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+		
+		Integer lIntIdCharacter = Integer.valueOf(pRequest.getParameter("idCharacter"));
+		
+		// load ProjectFromSceneChapterDTO
+		ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = CharacterManager.loadProjectFromSceneSecondaryCharacter(lIntIdCharacter);
+								
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lProjectFromSceneSecondaryCharacterDTO.toJSONObject().toString());
+		
+		mLog.debug("End changeSecondaryCharacterInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+	}
+	
 	public void changeChapterInProjectFromScene(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws ServletException, IOException {
 
