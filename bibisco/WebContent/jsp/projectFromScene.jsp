@@ -15,14 +15,17 @@
    		  $(this).tab('show');
    		});
     	
+    	var dialogConfig = {
+   			width: dialogWidth,
+   			height: projectFromSceneDialogHeight,
+   			selectWidth : dialogWidth - 150
+    	}
+    	
     	// set select option width
     	var selectWidth = dialogWidth - 150;
-    	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", selectWidth);
-    	$("#bibiscoProjectFromSceneSelectChapter").css("width", selectWidth);
-    	$("#bibiscoProjectFromSceneSelectChapterSection").css("width", selectWidth);
-    	$("#bibiscoProjectFromSceneSelectCharacter").css("width", selectWidth);
-    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").css("width", selectWidth);
-    	$("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").css("width", selectWidth);
+    	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", dialogConfig.selectWidth);
+    	$("#bibiscoProjectFromSceneSelectChapter").css("width", dialogConfig.selectWidth);
+    	$("#bibiscoProjectFromSceneSelectChapterSection").css("width", dialogConfig.selectWidth);
     	
     	// hide chapter's section not visible at startup   
     	$('bibiscoProjectFromSceneDivChapterReason').hide();
@@ -73,50 +76,123 @@
         // populate chapter section
         populateChapter(${projectFromSceneChapter});
         
-        // select character
-        $("#bibiscoProjectFromSceneSelectCharacter").select2({
+       
+        initCharacter(dialogConfig);
+    }
+    
+    function initCharacter(dialogConfig) {
+        
+        <c:if test="${fn:length(characters) > 0}">
+           initSelectCharacter(dialogConfig);
+           <c:choose>
+	           <c:when test="${not empty projectFromSceneMainCharacter}">
+	               initMainCharacterElements(dialogConfig)
+	               populateMainCharacter(${projectFromSceneMainCharacter}); 
+	               hideSecondaryCharacterElements();
+	           </c:when>
+	           <c:when test="${not empty projectFromSceneSecondaryCharacter}">
+	               initSecondaryCharacterElements(dialogConfig) 
+	               populateSecondaryCharacter(${projectFromSceneSecondaryCharacter});
+	               hideMainCharacterElements();
+	           </c:when>
+	           <c:otherwise>
+	           hideMainCharacterElements();
+	           hideSecondaryCharacterElements();
+	           </c:otherwise>
+           </c:choose>   
+        </c:if>
+    }
+    
+    function initSelectCharacter(dialogConfig) {
+    	$("#bibiscoProjectFromSceneSelectCharacter").css("width", dialogConfig.selectWidth); 
+    	$("#bibiscoProjectFromSceneSelectCharacter").select2({
             escapeMarkup: function(m) { return m; }
         });
+        $("#bibiscoProjectFromSceneSelectCharacter").on("change", function(e) { 
+            var selectedCharacter = $('#bibiscoProjectFromSceneSelectCharacter option:selected').data('idcharacter');
+            var mainCharacter = $('#bibiscoProjectFromSceneSelectCharacter option:selected').data('maincharacter');
 
-        <c:choose>
-	        <c:when test="${fn:length(characters) > 0 && not empty projectFromSceneMainCharacter}">
-		        $("#bibiscoProjectFromSceneSelectMainCharacterSection").select2({
-		            escapeMarkup: function(m) { return m; }
-		        });
-		        $('#bibiscoProjectFromSceneSelectMainCharacterSection').on("change", function(e) { 
-		            var selectedMainCharacterSection = $('#bibiscoProjectFromSceneSelectMainCharacterSection option:selected').data('idmaincharactersection');
-		            $('.mainCharacterContentSection').hide();
-		            $('#bibiscoProjectFromSceneDivMainCharacter'+selectedMainCharacterSection).show();		            
-		        });
-		        $('.mainCharacterContentSection').hide();
-		        $('#bibiscoProjectFromSceneDivMainCharacterPersonaldata').show();
-		        $('#bibiscoProjectFromSceneDivMainCharacterContent').css("height", projectFromSceneDialogHeight-250);
-		        $('#bibiscoProjectFromSceneDivMainCharacterContent').jScrollPane({
-		            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		        }).data('jsp');
-		        populateProjectFromSceneMainCharacter(${projectFromSceneMainCharacter});
-		        
-		        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").hide();
-		        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').hide();
-	        </c:when>
-	        <c:when test="${fn:length(characters) > 0 && not empty projectFromSceneSecondaryCharacter}">
-	            $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").select2({
-		            escapeMarkup: function(m) { return m; }
-		        });
-		        $("#bibiscoProjectFromSceneSelectMainCharacterSection").hide();
-		        $('#bibiscoProjectFromSceneDivMainCharacterContent').hide();
-            </c:when>
-	        <c:otherwise>
-	        $("#bibiscoProjectFromSceneSelectMainCharacterSection").hide();
-	        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").hide();
-	        $('#bibiscoProjectFromSceneDivMainCharacterContent').hide();
-	        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').hide();
-	        </c:otherwise>
-	    </c:choose>
-       
-        
-        
+            var action;
+            if (mainCharacter) {
+                action = 'changeMainCharacterInProjectFromScene';
+            } else {
+                action = 'changeSecondaryCharacterInProjectFromScene';
+            }
+            
+            $.ajax({
+                  type: 'POST',
+                  url: 'BibiscoServlet?action='+action,
+                  dataType: 'json',
+                  data: {   
+                      idCharacter: selectedCharacter
+                  },
+                  beforeSend:function(){
+                      bibiscoOpenLoadingBanner();
+                  },
+                  success:function(projectFromSceneCharacter){
+                      if (mainCharacter) {
+                          populateMainCharacter(projectFromSceneCharacter);               
+                      } else {
+                          populateSecondaryCharacter(projectFromSceneCharacter);
+                      }
+                      bibiscoCloseLoadingBannerSuccess();
+                  },
+                  error:function(){
+                      bibiscoCloseLoadingBannerError();
+                  }
+                });
+        });
     }
+    
+    function initMainCharacterElements(dialogConfig) {
+    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").css("width", dialogConfig.selectWidth);       
+    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        
+        $('#bibiscoProjectFromSceneSelectMainCharacterSection').on("change", function(e) { 
+            var selectedMainCharacterSection = $('#bibiscoProjectFromSceneSelectMainCharacterSection option:selected').data('idmaincharactersection');
+            $('.mainCharacterContentSection').hide();
+            $('#bibiscoProjectFromSceneDivMainCharacter'+selectedMainCharacterSection).show();                  
+        });
+        $('.mainCharacterContentSection').hide();
+        $('#bibiscoProjectFromSceneDivMainCharacterPersonaldata').show();
+        $('#bibiscoProjectFromSceneDivMainCharacterContent').css("height", dialogConfig.height-250);
+        $('#bibiscoProjectFromSceneDivMainCharacterContent').jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
+    }
+    
+    function hideMainCharacterElements() {
+    	 $("#bibiscoProjectFromSceneSelectMainCharacterSection").hide();
+    	 $('#bibiscoProjectFromSceneDivMainCharacterContent').hide();
+    }
+    
+    function initSecondaryCharacterElements(dialogConfig) {
+        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").css("width", dialogConfig.selectWidth);
+        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        
+        $('#bibiscoProjectFromSceneSelectSecondaryCharacterSection').on("change", function(e) { 
+            var selectedSecondaryCharacterSection = $('#bibiscoProjectFromSceneSelectSecondaryCharacterSection option:selected').data('idsecondarycharactersection');
+            $('.secondaryCharacterContentSection').hide();
+            $('#bibiscoProjectFromSceneDivSecondaryCharacter'+selectedSecondaryCharacterSection).show();                  
+        });
+        $('.secondaryCharacterContentSection').hide();
+        $('#bibiscoProjectFromSceneDivSecondaryCharacterDescription').show();
+        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').css("height", dialogConfig.height-250);
+        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
+    }
+    
+    
+    function hideSecondaryCharacterElements() {
+    	$("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").hide();
+        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').hide();
+   }
+    
     
     function populateMainCharacterInfoQuestion(infoQuestion, targetDiv) {
     	
@@ -137,7 +213,7 @@
         targetDiv.append(infoWithoutQuestion.info);
     }
     
-    function populateProjectFromSceneMainCharacter(projectFromSceneMainCharacter) {
+    function populateMainCharacter(projectFromSceneMainCharacter) {
     	
     	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PERSONAL_DATA, $('#bibiscoProjectFromSceneDivMainCharacterPersonaldata'));
     	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PHYSIONOMY, $('#bibiscoProjectFromSceneDivMainCharacterPhysionomy'));
@@ -148,6 +224,9 @@
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.LIFE_BEFORE_STORY_BEGINNING, $('#bibiscoProjectFromSceneDivMainCharacterLifebeforestorybeginning'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.CONFLICT, $('#bibiscoProjectFromSceneDivMainCharacterConflict'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.EVOLUTION_DURING_THE_STORY, $('#bibiscoProjectFromSceneDivMainCharacterEvolutionduringthestory'));
+    }
+    
+    function populateSecondaryCharacter(projectFromSceneSecondaryCharacter) {
     	
     }
     
@@ -264,7 +343,7 @@
                 <c:forEach items="${characters}" var="character" varStatus="characterNumber">
                     <c:choose>
                         <c:when test="${characterNumber.count == 1}">
-                            <option selected="selected" data-idcharacter="${character.idCharacter}" data-mainCharacter="${character.mainCharacter}">${character.name}</option>
+                            <option selected="selected" data-idcharacter="${character.idCharacter}" data-maincharacter="${character.mainCharacter}">${character.name}</option>
                         </c:when>
                         <c:otherwise>
                             <option data-idcharacter="${character.idCharacter}" data-mainCharacter="${character.mainCharacter}">${character.name}</option>
@@ -307,8 +386,8 @@
               <div id="bibiscoProjectFromSceneDivMainCharacterImages" class="mainCharacterContentSection"></div>
            </div>
            <div id="bibiscoProjectFromSceneDivSecondaryCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
-              <div id="bibiscoProjectFromSceneDivSecondaryCharacterDescription"></div>
-              <div id="bibiscoProjectFromSceneDivSecondaryCharacterImages"></div>
+              <div id="bibiscoProjectFromSceneDivSecondaryCharacterDescription" class="secondaryCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivSecondaryCharacterImages" class="secondaryCharacterContentSection"></div>
            </div>
 	   </div>
 	   
