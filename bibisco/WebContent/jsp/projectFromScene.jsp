@@ -10,77 +10,90 @@
             
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoProjectFromSceneInitCallback(ajaxDialog, idCaller, dialogWidth, projectFromSceneDialogHeight) {
+    	
+    	// create dialog config object
+    	var dialogConfig = {
+            width: dialogWidth,
+            height: projectFromSceneDialogHeight,
+            selectWidth : dialogWidth - 150
+        }
+    	
+    	// init tabbing
     	$('#bibiscoProjectFromSceneULMainMenu a').click(function (e) {
    		  e.preventDefault();
    		  $(this).tab('show');
    		});
+    		
+    	// architecture
+    	initArchitectureTab(dialogConfig);
     	
-    	var dialogConfig = {
-   			width: dialogWidth,
-   			height: projectFromSceneDialogHeight,
-   			selectWidth : dialogWidth - 150
-    	}
+    	// chapters
+    	initChaptersTab(dialogConfig);
     	
-    	// set select option width
-    	var selectWidth = dialogWidth - 150;
+        // characters
+        initCharactersTab(dialogConfig);
+    }
+    
+    function initArchitectureTab(dialogConfig) {
+    	
     	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", dialogConfig.selectWidth);
-    	$("#bibiscoProjectFromSceneSelectChapter").css("width", dialogConfig.selectWidth);
-    	$("#bibiscoProjectFromSceneSelectChapterSection").css("width", dialogConfig.selectWidth);
-    	
-    	// hide chapter's section not visible at startup   
-    	$('bibiscoProjectFromSceneDivChapterReason').hide();
-    	$('bibiscoProjectFromSceneDivChapterNotes').hide();
-    	
-    	$("#bibiscoProjectFromSceneSelectArchitecture").select2({
+        $("#bibiscoProjectFromSceneSelectArchitecture").select2({
             escapeMarkup: function(m) { return m; }
         });
+    }
+    
+    function initChaptersTab(dialogConfig) {
     	
-    	$('#bibiscoProjectFromSceneDivChapterContent').css("height", projectFromSceneDialogHeight-250);
-    	
-    	// select chapter
-    	$("#bibiscoProjectFromSceneSelectChapter").select2({
+        $("#bibiscoProjectFromSceneSelectChapter").css("width", dialogConfig.selectWidth);
+        $("#bibiscoProjectFromSceneSelectChapterSection").css("width", dialogConfig.selectWidth);
+        
+        // hide chapter's section not visible at startup   
+        $('bibiscoProjectFromSceneDivChapterReason').hide();
+        $('bibiscoProjectFromSceneDivChapterNotes').hide();
+        $('#bibiscoProjectFromSceneDivChapterContent').css("height", dialogConfig.height-250);
+        
+        // select chapter
+        $("#bibiscoProjectFromSceneSelectChapter").select2({
             escapeMarkup: function(m) { return m; }
         });
-    	$("#bibiscoProjectFromSceneSelectChapter").on("change", function(e) { 
-    		var selectedChapter = $('#bibiscoProjectFromSceneSelectChapter option:selected').data('idchapter');
-    		$.ajax({
-    	          type: 'POST',
-    	          url: 'BibiscoServlet?action=changeChapterInProjectFromScene',
-    	          dataType: 'json',
-    	          data: {   
-    	        	  idChapter: selectedChapter
-    	          },
-    	          beforeSend:function(){
-    	              bibiscoOpenLoadingBanner();
-    	          },
-    	          success:function(projectFromSceneChapter){
-    	        	  populateChapter(projectFromSceneChapter, projectFromSceneDialogHeight);
-    	        	  bibiscoCloseLoadingBannerSuccess();
-    	          },
-    	          error:function(){
-    	              bibiscoCloseLoadingBannerError();
-    	          }
-    	        });
+        $("#bibiscoProjectFromSceneSelectChapter").on("change", function(e) { 
+            var selectedChapter = $('#bibiscoProjectFromSceneSelectChapter option:selected').data('idchapter');
+            $.ajax({
+                  type: 'POST',
+                  url: 'BibiscoServlet?action=changeChapterInProjectFromScene',
+                  dataType: 'json',
+                  data: {   
+                      idChapter: selectedChapter
+                  },
+                  beforeSend:function(){
+                      bibiscoOpenLoadingBanner();
+                  },
+                  success:function(projectFromSceneChapter){
+                      populateChapter(projectFromSceneChapter, dialogConfig.height);
+                      bibiscoCloseLoadingBannerSuccess();
+                  },
+                  error:function(){
+                      bibiscoCloseLoadingBannerError();
+                  }
+                });
         });
-    	
-    	// select chapter sections
+        
+        // select chapter sections
         $('#bibiscoProjectFromSceneSelectChapterSection').select2({
             escapeMarkup: function(m) { return m; }
         });
         $('#bibiscoProjectFromSceneSelectChapterSection').on("change", function(e) { 
-        	var selectedChapterSection = $('#bibiscoProjectFromSceneSelectChapterSection option:selected').data('idchaptersection');
-        	$('.chapterContentSection').hide();
+            var selectedChapterSection = $('#bibiscoProjectFromSceneSelectChapterSection option:selected').data('idchaptersection');
+            $('.chapterContentSection').hide();
             $('#bibiscoProjectFromSceneDivChapter'+selectedChapterSection).show();
         });
-    	
+        
         // populate chapter section
         populateChapter(${projectFromSceneChapter});
-        
-       
-        initCharacter(dialogConfig);
+            	
     }
     
-    function initCharacter(dialogConfig) {
+    function initCharactersTab(dialogConfig) {
         
         <c:if test="${fn:length(characters) > 0}">
            initSelectCharacter(dialogConfig);
