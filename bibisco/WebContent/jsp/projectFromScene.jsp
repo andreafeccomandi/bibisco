@@ -47,16 +47,16 @@
         $("#bibiscoProjectFromSceneSelectChapter").css("width", dialogConfig.selectWidth);
         $("#bibiscoProjectFromSceneSelectChapterSection").css("width", dialogConfig.selectWidth);
         
-        // hide chapter's section not visible at startup   
-        $('bibiscoProjectFromSceneDivChapterReason').hide();
-        $('bibiscoProjectFromSceneDivChapterNotes').hide();
+        // hide chapter's sections not visible at startup   
+        $('#bibiscoProjectFromSceneDivChapterReason').hide();
+        $('#bibiscoProjectFromSceneDivChapterNotes').hide();
         $('#bibiscoProjectFromSceneDivChapterContent').css("height", dialogConfig.height-250);
         
         // select chapter
-        $("#bibiscoProjectFromSceneSelectChapter").select2({
+        $('#bibiscoProjectFromSceneSelectChapter').select2({
             escapeMarkup: function(m) { return m; }
         });
-        $("#bibiscoProjectFromSceneSelectChapter").on("change", function(e) { 
+        $('#bibiscoProjectFromSceneSelectChapter').on("change", function(e) { 
             var selectedChapter = $('#bibiscoProjectFromSceneSelectChapter option:selected').data('idchapter');
             $.ajax({
                   type: 'POST',
@@ -99,20 +99,19 @@
            initSelectCharacter(dialogConfig);
            <c:choose>
 	           <c:when test="${not empty projectFromSceneMainCharacter}">
-	               initMainCharacterElements(dialogConfig)
+	               initSelectCharacterSection(dialogConfig, true);
+	               initCharacterElements(dialogConfig, true);
 	               populateMainCharacter(${projectFromSceneMainCharacter}); 
-	               hideSecondaryCharacterElements();
-	           </c:when>
-	           <c:when test="${not empty projectFromSceneSecondaryCharacter}">
-	               initSecondaryCharacterElements(dialogConfig) 
-	               populateSecondaryCharacter(${projectFromSceneSecondaryCharacter});
-	               hideMainCharacterElements();
 	           </c:when>
 	           <c:otherwise>
-	           hideMainCharacterElements();
-	           hideSecondaryCharacterElements();
+		           initSelectCharacterSection(dialogConfig, false);
+	               initCharacterElements(dialogConfig, false);
+	               populateSecondaryCharacter(${projectFromSceneSecondaryCharacter});
 	           </c:otherwise>
            </c:choose>   
+        </c:if>
+        <c:if test="${fn:length(characters) == 0}">
+            $('#bibiscoProjectFromSceneDivCharacterContent').hide();
         </c:if>
     }
     
@@ -124,14 +123,10 @@
         $("#bibiscoProjectFromSceneSelectCharacter").on("change", function(e) { 
             var selectedCharacter = $('#bibiscoProjectFromSceneSelectCharacter option:selected').data('idcharacter');
             var mainCharacter = $('#bibiscoProjectFromSceneSelectCharacter option:selected').data('maincharacter');
-
-            var action;
-            if (mainCharacter) {
-                action = 'changeMainCharacterInProjectFromScene';
-            } else {
-                action = 'changeSecondaryCharacterInProjectFromScene';
-            }
-            
+            var showingMainCharacter = $('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter');
+            var toggleMainSecondary = (!mainCharacter && showingMainCharacter) || (mainCharacter && !showingMainCharacter);
+            var action = mainCharacter ? 'changeMainCharacterInProjectFromScene' : 'changeSecondaryCharacterInProjectFromScene';
+           
             $.ajax({
                   type: 'POST',
                   url: 'BibiscoServlet?action='+action,
@@ -144,8 +139,14 @@
                   },
                   success:function(projectFromSceneCharacter){
                       if (mainCharacter) {
-                          populateMainCharacter(projectFromSceneCharacter);               
+                    	  if (toggleMainSecondary) {
+                    		 updateCharacter(true);
+                    	  }
+                          populateMainCharacter(projectFromSceneCharacter); 
                       } else {
+                    	  if (toggleMainSecondary) {
+                    		 updateCharacter(false);
+                    	  }
                           populateSecondaryCharacter(projectFromSceneCharacter);
                       }
                       bibiscoCloseLoadingBannerSuccess();
@@ -157,55 +158,91 @@
         });
     }
     
-    function initMainCharacterElements(dialogConfig) {
-    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").css("width", dialogConfig.selectWidth);       
-    	$("#bibiscoProjectFromSceneSelectMainCharacterSection").select2({
+    function initSelectCharacterSection(dialogConfig, main) {
+    	
+        $('#bibiscoProjectFromSceneSelectCharacterSection').css("width", dialogConfig.selectWidth);   
+        if (main) {
+        	addMainCharacterOptionToSelectCharacterSection();
+        } else {
+        	addSecondaryCharacterOptionToSelectCharacterSection();
+        }
+        
+        $("#bibiscoProjectFromSceneSelectCharacterSection").show();
+        $("#bibiscoProjectFromSceneSelectCharacterSection").select2({
             escapeMarkup: function(m) { return m; }
         });
-        
-        $('#bibiscoProjectFromSceneSelectMainCharacterSection').on("change", function(e) { 
-            var selectedMainCharacterSection = $('#bibiscoProjectFromSceneSelectMainCharacterSection option:selected').data('idmaincharactersection');
-            $('.mainCharacterContentSection').hide();
-            $('#bibiscoProjectFromSceneDivMainCharacter'+selectedMainCharacterSection).show();                  
+        $('#bibiscoProjectFromSceneSelectCharacterSection').on("change", function(e) { 
+            var selectedCharacterSection = $('#bibiscoProjectFromSceneSelectCharacterSection option:selected').data('idcharactersection');
+            $('.characterContentSection').hide();
+            $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();                  
         });
-        $('.mainCharacterContentSection').hide();
-        $('#bibiscoProjectFromSceneDivMainCharacterPersonaldata').show();
-        $('#bibiscoProjectFromSceneDivMainCharacterContent').css("height", dialogConfig.height-250);
-        $('#bibiscoProjectFromSceneDivMainCharacterContent').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
     }
     
-    function hideMainCharacterElements() {
-    	 $("#bibiscoProjectFromSceneSelectMainCharacterSection").hide();
-    	 $('#bibiscoProjectFromSceneDivMainCharacterContent').hide();
+    function addMainCharacterOptionToSelectCharacterSection() {
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Personaldata" id="bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData">Dati personali</option>');   	   
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Physionomy"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPhysionomy">Aspetto fisico</option>'); 
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Behaviors"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionBehaviors">Modi di fare</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Psychology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPsychology">Psicologia</option>');  
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Ideas"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionIdeas">Idee e passioni</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Sociology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionSociology">Sociologia</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Lifebeforestorybeginning"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionLifebeforestorybeginning">Vita precedente alla storia</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Conflict"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionConflict">Conflitto</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Evolutionduringthestory"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionEvolutionduringthestory">Evoluzione</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages">Immagini</option>');
+    	$('#bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData').attr('selected','selected'); 
+    	$('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', true);
     }
     
-    function initSecondaryCharacterElements(dialogConfig) {
-        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").css("width", dialogConfig.selectWidth);
-        $("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").select2({
-            escapeMarkup: function(m) { return m; }
-        });
-        
-        $('#bibiscoProjectFromSceneSelectSecondaryCharacterSection').on("change", function(e) { 
-            var selectedSecondaryCharacterSection = $('#bibiscoProjectFromSceneSelectSecondaryCharacterSection option:selected').data('idsecondarycharactersection');
-            $('.secondaryCharacterContentSection').hide();
-            $('#bibiscoProjectFromSceneDivSecondaryCharacter'+selectedSecondaryCharacterSection).show();                  
-        });
-        $('.secondaryCharacterContentSection').hide();
-        $('#bibiscoProjectFromSceneDivSecondaryCharacterDescription').show();
-        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').css("height", dialogConfig.height-250);
-        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+    function addSecondaryCharacterOptionToSelectCharacterSection() {
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Description" id="bibiscoProjectFromSceneSelectCharacterSectionOptionDescription">Descrizione</option>');
+        $("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages">Immagini</option>');
+        $('#bibiscoProjectFromSceneSelectCharacterSectionOptionDescription').attr('selected','selected');
+        $('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', false);
     }
     
+    function initCharacterElements(dialogConfig, main) {
+    	
+        $('.characterContentSection').hide();
+        if (main) {
+            $('#bibiscoProjectFromSceneDivCharacterPersonaldata').show();
+        } else {
+        	$('#bibiscoProjectFromSceneDivCharacterDescription').show();
+        }
+	    $('#bibiscoProjectFromSceneDivCharacterContent').css("height", dialogConfig.height-250);
+	    $('#bibiscoProjectFromSceneDivCharacterContent').jScrollPane({
+	        autoReinitialise: true, animateScroll: true, verticalGutter: 30
+	    }).data('jsp');
+    }
+   
     
-    function hideSecondaryCharacterElements() {
-    	$("#bibiscoProjectFromSceneSelectSecondaryCharacterSection").hide();
-        $('#bibiscoProjectFromSceneDivSecondaryCharacterContent').hide();
-   }
-    
+    function updateCharacter(secondaryToMain) {
+    	
+    	 $("#bibiscoProjectFromSceneSelectCharacterSection").select2('destroy');
+    	 $("#bibiscoProjectFromSceneSelectCharacterSection option:selected").removeAttr('selected');
+    	 if (secondaryToMain) {
+    		 addMainCharacterOptionToSelectCharacterSection();
+         } else {
+        	 addSecondaryCharacterOptionToSelectCharacterSection();
+         }
+         
+         $('#bibiscoProjectFromSceneSelectCharacterSection').select2({
+             escapeMarkup: function(m) { return m; }
+         });
+         $('#bibiscoProjectFromSceneSelectCharacterSection').on("change", function(e) { 
+             var selectedCharacterSection = $('#bibiscoProjectFromSceneSelectCharacterSection option:selected').data('idcharactersection');
+             $('.characterContentSection').hide();
+             $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();                  
+         });
+         
+         $('.characterContentSection').hide();
+         if (secondaryToMain) {
+             $('#bibiscoProjectFromSceneDivCharacterPersonaldata').show();
+         } else {
+             $('#bibiscoProjectFromSceneDivCharacterDescription').show();
+         }
+    }
     
     function populateMainCharacterInfoQuestion(infoQuestion, targetDiv) {
     	
@@ -227,20 +264,20 @@
     }
     
     function populateMainCharacter(projectFromSceneMainCharacter) {
-    	
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PERSONAL_DATA, $('#bibiscoProjectFromSceneDivMainCharacterPersonaldata'));
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PHYSIONOMY, $('#bibiscoProjectFromSceneDivMainCharacterPhysionomy'));
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.BEHAVIORS, $('#bibiscoProjectFromSceneDivMainCharacterBehaviors'));
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PSYCHOLOGY, $('#bibiscoProjectFromSceneDivMainCharacterPsychology'));
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.IDEAS, $('#bibiscoProjectFromSceneDivMainCharacterIdeas'));
-    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.SOCIOLOGY, $('#bibiscoProjectFromSceneDivMainCharacterSociology'));
-    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.LIFE_BEFORE_STORY_BEGINNING, $('#bibiscoProjectFromSceneDivMainCharacterLifebeforestorybeginning'));
-    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.CONFLICT, $('#bibiscoProjectFromSceneDivMainCharacterConflict'));
-    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.EVOLUTION_DURING_THE_STORY, $('#bibiscoProjectFromSceneDivMainCharacterEvolutionduringthestory'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PERSONAL_DATA, $('#bibiscoProjectFromSceneDivCharacterPersonaldata'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PHYSIONOMY, $('#bibiscoProjectFromSceneDivCharacterPhysionomy'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.BEHAVIORS, $('#bibiscoProjectFromSceneDivCharacterBehaviors'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PSYCHOLOGY, $('#bibiscoProjectFromSceneDivCharacterPsychology'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.IDEAS, $('#bibiscoProjectFromSceneDivCharacterIdeas'));
+    	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.SOCIOLOGY, $('#bibiscoProjectFromSceneDivCharacterSociology'));
+    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.LIFE_BEFORE_STORY_BEGINNING, $('#bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning'));
+    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.CONFLICT, $('#bibiscoProjectFromSceneDivCharacterConflict'));
+    	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.EVOLUTION_DURING_THE_STORY, $('#bibiscoProjectFromSceneDivCharacterEvolutionduringthestory'));
     }
     
     function populateSecondaryCharacter(projectFromSceneSecondaryCharacter) {
-    	
+    	$('#bibiscoProjectFromSceneDivCharacterDescription').html('');
+        $('#bibiscoProjectFromSceneDivCharacterDescription').append(projectFromSceneSecondaryCharacter.description);
     }
     
     function populateChapter(projectFromSceneChapter) {
@@ -364,21 +401,7 @@
                     </c:choose>
                 </c:forEach>
              </select>
-             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectMainCharacterSection">
-                <option selected="selected" data-idmaincharactersection="Personaldata">Dati personali</option>
-                <option data-idmaincharactersection="Physionomy">Aspetto fisico</option>  
-                <option data-idmaincharactersection="Behaviors">Modi di fare</option>
-                <option data-idmaincharactersection="Psychology">Psicologia</option>  
-                <option data-idmaincharactersection="Ideas">Idee e passioni</option>
-                <option data-idmaincharactersection="Sociology">Sociologia</option>
-                <option data-idmaincharactersection="Lifebeforestorybeginning">Vita precedente alla storia</option>
-                <option data-idmaincharactersection="Conflict">Conflitto</option>
-                <option data-idmaincharactersection="Evolutionduringthestory">Evoluzione</option>
-                <option data-idmaincharactersection="Images">Immagini</option>
-            </select>
-            <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectSecondaryCharacterSection">
-                <option selected="selected" data-idsecondarycharactersection="description">Descrizione</option>
-                <option data-idsecondarycharactersection="images">Immagini</option>
+             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacterSection">
             </select>
           </c:when>
           <c:otherwise>
@@ -386,21 +409,18 @@
           </c:otherwise>
 	   </c:choose>
 	   <hr style="margin-top: 10px;" />
-           <div id="bibiscoProjectFromSceneDivMainCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
-              <div id="bibiscoProjectFromSceneDivMainCharacterPersonaldata" class="mainCharacterContentSection">dati personali</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterPhysionomy" class="mainCharacterContentSection">fisionomia</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterBehaviors" class="mainCharacterContentSection">comportamenti</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterPsychology" class="mainCharacterContentSection">psicologia</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterIdeas" class="mainCharacterContentSection">idee</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterSociology" class="mainCharacterContentSection">sociologia</div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterLifebeforestorybeginning" class="mainCharacterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterConflict" class="mainCharacterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterEvolutionduringthestory" class="mainCharacterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivMainCharacterImages" class="mainCharacterContentSection"></div>
-           </div>
-           <div id="bibiscoProjectFromSceneDivSecondaryCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
-              <div id="bibiscoProjectFromSceneDivSecondaryCharacterDescription" class="secondaryCharacterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivSecondaryCharacterImages" class="secondaryCharacterContentSection"></div>
+           <div id="bibiscoProjectFromSceneDivCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
+              <div id="bibiscoProjectFromSceneDivCharacterPersonaldata" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterPhysionomy" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterBehaviors" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterPsychology" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterIdeas" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterSociology" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterConflict" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterEvolutionduringthestory" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterDescription" class="characterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterImages" class="characterContentSection"></div>
            </div>
 	   </div>
 	   
