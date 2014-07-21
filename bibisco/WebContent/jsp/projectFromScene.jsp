@@ -15,7 +15,8 @@
     	var dialogConfig = {
             width: dialogWidth,
             height: projectFromSceneDialogHeight,
-            selectWidth : dialogWidth - 150
+            selectWidth : dialogWidth - 150,
+            imageWidth : dialogWidth - 50
         }
     	
     	// init tabbing
@@ -101,12 +102,12 @@
 	           <c:when test="${not empty projectFromSceneMainCharacter}">
 	               initSelectCharacterSection(dialogConfig, true);
 	               initCharacterElements(dialogConfig, true);
-	               populateMainCharacter(${projectFromSceneMainCharacter}); 
+	               populateMainCharacter(${projectFromSceneMainCharacter}, dialogConfig); 
 	           </c:when>
 	           <c:otherwise>
 		           initSelectCharacterSection(dialogConfig, false);
 	               initCharacterElements(dialogConfig, false);
-	               populateSecondaryCharacter(${projectFromSceneSecondaryCharacter});
+	               populateSecondaryCharacter(${projectFromSceneSecondaryCharacter}, dialogConfig);
 	           </c:otherwise>
            </c:choose>   
         </c:if>
@@ -142,12 +143,12 @@
                     	  if (toggleMainSecondary) {
                     		 updateCharacter(true);
                     	  }
-                          populateMainCharacter(projectFromSceneCharacter); 
+                          populateMainCharacter(projectFromSceneCharacter, dialogConfig); 
                       } else {
                     	  if (toggleMainSecondary) {
                     		 updateCharacter(false);
                     	  }
-                          populateSecondaryCharacter(projectFromSceneCharacter);
+                          populateSecondaryCharacter(projectFromSceneCharacter, dialogConfig);
                       }
                       bibiscoCloseLoadingBannerSuccess();
                   },
@@ -263,7 +264,17 @@
         targetDiv.append(infoWithoutQuestion.info);
     }
     
-    function populateMainCharacter(projectFromSceneMainCharacter) {
+    function populateImages(character, dialogConfig) {
+    	var imagesDiv = $('#bibiscoProjectFromSceneDivCharacterImages');
+        imagesDiv.html('');
+        for (i=0;i<character.images.length;i++) {
+            imagesDiv.append('<h4>'+character.images[i].description+'</h4>');
+            imagesDiv.append('<img src="BibiscoServlet?action=getImage&idImage='+character.images[i].idImage+'" style="width: 100%;  height: auto; display: inline; max-width: '+dialogConfig.imageWidth+'px"/>');
+            imagesDiv.append('<p></p>');   
+        }
+    }
+    
+    function populateMainCharacter(projectFromSceneMainCharacter, dialogConfig) {
     	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PERSONAL_DATA, $('#bibiscoProjectFromSceneDivCharacterPersonaldata'));
     	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.PHYSIONOMY, $('#bibiscoProjectFromSceneDivCharacterPhysionomy'));
     	populateMainCharacterInfoQuestion(projectFromSceneMainCharacter.BEHAVIORS, $('#bibiscoProjectFromSceneDivCharacterBehaviors'));
@@ -273,11 +284,13 @@
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.LIFE_BEFORE_STORY_BEGINNING, $('#bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.CONFLICT, $('#bibiscoProjectFromSceneDivCharacterConflict'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.EVOLUTION_DURING_THE_STORY, $('#bibiscoProjectFromSceneDivCharacterEvolutionduringthestory'));
+    	populateImages(projectFromSceneMainCharacter, dialogConfig)
     }
     
-    function populateSecondaryCharacter(projectFromSceneSecondaryCharacter) {
+    function populateSecondaryCharacter(projectFromSceneSecondaryCharacter, dialogConfig) {
     	$('#bibiscoProjectFromSceneDivCharacterDescription').html('');
         $('#bibiscoProjectFromSceneDivCharacterDescription').append(projectFromSceneSecondaryCharacter.description);
+        populateImages(projectFromSceneSecondaryCharacter, dialogConfig);
     }
     
     function populateChapter(projectFromSceneChapter) {

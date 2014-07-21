@@ -461,6 +461,7 @@ public class CharacterManager {
 		lProjectFromSceneSecondaryCharacterDTO.setDescription(lSecondaryCharacterDTO.getDescription());
 		lProjectFromSceneSecondaryCharacterDTO.setPosition(lSecondaryCharacterDTO.getPosition());
 		lProjectFromSceneSecondaryCharacterDTO.setMainCharacter(lSecondaryCharacterDTO.isMainCharacter());
+		lProjectFromSceneSecondaryCharacterDTO.setImageDTOList(ImageManager.loadImagesByElement(pIntIdCharacter, ElementType.CHARACTERS));
 		
 		mLog.debug("Start loadProjectFromSceneSecondaryCharacter(",pIntIdCharacter.toString(),")");
 		
@@ -490,12 +491,14 @@ public class CharacterManager {
 			lListCharacterInfoWithoutQuestionsDTO.add(loadCharacterInfoWithoutQuestions(lCharacterInfoWithoutQuestions, pIntIdCharacter));
 		}
 		
+		
 		lProjectFromSceneMainCharacterDTO.setIdCharacter(pIntIdCharacter);
 		lProjectFromSceneMainCharacterDTO.setName(lMainCharacterDTO.getName());
 		lProjectFromSceneMainCharacterDTO.setPosition(lMainCharacterDTO.getPosition());
 		lProjectFromSceneMainCharacterDTO.setMainCharacter(true);
 		lProjectFromSceneMainCharacterDTO.setCharacterInfoQuestionsDTOList(lListCharacterInfoQuestionsDTO);
 		lProjectFromSceneMainCharacterDTO.setCharacterInfoWithoutQuestionsDTOList(lListCharacterInfoWithoutQuestionsDTO);
+		lProjectFromSceneMainCharacterDTO.setImageDTOList(ImageManager.loadImagesByElement(pIntIdCharacter, ElementType.CHARACTERS));
 		
 		mLog.debug("End loadProjectFromSceneMainCharacter(",pIntIdCharacter.toString(),")");
 		

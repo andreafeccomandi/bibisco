@@ -132,7 +132,7 @@
 					</c:if>
 							<div class="loadingImage" style="width: 810px; height: 500px; text-align:center; 
 							line-height:500px;  vertical-align: middle;">
-								<img data-idimage="${image.idImage}" src="BibiscoServlet?action=getImage&idImage=${image.idImage}" style="display: inline;"/>
+								<img data-idimage="${image.idImage}" src="BibiscoServlet?action=getImage&idImage=${image.idImage}" style="display: inline;max-height: 500px; height: 100%; width: auto;"/>
 							</div>
 							<div class="carousel-caption">
 								<h4>${image.description}</h4>

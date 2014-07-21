@@ -14,6 +14,9 @@
  */
 package com.bibisco.bean;
 
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +32,7 @@ import com.bibisco.log.Log;
 public class ProjectFromSceneSecondaryCharacterDTO extends SecondaryCharacterDTO {
 	
 	private static Log mLog = Log.getInstance(ProjectFromSceneSecondaryCharacterDTO.class);
-
+	List<ImageDTO> imageDTOList;
 	
 	public JSONObject toJSONObject() {
 		
@@ -43,11 +46,31 @@ public class ProjectFromSceneSecondaryCharacterDTO extends SecondaryCharacterDTO
 			lJSONObject.put("mainCharacter", mainCharacter);
 			lJSONObject.put("description", description);
 			
+			// images
+			if (imageDTOList != null) {
+				JSONArray lJSONArrayImages = new JSONArray();
+				for (ImageDTO lImageDTO : imageDTOList) {
+					JSONObject lJsonObjectImage = new JSONObject();
+					lJsonObjectImage.put("idImage", lImageDTO.getIdImage());
+					lJsonObjectImage.put("description", lImageDTO.getDescription());
+					lJSONArrayImages.put(lJsonObjectImage);
+				}
+				lJSONObject.put("images", lJSONArrayImages);
+			}
+			
 		} catch (JSONException e) {
 			mLog.error(e);
 			throw new BibiscoException(e, BibiscoException.FATAL);
 		}
 		
 		return lJSONObject;
+	}
+
+	public List<ImageDTO> getImageDTOList() {
+		return imageDTOList;
+	}
+
+	public void setImageDTOList(List<ImageDTO> imageDTOList) {
+		this.imageDTOList = imageDTOList;
 	}
 }

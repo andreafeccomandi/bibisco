@@ -36,6 +36,7 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 
 	List<CharacterInfoQuestionsDTO> characterInfoQuestionsDTOList;
 	List<CharacterInfoWithoutQuestionsDTO> characterInfoWithoutQuestionsDTOList;
+	List<ImageDTO> imageDTOList;
 	
 	
 	public JSONObject toJSONObject() {
@@ -88,6 +89,18 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 				}
 			}
 			
+			// images
+			if (imageDTOList != null) {
+				JSONArray lJSONArrayImages = new JSONArray();
+				for (ImageDTO lImageDTO : imageDTOList) {
+					JSONObject lJsonObjectImage = new JSONObject();
+					lJsonObjectImage.put("idImage", lImageDTO.getIdImage());
+					lJsonObjectImage.put("description", lImageDTO.getDescription());
+					lJSONArrayImages.put(lJsonObjectImage);
+				}
+				lJSONObject.put("images", lJSONArrayImages);
+			}
+			
 			
 		} catch (JSONException e) {
 			mLog.error(e);
@@ -116,5 +129,15 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 
 	public void setCharacterInfoWithoutQuestionsDTOList(List<CharacterInfoWithoutQuestionsDTO> characterInfoWithoutQuestionsDTOList) {
 		this.characterInfoWithoutQuestionsDTOList = characterInfoWithoutQuestionsDTOList;
+	}
+
+
+	public List<ImageDTO> getImageDTOList() {
+		return imageDTOList;
+	}
+
+
+	public void setImageDTOList(List<ImageDTO> imageDTOList) {
+		this.imageDTOList = imageDTOList;
 	}
 }
