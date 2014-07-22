@@ -33,6 +33,9 @@
     	
         // characters
         initCharactersTab(dialogConfig);
+        
+        // locations
+        initLocationsTab(dialogConfig);
     }
     
     function initArchitectureTab(dialogConfig) {
@@ -263,13 +266,12 @@
         targetDiv.html('');
         targetDiv.append(infoWithoutQuestion.info);
     }
-    
-    function populateImages(character, dialogConfig) {
-    	var imagesDiv = $('#bibiscoProjectFromSceneDivCharacterImages');
+        
+    function populateImages(imagesDiv, element, dialogConfig) {
         imagesDiv.html('');
-        for (i=0;i<character.images.length;i++) {
-            imagesDiv.append('<h4>'+character.images[i].description+'</h4>');
-            imagesDiv.append('<img src="BibiscoServlet?action=getImage&idImage='+character.images[i].idImage+'" style="width: 100%;  height: auto; display: inline; max-width: '+dialogConfig.imageWidth+'px"/>');
+        for (i=0;i<element.images.length;i++) {
+            imagesDiv.append('<h4>'+element.images[i].description+'</h4>');
+            imagesDiv.append('<img src="BibiscoServlet?action=getImage&idImage='+element.images[i].idImage+'" style="width: 100%;  height: auto; display: inline; max-width: '+dialogConfig.imageWidth+'px"/>');
             imagesDiv.append('<p></p>');   
         }
     }
@@ -284,13 +286,13 @@
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.LIFE_BEFORE_STORY_BEGINNING, $('#bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.CONFLICT, $('#bibiscoProjectFromSceneDivCharacterConflict'));
     	populateMainCharacterInfoWithoutQuestion(projectFromSceneMainCharacter.EVOLUTION_DURING_THE_STORY, $('#bibiscoProjectFromSceneDivCharacterEvolutionduringthestory'));
-    	populateImages(projectFromSceneMainCharacter, dialogConfig)
+    	populateImages($('#bibiscoProjectFromSceneDivCharacterImages'), projectFromSceneMainCharacter, dialogConfig);
     }
     
     function populateSecondaryCharacter(projectFromSceneSecondaryCharacter, dialogConfig) {
     	$('#bibiscoProjectFromSceneDivCharacterDescription').html('');
         $('#bibiscoProjectFromSceneDivCharacterDescription').append(projectFromSceneSecondaryCharacter.description);
-        populateImages(projectFromSceneSecondaryCharacter, dialogConfig);
+        populateImages($('#bibiscoProjectFromSceneDivCharacterImages'),projectFromSceneSecondaryCharacter, dialogConfig);
     }
     
     function populateChapter(projectFromSceneChapter) {
@@ -334,6 +336,67 @@
     	chapterDiv.jScrollPane({
             autoReinitialise: true, animateScroll: true, verticalGutter: 30
         }).data('jsp');
+    }
+    
+    function initLocationsTab(dialogConfig) {
+        
+        <c:if test="${fn:length(locations) > 0}">
+        
+        // select location
+        $('#bibiscoProjectFromSceneSelectLocation').css("width", dialogConfig.selectWidth);
+        $('#bibiscoProjectFromSceneSelectLocation').select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        $('#bibiscoProjectFromSceneSelectLocation').on("change", function(e) { 
+            var selectedLocation = $('#bibiscoProjectFromSceneSelectLocation option:selected').data('idlocation');
+            $.ajax({
+                  type: 'POST',
+                  url: 'BibiscoServlet?action=changeLocationInProjectFromScene',
+                  dataType: 'json',
+                  data: {   
+                	  idLocation: selectedLocation
+                  },
+                  beforeSend:function(){
+                      bibiscoOpenLoadingBanner();
+                  },
+                  success:function(projectFromSceneLocation){
+                      populateLocation(projectFromSceneLocation, dialogConfig.height);
+                      bibiscoCloseLoadingBannerSuccess();
+                  },
+                  error:function(){
+                      bibiscoCloseLoadingBannerError();
+                  }
+                });
+        });
+        
+        // select location section
+        $('#bibiscoProjectFromSceneSelectLocationSection').css("width", dialogConfig.selectWidth);
+        $('#bibiscoProjectFromSceneSelectLocationSection').select2({
+            escapeMarkup: function(m) { return m; }
+        });
+        $('#bibiscoProjectFromSceneSelectLocationSection').on("change", function(e) { 
+            var selectedLocationSection = $('#bibiscoProjectFromSceneSelectLocationSection option:selected').data('idlocationsection');
+            $('.locationContentSection').hide();
+            $('#bibiscoProjectFromSceneDivLocation'+selectedLocationSection).show();                  
+        });
+        
+        // location content
+        $('#bibiscoProjectFromSceneDivLocationImages').hide();
+        $('#bibiscoProjectFromSceneDivLocationContent').css("height", dialogConfig.height-250);
+        $('#bibiscoProjectFromSceneDivLocationContent').jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
+        
+        populateLocation(${projectFromSceneLocation}, dialogConfig);
+        
+        </c:if>
+
+    }
+    
+    function populateLocation(projectFromSceneLocation, dialogConfig) {
+        $('#bibiscoProjectFromSceneDivLocationDescription').html('');
+        $('#bibiscoProjectFromSceneDivLocationDescription').append(projectFromSceneLocation.description);
+        populateImages($('#bibiscoProjectFromSceneDivLocationImages'),projectFromSceneLocation, dialogConfig);
     }
     
     <!-- CLOSE DIALOG CALLBACK -->
@@ -443,11 +506,29 @@
 	   <c:choose>
           <c:when test="${fn:length(locations) > 0}">
              <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocation">
-                <option selected="selected" data-idchapter="${chapter.idChapter}">${chapter.title}</option>
+                <c:forEach items="${locations}" var="location" varStatus="locationNumber">
+                    <c:choose>
+                        <c:when test="${locationNumber.count == 1}">
+                            <option selected="selected" data-idlocation="${location.idLocation}">${location.name} (${location.fullyQualifiedArea})</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option data-idlocation="${location.idLocation}">${location.name} (${location.fullyQualifiedArea})</option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
              </select>
+             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocationSection">
+	              <option selected="selected" data-idlocationsection="Description">Descrizione</option>
+	              <option data-idlocationsection="Images">Immagini</option>  
+	         </select>
+             <hr style="margin-top: 10px;" />
+	           <div id="bibiscoProjectFromSceneDivLocationContent" style="text-align: justify; width: 100%; overflow: scroll;">
+	              <div id="bibiscoProjectFromSceneDivLocationDescription" class="locationContentSection"></div>
+	              <div id="bibiscoProjectFromSceneDivLocationImages" class="locationContentSection"></div>
+	           </div>	          
           </c:when>
           <c:otherwise>
-             <em>Non sono ancora stati creati personaggi</em>
+             <em>Non sono ancora stati creati luoghi</em>
           </c:otherwise>
        </c:choose>
        

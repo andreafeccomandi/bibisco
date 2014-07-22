@@ -32,14 +32,14 @@ public class LocationDTO implements IAnalysisChapterPresenceItem {
 	
 	private Log mLog = Log.getInstance(LocationDTO.class);
 	
-	private Integer idLocation;
-	private Integer position;
-	private String nation;
-	private String state;
-	private String city;
-	private String name;
-	private String description;
-	private TaskStatus taskStatus;
+	Integer idLocation;
+	Integer position;
+	String nation;
+	String state;
+	String city;
+	String name;
+	String description;
+	TaskStatus taskStatus;
 	
 	public String getFullyQualifiedArea() {
 		

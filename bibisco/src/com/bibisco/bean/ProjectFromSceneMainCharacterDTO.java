@@ -106,8 +106,7 @@ public class ProjectFromSceneMainCharacterDTO extends CharacterDTO {
 			mLog.error(e);
 			throw new BibiscoException(e, BibiscoException.FATAL);
 		}
-		
-		mLog.debug("******************* ", lJSONObject.toString());
+
 		return lJSONObject;
 	}
 
