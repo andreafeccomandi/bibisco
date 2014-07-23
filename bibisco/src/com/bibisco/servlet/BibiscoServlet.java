@@ -1022,15 +1022,17 @@ public class BibiscoServlet extends HttpServlet {
 		Integer lIntIdScene = Integer.parseInt(pRequest.getParameter("idScene"));
 		pRequest.setAttribute("idActualScene", lIntIdScene);
 		
-		// load ProjectFromSceneChapterDTO
-		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.loadProjectFromSceneChapterByIdScene(lIntIdScene);
-		pRequest.setAttribute("projectFromSceneChapter", lProjectFromSceneChapterDTO.toJSONObject());
+		// load architecture
+		ProjectFromSceneArchitectureDTO lProjectFromSceneArchitectureDTO = ProjectFromSceneManager.loadArchitecture();
+		pRequest.setAttribute("projectFromSceneArchitecture", lProjectFromSceneArchitectureDTO);
 		
 		// load chapters
 		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
 		pRequest.setAttribute("chapters", lListChapterDTO);
 		
-		// set actual chapter
+		// load  actual chapter
+		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.loadChapterByIdScene(lIntIdScene);
+		pRequest.setAttribute("projectFromSceneChapter", lProjectFromSceneChapterDTO.toJSONObject());
 		pRequest.setAttribute("idActualChapter", lProjectFromSceneChapterDTO.getSceneRevisionDTOList().get(0).getIdChapter());
 		
 		// load characters
@@ -1041,10 +1043,10 @@ public class BibiscoServlet extends HttpServlet {
 		if(lListCharacterDTO!=null && lListCharacterDTO.size()>0) {
 			CharacterDTO lCharacterDTO = lListCharacterDTO.get(0);
 			if (lCharacterDTO.isMainCharacter()) {
-				ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = ProjectFromSceneManager.loadProjectFromSceneMainCharacter(lCharacterDTO.getIdCharacter());
+				ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = ProjectFromSceneManager.loadMainCharacter(lCharacterDTO.getIdCharacter());
 				pRequest.setAttribute("projectFromSceneMainCharacter", lProjectFromSceneMainCharacterDTO.toJSONObject().toString());				
 			} else {
-				ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = ProjectFromSceneManager.loadProjectFromSceneSecondaryCharacter(lCharacterDTO.getIdCharacter());
+				ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = ProjectFromSceneManager.loadSecondaryCharacter(lCharacterDTO.getIdCharacter());
 			    pRequest.setAttribute("projectFromSceneSecondaryCharacter", lProjectFromSceneSecondaryCharacterDTO.toJSONObject());
 			}
 		}
@@ -1053,8 +1055,9 @@ public class BibiscoServlet extends HttpServlet {
 		List<LocationDTO> lListLocationDTO = LocationManager.loadAll();
 		pRequest.setAttribute("locations", lListLocationDTO);
 		
+		// load first location
 		if(lListLocationDTO!=null && lListLocationDTO.size()>0) {
-			ProjectFromSceneLocationDTO lProjectFromSceneLocationDTO = ProjectFromSceneManager.loadProjectFromSceneLocation(lListLocationDTO.get(0).getIdLocation());
+			ProjectFromSceneLocationDTO lProjectFromSceneLocationDTO = ProjectFromSceneManager.loadLocation(lListLocationDTO.get(0).getIdLocation());
 			pRequest.setAttribute("projectFromSceneLocation", lProjectFromSceneLocationDTO.toJSONObject());
 		}
 		
@@ -1071,7 +1074,7 @@ public class BibiscoServlet extends HttpServlet {
 		Integer lIntIdCharacter = Integer.valueOf(pRequest.getParameter("idCharacter"));
 		
 		// load ProjectFromSceneChapterDTO
-		ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = ProjectFromSceneManager.loadProjectFromSceneMainCharacter(lIntIdCharacter);
+		ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = ProjectFromSceneManager.loadMainCharacter(lIntIdCharacter);
 								
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();
@@ -1088,7 +1091,7 @@ public class BibiscoServlet extends HttpServlet {
 		Integer lIntIdCharacter = Integer.valueOf(pRequest.getParameter("idCharacter"));
 		
 		// load ProjectFromSceneChapterDTO
-		ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = ProjectFromSceneManager.loadProjectFromSceneSecondaryCharacter(lIntIdCharacter);
+		ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = ProjectFromSceneManager.loadSecondaryCharacter(lIntIdCharacter);
 								
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();
@@ -1104,7 +1107,7 @@ public class BibiscoServlet extends HttpServlet {
 				
 		Integer lIntIdChapter = Integer.parseInt(pRequest.getParameter("idChapter"));
 
-		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.loadProjectFromSceneChapterByIdChapter(lIntIdChapter);
+		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = ProjectFromSceneManager.loadChapterByIdChapter(lIntIdChapter);
 		
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();
@@ -1120,7 +1123,7 @@ public class BibiscoServlet extends HttpServlet {
 				
 		Integer lIntIdLocation = Integer.parseInt(pRequest.getParameter("idLocation"));
 
-		ProjectFromSceneLocationDTO lProjectFromSceneLocationDTO = ProjectFromSceneManager.loadProjectFromSceneLocation(lIntIdLocation);
+		ProjectFromSceneLocationDTO lProjectFromSceneLocationDTO = ProjectFromSceneManager.loadLocation(lIntIdLocation);
 		
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();

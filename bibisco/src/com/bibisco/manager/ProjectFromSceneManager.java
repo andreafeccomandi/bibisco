@@ -43,6 +43,8 @@ import com.bibisco.enums.CharacterInfoWithoutQuestions;
 import com.bibisco.enums.ElementType;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
+import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
+import com.bibisco.servlet.ProjectFromSceneArchitectureDTO;
 
 /**
  * Project from scene manager.
@@ -54,11 +56,11 @@ public class ProjectFromSceneManager {
 
 	private static Log mLog = Log.getInstance(ProjectFromSceneManager.class);
 
-	public static ProjectFromSceneChapterDTO loadProjectFromSceneChapterByIdScene(Integer pIntIdScene) {
+	public static ProjectFromSceneChapterDTO loadChapterByIdScene(Integer pIntIdScene) {
 
 		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO;
 
-		mLog.debug("Start loadProjectFromSceneChapterByIdScene(" + pIntIdScene + ")");
+		mLog.debug("Start loadChapterByIdScene(" + pIntIdScene + ")");
 		
 		//load scene
 		Scenes lScenes;
@@ -74,17 +76,17 @@ public class ProjectFromSceneManager {
 			lSqlSession.close();
 		}
 		
-		lProjectFromSceneChapterDTO = loadProjectFromSceneChapterByIdChapter(lScenes.getIdChapter());
-		mLog.debug("End loadProjectFromSceneChapterByIdScene(" + pIntIdScene + ")");
+		lProjectFromSceneChapterDTO = loadChapterByIdChapter(lScenes.getIdChapter());
+		mLog.debug("End loadChapterByIdScene(" + pIntIdScene + ")");
 		
 		return lProjectFromSceneChapterDTO;
 	}
 	
-	public static ProjectFromSceneChapterDTO loadProjectFromSceneChapterByIdChapter(Integer pIntIdChapter) {
+	public static ProjectFromSceneChapterDTO loadChapterByIdChapter(Integer pIntIdChapter) {
 
 		ProjectFromSceneChapterDTO lProjectFromSceneChapterDTO = new ProjectFromSceneChapterDTO();
 
-		mLog.debug("Start loadProjectFromSceneChapterByIdChapter(" + pIntIdChapter + ")");
+		mLog.debug("Start loadChapterByIdChapter(" + pIntIdChapter + ")");
 		
 		// load chapter
 		ChapterDTO lChapterDTO = ChapterManager.load(pIntIdChapter);
@@ -96,7 +98,7 @@ public class ProjectFromSceneManager {
 		List<SceneRevisionDTO> lListSceneRevisionDTO = loadScenesByIdChapter(pIntIdChapter);
 		lProjectFromSceneChapterDTO.setSceneRevisionDTOList(lListSceneRevisionDTO);
 
-		mLog.debug("End loadProjectFromSceneChapterByIdChapter(" + pIntIdChapter + ")");
+		mLog.debug("End loadChapterByIdChapter(" + pIntIdChapter + ")");
 
 		return lProjectFromSceneChapterDTO;
 	}
@@ -139,11 +141,11 @@ public class ProjectFromSceneManager {
 		return lListSceneRevisionDTO;
 	}
 
-	public static ProjectFromSceneMainCharacterDTO loadProjectFromSceneMainCharacter(Integer pIntIdCharacter) {
+	public static ProjectFromSceneMainCharacterDTO loadMainCharacter(Integer pIntIdCharacter) {
 		
 		ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO;
 		
-		mLog.debug("Start loadProjectFromSceneMainCharacter(",pIntIdCharacter.toString(),")");
+		mLog.debug("Start loadMainCharacter(",pIntIdCharacter.toString(),")");
 		lProjectFromSceneMainCharacterDTO = new ProjectFromSceneMainCharacterDTO();
 		
 		// basic info
@@ -170,16 +172,16 @@ public class ProjectFromSceneManager {
 		lProjectFromSceneMainCharacterDTO.setCharacterInfoWithoutQuestionsDTOList(lListCharacterInfoWithoutQuestionsDTO);
 		lProjectFromSceneMainCharacterDTO.setImageDTOList(ImageManager.loadImagesByElement(pIntIdCharacter, ElementType.CHARACTERS));
 		
-		mLog.debug("End loadProjectFromSceneMainCharacter(",pIntIdCharacter.toString(),")");
+		mLog.debug("End loadMainCharacter(",pIntIdCharacter.toString(),")");
 		
 		return lProjectFromSceneMainCharacterDTO;
 	}
 
-	public static ProjectFromSceneSecondaryCharacterDTO loadProjectFromSceneSecondaryCharacter(Integer pIntIdCharacter) {
+	public static ProjectFromSceneSecondaryCharacterDTO loadSecondaryCharacter(Integer pIntIdCharacter) {
 		
 		ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO;
 		
-		mLog.debug("Start loadProjectFromSceneSecondaryCharacter(",pIntIdCharacter.toString(),")");
+		mLog.debug("Start loadSecondaryCharacter(",pIntIdCharacter.toString(),")");
 		
 		SecondaryCharacterDTO lSecondaryCharacterDTO = CharacterManager.loadSecondaryCharacter(pIntIdCharacter);
 		lProjectFromSceneSecondaryCharacterDTO = new ProjectFromSceneSecondaryCharacterDTO();
@@ -190,17 +192,35 @@ public class ProjectFromSceneManager {
 		lProjectFromSceneSecondaryCharacterDTO.setMainCharacter(lSecondaryCharacterDTO.isMainCharacter());
 		lProjectFromSceneSecondaryCharacterDTO.setImageDTOList(ImageManager.loadImagesByElement(pIntIdCharacter, ElementType.CHARACTERS));
 		
-		mLog.debug("End loadProjectFromSceneSecondaryCharacter(",pIntIdCharacter.toString(),")");
+		mLog.debug("End loadSecondaryCharacter(",pIntIdCharacter.toString(),")");
 		
 		return lProjectFromSceneSecondaryCharacterDTO;
 	
 	}
 	
-	public static ProjectFromSceneLocationDTO loadProjectFromSceneLocation(Integer pIntIdLocation) {
+	public static ProjectFromSceneArchitectureDTO loadArchitecture() {
+		
+		ProjectFromSceneArchitectureDTO lProjectFromSceneArchitectureDTO;
+		
+		mLog.debug("Start loadArchitecture()");
+		
+		lProjectFromSceneArchitectureDTO = new ProjectFromSceneArchitectureDTO();
+		lProjectFromSceneArchitectureDTO.setFabula(ArchitectureItemManager.load(ArchitectureItemType.FABULA).getText());
+		lProjectFromSceneArchitectureDTO.setPremise(ArchitectureItemManager.load(ArchitectureItemType.PREMISE).getText());
+		lProjectFromSceneArchitectureDTO.setSetting(ArchitectureItemManager.load(ArchitectureItemType.SETTING).getText());
+		lProjectFromSceneArchitectureDTO.setStrandList(StrandManager.loadAll());
+		
+		mLog.debug("End loadArchitecture()");
+		
+		return lProjectFromSceneArchitectureDTO;
+		
+	} 
+	
+	public static ProjectFromSceneLocationDTO loadLocation(Integer pIntIdLocation) {
 		
 		ProjectFromSceneLocationDTO lProjectFromSceneLocationDTO;
 		
-		mLog.debug("Start loadProjectFromSceneLocation(",pIntIdLocation.toString(),")");
+		mLog.debug("Start loadLocation(",pIntIdLocation.toString(),")");
 		
 		LocationDTO lLocationDTO = LocationManager.load(pIntIdLocation);
 		
@@ -214,7 +234,7 @@ public class ProjectFromSceneManager {
 		lProjectFromSceneLocationDTO.setState(lLocationDTO.getState());
 		lProjectFromSceneLocationDTO.setImageDTOList(ImageManager.loadImagesByElement(pIntIdLocation, ElementType.LOCATIONS));
 		
-		mLog.debug("End loadProjectFromSceneLocation(",pIntIdLocation.toString(),")");
+		mLog.debug("End loadLocation(",pIntIdLocation.toString(),")");
 		
 		return lProjectFromSceneLocationDTO;
 	

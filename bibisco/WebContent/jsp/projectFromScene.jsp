@@ -40,10 +40,22 @@
     
     function initArchitectureTab(dialogConfig) {
     	
-    	$("#bibiscoProjectFromSceneSelectArchitecture").css("width", dialogConfig.selectWidth);
-        $("#bibiscoProjectFromSceneSelectArchitecture").select2({
+    	$("#bibiscoProjectFromSceneSelectArchitectureSection").css("width", dialogConfig.selectWidth);
+        $("#bibiscoProjectFromSceneSelectArchitectureSection").select2({
             escapeMarkup: function(m) { return m; }
         });
+        $('#bibiscoProjectFromSceneSelectArchitectureSection').on("change", function(e) { 
+            var selectedArchitectureSection = $('#bibiscoProjectFromSceneSelectArchitectureSection option:selected').data('idarchitecturesection');
+            $('.architectureContentSection').hide();
+            $('#bibiscoProjectFromSceneDivArchitecture'+selectedArchitectureSection).show();
+        });
+        
+        $('.architectureContentSection').hide();
+        $('#bibiscoProjectFromSceneDivArchitecturePremise').show();
+        $('#bibiscoProjectFromSceneDivArchitectureContent').css("height", dialogConfig.height-250);
+        $('#bibiscoProjectFromSceneDivArchitectureContent').jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
     }
     
     function initChaptersTab(dialogConfig) {
@@ -421,16 +433,34 @@
 	  <li><a href="#bibiscoProjectFromSceneTabLiLocations" data-toggle="tab">Luoghi</a></li>
 	</ul>
 	<div class="tab-content">
+	
 	   <!-- ARCHITECTURE -->
 	   <div style="margin-top: 10px;" class="tab-pane active" id="bibiscoProjectFromSceneTabLiArchitecture">
-		   <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectArchitecture">
-		       <option>Premessa</option>
-		       <option>Fabula</option>
-		       <option>Ambientazione</option>  
+		   <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectArchitectureSection"> 
+		       <option selected="selected" data-idarchitecturesection="Premise">Premessa</option>
+               <option data-idarchitecturesection="Fabula">Fabula</option>  
+               <option data-idarchitecturesection="Setting">Ambientazione</option>  
+               <option data-idarchitecturesection="Strands">Linee narrative</option>  
 		   </select>    
 		   <hr/>
-		   <div id="bibiscoProjectFromSceneDivArchitecture">
-		   
+		   <div id="bibiscoProjectFromSceneDivArchitectureContent">
+		      <div id="bibiscoProjectFromSceneDivArchitecturePremise" class="architectureContentSection">${projectFromSceneArchitecture.premise}</div>
+              <div id="bibiscoProjectFromSceneDivArchitectureFabula" class="architectureContentSection">${projectFromSceneArchitecture.fabula}</div>
+              <div id="bibiscoProjectFromSceneDivArchitectureSetting" class="architectureContentSection">${projectFromSceneArchitecture.setting}</div>
+              <div id="bibiscoProjectFromSceneDivArchitectureStrands" class="architectureContentSection">
+              <c:choose>
+		          <c:when test="${fn:length(projectFromSceneArchitecture.strandList) > 0}">   
+		                <c:forEach items="${projectFromSceneArchitecture.strandList}" var="strand" varStatus="strandNumber">
+		                    <h4>${strand.name}</h4>
+		                    <p>${strand.description}</p>
+		                    <p></p>
+		                </c:forEach>           
+		          </c:when>
+		          <c:otherwise>
+		             <em>Non sono ancora state create linee narrative.</em>
+		          </c:otherwise>
+		       </c:choose>
+              </div>
 		   </div>
 	   </div>
 	   

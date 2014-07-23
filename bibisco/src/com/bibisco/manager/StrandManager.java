@@ -56,19 +56,12 @@ public class StrandManager {
     		StrandsMapper lStrandsMapper = lSqlSession.getMapper(StrandsMapper.class);
     		StrandsExample lStrandsExample = new StrandsExample();
     		lStrandsExample.setOrderByClause("position");
-			List<Strands> lListStrands = lStrandsMapper.selectByExample(lStrandsExample);
+			List<Strands> lListStrands = lStrandsMapper.selectByExampleWithBLOBs(lStrandsExample);
 			
 			if (lListStrands!=null && lListStrands.size()>0) {
 				lListStrandDTO = new ArrayList<StrandDTO>();
-				for (Strands lStrands : lListStrands) {
-					
-					StrandDTO lStrandDTO = new StrandDTO();
-					lStrandDTO.setIdStrand(lStrands.getIdStrand().intValue());
-					lStrandDTO.setName(lStrands.getName());
-					lStrandDTO.setPosition(lStrands.getPosition());
-					lStrandDTO.setTaskStatus(TaskStatus.getTaskStatusFromValue(lStrands.getTaskStatus()));
-					
-					lListStrandDTO.add(lStrandDTO);
+				for (Strands lStrands : lListStrands) {					
+					lListStrandDTO.add(createStrandDTOFromStrands(lStrands));
 				}
 			}
 		
