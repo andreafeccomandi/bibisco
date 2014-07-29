@@ -1044,7 +1044,7 @@ public class BibiscoServlet extends HttpServlet {
 			CharacterDTO lCharacterDTO = lListCharacterDTO.get(0);
 			if (lCharacterDTO.isMainCharacter()) {
 				ProjectFromSceneMainCharacterDTO lProjectFromSceneMainCharacterDTO = ProjectFromSceneManager.loadMainCharacter(lCharacterDTO.getIdCharacter());
-				pRequest.setAttribute("projectFromSceneMainCharacter", lProjectFromSceneMainCharacterDTO.toJSONObject().toString());				
+				pRequest.setAttribute("projectFromSceneMainCharacter", lProjectFromSceneMainCharacterDTO.toJSONObject());				
 			} else {
 				ProjectFromSceneSecondaryCharacterDTO lProjectFromSceneSecondaryCharacterDTO = ProjectFromSceneManager.loadSecondaryCharacter(lCharacterDTO.getIdCharacter());
 			    pRequest.setAttribute("projectFromSceneSecondaryCharacter", lProjectFromSceneSecondaryCharacterDTO.toJSONObject());

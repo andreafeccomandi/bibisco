@@ -55,6 +55,8 @@
         
         $('.architectureContentSection').hide();
         $('#bibiscoProjectFromSceneDivArchitecturePremise').show();
+        
+        // init jScrollPane
         $('#bibiscoProjectFromSceneDivArchitectureContent').css("height", dialogConfig.height-250);
         $('#bibiscoProjectFromSceneDivArchitectureContent').jScrollPane({
             autoReinitialise: true, animateScroll: true, verticalGutter: 30
@@ -109,6 +111,12 @@
         
         // populate chapter section
         populateChapter(${projectFromSceneChapter});
+        
+        // init jScrollPane
+        var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
+        chapterDiv.jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
             	
     }
     
@@ -367,11 +375,6 @@
     	
     	// chapter notes
     	populateDivWithTextManagingEmpty(projectFromSceneChapter.chapterNotes, $('#bibiscoProjectFromSceneDivChapterNotes'));
-    	    	
-    	var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
-    	chapterDiv.jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
     }
     
     function initLocationsTab(dialogConfig) {
@@ -418,12 +421,15 @@
         
         // location content
         $('#bibiscoProjectFromSceneDivLocationImages').hide();
+        
+        // populate
+        populateLocation(${projectFromSceneLocation}, dialogConfig);
+        
+        // init jScrollPane
         $('#bibiscoProjectFromSceneDivLocationContent').css("height", dialogConfig.height-250);
         $('#bibiscoProjectFromSceneDivLocationContent').jScrollPane({
             autoReinitialise: true, animateScroll: true, verticalGutter: 30
         }).data('jsp');
-        
-        populateLocation(${projectFromSceneLocation}, dialogConfig);
         
         </c:if>
 
