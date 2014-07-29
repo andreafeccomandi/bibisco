@@ -1024,7 +1024,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// load architecture
 		ProjectFromSceneArchitectureDTO lProjectFromSceneArchitectureDTO = ProjectFromSceneManager.loadArchitecture();
-		pRequest.setAttribute("projectFromSceneArchitecture", lProjectFromSceneArchitectureDTO);
+		pRequest.setAttribute("projectFromSceneArchitecture", lProjectFromSceneArchitectureDTO.toJSONObject());
 		
 		// load chapters
 		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
