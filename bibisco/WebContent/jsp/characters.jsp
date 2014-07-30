@@ -106,7 +106,7 @@ function bibiscoCreateSecondaryCharacter(configSecondary) {
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configSecondary); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
-			  resizable: false, 
+			  resizable: false, modal: true, 
 			  width: 500, height: 210, positionTop: 100
 	  };
 	  

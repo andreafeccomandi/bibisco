@@ -277,9 +277,9 @@ function bibiscoCloseLoadingBannerWithoutMessage() {
 
 /* Create task status banner */
 function bibiscoGetBibiscoTaskStatus(taskStatus, wordCount, characterCount) {
-	
+
 	var result = '';
-	if (!(wordCount === 'undefined' && characterCount === 'undefined')) {
+	if (wordCount && characterCount) {
 		result = result + '<span class="label label-info" title="' + jsBibiscoTaskStatusWords +  ' (' + jsBibiscoTaskStatusCharacters + ')">'+ wordCount + ' (' +  characterCount + ')</span>&nbsp;';
 	}
 	
