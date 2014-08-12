@@ -15,7 +15,8 @@
 <link rel="stylesheet" href="js/bootstrap/bootstrap-switch/bootstrapSwitch.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="js/fontawesome/font-awesome.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="js/jscrollpane/jquery.jscrollpane.css?version=${version}" type="text/css" media="print, projection, screen" />
-<link rel="stylesheet" href="css/bibisco.css?version=${version}" type="text/css" media="print, projection, screen" />
+<link rel="stylesheet" href="js/jscrollpane/jquery.jscrollpane.css?version=${version}" type="text/css" media="print, projection, screen" />
+<link rel="stylesheet" href="js/jqplot/jquery.jqplot.css?version=${version}" type="text/css" media="print, projection, screen" />
 
 
 <script type="text/javascript" src="js/jsMessages.jsp?version=${version}"></script>
@@ -46,6 +47,10 @@
 <script type="text/javascript" src="js/jscrollpane/jquery.jscrollpane.min.js?version=${version}"></script>
 <script type="text/javascript" src="js/jscrollpane/jquery.mousewheel.js?version=${version}"></script>
 <script type="text/javascript" src="js/jquery-dateFormat/jquery.dateFormat-1.0.js?version=${version}"></script>
+<script type="text/javascript" src="js/jqplot/jquery.jqplot.js"></script>
+<script type="text/javascript" src="js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
 
 
 <c:if test="${language != 'en'}">

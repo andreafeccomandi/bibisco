@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
+import org.h2.engine.Database;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,6 +105,7 @@ public class BibiscoServlet extends HttpServlet {
 	private static final long serialVersionUID = -5786169245095217631L;
 	private static final Log mLog = Log.getInstance(BibiscoServlet.class);
 
+	private static final String ANALYSIS_CHAPTER_LENGTH = "/jsp/analysisChaptersLength.jsp";
 	private static final String ANALYSIS_CHARACTER_SCENE = "/jsp/analysisCharacterScene.jsp";
 	private static final String ANALYSIS_ITEMS_CHAPTERS = "/jsp/analysisItemsChapters.jsp";
 	private static final String CAROUSEL_IMAGE = "/jsp/carouselImage.jsp";	
@@ -1130,6 +1132,20 @@ public class BibiscoServlet extends HttpServlet {
 		lWriter.write(lProjectFromSceneLocationDTO.toJSONObject().toString());
 	
 		mLog.debug("End changeLocationInProjectFromScene(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void openAnalysisWordCountChapters(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+
+		mLog.debug("Start openAnalysisWordCountChapters(HttpServletRequest, HttpServletResponse)");
+		
+		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
+		
+		pRequest.setAttribute("chapters", lListChapterDTO);
+		pRequest.getRequestDispatcher(ANALYSIS_CHAPTER_LENGTH+"?version="+(new java.util.Date()).getTime()).forward(pRequest, pResponse);
+		
+		mLog.debug("Start openAnalysisWordCountChapters(HttpServletRequest, HttpServletResponse)");
+		
 	}
 	
 	public void openAnalysisCharacterScene(HttpServletRequest pRequest,

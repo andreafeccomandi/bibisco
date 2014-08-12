@@ -22,6 +22,14 @@ $(function() {
     	</div>
     	<section>
     	<div class="row-fluid">
+    	   <div class="span3">
+                <tags:bibiscoThumbnail 
+                    description="jsp.analysis.thumbnail.analysisWordCountChapters.description" 
+                    title="jsp.analysis.thumbnail.analysisWordCountChapters.title" 
+                    type="analysisWordCountChapters" taskStatus="DISABLE"
+                    id="WORD_COUNT_CHAPTERS"
+                    width="980" height="window.innerHeight - 75" positionTop="25" />
+            </div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.charactersChapters.description" 
@@ -46,18 +54,19 @@ $(function() {
 					id="LOCATIONS_CHAPTERS"
 					width="980" height="window.innerHeight - 75" positionTop="25" />
 			</div>
-			<div class="span3">
-				<tags:bibiscoThumbnail 
-					description="jsp.analysis.thumbnail.strandsChapters.description" 
-					title="jsp.analysis.thumbnail.strandsChapters.title" 
-					type="analysisStrandsChapters" taskStatus="DISABLE"
-					id="STRANDS_CHAPTERS"
-					width="980" height="window.innerHeight - 75" positionTop="25" />
-			</div>
+			
 		</div>
 		</section>
 		<section>
 		<div class="row-fluid">
+		  <div class="span3">
+                <tags:bibiscoThumbnail 
+                    description="jsp.analysis.thumbnail.strandsChapters.description" 
+                    title="jsp.analysis.thumbnail.strandsChapters.title" 
+                    type="analysisStrandsChapters" taskStatus="DISABLE"
+                    id="STRANDS_CHAPTERS"
+                    width="980" height="window.innerHeight - 75" positionTop="25" />
+            </div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.pointOfViewsChapters.description" 
