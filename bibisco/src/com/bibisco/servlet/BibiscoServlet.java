@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
-import org.h2.engine.Database;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,9 +75,11 @@ import com.bibisco.enums.PointOfView;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ArchitectureItemManager;
+import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 import com.bibisco.manager.ChapterManager;
 import com.bibisco.manager.CharacterManager;
 import com.bibisco.manager.ContextManager;
+import com.bibisco.manager.HttpManager;
 import com.bibisco.manager.ImageManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
@@ -92,8 +93,6 @@ import com.bibisco.manager.SpellCheckManager;
 import com.bibisco.manager.StrandManager;
 import com.bibisco.manager.TextEditorManager;
 import com.bibisco.manager.VersionManager;
-import com.bibisco.manager.HttpManager;
-import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 
 /**
  * This servlet handles all operations.

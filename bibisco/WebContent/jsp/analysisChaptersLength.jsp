@@ -7,73 +7,78 @@
 
 <script type="text/javascript">
 //<![CDATA[
-        
+                     
     function bibiscoAnalysisChaptersLengthInitGraph() {
-        plot2b = $.jqplot('bibiscoAnalysisChaptersLengthChartDiv', [[[9,1], [9,2], [6,3], [3,4]], [[5,1], [1,2], [3,3], [4,4]], [[4,1], [7,2], [1,3], [2,4]]], {
-            seriesDefaults: {
-                renderer:$.jqplot.BarRenderer,
-                pointLabels: { show: true, location: 'e', edgeTolerance: -15 },
-                shadowAngle: 135,
-                rendererOptions: {
-                    barDirection: 'horizontal'
-                }
-            },
-            axes: {
-                yaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer
-                }
+
+    	$('#bibiscoAnalysisChaptersLengthChartDiv').css('width', innerWidth-320);
+        $('#bibiscoAnalysisChaptersLengthChartDiv').css('height', innerHeight-180);
+       
+        var graphData = [];
+
+        <c:if test="${not empty chapters}">
+           <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
+             var chapterItem = [];
+             chapterItem.push(${chapter.position});
+             chapterItem.push(${chapter.wordCount});
+             graphData.push(chapterItem);
+           </c:forEach>
+        </c:if>
+        
+        var plot1 = $.jqplot('bibiscoAnalysisChaptersLengthChartDiv', [graphData], {
+
+          seriesDefaults: {
+              renderer:$.jqplot.BarRenderer,
+              // Show point labels to the right ('e'ast) of each bar.
+              // edgeTolerance of -15 allows labels flow outside the grid
+              // up to 15 pixels.  If they flow out more than that, they 
+              // will be hidden.
+              pointLabels: { show: true, location: 'n' },
+          },
+          axesDefaults: {
+              tickRenderer: $.jqplot.CanvasAxisTickRenderer ,
+              tickOptions: {
+                fontSize: '10pt'
+              }
+          },
+          pointLabels: { show: true },
+          axes: {
+              xaxis: {
+                renderer: $.jqplot.CategoryAxisRenderer,
+                label:'<fmt:message key="jsp.analysisChaptersLength.js.xaxis.label" />'
+              },
+              yaxis:{
+                label:'<fmt:message key="jsp.analysisChaptersLength.js.yaxis.label" />', 
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+              }
             }
         });
-     
-        $('#bibiscoAnalysisChaptersLengthChartDiv').bind('jqplotDataHighlight', 
-            function (ev, seriesIndex, pointIndex, data) {
-                $('#info2b').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);
-            }
-        );    
-        $('#bibiscoAnalysisChaptersLengthChartDiv').bind('jqplotDataClick', 
-            function (ev, seriesIndex, pointIndex, data) {
-                $('#info2c').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data+ ', pageX: '+ev.pageX+', pageY: '+ev.pageY);
-            }
-        );
-             
-        $('#bibiscoAnalysisChaptersLengthChartDiv').bind('jqplotDataUnhighlight', 
-            function (ev) {
-                $('#info2b').html('Nothing');
-            }
-        );
-    }
-	   
-           
-           
+      }  
+    
+                  
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoThumbnailInitCallback(ajaxDialog, idCaller, type, id) {
-    	
-    	// close button
-    	$('#bibiscoAnalysisChaptersLengthAClose').tooltip();
-    	
-    	// set div height
-    	$('#bibiscoAnalysisChaptersLengthDiv').css('height', window.innerHeight - 200);
-    	
-    	// initialize scrollbar
-		$('#bibiscoAnalysisChaptersLengthDiv').jScrollPane({
-			autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		}).data('jsp');
-    	
-    	// initialize graph
-		bibiscoAnalysisChaptersLengthInitGraph();
+        
+        // close button
+        $('#bibiscoAnalysisChaptersLengthAClose').tooltip();
+        
+        // set div height
+        $('#bibiscoAnalysisChaptersLengthDiv').css('height', window.innerHeight - 200);
+                    
+        // initialize graph
+        bibiscoAnalysisChaptersLengthInitGraph();
     }     
     
- 	// close dialog callback
-	function bibiscoThumbnailCloseCallback(ajaxDialog, idCaller, type) {
-		// close button
-    	$('#bibiscoAnalysisChaptersLengthAClose').tooltip('hide');
+    // close dialog callback
+    function bibiscoThumbnailCloseCallback(ajaxDialog, idCaller, type) {
+        // close button
+        $('#bibiscoAnalysisChaptersLengthAClose').tooltip('hide');
     }
-	
-	// before close dialog callback
-	function bibiscoThumbnailBeforeCloseCallback(ajaxDialog, idCaller, type) {
-		
+    
+    // before close dialog callback
+    function bibiscoThumbnailBeforeCloseCallback(ajaxDialog, idCaller, type) {
+        
     }
-	
+    
 //]]>           
 </script>
 
@@ -84,20 +89,17 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisChaptersLengthDiv2" style="width: 100%; overflow: scroll;" class="notSelectableText">
-		   <div id="bibiscoAnalysisChaptersLengthChartDiv" style="height:400px;width:300px; "></div> 
-		</div>
-        
+        <div id="bibiscoAnalysisChaptersLengthChartDiv"></div> 
     </c:otherwise>
 </c:choose>
 
 
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
-		<tr>
-			<td style="text-align: right;"><a id="bibiscoAnalysisChaptersLengthAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
-					class="icon-remove"></i></a></td>
-		</tr>
-	</table>
+    <table style="width: 100%">
+        <tr>
+            <td style="text-align: right;"><a id="bibiscoAnalysisChaptersLengthAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
+                    class="icon-remove"></i></a></td>
+        </tr>
+    </table>
 </div>
