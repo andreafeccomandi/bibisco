@@ -60,7 +60,7 @@
 		            <table style="width: 850px; table-layout: fixed;" class="table table-striped table-bordered table-condensed" >
 		                <thead>
 		                    <th style="width: 120px;"><fmt:message key="jsp.analysisCharacterScene.th.dateTime"/></th>
-		                    <th style="width: 330px;"><fmt:message key="jsp.analysisCharacterScene.th.location"/></th>
+		                    <th style="width: 430px;"><fmt:message key="jsp.analysisCharacterScene.th.location"/></th>
 		                    <th style="width: 200px;"><fmt:message key="jsp.analysisCharacterScene.th.scene"/></th>
 		                    <th style="width: 200px;"><fmt:message key="jsp.analysisCharacterScene.th.chapter"/></th>       
 		                </thead>
@@ -68,7 +68,7 @@
 		                    <c:forEach items="${characterSceneAnalysis[character.idCharacter]}" var="characterScene" varStatus="characterSceneNumber">
 		                    <tr>
 		                        <td style="width: 120px;"><fmt:formatDate value="${characterScene.sceneDate}" pattern="${patternTimestamp}"/></td>
-		                        <td style="width: 330px;"><c:out value="${characterScene.location}" /></td>
+		                        <td style="width: 430px;"><c:out value="${characterScene.location}" /></td>
 		                        <td style="width: 200px;"><c:out value="${characterScene.sceneDescription}" /></td>
 		                        <td style="width: 200px;"><c:out value="${characterScene.chapterTitle}" /></td>
 		                    </tr>

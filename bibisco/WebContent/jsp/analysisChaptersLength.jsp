@@ -10,7 +10,7 @@
                      
     function bibiscoAnalysisChaptersLengthInitGraph() {
 
-    	$('#bibiscoAnalysisChaptersLengthChartDiv').css('width', innerWidth-320);
+    	$('#bibiscoAnalysisChaptersLengthChartDiv').css('width', innerWidth-100);
         $('#bibiscoAnalysisChaptersLengthChartDiv').css('height', innerHeight-180);
        
         var graphData = [];

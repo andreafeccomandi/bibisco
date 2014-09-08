@@ -28,7 +28,7 @@ $(function() {
                     title="jsp.analysis.thumbnail.analysisWordCountChapters.title" 
                     type="analysisWordCountChapters" taskStatus="DISABLE"
                     id="WORD_COUNT_CHAPTERS"
-                    width="980" height="window.innerHeight - 75" positionTop="25" />
+                    width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
             </div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
@@ -36,7 +36,7 @@ $(function() {
 					title="jsp.analysis.thumbnail.charactersChapters.title" 
 					type="analysisCharactersChapters" taskStatus="DISABLE"
 					id="CHARACTERS_CHAPTERS"
-					width="980" height="window.innerHeight - 75" positionTop="25" />
+					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
@@ -44,7 +44,7 @@ $(function() {
 					title="jsp.analysis.thumbnail.charactersScene.title" 
 					type="analysisCharacterScene" taskStatus="DISABLE"
 					id="CHARACTERS_SCENE"
-					width="980" height="window.innerHeight - 75" positionTop="25" />
+					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
@@ -52,7 +52,7 @@ $(function() {
 					title="jsp.analysis.thumbnail.locationsChapters.title" 
 					type="analysisLocationsChapters" taskStatus="DISABLE"
 					id="LOCATIONS_CHAPTERS"
-					width="980" height="window.innerHeight - 75" positionTop="25" />
+					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
 			
 		</div>
@@ -65,7 +65,7 @@ $(function() {
                     title="jsp.analysis.thumbnail.strandsChapters.title" 
                     type="analysisStrandsChapters" taskStatus="DISABLE"
                     id="STRANDS_CHAPTERS"
-                    width="980" height="window.innerHeight - 75" positionTop="25" />
+                    width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
             </div>
 			<div class="span3">
 				<tags:bibiscoThumbnail 
@@ -73,7 +73,7 @@ $(function() {
 					title="jsp.analysis.thumbnail.pointOfViewsChapters.title" 
 					type="analysisPointOfViewsChapters" taskStatus="DISABLE"
 					id="POINT_OF_VIEWS_CHAPTERS"
-					width="980" height="window.innerHeight - 75" positionTop="25" />
+					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
 		</div>
 		</section>

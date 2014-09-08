@@ -70,9 +70,17 @@
 		            <tr>
 		                <td style="width:120px; text-align: right">${item.analysisChapterPresenceItemDescription}</td>
 		                <c:forEach items="${characterItemPresence[item.analysisChapterPresenceItemId]}" var="chapterPresence" varStatus="characterNumber">
-		                    <td style="text-align: center; vertical-align: middle; width: 15px;">
-		                    <c:if test="${chapterPresence}"><i class="icon-ok"></i></c:if>
-		                    </td>
+		                    <c:choose>
+			                    <c:when test="${chapterPresence}">
+				                    <td style="text-align: center; vertical-align: middle; width: 15px;" 
+				                        class="bibiscoAnalysisItemsRow${itemNumber.count % 12}">
+				                    </td>
+			                    </c:when>
+			                    <c:otherwise>
+				                    <td style="text-align: center; vertical-align: middle; width: 15px;">
+		                            </td>
+			                    </c:otherwise>
+		                    </c:choose>              
 		                </c:forEach>
 		            </tr>
 		            </c:forEach>
