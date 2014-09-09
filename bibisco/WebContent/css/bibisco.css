@@ -117,12 +117,16 @@ div.bibiscoSuggestions h4 {
   display: none;
 }  
 
+.bibiscoAnalysisItemsRow0 {
+    background-color: #0084D1 !important;
+}
+
 .bibiscoAnalysisItemsRow1 {
 	background-color: #004586 !important;
 }
 
 .bibiscoAnalysisItemsRow2 {
-    background-color: #FF420E !important;
+   background-color: #FF420E !important;
 }
 
 .bibiscoAnalysisItemsRow3 {
@@ -159,8 +163,4 @@ div.bibiscoSuggestions h4 {
 
 .bibiscoAnalysisItemsRow11 {
     background-color: #C5000B !important;
-}
-
-.bibiscoAnalysisItemsRow0 {
-    background-color: #0084D1 !important;
 }
