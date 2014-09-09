@@ -23,4 +23,8 @@
 <c:if test="${bibiscoTaskStatus == 'COMPLETED'}">
 <span class="badge badge-success bibiscoTaskStatusCompleted" title="<fmt:message key="tag.bibiscothumbnail.taskstatus.completed.description"/>"><fmt:message key="tag.bibiscothumbnail.taskstatus.completed" /></span>	
 </c:if>
+
+<c:if test="${bibiscoTaskStatus == 'STATS'}">
+<span class="label label-info">info</i> </span>  
+</c:if>
 </div>

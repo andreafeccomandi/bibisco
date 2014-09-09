@@ -21,7 +21,7 @@ package com.bibisco.enums;
  * @author Andrea Feccomandi
  *
  */
-public enum TaskStatus {TODO(0), TOCOMPLETE(1), COMPLETED(2), DISABLE(-1);
+public enum TaskStatus {TODO(0), TOCOMPLETE(1), COMPLETED(2), STATS(-2), DISABLE(-1);
 
 	private Integer mIntValue;
 	

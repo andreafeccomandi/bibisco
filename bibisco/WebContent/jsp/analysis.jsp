@@ -26,7 +26,7 @@ $(function() {
                 <tags:bibiscoThumbnail 
                     description="jsp.analysis.thumbnail.analysisWordCountChapters.description" 
                     title="jsp.analysis.thumbnail.analysisWordCountChapters.title" 
-                    type="analysisWordCountChapters" taskStatus="DISABLE"
+                    type="analysisWordCountChapters" taskStatus="STATS"
                     id="WORD_COUNT_CHAPTERS"
                     width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
             </div>
@@ -34,7 +34,7 @@ $(function() {
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.charactersChapters.description" 
 					title="jsp.analysis.thumbnail.charactersChapters.title" 
-					type="analysisCharactersChapters" taskStatus="DISABLE"
+					type="analysisCharactersChapters" taskStatus="STATS"
 					id="CHARACTERS_CHAPTERS"
 					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
@@ -42,7 +42,7 @@ $(function() {
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.charactersScene.description" 
 					title="jsp.analysis.thumbnail.charactersScene.title" 
-					type="analysisCharacterScene" taskStatus="DISABLE"
+					type="analysisCharacterScene" taskStatus="STATS"
 					id="CHARACTERS_SCENE"
 					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
@@ -50,7 +50,7 @@ $(function() {
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.locationsChapters.description" 
 					title="jsp.analysis.thumbnail.locationsChapters.title" 
-					type="analysisLocationsChapters" taskStatus="DISABLE"
+					type="analysisLocationsChapters" taskStatus="STATS"
 					id="LOCATIONS_CHAPTERS"
 					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
@@ -63,7 +63,7 @@ $(function() {
                 <tags:bibiscoThumbnail 
                     description="jsp.analysis.thumbnail.strandsChapters.description" 
                     title="jsp.analysis.thumbnail.strandsChapters.title" 
-                    type="analysisStrandsChapters" taskStatus="DISABLE"
+                    type="analysisStrandsChapters" taskStatus="STATS"
                     id="STRANDS_CHAPTERS"
                     width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
             </div>
@@ -71,7 +71,7 @@ $(function() {
 				<tags:bibiscoThumbnail 
 					description="jsp.analysis.thumbnail.pointOfViewsChapters.description" 
 					title="jsp.analysis.thumbnail.pointOfViewsChapters.title" 
-					type="analysisPointOfViewsChapters" taskStatus="DISABLE"
+					type="analysisPointOfViewsChapters" taskStatus="STATS"
 					id="POINT_OF_VIEWS_CHAPTERS"
 					width="window.innerWidth - 50" height="window.innerHeight - 75" positionTop="25" />
 			</div>
