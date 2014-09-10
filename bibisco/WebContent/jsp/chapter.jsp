@@ -50,6 +50,7 @@ function bibiscoChapterInitCallback(configChapter) {
 		},
 		dnd: true,
 		titleForm : {
+			titleMandatory: true,
 			titleMinlength: 2,
 			titleMaxlength: 50,
 			titleValue: function() {
@@ -130,7 +131,8 @@ function bibiscoSelectScene(position,configScene) {
 	<div class="span12">
 		<div class="row-fluid page-header">
 			<div class="span8" style="float: left;">
-				<h1 id="bibiscoChapterH1Title"><span id="bibiscoChapterSpanTitle"><c:out value="${chapter.title}"></c:out></span>&nbsp;&nbsp;<button id="bibiscoChapterButtonUpdateTitle" title="<fmt:message key="jsp.chapter.button.updateTitle" />" class="btn btn-mini"><i class="icon-pencil"></i></button>
+				<h1 id="bibiscoChapterH1Title">
+				<span id="bibiscoChapterSpanPosition">#${chapter.position}&nbsp;</span><span id="bibiscoChapterSpanTitle"><c:out value="${chapter.title}"></c:out></span>&nbsp;&nbsp;<button id="bibiscoChapterButtonUpdateTitle" title="<fmt:message key="jsp.chapter.button.updateTitle" />" class="btn btn-mini"><i class="icon-pencil"></i></button>
     			</h1>
     		</div>
     		<div class="span4" style="text-align: right;">

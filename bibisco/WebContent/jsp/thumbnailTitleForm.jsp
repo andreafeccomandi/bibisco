@@ -15,7 +15,7 @@
 				bibiscoThumbnailTitleFormInputTitle : {
 					minlength : config.titleForm.titleMinlength,
 					maxlength : config.titleForm.titleMaxlength,
-					required : true
+					required : config.titleForm.titleMandatory
 				}
 			},
 			highlight : function(label) {

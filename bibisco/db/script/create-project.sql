@@ -90,7 +90,7 @@ PRIMARY KEY(id_character));
 
 CREATE TABLE chapters (
   id_chapter SERIAL  NOT NULL ,
-  title VARCHAR(50)   NOT NULL ,
+  title VARCHAR(50)   ,
   position INTEGER   NOT NULL ,
   reason TEXT    ,
   reason_task_status INTEGER  DEFAULT 0 NOT NULL ,

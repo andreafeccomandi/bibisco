@@ -11,7 +11,8 @@ $(function() {
 		},
 		dnd: true,
 		titleForm : {
-			titleMinlength: 2,
+			titleMandatory: false,
+			titleMinlength: 0,
 			titleMaxlength: 50,
 			titleValue: function() {
 				return $('#bibiscoChapterSpanTitle').html();

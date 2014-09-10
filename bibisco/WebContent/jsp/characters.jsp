@@ -12,6 +12,7 @@ $(function() {
 		},
 		dnd: true,
 		titleForm : {
+			titleMandatory: true,
 			titleMinlength: 2,
 			titleMaxlength: 50,
 			titleValue: function() {
@@ -50,6 +51,7 @@ $(function() {
 			},
 			dnd: true,
 			titleForm : {
+				titleMandatory: true,
 				titleMinlength: 2,
 				titleMaxlength: 50,
 				titleValue: function() {
