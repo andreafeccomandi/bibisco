@@ -487,10 +487,10 @@
 		   <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
 		      <c:choose>
 			      <c:when test="${chapter.idChapter == idActualChapter}">
-			         <option selected="selected" data-idchapter="${chapter.idChapter}">${chapter.title}</option>
+			         <option selected="selected" data-idchapter="${chapter.idChapter}">#${chapter.position} ${chapter.title}</option>
 			      </c:when>
 			      <c:otherwise>
-				     <option data-idchapter="${chapter.idChapter}">${chapter.title}</option>
+				     <option data-idchapter="${chapter.idChapter}">#${chapter.position} ${chapter.title}</option>
 				  </c:otherwise>
 			  </c:choose>
 		   </c:forEach>	   
