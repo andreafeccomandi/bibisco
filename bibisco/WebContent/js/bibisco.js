@@ -279,7 +279,7 @@ function bibiscoCloseLoadingBannerWithoutMessage() {
 function bibiscoGetBibiscoTaskStatus(taskStatus, wordCount, characterCount) {
 
 	var result = '';
-	if (wordCount && characterCount) {
+	if (wordCount!=null && characterCount!=null) {
 		result = result + '<span class="label label-info" title="' + jsBibiscoTaskStatusWords +  ' (' + jsBibiscoTaskStatusCharacters + ')">'+ wordCount + ' (' +  characterCount + ')</span>&nbsp;';
 	}
 	
