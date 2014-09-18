@@ -256,17 +256,17 @@
             
             var active = $('#bibiscoSceneAProjectFromScene').hasClass('active');
             
-            // character section is active
+            // project from scene section is active
             if (active) {
             	projectFromSceneDialog.close();
             	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftSingle, positions.positionTop] });
             	
-            	// return false is necessary because character section close callback already
+            	// return false is necessary because project from scene section close callback already
             	// changes this button status
             	return false;
             } 
             
-            // character section is not active
+            // project from scene section is not active
             else {
             	ajaxDialog.dialog("option", { position: [positions.scenePositionLeftWithProjectFromScene, positions.positionTop] });
                 
@@ -322,6 +322,9 @@
         
         //task status
         var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: scene.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+        
+        //initial suggestions
+        bibiscoShowSceneTip();
         
     }     
     <!-- END INIT DIALOG CALLBACK -->
@@ -427,6 +430,12 @@
     function setSceneRevisionSelectToActualRevision() {
         var actualRevisionValue = parseInt($("#bibiscoSceneSelectRevision").attr('data-actualRevision')); 
         $("#bibiscoSceneSelectRevision").select2("val", actualRevisionValue);
+    }
+    
+    function bibiscoShowSceneTip() {
+    	<c:if test="${tipSettings.sceneTip}">
+    	   bibiscoShowTip('sceneTip', 210);
+    	</c:if>
     }
 
 //]]>           

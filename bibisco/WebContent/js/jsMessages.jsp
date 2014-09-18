@@ -28,7 +28,7 @@ jsBibiscoTaskStatusToCompleteDescription = "<fmt:message key="tag.bibiscothumbna
 jsBibiscoTaskStatusCompletedDescription = "<fmt:message key="tag.bibiscothumbnail.taskstatus.completed.description"/>";
 jsBibiscoTaskStatusWords = "<fmt:message key="jsp.common.span.words"/>";
 jsBibiscoTaskStatusCharacters = "<fmt:message key="jsp.common.span.characters"/>";
-
+jsBibiscoTipDialogTitle = "<fmt:message key="jsp.tip.title" />";
 
 jsPluginBibiscospellCkeditor = "<fmt:message key="js.plugin.bibiscospell.ckeditor" />";
 

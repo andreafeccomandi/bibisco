@@ -745,3 +745,19 @@ function bibiscoOpenDefaultBrowser(url) {
 		  success:function(spellCheckResult){},
 		});
 }
+
+function bibiscoShowTip(tipCode, height) {
+    
+    var ajaxDialogContent = { 
+              idCaller: 'bibiscoShowTip',
+              url: 'jsp/tip.jsp?tipCode='+tipCode,
+              title: jsBibiscoTipDialogTitle, 
+              init: function (idAjaxDialog, idCaller) { return bibiscoTipInit(idAjaxDialog, idCaller); },
+              close: function (idAjaxDialog, idCaller) { return bibiscoTipClose(idAjaxDialog, idCaller); },
+              beforeClose: function (idAjaxDialog, idCaller) { return bibiscoTipBeforeClose(idAjaxDialog, idCaller); },
+              resizable: false, modal: true, 
+              width: 500, height: height, positionTop: 100
+    };
+      
+    bibiscoOpenAjaxDialog(ajaxDialogContent);
+}

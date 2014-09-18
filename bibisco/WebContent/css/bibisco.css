@@ -27,7 +27,7 @@
 	margin-bottom: 5px;
 }
 
-.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.emptyThumbnailListElements, .notSelectableText, .bibiscoSuggestions {
+.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.emptyThumbnailListElements, .notSelectableText, .bibiscoSuggestions, .bibiscoTip {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -99,6 +99,20 @@ div.bibiscoSuggestions p {
 
 div.bibiscoSuggestions h4 {
 	margin-bottom: 10px;
+}
+
+.bibiscoTip {
+    margin-top: 10px; 
+    margin-left: 10px; 
+    width: 450px;
+}
+
+div.bibiscoTip p {
+    text-align: justify;
+}
+
+div.bibiscoTip h4 {
+    margin-bottom: 10px;
 }
 
 .defaultBrowserUrl {

@@ -66,6 +66,7 @@ import com.bibisco.bean.SceneDTO;
 import com.bibisco.bean.SceneRevisionDTO;
 import com.bibisco.bean.SecondaryCharacterDTO;
 import com.bibisco.bean.StrandDTO;
+import com.bibisco.bean.TipSettings;
 import com.bibisco.bean.WebMessage;
 import com.bibisco.enums.CharacterInfoQuestions;
 import com.bibisco.enums.CharacterInfoWithoutQuestions;
@@ -92,6 +93,7 @@ import com.bibisco.manager.SceneTagsManager;
 import com.bibisco.manager.SpellCheckManager;
 import com.bibisco.manager.StrandManager;
 import com.bibisco.manager.TextEditorManager;
+import com.bibisco.manager.TipManager;
 import com.bibisco.manager.VersionManager;
 
 /**
@@ -1448,6 +1450,18 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("End deleteSecondarycharacter(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void disableTip(HttpServletRequest pRequest, HttpServletResponse pResponse) {
+		mLog.debug("Start disableTip(HttpServletRequest, HttpServletResponse)");
+		
+		TipManager.disableTip(pRequest.getParameter("tipCode"));
+		
+		// get tip settings
+		TipSettings lTipSettings = TipManager.load();
+		getServletContext().setAttribute("tipSettings", lTipSettings);
+		
+		mLog.debug("End disableTip(HttpServletRequest, HttpServletResponse)");
+	}
+	
 	public void deleteChapter(HttpServletRequest pRequest, HttpServletResponse pResponse) {
 		mLog.debug("Start deletechapter(HttpServletRequest, HttpServletResponse)");
 		
@@ -1646,6 +1660,10 @@ public class BibiscoServlet extends HttpServlet {
 		// get rich text editor settings
 		RichTextEditorSettings lRichTextEditorSettings = RichTextEditorSettingsManager.load();
 		getServletContext().setAttribute("richTextEditorSettings", lRichTextEditorSettings);
+		
+		// get tip settings
+		TipSettings lTipSettings = TipManager.load();
+		getServletContext().setAttribute("tipSettings", lTipSettings);
 
 		// get projects
 		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
