@@ -705,6 +705,10 @@ function bibiscoAddThumbnail(data, position, config) {
 
 	bibiscoInitAllThumbnail(config);
 	config.scrollbar.scrollToPercentY(100);
+	
+	if (position > 1) {
+		bibiscoShowDndTip(config);
+	}
 }
 
 // open thumbnail title form
@@ -761,3 +765,20 @@ function bibiscoShowTip(tipCode, height) {
       
     bibiscoOpenAjaxDialog(ajaxDialogContent);
 }
+
+function bibiscoShowDndTip(config) {
+	
+	$.ajax({
+		  type: 'GET',
+		  async: true,
+		  url: 'BibiscoServlet?action=isDndTipEnabled&tipCode='+config.titleForm.tipCode,
+		  error:function(jqXHR, textStatus, errorThrown) {},
+		  success:function(result){
+			  if (result == 'true') {
+				  bibiscoShowTip(config.titleForm.tipCode, 150);				  
+			  }
+		  },
+		});
+}
+
+

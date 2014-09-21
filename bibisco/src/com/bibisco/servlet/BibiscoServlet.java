@@ -1462,6 +1462,26 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("End disableTip(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void isDndTipEnabled(HttpServletRequest pRequest, HttpServletResponse pResponse) throws IOException {
+		mLog.debug("Start isTipEnabled(HttpServletRequest, HttpServletResponse)");
+		
+		Boolean lBlnResult;
+		String lStrTipCode = pRequest.getParameter("tipCode");
+		mLog.debug("tipCode: " + lStrTipCode);
+		
+		// get tip settings
+		TipSettings lTipSettings = (TipSettings) getServletContext().getAttribute("tipSettings");
+		
+		lBlnResult = lTipSettings.getDndTipMap().get(lStrTipCode);
+		
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		lWriter.write(lBlnResult.toString());
+		
+		mLog.debug("End isTipEnabled(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	
 	public void deleteChapter(HttpServletRequest pRequest, HttpServletResponse pResponse) {
 		mLog.debug("Start deletechapter(HttpServletRequest, HttpServletResponse)");
 		

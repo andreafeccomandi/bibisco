@@ -434,7 +434,7 @@
     
     function bibiscoShowSceneTip() {
     	<c:if test="${tipSettings.sceneTip}">
-    	   bibiscoShowTip('sceneTip', 210);
+    	   bibiscoShowTip('sceneTip', 235);
     	</c:if>
     }
 

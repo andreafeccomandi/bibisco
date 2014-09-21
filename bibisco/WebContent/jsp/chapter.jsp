@@ -61,7 +61,8 @@ function bibiscoChapterInitCallback(configChapter) {
 				bibiscoSceneButtonUpdateTitleInit(config, id, position);
 			},
 			titleLabel: "<fmt:message key="jsp.sceneTitle.form.title" />",
-			updateTitleLabel: "<fmt:message key="jsp.scene.dialog.title.updateTitle" />"
+			updateTitleLabel: "<fmt:message key="jsp.scene.dialog.title.updateTitle" />",
+			tipCode : 'scenesdndTip'
 		}
 	};
 	<c:if test="${not empty chapter.sceneList}">

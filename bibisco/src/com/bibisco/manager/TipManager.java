@@ -55,19 +55,19 @@ public class TipManager {
 					lTipSettings.setSceneTip(Boolean.parseBoolean(lProperties.getValue()));
 					continue;
 				} else if (lProperties.getProperty().equalsIgnoreCase("chaptersdndTip")) {
-					lTipSettings.setChaptersdndTip(Boolean.parseBoolean(lProperties.getValue()));
+					lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
 					continue;
 				} else if (lProperties.getProperty().equalsIgnoreCase("scenesdndTip")) {
-					lTipSettings.setScenesdndTip(Boolean.parseBoolean(lProperties.getValue()));
+					lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
 					continue;
 				} else if (lProperties.getProperty().equalsIgnoreCase("locationsdndTip")) {
-					lTipSettings.setLocationsdndTip(Boolean.parseBoolean(lProperties.getValue()));
+					lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
 					continue;
 				} else if (lProperties.getProperty().equalsIgnoreCase("charactersdndTip")) {
-					lTipSettings.setCharactersdndTip(Boolean.parseBoolean(lProperties.getValue()));
+					lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
 					continue;
-				} else if (lProperties.getProperty().equalsIgnoreCase("stransdndTip")) {
-					lTipSettings.setStransdndTip(Boolean.parseBoolean(lProperties.getValue()));
+				} else if (lProperties.getProperty().equalsIgnoreCase("strandsdndTip")) {
+					lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
 					continue;
 				}
 			}

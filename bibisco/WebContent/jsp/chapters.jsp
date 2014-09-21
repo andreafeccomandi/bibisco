@@ -21,7 +21,8 @@ $(function() {
 				$('#bibiscoChapterSpanTitle').html(title);
 			},
 			titleLabel: "<fmt:message key="jsp.chapterTitle.form.title" />",
-			updateTitleLabel: "<fmt:message key="jsp.chapter.dialog.title.updateTitle" />"
+			updateTitleLabel: "<fmt:message key="jsp.chapter.dialog.title.updateTitle" />",
+			tipCode : 'chaptersdndTip'
 		}
 	};
 	

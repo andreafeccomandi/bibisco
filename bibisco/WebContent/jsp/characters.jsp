@@ -22,7 +22,8 @@ $(function() {
 				$('#bibiscoCharacterSpanTitle').html(title);
 			},
 			titleLabel: "<fmt:message key="jsp.characterTitle.form.title" />",
-			updateTitleLabel: "<fmt:message key="jsp.character.dialog.title.updateTitle" />"
+			updateTitleLabel: "<fmt:message key="jsp.character.dialog.title.updateTitle" />",
+			tipCode : 'charactersdndTip'
 		}
 	};
 	<c:if test="${not empty project.mainCharacterList}">
@@ -62,7 +63,8 @@ $(function() {
 					bibiscoSecondaryCharacterButtonUpdateTitleInit(config, id, position);
 				},
 				titleLabel: "<fmt:message key="jsp.characterTitle.form.title" />",
-				updateTitleLabel: "<fmt:message key="jsp.character.dialog.title.updateTitle" />"
+				updateTitleLabel: "<fmt:message key="jsp.character.dialog.title.updateTitle" />",
+				tipCode : 'charactersdndTip'
 			}
 		};
 	

@@ -7,4 +7,4 @@ insert into properties (property,value) values ('chaptersdndTip','true');
 insert into properties (property,value) values ('scenesdndTip','true');
 insert into properties (property,value) values ('locationsdndTip','true');
 insert into properties (property,value) values ('charactersdndTip','true');
-insert into properties (property,value) values ('stransdndTip','true');
+insert into properties (property,value) values ('strandsdndTip','true');

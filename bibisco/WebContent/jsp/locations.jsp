@@ -26,7 +26,8 @@ $(function() {
 					
 			},
 			titleLabel: "<fmt:message key="jsp.locationTitle.form.title" />",
-			updateTitleLabel: "<fmt:message key="jsp.location.dialog.title.updateTitle" />"
+			updateTitleLabel: "<fmt:message key="jsp.location.dialog.title.updateTitle" />",
+			tipCode : 'locationsdndTip'
 		}
 	};
 	

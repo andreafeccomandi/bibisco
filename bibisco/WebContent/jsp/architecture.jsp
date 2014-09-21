@@ -23,7 +23,8 @@ $(function() {
 				bibiscoStrandButtonUpdateTitleInit(config, id, position);
 			},
 			titleLabel: "<fmt:message key="jsp.architecture.strandTitle.form.title" />",
-			updateTitleLabel: "<fmt:message key="jsp.architecture.strand.dialog.title.updateTitle" />"
+			updateTitleLabel: "<fmt:message key="jsp.architecture.strand.dialog.title.updateTitle" />",
+			tipCode : 'strandsdndTip'
 		}
 	};
 

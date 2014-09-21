@@ -14,6 +14,9 @@
  */
 package com.bibisco.bean;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Tip settings bean.
  * 
@@ -23,11 +26,7 @@ package com.bibisco.bean;
 public class TipSettings {
 	
 	private boolean sceneTip= true;
-	private boolean chaptersdndTip= true;
-	private boolean scenesdndTip= true;
-	private boolean locationsdndTip= true;
-	private boolean charactersdndTip= true;
-	private boolean stransdndTip= true;
+	private Map<String, Boolean> dndTipMap = new HashMap<String, Boolean>();
 	
 	public boolean isSceneTip() {
 		return sceneTip;
@@ -35,35 +34,11 @@ public class TipSettings {
 	public void setSceneTip(boolean sceneTip) {
 		this.sceneTip = sceneTip;
 	}
-	public boolean isChaptersdndTip() {
-		return chaptersdndTip;
+	public Map<String, Boolean> getDndTipMap() {
+		return dndTipMap;
 	}
-	public void setChaptersdndTip(boolean chaptersdndTip) {
-		this.chaptersdndTip = chaptersdndTip;
-	}
-	public boolean isScenesdndTip() {
-		return scenesdndTip;
-	}
-	public void setScenesdndTip(boolean scenesdndTip) {
-		this.scenesdndTip = scenesdndTip;
-	}
-	public boolean isLocationsdndTip() {
-		return locationsdndTip;
-	}
-	public void setLocationsdndTip(boolean locationsdndTip) {
-		this.locationsdndTip = locationsdndTip;
-	}
-	public boolean isCharactersdndTip() {
-		return charactersdndTip;
-	}
-	public void setCharactersdndTip(boolean charactersdndTip) {
-		this.charactersdndTip = charactersdndTip;
-	}
-	public boolean isStransdndTip() {
-		return stransdndTip;
-	}
-	public void setStransdndTip(boolean stransdndTip) {
-		this.stransdndTip = stransdndTip;
+	public void setDndTipMap(Map<String, Boolean> dndTipMap) {
+		this.dndTipMap = dndTipMap;
 	}
 	
 
