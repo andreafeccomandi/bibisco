@@ -1,4 +1,4 @@
-package com.bibisco.servlet;
+package com.bibisco.bean;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bibisco.BibiscoException;
-import com.bibisco.bean.StrandDTO;
 import com.bibisco.log.Log;
 
 public class ProjectFromSceneArchitectureDTO {

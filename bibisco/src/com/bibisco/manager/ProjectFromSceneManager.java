@@ -26,6 +26,7 @@ import com.bibisco.bean.CharacterInfoQuestionsDTO;
 import com.bibisco.bean.CharacterInfoWithoutQuestionsDTO;
 import com.bibisco.bean.LocationDTO;
 import com.bibisco.bean.MainCharacterDTO;
+import com.bibisco.bean.ProjectFromSceneArchitectureDTO;
 import com.bibisco.bean.ProjectFromSceneChapterDTO;
 import com.bibisco.bean.ProjectFromSceneLocationDTO;
 import com.bibisco.bean.ProjectFromSceneMainCharacterDTO;
@@ -44,7 +45,6 @@ import com.bibisco.enums.ElementType;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
-import com.bibisco.servlet.ProjectFromSceneArchitectureDTO;
 
 /**
  * Project from scene manager.

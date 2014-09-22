@@ -56,6 +56,7 @@ import com.bibisco.bean.LocationDTO;
 import com.bibisco.bean.MainCharacterDTO;
 import com.bibisco.bean.PointOfView4AnalysisDTO;
 import com.bibisco.bean.ProjectDTO;
+import com.bibisco.bean.ProjectFromSceneArchitectureDTO;
 import com.bibisco.bean.ProjectFromSceneChapterDTO;
 import com.bibisco.bean.ProjectFromSceneLocationDTO;
 import com.bibisco.bean.ProjectFromSceneMainCharacterDTO;
