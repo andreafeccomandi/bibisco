@@ -29,6 +29,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -321,13 +322,15 @@ public class ProjectManager {
 	}
 		
 	
-	private static String getProjectExportFilePath(ExportType pExportType, String pStrType, String pStrTimestamp) {
+	private static String getProjectExportFilePath(ExportType pExportType, String pStrType, String pStrTimestamp, String pStrProjectName) {
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 			
 		// create export file path
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append(lContextManager.getExportDirectoryPath());
+		lStringBuilder.append(getProjectNameForExport(pStrProjectName));
+		lStringBuilder.append("_");
 		lStringBuilder.append(pStrType);
 		lStringBuilder.append("_");
 		lStringBuilder.append(pStrTimestamp);
@@ -335,6 +338,20 @@ public class ProjectManager {
 		
 		return lStringBuilder.toString();
 	}
+	
+	private static String getProjectNameForExport(String pStrProjectName) {
+		
+		StringBuilder lStringBuilder = new StringBuilder();
+		
+		for (int i = 0; i < pStrProjectName.length(); i++) {
+			if (CharUtils.isAsciiAlphanumeric(pStrProjectName.charAt(i))) {
+				lStringBuilder.append(pStrProjectName.charAt(i));
+			}
+		}
+		
+		return lStringBuilder.toString();
+	}
+	
 	
 	private static String getTemplateDBFilePath(String pStrIdProject) {
 		
@@ -381,8 +398,12 @@ public class ProjectManager {
 		
 		mLog.debug("Start exportProjectAsArchive()");
 		
+		// load project name
+		ProjectDTO lProjectDTO = load();
+		String lStrProjectName = lProjectDTO.getName();
+		
 		// generate archive file name
-		String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), lStrProjectName);
 		
 		// create archive
 		zipIt(lStrZipFile);
@@ -437,10 +458,10 @@ public class ProjectManager {
 		String pStrTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
 		// novel
-		lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, "novel", pStrTimestamp), pExportType, lStrProjectName));
+		lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, "novel", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
 		
 		// project
-		lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, "project", pStrTimestamp), pExportType, lStrProjectName));
+		lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, "project", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
 		
 		mLog.debug("End exportAsWordOrPdf(ExportType)");
 		
