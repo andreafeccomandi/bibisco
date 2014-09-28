@@ -78,13 +78,17 @@ public class Application implements IApplication {
         	// init Locale
         	LocaleManager.getInstance();
         	
-        	// init xulrunner path
-    		String lStrXulRunnerPath = ContextManager.getInstance().getXulRunnerDirectoryPath();
-    		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
-    		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
-    		
-    		// enable clipboard operation
-    		enableClipboardOperationOnXulrunner();
+        	ContextManager lContextManager = ContextManager.getInstance();
+        	
+        	// if win or linux init xulrunner path
+        	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux")) {
+        		String lStrXulRunnerPath = lContextManager.getXulRunnerDirectoryPath();
+        		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
+        		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
+        		        		
+        		// enable clipboard operation
+        		enableClipboardOperationOnXulrunner();
+        	}
     		
     		// create and run workbench
     		try {

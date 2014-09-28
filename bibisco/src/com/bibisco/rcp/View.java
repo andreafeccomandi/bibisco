@@ -28,6 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.bibisco.BibiscoException;
 import com.bibisco.Constants;
 import com.bibisco.log.Log;
+import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.JettyManager;
 import com.bibisco.manager.HttpManager;
 
@@ -49,7 +50,17 @@ public class View extends ViewPart {
 		cancelWorkbenchAutoSaveJob();
 		
 		// create Browser instance
-		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
+		ContextManager lContextManager = ContextManager.getInstance();
+    	
+    	// if win or linux create MOZILLA browser
+    	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux")) {    
+    		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
+    	}
+    	// if mac use default browser (WEBKIT)
+    	else {
+    		mBrowser = new Browser(pCmpParent, SWT.NONE);
+    	}
+    	
 		mBrowser.setJavascriptEnabled(true);
 		// browser context menu disabled
 		mBrowser.addMenuDetectListener(new MenuDetectListener() {

@@ -110,9 +110,11 @@
 
             initializeButton('undo', 'bibiscoTagRichTextEditorButtonUndo');
             initializeButton('redo', 'bibiscoTagRichTextEditorButtonRepeat');
-            initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
-            initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
-            initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
+            <c:if test="${OS == 'win' || OS == 'linux'}">
+                initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
+                initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
+                initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
+            </c:if>
             initializeButton('print', 'bibiscoTagRichTextEditorButtonPrint');
             initializeButton('bold', 'bibiscoTagRichTextEditorButtonBold');
             initializeButton('italic', 'bibiscoTagRichTextEditorButtonItalic');
@@ -151,7 +153,7 @@
             // set initial text         
             var initialText = '';
             if (bibiscoRichTextEditorConfig.text) {
-            	initialText = bibiscoRichTextEditorConfig.text;
+                initialText = bibiscoRichTextEditorConfig.text;
             } 
             bibiscoRichTextEditor.setText(initialText);
             
@@ -233,8 +235,15 @@
             
             // character word count after every command exec
             ev.editor.on('afterCommandExec', function(evt) {
-            	bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
-            });  
+                bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
+            });
+            
+            // if mac os remove copy/cut/paste from context menu
+            <c:if test="${OS == 'mac'}">
+	            ev.editor.removeMenuItem('copy');
+	            ev.editor.removeMenuItem('cut');
+	            ev.editor.removeMenuItem('paste');
+            </c:if>
              
             // editor is initialized: let's show it!
             $('#bibiscoTagRichTextEditorTextareaContainer').show();
@@ -330,7 +339,7 @@
     }
     
     function bibiscoCharacterWordCount(text2parse) {
-    	    	
+                
         $.ajax({
             type: 'POST',
             async: true,
@@ -361,17 +370,20 @@
             <i class="icon-print"></i>
         </button>
     </div>
-    <div class="btn-group">
-        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
-            <i class="icon-copy"></i>
-        </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
-            <i class="icon-cut"></i>
-        </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
-            <i class="icon-paste"></i>
-        </button>
-    </div>
+   
+    <c:if test="${OS == 'win' || OS == 'linux'}">
+	    <div class="btn-group">
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
+	            <i class="icon-copy"></i>
+	        </button>
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
+	            <i class="icon-cut"></i>
+	        </button>
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
+	            <i class="icon-paste"></i>
+	        </button>
+	    </div>
+    </c:if>
     <div class="btn-group" data-toggle="buttons-checkbox">
         <button class="btn" id="bibiscoTagRichTextEditorButtonBold" title="<fmt:message key="tag.bibiscoRichTextEditor.bold"/>">
             <i class="icon-bold"></i>

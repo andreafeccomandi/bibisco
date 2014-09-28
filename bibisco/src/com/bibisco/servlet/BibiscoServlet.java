@@ -1675,6 +1675,9 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start init()");
 		
+		// get OS
+		getServletContext().setAttribute("OS", ContextManager.getInstance().getOS());
+		
 		// get language
 		getServletContext().setAttribute("language", LocaleManager.getInstance().getLocale().getLanguage());
 
