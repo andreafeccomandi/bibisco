@@ -70,7 +70,7 @@
 		                        <td style="width: 120px;"><fmt:formatDate value="${characterScene.sceneDate}" pattern="${patternTimestamp}"/></td>
 		                        <td style="width: 430px;"><c:out value="${characterScene.location}" /></td>
 		                        <td style="width: 200px;"><c:out value="${characterScene.sceneDescription}" /></td>
-		                        <td style="width: 200px;"><c:out value="${characterScene.chapterTitle}" /></td>
+		                        <td style="width: 200px;">#${characterScene.chapterPosition}&nbsp;<c:out value="${characterScene.chapterTitle}" /></td>
 		                    </tr>
 		                    </c:forEach>
 		                </tbody>

@@ -15,14 +15,14 @@
        
         var graphData = [];
 
-        <c:if test="${not empty chapters}">
-           <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
-             var chapterItem = [];
-             chapterItem.push(${chapter.position});
-             chapterItem.push(${chapter.wordCount});
-             graphData.push(chapterItem);
-           </c:forEach>
-        </c:if>
+        
+       <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
+         var chapterItem = [];
+         chapterItem.push(${chapter.position});
+         chapterItem.push(${chapter.wordCount});
+         graphData.push(chapterItem);
+       </c:forEach>
+        
         
         var plot1 = $.jqplot('bibiscoAnalysisChaptersLengthChartDiv', [graphData], {
 
@@ -65,7 +65,9 @@
         $('#bibiscoAnalysisChaptersLengthDiv').css('height', window.innerHeight - 200);
                     
         // initialize graph
+        <c:if test="${not empty chapters}">
         bibiscoAnalysisChaptersLengthInitGraph();
+        </c:if>
     }     
     
     // close dialog callback

@@ -69,7 +69,7 @@ $(function() {
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 
 				  resizable: false, modal: true,
-				  width: 600, height: 240
+				  width: 600, height: 240, positionTop: 100
 		  };
 		  
 		  bibiscoOpenAjaxDialog(ajaxDialogContent);

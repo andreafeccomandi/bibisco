@@ -170,6 +170,8 @@ public class SceneManager {
 			lSceneRevisions.setIdScene(pIntIdScene);
 			lSceneRevisions.setRevisionNumber(lIntMaxRevisionNumber + 1);
 			lSceneRevisions.setSelected("Y");
+			lSceneRevisions.setWords(0);
+			lSceneRevisions.setCharacters(0);
 			lSceneRevisionsMapper.insert(lSceneRevisions);
 
 			// reload scene with new revision

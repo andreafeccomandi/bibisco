@@ -29,6 +29,7 @@ public class CharacterSceneDTO {
 	private Integer idCharacter;
 	private String characterName;
 	private Integer idChapter;
+	private Integer chapterPosition;
 	private String chapterTitle;
 	private Integer idScene;
 	private Date sceneDate;
@@ -185,5 +186,15 @@ public class CharacterSceneDTO {
 
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
+	}
+
+
+	public Integer getChapterPosition() {
+		return chapterPosition;
+	}
+
+
+	public void setChapterPosition(Integer chapterPosition) {
+		this.chapterPosition = chapterPosition;
 	}
 }

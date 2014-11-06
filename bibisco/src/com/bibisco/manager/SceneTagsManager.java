@@ -429,6 +429,7 @@ public class SceneTagsManager {
 					lCharacterSceneDTO.setIdCharacter(lVCharacterScene.getIdCharacter().intValue());
 					lCharacterSceneDTO.setCharacterName(lVCharacterScene.getCharacterName());
 					lCharacterSceneDTO.setIdChapter(lVCharacterScene.getIdChapter().intValue());
+					lCharacterSceneDTO.setChapterPosition(lVCharacterScene.getChapterPosition());
 					lCharacterSceneDTO.setChapterTitle(lVCharacterScene.getChapterTitle());
 					lCharacterSceneDTO.setIdScene(lVCharacterScene.getIdScene().intValue());
 					lCharacterSceneDTO.setSceneDate(lVCharacterScene.getSceneDate());

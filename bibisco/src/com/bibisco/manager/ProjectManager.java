@@ -771,6 +771,8 @@ public class ProjectManager {
 			// add scene
 			if (StringUtils.isNotBlank(lVSelectedSceneRevisions.getScene())) {
 				HTMLParser.parse(lVSelectedSceneRevisions.getScene(), lExporter);
+				// add empty line after scene
+				lExporter.addEmptyLines(1);
 			}
 		}
 		
