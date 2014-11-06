@@ -20,7 +20,7 @@
     	$('#bibiscoLocationIdLocation').val(location.idLocation);
     	
 		//rich text editor height
-		var bibiscoRichTextEditorVerticalPadding = 200;
+		var bibiscoRichTextEditorVerticalPadding = 220;
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
 		
 		bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: location.description, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});

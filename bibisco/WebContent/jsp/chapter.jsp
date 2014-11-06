@@ -131,12 +131,12 @@ function bibiscoSelectScene(position,configScene) {
 <div class="row-fluid">
 	<div class="span12">
 		<div class="row-fluid page-header">
-			<div class="span8" style="float: left;">
+			<div class="span10" style="float: left;">
 				<h1 id="bibiscoChapterH1Title">
 				<span id="bibiscoChapterSpanPosition">#${chapter.position}&nbsp;</span><span id="bibiscoChapterSpanTitle"><c:out value="${chapter.title}"></c:out></span>&nbsp;&nbsp;<button id="bibiscoChapterButtonUpdateTitle" title="<fmt:message key="jsp.chapter.button.updateTitle" />" class="btn btn-mini"><i class="icon-pencil"></i></button>
     			</h1>
     		</div>
-    		<div class="span4" style="text-align: right;">
+    		<div class="span2" style="text-align: right;">
     			<a id="bibiscoChapterABackToChapterList" class="btn" style="margin-top: 2px;" href="#"><i class="icon-chevron-up icon-white"></i><fmt:message key="jsp.chapter.a.backToChapterList" /></a>
     		</div>
     	</div>

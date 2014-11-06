@@ -9,8 +9,8 @@
     
 <div data-bibiscoTagThumbnailId="${id}" class="thumbnail" style="height: 70px;" id="bibiscoTagThumbnailStrandDiv${id}"">
 	<div class="caption">
-		<table style="width: 100%">
-		<tr><td style="text-align: left;"><strong  class="bibiscoThumbnailTitle">${title}</strong></td>
+		<table style="width: 100%">		
+		<tr><td rowspan="2" style="vertical-align: top; text-align: left;"><strong  class="bibiscoThumbnailTitle">${title}</strong></td>
 		<td style="text-align: right;">
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>
