@@ -360,6 +360,9 @@
     	// chapter text
     	var chapterText = $('#bibiscoProjectFromSceneDivChapterText');
     	chapterText.html('');
+    	if(projectFromSceneChapter.scenes.length==0) {
+    		chapterText.append("<em><fmt:message key="jsp.projectFromScene.div.scenes.empty" /></em>");
+    	}
     	for (i=0;i<projectFromSceneChapter.scenes.length;i++) {
 	   		chapterText.append('<h4>'+projectFromSceneChapter.scenes[i].sceneTitle+'</h4>');
 	   	   if (projectFromSceneChapter.scenes[i].idScene == ${idActualScene}) {
