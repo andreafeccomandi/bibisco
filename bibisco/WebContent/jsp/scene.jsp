@@ -142,6 +142,12 @@
         $('#bibiscoSceneDivTags').hide();       
         $('#bibiscoSceneDivCharacters').hide();
         
+        $('#bibiscoSceneDivTags').css("height", ajaxDialog.getHeight() - 150);
+        $('#bibiscoSceneDivTags').jScrollPane({
+            autoReinitialise: true, animateScroll: true, verticalGutter: 30
+        }).data('jsp');
+        
+        
         // point of view
         $('button.scenePointOfView').click(function() {
             $('button.scenePointOfView.active').removeClass('active');
@@ -452,7 +458,7 @@
         <tags:bibiscoRichTextEditor />
     </div>
 </div>
-<div id="bibiscoSceneDivTags">
+<div id="bibiscoSceneDivTags" class="notSelectableText">
     <div class="accordion" id="sceneAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">
