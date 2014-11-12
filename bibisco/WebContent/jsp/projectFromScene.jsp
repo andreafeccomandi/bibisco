@@ -15,7 +15,7 @@
     	// create dialog config object
     	var dialogConfig = {
             width: dialogWidth,
-            height: projectFromSceneDialogHeight,
+            height: projectFromSceneDialogHeight - 20,
             selectWidth : dialogWidth - 150,
             imageWidth : dialogWidth - 50
         }
@@ -458,9 +458,9 @@
 <div style="margin-top: 10px;">
 	<ul id="bibiscoProjectFromSceneULMainMenu" class="nav nav-tabs">
 	  <li class="active"><a href="#bibiscoProjectFromSceneTabLiArchitecture" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.architecture" /></a></li>
-	  <li><a href="#bibiscoProjectFromSceneTabLiChapters" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.chapters" /></a></li>
 	  <li><a href="#bibiscoProjectFromSceneTabLiCharacters" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.characters" /></a></li>
 	  <li><a href="#bibiscoProjectFromSceneTabLiLocations" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.locations" /></a></li>
+	  <li><a href="#bibiscoProjectFromSceneTabLiChapters" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.chapters" /></a></li>
 	</ul>
 	<div class="tab-content">
 	
