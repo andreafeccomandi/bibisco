@@ -30,15 +30,24 @@ $(function() {
     $('.defaultBrowserUrl').click(function() {
         bibiscoOpenDefaultBrowser($(this).html());
     }); 
+        
+    // link to facebook page
+    $('#bibiscoInfoImgFacebook').click(function() {
+        bibiscoOpenDefaultBrowser('https://www.facebook.com/bibisco.official.page');
+    }); 
+    
+    // link to twitter page
+    $('#bibiscoInfoImgTwitter').click(function() {
+        bibiscoOpenDefaultBrowser('https://twitter.com/bibiscotweet');
+    });
     
     // donate with PayPal
-   	$('#bibiscoInfoDonatePayPal').click(function() {
+   	$('#bibiscoInfoImgDonatePayPal').click(function() {
         bibiscoOpenDefaultBrowser('${baseURL}/donatePayPal');
     }); 
     
-    
     // donate with Flattr
-    $('#bibiscoInfoDonateFlattr').click(function() {
+    $('#bibiscoInfoImgDonateFlattr').click(function() {
         bibiscoOpenDefaultBrowser('${baseURL}/donateFlattr');
     }); 
     
@@ -80,18 +89,19 @@ $(function() {
      <p><fmt:message key="jsp.info.p.project.2"/></p>
      <h5><fmt:message key="jsp.info.h5.website"/></h5>
      <p class="defaultBrowserUrl"><fmt:message key="jsp.info.p.websiteurl"/></p>
-     <h5>Facebook</h5>
-     <p class="defaultBrowserUrl">https://www.facebook.com/bibisco.official.page</p>
-     <h5>Twitter</h5>
-     <p class="defaultBrowserUrl">https://twitter.com/bibiscotweet</p>
      <h5>Email</h5>
      <p class="defaultBrowserUrl">mailto:info@bibisco.com</p>
+     <h5>Social media</h5>
+     <p class="bibiscoSocialMediaButton">
+        <img id="bibiscoInfoImgFacebook" class="bibiscoSocialMediaButtonFacebook" src="img/facebook.png">
+        <img id="bibiscoInfoImgTwitter" class="bibiscoSocialMediaButtonTwitter" src="img/twitter.png">
+     </p>
      </div>
      <div class="span3">   
      <h3><fmt:message key="jsp.info.h3.donations"/></h3>
      <p><fmt:message key="jsp.info.p.donations.1"/></p>
      <p><fmt:message key="jsp.info.p.donations.2"/></p>
-     <p><a id="bibiscoInfoDonatePayPal" class="btn"><fmt:message key="jsp.info.a.donatepaypal"/></a></p>
-     <p><a id="bibiscoInfoDonateFlattr" class="btn"><fmt:message key="jsp.info.a.donateflattr"/></a></p>
+     <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonatePayPal" class="bibiscoDonationButtonPaypal" src="img/<fmt:message key="jsp.info.img.donatepaypal"/>"></p>
+     <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png"></p>
      </div>
  </div>		

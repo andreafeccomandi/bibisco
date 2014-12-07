@@ -178,3 +178,36 @@ div.bibiscoTip h4 {
 .bibiscoAnalysisItemsRow11 {
     background-color: #C5000B !important;
 }
+
+.bibiscoDonationsButton {
+	text-align: center;
+}
+
+.bibiscoDonationsButton img {
+    cursor: pointer;
+}
+
+.bibiscoDonationButtonPaypal {
+
+}
+
+.bibiscoDonationButtonFlattr {
+    margin-top: 10px;
+}
+
+.bibiscoSocialMediaButton {
+    margin-top: 5px;
+    text-align: center:
+}
+
+.bibiscoSocialMediaButton img {
+	cursor: pointer;
+}
+
+.bibiscoSocialMediaButtonFacebook {
+    margin-left: 2px;
+}
+
+.bibiscoSocialMediaButtonTwitter {
+    margin-left: 5px;
+}
