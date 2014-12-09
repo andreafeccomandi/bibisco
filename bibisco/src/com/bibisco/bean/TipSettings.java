@@ -26,6 +26,8 @@ import java.util.Map;
 public class TipSettings {
 	
 	private boolean sceneTip= true;
+	private boolean socialMediaTip = true;
+	private boolean donationTip = true;
 	private Map<String, Boolean> dndTipMap = new HashMap<String, Boolean>();
 	
 	public boolean isSceneTip() {
@@ -39,6 +41,18 @@ public class TipSettings {
 	}
 	public void setDndTipMap(Map<String, Boolean> dndTipMap) {
 		this.dndTipMap = dndTipMap;
+	}
+	public boolean isSocialMediaTip() {
+		return socialMediaTip;
+	}
+	public void setSocialMediaTip(boolean socialMediaTip) {
+		this.socialMediaTip = socialMediaTip;
+	}
+	public boolean isDonationTip() {
+		return donationTip;
+	}
+	public void setDonationTip(boolean donationTip) {
+		this.donationTip = donationTip;
 	}
 	
 

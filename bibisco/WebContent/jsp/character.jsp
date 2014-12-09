@@ -42,6 +42,16 @@ function bibiscoCharacterInitCallback(config) {
 	$('#bibiscoCharacterButtonUpdateTitle').tooltip();
 	
 	$('.bibiscoTagTaskStatusDiv span').tooltip();
+	
+	// show social media tip
+	bibiscoShowSocialMediaTip();
+}
+
+
+function bibiscoShowSocialMediaTip() {
+    <c:if test="${tipSettings.socialMediaTip}">
+       bibiscoShowTip('socialMediaTip', 235);
+    </c:if>
 }
 
 </script>

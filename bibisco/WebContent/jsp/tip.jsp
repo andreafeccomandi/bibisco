@@ -46,7 +46,7 @@ function bibiscoTipClose(idAjaxDialog, idCaller) {
 
 <div id="bibiscoTipDiv" style="width: 100%;" >
 	<div class="bibiscoTip">
-	<jsp:include page="tips/${language}/${param.tipCode}.html" />
+	<jsp:include page="tips/${param.tipCode}.jsp" />
 	</div>
 </div>
 

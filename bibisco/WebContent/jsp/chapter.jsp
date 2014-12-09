@@ -82,6 +82,15 @@ function bibiscoChapterInitCallback(configChapter) {
 	});
 	
 	$('.bibiscoChapter .bibiscoTagTaskStatusDiv span').tooltip();
+	
+    //show social media tip
+    bibiscoShowDonationTip();
+}
+
+function bibiscoShowDonationTip() {
+	<c:if test="${tipSettings.donationTip}">
+	   bibiscoShowTip('donationTip', 270);
+	</c:if>
 }
 
 function bibiscoCreateScene(configScene) {

@@ -8,3 +8,6 @@ insert into properties (property,value) values ('scenesdndTip','true');
 insert into properties (property,value) values ('locationsdndTip','true');
 insert into properties (property,value) values ('charactersdndTip','true');
 insert into properties (property,value) values ('strandsdndTip','true');
+insert into properties (property,value) values ('donationTip','');
+insert into properties (property,value) values ('socialMediaTip','true');
+
