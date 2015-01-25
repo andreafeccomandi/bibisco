@@ -68,7 +68,6 @@ import com.bibisco.bean.SceneRevisionDTO;
 import com.bibisco.bean.SecondaryCharacterDTO;
 import com.bibisco.bean.StrandDTO;
 import com.bibisco.bean.TipSettings;
-import com.bibisco.bean.WebMessage;
 import com.bibisco.enums.CharacterInfoQuestions;
 import com.bibisco.enums.CharacterInfoWithoutQuestions;
 import com.bibisco.enums.ElementType;
@@ -81,7 +80,6 @@ import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 import com.bibisco.manager.ChapterManager;
 import com.bibisco.manager.CharacterManager;
 import com.bibisco.manager.ContextManager;
-import com.bibisco.manager.HttpManager;
 import com.bibisco.manager.ImageManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
@@ -169,8 +167,8 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
 		
 		// get messages from bibisco.com
-		WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
-		pRequest.setAttribute("webMessage", lWebMessage);
+		// WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
+		// pRequest.setAttribute("webMessage", lWebMessage);
 
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
@@ -1391,7 +1389,11 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// open folder in file system
 		if (Desktop.isDesktopSupported()) {
-		    Desktop.getDesktop().open(lListFile.get(0).getParentFile());
+		    try {
+				Desktop.getDesktop().open(lListFile.get(0).getParentFile());
+			} catch (Exception e) {
+				mLog.error(e);
+			}
 		}
 		
 		JSONObject lJSONObject;
