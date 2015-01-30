@@ -87,7 +87,7 @@ public class Application implements IApplication {
         		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
         		        		
         		// enable clipboard operation
-        		enableClipboardOperationOnXulrunner();
+        		//enableClipboardOperationOnXulrunner();
         	}
     		
     		// create and run workbench

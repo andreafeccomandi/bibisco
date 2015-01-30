@@ -8,6 +8,7 @@
 	<property name="license.source.dir" value="${basedir}/license" />
 	<property name="license.target.dir" value="${build.dir}/license" />
 	<property name="product.source.dir" value="${basedir}/product" />
+	<property name="readme.source.dir" value="${basedir}/readme" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="WebContent.source.dir" value="${basedir}/WebContent" />
 	<property name="WebContent.target.dir" value="${build.dir}/WebContent" />
@@ -18,6 +19,7 @@
 	<target name="build_win">
 		<antcall target="build">
 			<param name="product.file" value="${product.source.dir}/bibisco_win.product"/>
+			<param name="readme.file" value="${readme.source.dir}/readme_win.txt"/>
 			<param name="xulrunner.source.dir" value="${basedir}/xulrunner/win"/>
 			<param name="xulrunner.target.dir" value="${build.dir}/xulrunner/win" />   
 		</antcall>
@@ -25,6 +27,7 @@
 	<target name="build_linux">
         <antcall target="build">
         	<param name="product.file" value="${product.source.dir}/bibisco_linux.product"/>
+        	<param name="readme.file" value="${readme.source.dir}/readme_linux.txt"/>
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux"/>
             <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux" />   
         </antcall>
@@ -32,6 +35,7 @@
 	<target name="build_mac">
         <antcall target="build">
             <param name="product.file" value="${product.source.dir}/bibisco_mac.product"/>
+        	<param name="readme.file" value="${readme.source.dir}/readme_mac.txt"/>
             <param name="xulrunner.source.dir" value="${basedir}/xulrunner/mac"/>
             <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/mac" />   
         </antcall>
@@ -63,6 +67,7 @@
 		    <fileset dir="${license.source.dir}"/>
 		</copy>
 		<copy file="${product.file}" tofile="${basedir}/bibisco.product"/>
+		<copy file="${readme.file}" tofile="${build.dir}/readme.txt"/>
 	    <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_svil.xml"/>
 		<move file="${src.dir}/bibiscoConfig_prod.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
 		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_svil.xml"/>
