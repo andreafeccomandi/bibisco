@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -62,7 +63,14 @@ public class HTMLParser {
 			
 		} else {
 			TextFormatting lTextFormatting = pTextFormatting.clone();
-			String lStrTagName = ((Element) pNode).tag().getName();
+			
+			String lStrTagName = "";
+			if (pNode instanceof Element) {				
+				lStrTagName = ((Element) pNode).tag().getName();
+			} else if (pNode instanceof Comment) {
+				lStrTagName = ((Comment) pNode).outerHtml();
+			}
+			
 
 			if (lStrTagName.equalsIgnoreCase("p")) {
 				pExporter.startParagraph(getParagraphAlignment(((Element) pNode).attr("style")));

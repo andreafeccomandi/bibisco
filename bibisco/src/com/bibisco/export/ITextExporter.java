@@ -191,8 +191,11 @@ public class ITextExporter implements IExporter {
 	
 	@Override
 	public void endListItem() {
-		mList.add(mListItem);
-		mListItem = null;
+		if (mList!=null) {			
+			mList.add(mListItem);
+			mListItem = null;
+		}
+		
 	}
 	
 	@Override
