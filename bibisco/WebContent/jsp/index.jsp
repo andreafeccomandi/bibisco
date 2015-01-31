@@ -17,7 +17,7 @@ $(function() {
 	$(document).on('dragstart', '.btn, img, a', function(event) { event.preventDefault(); });
 	
 	// disable open modal dialog by xulrunner to avoid message 'This document cannot be displayed while offline. To go online, uncheck Work Offline from the File menu.'
-	$(window).addEventListener('DOMWillOpenModalDialog',function(e){ e.preventDefault(); }, true);
+	//$(window).addEventListener('DOMWillOpenModalDialog',function(e){ e.preventDefault(); }, true);
 });
 
 </script>
