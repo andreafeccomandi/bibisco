@@ -14,10 +14,6 @@
  */
 package com.bibisco.rcp;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -85,9 +81,6 @@ public class Application implements IApplication {
         		String lStrXulRunnerPath = lContextManager.getXulRunnerDirectoryPath();
         		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
         		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
-        		        		
-        		// enable clipboard operation
-        		//enableClipboardOperationOnXulrunner();
         	}
     		
     		// create and run workbench
@@ -148,33 +141,5 @@ public class Application implements IApplication {
 					workbench.close();
 			}
 		});
-	}
-	
-	private void enableClipboardOperationOnXulrunner() {
-		try {
-			Class<?> lClass = Activator.getDefault().getClass()
-			        .getClassLoader()
-			        .loadClass("org.eclipse.swt.browser.MozillaDelegate");
-			Method lMethod = lClass.getDeclaredMethod("getProfilePath");
-			lMethod.setAccessible(true);
-			String lStrProfilePath = (String) lMethod.invoke(null);
-			
-			mLog.debug("Xulrunner prefs.js location: ", lStrProfilePath + File.separator + "prefs.js");
-			File lFileUserPrefs = new File(lStrProfilePath + File.separator + "prefs.js");
-			FileWriter lFileWriter = new FileWriter(lFileUserPrefs);
-            BufferedWriter lBufferedWriter = new BufferedWriter(lFileWriter);
-            lBufferedWriter.write("user_pref(\"capability.policy.policynames\", \"allowclipboard\");");
-            lBufferedWriter.newLine();
-            lBufferedWriter.write("user_pref(\"capability.policy.default.Clipboard.cutcopy\", \"allAccess\");");
-            lBufferedWriter.newLine();
-            lBufferedWriter.write("user_pref(\"capability.policy.default.Clipboard.paste\", \"allAccess\");");
-            lBufferedWriter.newLine();
-            lBufferedWriter.write("user_pref(\"browser.cache.disk.enable\", \"false\");");
-            lBufferedWriter.close();
-						
-		} catch (Exception e) {
-			// suffocated exception: bibisco start with clipboard capabilities disabled.
-			mLog.error(e);
-		} 
 	}
 }

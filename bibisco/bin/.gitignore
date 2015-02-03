@@ -4,8 +4,8 @@
 /bibiscoConfig.xml
 /bibiscoConfig_prod.xml
 /com
+/test
 /dbConfiguration.xml
 /log4j.dtd
 /log4j.xml
 /log4j_prod.xml
-/test
