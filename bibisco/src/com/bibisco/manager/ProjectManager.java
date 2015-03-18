@@ -52,6 +52,8 @@ import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.dao.client.ProjectMapper;
 import com.bibisco.dao.client.ProjectsMapper;
 import com.bibisco.dao.client.SceneRevisionsMapper;
+import com.bibisco.dao.client.ScenesMapper;
+import com.bibisco.dao.client.VScenesMapper;
 import com.bibisco.dao.client.VSelectedSceneRevisionsMapper;
 import com.bibisco.dao.model.Project;
 import com.bibisco.dao.model.ProjectWithBLOBs;
@@ -59,6 +61,10 @@ import com.bibisco.dao.model.Projects;
 import com.bibisco.dao.model.ProjectsExample;
 import com.bibisco.dao.model.SceneRevisions;
 import com.bibisco.dao.model.SceneRevisionsExample;
+import com.bibisco.dao.model.Scenes;
+import com.bibisco.dao.model.ScenesExample;
+import com.bibisco.dao.model.VChapters;
+import com.bibisco.dao.model.VScenesExample;
 import com.bibisco.dao.model.VSelectedSceneRevisions;
 import com.bibisco.dao.model.VSelectedSceneRevisionsExample;
 import com.bibisco.enums.CharacterInfoQuestions;
@@ -1216,6 +1222,24 @@ public class ProjectManager {
 	private static void update_to_1_1_2(SqlSession pSqlSession, ProjectMapper pProjectMapper) {
 		
 		mLog.debug("Start update_to_1_1_2(SqlSession, ProjectMapper");
+		
+		// repair scenes' position
+		ScenesMapper lScenesMapper = pSqlSession.getMapper(ScenesMapper.class);
+		ScenesExample lScenesExample = new ScenesExample();
+		lScenesExample.setOrderByClause("id_chapter, position, id_scene");
+		List<Scenes> lListScenes = lScenesMapper.selectByExample(lScenesExample);
+		
+		Integer lIntLastChapter = null;
+		int i=0;
+		for (Scenes lScenes : lListScenes) {
+			if (!lScenes.getIdChapter().equals(lIntLastChapter)) {
+				lIntLastChapter = lScenes.getIdChapter();
+				i=0;
+			}
+			lScenes.setPosition(++i);
+			lScenesMapper.updateByPrimaryKey(lScenes);
+		}
+		
 		
 		// run ddl script
 		pProjectMapper.update_to_1_1_2();
