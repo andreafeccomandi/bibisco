@@ -95,7 +95,9 @@ public interface ProjectMapper {
 	 */
 	int updateByPrimaryKey(Project record);
 	
-	void updateFrom_1_0_0_to_1_1_0();
+	void update_to_1_1_0();
 	
 	String getProjectVersion(String idProject);
+
+	void update_to_1_1_2();
 }

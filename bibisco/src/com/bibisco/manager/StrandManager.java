@@ -203,6 +203,10 @@ public class StrandManager {
 				// get strand to update
 				Strands lStrands = lStrandsMapper.selectByExample(lStrandsExample).get(0);
 				
+				// update strand position with fake position to preserve unique index before shift
+				lStrands.setPosition(-1);
+				lStrandsMapper.updateByPrimaryKey(lStrands);
+				
 				// update other strands' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;
@@ -216,7 +220,7 @@ public class StrandManager {
 					lStrandsMapper.shiftDown(lIntStartPosition, lIntEndPosition);
 				}
 				
-				// update location position
+				// update strand position
 				lStrands.setPosition(pIntDestPosition);
 				lStrandsMapper.updateByPrimaryKey(lStrands);
 			

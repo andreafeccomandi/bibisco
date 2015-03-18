@@ -456,7 +456,7 @@
     from PUBLIC.PROJECT
     where ID_PROJECT = #{idProject,jdbcType=VARCHAR}
   </select>
-  <update id="updateFrom_1_0_0_to_1_1_0">
+  <update id="update_to_1_1_0">
     ALTER TABLE PUBLIC.CHAPTERS ALTER COLUMN "TITLE" varchar(50)  NULL;
     ALTER TABLE PUBLIC.SCENE_REVISIONS ADD "WORDS" integer DEFAULT 0 NOT NULL;
     ALTER TABLE PUBLIC.SCENE_REVISIONS ADD "CHARACTERS" integer DEFAULT 0 NOT NULL;
@@ -484,4 +484,13 @@
 		JOIN CHAPTERS C on C.ID_CHAPTER = S.ID_CHAPTER
 		WHERE SR.SELECTED = 'Y';
   </update>
+  <update id="update_to_1_1_2">
+    CREATE UNIQUE INDEX idx_locations_position ON PUBLIC.locations (position);
+    CREATE UNIQUE INDEX idx_strands_position ON PUBLIC.strands (position);
+    CREATE UNIQUE INDEX idx_characters_position_main_character ON PUBLIC.characters (main_character, position);
+    CREATE UNIQUE INDEX idx_chapters_position ON PUBLIC.chapters (position);
+    CREATE UNIQUE INDEX idx_scenes_id_chapter_position ON PUBLIC.scenes (id_chapter, position);
+    CREATE UNIQUE INDEX idx_scene_revisions_id_scene_rev_number ON PUBLIC.scene_revisions (id_scene, revision_number);
+  </update>
+  
 </mapper>

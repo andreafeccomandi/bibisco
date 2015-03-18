@@ -1164,31 +1164,19 @@ public class ProjectManager {
 			String lStrBibiscoVersion = lProjectMapper.getProjectVersion(pStrIdProject);
 
 			// update version if necessary
-			if (lStrBibiscoVersion.equals("1.0.0")) {
-
-				// run ddl script
-				lProjectMapper.updateFrom_1_0_0_to_1_1_0();
-
-				// update character and word count
-				SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
-				List<SceneRevisions> lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(new SceneRevisionsExample());
-				if (lListSceneRevisions != null && lListSceneRevisions.size() > 0) {
-					for (SceneRevisions lSceneRevisions : lListSceneRevisions) {
-						String lStrSceneText = lSceneRevisions.getScene();
-						CharacterWordCount lCharacterWordCount = TextEditorManager.getCharacterWordCount(lStrSceneText);
-						lSceneRevisions.setCharacters(lCharacterWordCount.getCharacters());
-						lSceneRevisions.setWords(lCharacterWordCount.getWords());
-						lSceneRevisionsMapper.updateByPrimaryKey(lSceneRevisions);
-					}
-				}
-
-				// update project version
-				ProjectWithBLOBs lProjectWithBLOBs = new ProjectWithBLOBs();
-				lProjectWithBLOBs.setIdProject(pStrIdProject);
-				lProjectWithBLOBs.setBibiscoVersion(VersionManager.getInstance().getVersion());
-				lProjectMapper.updateByPrimaryKeySelective(lProjectWithBLOBs);
+			if (VersionManager.compare(lStrBibiscoVersion, "1.1.0") == -1) {
+				update_to_1_1_0(lSqlSession, lProjectMapper);
 			}
-
+			if (VersionManager.compare(lStrBibiscoVersion, "1.1.2") == -1) {
+				update_to_1_1_2(lSqlSession, lProjectMapper);
+			}
+			
+			// update project version
+			ProjectWithBLOBs lProjectWithBLOBs = new ProjectWithBLOBs();
+			lProjectWithBLOBs.setIdProject(pStrIdProject);
+			lProjectWithBLOBs.setBibiscoVersion(VersionManager.getInstance().getVersion());
+			lProjectMapper.updateByPrimaryKeySelective(lProjectWithBLOBs);
+			
 			lSqlSession.commit();
 
 		} catch (Throwable t) {
@@ -1200,6 +1188,40 @@ public class ProjectManager {
 		}
 
 		mLog.debug("End checkProjectVersionAndUpdateIfNecessary(String)");
+	}
+
+	private static void update_to_1_1_0(SqlSession pSqlSession, ProjectMapper pProjectMapper) {
+		
+		mLog.debug("Start update_to_1_1_0(SqlSession, ProjectMapper");
+		
+		// run ddl script
+		pProjectMapper.update_to_1_1_0();
+
+		// update character and word count
+		SceneRevisionsMapper lSceneRevisionsMapper = pSqlSession.getMapper(SceneRevisionsMapper.class);
+		List<SceneRevisions> lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(new SceneRevisionsExample());
+		if (lListSceneRevisions != null && lListSceneRevisions.size() > 0) {
+			for (SceneRevisions lSceneRevisions : lListSceneRevisions) {
+				String lStrSceneText = lSceneRevisions.getScene();
+				CharacterWordCount lCharacterWordCount = TextEditorManager.getCharacterWordCount(lStrSceneText);
+				lSceneRevisions.setCharacters(lCharacterWordCount.getCharacters());
+				lSceneRevisions.setWords(lCharacterWordCount.getWords());
+				lSceneRevisionsMapper.updateByPrimaryKey(lSceneRevisions);
+			}
+		}
+
+		mLog.debug("End update_to_1_1_0(SqlSession, ProjectMapper");
+	}
+	
+	private static void update_to_1_1_2(SqlSession pSqlSession, ProjectMapper pProjectMapper) {
+		
+		mLog.debug("Start update_to_1_1_2(SqlSession, ProjectMapper");
+		
+		// run ddl script
+		pProjectMapper.update_to_1_1_2();
+
+
+		mLog.debug("End update_to_1_1_2(SqlSession, ProjectMapper");
 	}
 	
 }

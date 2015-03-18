@@ -415,6 +415,10 @@ public class CharacterManager {
 				lCharactersExample.createCriteria().andPositionEqualTo(pIntSourcePosition).andMainCharacterEqualTo(pBlnMainCharacter ? "Y" : "N");
 				Characters lCharacters = lCharactersMapper.selectByExample(lCharactersExample).get(0);
 				
+				// update character position with fake position to preserve unique index before shift
+				lCharacters.setPosition(-1);
+				lCharactersMapper.updateByPrimaryKey(lCharacters);
+				
 				// update other Characters' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;
@@ -428,7 +432,7 @@ public class CharacterManager {
 					lCharactersMapper.shiftDown(lIntStartPosition, lIntEndPosition, pBlnMainCharacter ? "Y" : "N");
 				}
 				
-				// update chapter position
+				// update character position
 				lCharacters.setPosition(pIntDestPosition);
 				lCharactersMapper.updateByPrimaryKey(lCharacters);
 			

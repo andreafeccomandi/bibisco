@@ -7,7 +7,10 @@ CREATE TABLE locations (
   city VARCHAR(100)    ,
   description TEXT    ,
   task_status INTEGER  DEFAULT 0 NOT NULL   ,
-PRIMARY KEY(id_location));
+PRIMARY KEY(id_location)  );
+
+
+CREATE UNIQUE INDEX idx_locations_position ON locations (position);
 
 
 
@@ -35,7 +38,10 @@ CREATE TABLE strands (
   position INTEGER   NOT NULL ,
   description TEXT    ,
   task_status INTEGER  DEFAULT 0 NOT NULL   ,
-PRIMARY KEY(id_strand));
+PRIMARY KEY(id_strand)  );
+
+
+CREATE UNIQUE INDEX idx_strands_position ON strands (position);
 
 
 
@@ -83,19 +89,25 @@ CREATE TABLE characters (
   evolutionduringthestory TEXT    ,
   secondary_character_description TEXT    ,
   secondary_character_description_task_status INTEGER  DEFAULT 0 NOT NULL   ,
-PRIMARY KEY(id_character));
+PRIMARY KEY(id_character)  );
+
+
+CREATE UNIQUE INDEX idx_characters_position_main_character ON characters (main_character, position);
 
 
 
 
 CREATE TABLE chapters (
   id_chapter SERIAL  NOT NULL ,
-  title VARCHAR(50)   ,
+  title VARCHAR(50)    ,
   position INTEGER   NOT NULL ,
   reason TEXT    ,
   reason_task_status INTEGER  DEFAULT 0 NOT NULL ,
   note TEXT      ,
-PRIMARY KEY(id_chapter));
+PRIMARY KEY(id_chapter)  );
+
+
+CREATE UNIQUE INDEX idx_chapters_position ON chapters (position);
 
 
 
@@ -106,12 +118,13 @@ CREATE TABLE scenes (
   description VARCHAR(50)   NOT NULL ,
   position INTEGER   NOT NULL ,
   task_status INTEGER  DEFAULT 0 NOT NULL   ,
-PRIMARY KEY(id_scene)  ,
+PRIMARY KEY(id_scene)    ,
   FOREIGN KEY(id_chapter)
     REFERENCES chapters(id_chapter));
 
 
 CREATE INDEX scenes_FKIndex1 ON scenes (id_chapter);
+CREATE UNIQUE INDEX idx_scenes_id_chapter_position ON scenes (id_chapter, position);
 
 
 CREATE INDEX IFK_fk_chapters_scns ON scenes (id_chapter);
@@ -146,7 +159,7 @@ CREATE TABLE scene_revisions (
   tense VARCHAR(20)    ,
   words INTEGER  DEFAULT 0 NOT NULL ,
   characters INTEGER  DEFAULT 0 NOT NULL   ,
-PRIMARY KEY(id_scene_revision)      ,
+PRIMARY KEY(id_scene_revision)        ,
   FOREIGN KEY(id_scene)
     REFERENCES scenes(id_scene),
   FOREIGN KEY(point_of_view_id_character)
@@ -158,6 +171,7 @@ PRIMARY KEY(id_scene_revision)      ,
 CREATE INDEX scene_revisions_FKIndex1 ON scene_revisions (id_scene);
 CREATE INDEX scene_revisions_FKIndex3 ON scene_revisions (point_of_view_id_character);
 CREATE INDEX scene_revisions_FKIndex5 ON scene_revisions (id_location);
+CREATE UNIQUE INDEX idx_scene_revisions_id_scene_rev_number ON scene_revisions (id_scene, revision_number);
 
 
 CREATE INDEX IFK_fk_scn_scn_revs ON scene_revisions (id_scene);

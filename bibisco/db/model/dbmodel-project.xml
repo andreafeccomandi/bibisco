@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes" ?>
 <DBMODEL Version="4.0">
 <SETTINGS>
-<GLOBALSETTINGS ModelName="dbmodel" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="75.00" XPos="1006" YPos="684" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="" HPageCount="4.0" PageAspectRatio="1.440892512336408" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="nimbus sans l" CanvasWidth="4096" CanvasHeight="2842" />
+<GLOBALSETTINGS ModelName="dbmodel" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="75.00" XPos="1093" YPos="654" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="" HPageCount="4.0" PageAspectRatio="1.440892512336408" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="nimbus sans l" CanvasWidth="4096" CanvasHeight="2842" />
 <DATATYPEGROUPS>
 <DATATYPEGROUP Name="Numeric Types" Icon="1" />
 <DATATYPEGROUP Name="Date and Time Types" Icon="2" />
@@ -303,6 +303,11 @@
 <INDEXCOLUMN idColumn="1045" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
+<INDEX ID="1768" IndexName="idx_chapters_position" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1048" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
 </INDICES>
 </TABLE>
 <TABLE ID="1063" Tablename="scenes" PrevTableName="Table_06" XPos="2145" YPos="1167" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="12" >
@@ -352,6 +357,12 @@
 <INDEX ID="1072" IndexName="scenes_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1070">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1073" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="1764" IndexName="idx_scenes_id_chapter_position" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1073" LengthParam="0" />
+<INDEXCOLUMN idColumn="1069" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -453,6 +464,12 @@
 <INDEX ID="1139" IndexName="scene_revisions_FKIndex5" IndexKind="1" FKRefDef_Obj_id="1137">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1568" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="1766" IndexName="idx_scene_revisions_id_scene_rev_number" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1093" LengthParam="0" />
+<INDEXCOLUMN idColumn="1088" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -623,6 +640,12 @@
 <INDEXCOLUMN idColumn="1098" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
+<INDEX ID="1776" IndexName="idx_characters_position_main_character" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1188" LengthParam="0" />
+<INDEXCOLUMN idColumn="1577" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
 </INDICES>
 </TABLE>
 <TABLE ID="1128" Tablename="locations" PrevTableName="Table_12" XPos="2107" YPos="1691" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="25" >
@@ -679,9 +702,14 @@
 <INDEXCOLUMN idColumn="1130" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
+<INDEX ID="1771" IndexName="idx_locations_position" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1632" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1168" Tablename="scene_revision_characters" PrevTableName="Table_14" XPos="1817" YPos="1817" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="29" >
+<TABLE ID="1168" Tablename="scene_revision_characters" PrevTableName="Table_14" XPos="1816" YPos="1848" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="29" >
 <COLUMNS>
 <COLUMN ID="1181" ColName="id_character" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -761,7 +789,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1449" Tablename="strands" PrevTableName="Table_25" XPos="1451" YPos="1120" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="53" >
+<TABLE ID="1449" Tablename="strands" PrevTableName="Table_25" XPos="1455" YPos="1084" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="53" >
 <COLUMNS>
 <COLUMN ID="1451" ColName="id_strand" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -798,6 +826,11 @@
 <INDEX ID="1452" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1451" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="1773" IndexName="idx_strands_position" IndexKind="2" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1644" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -951,7 +984,7 @@
 <RELATION ID="1070" RelationName="fk_chapters_scns" Kind="2" SrcTable="1043" DestTable="1063" FKFields="id_chapter=id_chapter\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-4" CaptionOffsetY="-3" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1072" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="13" />
 <RELATION ID="1090" RelationName="fk_scn_scn_revs" Kind="2" SrcTable="1063" DestTable="1084" FKFields="id_scene=id_scene\n" FKFieldsComments="\n" relDirection="4" MidOffset="-23" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-61" CaptionOffsetY="-23" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1092" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="17" />
 <RELATION ID="1114" RelationName="fk_chrs_scn_revs" Kind="2" SrcTable="1096" DestTable="1084" FKFields="id_character=point_of_view_id_character\n" FKFieldsComments="\n" relDirection="4" MidOffset="24" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-12" CaptionOffsetY="-56" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1116" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="22" />
-<RELATION ID="1137" RelationName="fk_locations_scn_revs" Kind="2" SrcTable="1128" DestTable="1084" FKFields="id_location=id_location\n" FKFieldsComments="\n" relDirection="4" MidOffset="-3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-57" CaptionOffsetY="10" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1139" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="26" />
+<RELATION ID="1137" RelationName="fk_locations_scn_revs" Kind="2" SrcTable="1128" DestTable="1084" FKFields="id_location=id_location\n" FKFieldsComments="\n" relDirection="4" MidOffset="-3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-53" CaptionOffsetY="22" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1139" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="26" />
 <RELATION ID="1170" RelationName="fk_scn_revs_scn_revs_chrs" Kind="0" SrcTable="1084" DestTable="1168" FKFields="id_scene_revision=id_scene_revision\n" FKFieldsComments="\n" relDirection="3" MidOffset="11" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-11" CaptionOffsetY="-2" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1172" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="30" />
 <RELATION ID="1177" RelationName="fk_chrs_scn_revs_chrs" Kind="0" SrcTable="1096" DestTable="1168" FKFields="id_character=id_character\n" FKFieldsComments="\n" relDirection="4" MidOffset="54" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="22" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1179" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="31" />
 <RELATION ID="1615" RelationName="fk_characters_character_info" Kind="1" SrcTable="1096" DestTable="1277" FKFields="id_character=id_character\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1617" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="18" />

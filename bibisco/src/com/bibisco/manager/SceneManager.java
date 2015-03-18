@@ -462,6 +462,11 @@ public class SceneManager {
 
 			if (pIntSourcePosition.intValue() != pIntDestPosition.intValue()) {
 
+				// update scene position with fake position to preserve unique index before shift
+				lScenes.setPosition(-1);
+				lScenesMapper.updateByPrimaryKey(lScenes);
+				
+				
 				// update other scenes' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;

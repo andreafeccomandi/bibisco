@@ -307,6 +307,10 @@ public class ChapterManager {
 				// get chapter to update
 				Chapters lChapters = lChaptersMapper.selectByExample(lChaptersExample).get(0);
 				
+				// update chapter position with fake position to preserve unique index before shift
+				lChapters.setPosition(-1);
+				lChaptersMapper.updateByPrimaryKey(lChapters);
+				
 				// update other chapters' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;

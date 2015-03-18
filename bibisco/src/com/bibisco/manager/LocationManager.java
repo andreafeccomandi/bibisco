@@ -192,6 +192,10 @@ public class LocationManager {
 				// get location to update
 				Locations lLocations = lLocationsMapper.selectByExample(lLocationsExample).get(0);
 				
+				// update location position with fake position to preserve unique index before shift
+				lLocations.setPosition(-1);
+				lLocationsMapper.updateByPrimaryKey(lLocations);
+				
 				// update other locations' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;
