@@ -299,11 +299,11 @@
   <update id="shiftUp" parameterType="map">
     update PUBLIC.SCENES
     set POSITION = POSITION + 1
-    where POSITION &gt;= #{startPosition,jdbcType=INTEGER} and POSITION &lt; #{endPosition,jdbcType=INTEGER}
+    where POSITION &gt;= #{startPosition,jdbcType=INTEGER} and POSITION &lt; #{endPosition,jdbcType=INTEGER} and ID_CHAPTER = #{idChapter,jdbcType=INTEGER}
   </update>
   <update id="shiftDown" parameterType="map">
     update PUBLIC.SCENES
     set POSITION = POSITION - 1
-    where POSITION &gt; #{startPosition,jdbcType=INTEGER} and POSITION &lt;= #{endPosition,jdbcType=INTEGER}
+    where POSITION &gt; #{startPosition,jdbcType=INTEGER} and POSITION &lt;= #{endPosition,jdbcType=INTEGER} and ID_CHAPTER = #{idChapter,jdbcType=INTEGER}
   </update>
 </mapper>

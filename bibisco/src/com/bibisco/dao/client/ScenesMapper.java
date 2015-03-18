@@ -72,9 +72,9 @@ public interface ScenesMapper {
 	 */
 	int updateByPrimaryKey(Scenes record);
 
-	int shiftUp( @Param("startPosition")Integer startPosition, @Param("endPosition")Integer endPosition);
+	int shiftUp( @Param("startPosition")Integer startPosition, @Param("endPosition")Integer endPosition, @Param("idChapter")Integer idChapter);
 	
-	int shiftDown(@Param("startPosition")Integer startPosition, @Param("endPosition")Integer endPosition);
+	int shiftDown(@Param("startPosition")Integer startPosition, @Param("endPosition")Integer endPosition, @Param("idChapter")Integer idChapter);
 	
 	void deleteByChapterPosition(Integer chapterPosition);
 }

@@ -1511,8 +1511,8 @@ public class BibiscoServlet extends HttpServlet {
 	
 	public void deleteScene(HttpServletRequest pRequest, HttpServletResponse pResponse) {
 		mLog.debug("Start deleteScene(HttpServletRequest, HttpServletResponse)");
-		
-		SceneManager.deleteByPosition(Integer.valueOf(pRequest.getParameter("position")));
+				
+		SceneManager.delete(Integer.valueOf(pRequest.getParameter("idThumbnail")));
 		
 		mLog.debug("End deleteScene(HttpServletRequest, HttpServletResponse)");
 	}
@@ -1563,7 +1563,7 @@ public class BibiscoServlet extends HttpServlet {
 	public void moveScene(HttpServletRequest pRequest, HttpServletResponse pResponse) {
 		mLog.debug("Start moveScene(HttpServletRequest, HttpServletResponse)");
 		
-		SceneManager.move(Integer.valueOf(pRequest.getParameter("sourcePosition")), 
+		SceneManager.move(Integer.valueOf(pRequest.getParameter("idThumbnail")), 
 				Integer.valueOf(pRequest.getParameter("destPosition"))); 
 		
 		mLog.debug("End moveScene(HttpServletRequest, HttpServletResponse)");

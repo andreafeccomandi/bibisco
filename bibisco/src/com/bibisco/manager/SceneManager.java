@@ -35,7 +35,6 @@ import com.bibisco.dao.model.SceneRevisionStrandsKey;
 import com.bibisco.dao.model.SceneRevisions;
 import com.bibisco.dao.model.SceneRevisionsExample;
 import com.bibisco.dao.model.Scenes;
-import com.bibisco.dao.model.ScenesExample;
 import com.bibisco.enums.PointOfView;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
@@ -308,19 +307,17 @@ public class SceneManager {
 		return lSceneRevisionDTO;
 	}
 	
-	public static void deleteByPosition(Integer pIntIdPosition) {
+	public static void delete(Integer pIntIdScene) {
 
-		mLog.debug("Start deleteByPosition(Integer)");
+		mLog.debug("Start delete(Integer)");
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
-			ScenesExample lScenesExample = new ScenesExample();
-			lScenesExample.createCriteria().andPositionEqualTo(pIntIdPosition);
-			
+		
 			// load scene
 			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
-			Scenes lScenes = lScenesMapper.selectByExample(lScenesExample).get(0);
+			Scenes lScenes = lScenesMapper.selectByPrimaryKey(pIntIdScene.longValue());
 
 			// load all scene revisions
 			SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
@@ -348,7 +345,7 @@ public class SceneManager {
 			lScenesMapper.deleteByPrimaryKey(lScenes.getIdScene());
 			
 			// shift down scenes
-			lScenesMapper.shiftDown(pIntIdPosition, Integer.MAX_VALUE);
+			lScenesMapper.shiftDown(lScenes.getPosition(), Integer.MAX_VALUE, lScenes.getIdChapter());
 
 			lSqlSession.commit();
 			
@@ -360,7 +357,7 @@ public class SceneManager {
 			lSqlSession.close();
 		}
 		
-		mLog.debug("End deleteByPosition(Integer)");
+		mLog.debug("End delete(Integer)");
 
 	}
 	
@@ -449,51 +446,50 @@ public class SceneManager {
 		return pSceneDTO;
 	}
 	
-	public static void move(Integer pIntSourcePosition, Integer pIntDestPosition) {
+	public static void move(Integer pIntIdScene, Integer pIntDestPosition) {
 
 		mLog.debug("Start move(Integer, Integer)");
-		
-		if (pIntSourcePosition != pIntDestPosition) {
-			SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
-	    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-	    	try {
-	    		
-				ScenesExample lScenesExample = new ScenesExample();
-				lScenesExample.createCriteria().andPositionEqualTo(pIntSourcePosition);
-				
-				ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
-				
-				// get chapter to update
-				Scenes lScenes = lScenesMapper.selectByExample(lScenesExample).get(0);
-				
-				// update other Scenes' position
+
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+
+		try {
+
+			// get scene to update
+			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
+			Scenes lScenes = lScenesMapper.selectByPrimaryKey(pIntIdScene.longValue());
+			Integer pIntSourcePosition = lScenes.getPosition();
+
+			if (pIntSourcePosition.intValue() != pIntDestPosition.intValue()) {
+
+				// update other scenes' position
 				Integer lIntStartPosition;
 				Integer lIntEndPosition;
 				if (pIntSourcePosition > pIntDestPosition) {
 					lIntStartPosition = pIntDestPosition;
 					lIntEndPosition = pIntSourcePosition;
-					lScenesMapper.shiftUp(lIntStartPosition, lIntEndPosition);
+					lScenesMapper.shiftUp(lIntStartPosition, lIntEndPosition, lScenes.getIdChapter());
 				} else {
 					lIntStartPosition = pIntSourcePosition;
 					lIntEndPosition = pIntDestPosition;
-					lScenesMapper.shiftDown(lIntStartPosition, lIntEndPosition);
+					lScenesMapper.shiftDown(lIntStartPosition, lIntEndPosition, lScenes.getIdChapter());
 				}
-				
-				// update chapter position
+
+				// update scene position
 				lScenes.setPosition(pIntDestPosition);
 				lScenesMapper.updateByPrimaryKey(lScenes);
-			
+
 				lSqlSession.commit();
-				
-	    	} catch(Throwable t) {
-				mLog.error(t);
-				lSqlSession.rollback();
-				throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-			} finally {
-				lSqlSession.close();
 			}
+
+		} catch (Throwable t) {
+			mLog.error(t);
+			lSqlSession.rollback();
+			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
+		} finally {
+			lSqlSession.close();
 		}
-			
+
 		mLog.debug("End move(Integer, Integer)");
 	}
 	

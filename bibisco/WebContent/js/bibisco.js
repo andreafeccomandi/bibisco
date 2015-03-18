@@ -554,7 +554,8 @@ function bibiscoInitThumbnail(position, config) {
 			drop : function(event, ui) {
 				var sourcePosition = parseInt(ui.draggable.closest('.thumbnailSlot').attr('data-slotPosition'));
 				var destPosition = parseInt($(this).attr('data-slotPosition'));
-
+				var idThumbnail = bibiscoGetThumbnailIdFromPosition(family, sourcePosition);
+				
 				$.ajax({
 					type : 'POST',
 					url : 'BibiscoServlet?action=thumbnailAction',
@@ -562,6 +563,7 @@ function bibiscoInitThumbnail(position, config) {
 						thumbnailAction : 'move',
 						sourcePosition : sourcePosition,
 						destPosition : destPosition,
+						idThumbnail : idThumbnail,
 						family : config.family
 					},
 					beforeSend : function() {
@@ -635,7 +637,8 @@ function bibiscoDeleteThumbnail(position, config) {
 				data : {
 					thumbnailAction : 'delete',
 					position : position,
-					family : config.family
+					family : config.family,
+					idThumbnail : bibiscoGetThumbnailIdFromPosition(config.family, position)
 				},
 				beforeSend : function() {
 					bibiscoOpenLoadingBanner();
