@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.1.1" useFeatures="false" includeLaunchers="true">
-
+<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.1.2" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -32,7 +31,6 @@
             winExtraLargeHigh="/bibisco/icons/launching/logo256x256-32bit .bmp"/>
       </win>
    </launcher>
-
 
    <vm>
       <linux include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</linux>
