@@ -1173,6 +1173,9 @@ public class ProjectManager {
 			if (VersionManager.compare(lStrBibiscoVersion, "1.1.2") == -1) {
 				update_to_1_1_2(lSqlSession, lProjectMapper);
 			}
+			if (VersionManager.compare(lStrBibiscoVersion, "1.2.0") == -1) {
+				update_to_1_2_0(lSqlSession, lProjectMapper);
+			}
 			
 			// update project version
 			ProjectWithBLOBs lProjectWithBLOBs = new ProjectWithBLOBs();
@@ -1245,4 +1248,14 @@ public class ProjectManager {
 		mLog.debug("End update_to_1_1_2(SqlSession, ProjectMapper");
 	}
 	
+	
+	private static void update_to_1_2_0(SqlSession pSqlSession, ProjectMapper pProjectMapper) {
+		
+		mLog.debug("Start update_to_1_2_0(SqlSession, ProjectMapper");
+		
+		// run ddl script
+		pProjectMapper.update_to_1_2_0();
+
+		mLog.debug("End update_to_1_2_0(SqlSession, ProjectMapper");
+	}
 }
