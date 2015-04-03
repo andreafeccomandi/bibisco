@@ -100,4 +100,6 @@ public interface ProjectMapper {
 	String getProjectVersion(String idProject);
 
 	void update_to_1_1_2();
+	
+	void update_to_1_2_0();
 }
