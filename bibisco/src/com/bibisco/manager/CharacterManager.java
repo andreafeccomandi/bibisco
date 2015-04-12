@@ -403,7 +403,7 @@ public class CharacterManager {
 
 		mLog.debug("Start move(Integer, Integer, boolean)");
 		
-		if (pIntSourcePosition != pIntDestPosition) {
+		if (!pIntSourcePosition.equals(pIntDestPosition)) {
 			SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
 	    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
 	    	try {

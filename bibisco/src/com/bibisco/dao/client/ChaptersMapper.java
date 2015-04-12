@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.Chapters;
 import com.bibisco.dao.model.ChaptersExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.bibisco.dao.model.ChaptersWithBLOBs;
 
 public interface ChaptersMapper {

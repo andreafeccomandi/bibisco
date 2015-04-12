@@ -18,8 +18,11 @@ package com.bibisco.log;
  */
 
 
-import java.io.*;
-import org.apache.log4j.*;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
 
 
 /**

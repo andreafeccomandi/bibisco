@@ -23,7 +23,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+import com.bibisco.BibiscoException;
 import com.bibisco.Constants;
+import com.bibisco.log.Log;
 
 /**
  * @author Andrea Feccomandi
@@ -31,6 +33,8 @@ import com.bibisco.Constants;
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+	private static Log mLog = Log.getInstance(ApplicationWorkbenchWindowAdvisor.class);
+	
     public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
         super(configurer);
     }
@@ -65,6 +69,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         shell.setLayout(lFormLayout);             
         
         Control lControlPage = configurer.createPageComposite(shell);
+        if (lControlPage==null) {
+        	mLog.error("Control Page Composite is null");
+        	throw new BibiscoException(BibiscoException.FATAL);
+        }
         FormData lFormData = new FormData();
         lFormData.top = new FormAttachment(0, 0);
         lFormData.left = new FormAttachment(0, 0);

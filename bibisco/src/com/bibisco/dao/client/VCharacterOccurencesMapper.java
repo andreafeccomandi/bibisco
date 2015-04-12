@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.VCharacterOccurences;
 import com.bibisco.dao.model.VCharacterOccurencesExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface VCharacterOccurencesMapper {
     /**

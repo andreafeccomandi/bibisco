@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.Images;
 import com.bibisco.dao.model.ImagesExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface ImagesMapper {
 

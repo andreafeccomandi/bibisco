@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.VPointOfView4Analysis;
 import com.bibisco.dao.model.VPointOfView4AnalysisExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface VPointOfView4AnalysisMapper {
     /**

@@ -927,9 +927,11 @@ public class ProjectManager {
 		}
 
 		if (pFileNode.isDirectory()) {
-			String[] subNote = pFileNode.list();
-			for (String filename : subNote) {
-				lFileList.addAll(getDirectoryFileList(new File(pFileNode, filename)));
+			String[] lStrSubNodes = pFileNode.list();
+			if (lStrSubNodes != null && lStrSubNodes.length > 0) {
+				for (String filename : lStrSubNodes) {
+					lFileList.addAll(getDirectoryFileList(new File(pFileNode, filename)));
+				}
 			}
 		}
 		

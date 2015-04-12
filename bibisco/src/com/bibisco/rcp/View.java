@@ -29,8 +29,8 @@ import com.bibisco.BibiscoException;
 import com.bibisco.Constants;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ContextManager;
-import com.bibisco.manager.JettyManager;
 import com.bibisco.manager.HttpManager;
+import com.bibisco.manager.JettyManager;
 
 /**
  * Main view of application.

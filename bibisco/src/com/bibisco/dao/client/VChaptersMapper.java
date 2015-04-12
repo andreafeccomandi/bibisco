@@ -1,10 +1,12 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.VChapters;
 import com.bibisco.dao.model.VChaptersExample;
 import com.bibisco.dao.model.VChaptersWithBLOBs;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface VChaptersMapper {
 

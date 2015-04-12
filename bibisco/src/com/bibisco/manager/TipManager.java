@@ -41,8 +41,8 @@ import com.bibisco.log.Log;
  */
 public class TipManager {
 
+	private static final String DATE_FORMAT = "yyyyMMdd";
 	private static Log mLog = Log.getInstance(TipManager.class);
-	private static DateFormat mDateFormat = new SimpleDateFormat("yyyyMMdd");
 
 	public static TipSettings load() {
 
@@ -104,7 +104,9 @@ public class TipManager {
 		
 		// it's first time...
 		else if (StringUtils.isEmpty(lProperties.getValue())) {
-			String lStrDate = mDateFormat.format(new Date());
+			
+			DateFormat lDateFormat = new SimpleDateFormat(DATE_FORMAT);
+			String lStrDate = lDateFormat.format(new Date());
 			SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
 	    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
 	    	try {
@@ -126,7 +128,8 @@ public class TipManager {
 		
 		else {
 			try {
-				Date lDate = mDateFormat.parse(lProperties.getValue());
+				DateFormat lDateFormat = new SimpleDateFormat(DATE_FORMAT);
+				Date lDate = lDateFormat.parse(lProperties.getValue());
 				Date lDateNow = new Date();
 				if (lDateNow.after(DateUtils.addDays(lDate, 30))) {
 					return true;

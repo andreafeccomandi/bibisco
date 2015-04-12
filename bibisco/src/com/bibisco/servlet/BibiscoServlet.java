@@ -620,7 +620,8 @@ public class BibiscoServlet extends HttpServlet {
 		// get file item
 		FileItem lFileItem = (FileItem) pRequest.getAttribute("file-document_file");
 		if (lFileItem.getName() == null || lFileItem.getName().length() == 0) {
-			lFileItem = null;
+			mLog.error("Archive file has null name");
+			throw new BibiscoException(BibiscoException.IO_EXCEPTION);
 		} else {
 			lBytes = lFileItem.get();
 			mLog.debug("FileItem " + lFileItem.getName());
@@ -1386,7 +1387,8 @@ public class BibiscoServlet extends HttpServlet {
 			break;
 			
 		default:
-			break;
+			mLog.error("Unsupported archive type: ", lExportType.name());
+			throw new BibiscoException(BibiscoException.FATAL);
 		}
 		
 		// open folder in file system

@@ -183,11 +183,7 @@ public class Hunspell {
 				return "hunspell-linux-x86-64";
 			}
 			
-		} else if (os.startsWith("sunos")) {
-			//if (arch.equals("sparc")) { 
-			//	return "hunspell-sunos-sparc-64";
-			//}			
-		}
+		} 
 	
 		throw new UnsupportedOperationException("Unknown OS/arch: "+os+"/"+arch);
     }    

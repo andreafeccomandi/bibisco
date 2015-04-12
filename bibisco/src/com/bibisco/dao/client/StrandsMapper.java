@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.Strands;
 import com.bibisco.dao.model.StrandsExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface StrandsMapper {
 

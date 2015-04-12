@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.SceneRevisionStrandsExample;
 import com.bibisco.dao.model.SceneRevisionStrandsKey;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface SceneRevisionStrandsMapper {
     /**

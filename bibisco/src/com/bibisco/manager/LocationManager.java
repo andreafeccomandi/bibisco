@@ -179,7 +179,7 @@ public class LocationManager {
 
 		mLog.debug("Start move(Integer, Integer)");
 		
-		if (pIntSourcePosition != pIntDestPosition) {
+		if (!pIntSourcePosition.equals(pIntDestPosition)) {
 			SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
 	    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
 	    	try {

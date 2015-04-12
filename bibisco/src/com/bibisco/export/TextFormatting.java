@@ -20,7 +20,7 @@ package com.bibisco.export;
  * @author Andrea Feccomandi
  *
  */
-public class TextFormatting {
+public class TextFormatting implements Cloneable {
 	
 	public boolean bold = false;
 	public boolean italic = false;

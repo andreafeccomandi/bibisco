@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.VScenes;
 import com.bibisco.dao.model.VScenesExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface VScenesMapper {
     /**

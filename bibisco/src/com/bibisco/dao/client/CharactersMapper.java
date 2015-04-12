@@ -1,9 +1,11 @@
 package com.bibisco.dao.client;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bibisco.dao.model.Characters;
 import com.bibisco.dao.model.CharactersExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.bibisco.dao.model.CharactersWithBLOBs;
 
 public interface CharactersMapper {
