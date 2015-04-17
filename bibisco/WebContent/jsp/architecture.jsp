@@ -122,18 +122,18 @@ function bibiscoSelectStrand(position,config) {
 	</div>
 </div>
 
-<div class="row-fluid page-header" style="margin-top: 50px;">
+<div class="row-fluid page-header bibiscoStrandsSectionTitle">
 	<div class="span9">
 		<h2><fmt:message key="jsp.architecture.strands.h2" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.architecture.strands.h2.small" /></small></h2>
   		</div>
-  		<div class="span3" style="text-align: right;">
-  			<a id="bibiscoStrandACreateStrand" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="strand" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.architecture.a.createStrand" /></a>
+  		<div class="span3 pagination-right">
+  			<a id="bibiscoStrandACreateStrand" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="strand" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.architecture.a.createStrand" /></a>
   		</div>
 </div>
 <div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="emptyThumbnailListElements">
 	<tags:bibiscoEmptyThumbnailListBox text="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text" createButtonText="jsp.strands.a.createFirstStrand" createButtonId="bibiscoStrandsACreateFirstStrand"  />
 </div>
-<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="strand" style="width: 100%; height: 350px; overflow: scroll;">
+<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages notEmptyThumbnailListElements bibiscoStrandsNotEmptyStrands" data-thumbnailFamily="strand">
 	    	<c:forEach items="${project.architecture.strandList}" var="strand" varStatus="strandNumber">
 	    		
 	    		<c:if test="${strandNumber.count % 4 == 1}">

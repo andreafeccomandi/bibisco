@@ -41,6 +41,18 @@
 	outline: 0;
 }
 
+.defaultBrowserUrl {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dialog-no-close .ui-dialog-titlebar-close {
+  display: none;
+}  
+
+
+
+/* RICH TEXT EDITOR */
 
 .bibiscoRichTextEditor-bodyClass-courierbig {
 	font-family: courier new, courier, monospace; 
@@ -87,6 +99,8 @@
 	font-size: 16px; 
 }
 
+/* SUGGESTIONS */
+
 .bibiscoSuggestions {
 	margin-top: 10px; 
 	margin-left: 10px; 
@@ -115,10 +129,35 @@ div.bibiscoTip h4 {
     margin-bottom: 10px;
 }
 
-.defaultBrowserUrl {
-	text-decoration: underline;
-	cursor: pointer;
+/* PROJECT */
+
+.bibiscoProjectMotivational {
+	margin-top: 60px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 30px; 
+	padding-bottom: 35px; 
+	padding-left: 40px; 
+	height: 200px;"
 }
+
+/* ARCHITECTURE */
+
+.bibiscoStrandsNotEmptyStrands {
+	width: 100%; 
+	height: 350px; 
+	overflow: scroll;
+}
+
+.bibiscoStrandsSectionTitle {
+	margin-top: 50px;
+}
+
+.bibiscoStrandsSectionTitle a {
+    margin-top: 2px;
+}
+
+/* ANALYSIS */
 
 .bibiscoAnalysisNoInfoAvailable {
 	margin-top: 10px; 
@@ -127,9 +166,6 @@ div.bibiscoTip h4 {
 	line-height: 1.5em;
 }
 
-.dialog-no-close .ui-dialog-titlebar-close {
-  display: none;
-}  
 
 .bibiscoAnalysisItemsRow0 {
     background-color: #0084D1 !important;
@@ -178,6 +214,29 @@ div.bibiscoTip h4 {
 .bibiscoAnalysisItemsRow11 {
     background-color: #C5000B !important;
 }
+
+
+/* SETTINGS */
+
+.bibiscoSettingsButtonArea {
+	margin-top: 30px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 20px; 
+	padding-bottom: 35px; 
+	padding-left: 40px;
+}
+
+.bibiscoSettingsButtonArea p {
+	margin-top: 16px;
+}
+
+.bibiscoSettingsButtonArea a {
+    margin-right: 10px;
+}
+
+
+/* INFO */
 
 .bibiscoDonationsButton {
 	text-align: center;

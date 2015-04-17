@@ -85,14 +85,17 @@ $(function() {
 	    	</div>
 		</div>
 	</div>
-	<div class="row-fluid" style="height: 400px;">
+	<div class="row-fluid">
 	<div class="span12">
-    	<div class="hero-unit" style="margin-top: 60px; margin-left: 30px; margin-right: 150px; padding-top: 30px; padding-bottom: 35px; padding-left: 40px; height: 200px;">
+    	<div class="hero-unit bibiscoProjectMotivational">
 				<h1 class="notSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.project.h1" /></h1>
 				<p class="notSelectableText" style="margin-top: 40px;">
 					<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectSuggestions" style="margin-right: 10px;"><fmt:message key="jsp.project.button.bibiscoProjectSuggestions" /></a>
 				</p>
 		</div>  	  	
+    </div>
+    <div class="row-fluid">
+    
     </div>
 </div>
 </div>
