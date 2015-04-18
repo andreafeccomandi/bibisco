@@ -127,7 +127,7 @@ function bibiscoSelectStrand(position,config) {
 		<h2><fmt:message key="jsp.architecture.strands.h2" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.architecture.strands.h2.small" /></small></h2>
   		</div>
   		<div class="span3 pagination-right">
-  			<a id="bibiscoStrandACreateStrand" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="strand" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.architecture.a.createStrand" /></a>
+  			<a id="bibiscoStrandACreateStrand" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="strand" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.architecture.a.createStrand" /></a>
   		</div>
 </div>
 <div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="emptyThumbnailListElements">

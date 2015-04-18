@@ -50,7 +50,14 @@
   display: none;
 }  
 
+.bibiscoHeaderButton {
+	margin-top: 2px;
+}
 
+.notEmptyThumbnailListElements {
+	width: 100%; 
+	overflow: scroll;
+}
 
 /* RICH TEXT EDITOR */
 
@@ -144,17 +151,28 @@ div.bibiscoTip h4 {
 /* ARCHITECTURE */
 
 .bibiscoStrandsNotEmptyStrands {
-	width: 100%; 
 	height: 350px; 
-	overflow: scroll;
 }
 
 .bibiscoStrandsSectionTitle {
 	margin-top: 50px;
 }
 
-.bibiscoStrandsSectionTitle a {
-    margin-top: 2px;
+/* CHARACTERS */
+.bibiscoMainCharactersNotEmpty {
+	height: 180px; 
+}
+
+.bibiscoMainCharactersEmpty {
+	height: 180px;
+}
+
+.bibiscoSecondaryCharactersSectionTitle {
+    margin-top: 20px;
+}
+
+.bibiscoSecondaryCharactersNotEmpty {
+    height: 270px; 
 }
 
 /* ANALYSIS */

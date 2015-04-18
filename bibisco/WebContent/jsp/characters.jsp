@@ -173,14 +173,14 @@ function bibiscoSelectSecondaryCharacter(position,config) {
 			<div class="span8">
 				<h1><fmt:message key="jsp.characters.h1.main" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.characters.h1.small.main" /></small></h1>
     		</div>
-    		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoCharactersACreateMainCharacter" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="maincharacter" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.characters.a.createMainCharacter" /></a>
+    		<div class="span4 pagination-right">
+    			<a id="bibiscoCharactersACreateMainCharacter" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="maincharacter" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.characters.a.createMainCharacter" /></a>
     		</div>
     	</div>
-    	<div id="bibiscoChaptersDivEmptyMainCharacters" data-thumbnailFamily="maincharacter" class="emptyThumbnailListElements" style="height: 180px; ">
+    	<div id="bibiscoCharactersDivEmptyMainCharacters" data-thumbnailFamily="maincharacter" class="emptyThumbnailListElements bibiscoMainCharactersEmpty">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.characters.bibiscoEmptyThumbnailListBox.text.main" createButtonText="jsp.characters.a.createFirstMainCharacter" createButtonId="bibiscoCharactersACreateFirstMainCharacter"  />
 		</div>	    	
-    	<div id="bibiscoChaptersDivNotEmptyMainCharacters" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="maincharacter" style="width: 100%; height: 180px; overflow: scroll;">
+    	<div id="bibiscoCharactersDivNotEmptyMainCharacters" class="bibiscoThumbnailPages notEmptyThumbnailListElements bibiscoMainCharactersNotEmpty" data-thumbnailFamily="maincharacter">
 	    	<c:forEach items="${project.mainCharacterList}" var="maincharacter" varStatus="mainCharacterNumber">
 	    		
 	    		<c:if test="${mainCharacterNumber.count % 4 == 1}">
@@ -204,18 +204,18 @@ function bibiscoSelectSecondaryCharacter(position,config) {
 	    	</c:if>
     	</div>    	
     </div>
-    <div class="row-fluid page-header">
+    <div class="row-fluid page-header bibiscoSecondaryCharactersSectionTitle">
 		<div class="span10">
-			<h1 style="margin-top: 20px;"><fmt:message key="jsp.characters.h1.secondary" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.characters.h1.small.secondary" /></small></h1>
+			<h1><fmt:message key="jsp.characters.h1.secondary" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.characters.h1.small.secondary" /></small></h1>
    		</div>
-   		<div class="span2" style="text-align: right;">
-   			<a style="margin-top: 20px;" id="bibiscoCharactersACreateSecondaryCharacter" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="secondarycharacter" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.characters.a.createSecondaryCharacter" /></a>
+   		<div class="span2 pagination-right">
+   			<a id="bibiscoCharactersACreateSecondaryCharacter" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="secondarycharacter" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.characters.a.createSecondaryCharacter" /></a>
    		</div>
    	</div>
-	<div id="bibiscoChaptersDivEmptySecondaryCharacters" data-thumbnailFamily="secondarycharacter" class="emptyThumbnailListElements" >
+	<div id="bibiscoCharactersDivEmptySecondaryCharacters" data-thumbnailFamily="secondarycharacter" class="emptyThumbnailListElements" >
 		<tags:bibiscoEmptyThumbnailListBox text="jsp.characters.bibiscoEmptyThumbnailListBox.text.secondary" createButtonText="jsp.characters.a.createFirstSecondaryCharacter" createButtonId="bibiscoCharactersACreateFirstSecondaryCharacter"  />
 	</div>	  
-   	<div id="bibiscoChaptersDivNotEmptySecondaryCharacters" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="secondarycharacter" style="width: 100%; height: 270px; overflow: scroll;">
+   	<div id="bibiscoCharactersDivNotEmptySecondaryCharacters" class="bibiscoThumbnailPages notEmptyThumbnailListElements bibiscoSecondaryCharactersNotEmpty" data-thumbnailFamily="secondarycharacter">
 	    	<c:forEach items="${project.secondaryCharacterList}" var="secondarycharacter" varStatus="secondaryCharacterNumber">
 	    		<c:if test="${secondaryCharacterNumber.count % 4 == 1}">
 	    			<section>
