@@ -95,7 +95,7 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 	
 	// create a dialog div
 	var idDialog = 'bibiscoDivDialog' + $.now();
-	var dialog = $('<div id="' + idDialog + '" style="display:none" class="bibiscoAjaxDialog loading"></div>').appendTo('body');
+	var dialog = $('<div id="' + idDialog + '" style="display:none" class="bibiscoAjaxDialog bibiscoLoading"></div>').appendTo('body');
 	// open the dialog
 	dialog.dialog({
 
@@ -159,7 +159,7 @@ function bibiscoOpenAjaxDialog(ajaxDialogContent) {
 		ajaxDialogContent.init(dialog, ajaxDialogContent.idCaller, ajaxDialogContent.type, ajaxDialogContent.id);
 
 		// remove the loading class
-		dialog.removeClass('loading');
+		dialog.removeClass('bibiscoLoading');
 	});
 
 	// full screen function
@@ -504,10 +504,10 @@ function bibiscoInitThumbnail(position, config) {
 	
 	// hover
 	thumbnail.hover(function() {
-		thumbnail.addClass("thumbnailTagHover");
+		thumbnail.addClass("bibiscoThumbnailTagHover");
 		toolbar.show();
 	}, function() {
-		thumbnail.removeClass("thumbnailTagHover");
+		thumbnail.removeClass("bibiscoThumbnailTagHover");
 		toolbar.hide();
 	});
 
@@ -534,8 +534,8 @@ function bibiscoInitThumbnail(position, config) {
 			scroll: false,
 			cursorAt: { top: 56, left: 56 },
 			start: function(event, ui) {
-				$(ui.helper).removeClass("thumbnailTagHover");
-				$(ui.helper).addClass("thumbnailTagMove");
+				$(ui.helper).removeClass("bibiscoThumbnailTagHover");
+				$(ui.helper).addClass("bibiscoThumbnailTagMove");
 				$(ui.helper).find('.bibiscoThumbnailToolbar').hide();
 				$(ui.helper).width(thumbnail.width());
 				$(ui.helper).height(thumbnail.height());				
@@ -549,7 +549,7 @@ function bibiscoInitThumbnail(position, config) {
 		});
 
 		$('.thumbnailSlot[data-thumbnailFamily="' + family + '"]').droppable({
-			hoverClass: 'thumbnailTagHover',
+			hoverClass: 'bibiscoThumbnailTagHover',
 			accept : '.thumbnailSlot[data-thumbnailFamily="' + family + '"] .thumbnail ',
 			drop : function(event, ui) {
 				var sourcePosition = parseInt(ui.draggable.closest('.thumbnailSlot').attr('data-slotPosition'));
@@ -593,7 +593,7 @@ function bibiscoInitThumbnail(position, config) {
 
 						bibiscoInitAllThumbnail(config);
 						bibiscoCloseLoadingBannerSuccess();
-						$('.thumbnailSlot[data-thumbnailFamily="' + family + '"] .thumbnail ').removeClass("thumbnailTagHover");
+						$('.thumbnailSlot[data-thumbnailFamily="' + family + '"] .thumbnail ').removeClass("bibiscoThumbnailTagHover");
 						
 					},
 					error : function() {
@@ -733,13 +733,13 @@ function openThumbnailUpdateTitle(idCaller, config, id, position) {
 
 
 function bibiscoShowEmptyThumbnailListElements(family) {
-	$('.emptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
-	$('.notEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
+	$('.bibiscoEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
+	$('.bibiscoNotEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
 }
 
 function bibiscoShowNotEmptyThumbnailListElements(family) {
-	$('.emptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
-	$('.notEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
+	$('.bibiscoEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
+	$('.bibiscoNotEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
 }
 
 function bibiscoOpenDefaultBrowser(url) {

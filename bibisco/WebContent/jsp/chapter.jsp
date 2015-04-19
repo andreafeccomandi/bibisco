@@ -182,13 +182,13 @@ function bibiscoSelectScene(position,configScene) {
     		<div class="span6">
     		</div>
     		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoChapterACreateScene" class="btn btn-primary notEmptyThumbnailListElements" data-thumbnailFamily="scene" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.chapter.a.createScene" /></a>
+    			<a id="bibiscoChapterACreateScene" class="btn btn-primary bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="scene" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.chapter.a.createScene" /></a>
     		</div>
     	</div>
-    	<div id="bibiscoChapterDivEmptyScenes" data-thumbnailFamily="scene" class="emptyThumbnailListElements">
+    	<div id="bibiscoChapterDivEmptyScenes" data-thumbnailFamily="scene" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapter.a.createFirstScene" createButtonId="bibiscoChapterACreateFirstScene"  />
 		</div>    	
-    	<div class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="scene" style="width: 100%; height: 400px; overflow: scroll;">
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="scene" style="width: 100%; height: 400px; overflow: scroll;">
 	    	<c:forEach items="${chapter.sceneList}" var="scene" varStatus="sceneNumber">
 	    		
 	    		<c:if test="${sceneNumber.count % 4 == 1}">

@@ -19,10 +19,10 @@
 		
 		$("#bibiscoTagThumbnailDiv${type}${id}").hover(
 		  function () {
-			  $("#bibiscoTagThumbnailDiv${type}${id}").addClass("thumbnailTagHover");
+			  $("#bibiscoTagThumbnailDiv${type}${id}").addClass("bibiscoThumbnailTagHover");
 		  },
 		  function () {
-			  $("#bibiscoTagThumbnailDiv${type}${id}").removeClass("thumbnailTagHover");
+			  $("#bibiscoTagThumbnailDiv${type}${id}").removeClass("bibiscoThumbnailTagHover");
 		  }
 		);
 		

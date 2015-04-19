@@ -46,10 +46,10 @@
 
 		$("#bibiscoTagThumbnailStrandDivAddItem").hover(
 		  function () {
-			  $('#bibiscoTagThumbnailStrandDivAddItem').addClass('thumbnailTagHover');
+			  $('#bibiscoTagThumbnailStrandDivAddItem').addClass('bibiscoThumbnailTagHover');
 		  },
 		  function () {
-			  $("#bibiscoTagThumbnailStrandDivAddItem").removeClass('thumbnailTagHover');
+			  $("#bibiscoTagThumbnailStrandDivAddItem").removeClass('bibiscoThumbnailTagHover');
 		  }
 		);
 		

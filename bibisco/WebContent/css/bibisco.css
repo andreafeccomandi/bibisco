@@ -1,33 +1,6 @@
-.thumbnailTagHover {
-	background-color: #f5f5f5;
-	cursor: pointer;
-}
+/* DISABLE SELECTION ON TEXT */
 
-.thumbnailTagMove {
-	background-color: #FCF8E3;
-	cursor: move;
-}
-
-.loading { 
-	background: url(../img/bibisco-spinner.gif) center no-repeat !important;
-}
-
-.loadingImage { 
-	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
-}
-
-.carouselImageBackground { 
-	background-color: #555555 !important;
-}
-
-
-.sceneTagsExplains {
-	font-size: 13px;
-	font-style: italic;
-	margin-bottom: 5px;
-}
-
-.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.emptyThumbnailListElements, .notSelectableText, .bibiscoSuggestions, .bibiscoTip {
+.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.bibiscoEmptyThumbnailListElements, .notSelectableText, .bibiscoSuggestions, .bibiscoTip {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -36,28 +9,68 @@
 	user-select: none;
 }
 
-
 .btn:focus {
 	outline: 0;
 }
 
-.defaultBrowserUrl {
+.dialog-no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+/* COMMON STYLES */
+  
+.bibiscoDefaultBrowserUrl {
     text-decoration: underline;
     cursor: pointer;
 }
 
-.dialog-no-close .ui-dialog-titlebar-close {
-  display: none;
-}  
 
 .bibiscoHeaderButton {
-	margin-top: 2px;
+    margin-top: 2px;
 }
 
-.notEmptyThumbnailListElements {
-	width: 100%; 
-	overflow: scroll;
+.bibiscoNotEmptyThumbnailListElements {
+    width: 100%; 
+    overflow: scroll;
 }
+
+
+/* THUMBNAIL */
+
+.bibiscoThumbnailTagHover {
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.bibiscoThumbnailTagMove {
+	background-color: #FCF8E3;
+	cursor: move;
+}
+
+/* LOADING */
+
+.bibiscoLoading { 
+	background: url(../img/bibisco-spinner.gif) center no-repeat !important;
+}
+
+.bibiscoLoadingImage { 
+	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
+}
+
+/* IMAGE CAROUSEL */
+
+.bibiscoCarouselImageBackground { 
+	background-color: #555555 !important;
+}
+
+/* SCENES */
+
+.bibiscoSceneTagsExplains {
+	font-size: 13px;
+	font-style: italic;
+	margin-bottom: 5px;
+}
+
 
 /* RICH TEXT EDITOR */
 

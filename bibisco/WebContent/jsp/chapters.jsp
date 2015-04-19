@@ -100,13 +100,13 @@ function bibiscoSelectChapter(position,config) {
     		<div class="span6">
     		</div>
     		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoChaptersACreateChapter" data-thumbnailFamily="chapter" class="btn btn-primary notEmptyThumbnailListElements" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.chapters.a.createChapter" /></a>
+    			<a id="bibiscoChaptersACreateChapter" data-thumbnailFamily="chapter" class="btn btn-primary bibiscoNotEmptyThumbnailListElements" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.chapters.a.createChapter" /></a>
     		</div>
     	</div>
-    	<div id="bibiscoChaptersDivEmptyChapters" data-thumbnailFamily="chapter" class="emptyThumbnailListElements">
+    	<div id="bibiscoChaptersDivEmptyChapters" data-thumbnailFamily="chapter" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapters.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapters.a.createFirstChapter" createButtonId="bibiscoChaptersACreateFirstChapter"  />
 		</div>	
-    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages notEmptyThumbnailListElements" data-thumbnailFamily="chapter" style="width: 100%; height: 600px; overflow: scroll;">
+    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="chapter" style="width: 100%; height: 600px; overflow: scroll;">
 	    	<c:forEach items="${project.chapterList}" var="chapter" varStatus="chapterNumber">
 	    		
 	    		<c:if test="${chapterNumber.count % 4 == 1}">

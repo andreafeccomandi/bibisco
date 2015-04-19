@@ -80,7 +80,7 @@ $(function() {
 	</c:if>
 	
 	// open default browser
-    $('.defaultBrowserUrl').click(function() {
+    $('.bibiscoDefaultBrowserUrl').click(function() {
         bibiscoOpenDefaultBrowser($(this).html());
     });
 });

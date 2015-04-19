@@ -467,7 +467,7 @@
             </div>
             <div id="sceneAccordionGroupPointOfView" class="accordion-body collapse in">
                 <div class="accordion-inner">
-                    <div class="row-fluid sceneTagsExplains"><fmt:message key="jsp.scene.pointOfView.subtitle" /></div>
+                    <div class="row-fluid bibiscoSceneTagsExplains"><fmt:message key="jsp.scene.pointOfView.subtitle" /></div>
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <button id="bibiscoSceneBtnPointOfView1stOnMajor" class="btn btnSceneTags scenePointOfView scenePointOfViewOnCharacter" style="margin-bottom: 5px;" data-toggle="button" data-id="FIRST_ON_MAJOR">
                             <fmt:message key="jsp.scene.button.pointOfView.1stOnMajor" />
@@ -489,7 +489,7 @@
                         </button>
                     </div>
                     <div class="row-fluid" id="bibiscoSceneDivScenePointOfViewCharacter">
-                        <div class="row-fluid sceneTagsExplains" style="margin-top: 5px;"><fmt:message key="jsp.scene.label.pointOfView.character" /></div>
+                        <div class="row-fluid bibiscoSceneTagsExplains" style="margin-top: 5px;"><fmt:message key="jsp.scene.label.pointOfView.character" /></div>
                         <c:forEach items="${characters}" var="sceneCharacter" varStatus="sceneCharacterNumber">
                             <button class="btn btnSceneTags scenePointOfViewCharacter"  data-toggle="button" data-id="${sceneCharacter.idCharacter}">${sceneCharacter.name}</button>
                         </c:forEach>
@@ -503,7 +503,7 @@
             </div>
             <div id="sceneAccordionGroupCharacters" class="accordion-body collapse">
                 <div class="accordion-inner">
-                    <div class="row-fluid sceneTagsExplains"><fmt:message key="jsp.scene.characters.subtitle" /></div>
+                    <div class="row-fluid bibiscoSceneTagsExplains"><fmt:message key="jsp.scene.characters.subtitle" /></div>
                     <c:forEach items="${characters}" var="character" varStatus="characterNumber">
                         <button style="margin-top: 5px;" class="btn btnSceneTags sceneCharacter" data-toggle="button" data-id="${character.idCharacter}">${character.name}</button>
                     </c:forEach>
@@ -516,7 +516,7 @@
             </div>
             <div id="sceneAccordionGroupLocation" class="accordion-body collapse">
                 <div class="accordion-inner">
-                    <div class="row-fluid sceneTagsExplains"><fmt:message key="jsp.scene.location.subtitle" /></div>
+                    <div class="row-fluid bibiscoSceneTagsExplains"><fmt:message key="jsp.scene.location.subtitle" /></div>
                     <c:forEach items="${locations}" var="location" varStatus="locationNumber">
                         <button style="margin-top: 5px;" class="btn btnSceneTags location" data-toggle="button" data-id="${location.idLocation}">${location.name}</button>
                     </c:forEach>
@@ -529,7 +529,7 @@
             </div>
             <div id="sceneAccordionGroupTime" class="accordion-body collapse">
                 <div class="accordion-inner">
-                    <div class="row-fluid sceneTagsExplains"><fmt:message key="jsp.scene.time.subtitle" /></div>
+                    <div class="row-fluid bibiscoSceneTagsExplains"><fmt:message key="jsp.scene.time.subtitle" /></div>
                     <div class="input-append date" id="bibiscoSceneDivTime" data-date-format="<fmt:message key="pattern.datetimepicker.datetime" />">
                         <input id="bibiscoSceneInputTime" class="span2" size="16" type="text" value="">
                         <span class="add-on"><i class="icon-remove"></i></span>
@@ -544,7 +544,7 @@
             </div>
             <div id="sceneAccordionGroupStrands" class="accordion-body collapse">
                 <div class="accordion-inner">
-                    <div class="row-fluid sceneTagsExplains"><fmt:message key="jsp.scene.strands.subtitle" /></div>
+                    <div class="row-fluid bibiscoSceneTagsExplains"><fmt:message key="jsp.scene.strands.subtitle" /></div>
                     <c:forEach items="${strands}" var="strand" varStatus="strandNumber">
                         <button style="margin-top: 5px;" class="btn btnSceneTags strand" data-toggle="button" data-id="${strand.idStrand}">${strand.name}</butmeton>
                     </c:forEach>

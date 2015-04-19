@@ -27,7 +27,7 @@ $(function() {
     });
     
     // link to official website
-    $('.defaultBrowserUrl').click(function() {
+    $('.bibiscoDefaultBrowserUrl').click(function() {
         bibiscoOpenDefaultBrowser($(this).html());
     }); 
         
@@ -89,9 +89,9 @@ $(function() {
      <p><fmt:message key="jsp.info.p.project.1"/></p>
      <p><fmt:message key="jsp.info.p.project.2"/></p>
      <h5><fmt:message key="jsp.info.h5.website"/></h5>
-     <p class="defaultBrowserUrl"><fmt:message key="jsp.info.p.websiteurl"/></p>
+     <p class="bibiscoDefaultBrowserUrl"><fmt:message key="jsp.info.p.websiteurl"/></p>
      <h5>Email</h5>
-     <p class="defaultBrowserUrl">mailto:info@bibisco.com</p>
+     <p class="bibiscoDefaultBrowserUrl">mailto:info@bibisco.com</p>
      <h5>Social media</h5>
      <p class="bibiscoSocialMediaButton">
         <img id="bibiscoInfoImgFacebook" class="bibiscoSocialMediaButtonFacebook" src="img/facebook.png">

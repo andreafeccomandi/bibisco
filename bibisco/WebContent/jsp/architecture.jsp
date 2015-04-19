@@ -130,10 +130,10 @@ function bibiscoSelectStrand(position,config) {
   			<a id="bibiscoStrandACreateStrand" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="strand" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.architecture.a.createStrand" /></a>
   		</div>
 </div>
-<div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="emptyThumbnailListElements">
+<div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="bibiscoEmptyThumbnailListElements">
 	<tags:bibiscoEmptyThumbnailListBox text="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text" createButtonText="jsp.strands.a.createFirstStrand" createButtonId="bibiscoStrandsACreateFirstStrand"  />
 </div>
-<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages notEmptyThumbnailListElements bibiscoStrandsNotEmptyStrands" data-thumbnailFamily="strand">
+<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoStrandsNotEmptyStrands" data-thumbnailFamily="strand">
 	    	<c:forEach items="${project.architecture.strandList}" var="strand" varStatus="strandNumber">
 	    		
 	    		<c:if test="${strandNumber.count % 4 == 1}">

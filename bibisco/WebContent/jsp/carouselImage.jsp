@@ -72,8 +72,8 @@
      	
      	// remove loading icon after loading image
      	$('img').load(function() {
-     		$(this).closest('div').removeClass('loadingImage');
-     		$(this).closest('div').addClass('carouselImageBackground');
+     		$(this).closest('div').removeClass('bibiscoLoadingImage');
+     		$(this).closest('div').addClass('bibiscoCarouselImageBackground');
      	});
  	
     }     
@@ -114,11 +114,11 @@
 
 <div class="bibiscoDialogContent">
 	
-	<div data-thumbnailFamily="images" class="emptyThumbnailListElements">
+	<div data-thumbnailFamily="images" class="bibiscoEmptyThumbnailListElements">
 	  <tags:bibiscoEmptyThumbnailListBox text="jsp.carouselImage.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.carouselImage.a.addFirstImage" createButtonId="bibiscoCarouselImageAAddFirstImage"  />
 	</div>
 	
-	<div id="bibiscoCarouselImageDivImages" class="notEmptyThumbnailListElements" data-thumbnailFamily="images">
+	<div id="bibiscoCarouselImageDivImages" class="bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="images">
 		
 		<div id="bibiscoCarouselImageDivCarousel" class="carousel slide">
 		  <!-- Carousel items -->
@@ -130,7 +130,7 @@
 					<c:if test="${imageNumber.count > 1}">
 						<div class="item">
 					</c:if>
-							<div class="loadingImage" style="width: 810px; height: 500px; text-align:center; 
+							<div class="bibiscoLoadingImage" style="width: 810px; height: 500px; text-align:center; 
 							line-height:500px;  vertical-align: middle;">
 								<img data-idimage="${image.idImage}" src="BibiscoServlet?action=getImage&idImage=${image.idImage}" style="display: inline;max-height: 500px; height: auto; max-width: 810px; width: auto;"/>
 							</div>
