@@ -16,8 +16,8 @@ $(function() {
 			<div class="span8">
     			<h1><fmt:message key="jsp.analysis.h1"/></h1>
     		</div>
-    		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoAnalysisAImportantNote" class="btn btn-primary" style="margin-top: 2px;" href="#"><i class="icon-exclamation-sign icon-white"></i><fmt:message key="jsp.analysis.a.readme" /></a>
+    		<div class="span4 pagination-right">
+    			<a id="bibiscoAnalysisAImportantNote" class="btn btn-primary bibiscoHeaderButton" href="#"><i class="icon-exclamation-sign icon-white"></i><fmt:message key="jsp.analysis.a.readme" /></a>
     		</div>
     	</div>
     	<section>
