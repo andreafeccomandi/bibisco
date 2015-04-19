@@ -59,14 +59,14 @@ function exportProject(type) {
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="row-fluid page-header">
-				<div class="span12" style="float: left;">
+				<div class="span12">
 					<h1 id="bibiscoExportH1Title"><fmt:message key="jsp.export.h1" /></h1>
 	    		</div>
 	    	</div>
-	    	<div class="hero-unit" style="margin-top: 30px; margin-left: 30px; margin-right: 150px; padding-top: 20px; padding-bottom: 35px; padding-left: 40px;">
-				<p style="margin-top: 16px;">
-					<a id="bibiscoExportAPDF" class="btn btn-primary btn-large" href="#" style="margin-right: 10px;"><fmt:message key="jsp.export.a.pdf" /></a>
-					<a id="bibiscoExportAWord" class="btn btn-large" href="#" style="margin-right: 10px;"><fmt:message key="jsp.export.a.word" /></a>
+	    	<div class="hero-unit bibiscoExportButtonArea">
+				<p>
+					<a id="bibiscoExportAPDF" class="btn btn-primary btn-large" href="#"><fmt:message key="jsp.export.a.pdf" /></a>
+					<a id="bibiscoExportAWord" class="btn btn-large" href="#"><fmt:message key="jsp.export.a.word" /></a>
 					<a id="bibiscoExportAArchive" class="btn btn-large" href="#"><fmt:message key="jsp.export.a.archive" /></a>
 				</p>
 			</div>  
