@@ -735,11 +735,13 @@ function openThumbnailUpdateTitle(idCaller, config, id, position) {
 function bibiscoShowEmptyThumbnailListElements(family) {
 	$('.bibiscoEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
 	$('.bibiscoNotEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
+	$('.bibiscoHeaderButton[data-thumbnailFamily="' + family + '"]').hide();
 }
 
 function bibiscoShowNotEmptyThumbnailListElements(family) {
 	$('.bibiscoEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').hide();
 	$('.bibiscoNotEmptyThumbnailListElements[data-thumbnailFamily="' + family + '"] ').show();
+	$('.bibiscoHeaderButton[data-thumbnailFamily="' + family + '"]').show();
 }
 
 function bibiscoOpenDefaultBrowser(url) {

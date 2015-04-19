@@ -104,14 +104,14 @@ function bibiscoSelectLocation(position,config) {
     		</div>
     		<div class="span6">
     		</div>
-    		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoLocationsACreateLocation" class="btn btn-primary bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="location" style="margin-top: 2px;" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.locations.a.createLocation" /></a>
+    		<div class="span4 pagination-right">
+    			<a id="bibiscoLocationsACreateLocation" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="location" href="#"><i class="icon-plus icon-white"></i><fmt:message key="jsp.locations.a.createLocation" /></a>
     		</div>
     	</div>
     	<div id="bibiscoLocationsDivEmptyLocations" data-thumbnailFamily="location" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.locations.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.locations.a.createFirstLocation" createButtonId="bibiscoLocationsACreateFirstLocation"  />
 		</div>	    	
-    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="location" style="width: 100%; height: 600px; overflow: scroll;">
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoLocationsNotEmptyThumbnailListElements" data-thumbnailFamily="location" >
 	    	<c:forEach items="${project.locationList}" var="location" varStatus="locationNumber">
 	    		
 	    		<c:if test="${locationNumber.count % 4 == 1}">

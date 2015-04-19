@@ -163,7 +163,7 @@ div.bibiscoTip h4 {
 
 /* ARCHITECTURE */
 
-.bibiscoStrandsNotEmptyStrands {
+.bibiscoStrandsNotEmptyThumbnailListElements {
 	height: 350px; 
 }
 
@@ -172,11 +172,11 @@ div.bibiscoTip h4 {
 }
 
 /* CHARACTERS */
-.bibiscoMainCharactersNotEmpty {
+.bibiscoMainCharactersNotEmptyThumbnailListElements {
 	height: 180px; 
 }
 
-.bibiscoMainCharactersEmpty {
+.bibiscoMainCharactersEmptyThumbnailListElements {
 	height: 180px;
 }
 
@@ -184,9 +184,21 @@ div.bibiscoTip h4 {
     margin-top: 20px;
 }
 
-.bibiscoSecondaryCharactersNotEmpty {
+.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
     height: 270px; 
 }
+
+/* LOCATIONS */
+.bibiscoLocationsNotEmptyThumbnailListElements {
+    height: 600px;
+}
+
+/* CHAPTERS */
+.bibiscoChaptersNotEmptyThumbnailListElements {
+	height: 600px;
+}
+
+
 
 /* ANALYSIS */
 
