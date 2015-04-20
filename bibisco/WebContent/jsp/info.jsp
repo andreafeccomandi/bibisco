@@ -55,7 +55,7 @@ $(function() {
 
 </script>
 
-<div class="row-fluid notSelectableText">
+<div class="row-fluid bibiscoNotSelectableText">
 	<div class="span12">
 		<div class="row-fluid  page-header">
 			<div class="span8">
@@ -64,7 +64,7 @@ $(function() {
     	</div>
 	</div>
 </div>
-<div class="row-fluid notSelectableText">
+<div class="row-fluid bibiscoNotSelectableText">
      <div class="span3">   
      <h3><fmt:message key="jsp.info.h3.about"/></h3>
      <h5><fmt:message key="jsp.info.h5.version"/></h5>

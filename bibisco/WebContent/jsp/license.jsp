@@ -23,7 +23,7 @@ function bibiscoLicenseBeforeClose(idAjaxDialog, idCaller) {
 
 
 
-<div id="bibiscoLicenseDiv" class="notSelectableText" style="width: 100%; height: 350px; overflow: scroll;" >
+<div id="bibiscoLicenseDiv" class="bibiscoNotSelectableText" style="width: 100%; height: 350px; overflow: scroll;" >
 <p>GNU GENERAL PUBLIC LICENSE</p>
 <p>Version 2, June 1991</p> 
 

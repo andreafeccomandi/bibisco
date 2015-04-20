@@ -40,17 +40,17 @@
 
 <c:choose>
     <c:when test="${empty characters}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisCharacterScene.em.noItemAvailable" /></em>
         </div>
     </c:when>
     <c:when test="${empty characterSceneAnalysis}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable" /></em>
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisCharacterSceneDiv" style="width: 100%; overflow: scroll;" class="notSelectableText">
+        <div id="bibiscoAnalysisCharacterSceneDiv" style="width: 100%; overflow: scroll;" class="bibiscoNotSelectableText">
 		    <c:forEach items="${characters}" var="character" varStatus="characterNumber">
 		        <h4 style="margin-top: 10px;">${character.name}</h4>
 		        <c:if test="${empty characterSceneAnalysis[character.idCharacter]}">

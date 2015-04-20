@@ -40,17 +40,17 @@
 
 <c:choose>
     <c:when test="${empty chapters}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisItemsChapters.em.noChapters" /></em>
         </div>
     </c:when>
     <c:when test="${empty items}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisItemsChapters.em.noItemAvailable.${itemType}" /></em>
         </div>
     </c:when>
     <c:when test="${empty characterItemPresence}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisItemsChapters.em.noItemPresenceAvailable.${itemType}" /></em>
         </div>
     </c:when>

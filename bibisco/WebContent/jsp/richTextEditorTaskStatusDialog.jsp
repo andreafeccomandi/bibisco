@@ -82,7 +82,7 @@
 <div style="text-align: center; margin-top: 5px;">
 <div class="row-fluid">
 	<div class="span12" style="height: 16px;">
-		<div id="bibiscoRichTextEditorTaskStatusDialogDivDescription" class="notSelectableText" style="text-align: left; margin-left: 10px; margin-right: 10px; font-size: 16px;"><em id="bibiscoRichTextEditorTaskStatusDialogEmDescription"></em></div>
+		<div id="bibiscoRichTextEditorTaskStatusDialogDivDescription" class="bibiscoNotSelectableText" style="text-align: left; margin-left: 10px; margin-right: 10px; font-size: 16px;"><em id="bibiscoRichTextEditorTaskStatusDialogEmDescription"></em></div>
 	</div>
 </div>
 <hr style="text-align: center; margin-top: 5px; margin-bottom: 10px;" />

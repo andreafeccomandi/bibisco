@@ -269,7 +269,7 @@
 <div id="bibiscoRichTextEditorTaskStatusDialogDivRichTextEditor">
 <tags:bibiscoRichTextEditor />
 </div>
-<div id="bibiscoCharacterInfoDivInterviewButtons" class="notSelectableText" style="text-align: center;margin-top: 13px;">
+<div id="bibiscoCharacterInfoDivInterviewButtons" class="bibiscoNotSelectableText" style="text-align: center;margin-top: 13px;">
 <a id="bibiscoCharacterInfoAPreviousQuestion" class="btn btn-large" style="margin-right: 15px;" href="#"><i class="icon-caret-left"></i>&nbsp;&nbsp;<strong><fmt:message key="jsp.characterInfo.a.previousQuestion" /></strong></a>
 <a id="bibiscoCharacterInfoANextQuestion" class="btn btn-large" style="margin-left: 15px;" href="#"><strong><fmt:message key="jsp.characterInfo.a.nextQuestion" /></strong>&nbsp;&nbsp;<i class="icon-caret-right"></i></a>
 </div>

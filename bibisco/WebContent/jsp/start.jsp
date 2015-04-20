@@ -90,8 +90,8 @@ $(function() {
 <div class="row-fluid" style="height: 600px;">
 	<div class="span12">
     	<div class="hero-unit" style="margin-top: 60px; margin-left: 30px; margin-right: 150px; padding-top: 30px; padding-bottom: 35px; padding-left: 40px; height: 200px;">
-				<h1 class="notSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.start.h1" /></h1>
-				<p class="notSelectableText" style="margin-top: 40px;">
+				<h1 class="bibiscoNotSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.start.h1" /></h1>
+				<p class="bibiscoNotSelectableText" style="margin-top: 40px;">
 					<c:if test="${not empty projectList}">
 						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsAOpenProject" style="margin-right: 10px;"><fmt:message key="jsp.start.button.openProject" /></a>
 						<a href="#" class="btn btn-large" id="bibiscoProjectsACreateProject" style="margin-right: 10px;"><fmt:message key="jsp.start.button.createProject" /></a>

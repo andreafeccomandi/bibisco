@@ -86,7 +86,7 @@
 
 <c:choose>
     <c:when test="${empty chapters}">
-        <div class="notSelectableText bibiscoAnalysisNoInfoAvailable">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisChaptersLength.em.noItemAvailable" /></em>
         </div>
     </c:when>

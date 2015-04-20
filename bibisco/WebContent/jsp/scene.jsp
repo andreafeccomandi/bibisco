@@ -458,7 +458,7 @@
         <tags:bibiscoRichTextEditor />
     </div>
 </div>
-<div id="bibiscoSceneDivTags" class="notSelectableText bibiscoSceneTags">
+<div id="bibiscoSceneDivTags" class="bibiscoNotSelectableText bibiscoSceneTags">
     <div class="accordion" id="sceneAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">

@@ -356,7 +356,7 @@
     }
         
 </script>
-<div id="bibiscoTagRichTextEditorDivToolbar" class="btn-toolbar notSelectableText" style="display: none; margin-top: 0px; margin-bottom: 0px; margin-left: 9px;">
+<div id="bibiscoTagRichTextEditorDivToolbar" class="btn-toolbar bibiscoNotSelectableText" style="display: none; margin-top: 0px; margin-bottom: 0px; margin-left: 9px;">
     <div class="btn-group">
         <button class="btn" id="bibiscoTagRichTextEditorButtonUndo" title="<fmt:message key="tag.bibiscoRichTextEditor.undo"/>">
             <i class="icon-undo"></i>
@@ -442,7 +442,7 @@
 </div>
 <div id="bibiscoTagRichTextEditorTextareaContainer" style="display: none;">
 <textarea id="bibiscoTagRichTextEditorTextarea"></textarea>
-<p class="notSelectableText" style="text-align: right; margin-right: 12px;">
+<p class="bibiscoNotSelectableText" style="text-align: right; margin-right: 12px;">
 <fmt:message key="jsp.common.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span>, <fmt:message key="jsp.common.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span></p>
 </div>
 

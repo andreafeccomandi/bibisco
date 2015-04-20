@@ -88,8 +88,8 @@ $(function() {
 	<div class="row-fluid">
 	<div class="span12">
     	<div class="hero-unit bibiscoProjectMotivational">
-				<h1 class="notSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.project.h1" /></h1>
-				<p class="notSelectableText" style="margin-top: 40px;">
+				<h1 class="bibiscoNotSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.project.h1" /></h1>
+				<p class="bibiscoNotSelectableText" style="margin-top: 40px;">
 					<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectSuggestions" style="margin-right: 10px;"><fmt:message key="jsp.project.button.bibiscoProjectSuggestions" /></a>
 				</p>
 		</div>  	  	
