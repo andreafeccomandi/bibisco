@@ -212,10 +212,38 @@ div.bibiscoTip h4 {
 
 /* SCENE */
 
+.bibiscoSceneTags div.accordion-heading span {
+	font-size: 14px;
+}
+
+.bibiscoSceneTags div.accordion-inner button {
+	margin-top: 5px;
+}
+
 .bibiscoSceneTagsExplains {
     font-size: 13px;
     font-style: italic;
-    margin-bottom: 5px;
+}
+
+.bibiscoSceneTagsExplainsPointOfViewCharacter {
+	margin-top: 10px;
+}
+
+.bibiscoSceneSelectRevision {
+	 width:200px; 
+	 margin-left: 5px;
+}
+
+.bibiscoSceneSelectRevisionOriginalOption {
+	font-style: italic;
+}
+
+.bibiscoSceneCommands a {
+	margin-left: 5px;
+}
+
+.bibiscoSceneCommands table {
+     width: 100%;
 }
 
 
