@@ -63,14 +63,6 @@
 	background-color: #555555 !important;
 }
 
-/* SCENES */
-
-.bibiscoSceneTagsExplains {
-	font-size: 13px;
-	font-style: italic;
-	margin-bottom: 5px;
-}
-
 
 /* RICH TEXT EDITOR */
 
@@ -196,6 +188,20 @@ div.bibiscoTip h4 {
 /* CHAPTERS */
 .bibiscoChaptersNotEmptyThumbnailListElements {
 	height: 600px;
+}
+
+/* CHAPTER */
+
+.bibiscoScenesNotEmptyThumbnailListElements {
+    height: 400px;
+}
+
+/* SCENE */
+
+.bibiscoSceneTagsExplains {
+    font-size: 13px;
+    font-style: italic;
+    margin-bottom: 5px;
 }
 
 
