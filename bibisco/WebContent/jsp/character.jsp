@@ -59,19 +59,19 @@ function bibiscoShowSocialMediaTip() {
 <div class="row-fluid">
 	<div class="span12">
 		<div class="row-fluid page-header">
-			<div class="span8" style="float: left;">
+			<div class="span8">
     			<h1 id="bibiscoCharacterH1Title"><span id="bibiscoCharacterSpanTitle"><c:out value="${character.name}"></c:out></span>&nbsp;&nbsp;<button id="bibiscoCharacterButtonUpdateTitle" title="<fmt:message key="jsp.character.button.updateTitle" />" class="btn btn-mini"><i class="icon-pencil"></i></button>
     			</h1>
     		</div>
-    		<div class="span4" style="text-align: right;">
-    			<a id="bibiscoCharacterABackToCharacterList" class="btn" style="margin-top: 2px;" href="#"><i class="icon-chevron-up icon-white"></i>&nbsp;<fmt:message key="jsp.character.a.backToCharacterList" /></a>
+    		<div class="span4 pagination-right">
+    			<a id="bibiscoCharacterABackToCharacterList" class="btn bibiscoHeaderButton" href="#"><i class="icon-chevron-up icon-white"></i>&nbsp;<fmt:message key="jsp.character.a.backToCharacterList" /></a>
     		</div>
     	</div>
     	<div class="row-fluid" >
-			<div class="span3 page-header"  style="margin-top: 0px; margin-bottom: 9px; padding-bottom: 5px;">
+			<div class="span3 page-header bibiscoCharacterSectionTitleFirstRow">
 				<h3><fmt:message key="jsp.character.h3.whois" /></h3>
     		</div>
-    		<div class="span9 page-header" style="margin-top: 0px; margin-bottom: 9px; padding-bottom: 5px;">
+    		<div class="span9 page-header bibiscoCharacterSectionTitleFirstRow">
 				<h3><fmt:message key="jsp.character.h3.seems" /></h3>
     		</div>
     	</div>
@@ -112,10 +112,10 @@ function bibiscoShowSocialMediaTip() {
 		</div>
 		</section>
 		<div class="row-fluid">
-			<div class="span6 page-header" style="margin-top: 10px; margin-bottom: 9px; padding-bottom: 5px;">
+			<div class="span6 page-header bibiscoCharacterSectionTitle">
 				<h3><fmt:message key="jsp.character.h3.think" /></h3>
     		</div>
-    		<div class="span6 page-header" style="margin-top: 10px; margin-bottom: 9px; padding-bottom: 5px;">
+    		<div class="span6 page-header bibiscoCharacterSectionTitle">
 				<h3><fmt:message key="jsp.character.h3.comesfrom" /></h3>
     		</div>
     	</div>
@@ -157,7 +157,7 @@ function bibiscoShowSocialMediaTip() {
 		</div>
 		</section>
 		<div class="row-fluid">
-    		<div class="span6 page-header" style="margin-top: 10px; margin-bottom: 9px; padding-bottom: 5px;">
+    		<div class="span6 page-header bibiscoCharacterSectionTitle">
 				<h3><h3><fmt:message key="jsp.character.h3.go" /></h3></h3>
     		</div>
     		<div class="span6">

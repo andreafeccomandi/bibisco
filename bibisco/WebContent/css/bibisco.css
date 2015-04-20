@@ -180,6 +180,20 @@ div.bibiscoTip h4 {
     height: 270px; 
 }
 
+/* CHARACTER */
+
+.bibiscoCharacterSectionTitleFirstRow {
+	margin-top: 0px; 
+    margin-bottom: 9px; 
+    padding-bottom: 5px;
+}
+
+.bibiscoCharacterSectionTitle {
+    margin-top: 10px; 
+    margin-bottom: 9px; 
+    padding-bottom: 5px;
+}
+
 /* LOCATIONS */
 .bibiscoLocationsNotEmptyThumbnailListElements {
     height: 600px;
