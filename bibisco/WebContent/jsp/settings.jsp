@@ -48,7 +48,7 @@ $(function() {
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="row-fluid page-header">
-				<div class="span12" style="float: left;">
+				<div class="span12">
 					<h1 id="bibiscoSettingsH1Title"><fmt:message key="jsp.settings.h1" /></h1>
 	    		</div>
 	    	</div>
