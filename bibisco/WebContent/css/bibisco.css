@@ -111,6 +111,32 @@
 	font-size: 16px; 
 }
 
+/* START */
+
+.bibiscoStartMotivational {
+    margin-top: 60px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; 
+    height: 200px;
+}
+
+.bibiscoStartMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoStartMotivational p {
+    margin-top: 40px;
+}
+
+.bibiscoStartMotivational a {
+    margin-right: 10px;
+}
+
+
+
 /* SUGGESTIONS */
 
 .bibiscoSuggestions {

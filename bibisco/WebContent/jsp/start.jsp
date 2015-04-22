@@ -87,21 +87,21 @@ $(function() {
 
 </script>
 <%@ include file="menu.jsp" %>
-<div class="row-fluid" style="height: 600px;">
+<div class="row-fluid">
 	<div class="span12">
-    	<div class="hero-unit" style="margin-top: 60px; margin-left: 30px; margin-right: 150px; padding-top: 30px; padding-bottom: 35px; padding-left: 40px; height: 200px;">
-				<h1 class="bibiscoNotSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.start.h1" /></h1>
-				<p class="bibiscoNotSelectableText" style="margin-top: 40px;">
+    	<div class="hero-unit bibiscoStartMotivational">
+				<h1 class="bibiscoNotSelectableText"><fmt:message key="jsp.start.h1" /></h1>
+				<p class="bibiscoNotSelectableText">
 					<c:if test="${not empty projectList}">
-						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsAOpenProject" style="margin-right: 10px;"><fmt:message key="jsp.start.button.openProject" /></a>
-						<a href="#" class="btn btn-large" id="bibiscoProjectsACreateProject" style="margin-right: 10px;"><fmt:message key="jsp.start.button.createProject" /></a>
-						<a href="#" class="btn btn-large" style="margin-right: 10px;" id="bibiscoProjectsAImportProject"><fmt:message key="jsp.start.button.importProject" /></a>				
+						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsAOpenProject"><fmt:message key="jsp.start.button.openProject" /></a>
+						<a href="#" class="btn btn-large" id="bibiscoProjectsACreateProject"><fmt:message key="jsp.start.button.createProject" /></a>
+						<a href="#" class="btn btn-large" id="bibiscoProjectsAImportProject"><fmt:message key="jsp.start.button.importProject" /></a>				
 					</c:if>
 					<c:if test="${empty projectList}">
-						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsACreateProject" style="margin-right: 10px;"><fmt:message key="jsp.start.button.createFirstProject" /></a>
-						<a href="#" class="btn btn-large" style="margin-right: 10px;" id="bibiscoProjectsAImportProject"><fmt:message key="jsp.start.button.importFirstProject" /></a>				
+						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsACreateProject"><fmt:message key="jsp.start.button.createFirstProject" /></a>
+						<a href="#" class="btn btn-large" id="bibiscoProjectsAImportProject"><fmt:message key="jsp.start.button.importFirstProject" /></a>				
 					</c:if>	
-					<a href="#" class="btn btn-large" style="margin-right: 10px;" id="bibiscoProjectsAChangeLanguage"><fmt:message key="jsp.start.button.changeLanguage" /></a>
+					<a href="#" class="btn btn-large" id="bibiscoProjectsAChangeLanguage"><fmt:message key="jsp.start.button.changeLanguage" /></a>
 				</p>
 		</div>  	  	
     </div>
