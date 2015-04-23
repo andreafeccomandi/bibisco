@@ -66,6 +66,21 @@
 
 .bibiscoLoadingImage { 
 	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
+	width: 810px; 
+	height: 500px; 
+	text-align:center; 
+	line-height:500px;  
+	vertical-align: middle;
+}
+
+.bibiscoAddImageIFrameUploadTarget {
+	width:0;
+	height:0;
+	border:0px solid #fff;
+}
+
+.bibiscoAddImageForm {
+	margin-top: 10px;
 }
 
 /* IMAGE CAROUSEL */

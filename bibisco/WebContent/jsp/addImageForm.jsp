@@ -77,7 +77,7 @@
 		var actualImagesNumber = $('div.carousel-inner div.item').size();
 		
 		// html to append
-		var imageToAppend = '<div class="active item"><div class="bibiscoLoadingImage" style="width: 810px; height: 500px; text-align:center; line-height:500px;  vertical-align: middle;"><img src="BibiscoServlet?action=getImage&idImage='+idImage+'" data-idimage="'+idImage+'"  /></div><div class="carousel-caption"><h4>'+imageDescription+'</h4></div></div>';
+		var imageToAppend = '<div class="active item"><div class="bibiscoLoadingImage"><img src="BibiscoServlet?action=getImage&idImage='+idImage+'" data-idimage="'+idImage+'"  /></div><div class="carousel-caption"><h4>'+imageDescription+'</h4></div></div>';
 		
 		// add image to carousel
 		if (actualImagesNumber > 0) {
@@ -95,7 +95,7 @@
 	}
 </script>
 
-<div style="margin-top: 10px;">
+<div class="bibiscoAddImageForm">
 	<form id="bibiscoAddImageForm" method="post" enctype="multipart/form-data" target="upload_target" action="BibiscoServlet">
 		<input type="hidden" name="action" value="addImage">
 		<input type="hidden" name="idElement" value="${param.idElement}">
@@ -113,13 +113,13 @@
 	</form>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;">
-				<a id="bibiscoAddImageASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i	class="icon-ok icon-white"></i></a> 
-				<a id="bibiscoAddImageAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a>
+			<td>
+				<a id="bibiscoAddImageASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i	class="icon-ok icon-white"></i></a> 
+				<a id="bibiscoAddImageAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
 			</td>
 		</tr>
 	</table>
 </div>
-<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe> 
+<iframe id="upload_target" name="upload_target" src="#" class="bibiscoAddImageIFrameUploadTarget"></iframe> 
