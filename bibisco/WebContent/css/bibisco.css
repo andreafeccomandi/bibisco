@@ -34,6 +34,17 @@
     overflow: scroll;
 }
 
+.bibiscoDialogFooter table {
+	width: 100%;
+}
+
+.bibiscoDialogFooter td {
+    text-align: right;
+}
+
+.bibiscoDialogFooter a {
+    margin-left: 5px;
+}
 
 /* THUMBNAIL */
 
@@ -329,6 +340,36 @@ div.bibiscoTip h4 {
 
 .bibiscoAnalysisItemsRow11 {
     background-color: #C5000B !important;
+}
+
+.bibiscoAnalysisCharactersChapters {
+	margin-top: 10px; 
+	width: 100%; 
+	overflow: scroll;
+}
+
+.bibiscoAnalysisCharactersChapters table {
+    table-layout: fixed;
+}
+
+.bibiscoAnalysisCharactersChapters th {
+	text-align: center; 
+	width: 15px;
+}
+
+.bibiscoAnalysisCharactersChapters th:first-child {
+    width:120px;
+}
+
+.bibiscoAnalysisCharactersChapters td {
+    text-align: center; 
+    vertical-align: middle; 
+    width: 15px;
+}
+
+.bibiscoAnalysisCharactersChapters td:first-child {
+    width:120px; 
+    text-align: right
 }
 
 

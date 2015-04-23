@@ -17,6 +17,9 @@
     	// set div height
     	$('#bibiscoAnalysisCharactersChaptersDiv').css('height', window.innerHeight - 200);
     	
+    	// set table width
+    	$('#bibiscoAnalysisCharactersChaptersDiv table').css('width', ${fn:length(chapters) * 27 + 120});
+    	
     	// initialize scrollbar
 		$('#bibiscoAnalysisCharactersChaptersDiv').jScrollPane({
 			autoReinitialise: true, animateScroll: true, verticalGutter: 30
@@ -55,30 +58,27 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisCharactersChaptersDiv" style="margin-top: 10px; width: 100%; overflow: scroll;">
-		    <table style="width: ${fn:length(chapters) * 27 + 120}px; table-layout: fixed;" class="table table-striped table-bordered table-condensed" >
+        <div id="bibiscoAnalysisCharactersChaptersDiv" class="bibiscoAnalysisCharactersChapters">
+		    <table class="table table-striped table-bordered table-condensed" >
 		        <thead>
 		            <tr>
-		                <th style="width:120px;"></th>
+		                <th></th>
 		                <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
-		                    <th style="text-align: center; width: 15px;">${chapter.position}</th>
+		                    <th>${chapter.position}</th>
 		                </c:forEach>
 		            </tr>
 		        </thead>
 		        <tbody>
 		            <c:forEach items="${items}" var="item" varStatus="itemNumber">
 		            <tr>
-		                <td style="width:120px; text-align: right">${item.analysisChapterPresenceItemDescription}</td>
+		                <td>${item.analysisChapterPresenceItemDescription}</td>
 		                <c:forEach items="${characterItemPresence[item.analysisChapterPresenceItemId]}" var="chapterPresence" varStatus="characterNumber">
 		                    <c:choose>
 			                    <c:when test="${chapterPresence}">
-				                    <td style="text-align: center; vertical-align: middle; width: 15px;" 
-				                        class="bibiscoAnalysisItemsRow${itemNumber.count % 12}">
-				                    </td>
+				                    <td class="bibiscoAnalysisItemsRow${itemNumber.count % 12}"></td>
 			                    </c:when>
 			                    <c:otherwise>
-				                    <td style="text-align: center; vertical-align: middle; width: 15px;">
-		                            </td>
+				                    <td></td>
 			                    </c:otherwise>
 		                    </c:choose>              
 		                </c:forEach>
@@ -92,9 +92,9 @@
 
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;"><a id="bibiscoAnalysisCharactersChaptersAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
+			<td><a id="bibiscoAnalysisCharactersChaptersAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i
 					class="icon-remove"></i></a></td>
 		</tr>
 	</table>
