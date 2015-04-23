@@ -98,9 +98,9 @@
 
 
 <div class="bibiscoDialogFooter control-group">
-    <table style="width: 100%">
+    <table>
         <tr>
-            <td style="text-align: right;"><a id="bibiscoAnalysisChaptersLengthAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
+            <td><a id="bibiscoAnalysisChaptersLengthAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i
                     class="icon-remove"></i></a></td>
         </tr>
     </table>
