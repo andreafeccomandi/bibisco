@@ -50,27 +50,27 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisCharacterSceneDiv" style="width: 100%; overflow: scroll;" class="bibiscoNotSelectableText">
+        <div id="bibiscoAnalysisCharacterSceneDiv" class="bibiscoAnalysisCharacterScene bibiscoNotSelectableText">
 		    <c:forEach items="${characters}" var="character" varStatus="characterNumber">
-		        <h4 style="margin-top: 10px;">${character.name}</h4>
+		        <h4>${character.name}</h4>
 		        <c:if test="${empty characterSceneAnalysis[character.idCharacter]}">
 		        <em><fmt:message key="jsp.analysisCharacterScene.noInfoAvailable"/></em>
 		        </c:if>
 		        <c:if test="${not empty characterSceneAnalysis[character.idCharacter]}">
-		            <table style="width: 850px; table-layout: fixed;" class="table table-striped table-bordered table-condensed" >
+		            <table class="table table-striped table-bordered table-condensed" >
 		                <thead>
-		                    <th style="width: 120px;"><fmt:message key="jsp.analysisCharacterScene.th.dateTime"/></th>
-		                    <th style="width: 430px;"><fmt:message key="jsp.analysisCharacterScene.th.location"/></th>
-		                    <th style="width: 200px;"><fmt:message key="jsp.analysisCharacterScene.th.scene"/></th>
-		                    <th style="width: 200px;"><fmt:message key="jsp.analysisCharacterScene.th.chapter"/></th>       
+		                    <th class="bibiscoAnalysisCharacterSceneColSceneDate"><fmt:message key="jsp.analysisCharacterScene.th.dateTime"/></th>
+		                    <th class="bibiscoAnalysisCharacterSceneColLocation"><fmt:message key="jsp.analysisCharacterScene.th.location"/></th>
+		                    <th class="bibiscoAnalysisCharacterSceneSceneDescription"><fmt:message key="jsp.analysisCharacterScene.th.scene"/></th>
+		                    <th class="bibiscoAnalysisCharacterSceneChapterPosition"><fmt:message key="jsp.analysisCharacterScene.th.chapter"/></th>       
 		                </thead>
 		                <tbody>
 		                    <c:forEach items="${characterSceneAnalysis[character.idCharacter]}" var="characterScene" varStatus="characterSceneNumber">
 		                    <tr>
-		                        <td style="width: 120px;"><fmt:formatDate value="${characterScene.sceneDate}" pattern="${patternTimestamp}"/></td>
-		                        <td style="width: 430px;"><c:out value="${characterScene.location}" /></td>
-		                        <td style="width: 200px;"><c:out value="${characterScene.sceneDescription}" /></td>
-		                        <td style="width: 200px;">#${characterScene.chapterPosition}&nbsp;<c:out value="${characterScene.chapterTitle}" /></td>
+		                        <td class="bibiscoAnalysisCharacterSceneColSceneDate"><fmt:formatDate value="${characterScene.sceneDate}" pattern="${patternTimestamp}"/></td>
+		                        <td class="bibiscoAnalysisCharacterSceneColLocation"><c:out value="${characterScene.location}" /></td>
+		                        <td class="bibiscoAnalysisCharacterSceneSceneDescription"><c:out value="${characterScene.sceneDescription}" /></td>
+		                        <td class="bibiscoAnalysisCharacterSceneChapterPosition">#${characterScene.chapterPosition}&nbsp;<c:out value="${characterScene.chapterTitle}" /></td>
 		                    </tr>
 		                    </c:forEach>
 		                </tbody>
@@ -84,9 +84,9 @@
 
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;"><a id="bibiscoAnalysisCharacterSceneAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
+			<td><a id="bibiscoAnalysisCharacterSceneAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i
 					class="icon-remove"></i></a></td>
 		</tr>
 	</table>

@@ -372,6 +372,36 @@ div.bibiscoTip h4 {
     text-align: right
 }
 
+.bibiscoAnalysisCharacterScene {
+	width: 100%; 
+	overflow: scroll;
+}
+
+.bibiscoAnalysisCharacterScene h4 {
+	margin-top: 10px;
+}
+
+.bibiscoAnalysisCharacterScene table {
+   width: 850px; 
+   table-layout: fixed;
+}
+
+.bibiscoAnalysisCharacterSceneColSceneDate {
+	width: 120px;
+}
+
+.bibiscoAnalysisCharacterSceneColLocation {
+    width: 430px;
+}
+
+.bibiscoAnalysisCharacterSceneSceneDescription {
+    width: 200px;
+}
+
+.bibiscoAnalysisCharacterSceneChapterPosition {
+    width: 200px;
+}
+
 
 /* EXPORT */
 
