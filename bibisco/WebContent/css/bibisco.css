@@ -85,10 +85,31 @@
 
 /* IMAGE CAROUSEL */
 
-.bibiscoCarouselImageBackground { 
-	background-color: #555555 !important;
+.bibiscoCarouselImage {
+	overflow: hidden !important;
 }
 
+
+.bibiscoCarouselImageBackground { 
+	background-color: #555555 !important;
+	text-align: center;
+}
+
+.bibiscoCarouselImageBackground img {
+    display: inline;
+    max-height: 500px;
+    height: auto; 
+    max-width: 810px; 
+    width: auto;
+}
+
+.bibiscoCarouselImageCommands {
+    text-align: right;
+}
+
+.bibiscoCarouselImageCommands a {
+    margin-left: 5px;
+}
 
 /* RICH TEXT EDITOR */
 

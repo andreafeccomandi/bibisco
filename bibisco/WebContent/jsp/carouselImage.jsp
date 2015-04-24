@@ -118,7 +118,7 @@
 	  <tags:bibiscoEmptyThumbnailListBox text="jsp.carouselImage.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.carouselImage.a.addFirstImage" createButtonId="bibiscoCarouselImageAAddFirstImage"  />
 	</div>
 	
-	<div id="bibiscoCarouselImageDivImages" class="bibiscoNotEmptyThumbnailListElements" data-thumbnailFamily="images">
+	<div id="bibiscoCarouselImageDivImages" class="bibiscoNotEmptyThumbnailListElements bibiscoCarouselImage" data-thumbnailFamily="images">
 		
 		<div id="bibiscoCarouselImageDivCarousel" class="carousel slide">
 		  <!-- Carousel items -->
@@ -130,9 +130,8 @@
 					<c:if test="${imageNumber.count > 1}">
 						<div class="item">
 					</c:if>
-							<div class="bibiscoLoadingImage" style="width: 810px; height: 500px; text-align:center; 
-							line-height:500px;  vertical-align: middle;">
-								<img data-idimage="${image.idImage}" src="BibiscoServlet?action=getImage&idImage=${image.idImage}" style="display: inline;max-height: 500px; height: auto; max-width: 810px; width: auto;"/>
+							<div class="bibiscoLoadingImage">
+								<img data-idimage="${image.idImage}" src="BibiscoServlet?action=getImage&idImage=${image.idImage}"/>
 							</div>
 							<div class="carousel-caption">
 								<h4>${image.description}</h4>
@@ -146,17 +145,17 @@
 		</div>
 
 		<div class="row-fluid">
-			<div class="span12" style="text-align: right;">
+			<div class="span12 bibiscoCarouselImageCommands">
 	    		<a id="bibiscoCarouselImageAAddImage" class="btn btn-primary" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.carouselImage.a.addImage" /></a>
-	    		<a id="bibiscoCarouselImageADeleteCurrentImage" class="btn" style="margin-left: 5px;" href="#"><i class="icon-trash icon-white"></i>&nbsp;<fmt:message key="jsp.carouselImage.a.deleteCurrentImage" /></a>
+	    		<a id="bibiscoCarouselImageADeleteCurrentImage" class="btn" href="#"><i class="icon-trash icon-white"></i>&nbsp;<fmt:message key="jsp.carouselImage.a.deleteCurrentImage" /></a>
 	    	</div>
 	    </div>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right:;">
-				<a id="bibiscoCarouselImageAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"> </i> </a>
+			<td>
+				<a id="bibiscoCarouselImageAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"> </i> </a>
 			</td>
 		</tr>
 	</table>

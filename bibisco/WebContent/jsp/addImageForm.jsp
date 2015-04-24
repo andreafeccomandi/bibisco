@@ -77,7 +77,7 @@
 		var actualImagesNumber = $('div.carousel-inner div.item').size();
 		
 		// html to append
-		var imageToAppend = '<div class="active item"><div class="bibiscoLoadingImage"><img src="BibiscoServlet?action=getImage&idImage='+idImage+'" data-idimage="'+idImage+'"  /></div><div class="carousel-caption"><h4>'+imageDescription+'</h4></div></div>';
+		var imageToAppend = '<div class="active item"><div class="bibiscoCarouselImageBackground"><img src="BibiscoServlet?action=getImage&idImage='+idImage+'" data-idimage="'+idImage+'"  /></div><div class="carousel-caption"><h4>'+imageDescription+'</h4></div></div>';
 		
 		// add image to carousel
 		if (actualImagesNumber > 0) {
