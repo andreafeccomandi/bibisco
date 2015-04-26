@@ -226,6 +226,20 @@ div.bibiscoTip h4 {
 	height: 200px;"
 }
 
+.bibiscoCreateProject {
+	margin-top: 10px;
+}
+
+.bibiscoCreateProject input {
+    width: 220px;
+}
+
+/* we know that select picker transforms select tag in a tag insiede a div... */
+.bibiscoCreateProject form div.control-group div.controls div.selectpicker {
+    width: 230px;
+}
+
+
 .bibiscoChangeProjectName {
 	margin-top: 10px;
 }

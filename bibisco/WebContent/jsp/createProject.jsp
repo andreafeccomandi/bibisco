@@ -105,16 +105,16 @@
 	}
 </script>
 
-<div style="margin-top: 10px;">
+<div class="bibiscoCreateProject">
 	<form id="bibiscoCreateProjectForm">
 		<div class="control-group">
 			<label id="bibiscoCreateProjectNameLabel" class="control-label" for="bibiscoCreateProjectName"><fmt:message key="jsp.createProject.form.label.name" /></label>
 			<div class="controls">
-				<input width="200px;" type="text" class="span5" name="bibiscoCreateProjectName" id="bibiscoCreateProjectName" maxlength="50">
+				<input type="text" class="span5" name="bibiscoCreateProjectName" id="bibiscoCreateProjectName" maxlength="50">
 			</div>
 			<label id="bibiscoCreateProjectSelectLanguageLabel" class="control-label" for="bibiscoCreateProjectSelectLanguage"><fmt:message key="jsp.createProject.form.label.language" /></label>
 			<div class="controls">
-				<select class="selectpicker" style="width:200px;" name="bibiscoCreateProjectSelectLanguage" id="bibiscoCreateProjectSelectLanguage">
+				<select class="selectpicker" name="bibiscoCreateProjectSelectLanguage" id="bibiscoCreateProjectSelectLanguage">
 					<option value="ca_ES"><fmt:message key="jsp.createProject.form.selectLanguage.option.ca_ES" /></option>
 					<option value="da_DK"><fmt:message key="jsp.createProject.form.selectLanguage.option.da_DK" /></option>
 					<option value="de_DE"><fmt:message key="jsp.createProject.form.selectLanguage.option.de_DE" /></option>
@@ -140,10 +140,10 @@
 	</form>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;"><a id="bibiscoCreateProjectFormASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i
-					class="icon-ok icon-white"></i></a> <a id="bibiscoCreateProjectFormAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
+			<td><a id="bibiscoCreateProjectFormASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i
+					class="icon-ok icon-white"></i></a> <a id="bibiscoCreateProjectFormAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i
 					class="icon-remove"></i></a></td>
 		</tr>
 	</table>
