@@ -267,6 +267,69 @@ div.bibiscoTip h4 {
     padding-bottom: 5px;
 }
 
+.bibiscoCharacterInfo {
+	text-align: center; 
+	margin-top: 5px;"
+}
+
+.bibiscoCharacterInfo hr {
+    text-align: center; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+}
+
+.bibiscoCharacterInfoInterview span {
+	height: 30px; 
+	text-align: left; 
+	font-size: 18px; 
+	line-height: 27px;
+}
+
+/* we know that select picker transforms select tag in a tag insiede a div... */
+.bibiscoCharacterInfoInterview div.selectpicker {
+	width: 750px; 
+	text-align: left;
+}
+
+.bibiscoCharacterInfoFreeText {
+	text-align: left; 
+	height: 28px; 
+	margin-left: 10px; 
+	margin-right: 10px; 
+	font-size: 16px;
+}
+
+
+.bibiscoCharacterInfoDivInterviewButtons {
+	text-align: center;
+	margin-top: 13px;
+}
+
+.bibiscoCharacterInfoDivInterviewButtons a {
+    width: 170px;
+    margin-right: 15px;
+}
+
+.bibiscoCharacterInfoTaskStatusSelector {
+	width: 281px;
+}
+
+.bibiscoCharacterInfoDialogButtons {
+    width: 281px;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector {
+	text-align: center;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector div {
+    width: 216px;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector a {
+    width: 85px;
+}
+
 /* LOCATIONS */
 .bibiscoLocationsNotEmptyThumbnailListElements {
     height: 600px;

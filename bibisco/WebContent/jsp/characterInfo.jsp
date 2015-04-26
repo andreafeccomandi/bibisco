@@ -16,7 +16,7 @@
     	characterInfoBean = ${characterInfoBean};
     		
     	// save button
-    	$('#bibiscoRichTextEditorTaskStatusDialogASave').click(function() {
+    	$('#bibiscoCharacterInfoDialogASave').click(function() {
     		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
     		
     		// save last answer to characterInfoBean
@@ -54,10 +54,10 @@
       		  }
       		});
     	});	  
-    	$('#bibiscoRichTextEditorTaskStatusDialogASave').tooltip();
+    	$('#bibiscoCharacterInfoDialogASave').tooltip();
     	
     	// close button
-    	$('#bibiscoRichTextEditorTaskStatusDialogAClose').tooltip();
+    	$('#bibiscoCharacterInfoDialogAClose').tooltip();
     	
     	
     	
@@ -222,7 +222,7 @@
 	// before close dialog callback
 	function bibiscoThumbnailBeforeCloseCallback(ajaxDialog, idCaller, type) {
 		
-		$('#bibiscoRichTextEditorTaskStatusDialogAClose').tooltip('hide');
+		$('#bibiscoCharacterInfoDialogAClose').tooltip('hide');
 		if (bibiscoRichTextEditor.unSaved) {
 			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
 			bibiscoConfirm(jsCommonMessageConfirmExitWithoutSave, function(result) {
@@ -244,12 +244,12 @@
 
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <div class="bibiscoDialogContent">
-<div style="text-align: center; margin-top: 5px;">
+<div class="bibiscoCharacterInfo">
 <div class="row-fluid">
 	<div class="span12">
-		<div id="bibiscoCharacterInfoDivInterview">
-			<em><span style="height: 30px; text-align: left; font-size: 18px; line-height: 27px;">
-				<select id="bibiscoCharacterInfoSelectInterview" data-actual-question="0" data-questions="${fn:length(questionList)}" class="selectpicker" style="width:750px; text-align: left;">
+		<div id="bibiscoCharacterInfoDivInterview" class="bibiscoCharacterInfoInterview">
+			<em><span>
+				<select id="bibiscoCharacterInfoSelectInterview" data-actual-question="0" data-questions="${fn:length(questionList)}" class="selectpicker">
 				<c:forEach items="${questionList}" var="question" varStatus="questionNumber">
 	    			<c:if test="${questionNumber.count == 1}">
 	    				<option value="0" selected="selected"><fmt:message key="jsp.characterInfo.question" />&nbsp;<c:out value="${question}"></c:out></option>
@@ -261,33 +261,33 @@
 			</select>
 			</span></em>
 		</div>
-		<div id="bibiscoCharacterInfoDivFreeText" style="text-align: left; height: 28px; margin-left: 10px; margin-right: 10px; font-size: 16px;"><em><c:out value="${freeTextDescription}"></c:out></em></div>
+		<div id="bibiscoCharacterInfoDivFreeText" class="bibiscoCharacterInfoFreeText"><em><c:out value="${freeTextDescription}"></c:out></em></div>
 	</div>
 </div>
-<hr style="text-align: center; margin-top: 10px; margin-bottom: 10px;" />
+<hr />
 </div>
 <div id="bibiscoRichTextEditorTaskStatusDialogDivRichTextEditor">
 <tags:bibiscoRichTextEditor />
 </div>
-<div id="bibiscoCharacterInfoDivInterviewButtons" class="bibiscoNotSelectableText" style="text-align: center;margin-top: 13px;">
-<a id="bibiscoCharacterInfoAPreviousQuestion" class="btn btn-large" style="margin-right: 15px;" href="#"><i class="icon-caret-left"></i>&nbsp;&nbsp;<strong><fmt:message key="jsp.characterInfo.a.previousQuestion" /></strong></a>
-<a id="bibiscoCharacterInfoANextQuestion" class="btn btn-large" style="margin-left: 15px;" href="#"><strong><fmt:message key="jsp.characterInfo.a.nextQuestion" /></strong>&nbsp;&nbsp;<i class="icon-caret-right"></i></a>
+<div id="bibiscoCharacterInfoDivInterviewButtons" class="bibiscoNotSelectableText bibiscoCharacterInfoDivInterviewButtons">
+<a id="bibiscoCharacterInfoAPreviousQuestion" class="btn btn-large" href="#"><i class="icon-caret-left"></i>&nbsp;&nbsp;<strong><fmt:message key="jsp.characterInfo.a.previousQuestion" /></strong></a>
+<a id="bibiscoCharacterInfoANextQuestion" class="btn btn-large" href="#"><strong><fmt:message key="jsp.characterInfo.a.nextQuestion" /></strong>&nbsp;&nbsp;<i class="icon-caret-right"></i></a>
 </div>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%"><tr>
-		<td style="text-align: left;width: 40%">
+	<table><tr>
+		<td class="bibiscoCharacterInfoTaskStatusSelector">
 			<tags:bibiscoTaskStatusSelector />
 		</td>
-		<td align="center">
-			<div id="bibiscoTagTaskStatusSelectorDiv" class="btn-group" data-toggle="buttons-radio" style="width: 215px;">
-				<a id="bibiscoCharacterInfoAInterview" style="width: 85px;" title="<fmt:message key="jsp.characterInfo.a.interview" />" class="btn"><span><fmt:message key="jsp.characterInfo.a.interview" /></span></a>
-				<a id="bibiscoCharacterInfoAFreeText" style="width: 85px;" title="<fmt:message key="jsp.characterInfo.a.freeText" />" class="btn"><span><fmt:message key="jsp.characterInfo.a.freeText" /></span></a>
+		<td class="bibiscoCharacterInfoInterviewFreeTextSelector" align="center">
+			<div id="bibiscoTagTaskStatusSelectorDiv" class="btn-group" data-toggle="buttons-radio">
+				<a id="bibiscoCharacterInfoAInterview" title="<fmt:message key="jsp.characterInfo.a.interview" />" class="btn"><span><fmt:message key="jsp.characterInfo.a.interview" /></span></a>
+				<a id="bibiscoCharacterInfoAFreeText" title="<fmt:message key="jsp.characterInfo.a.freeText" />" class="btn"><span><fmt:message key="jsp.characterInfo.a.freeText" /></span></a>
 			</div>
 		</td>
-		<td style="text-align: right;width: 40%">
-			<a id="bibiscoRichTextEditorTaskStatusDialogASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 10px;" href="#"><i class="icon-ok icon-white"></i></a>
-	    	<a id="bibiscoRichTextEditorTaskStatusDialogAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 10px;" href="#"><i class="icon-remove"></i></a>
+		<td class="bibiscoCharacterInfoDialogButtons">
+			<a id="bibiscoCharacterInfoDialogASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a>
+	    	<a id="bibiscoCharacterInfoDialogAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
 		</td>
 	</tr></table>
 </div>
