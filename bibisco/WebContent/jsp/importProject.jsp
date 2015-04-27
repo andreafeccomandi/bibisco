@@ -114,25 +114,25 @@
 	}
 </script>
 
-<div style="margin-top: 10px;">
+<div class="bibiscoImportProject">
 	<form id="bibiscoImportProjectForm" method="post" enctype="multipart/form-data" target="upload_target" action="BibiscoServlet">
 		<input type="hidden" name="action" value="importProjectArchiveFile">
 		<div class="control-group">
 			<label id="bibiscoImportProjectInputFileLabel" class="control-label" for="bibiscoImportProjectInputFile"><fmt:message key="jsp.importProject.label.file" /></label>
 			<div class="controls">
-				<input width="50" class="span5" id="document_file" type="file" name="document_file" >
+				<input id="document_file" type="file" name="document_file" >
 			</div>
 		</div>
 	</form>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;">
-				<a id="bibiscoImportProjectASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i	class="icon-ok icon-white"></i></a> 
-				<a id="bibiscoImportProjectAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a>
+			<td>
+				<a id="bibiscoImportProjectASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i	class="icon-ok icon-white"></i></a> 
+			    <a id="bibiscoImportProjectAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
 			</td>
 		</tr>
 	</table>
 </div>
-<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe> 
+<iframe id="upload_target" name="upload_target" src="#" class="bibiscoImportProjectIFrameUploadTarget"></iframe> 

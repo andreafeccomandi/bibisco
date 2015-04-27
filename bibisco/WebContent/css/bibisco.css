@@ -239,6 +239,20 @@ div.bibiscoTip h4 {
     width: 230px;
 }
 
+.bibiscoImportProject {
+    margin-top: 10px;
+}
+
+.bibiscoImportProject input {
+    width: 100px;
+}
+
+.bibiscoImportProjectIFrameUploadTarget {
+    width:0;
+    height:0;
+    border:0px solid #fff;
+}
+
 
 .bibiscoChangeProjectName {
 	margin-top: 10px;
