@@ -253,6 +253,26 @@ div.bibiscoTip h4 {
     border:0px solid #fff;
 }
 
+.bibiscoSelectProject {
+	margin-top: 10px; 
+	overflow: scroll; 
+	width: 100%; 
+	height: 250px;
+}
+
+.bibiscoSelectProject table {
+	width: 465px; 
+	margin-left: 15px;
+}
+
+.bibiscoSelectProject span {
+	display: inline-block; 
+	width: 360px;
+}
+
+.bibiscoSelectProject a {
+    margin-left: 5px;
+}
 
 .bibiscoChangeProjectName {
 	margin-top: 10px;

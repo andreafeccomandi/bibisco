@@ -12,7 +12,7 @@
 		$('#bibiscoSelectProjectFormAClose').tooltip();
 		
 		// open button
-		$('.openButton').click(function() {
+		$('.bibiscoSelectProjectOpenButton').click(function() {
 			
 			var idProject = $(this).attr('data-idproject');
 			
@@ -36,10 +36,10 @@
 				}
 			});
 		});
-		$('.openButton').tooltip();
+		$('.bibiscoSelectProjectOpenButton').tooltip();
 		
 		// delete button
-		$('.deleteButton').click(function() {
+		$('.bibiscoSelectProjectDeleteButton').click(function() {
 			var idProject = $(this).attr('data-idproject');
 			var tr = $(this).closest('tr');
 			bibiscoConfirm('<fmt:message key="jsp.selectProject.delete.confirm" />', function(result) {
@@ -64,7 +64,7 @@
 			    } 
 			});
 		});
-		$('.deleteButton').tooltip();
+		$('.bibiscoSelectProjectDeleteButton').tooltip();
 		
 		
 		// initialize scrollbar
@@ -84,16 +84,16 @@
 	}
 </script>
 
-<div id="bibiscoSelectProjectDiv" style="margin-top: 10px; overflow: scroll; width: 100%; height: 250px;">
-	<table style="width: 465px; margin-left: 15px;" class="table table-striped table-bordered">
+<div id="bibiscoSelectProjectDiv" class="bibiscoSelectProject">
+	<table class="table table-striped table-bordered">
   		<tbody>
   			<c:forEach items="${projectList}" var="project" varStatus="projectNumber">
     		<tr>
       			<td>
-				<span style="display: inline-block; width: 360px;"><c:out value="${project.name}" /></span>
-      			<a data-idproject="${project.idProject}" title="<fmt:message key="jsp.selectProject.button.open" />" class="btn btn-primary openButton" style="margin-left: 5px;" href="#">
+				<span><c:out value="${project.name}" /></span>
+      			<a data-idproject="${project.idProject}" title="<fmt:message key="jsp.selectProject.button.open" />" class="btn btn-primary bibiscoSelectProjectOpenButton"href="#">
       			<i class="icon-folder-open"></i></a>
-      			<a data-idproject="${project.idProject}" title="<fmt:message key="jsp.common.button.delete" />" class="btn deleteButton" style="margin-left: 5px;" href="#">
+      			<a data-idproject="${project.idProject}" title="<fmt:message key="jsp.common.button.delete" />" class="btn bibiscoSelectProjectDeleteButton" href="#">
       			<i class="icon-trash"></i></a>
       			</td>
     		</tr>
@@ -104,10 +104,9 @@
 
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;"><a id="bibiscoSelectProjectFormAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
-					class="icon-remove"></i></a></td>
+			<td><a id="bibiscoSelectProjectAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i	class="icon-remove"></i></a></td>
 		</tr>
 	</table>
 </div>
