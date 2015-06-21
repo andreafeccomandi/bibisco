@@ -143,13 +143,13 @@
 	<tags:bibiscoRichTextEditor />
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: left;"><tags:bibiscoTaskStatusSelector/></td>
-			<td style="text-align: right:;"> 
-				<a id="bibiscoLocationAImages" title="<fmt:message key="jsp.location.button.images" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-picture"></i></a> 
-				<a id="bibiscoLocationASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i class="icon-ok icon-white"></i></a> 
-				<a id="bibiscoLocationAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"> </i> </a>
+			<td><tags:bibiscoTaskStatusSelector/></td>
+			<td> 
+				<a id="bibiscoLocationAImages" title="<fmt:message key="jsp.location.button.images" />" class="btn" href="#"><i class="icon-picture"></i></a> 
+				<a id="bibiscoLocationASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a> 
+				<a id="bibiscoLocationAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"> </i> </a>
 			</td>
 		</tr>
 	</table>
