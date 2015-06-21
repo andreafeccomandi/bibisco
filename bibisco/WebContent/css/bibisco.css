@@ -70,6 +70,9 @@
 	background: url(../img/bibisco-spinner.gif) center no-repeat !important;
 }
 
+
+/* IMAGE */
+
 .bibiscoLoadingImage { 
 	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
 	width: 810px; 
@@ -162,6 +165,11 @@
 .bibiscoRichTextEditor-bodyClass-arialsmall {
 	font-family: Helvetica, Arial, sans-serif; 
 	font-size: 16px; 
+}
+
+/* MENU */
+.bibiscoMenu {
+	z-index: 100;
 }
 
 /* START */

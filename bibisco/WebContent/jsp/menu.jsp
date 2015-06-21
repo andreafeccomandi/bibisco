@@ -6,7 +6,7 @@
 <%@ taglib prefix="fn" uri="/jstl/functions"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 
-<div class="navbar navbar-fixed-top" style="z-index: 100;">
+<div class="navbar navbar-fixed-top bibiscoMenu">
      <div class="navbar-inner">
        <div class="container">
          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
