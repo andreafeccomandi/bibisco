@@ -44,18 +44,19 @@ function bibiscoTipClose(idAjaxDialog, idCaller) {
 	
 </script>
 
-<div id="bibiscoTipDiv" style="width: 100%;" >
-	<div class="bibiscoTip">
+<div id="bibiscoTipDiv">
+	<div class="">
 	<jsp:include page="tips/${param.tipCode}.jsp" />
 	</div>
 </div>
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;">
-				<a id="bibiscoTipADontTellMeMore" class="btn btn-primary" style="margin-left: 5px;" href="#"><fmt:message key="jsp.tip.button.donttellmemore" /></a>
-				<a id="bibiscoTipAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a></td>
+			<td>
+				<a id="bibiscoTipADontTellMeMore" class="btn btn-primary"href="#"><fmt:message key="jsp.tip.button.donttellmemore" /></a>
+				<a id="bibiscoTipAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
+			</td>
 		</tr>
 	</table>
 </div>
