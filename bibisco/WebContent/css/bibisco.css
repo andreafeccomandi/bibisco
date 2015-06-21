@@ -58,6 +58,12 @@
 	cursor: move;
 }
 
+/* INDEX */
+.bibiscoIndexBody {
+	height: 100%; 
+	overflow: hidden;
+}
+
 /* LOADING */
 
 .bibiscoLoading { 

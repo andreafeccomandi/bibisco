@@ -5,7 +5,7 @@
 <%@ include file="head.jsp" %>
 </head>
 
-<body style="height: 100%; overflow: hidden;">
+<body class="bibiscoIndexBody">
 <%@ taglib prefix="c" uri="/jstl/core"%>
 
 <script type="text/javascript">
