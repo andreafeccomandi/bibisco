@@ -142,7 +142,7 @@
 	}
 </script>
 
-<div style="margin-top: 10px;">
+<div class="bibiscoThumbnailTitleForm">
 	<form id="bibiscoThumbnailTitleForm">
 		<div class="control-group">
 			<label id="bibiscoThumbnailTitleFormInputTitleLabel" class="control-label" for="bibiscoThumbnailTitleFormInputTitle"></label>
@@ -153,11 +153,12 @@
 	</form>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;"><a id="bibiscoThumbnailTitleFormASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i
-					class="icon-ok icon-white"></i></a> <a id="bibiscoThumbnailTitleFormAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i
-					class="icon-remove"></i></a></td>
+			<td>
+			     <a id="bibiscoThumbnailTitleFormASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a> 
+			     <a id="bibiscoThumbnailTitleFormAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
+			</td>
 		</tr>
 	</table>
 </div>

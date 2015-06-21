@@ -124,6 +124,11 @@
     margin-left: 5px;
 }
 
+/* THUMBNAIL TITLE FORM */
+.bibiscoThumbnailTitleForm {
+	margin-top: 10px;
+}
+
 /* RICH TEXT EDITOR TASK STATUS DIALOG */ 
 .bibiscoRichTextEditorTaskStatusDialog {
 	text-align: center; 
