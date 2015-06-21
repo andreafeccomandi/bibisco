@@ -102,15 +102,15 @@
 	}
 </script>
 
-<div style="margin-top: 10px;">
+<div class="bibiscoRichTextEditorSettings">
 	<form class="form-horizontal">
 		<div class="control-group">
 			<label class="control-label" for="inputEmail"><fmt:message key="jsp.richTextEditorSettings.font" /></label>
 			<div class="controls">
-				<div class="btn-group fontFamily" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivFont">
-					<button id="bibiscoRichTextEditorSettingsButtonFontcourier" name="courier" class="btn" style="font-family: Courier new"><fmt:message key="jsp.richTextEditorSettings.font.courier" /></button>
-					<button id="bibiscoRichTextEditorSettingsButtonFonttimes" name="times" class="btn" style="font-family: Times New Roman, Times, serif"><fmt:message key="jsp.richTextEditorSettings.font.times" /></button>
-					<button id="bibiscoRichTextEditorSettingsButtonFontarial" name="arial" class="btn" style="font-family: Arial, Helvetica, sans-serif"><fmt:message key="jsp.richTextEditorSettings.font.arial" /></button>
+				<div class="btn-group fontFamily bibiscoRichTextEditorSettingsFont" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivFont">
+					<button id="bibiscoRichTextEditorSettingsButtonFontcourier" name="courier" class="btn"><fmt:message key="jsp.richTextEditorSettings.font.courier" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonFonttimes" name="times" class="btn"><fmt:message key="jsp.richTextEditorSettings.font.times" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonFontarial" name="arial" class="btn"><fmt:message key="jsp.richTextEditorSettings.font.arial" /></button>
 				</div>
 			</div>
 		</div>
@@ -133,21 +133,19 @@
 				</div>
 			</div>
 		</div>
-		<div id="bibiscoRichTextEditorSettingsDivSample" class="well richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}"
-			style="background-color: white; padding: 10px; margin-top: 30px; width: 530px; height: 120px;">
+		<div id="bibiscoRichTextEditorSettingsDivSample" class="well richTextEditor bibiscoRichTextEditorSettingsSample bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}">
 			<fmt:message key="jsp.richTextEditorSettings.sampletext" />
 		</div>	
 	</form>
 </div>
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;">
-			<a id="bibiscoRichTextEditorSettingsASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i
-					class="icon-ok icon-white"></i></a> 
-			<a id="bibiscoRichTextEditorSettingsAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;"
-				href="#"><i class="icon-remove"></i></a></td>
+			<td>
+			 <a id="bibiscoRichTextEditorSettingsASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a> 
+			 <a id="bibiscoRichTextEditorSettingsAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
+			</td>
 		</tr>
 	</table>
 </div>
