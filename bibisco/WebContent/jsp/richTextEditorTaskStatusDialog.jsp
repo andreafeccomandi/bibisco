@@ -79,13 +79,13 @@
 <div class="bibiscoDialogContent">
 
 <!-- START -->
-<div style="text-align: center; margin-top: 5px;">
+<div class="bibiscoRichTextEditorTaskStatusDialog">
 <div class="row-fluid">
-	<div class="span12" style="height: 16px;">
-		<div id="bibiscoRichTextEditorTaskStatusDialogDivDescription" class="bibiscoNotSelectableText" style="text-align: left; margin-left: 10px; margin-right: 10px; font-size: 16px;"><em id="bibiscoRichTextEditorTaskStatusDialogEmDescription"></em></div>
+	<div class="span12 bibiscoRichTextEditorTaskStatusDialogDescriptionRow">
+		<div id="bibiscoRichTextEditorTaskStatusDialogDivDescription" class="bibiscoNotSelectableText bibiscoRichTextEditorTaskStatusDialogDescription"><em id="bibiscoRichTextEditorTaskStatusDialogEmDescription"></em></div>
 	</div>
 </div>
-<hr style="text-align: center; margin-top: 5px; margin-bottom: 10px;" />
+<hr/>
 </div>
 
 
@@ -94,13 +94,14 @@
 <tags:bibiscoRichTextEditor /></div>
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%"><tr>
-		<td style="text-align: left;">
+	<table>
+	   <tr>
+		<td>
 			<tags:bibiscoTaskStatusSelector />
 		</td>
-		<td style="text-align: right;">
-		<a id="bibiscoRichTextEditorTaskStatusDialogASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i class="icon-ok icon-white"></i></a>
-	    <a id="bibiscoRichTextEditorTaskStatusDialogAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a>
+		<td>
+		<a id="bibiscoRichTextEditorTaskStatusDialogASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a>
+	    <a id="bibiscoRichTextEditorTaskStatusDialogAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
 		</td>
 	</tr></table>
 </div>

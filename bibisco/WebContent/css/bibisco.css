@@ -124,6 +124,30 @@
     margin-left: 5px;
 }
 
+/* RICH TEXT EDITOR TASK STATUS DIALOG */ 
+.bibiscoRichTextEditorTaskStatusDialog {
+	text-align: center; 
+	margin-top: 5px;
+}
+
+.bibiscoRichTextEditorTaskStatusDialog hr {
+    text-align: center; 
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.bibiscoRichTextEditorTaskStatusDialogDescriptionRow {
+	height: 16px;
+}
+
+.bibiscoRichTextEditorTaskStatusDialogDescription {
+    text-align: left; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    font-size: 16px;
+}
+
+
 /* RICH TEXT EDITOR */
 
 .bibiscoRichTextEditor-bodyClass-courierbig {
