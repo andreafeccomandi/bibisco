@@ -38,8 +38,12 @@
 	width: 100%;
 }
 
-.bibiscoDialogFooter td {
+.bibiscoDialogFooter td:last {
     text-align: right;
+}
+
+.bibiscoDialogFooter td:first {
+    text-align: left;
 }
 
 .bibiscoDialogFooter a {

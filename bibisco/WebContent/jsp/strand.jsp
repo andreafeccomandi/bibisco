@@ -109,12 +109,12 @@
 	<tags:bibiscoRichTextEditor />
 </div>
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: left;"><tags:bibiscoTaskStatusSelector/></td>
-			<td style="text-align: right:;">  
-				<a id="bibiscoStrandASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i class="icon-ok icon-white"></i></a> 
-				<a id="bibiscoStrandAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"> </i> </a>
+			<td><tags:bibiscoTaskStatusSelector/></td>
+			<td>  
+				<a id="bibiscoStrandASave" title="<fmt:message key="jsp.common.button.save" />" class="btn btn-primary" href="#"><i class="icon-ok icon-white"></i></a> 
+				<a id="bibiscoStrandAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"> </i> </a>
 			</td>
 		</tr>
 	</table>
