@@ -226,6 +226,20 @@ div.bibiscoTip h4 {
 	height: 200px;"
 }
 
+.bibiscoProjectMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoProjectMotivational p {
+    margin-top: 40px;
+}
+
+.bibiscoProjectMotivational a {
+     margin-right: 10px;
+}
+
+
+
 .bibiscoCreateProject {
 	margin-top: 10px;
 }

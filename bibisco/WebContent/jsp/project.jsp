@@ -75,12 +75,12 @@ $(function() {
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="row-fluid page-header">
-				<div class="span8" style="float: left;">
+				<div class="span8">
 					<h1 id="bibiscoProjectH1Title"><span id="bibiscoProjectSpanTitle"><c:out value="${project.name}"></c:out></span>&nbsp;&nbsp;<button id="bibiscoProjectButtonUpdateTitle" title="<fmt:message key="jsp.project.button.updateTitle" />" class="btn btn-mini"><i class="icon-pencil"></i></button>
 	    			</h1>
 	    		</div>
-	    		<div class="span4" style="text-align: right;">
-	    			<a id="bibiscoProjectAExitProject" title="<fmt:message key="jsp.project.a.exitProject.tooltip" />" class="btn" style="margin-top: 2px;" href="#"><i class="icon-chevron-up icon-white"></i><fmt:message key="jsp.project.a.exitProject" /></a>
+	    		<div class="span4 pagination-right">
+	    			<a id="bibiscoProjectAExitProject" title="<fmt:message key="jsp.project.a.exitProject.tooltip" />" class="btn bibiscoHeaderButton" href="#"><i class="icon-chevron-up icon-white"></i><fmt:message key="jsp.project.a.exitProject" /></a>
 	    		</div>
 	    	</div>
 		</div>
@@ -88,9 +88,9 @@ $(function() {
 	<div class="row-fluid">
 	<div class="span12">
     	<div class="hero-unit bibiscoProjectMotivational">
-				<h1 class="bibiscoNotSelectableText" style="margin-top: 10px;"><fmt:message key="jsp.project.h1" /></h1>
-				<p class="bibiscoNotSelectableText" style="margin-top: 40px;">
-					<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectSuggestions" style="margin-right: 10px;"><fmt:message key="jsp.project.button.bibiscoProjectSuggestions" /></a>
+				<h1 class="bibiscoNotSelectableText"><fmt:message key="jsp.project.h1" /></h1>
+				<p class="bibiscoNotSelectableText">
+					<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectSuggestions"><fmt:message key="jsp.project.button.bibiscoProjectSuggestions" /></a>
 				</p>
 		</div>  	  	
     </div>
