@@ -75,7 +75,7 @@ function getActualSuggestion() {
 	
 </script>
 
-<div id="bibiscoSuggestionsDiv" data-actual-suggestion="0" data-total-suggestions="6" style="width: 100%; height: 350px; overflow: scroll;" >
+<div id="bibiscoSuggestionsDiv" class="bibiscoSuggestionsCarousel" data-actual-suggestion="0" data-total-suggestions="6" >
 	<div class="bibiscoSuggestions" data-suggestion="0">
 	<jsp:include page="suggestions/${language}/characters.html" />
 	</div>
@@ -97,12 +97,12 @@ function getActualSuggestion() {
 </div>
 
 <div class="bibiscoDialogFooter control-group">
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<td style="text-align: right;">
-				<a id="bibiscoSuggestionsABack" title="<fmt:message key="jsp.suggestions.button.back" />" class="btn" style="margin-left: 5px;" href="#"><i class="icon-chevron-left"></i></a>
-				<a id="bibiscoSuggestionsAForward" title="<fmt:message key="jsp.suggestions.button.forward" />" class="btn btn-primary" style="margin-left: 5px;" href="#"><i class="icon-chevron-right"></i></a>
-				<a id="bibiscoSuggestionsAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a></td>
+			<td>
+				<a id="bibiscoSuggestionsABack" title="<fmt:message key="jsp.suggestions.button.back" />" class="btn" href="#"><i class="icon-chevron-left"></i></a>
+				<a id="bibiscoSuggestionsAForward" title="<fmt:message key="jsp.suggestions.button.forward" />" class="btn btn-primary" href="#"><i class="icon-chevron-right"></i></a>
+				<a id="bibiscoSuggestionsAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a></td>
 		</tr>
 	</table>
 </div>

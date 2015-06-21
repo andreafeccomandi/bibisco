@@ -186,6 +186,12 @@
 
 /* SUGGESTIONS */
 
+.bibiscoSuggestionsCarousel {
+	width: 100%; 
+	height: 350px; 
+	overflow: scroll;
+}
+
 .bibiscoSuggestions {
 	margin-top: 10px; 
 	margin-left: 10px; 
