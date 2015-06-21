@@ -454,6 +454,9 @@ div.bibiscoTip h4 {
      width: 100%;
 }
 
+.bibiscoSceneTipButton {
+	margin-right: 5px;
+}
 
 /* ANALYSIS */
 
@@ -614,6 +617,12 @@ div.bibiscoTip h4 {
 
 
 /* INFO */
+
+.bibiscoLicense {
+	width: 100%; 
+	height: 350px; 
+	overflow: scroll;
+}
 
 .bibiscoDonationsButton {
 	text-align: center;

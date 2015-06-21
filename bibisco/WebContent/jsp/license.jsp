@@ -23,7 +23,7 @@ function bibiscoLicenseBeforeClose(idAjaxDialog, idCaller) {
 
 
 
-<div id="bibiscoLicenseDiv" class="bibiscoNotSelectableText" style="width: 100%; height: 350px; overflow: scroll;" >
+<div id="bibiscoLicenseDiv" class="bibiscoNotSelectableText bibiscoLicense" >
 <p>GNU GENERAL PUBLIC LICENSE</p>
 <p>Version 2, June 1991</p> 
 
@@ -115,10 +115,10 @@ If distribution of executable or object code is made by offering access to copy 
 </div>
 
 <div class="bibiscoDialogFooter control-group">
-    <table style="width: 100%">
+    <table>
         <tr>
-            <td style="text-align: right;">
-                <a id="bibiscoLicenseAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#"><i class="icon-remove"></i></a>
+            <td>
+                <a id="bibiscoLicenseAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#"><i class="icon-remove"></i></a>
             </td>
         </tr>
     </table>
