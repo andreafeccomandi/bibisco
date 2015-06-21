@@ -450,6 +450,10 @@ div.bibiscoTip h4 {
 }
 
 /* LOCATIONS */
+.bibiscoLocationTitleForm {
+    margin-top: 10px;
+}
+
 .bibiscoLocationsNotEmptyThumbnailListElements {
     height: 600px;
 }
