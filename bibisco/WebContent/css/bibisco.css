@@ -706,6 +706,7 @@ div.bibiscoTip h4 {
 
 .bibiscoDonationsButton {
 	text-align: center;
+	margin-top: 15px;
 }
 
 .bibiscoDonationsButton img {
@@ -718,6 +719,7 @@ div.bibiscoTip h4 {
 
 .bibiscoDonationButtonFlattr {
     margin-top: 10px;
+    margin-left: 25px;
 }
 
 .bibiscoSocialMediaButton {

@@ -22,9 +22,9 @@ $(function() {
 </script>
 <p><fmt:message key="jsp.tip.donationTip.1"/></p>
 <p><fmt:message key="jsp.tip.donationTip.2"/></p>
-<p style="margin-top: 15px;" class="bibiscoDonationsButton">
+<p class="bibiscoDonationsButton">
 <img id="bibiscoTipImgDonatePayPal" class="bibiscoDonationButtonPaypal" src="img/<fmt:message key="jsp.info.img.donatepaypal"/>">
-<img style="margin-left: 25px;" id="bibiscoTipImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png">
+<img id="bibiscoTipImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png">
 </p>
      
 
