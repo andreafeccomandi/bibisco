@@ -47,13 +47,13 @@
         });
         $('#bibiscoProjectFromSceneSelectArchitectureSection').on("change", function(e) { 
             var selectedArchitectureSection = $('#bibiscoProjectFromSceneSelectArchitectureSection option:selected').data('idarchitecturesection');
-            $('.architectureContentSection').hide();
+            $('.bibiscoArchitectureContentSection').hide();
             $('#bibiscoProjectFromSceneDivArchitecture'+selectedArchitectureSection).show();
         });
         
         populateArchitecture(${projectFromSceneArchitecture});
         
-        $('.architectureContentSection').hide();
+        $('.bibiscoArchitectureContentSection').hide();
         $('#bibiscoProjectFromSceneDivArchitecturePremise').show();
         
         // init jScrollPane
@@ -105,7 +105,7 @@
         });
         $('#bibiscoProjectFromSceneSelectChapterSection').on("change", function(e) { 
             var selectedChapterSection = $('#bibiscoProjectFromSceneSelectChapterSection option:selected').data('idchaptersection');
-            $('.chapterContentSection').hide();
+            $('.bibiscoChapterContentSection').hide();
             $('#bibiscoProjectFromSceneDivChapter'+selectedChapterSection).show();
         });
         
@@ -200,7 +200,7 @@
         });
         $('#bibiscoProjectFromSceneSelectCharacterSection').on("change", function(e) { 
             var selectedCharacterSection = $('#bibiscoProjectFromSceneSelectCharacterSection option:selected').data('idcharactersection');
-            $('.characterContentSection').hide();
+            $('.bibiscoCharacterContentSection').hide();
             $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();                  
         });
     }
@@ -231,7 +231,7 @@
     
     function initCharacterElements(dialogConfig, main) {
     	
-        $('.characterContentSection').hide();
+        $('.bibiscoCharacterContentSection').hide();
         if (main) {
             $('#bibiscoProjectFromSceneDivCharacterPersonaldata').show();
         } else {
@@ -259,11 +259,11 @@
          });
          $('#bibiscoProjectFromSceneSelectCharacterSection').on("change", function(e) { 
              var selectedCharacterSection = $('#bibiscoProjectFromSceneSelectCharacterSection option:selected').data('idcharactersection');
-             $('.characterContentSection').hide();
+             $('.bibiscoCharacterContentSection').hide();
              $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();                  
          });
          
-         $('.characterContentSection').hide();
+         $('.bibiscoCharacterContentSection').hide();
          if (secondaryToMain) {
              $('#bibiscoProjectFromSceneDivCharacterPersonaldata').show();
          } else {
@@ -418,7 +418,7 @@
         });
         $('#bibiscoProjectFromSceneSelectLocationSection').on("change", function(e) { 
             var selectedLocationSection = $('#bibiscoProjectFromSceneSelectLocationSection option:selected').data('idlocationsection');
-            $('.locationContentSection').hide();
+            $('.bibiscoLocationContentSection').hide();
             $('#bibiscoProjectFromSceneDivLocation'+selectedLocationSection).show();                  
         });
         
@@ -458,7 +458,7 @@
     
 //]]>           
 </script>
-<div style="margin-top: 10px;">
+<div class="bibiscoProjectFromScene">
 	<ul id="bibiscoProjectFromSceneULMainMenu" class="nav nav-tabs">
 	  <li class="active"><a href="#bibiscoProjectFromSceneTabLiArchitecture" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.architecture" /></a></li>
 	  <li><a href="#bibiscoProjectFromSceneTabLiCharacters" data-toggle="tab"><fmt:message key="jsp.projectFromScene.nav.li.characters" /></a></li>
@@ -468,7 +468,7 @@
 	<div class="tab-content">
 	
 	   <!-- ARCHITECTURE -->
-	   <div style="margin-top: 10px;" class="tab-pane active" id="bibiscoProjectFromSceneTabLiArchitecture">
+	   <div class="tab-pane active bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiArchitecture">
 		   <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectArchitectureSection"> 
 		       <option selected="selected" data-idarchitecturesection="Premise"><fmt:message key="jsp.projectFromScene.select.architecture.premise" /></option>
                <option data-idarchitecturesection="Fabula"><fmt:message key="jsp.projectFromScene.select.architecture.fabula" /></option>  
@@ -477,15 +477,15 @@
 		   </select>    
 		   <hr/>
 		   <div id="bibiscoProjectFromSceneDivArchitectureContent">
-		      <div id="bibiscoProjectFromSceneDivArchitecturePremise" class="architectureContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivArchitectureFabula" class="architectureContentSection"></div> 
-              <div id="bibiscoProjectFromSceneDivArchitectureSetting" class="architectureContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivArchitectureStrands" class="architectureContentSection"></div>
+		      <div id="bibiscoProjectFromSceneDivArchitecturePremise" class="bibiscoArchitectureContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivArchitectureFabula" class="bibiscoArchitectureContentSection"></div> 
+              <div id="bibiscoProjectFromSceneDivArchitectureSetting" class="bibiscoArchitectureContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivArchitectureStrands" class="bibiscoArchitectureContentSection"></div>
 		   </div>
 	   </div>
 	   
 	   <!-- CHAPTER -->
-	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiChapters">
+	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiChapters">
 	       <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapter">
 		   <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
 		      <c:choose>
@@ -503,16 +503,16 @@
               <option data-idchaptersection="Reason"><fmt:message key="jsp.projectFromScene.select.chapter.reason" /></option>  
               <option data-idchaptersection="Notes"><fmt:message key="jsp.projectFromScene.select.chapter.notes" /></option>  
            </select>
-		   <hr style="margin-top: 10px;" />
-		   <div id="bibiscoProjectFromSceneDivChapterContent" style="text-align: justify; width: 100%; overflow: scroll;">
-		      <div id="bibiscoProjectFromSceneDivChapterText" class="chapterContentSection"></div>
-		      <div id="bibiscoProjectFromSceneDivChapterReason" class="chapterContentSection"></div>
-		      <div id="bibiscoProjectFromSceneDivChapterNotes" class="chapterContentSection"></div>
+		   <hr />
+		   <div id="bibiscoProjectFromSceneDivChapterContent" class="bibiscoProjectFromSceneTabContent">
+		      <div id="bibiscoProjectFromSceneDivChapterText" class="bibiscoChapterContentSection"></div>
+		      <div id="bibiscoProjectFromSceneDivChapterReason" class="bibiscoChapterContentSection"></div>
+		      <div id="bibiscoProjectFromSceneDivChapterNotes" class="bibiscoChapterContentSection"></div>
 	       </div>
 	   </div>
 	   
 	   <!-- CHARACTERS -->
-	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiCharacters">
+	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiCharacters">
 	   <c:choose>
           <c:when test="${fn:length(characters) > 0}">
              <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacter">
@@ -529,19 +529,19 @@
              </select>
              <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacterSection">
             </select>
-	        <hr style="margin-top: 10px;" />
-            <div id="bibiscoProjectFromSceneDivCharacterContent" style="text-align: justify; width: 100%; overflow: scroll;">
-              <div id="bibiscoProjectFromSceneDivCharacterPersonaldata" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterPhysionomy" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterBehaviors" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterPsychology" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterIdeas" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterSociology" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterConflict" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterEvolutionduringthestory" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterDescription" class="characterContentSection"></div>
-              <div id="bibiscoProjectFromSceneDivCharacterImages" class="characterContentSection"></div>
+	        <hr />
+            <div id="bibiscoProjectFromSceneDivCharacterContent" class="bibiscoProjectFromSceneTabContent">
+              <div id="bibiscoProjectFromSceneDivCharacterPersonaldata" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterPhysionomy" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterBehaviors" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterPsychology" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterIdeas" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterSociology" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterLifebeforestorybeginning" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterConflict" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterEvolutionduringthestory" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterDescription" class="bibiscoCharacterContentSection"></div>
+              <div id="bibiscoProjectFromSceneDivCharacterImages" class="bibiscoCharacterContentSection"></div>
             </div>
           </c:when>
           <c:otherwise>
@@ -552,7 +552,7 @@
 	   
 	   
 	   <!-- LOCATIONS -->
-	   <div style="margin-top: 10px;" class="tab-pane" id="bibiscoProjectFromSceneTabLiLocations">
+	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiLocations">
 	   <c:choose>
           <c:when test="${fn:length(locations) > 0}">
              <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocation">
@@ -571,10 +571,10 @@
 	              <option selected="selected" data-idlocationsection="Description"><fmt:message key="jsp.projectFromScene.select.location.description" /></option>
 	              <option data-idlocationsection="Images"><fmt:message key="jsp.projectFromScene.select.location.images" /></option>  
 	         </select>
-             <hr style="margin-top: 10px;" />
-	           <div id="bibiscoProjectFromSceneDivLocationContent" style="text-align: justify; width: 100%; overflow: scroll;">
-	              <div id="bibiscoProjectFromSceneDivLocationDescription" class="locationContentSection"></div>
-	              <div id="bibiscoProjectFromSceneDivLocationImages" class="locationContentSection"></div>
+             <hr />
+	           <div id="bibiscoProjectFromSceneDivLocationContent" class="bibiscoProjectFromSceneTabContent">
+	              <div id="bibiscoProjectFromSceneDivLocationDescription" class="bibiscoLocationContentSection"></div>
+	              <div id="bibiscoProjectFromSceneDivLocationImages" class="bibiscoLocationContentSection"></div>
 	           </div>	          
           </c:when>
           <c:otherwise>
@@ -589,10 +589,10 @@
 
 
 <div class="bibiscoDialogFooter control-group">
-    <table style="width: 100%">
+    <table>
         <tr>
-            <td style="text-align: right;">
-                <a id="bibiscoProjectFromSceneAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" style="margin-left: 5px;" href="#">
+            <td>
+                <a id="bibiscoProjectFromSceneAClose" title="<fmt:message key="jsp.common.button.close" />" class="btn ajaxDialogCloseBtn" href="#">
                 <i class="icon-remove"></i></a>
             </td>
         </tr>

@@ -534,6 +534,27 @@ div.bibiscoTip h4 {
 	margin-right: 5px;
 }
 
+/* PROJECT FROM SCENE */
+.bibiscoProjectFromScene {
+	margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTab {
+	margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTab hr {
+    margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTabContent {
+    text-align: justify; 
+    width: 100%; 
+    overflow: scroll;
+}
+
+
+
 /* ANALYSIS */
 
 .bibiscoAnalysisNoInfoAvailable {
