@@ -62,6 +62,20 @@
 	cursor: move;
 }
 
+.bibiscoEmptyThumnailListBox {
+	margin-top: 30px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 20px; 
+	padding-bottom: 35px; 
+	padding-left: 40px;
+}
+
+.bibiscoEmptyThumnailListBox p {
+	margin-top: 16px;
+}
+
+
 /* INDEX */
 .bibiscoIndexBody {
 	height: 100%; 
