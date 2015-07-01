@@ -75,6 +75,30 @@
 	margin-top: 16px;
 }
 
+.bibiscoTagThumbnail {
+	height: 100px;
+}
+
+.bibiscoTagThumbnail table {
+     width: 100%;
+}
+
+.bibiscoTagThumbnailTitle td:first-child {
+	text-align: left;
+}
+
+.bibiscoTagThumbnailTitle td:last-child {
+    text-align: right;
+}
+
+.bibiscoTagThumbnailSpacing td {
+	height: 10px;
+}
+
+.bibiscoTagThumbnailDescription td {
+    height: 52px; 
+    vertical-align: top;
+}
 
 /* INDEX */
 .bibiscoIndexBody {
