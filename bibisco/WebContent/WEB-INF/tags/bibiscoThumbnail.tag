@@ -55,7 +55,7 @@
 		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>
-		<tr class="bibiscoThumbnailSpacing"><td colspan="2"></td></tr>
+		<tr class="bibiscoThumbnailSpacingSmall"><td colspan="2"></td></tr>
 		<tr class="bibiscoThumbnailDescription"><td colspan="2"><fmt:message key="${description}" /></td></tr>
 		</table>
 	</div>		

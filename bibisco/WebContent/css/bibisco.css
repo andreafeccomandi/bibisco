@@ -83,6 +83,18 @@
      width: 100%;
 }
 
+.bibiscoThumbnailSmall {
+    height: 70px;
+}
+
+.bibiscoThumbnailSmall table {
+     width: 100%;
+}
+
+.bibiscoThumbnail table {
+     width: 100%;
+}
+
 .bibiscoThumbnailTitle td:first-child {
 	text-align: left;
 	vertical-align: top;
@@ -92,8 +104,12 @@
     text-align: right;
 }
 
+.bibiscoThumbnailSpacingSmall td {	
+    height: 10px;
+}
+
 .bibiscoThumbnailSpacing td {
-	height: 10px;
+    height: 20px;
 }
 
 .bibiscoThumbnailDescription td {
