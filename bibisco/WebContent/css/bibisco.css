@@ -118,6 +118,11 @@
 	vertical-align: top;
 }
 
+.bibiscoThumbnailSceneTitle {
+    height: 40px; 
+    vertical-align: top;
+}
+
 /* INDEX */
 .bibiscoIndexBody {
 	height: 100%; 
