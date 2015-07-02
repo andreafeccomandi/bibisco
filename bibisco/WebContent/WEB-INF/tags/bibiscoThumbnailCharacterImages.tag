@@ -48,15 +48,15 @@
 	//
 </script>
 
-<div id="bibiscoTagThumbnailDiv${type}${id}" class="thumbnail" style="height: 100px;">
+<div id="bibiscoTagThumbnailDiv${type}${id}" class="thumbnail bibiscoThumbnail">
 	<div class="caption">
-		<table style="width: 100%">
-		<tr><td style="text-align: left;"><strong><fmt:message key="${title}" /></strong></td>
-		<td style="text-align: right;">
+		<table>
+		<tr><td><strong><fmt:message key="${title}" /></strong></td>
+		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>
-		<tr><td colspan="2" style="height: 10px;"></td></tr>
-		<tr><td colspan="2" style="height: 52px; vertical-align: top;"><fmt:message key="${description}" /></td></tr>
+		<tr class="bibiscoThumbnailSpacingSmall"><td colspan="2"></td></tr>
+		<tr class="bibiscoThumbnailDescription"><td colspan="2"><fmt:message key="${description}" /></td></tr>
 		</table>
 	</div>		
 </div>
