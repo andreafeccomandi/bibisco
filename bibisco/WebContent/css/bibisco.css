@@ -237,6 +237,22 @@
 
 /* RICH TEXT EDITOR */
 
+.bibiscoTagRichTextEditorToolbar {
+	display: none; 
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	margin-left: 9px;
+}
+
+.bibiscoTagRichTextEditorToolbar button {
+	font-size: 1.2em;
+}
+
+.bibiscoRichTextEditorWordCharacterCount p{
+	text-align: right; 
+	margin-right: 12px;
+}
+
 .bibiscoRichTextEditor-bodyClass-courierbig {
 	font-family: courier new, courier, monospace; 
 	font-size: 20px; 
@@ -291,7 +307,7 @@
 	padding: 10px; 
 	margin-top: 30px; 
 	width: 530px; 
-	height: 120px;"
+	height: 120px;
 }
 
 .bibiscoRichTextEditorSettingsFont button[name="courier"]  {
@@ -383,7 +399,7 @@ div.bibiscoTip h4 {
 	padding-top: 30px; 
 	padding-bottom: 35px; 
 	padding-left: 40px; 
-	height: 200px;"
+	height: 200px;
 }
 
 .bibiscoProjectMotivational h1 {
@@ -495,7 +511,7 @@ div.bibiscoTip h4 {
 
 .bibiscoCharacterInfo {
 	text-align: center; 
-	margin-top: 5px;"
+	margin-top: 5px;
 }
 
 .bibiscoCharacterInfo hr {

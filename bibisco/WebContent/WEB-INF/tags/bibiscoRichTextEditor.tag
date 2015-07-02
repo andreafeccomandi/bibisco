@@ -356,7 +356,7 @@
     }
         
 </script>
-<div id="bibiscoTagRichTextEditorDivToolbar" class="btn-toolbar bibiscoNotSelectableText" style="display: none; margin-top: 0px; margin-bottom: 0px; margin-left: 9px;">
+<div id="bibiscoTagRichTextEditorDivToolbar" class="btn-toolbar bibiscoNotSelectableText bibiscoTagRichTextEditorToolbar">
     <div class="btn-group">
         <button class="btn" id="bibiscoTagRichTextEditorButtonUndo" title="<fmt:message key="tag.bibiscoRichTextEditor.undo"/>">
             <i class="icon-undo"></i>
@@ -402,13 +402,13 @@
         </button>
     </div>
     <div class="btn-group">
-       <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketleft"/>" style="font-size: 1.2em;">
+       <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketleft" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketleft"/>">
            <strong>&laquo;</strong>
         </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" style="font-size: 1.2em;">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonAngledbracketright" title="<fmt:message key="tag.bibiscoRichTextEditor.angledbracketright"/>" >
            <strong>&raquo;</strong>
         </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonLongdash" title="<fmt:message key="tag.bibiscoRichTextEditor.longdash"/>" style="font-size: 1.2em;">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonLongdash" title="<fmt:message key="tag.bibiscoRichTextEditor.longdash"/>">
            <strong>&mdash;</strong>
         </button>
     </div>
@@ -440,9 +440,10 @@
         </button>
     </div>
 </div>
-<div id="bibiscoTagRichTextEditorTextareaContainer" style="display: none;">
+<div id="bibiscoTagRichTextEditorTextareaContainer" class="bibiscoRichTextEditorWordCharacterCount" >
 <textarea id="bibiscoTagRichTextEditorTextarea"></textarea>
-<p class="bibiscoNotSelectableText" style="text-align: right; margin-right: 12px;">
-<fmt:message key="jsp.common.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span>, <fmt:message key="jsp.common.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span></p>
+<p class="bibiscoNotSelectableText bibiscoRichTextEditorWordCharacterCount">
+<fmt:message key="jsp.common.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span>, <fmt:message key="jsp.common.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span>
+</p>
 </div>
 
