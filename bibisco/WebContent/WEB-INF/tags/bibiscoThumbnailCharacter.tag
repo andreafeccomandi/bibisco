@@ -7,15 +7,15 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
     
-<div data-bibiscoTagThumbnailId="${id}" class="thumbnail" style="height: 70px;" id="bibiscoTagThumbnailCharacterDiv${id}"">
+<div data-bibiscoTagThumbnailId="${id}" class="thumbnail bibiscoThumbnailSmall" id="bibiscoTagThumbnailCharacterDiv${id}"">
 	<div class="caption">
-		<table style="width: 100%">
-		<tr><td rowspan="2" style="vertical-align: top; text-align: left;"><strong  class="bibiscoThumbnailTitle">${title}</strong></td>
-		<td style="text-align: right;">
+		<table>
+		<tr class="bibiscoThumbnailTitle"><td rowspan="2"><strong  class="bibiscoThumbnailTitle">${title}</strong></td>
+		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>
-		<tr><td colspan="2" style="height: 20px;"></td></tr>
-		<tr><td colspan="2" style="height: 10px;text-align: right;" class="bibiscoThumbnailToolbar">
+		<tr class="bibiscoThumbnailSpacing"><td colspan="2"></td></tr>
+		<tr><td colspan="2" class="bibiscoThumbnailToolbar">
 			<button title="<fmt:message key="jsp.common.button.delete" />" class="btn btn-mini bibiscoThumbnailButtonDelete"><i class="icon-trash"></i></button>
 		</td></tr>
 		</table>
