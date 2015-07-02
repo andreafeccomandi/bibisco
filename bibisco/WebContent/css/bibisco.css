@@ -85,6 +85,7 @@
 
 .bibiscoThumbnailTitle td:first-child {
 	text-align: left;
+	vertical-align: top;
 }
 
 .bibiscoThumbnailTitle td:last-child {
@@ -121,6 +122,10 @@
 .bibiscoThumbnailSceneTitle {
     height: 40px; 
     vertical-align: top;
+}
+
+.bibiscoThumbnailLocationArea {
+	height: 40px;
 }
 
 /* INDEX */
