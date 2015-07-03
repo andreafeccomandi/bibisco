@@ -102,6 +102,7 @@
 
 .bibiscoThumbnailHeader td:last-child {
     text-align: right;
+    vertical-align: top;
 }
 
 .bibiscoThumbnailSpacingSmall td {	
@@ -113,27 +114,13 @@
 }
 
 .bibiscoThumbnailDescription td {
-    height: 52px; 
+    height: 40px; 
     vertical-align: top;
 }
 
 .bibiscoThumbnailToolbar {
 	 height: 10px;
 	 text-align: right;
-}
-
-.bibiscoThumbnailChapterTitle {
-	height: 40px; 
-	vertical-align: top;
-}
-
-.bibiscoThumbnailSceneTitle {
-    height: 40px; 
-    vertical-align: top;
-}
-
-.bibiscoThumbnailLocationArea {
-	height: 40px;
 }
 
 /* INDEX */

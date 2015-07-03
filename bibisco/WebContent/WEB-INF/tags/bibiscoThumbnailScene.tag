@@ -19,7 +19,7 @@
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" bibiscoWordCount="${wordCount}" bibiscoCharacterCount="${characterCount}"/>
 		</td></tr>
 		<tr class="bibiscoThumbnailSpacingSmall"><td colspan="2"></td></tr>
-		<tr><td colspan="2" class="bibiscoThumbnailTitle bibiscoThumbnailSceneTitle">${title}</td></tr>
+		<tr class="bibiscoThumbnailDescription"><td colspan="2" class="bibiscoThumbnailTitle">${title}</td></tr>
 		<tr><td colspan="2" class="bibiscoThumbnailToolbar">
 			<button title="<fmt:message key="jsp.common.button.delete" />" class="btn btn-mini bibiscoThumbnailButtonDelete"><i class="icon-trash"></i></button>
 		</td></tr>
