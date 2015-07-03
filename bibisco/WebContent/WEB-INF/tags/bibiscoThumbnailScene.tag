@@ -14,7 +14,7 @@
 <div data-bibiscoTagThumbnailId="${id}" class="thumbnail bibiscoThumbnail" id="bibiscoTagThumbnailSceneDiv${id}">
 	<div class="caption">
 		<table>
-		<tr class="bibiscoThumbnailWordCount"><td><strong class="bibiscoThumbnailPosition"></strong></td>
+		<tr class="bibiscoThumbnailHeader"><td><strong class="bibiscoThumbnailPosition"></strong></td>
 		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" bibiscoWordCount="${wordCount}" bibiscoCharacterCount="${characterCount}"/>
 		</td></tr>

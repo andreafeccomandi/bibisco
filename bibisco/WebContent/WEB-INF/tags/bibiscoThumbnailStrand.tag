@@ -10,7 +10,7 @@
 <div data-bibiscoTagThumbnailId="${id}" class="thumbnail bibiscoThumbnailSmall" id="bibiscoTagThumbnailStrandDiv${id}"">
 	<div class="caption">
 		<table>		
-		<tr class="bibiscoThumbnailTitle"><td rowspan="2"><strong>${title}</strong></td>
+		<tr class="bibiscoThumbnailHeader"><td rowspan="2"><strong class="bibiscoThumbnailTitle">${title}</strong></td>
 		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>

@@ -95,12 +95,12 @@
      width: 100%;
 }
 
-.bibiscoThumbnailTitle td:first-child {
+.bibiscoThumbnailHeader td:first-child {
 	text-align: left;
 	vertical-align: top;
 }
 
-.bibiscoThumbnailTitle td:last-child {
+.bibiscoThumbnailHeader td:last-child {
     text-align: right;
 }
 
@@ -120,14 +120,6 @@
 .bibiscoThumbnailToolbar {
 	 height: 10px;
 	 text-align: right;
-}
-
-.bibiscoThumbnailWordCount td:first-child {
-    text-align: left;
-}
-
-.bibiscoThumbnailWordCount td:last-child {
-    text-align: right;
 }
 
 .bibiscoThumbnailChapterTitle {

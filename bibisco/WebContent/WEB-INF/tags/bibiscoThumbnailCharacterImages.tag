@@ -51,7 +51,7 @@
 <div id="bibiscoTagThumbnailDiv${type}${id}" class="thumbnail bibiscoThumbnail">
 	<div class="caption">
 		<table>
-		<tr><td><strong><fmt:message key="${title}" /></strong></td>
+		<tr class="bibiscoThumbnailHeader"><td><strong class="bibiscoThumbnailTitle"><fmt:message key="${title}" /></strong></td>
 		<td>
 		<tags:bibiscoTaskStatus bibiscoTaskStatus="${taskStatus}" />
 		</td></tr>
