@@ -469,7 +469,7 @@
 	
 	   <!-- ARCHITECTURE -->
 	   <div class="tab-pane active bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiArchitecture">
-		   <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectArchitectureSection"> 
+		   <select class="selectpicker" id="bibiscoProjectFromSceneSelectArchitectureSection"> 
 		       <option selected="selected" data-idarchitecturesection="Premise"><fmt:message key="jsp.projectFromScene.select.architecture.premise" /></option>
                <option data-idarchitecturesection="Fabula"><fmt:message key="jsp.projectFromScene.select.architecture.fabula" /></option>  
                <option data-idarchitecturesection="Setting"><fmt:message key="jsp.projectFromScene.select.architecture.setting" /></option>  
@@ -486,7 +486,7 @@
 	   
 	   <!-- CHAPTER -->
 	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiChapters">
-	       <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapter">
+	       <select class="selectpicker" id="bibiscoProjectFromSceneSelectChapter">
 		   <c:forEach items="${chapters}" var="chapter" varStatus="chapterNumber">
 		      <c:choose>
 			      <c:when test="${chapter.idChapter == idActualChapter}">
@@ -498,7 +498,7 @@
 			  </c:choose>
 		   </c:forEach>	   
 		   </select>
-		   <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectChapterSection">
+		   <select class="selectpicker" id="bibiscoProjectFromSceneSelectChapterSection">
               <option selected="selected" data-idchaptersection="Text"><fmt:message key="jsp.projectFromScene.select.chapter.text" /></option>
               <option data-idchaptersection="Reason"><fmt:message key="jsp.projectFromScene.select.chapter.reason" /></option>  
               <option data-idchaptersection="Notes"><fmt:message key="jsp.projectFromScene.select.chapter.notes" /></option>  
@@ -515,7 +515,7 @@
 	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiCharacters">
 	   <c:choose>
           <c:when test="${fn:length(characters) > 0}">
-             <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacter">
+             <select class="selectpicker" id="bibiscoProjectFromSceneSelectCharacter">
                 <c:forEach items="${characters}" var="character" varStatus="characterNumber">
                     <c:choose>
                         <c:when test="${characterNumber.count == 1}">
@@ -527,7 +527,7 @@
                     </c:choose>
                 </c:forEach>
              </select>
-             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectCharacterSection">
+             <select class="selectpicker" id="bibiscoProjectFromSceneSelectCharacterSection">
             </select>
 	        <hr />
             <div id="bibiscoProjectFromSceneDivCharacterContent" class="bibiscoProjectFromSceneTabContent">
@@ -555,7 +555,7 @@
 	   <div class="tab-pane bibiscoProjectFromSceneTab" id="bibiscoProjectFromSceneTabLiLocations">
 	   <c:choose>
           <c:when test="${fn:length(locations) > 0}">
-             <select style="margin-left: 50px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocation">
+             <select class="selectpicker" id="bibiscoProjectFromSceneSelectLocation">
                 <c:forEach items="${locations}" var="location" varStatus="locationNumber">
                     <c:choose>
                         <c:when test="${locationNumber.count == 1}">
@@ -567,7 +567,7 @@
                     </c:choose>
                 </c:forEach>
              </select>
-             <select style="margin-left: 50px; margin-top: 5px;" class="selectpicker" id="bibiscoProjectFromSceneSelectLocationSection">
+             <select class="selectpicker" id="bibiscoProjectFromSceneSelectLocationSection">
 	              <option selected="selected" data-idlocationsection="Description"><fmt:message key="jsp.projectFromScene.select.location.description" /></option>
 	              <option data-idlocationsection="Images"><fmt:message key="jsp.projectFromScene.select.location.images" /></option>  
 	         </select>

@@ -624,6 +624,11 @@ div.bibiscoTip h4 {
     margin-top: 10px;
 }
 
+.bibiscoProjectFromSceneTab div.select2-container {
+    margin-left: 50px;
+    margin-bottom: 5px;
+}
+
 .bibiscoProjectFromSceneTabContent {
     text-align: justify; 
     width: 100%; 
@@ -792,6 +797,10 @@ div.bibiscoTip h4 {
 /* LANGUAGE */
 .bibiscoLanguage {
 	 margin-top: 10px;
+}
+
+.bibiscoLanguageSelectLanguage div.select2-container {
+	width:200px;
 }
 
 /* INFO */

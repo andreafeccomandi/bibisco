@@ -65,8 +65,8 @@
 		<input type="hidden" name="from" value="" id="bibiscoLanguageFormInputFrom"/>
 		<div class="control-group">
 			<label id="bibiscoLanguageSelectBibiscoLanguageLabel" class="control-label" for="bibiscoLanguageSelectBibiscoLanguage"><fmt:message key="jsp.language.form.selectLanguage.label" /></label>
-			<div class="controls">
-				<select class="selectpicker" style="width:200px;" name="locale" id="bibiscoLanguageSelectLanguage">
+			<div class="controls bibiscoLanguageSelectLanguage">
+				<select class="selectpicker" name="locale" id="bibiscoLanguageSelectLanguage">
 					<option value="en_US"><fmt:message key="jsp.language.form.selectLanguage.option.en" /></option>
 					<option value="es_ES"><fmt:message key="jsp.language.form.selectLanguage.option.es" /></option>					
 					<option value="it_IT"><fmt:message key="jsp.language.form.selectLanguage.option.it" /></option>
