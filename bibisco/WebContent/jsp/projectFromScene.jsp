@@ -302,7 +302,7 @@
         if (element.images && element.images.length>0) {
 	        for (i=0;i<element.images.length;i++) {
 	            imagesDiv.append('<h4>'+element.images[i].description+'</h4>');
-	            imagesDiv.append('<img src="BibiscoServlet?action=getImage&idImage='+element.images[i].idImage+'" style="width: 100%;  height: auto; display: inline; max-width: '+dialogConfig.imageWidth+'px"/>');
+	            imagesDiv.append('<img src="BibiscoServlet?action=getImage&idImage='+element.images[i].idImage+'" class="bibiscoProjectFromSceneImage" style="max-width: '+dialogConfig.imageWidth+'px"/>');
 	            imagesDiv.append('<p></p>');   
 	        }        	
         } else {

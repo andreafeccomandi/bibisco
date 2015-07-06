@@ -635,7 +635,11 @@ div.bibiscoTip h4 {
     overflow: scroll;
 }
 
-
+.bibiscoProjectFromSceneImage {
+    width: 100%;  
+    height: auto; 
+    display: inline;
+}
 
 /* ANALYSIS */
 
