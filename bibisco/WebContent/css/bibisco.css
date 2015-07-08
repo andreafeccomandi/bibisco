@@ -307,6 +307,22 @@
 	z-index: 100;
 }
 
+/* LOADING PAGE */
+.bibiscoLoadingPage {
+	margin-top: 300px; 
+	margin-left: 150px; 
+	margin-right: 150px;
+}
+
+.bibiscoLoadingPage div.progress {
+	 height: 50px;  
+	 border-radius: 20px;
+}
+
+.bibiscoLoadingPage div.bar {
+     height: 50px;  
+}
+
 /* START */
 
 .bibiscoStartMotivational {
