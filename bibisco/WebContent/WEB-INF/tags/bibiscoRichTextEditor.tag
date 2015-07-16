@@ -110,7 +110,7 @@
 
             initializeButton('undo', 'bibiscoTagRichTextEditorButtonUndo');
             initializeButton('redo', 'bibiscoTagRichTextEditorButtonRepeat');
-            <c:if test="${OS == 'win' || OS == 'linux'}">
+            <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
                 initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
                 initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
                 initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
@@ -371,7 +371,7 @@
         </button>
     </div>
    
-    <c:if test="${OS == 'win' || OS == 'linux'}">
+    <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
 	    <div class="btn-group">
 	        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
 	            <i class="icon-copy"></i>

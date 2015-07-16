@@ -27,19 +27,6 @@
             id="bibisco.view">
       </view>
    </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="*">
-         <view
-               standalone="true"
-               minimized="false"
-               relative="org.eclipse.ui.editorss"
-               relationship="left"
-               id="bibisco.view">
-         </view>
-      </perspectiveExtension>
-   </extension>
       <extension
             id="product"
             point="org.eclipse.core.runtime.products">

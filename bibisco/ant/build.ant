@@ -1,5 +1,6 @@
 <project name="bibisco" basedir="../" default="build_win">
 	
+	<property name="ant.dir" value="${basedir}/ant" />
 	<property name="build.dir" value="${basedir}/build/bibisco" />
 	<property name="db.source.dir" value="${basedir}/db" />
 	<property name="db.target.dir" value="${build.dir}/db" />
@@ -7,8 +8,6 @@
 	<property name="dictionaries.target.dir" value="${build.dir}/dictionaries" />
 	<property name="license.source.dir" value="${basedir}/license" />
 	<property name="license.target.dir" value="${build.dir}/license" />
-	<property name="product.source.dir" value="${basedir}/product" />
-	<property name="readme.source.dir" value="${basedir}/readme" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="WebContent.source.dir" value="${basedir}/WebContent" />
 	<property name="WebContent.target.dir" value="${build.dir}/WebContent" />
@@ -18,29 +17,31 @@
 	
 	<target name="build_win">
 		<antcall target="build">
-			<param name="product.file" value="${product.source.dir}/bibisco_win.product"/>
-			<param name="readme.file" value="${readme.source.dir}/readme_win.txt"/>
+			<param name="bibiscoConfig.file" value="${ant.dir}/win/bibiscoConfig_prod.xml"/>
+        	<param name="product.file" value="${ant.dir}/win/bibisco.product"/>
+        	<param name="readme.file" value="${ant.dir}/win/readme.txt"/>
 			<param name="xulrunner.source.dir" value="${basedir}/xulrunner/win"/>
 			<param name="xulrunner.target.dir" value="${build.dir}/xulrunner/win" />   
 		</antcall>
 	</target>
-	<target name="build_linux">
+	<target name="build_linux32">
         <antcall target="build">
-        	<param name="product.file" value="${product.source.dir}/bibisco_linux.product"/>
-        	<param name="readme.file" value="${readme.source.dir}/readme_linux.txt"/>
-        	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux"/>
-            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux" />   
+        	<param name="bibiscoConfig.file" value="${ant.dir}/linux32/bibiscoConfig_prod.xml"/>
+        	<param name="product.file" value="${ant.dir}/linux32/bibisco.product"/>
+        	<param name="readme.file" value="${ant.dir}/linux32/readme.txt"/>
+        	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux32"/>
+            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux32" />     
         </antcall>
     </target>
-	<target name="build_mac">
+	<target name="build_linux64">
         <antcall target="build">
-            <param name="product.file" value="${product.source.dir}/bibisco_mac.product"/>
-        	<param name="readme.file" value="${readme.source.dir}/readme_mac.txt"/>
-            <param name="xulrunner.source.dir" value="${basedir}/xulrunner/mac"/>
-            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/mac" />   
+        	<param name="bibiscoConfig.file" value="${ant.dir}/linux64/bibiscoConfig_prod.xml"/>
+        	<param name="product.file" value="${ant.dir}/linux64/bibisco.product"/>
+        	<param name="readme.file" value="${ant.dir}/linux64/readme.txt"/>
+        	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux64"/>
+            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux64" />   
         </antcall>
     </target>
-
 
 	<target name="build">
 		<delete dir="${build.dir}" />
@@ -66,36 +67,30 @@
 		<copy todir="${license.target.dir}">
 		    <fileset dir="${license.source.dir}"/>
 		</copy>
-		<copy file="${product.file}" tofile="${basedir}/bibisco.product"/>
+		<copy file="${product.file}" tofile="${basedir}/bibisco.product" overwrite="true"/>
 		<copy file="${readme.file}" tofile="${build.dir}/readme.txt"/>
-	    <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_svil.xml"/>
-		<move file="${src.dir}/bibiscoConfig_prod.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
-		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_svil.xml"/>
-		<move file="${src.dir}/log4j_prod.xml" tofile="${src.dir}/log4j.xml"/>
+		<copy file="${bibiscoConfig.file}" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true"/>
+		<copy file="${ant.dir}/common/log4j_prod.xml" tofile="${src.dir}/log4j.xml" overwrite="true"/>
 	</target>  
 
 	<target name="restore_svil_environment_win">
-		<copy file="${product.source.dir}/bibisco_win.product" tofile="${basedir}/bibisco.product"/>
-		<antcall target="restore_svil_environment" />
+		<copy file="${ant.dir}/win/bibisco.product" tofile="${basedir}/bibisco.product" overwrite="true" />
+		<copy file="${ant.dir}/win/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true" />
+		<copy file="${ant.dir}/common/log4j_svil.xml" tofile="${src.dir}/log4j.xml" overwrite="true" />
 	</target>
 
-	<target name="restore_svil_environment_linux">
-        <copy file="${product.source.dir}/bibisco_linux.product" tofile="${basedir}/bibisco.product"/>
-		<antcall target="restore_svil_environment" />
+	<target name="restore_svil_environment_linux32">
+		<copy file="${ant.dir}/linux32/bibisco.product" tofile="${basedir}/bibisco.product" overwrite="true" />
+		<copy file="${ant.dir}/linux32/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true" />
+		<copy file="${ant.dir}/common/log4j_svil.xml" tofile="${src.dir}/log4j.xml" overwrite="true" />
 	</target>
 	
-	<target name="restore_svil_environment_mac">
-        <copy file="${product.source.dir}/bibisco_mac.product" tofile="${basedir}/bibisco.product"/>
-		<antcall target="restore_svil_environment" />
-    </target>
-
-	<target name="restore_svil_environment">
-        <move file="${src.dir}/bibiscoConfig.xml" tofile="${src.dir}/bibiscoConfig_prod.xml"/>
-        <move file="${src.dir}/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml"/>
-		<move file="${src.dir}/log4j.xml" tofile="${src.dir}/log4j_prod.xml"/>
-		<move file="${src.dir}/log4j_svil.xml" tofile="${src.dir}/log4j.xml"/>
-    </target>
-	
+	<target name="restore_svil_environment_linux64">
+        <copy file="${ant.dir}/linux64/bibisco.product" tofile="${basedir}/bibisco.product" overwrite="true" />
+		<copy file="${ant.dir}/linux64/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true" />
+		<copy file="${ant.dir}/common/log4j_svil.xml" tofile="${src.dir}/log4j.xml" overwrite="true" />
+	</target>
+		
 	<target name="fix_linux_app_label">
 	    <copy file="${product.source.dir}/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" tofile="${build.dir}/plugins/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" overwrite="true"/>
 	</target>

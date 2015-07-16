@@ -1,4 +1,0 @@
-<config cacheEnabled="true">
-	<test enabled="N" />
-	<web uri="http://www.bibisco.com" />
-</config>

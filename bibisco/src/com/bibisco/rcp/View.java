@@ -53,7 +53,7 @@ public class View extends ViewPart {
 		ContextManager lContextManager = ContextManager.getInstance();
     	
     	// if win or linux create MOZILLA browser
-    	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux")) {    
+    	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux32") || lContextManager.getOS().equals("linux64")) {    
     		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
     	}
     	// if mac use default browser (WEBKIT)

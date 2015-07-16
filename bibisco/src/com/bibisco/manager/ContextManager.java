@@ -69,7 +69,7 @@ public class ContextManager {
 		ConfigManager lConfigManager = ConfigManager.getInstance();
 		
 		// os
-		mStrOS = calculateOSName();
+		mStrOS = lConfigManager.getMandatoryProperty("os/@value");;
 
 		// test or production
 		String lStrTestEnabled = lConfigManager.getMandatoryProperty("test/@enabled");
@@ -144,20 +144,6 @@ public class ContextManager {
 	
 	public String getOS() {
 		return mStrOS;
-	}
-
-	public static String calculateOSName() {
-		String lStrOS = System.getProperty("os.name").toLowerCase();
-		if (lStrOS.indexOf("win") >= 0) {
-			return "win";
-		}
-		if (lStrOS.indexOf("mac") >= 0) {
-			return "mac";
-		}
-		if (lStrOS.indexOf("nix") >= 0 || lStrOS.indexOf("nux") >= 0) {
-			return "linux";
-		}
-		return null;
 	}
 
 	public Object clone() throws CloneNotSupportedException {

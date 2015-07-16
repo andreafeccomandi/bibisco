@@ -1,0 +1,11 @@
+libnspr4.so
+libplc4.so
+libplds4.so
+libmozalloc.so
+libmozsqlite3.so
+libnssutil3.so
+libsoftokn3.so
+libnss3.so
+libssl3.so
+libsmime3.so
+libxul.so

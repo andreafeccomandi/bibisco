@@ -1,0 +1,6 @@
+<config cacheEnabled="true">
+	<!-- os possible values: win, linux32, linux64, mac -->
+	<os value="win"/>
+	<test enabled="N" />
+	<web uri="http://www.bibisco.com" />
+</config>

@@ -77,7 +77,7 @@ public class Application implements IApplication {
         	ContextManager lContextManager = ContextManager.getInstance();
         	
         	// if win or linux init xulrunner path
-        	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux")) {
+        	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux32")  || lContextManager.getOS().equals("linux64")) {
         		String lStrXulRunnerPath = lContextManager.getXulRunnerDirectoryPath();
         		mLog.info("XulRunnerPath = ", lStrXulRunnerPath);
         		System.setProperty("org.eclipse.swt.browser.XULRunnerPath",lStrXulRunnerPath);
