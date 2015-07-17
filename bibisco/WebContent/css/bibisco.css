@@ -1,12 +1,13 @@
 /* DISABLE SELECTION ON TEXT */
 
-.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.bibiscoEmptyThumbnailListElements, .bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip {
+.bibiscoIndexBody, .page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.bibiscoEmptyThumbnailListElements, .bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	-o-user-select: none;   
 }
 
 .btn:focus {

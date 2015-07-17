@@ -18,6 +18,18 @@ $(function() {
 	
 	// disable open modal dialog by xulrunner to avoid message 'This document cannot be displayed while offline. To go online, uncheck Work Offline from the File menu.'
 	//$(window).addEventListener('DOMWillOpenModalDialog',function(e){ e.preventDefault(); }, true);
+
+	// disable text selection on CTRL+A  
+    $(document).keydown(function(objEvent) {
+    	if (objEvent.ctrlKey) {
+        	if ($(objEvent.target).not('input')){
+            	if (objEvent.keyCode == 65 || objEvent.keyCode == 97) {                         
+                	objEvent.preventDefault();
+            	}
+            }
+        }
+    });
+	
 });
 
 </script>
