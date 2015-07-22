@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.2.0" useFeatures="false" includeLaunchers="true">
+<product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.2.1" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
-      <programArgs>-data @none</programArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <programArgs>-data @none
+      </programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="icons/branding/logo16x16.png" i32="icons/branding/logo32x32.png" i48="icons/branding/logo48x48.png" i64="icons/branding/logo64x64.png" i128="icons/branding/logo128x128.png"/>
@@ -140,43 +142,26 @@ END OF TERMS AND CONDITIONS
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
       <plugin id="org.eclipse.core.commands"/>
-      <plugin id="org.eclipse.core.commands.source"/>
       <plugin id="org.eclipse.core.contenttype"/>
-      <plugin id="org.eclipse.core.contenttype.source"/>
       <plugin id="org.eclipse.core.databinding"/>
       <plugin id="org.eclipse.core.databinding.beans"/>
-      <plugin id="org.eclipse.core.databinding.beans.source"/>
       <plugin id="org.eclipse.core.databinding.observable"/>
-      <plugin id="org.eclipse.core.databinding.observable.source"/>
       <plugin id="org.eclipse.core.databinding.property"/>
-      <plugin id="org.eclipse.core.databinding.property.source"/>
-      <plugin id="org.eclipse.core.databinding.source"/>
       <plugin id="org.eclipse.core.expressions"/>
-      <plugin id="org.eclipse.core.expressions.source"/>
       <plugin id="org.eclipse.core.externaltools"/>
-      <plugin id="org.eclipse.core.externaltools.source"/>
       <plugin id="org.eclipse.core.filebuffers"/>
-      <plugin id="org.eclipse.core.filebuffers.source"/>
       <plugin id="org.eclipse.core.filesystem"/>
-      <plugin id="org.eclipse.core.filesystem.source"/>
+      <plugin id="org.eclipse.core.filesystem.java7" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.jobs"/>
-      <plugin id="org.eclipse.core.jobs.source"/>
       <plugin id="org.eclipse.core.net"/>
-      <plugin id="org.eclipse.core.net.source"/>
       <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.resources"/>
-      <plugin id="org.eclipse.core.resources.source"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.registry.source"/>
-      <plugin id="org.eclipse.core.runtime.compatibility.source"/>
-      <plugin id="org.eclipse.core.runtime.source"/>
       <plugin id="org.eclipse.core.variables"/>
-      <plugin id="org.eclipse.core.variables.source"/>
       <plugin id="org.eclipse.debug.core"/>
       <plugin id="org.eclipse.e4.core.commands"/>
       <plugin id="org.eclipse.e4.core.contexts"/>
@@ -226,6 +211,7 @@ END OF TERMS AND CONDITIONS
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.jface.text"/>
       <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
@@ -237,6 +223,7 @@ END OF TERMS AND CONDITIONS
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.w3c.css.sac"/>
+      <plugin id="org.w3c.dom.events"/>
       <plugin id="org.w3c.dom.smil"/>
       <plugin id="org.w3c.dom.svg"/>
    </plugins>
