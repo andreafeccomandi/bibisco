@@ -24,7 +24,7 @@ Note!  bibisco is a java application and ships its own JRE (Java Runtime Environ
 
 You can support bibisco in a variuos way:
 
-* reporting [bugs or ideas](https://github.com/andreafeccomandi/bibisco/issues).
+* report [bugs or ideas](https://github.com/andreafeccomandi/bibisco/issues).
 * translate bibisco in missing languages, write to info@bibisco.com to get more info.
 * star Github repository.
 * like [bibisco Facebook page](https://www.facebook.com/bibisco.official.page).
