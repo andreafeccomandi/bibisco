@@ -1,19 +1,16 @@
-bibisco
-=======
-
-## Synopsis
+## What is bibisco?
 
 bibisco is an open source application for writing novels.
+
+bibisco is a personal project, made with love. 
+
+We love books and we want to help writers to write beautiful novels.
 
 With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf or rtf, and write with a fully featured text editor.
 
 You can create a novel structure, define premise, fabula, narrative strands and settings: geographic, temporal and social context.
 
 And, most of all, with bibisco you can **know everything about your characters**. Because your novel works only if its characters are believable, that is when you understand their human nature's complexity.
-
-## Motivation
-
-bibisco is a personal project, made with love. I love books and I want to help writers to write beautiful novels.
 
 ## Installation
 
@@ -23,7 +20,7 @@ bibisco is a personal project, made with love. I love books and I want to help w
 
 Note!  bibisco is a java application and ships its own JRE (Java Runtime Environment). You don't need to install or update JRE.
 
-## Contributors
+## Support
 
 You can support bibisco in a variuos way:
 
