@@ -10,4 +10,4 @@ insert into properties (property,value) values ('charactersdndTip','true');
 insert into properties (property,value) values ('strandsdndTip','true');
 insert into properties (property,value) values ('donationTip','');
 insert into properties (property,value) values ('socialMediaTip','true');
-insert into properties (property,value) values ('projectsDirectory','empty');
+insert into properties (property,value) values ('projectsDirectory','');
