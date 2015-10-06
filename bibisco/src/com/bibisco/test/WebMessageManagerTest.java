@@ -1,9 +1,9 @@
-package test;
+package com.bibisco.test;
 
 import com.bibisco.bean.WebMessage;
 import com.bibisco.manager.HttpManager;
 
-public class TestWebMessageManager {
+public class WebMessageManagerTest {
 
 	/**
 	 * @param args

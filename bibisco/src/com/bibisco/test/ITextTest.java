@@ -1,4 +1,4 @@
-package test;
+package com.bibisco.test;
 
 import java.io.FileOutputStream;
 import java.util.Date;
@@ -19,7 +19,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class TestIText {
+public class ITextTest {
 
 	private static Font catFont = new Font(Font.COURIER, 18, Font.BOLD);
 	private static Font redFont = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL);

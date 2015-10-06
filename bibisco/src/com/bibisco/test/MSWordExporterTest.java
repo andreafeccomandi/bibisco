@@ -1,4 +1,4 @@
-package test;
+package com.bibisco.test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,9 +14,9 @@ import com.bibisco.export.ParagraphAligment;
 import com.bibisco.export.TextFormatting;
 import com.bibisco.log.Log;
 
-public class MSWordExporter  {
+public class MSWordExporterTest  {
 
-	private static Log mLog = Log.getInstance(MSWordExporter.class);
+	private static Log mLog = Log.getInstance(MSWordExporterTest.class);
 	
 	private XWPFDocument mXWPFDocument = new XWPFDocument(); 
 	private String mStrFilePath = null;

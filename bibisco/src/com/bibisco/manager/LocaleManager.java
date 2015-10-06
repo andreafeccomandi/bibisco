@@ -16,13 +16,8 @@ package com.bibisco.manager;
 
 import java.util.Locale;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.commons.lang.StringUtils;
 
-import com.bibisco.BibiscoException;
-import com.bibisco.dao.SqlSessionFactoryManager;
-import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.model.Properties;
 import com.bibisco.log.Log;
 
 /**
@@ -60,36 +55,18 @@ public class LocaleManager {
 		
 		mLog.debug("Start initLocale()");
 		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-		SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-    	
-    		PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-    		Properties lProperties = lPropertiesMapper.selectByPrimaryKey("locale");
-    		
-    		if (lProperties != null) {
-    			String[] lStrLocaleSplit = lProperties.getValue().split("_");
-    			lLocale = new Locale(lStrLocaleSplit[0], lStrLocaleSplit[1]);
-    			
-    		} else {
-    			lLocale = Locale.getDefault();
-    			
-    			// save locale
-    			lProperties = new Properties();
-    			lProperties.setProperty("locale");
-    			lProperties.setValue(lLocale.toString());
-    			lPropertiesMapper.insert(lProperties);
-    			
-    			lSqlSession.commit();
-    		}
+		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
+		String lStrLocale = lPropertiesManager.getProperty("locale");
+		
+		if (StringUtils.isNotBlank(lStrLocale)) {
+			String[] lStrLocaleSplit = lStrLocale.split("_");
+			lLocale = new Locale(lStrLocaleSplit[0], lStrLocaleSplit[1]);
 			
-    	} catch(Throwable t) {
-    		lSqlSession.rollback();
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
+		} else {
+			lLocale = Locale.getDefault();
+			lPropertiesManager.updateProperty("locale", lLocale.toString());
 		}
+		
     	
     	mLog.debug("End initLocale()");
     	
@@ -98,29 +75,19 @@ public class LocaleManager {
 
 	public void saveLocale(String pStrLocale) {
 
-		mLog.debug("Start saveLocale(String)");
-
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-		SqlSession lSqlSession = lSqlSessionFactory.openSession();
-		try {
-
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			Properties lProperties = new Properties();
-			lProperties.setProperty("locale");
-			lProperties.setValue(pStrLocale);
-			lPropertiesMapper.updateByPrimaryKey(lProperties);
-			lSqlSession.commit();
+		mLog.debug("Start saveLocale(",pStrLocale,")");
 		
-			String[] lStrLocaleSplit = pStrLocale.split("_");
-			mLocale = new Locale(lStrLocaleSplit[0], lStrLocaleSplit[1]);
-
-		} catch (Throwable t) {
-			lSqlSession.rollback();
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
+		if (StringUtils.isBlank(pStrLocale)) {
+			throw new IllegalArgumentException("Null is not allowed");
+		} 
+		
+		String[] lStrLocaleSplit = pStrLocale.split("_");
+		if (lStrLocaleSplit.length != 2) {
+			throw new IllegalArgumentException("Not a valid locale");
 		}
+		
+		PropertiesManager.getInstance().updateProperty("locale", pStrLocale);
+		mLocale = new Locale(lStrLocaleSplit[0], lStrLocaleSplit[1]);
 
 		mLog.debug("End saveLocale(String)");
 	}

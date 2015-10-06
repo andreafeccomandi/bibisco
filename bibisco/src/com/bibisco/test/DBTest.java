@@ -1,4 +1,4 @@
-package test;
+package com.bibisco.test;
 
 import java.util.List;
 

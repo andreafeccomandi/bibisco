@@ -1,4 +1,4 @@
-package test;
+package com.bibisco.test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,7 +9,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-public class TestPOI {
+public class POITest {
 
 	public static void newWordDoc(String filename, String fileContent)   
 	         throws Exception {   

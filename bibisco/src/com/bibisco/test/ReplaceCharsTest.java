@@ -1,8 +1,8 @@
-package test;
+package com.bibisco.test;
 
 import org.apache.commons.lang.StringUtils;
 
-public class TestReplaceChars {
+public class ReplaceCharsTest {
 	
 	public static void main(String[] args) {
 		String lStrNodeText = "«all'improvviso, ¡come se si [fosse] dest/ato dal sonno, si (chiese): ma ¿perchè? andarla! a {prendere}, afferrarla»";
