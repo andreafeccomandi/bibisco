@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -191,6 +192,12 @@ public class ProjectManager {
 		
 		mLog.debug("Start insert(ProjectDTO)");
 		
+		// validate preconditions
+		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
+		Validate.notNull(pProjectDTO.getName(), "argument ProjectDTO.name cannot be null");
+		Validate.notNull(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be null");
+		Validate.notNull(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be null");
+		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
 		pProjectDTO.setIdProject(lStrIdProject);
@@ -212,9 +219,6 @@ public class ProjectManager {
     	
     	// load project
     	pProjectDTO = load();
-    	
-    	
-    	
     	
 		mLog.debug("End insert(ProjectDTO)");
 
@@ -381,14 +385,12 @@ public class ProjectManager {
 	
 	public static String getDBProjectDirectory(String pStrIdProject) {
 		
-		ContextManager lContextManager = ContextManager.getInstance();
-		
 		// create db directory path
-		String lStrDbDirectory = lContextManager.getDbDirectoryPath();
+		String lStrProjectsDirectory = getProjectsDirectory();
 		
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lStrDbDirectory);
+		lStringBuilder.append(lStrProjectsDirectory);
 		lStringBuilder.append(pStrIdProject);
 		lStringBuilder.append(ContextManager.getPathSeparator());
 		

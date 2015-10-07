@@ -19,8 +19,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bibisco.bean.ProjectDTO;
+import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.ProjectManager;
 import com.bibisco.manager.PropertiesManager;
+import com.bibisco.manager.VersionManager;
 
 public class ProjectManagerTest {
 
@@ -39,6 +42,19 @@ public class ProjectManagerTest {
 		ProjectManager.setProjectsDirectory("C:/Users/Andrea/bibisco/projects");
 		Assert.assertEquals(ProjectManager.isProjectsDirectoryEmpty(), false);
 		Assert.assertEquals(ProjectManager.getProjectsDirectory(), "C:/Users/Andrea/bibisco/projects");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInsertProjectWithEmptyProjectsDirectory() {
+		
+		ProjectDTO lProjectDTO = new ProjectDTO();
+		
+		lProjectDTO.setName("Test 1");
+		lProjectDTO.setLanguage(LocaleManager.getInstance().getLocale().getLanguage());
+		lProjectDTO.setBibiscoVersion(VersionManager.getInstance().getVersion());
+		
+		
+		
 	}
 	
 	@After 
