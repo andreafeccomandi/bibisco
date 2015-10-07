@@ -1158,6 +1158,41 @@ public class ProjectManager {
     	mLog.debug("End save(ProjectDTO)");
 	}
 	
+	public static boolean isProjectsDirectoryEmpty() {
+		
+		boolean lBlnResult;
+		
+		mLog.debug("Start isProjectsDirectoryEmpty()");
+		
+		lBlnResult = StringUtils.isBlank(PropertiesManager.getInstance().getProperty("projectsDirectory"));
+		
+		mLog.debug("End isProjectsDirectoryEmpty(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static String getProjectsDirectory() {
+		
+		String lStrProjectsDirectory;
+		
+		mLog.debug("Start getProjectsDirectory()");
+		
+		lStrProjectsDirectory = PropertiesManager.getInstance().getProperty("projectsDirectory");
+		
+		mLog.debug("End getProjectsDirectory()");
+		
+		return lStrProjectsDirectory;
+	}
+	
+	public static void setProjectsDirectory(String pStrProjectsDirectory) {
+		
+		mLog.debug("Start isProjectsDirectoryEmpty(", pStrProjectsDirectory , ")");
+		
+		PropertiesManager.getInstance().updateProperty("projectsDirectory", pStrProjectsDirectory);
+		
+		mLog.debug("End isProjectsDirectoryEmpty(", pStrProjectsDirectory , ")");
+	}
+	
 	private static void checkProjectVersionAndUpdateIfNecessary(String pStrIdProject) {
 
 		mLog.debug("Start checkProjectVersionAndUpdateIfNecessary(String)");

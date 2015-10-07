@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ PropertiesManagerTest.class, LocaleManagerTest.class, RichTextEditorSettingsManagerTest.class, VersionManagerTest.class,
-		TipManagerTest.class })
+		TipManagerTest.class, ProjectManagerTest.class })
 public class AllTests {
 
 }
