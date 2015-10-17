@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.bibisco.bean.TipSettings;
@@ -94,6 +95,7 @@ public class TipManager {
 	public static void disableTip(String pStrTipCode) {
 
 		mLog.debug("Start disableTip("+pStrTipCode+")");
+		Validate.notEmpty(pStrTipCode, "tip code cannot be empty");
 		
 		PropertiesManager.getInstance().updateProperty(pStrTipCode, "false");
 				

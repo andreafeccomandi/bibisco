@@ -86,6 +86,7 @@ import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 public class ProjectManager {
 
 	private static Log mLog = Log.getInstance(ProjectManager.class);
+	private static String INTERNAL_BIBISCO_PROJECTS_DB_DIR = "_internal_bibisco_projects_db_";
 	
 	public static ProjectDTO load(String pStrIdProject) {
 		
@@ -194,9 +195,10 @@ public class ProjectManager {
 		
 		// validate preconditions
 		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
-		Validate.notNull(pProjectDTO.getName(), "argument ProjectDTO.name cannot be null");
-		Validate.notNull(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be null");
-		Validate.notNull(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be null");
+		Validate.notEmpty(pProjectDTO.getName(), "argument ProjectDTO.name cannot be empty");
+		Validate.notEmpty(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be empty");
+		Validate.notEmpty(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be empty");
+		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
 		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
@@ -1180,10 +1182,15 @@ public class ProjectManager {
 		mLog.debug("Start getProjectsDirectory()");
 		
 		lStrProjectsDirectory = PropertiesManager.getInstance().getProperty("projectsDirectory");
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append(lStrProjectsDirectory);
+		lStringBuilder.append(ContextManager.getPathSeparator());
+		lStringBuilder.append(INTERNAL_BIBISCO_PROJECTS_DB_DIR);
+		lStringBuilder.append(ContextManager.getPathSeparator());
 		
 		mLog.debug("End getProjectsDirectory()");
 		
-		return lStrProjectsDirectory;
+		return lStringBuilder.toString();
 	}
 	
 	public static void setProjectsDirectory(String pStrProjectsDirectory) {

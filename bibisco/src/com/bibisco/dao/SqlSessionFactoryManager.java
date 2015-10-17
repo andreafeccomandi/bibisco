@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
 
+import org.apache.commons.lang.Validate;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -26,6 +27,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.bibisco.BibiscoException;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ContextManager;
+import com.bibisco.manager.ProjectManager;
 
 /**
  * SqlSessionFactory manager.
@@ -34,9 +36,7 @@ import com.bibisco.manager.ContextManager;
  *
  */
 public class SqlSessionFactoryManager { 
-	
-	private static final String BIBISCO_DB_URL = "bibisco";
-	
+		
 	private static final String DB_USERNAME = "root";
 	private static final String DB_PASSWORD = "password";
 	private static final String RESOURCE_FILE_NAME = "dbConfiguration.xml";
@@ -89,23 +89,27 @@ public class SqlSessionFactoryManager {
 	}
 	
 	
-	private static String getDBURL(String pStrDBName) {
+	private static String getBibiscoDBURL() {
 		
-		ContextManager lContextManager = ContextManager.getInstance();
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append("jdbc:h2:file:");		
+		lStringBuilder.append(ContextManager.getPathSeparator());
+		lStringBuilder.append(ContextManager.getInstance().getDbDirectoryPath());
+		lStringBuilder.append("bibisco");
+		
+		return lStringBuilder.toString();
+
+	}
+	
+	private static String getProjectDBURL(String pStrIdProject) {
+
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append("jdbc:h2:file:");
-		
+
 		lStringBuilder.append(ContextManager.getPathSeparator());
-		lStringBuilder.append(lContextManager.getDbDirectoryPath());
-		
-		if(pStrDBName.equalsIgnoreCase(BIBISCO_DB_URL)) {
-			lStringBuilder.append("bibisco");
-		} else {
-			lStringBuilder.append(pStrDBName);
-			lStringBuilder.append(ContextManager.getPathSeparator());
-			lStringBuilder.append(pStrDBName);
-		}
-		
+		lStringBuilder.append(ProjectManager.getDBProjectDirectory(pStrIdProject));
+		lStringBuilder.append(pStrIdProject);
+
 		return lStringBuilder.toString();
 
 	}
@@ -113,7 +117,7 @@ public class SqlSessionFactoryManager {
 	public SqlSessionFactory getSqlSessionFactoryBibisco() {
 		
 		if (mSqlSessionFactoryBibisco == null) {
-			mSqlSessionFactoryBibisco = buildSqlSessionFactory(getDBURL(BIBISCO_DB_URL));
+			mSqlSessionFactoryBibisco = buildSqlSessionFactory(getBibiscoDBURL());
 		}
 		
 		return mSqlSessionFactoryBibisco;
@@ -121,8 +125,9 @@ public class SqlSessionFactoryManager {
 
 	public SqlSessionFactory getSqlSessionFactoryProject() {
 		
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		if (mSqlSessionFactoryProject == null) {
-			mSqlSessionFactoryProject = buildSqlSessionFactory(getDBURL(ContextManager.getInstance().getIdProject()));
+			mSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(ContextManager.getInstance().getIdProject()));
 		}
 		
 		return mSqlSessionFactoryProject;

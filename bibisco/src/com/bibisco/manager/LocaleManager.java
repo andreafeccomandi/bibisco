@@ -17,6 +17,7 @@ package com.bibisco.manager;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 
 import com.bibisco.log.Log;
 
@@ -57,7 +58,7 @@ public class LocaleManager {
 		
 		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
 		String lStrLocale = lPropertiesManager.getProperty("locale");
-		
+				
 		if (StringUtils.isNotBlank(lStrLocale)) {
 			String[] lStrLocaleSplit = lStrLocale.split("_");
 			lLocale = new Locale(lStrLocaleSplit[0], lStrLocaleSplit[1]);
@@ -67,7 +68,6 @@ public class LocaleManager {
 			lPropertiesManager.updateProperty("locale", lLocale.toString());
 		}
 		
-    	
     	mLog.debug("End initLocale()");
     	
     	return lLocale;
@@ -77,9 +77,7 @@ public class LocaleManager {
 
 		mLog.debug("Start saveLocale(",pStrLocale,")");
 		
-		if (StringUtils.isBlank(pStrLocale)) {
-			throw new IllegalArgumentException("Null is not allowed");
-		} 
+		Validate.notEmpty(pStrLocale, "locale cannot be empty");
 		
 		String[] lStrLocaleSplit = pStrLocale.split("_");
 		if (lStrLocaleSplit.length != 2) {

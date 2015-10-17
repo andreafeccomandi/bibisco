@@ -17,6 +17,8 @@ package com.bibisco.manager;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
+
 import com.bibisco.bean.RichTextEditorSettings;
 import com.bibisco.log.Log;
 
@@ -56,6 +58,16 @@ public class RichTextEditorSettingsManager {
 
 		mLog.debug("Start save()");
 
+		Validate.notNull(pRichTextEditorSettings, "RichTextEditorSettings cannot be null");
+		Validate.notEmpty(pRichTextEditorSettings.getFont(), "RichTextEditorSettings.font cannot be empty");
+		Validate.notEmpty(pRichTextEditorSettings.getSize(), "RichTextEditorSettings.size cannot be empty");
+		Validate.isTrue(pRichTextEditorSettings.getFont().equals("courier") || 
+				pRichTextEditorSettings.getFont().equals("times") ||
+				pRichTextEditorSettings.getFont().equals("arial"), "RichTextEditorSettings.size can be courier, times, arial");
+		Validate.isTrue(pRichTextEditorSettings.getSize().equals("small") || 
+				pRichTextEditorSettings.getSize().equals("medium") ||
+				pRichTextEditorSettings.getSize().equals("big"), "RichTextEditorSettings.size can be small, medium, big");
+		
 		Map<String, String> lMapProperties = new HashMap<String, String>();
 		lMapProperties.put("font", pRichTextEditorSettings.getFont());
 		lMapProperties.put("font-size", pRichTextEditorSettings.getSize());

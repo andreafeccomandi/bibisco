@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -55,6 +56,10 @@ public class PropertiesManager {
 		throw new CloneNotSupportedException();
 	}
 	
+	public void reload() {
+		initPropertiesMap();
+	}
+	
 	private void initPropertiesMap() {
 		
 		mLog.debug("Start initPropertiesMap()");
@@ -84,6 +89,8 @@ public class PropertiesManager {
 	public void updateProperties(Map<String, String> pMapProperties) {
 		
 		mLog.debug("Start updateProperties(Map<String, String>)");
+		
+		Validate.notEmpty(pMapProperties, "Properties map cannot be empty");
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
@@ -120,6 +127,7 @@ public class PropertiesManager {
 
 		mLog.debug("Start updateProperty(", pStrProperty, ",", pStrValue, ")");
 		
+		Validate.notEmpty(pStrProperty, "Property cannot be empty");
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
