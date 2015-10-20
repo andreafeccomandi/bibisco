@@ -62,6 +62,7 @@ public class LocaleManagerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS")
 	public void testNullLocale() {
 		
 		//update locale with null value

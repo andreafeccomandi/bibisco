@@ -66,6 +66,7 @@ public class ProjectManagerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	public void testInsertProjectWithNullProjectDTO() {
 		ProjectManager.insert(null);
 	}

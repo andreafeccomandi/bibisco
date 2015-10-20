@@ -106,6 +106,7 @@ public class RichTextEditorSettingsManagerTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
 	public void testSaveSettingsWithNullRichTextEditorSettings() {
 		RichTextEditorSettingsManager.save(null);
 	}
