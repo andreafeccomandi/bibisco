@@ -59,7 +59,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
     
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void createWindowContents(final Shell shell) {
         
     	final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
