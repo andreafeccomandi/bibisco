@@ -46,12 +46,16 @@ public class AllTests {
 	public static final String RESOURCE_FILE_NAME = "dbConfiguration.xml";
 	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = "C:/temp/bibisco/projects/_internal_bibisco_projects_db_";
 	public static final String TEST_PROJECT_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4c";
+	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
+	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";
 	
 	private static boolean mBlnEnvironmentInitialized = false;
 	private static String mStrOS;
 	private static String mStrAbsolutePath;
 	private static String mStrPathSeparator = System.getProperty("file.separator");
 	private static String mStrTestBibiscoDBFilePath;
+	private static String mStrTestProject2DBFilePath;
+	private static String mStrTestProject3DBFilePath;
 	private static String mStrTestProjectDBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
@@ -63,7 +67,8 @@ public class AllTests {
 		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
 		FileUtils.cleanDirectory(new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
-
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject2DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject3DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 	}
 	
 	@AfterClass
@@ -88,15 +93,35 @@ public class AllTests {
 		lStringBuilderTestDBFilePath.append("bibisco.h2.db");
 		mStrTestBibiscoDBFilePath = lStringBuilderTestDBFilePath.toString();
 		
-		// test project db file path
+		// test project 1 db file path
 		StringBuilder lStringBuilderTestProjectDBFilePath = new StringBuilder();
 		lStringBuilderTestProjectDBFilePath.append(mStrAbsolutePath);
 		lStringBuilderTestProjectDBFilePath.append("db");
 		lStringBuilderTestProjectDBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProjectDBFilePath.append("test");
 		lStringBuilderTestProjectDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProjectDBFilePath.append("eee0acc0-0b59-4a41-84af-7a0d345d3d4c");
+		lStringBuilderTestProjectDBFilePath.append(TEST_PROJECT_ID);
 		mStrTestProjectDBFilePath = lStringBuilderTestProjectDBFilePath.toString();
+		
+		// test project 2 db file path
+		StringBuilder lStringBuilderTestProject2DBFilePath = new StringBuilder();
+		lStringBuilderTestProject2DBFilePath.append(mStrAbsolutePath);
+		lStringBuilderTestProject2DBFilePath.append("db");
+		lStringBuilderTestProject2DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject2DBFilePath.append("test");
+		lStringBuilderTestProject2DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject2DBFilePath.append(TEST_PROJECT2_ID);
+		mStrTestProject2DBFilePath = lStringBuilderTestProject2DBFilePath.toString();
+		
+		// test project 3 db file path
+		StringBuilder lStringBuilderTestProject3DBFilePath = new StringBuilder();
+		lStringBuilderTestProject3DBFilePath.append(mStrAbsolutePath);
+		lStringBuilderTestProject3DBFilePath.append("db");
+		lStringBuilderTestProject3DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject3DBFilePath.append("test");
+		lStringBuilderTestProject3DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject3DBFilePath.append(TEST_PROJECT3_ID);
+		mStrTestProject3DBFilePath = lStringBuilderTestProject3DBFilePath.toString();
 		
 		// clean db file path
 		StringBuilder lStringBuilderCleanDBFilePath = new StringBuilder();

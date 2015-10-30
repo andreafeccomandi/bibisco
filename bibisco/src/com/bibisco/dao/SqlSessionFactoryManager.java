@@ -16,6 +16,8 @@ package com.bibisco.dao;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.Validate;
@@ -43,7 +45,7 @@ public class SqlSessionFactoryManager {
 	
 	private static Log mLog = Log.getInstance(SqlSessionFactoryManager.class);
 	private SqlSessionFactory mSqlSessionFactoryBibisco; 
-	private SqlSessionFactory mSqlSessionFactoryProject;
+	private Map<String, SqlSessionFactory> mMapSqlSessionFactoryProjects;
 	private static SqlSessionFactoryManager mSqlSessionFactoryManager;
 
 	public synchronized static SqlSessionFactoryManager getInstance() {
@@ -55,7 +57,9 @@ public class SqlSessionFactoryManager {
 		return mSqlSessionFactoryManager;
 	}
 	
-	private SqlSessionFactoryManager() {}
+	private SqlSessionFactoryManager() {
+		mMapSqlSessionFactoryProjects = new HashMap<String, SqlSessionFactory>();
+	}
 	
 	public Object clone() throws CloneNotSupportedException {
 		return new CloneNotSupportedException();
@@ -126,20 +130,27 @@ public class SqlSessionFactoryManager {
 	public SqlSessionFactory getSqlSessionFactoryProject() {
 		
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
-		if (mSqlSessionFactoryProject == null) {
-			mSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(ContextManager.getInstance().getIdProject()));
+		
+		String lStrProjectId = ContextManager.getInstance().getIdProject();
+		if (mMapSqlSessionFactoryProjects.get(lStrProjectId) == null) {
+			SqlSessionFactory lSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(lStrProjectId));
+			mMapSqlSessionFactoryProjects.put(lStrProjectId, lSqlSessionFactoryProject);
 		}
 		
-		return mSqlSessionFactoryProject;
+		return mMapSqlSessionFactoryProjects.get(lStrProjectId);
 	}
 	
 	public void cleanSqlSessionFactoryProject() {
 
 		mLog.debug("Start cleanSqlSessionFactoryProject()");
 
-		PooledDataSource lPooledDataSource = (PooledDataSource) mSqlSessionFactoryProject.getConfiguration().getEnvironment().getDataSource();
-		lPooledDataSource.forceCloseAll();
-		mSqlSessionFactoryProject = null;
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		
+		String lStrProjectId = ContextManager.getInstance().getIdProject();
+		SqlSessionFactory lSqlSessionFactoryProject = mMapSqlSessionFactoryProjects.get(lStrProjectId);
+		PooledDataSource lPooledDataSource = (PooledDataSource) lSqlSessionFactoryProject.getConfiguration().getEnvironment().getDataSource();
+		lPooledDataSource.forceCloseAll();	
+		mMapSqlSessionFactoryProjects.remove(lStrProjectId);
 
 		mLog.debug("End cleanSqlSessionFactoryProject()");
 	}

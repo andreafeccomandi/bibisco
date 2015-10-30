@@ -49,11 +49,64 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testSetProjectsDirectory() {
-		ProjectManager.setProjectsDirectory("C:\\Users\\AndreaDocuments\\");
-		
+	public void testDoesProjectsDirectoryExistsWithProjectsDirectoryEmpty() {
+		emptyProjectsDirectory();
+		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), false);
+	}
+	
+	@Test
+	public void testDoesProjectsDirectoryExistsWithWrongProjectsDirectory() {
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			Properties lProperties = new Properties();
+			lProperties.setProperty("projectsDirectory");
+			lProperties.setValue("C:/temp/bibiscotto/projects");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);	
+			lSqlSession.commit();
+    	} catch (Throwable t) {	
+			lSqlSession.rollback();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	PropertiesManager.getInstance().reload();
+		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), false);
+	}
+	
+	@Test
+	public void testDoesProjectsDirectoryExistsWithCorrectProjectsDirectory() {
+		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testSetProjectsDirectoryWithEmptyDirectory() {
+		ProjectManager.setProjectsDirectory(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetProjectsDirectoryWithNonExistingDirectory() {
+		ProjectManager.setProjectsDirectory("C:\\Users\\AndreaDocuments\\");
+	}
+	
+	@Test
+	public void testSetProjectsDirectory() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjectMapper.deleteByExample(new ProjectsExample());
+			lSqlSession.commit();
+    	} finally {
+			lSqlSession.close();
+		}	
+		
+		ProjectManager.setProjectsDirectory("C:/temp/bibisco/projects");
+		
+    	lSqlSession = lSqlSessionFactory.openSession();
     	Properties lProperties;
     	try {
 			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
@@ -62,7 +115,7 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}
     	
-    	Assert.assertEquals(lProperties.getValue(), "C:\\Users\\AndreaDocuments\\");
+    	Assert.assertEquals(lProperties.getValue(), "C:/temp/bibisco/projects");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -103,6 +156,34 @@ public class ProjectManagerTest {
 		lProjectDTO.setLanguage(LocaleManager.getInstance().getLocale().getLanguage());
 		ProjectManager.insert(lProjectDTO);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInsertProjectAndProjectsDirectroryNotExists() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			Properties lProperties = new Properties();
+			lProperties.setProperty("projectsDirectory");
+			lProperties.setValue("C:/temp/bibiscotto/projects");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);	
+			lSqlSession.commit();
+    	} catch (Throwable t) {	
+			lSqlSession.rollback();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	PropertiesManager.getInstance().reload();
+		
+		ProjectDTO lProjectDTO = new ProjectDTO();
+		lProjectDTO.setName("Test Insert");
+		lProjectDTO.setLanguage(LocaleManager.getInstance().getLocale().getLanguage());
+		lProjectDTO.setBibiscoVersion(VersionManager.getInstance().getVersion());
+		lProjectDTO = ProjectManager.insert(lProjectDTO);
+	}
+	
 	
 	@Test
 	public void testInsertProject() throws IOException {
@@ -179,6 +260,101 @@ public class ProjectManagerTest {
 		}
     	
     	PropertiesManager.getInstance().reload();
+    	
+    	
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testImportProjectsFromProjectsDirectoryWithEmptyProjectsDirectory() {
+		emptyProjectsDirectory();
+		ProjectManager.importProjectsFromProjectsDirectory();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testImportProjectsFromProjectsDirectoryWithWrongProjectsDirectory() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			Properties lProperties = new Properties();
+			lProperties.setProperty("projectsDirectory");
+			lProperties.setValue("C:/temp/bibiscotto/projects");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);	
+			lSqlSession.commit();
+    	} catch (Throwable t) {	
+			lSqlSession.rollback();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	PropertiesManager.getInstance().reload();
+		
+		ProjectManager.importProjectsFromProjectsDirectory();
+	}
+	
+	@Test
+	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjectMapper.deleteByExample(new ProjectsExample());
+			lSqlSession.commit();
+    	} finally {
+			lSqlSession.close();
+		}	
+		
+		int lIntResult = ProjectManager.importProjectsFromProjectsDirectory();
+		Assert.assertEquals(3, lIntResult);
+		
+		List<Projects> lListProjects;
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			ProjectsExample lProjectsExample = new ProjectsExample();
+			lProjectsExample.setOrderByClause("id_project");
+			lListProjects = lProjectMapper.selectByExample(lProjectsExample);
+    	} finally {
+			lSqlSession.close();
+		}	
+		
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lListProjects.get(0).getIdProject());
+		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lListProjects.get(1).getIdProject());
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjects.get(2).getIdProject());
+		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		Project lProject;
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT2_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT2_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT3_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		
 	}
 	
 	public void emptyProjectsDirectory() {

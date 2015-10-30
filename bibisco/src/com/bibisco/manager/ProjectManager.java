@@ -199,6 +199,7 @@ public class ProjectManager {
 		Validate.notEmpty(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be empty");
 		Validate.notEmpty(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be empty");
 		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
+		Validate.isTrue(doesProjectsDirectoryExists(), "projects directory not exists");
 		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
@@ -1167,10 +1168,22 @@ public class ProjectManager {
 		boolean lBlnResult;
 		
 		mLog.debug("Start isProjectsDirectoryEmpty()");
-		
 		lBlnResult = StringUtils.isBlank(PropertiesManager.getInstance().getProperty("projectsDirectory"));
-		
 		mLog.debug("End isProjectsDirectoryEmpty(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static boolean doesProjectsDirectoryExists() {
+		
+		boolean lBlnResult = false;
+		
+		mLog.debug("Start doesProjectsDirectoryExists()");
+		if (!isProjectsDirectoryEmpty()) {
+			File lFile = new File(getProjectsDirectory());
+			lBlnResult = lFile.exists();
+		}
+		mLog.debug("End doesProjectsDirectoryExists(): return " + lBlnResult);
 		
 		return lBlnResult;
 	}
@@ -1195,11 +1208,66 @@ public class ProjectManager {
 	
 	public static void setProjectsDirectory(String pStrProjectsDirectory) {
 		
-		mLog.debug("Start isProjectsDirectoryEmpty(", pStrProjectsDirectory , ")");
+		mLog.debug("Start setProjectsDirectory(", pStrProjectsDirectory , ")");
 		
+		// validate preconditions
+		Validate.notEmpty(pStrProjectsDirectory, "projects directory cannot be empty");
+		Validate.isTrue(new File(pStrProjectsDirectory).exists(), "projects directory not exists");
+		
+		// update property
 		PropertiesManager.getInstance().updateProperty("projectsDirectory", pStrProjectsDirectory);
 		
-		mLog.debug("End isProjectsDirectoryEmpty(", pStrProjectsDirectory , ")");
+		// import projects from project directory
+		int lIntImportedProjects = importProjectsFromProjectsDirectory();
+		
+		mLog.info("Set project directory: ", pStrProjectsDirectory, " - " + lIntImportedProjects, " imported projects.");
+		
+		mLog.debug("End setProjectsDirectory(", pStrProjectsDirectory , ")");
+	}
+	
+	public static int importProjectsFromProjectsDirectory() {
+		
+		int lIntResult = 0;
+		
+		mLog.debug("Start importProjectsFromProjectsDirectory()");
+		
+		// validate preconditions
+		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
+		Validate.isTrue(doesProjectsDirectoryExists(), "projects directory not exists");
+		
+		File[] lFiles = new File(getProjectsDirectory()).listFiles();
+	    
+		// search file with extensions h2.db
+		boolean lBlnIsProjectValid = false;
+		if(lFiles!=null) { 
+	        for(File lFile: lFiles) {
+	        	if (lFile.isDirectory()) {
+	        		String lStrIdProject = lFile.getName();
+	        		lBlnIsProjectValid = lStrIdProject.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+	        		if (lBlnIsProjectValid) {
+	        			
+	        			// set project name to context
+	        	    	ContextManager.getInstance().setIdProject(lStrIdProject);
+	        	    	
+	        	    	// check if project is created with previuos version of bibisco and update it
+	        	    	checkProjectVersionAndUpdateIfNecessary(lStrIdProject);
+	        	    	
+	        	    	// load project
+	        	    	ProjectDTO lProjectDTO = load();
+	        			
+	        			//import project into bibisco db
+	        			insertIntoBibiscoDB(lProjectDTO);
+	        			
+	        			//increment counter
+	        			lIntResult++;
+	        		}
+	        	}
+	        }
+	    }
+		
+		mLog.debug("End importProjectsFromProjectsDirectory(), imported projects: " + lIntResult);
+		
+		return lIntResult;
 	}
 	
 	private static void checkProjectVersionAndUpdateIfNecessary(String pStrIdProject) {

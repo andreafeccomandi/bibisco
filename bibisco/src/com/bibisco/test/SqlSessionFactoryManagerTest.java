@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.bibisco.dao.SqlSessionFactoryManager;
 import com.bibisco.dao.client.ProjectMapper;
 import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.model.ProjectExample;
+import com.bibisco.dao.model.Project;
 import com.bibisco.dao.model.Properties;
 import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.PropertiesManager;
@@ -34,24 +34,23 @@ public class SqlSessionFactoryManagerTest {
 	}
 	
 	@Test
-	public void testGetSqlSessionFactoryProject() {
+	public void testGetSingleSqlSessionFactoryProject() {
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	int lIntProjectsCount;
+		Project lProject;
     	try {
 			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
-			lIntProjectsCount = lProjectMapper.countByExample(new ProjectExample());
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
     	} finally {
 			lSqlSession.close();
 		}
-		
-		
-		Assert.assertEquals(lIntProjectsCount, 1);
+		Assert.assertEquals(lProject.getIdProject(), AllTests.TEST_PROJECT_ID);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetSqlSessionFactoryWithNoProjectInContext() {
+		ContextManager.getInstance().setIdProject(null);
 		SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
 	}
 	
@@ -77,5 +76,42 @@ public class SqlSessionFactoryManagerTest {
 		}
     	
     	PropertiesManager.getInstance().reload();
+	}
+
+	@Test
+	public void testGetMultipleSqlSessionFactoryProject() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		Project lProject;
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+		} finally {
+			lSqlSession.close();
+		}
+		Assert.assertEquals(lProject.getIdProject(), AllTests.TEST_PROJECT_ID);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
+		lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT2_ID);
+		} finally {
+			lSqlSession.close();
+		}
+		Assert.assertEquals(lProject.getIdProject(), AllTests.TEST_PROJECT2_ID);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
+		lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
+		} finally {
+			lSqlSession.close();
+		}
+		Assert.assertEquals(lProject.getIdProject(), AllTests.TEST_PROJECT3_ID);
 	}
 }
