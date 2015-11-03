@@ -49,13 +49,13 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testDoesProjectsDirectoryExistsWithProjectsDirectoryEmpty() {
+	public void testProjectsDirectoryExistsWithProjectsDirectoryEmpty() {
 		emptyProjectsDirectory();
-		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), false);
+		Assert.assertEquals(ProjectManager.projectsDirectoryExists(), false);
 	}
 	
 	@Test
-	public void testDoesProjectsDirectoryExistsWithWrongProjectsDirectory() {
+	public void testProjectsDirectoryExistsWithWrongProjectsDirectory() {
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -72,12 +72,34 @@ public class ProjectManagerTest {
 		}
     	
     	PropertiesManager.getInstance().reload();
-		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), false);
+		Assert.assertEquals(ProjectManager.projectsDirectoryExists(), false);
 	}
 	
 	@Test
-	public void testDoesProjectsDirectoryExistsWithCorrectProjectsDirectory() {
-		Assert.assertEquals(ProjectManager.doesProjectsDirectoryExists(), true);
+	public void testProjectExists() {
+		Assert.assertTrue(ProjectManager.projectExists(AllTests.TEST_PROJECT_ID));
+	}
+	
+	@Test
+	public void testProjectExistsWithInexistentProject() {
+		Assert.assertFalse(ProjectManager.projectExists("XXX"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testProjectExistsWithNullIdProject() {
+		ProjectManager.projectExists(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testProjectExistsWithEmptyIdProject() {
+		ProjectManager.projectExists("");
+	}
+	
+	@Test
+	public void testProjectsDirectoryExistsWithCorrectProjectsDirectory() {
+		Assert.assertTrue(ProjectManager.projectsDirectoryExists());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -377,5 +399,29 @@ public class ProjectManagerTest {
 		}
     	
     	PropertiesManager.getInstance().reload();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoadProjectWithNullProjectId() {
+		ProjectManager.load(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoadProjectWithEmptyProjectId() {
+		ProjectManager.load("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoadProjectWithWrongProjectId() {
+		ProjectManager.load("xxx");
+	}
+	
+	@Test
+	public void testLoadProject() {
+		ProjectDTO lProjectDTO = ProjectManager.load(AllTests.TEST_PROJECT_ID);
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjectDTO.getIdProject());
+		Assert.assertEquals("1.3.0", lProjectDTO.getBibiscoVersion());
+		Assert.assertEquals("Test", lProjectDTO.getName());
+		Assert.assertEquals("en_US", lProjectDTO.getLanguage());
 	}
 }

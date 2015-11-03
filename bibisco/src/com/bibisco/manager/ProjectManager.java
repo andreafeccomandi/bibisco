@@ -199,7 +199,7 @@ public class ProjectManager {
 		Validate.notEmpty(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be empty");
 		Validate.notEmpty(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be empty");
 		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
-		Validate.isTrue(doesProjectsDirectoryExists(), "projects directory not exists");
+		Validate.isTrue(projectsDirectoryExists(), "projects directory not exists");
 		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
@@ -1174,13 +1174,37 @@ public class ProjectManager {
 		return lBlnResult;
 	}
 	
-	public static boolean doesProjectsDirectoryExists() {
+	public static boolean projectsDirectoryExists() {
 		
 		boolean lBlnResult = false;
 		
 		mLog.debug("Start doesProjectsDirectoryExists()");
 		if (!isProjectsDirectoryEmpty()) {
 			File lFile = new File(getProjectsDirectory());
+			lBlnResult = lFile.exists();
+		}
+		mLog.debug("End doesProjectsDirectoryExists(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static boolean projectExists(String pStrIdProject) {
+		
+		boolean lBlnResult = false;
+		
+		mLog.debug("Start doesProjectsDirectoryExists()");
+		
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+		
+		if (!isProjectsDirectoryEmpty()) {
+			StringBuilder lStringBuilder = new StringBuilder();
+			lStringBuilder.append(getProjectsDirectory());
+			lStringBuilder.append(pStrIdProject);
+			lStringBuilder.append(ContextManager.getPathSeparator());
+			lStringBuilder.append(pStrIdProject);
+			lStringBuilder.append(".h2.db");
+			
+			File lFile = new File(lStringBuilder.toString());
 			lBlnResult = lFile.exists();
 		}
 		mLog.debug("End doesProjectsDirectoryExists(): return " + lBlnResult);
@@ -1233,7 +1257,7 @@ public class ProjectManager {
 		
 		// validate preconditions
 		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
-		Validate.isTrue(doesProjectsDirectoryExists(), "projects directory not exists");
+		Validate.isTrue(projectsDirectoryExists(), "projects directory not exists");
 		
 		File[] lFiles = new File(getProjectsDirectory()).listFiles();
 	    
@@ -1249,7 +1273,7 @@ public class ProjectManager {
 	        			// set project name to context
 	        	    	ContextManager.getInstance().setIdProject(lStrIdProject);
 	        	    	
-	        	    	// check if project is created with previuos version of bibisco and update it
+	        	    	// check if project is created with previous version of bibisco and update it
 	        	    	checkProjectVersionAndUpdateIfNecessary(lStrIdProject);
 	        	    	
 	        	    	// load project
