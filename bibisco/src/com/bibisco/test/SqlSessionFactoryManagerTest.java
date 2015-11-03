@@ -49,6 +49,12 @@ public class SqlSessionFactoryManagerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testGetSqlSessionFactoryProjectWithWrongProject() {
+		ContextManager.getInstance().setIdProject("xxx");
+		SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetSqlSessionFactoryWithNoProjectInContext() {
 		ContextManager.getInstance().setIdProject(null);
 		SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();

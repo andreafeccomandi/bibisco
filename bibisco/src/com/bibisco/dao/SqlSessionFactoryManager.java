@@ -129,15 +129,17 @@ public class SqlSessionFactoryManager {
 
 	public SqlSessionFactory getSqlSessionFactoryProject() {
 		
-		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		String lStrIdProject = ContextManager.getInstance().getIdProject();
 		
-		String lStrProjectId = ContextManager.getInstance().getIdProject();
-		if (mMapSqlSessionFactoryProjects.get(lStrProjectId) == null) {
-			SqlSessionFactory lSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(lStrProjectId));
-			mMapSqlSessionFactoryProjects.put(lStrProjectId, lSqlSessionFactoryProject);
+		Validate.notEmpty(lStrIdProject, "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(lStrIdProject), "Project references non existent directory");
+		
+		if (mMapSqlSessionFactoryProjects.get(lStrIdProject) == null) {
+			SqlSessionFactory lSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(lStrIdProject));
+			mMapSqlSessionFactoryProjects.put(lStrIdProject, lSqlSessionFactoryProject);
 		}
 		
-		return mMapSqlSessionFactoryProjects.get(lStrProjectId);
+		return mMapSqlSessionFactoryProjects.get(lStrIdProject);
 	}
 	
 	public void cleanSqlSessionFactoryProject() {
