@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.json.JSONException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -222,7 +223,6 @@ public class ProjectManagerTest {
 		Assert.assertNotNull(lProjectDTO.getArchitecture());
 		Assert.assertEquals(lProjectDTO.getArchitecture().getPremiseTaskStatus(), TaskStatus.TODO);
 		Assert.assertEquals(lProjectDTO.getArchitecture().getFabulaTaskStatus(), TaskStatus.TODO);
-		Assert.assertEquals(lProjectDTO.getArchitecture().getStrandsTaskStatus(), TaskStatus.TODO);
 		Assert.assertEquals(lProjectDTO.getArchitecture().getSettingTaskStatus(), TaskStatus.TODO);
 		Assert.assertNull(lProjectDTO.getArchitecture().getStrandList());
 		Assert.assertNull(lProjectDTO.getChapterList());
@@ -417,11 +417,173 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testLoadProject() {
+	public void testLoadProject() throws JSONException {
 		ProjectDTO lProjectDTO = ProjectManager.load(AllTests.TEST_PROJECT_ID);
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjectDTO.getIdProject());
 		Assert.assertEquals("1.3.0", lProjectDTO.getBibiscoVersion());
 		Assert.assertEquals("Test", lProjectDTO.getName());
 		Assert.assertEquals("en_US", lProjectDTO.getLanguage());
+		
+		// ARCHITECTURE
+		
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getArchitecture().getFabulaTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getArchitecture().getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getArchitecture().getSettingTaskStatus());
+		Assert.assertEquals(3, lProjectDTO.getArchitecture().getStrandList().size());
+		Assert.assertEquals("Strand 1", lProjectDTO.getArchitecture().getStrandList().get(0).getName());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getArchitecture().getStrandList().get(0).getPosition());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getArchitecture().getStrandList().get(0).getTaskStatus());
+		Assert.assertEquals("<p>Strand 1</p>", lProjectDTO.getArchitecture().getStrandList().get(0).getDescription());
+		Assert.assertEquals("Strand 2", lProjectDTO.getArchitecture().getStrandList().get(1).getName());
+		Assert.assertEquals(new Integer(2), lProjectDTO.getArchitecture().getStrandList().get(1).getPosition());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getArchitecture().getStrandList().get(1).getTaskStatus());
+		Assert.assertEquals("<p>Strand 2</p>", lProjectDTO.getArchitecture().getStrandList().get(1).getDescription());
+		Assert.assertEquals("Strand 3", lProjectDTO.getArchitecture().getStrandList().get(2).getName());
+		Assert.assertEquals(new Integer(3), lProjectDTO.getArchitecture().getStrandList().get(2).getPosition());
+		Assert.assertEquals(TaskStatus.COMPLETED, lProjectDTO.getArchitecture().getStrandList().get(2).getTaskStatus());
+		Assert.assertEquals("<p>Strand 3</p>", lProjectDTO.getArchitecture().getStrandList().get(2).getDescription());
+		
+		
+		
+		// CHAPTERS
+		
+		Assert.assertEquals(3, lProjectDTO.getChapterList().size());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getChapterList().get(0).getIdChapter());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(0).getNote());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getChapterList().get(0).getPosition());
+		Assert.assertEquals("Chapter 1", lProjectDTO.getChapterList().get(0).getTitle());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(0).getReason());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getChapterList().get(0).getReasonTaskStatus());
+		Assert.assertEquals(new Integer(1), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("idChapter"));
+		Assert.assertEquals(new Integer(1), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("position"));
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, (TaskStatus) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("taskStatus"));
+		Assert.assertEquals(new Integer(13), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("wordCount"));
+		Assert.assertEquals(new Integer(49), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("characterCount"));
+		Assert.assertEquals(0, lProjectDTO.getChapterList().get(0).getSceneList().size());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getChapterList().get(0).getTaskStatus());
+		Assert.assertEquals(new Integer(13), lProjectDTO.getChapterList().get(0).getWordCount());
+		Assert.assertEquals(new Integer(49), lProjectDTO.getChapterList().get(0).getCharacterCount());
+		
+		Assert.assertEquals(new Integer(2), lProjectDTO.getChapterList().get(1).getIdChapter());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(1).getNote());
+		Assert.assertEquals(new Integer(2), lProjectDTO.getChapterList().get(1).getPosition());
+		Assert.assertEquals("Chapter 2", lProjectDTO.getChapterList().get(1).getTitle());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(1).getReason());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getChapterList().get(1).getReasonTaskStatus());
+		Assert.assertEquals(new Integer(2), (Integer) lProjectDTO.getChapterList().get(1).getWordCountTaskStatusAsJSONObject().get("idChapter"));
+		Assert.assertEquals(new Integer(2), (Integer) lProjectDTO.getChapterList().get(1).getWordCountTaskStatusAsJSONObject().get("position"));
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, (TaskStatus) lProjectDTO.getChapterList().get(1).getWordCountTaskStatusAsJSONObject().get("taskStatus"));
+		Assert.assertEquals(new Integer(0), (Integer) lProjectDTO.getChapterList().get(1).getWordCountTaskStatusAsJSONObject().get("wordCount"));
+		Assert.assertEquals(new Integer(0), (Integer) lProjectDTO.getChapterList().get(1).getWordCountTaskStatusAsJSONObject().get("characterCount"));
+		Assert.assertEquals(0, lProjectDTO.getChapterList().get(1).getSceneList().size());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getChapterList().get(1).getTaskStatus());
+		
+		Assert.assertEquals(new Integer(3), lProjectDTO.getChapterList().get(2).getIdChapter());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(2).getNote());
+		Assert.assertEquals(new Integer(3), lProjectDTO.getChapterList().get(2).getPosition());
+		Assert.assertEquals("Chapter 3", lProjectDTO.getChapterList().get(2).getTitle());
+		Assert.assertEquals(null, lProjectDTO.getChapterList().get(2).getReason());
+		Assert.assertEquals(TaskStatus.COMPLETED, lProjectDTO.getChapterList().get(2).getReasonTaskStatus());
+		Assert.assertEquals(new Integer(3), (Integer) lProjectDTO.getChapterList().get(2).getWordCountTaskStatusAsJSONObject().get("idChapter"));
+		Assert.assertEquals(new Integer(3), (Integer) lProjectDTO.getChapterList().get(2).getWordCountTaskStatusAsJSONObject().get("position"));
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, (TaskStatus) lProjectDTO.getChapterList().get(2).getWordCountTaskStatusAsJSONObject().get("taskStatus"));
+		Assert.assertEquals(new Integer(0), (Integer) lProjectDTO.getChapterList().get(2).getWordCountTaskStatusAsJSONObject().get("wordCount"));
+		Assert.assertEquals(new Integer(0), (Integer) lProjectDTO.getChapterList().get(2).getWordCountTaskStatusAsJSONObject().get("characterCount"));
+		Assert.assertEquals(0, lProjectDTO.getChapterList().get(2).getSceneList().size());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getChapterList().get(2).getTaskStatus());
+		
+		
+		// LOCATIONS
+		
+		Assert.assertEquals(3, lProjectDTO.getLocationList().size());
+		Assert.assertEquals("Nation 1, State 1, City 1 Location's name 1", lProjectDTO.getLocationList().get(0).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("71", lProjectDTO.getLocationList().get(0).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals("City 1", lProjectDTO.getLocationList().get(0).getCity());
+		Assert.assertEquals(null, lProjectDTO.getLocationList().get(0).getDescription());
+		Assert.assertEquals("Nation 1, State 1, City 1", lProjectDTO.getLocationList().get(0).getFullyQualifiedArea());
+		Assert.assertEquals(new Integer(71), lProjectDTO.getLocationList().get(0).getIdLocation());		
+		Assert.assertEquals("Location's name 1", lProjectDTO.getLocationList().get(0).getName());
+		Assert.assertEquals("Nation 1", lProjectDTO.getLocationList().get(0).getNation());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getLocationList().get(0).getPosition());
+		Assert.assertEquals("State 1", lProjectDTO.getLocationList().get(0).getState());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getLocationList().get(0).getTaskStatus());
+		
+		Assert.assertEquals("Nation 2, State 2, City 2 Location's name 2", lProjectDTO.getLocationList().get(1).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("72", lProjectDTO.getLocationList().get(1).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals("City 2", lProjectDTO.getLocationList().get(1).getCity());
+		Assert.assertEquals(null, lProjectDTO.getLocationList().get(1).getDescription());
+		Assert.assertEquals("Nation 2, State 2, City 2", lProjectDTO.getLocationList().get(1).getFullyQualifiedArea());
+		Assert.assertEquals(new Integer(72), lProjectDTO.getLocationList().get(1).getIdLocation());		
+		Assert.assertEquals("Location's name 2", lProjectDTO.getLocationList().get(1).getName());
+		Assert.assertEquals("Nation 2", lProjectDTO.getLocationList().get(1).getNation());
+		Assert.assertEquals(new Integer(2), lProjectDTO.getLocationList().get(1).getPosition());
+		Assert.assertEquals("State 2", lProjectDTO.getLocationList().get(1).getState());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getLocationList().get(1).getTaskStatus());
+		
+		Assert.assertEquals("Nation 3, State 3, City 3 Location's name 3", lProjectDTO.getLocationList().get(2).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("73", lProjectDTO.getLocationList().get(2).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals("City 3", lProjectDTO.getLocationList().get(2).getCity());
+		Assert.assertEquals(null, lProjectDTO.getLocationList().get(2).getDescription());
+		Assert.assertEquals("Nation 3, State 3, City 3", lProjectDTO.getLocationList().get(2).getFullyQualifiedArea());
+		Assert.assertEquals(new Integer(73), lProjectDTO.getLocationList().get(2).getIdLocation());		
+		Assert.assertEquals("Location's name 3", lProjectDTO.getLocationList().get(2).getName());
+		Assert.assertEquals("Nation 3", lProjectDTO.getLocationList().get(2).getNation());
+		Assert.assertEquals(new Integer(3), lProjectDTO.getLocationList().get(2).getPosition());
+		Assert.assertEquals("State 3", lProjectDTO.getLocationList().get(2).getState());
+		Assert.assertEquals(TaskStatus.COMPLETED, lProjectDTO.getLocationList().get(2).getTaskStatus());
+		
+		
+		// MAIN CHARACTERS
+		
+		Assert.assertEquals(3, lProjectDTO.getMainCharacterList().size());
+		Assert.assertEquals("Main character 1", lProjectDTO.getMainCharacterList().get(0).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("67", lProjectDTO.getMainCharacterList().get(0).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(67), lProjectDTO.getMainCharacterList().get(0).getIdCharacter());
+		Assert.assertEquals("Main character 1", lProjectDTO.getMainCharacterList().get(0).getName());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getMainCharacterList().get(0).getPosition());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getMainCharacterList().get(0).getTaskStatus());
+		Assert.assertTrue(lProjectDTO.getMainCharacterList().get(0).isMainCharacter());
+		
+		Assert.assertEquals("Main character 2", lProjectDTO.getMainCharacterList().get(1).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("68", lProjectDTO.getMainCharacterList().get(1).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(68), lProjectDTO.getMainCharacterList().get(1).getIdCharacter());
+		Assert.assertEquals("Main character 2", lProjectDTO.getMainCharacterList().get(1).getName());
+		Assert.assertEquals(new Integer(2), lProjectDTO.getMainCharacterList().get(1).getPosition());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getMainCharacterList().get(1).getTaskStatus());
+		Assert.assertTrue(lProjectDTO.getMainCharacterList().get(1).isMainCharacter());
+		
+		Assert.assertEquals("Main character 3", lProjectDTO.getMainCharacterList().get(2).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("69", lProjectDTO.getMainCharacterList().get(2).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(69), lProjectDTO.getMainCharacterList().get(2).getIdCharacter());
+		Assert.assertEquals("Main character 3", lProjectDTO.getMainCharacterList().get(2).getName());
+		Assert.assertEquals(new Integer(3), lProjectDTO.getMainCharacterList().get(2).getPosition());
+		Assert.assertEquals(TaskStatus.COMPLETED, lProjectDTO.getMainCharacterList().get(2).getTaskStatus());
+		Assert.assertTrue(lProjectDTO.getMainCharacterList().get(2).isMainCharacter());
+
+		Assert.assertEquals(3, lProjectDTO.getSecondaryCharacterList().size());
+		Assert.assertEquals("Secondary character 1", lProjectDTO.getSecondaryCharacterList().get(0).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("70", lProjectDTO.getSecondaryCharacterList().get(0).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(70), lProjectDTO.getSecondaryCharacterList().get(0).getIdCharacter());
+		Assert.assertEquals("Secondary character 1", lProjectDTO.getSecondaryCharacterList().get(0).getName());
+		Assert.assertEquals(new Integer(1), lProjectDTO.getSecondaryCharacterList().get(0).getPosition());
+		Assert.assertEquals(TaskStatus.TODO, lProjectDTO.getSecondaryCharacterList().get(0).getTaskStatus());
+		Assert.assertFalse(lProjectDTO.getSecondaryCharacterList().get(0).isMainCharacter());
+		
+		Assert.assertEquals("Secondary character 2", lProjectDTO.getSecondaryCharacterList().get(1).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("71", lProjectDTO.getSecondaryCharacterList().get(1).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(71), lProjectDTO.getSecondaryCharacterList().get(1).getIdCharacter());
+		Assert.assertEquals("Secondary character 2", lProjectDTO.getSecondaryCharacterList().get(1).getName());
+		Assert.assertEquals(new Integer(2), lProjectDTO.getSecondaryCharacterList().get(1).getPosition());
+		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getSecondaryCharacterList().get(1).getTaskStatus());
+		Assert.assertFalse(lProjectDTO.getSecondaryCharacterList().get(1).isMainCharacter());
+		
+		Assert.assertEquals("Secondary character 3", lProjectDTO.getSecondaryCharacterList().get(2).getAnalysisChapterPresenceItemDescription());
+		Assert.assertEquals("72", lProjectDTO.getSecondaryCharacterList().get(2).getAnalysisChapterPresenceItemId());
+		Assert.assertEquals(new Integer(72), lProjectDTO.getSecondaryCharacterList().get(2).getIdCharacter());
+		Assert.assertEquals("Secondary character 3", lProjectDTO.getSecondaryCharacterList().get(2).getName());
+		Assert.assertEquals(new Integer(3), lProjectDTO.getSecondaryCharacterList().get(2).getPosition());
+		Assert.assertEquals(TaskStatus.COMPLETED, lProjectDTO.getSecondaryCharacterList().get(2).getTaskStatus());
+		Assert.assertFalse(lProjectDTO.getSecondaryCharacterList().get(2).isMainCharacter());
+
 	}
 }

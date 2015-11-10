@@ -124,7 +124,7 @@ public class ChapterDTO {
 		this.characterCount = characterCount;
 	}
 
-	public Object getWordCountTaskStatusAsJSONObject() {
+	public JSONObject getWordCountTaskStatusAsJSONObject() {
 		
 		JSONObject lJSONObject;
 

@@ -27,7 +27,6 @@ import com.bibisco.enums.TaskStatus;
 public class ArchitectureDTO {
 	TaskStatus premiseTaskStatus;
 	TaskStatus fabulaTaskStatus;
-	TaskStatus strandsTaskStatus;
 	TaskStatus settingTaskStatus;
 	List<StrandDTO> strandList;
 	
@@ -42,12 +41,6 @@ public class ArchitectureDTO {
 	}
 	public void setFabulaTaskStatus(TaskStatus fabula) {
 		this.fabulaTaskStatus = fabula;
-	}
-	public TaskStatus getStrandsTaskStatus() {
-		return strandsTaskStatus;
-	}
-	public void setStrandsTaskStatus(TaskStatus strands) {
-		this.strandsTaskStatus = strands;
 	}
 	public TaskStatus getSettingTaskStatus() {
 		return settingTaskStatus;

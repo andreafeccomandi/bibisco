@@ -135,7 +135,6 @@ public class ProjectManager {
 		ArchitectureDTO lArchitectureDTO = new ArchitectureDTO();
 		lArchitectureDTO.setPremiseTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getPremiseTaskStatus()));
 		lArchitectureDTO.setFabulaTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getFabulaTaskStatus()));
-		lArchitectureDTO.setStrandsTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getStrandTaskStatus()));
 		lArchitectureDTO.setSettingTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getSettingTaskStatus()));
 		lArchitectureDTO.setStrandList(StrandManager.loadAll());
 		
