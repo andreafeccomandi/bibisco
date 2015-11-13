@@ -94,6 +94,10 @@ public class ProjectManager {
 		
 		mLog.debug("Start load(String)");
 		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
+		
 		// set project name to context
 		ContextManager.getInstance().setIdProject(pStrIdProject);
 		
@@ -262,6 +266,10 @@ public class ProjectManager {
 	public static void deleteProject(String pStrIdProject) {
 		
 		mLog.debug("Start deleteProject(String)");
+		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();

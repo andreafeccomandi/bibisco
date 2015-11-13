@@ -60,7 +60,6 @@ public class AllTests {
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
-	private static String mStrTestProjectDBUrl;
 	
 	@BeforeClass
 	public static void cleanProjectsDirectory() throws IOException, ConfigurationException {
@@ -150,17 +149,6 @@ public class AllTests {
 		lStringBuilderBibiscoDBUrl.append(mStrPathSeparator);
 		lStringBuilderBibiscoDBUrl.append("bibisco");
 		mStrBibiscoDBUrl = lStringBuilderBibiscoDBUrl.toString();
-		
-		// test project db url
-		StringBuilder lStringBuilderTestProjectDBUrl = new StringBuilder();
-		lStringBuilderTestProjectDBUrl.append("jdbc:h2:file:");
-		lStringBuilderTestProjectDBUrl.append(mStrPathSeparator);
-		lStringBuilderTestProjectDBUrl.append(BIBISCO_INTERNAL_PROJECTS_DIR);
-		lStringBuilderTestProjectDBUrl.append(mStrPathSeparator);
-		lStringBuilderTestProjectDBUrl.append(TEST_PROJECT_ID);
-		lStringBuilderTestProjectDBUrl.append(mStrPathSeparator);
-		lStringBuilderTestProjectDBUrl.append(TEST_PROJECT_ID);
-		mStrTestProjectDBUrl = lStringBuilderTestProjectDBUrl.toString();
 		
 		cleanProjectsDirectory();
 		

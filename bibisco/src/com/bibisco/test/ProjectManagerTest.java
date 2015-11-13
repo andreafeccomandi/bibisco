@@ -14,6 +14,7 @@
  */
 package com.bibisco.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import com.bibisco.dao.model.Projects;
 import com.bibisco.dao.model.ProjectsExample;
 import com.bibisco.dao.model.Properties;
 import com.bibisco.enums.TaskStatus;
+import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.ProjectManager;
 import com.bibisco.manager.PropertiesManager;
@@ -43,6 +45,28 @@ import com.bibisco.manager.VersionManager;
 
 public class ProjectManagerTest {
 
+	@Before 
+	@After
+	public void init() throws ConfigurationException, IOException {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			Properties lProperties = new Properties();
+			lProperties.setProperty("projectsDirectory");
+			lProperties.setValue("C:/temp/bibisco/projects");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);	
+			lSqlSession.commit();
+    	} catch (Throwable t) {	
+			lSqlSession.rollback();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	PropertiesManager.getInstance().reload();	
+	}
+	
 	@Test
 	public void testIsProjectsDirectoryEmpty() {
 		emptyProjectsDirectory();
@@ -260,30 +284,6 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}	
 		Assert.assertEquals(lListProjects.size(), 1);
-	}
-	
-	@Before 
-	@After
-	public void init() throws ConfigurationException, IOException {
-		
-		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			Properties lProperties = new Properties();
-			lProperties.setProperty("projectsDirectory");
-			lProperties.setValue("C:/temp/bibisco/projects");
-			lPropertiesMapper.updateByPrimaryKey(lProperties);	
-			lSqlSession.commit();
-    	} catch (Throwable t) {	
-			lSqlSession.rollback();
-    	} finally {
-			lSqlSession.close();
-		}
-    	
-    	PropertiesManager.getInstance().reload();
-    	
-    	
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -636,12 +636,99 @@ public class ProjectManagerTest {
 		Assert.assertNull(lListProjectDTOs.get(2).getBibiscoVersion());
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(2).getIdProject());
 		Assert.assertNull(lListProjectDTOs.get(2).getLanguage());
-		Assert.assertEquals("Test 3", lListProjectDTOs.get(2).getName());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lListProjectDTOs.get(2).getName());
 		Assert.assertNull(lListProjectDTOs.get(2).getArchitecture());
 		Assert.assertNull(lListProjectDTOs.get(2).getChapterList());
 		Assert.assertNull(lListProjectDTOs.get(2).getLocationList());
 		Assert.assertNull(lListProjectDTOs.get(2).getMainCharacterList());
 		Assert.assertNull(lListProjectDTOs.get(2).getSecondaryCharacterList());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteProjectWithEmptyIdProject() {
+		ProjectManager.deleteProject("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteProjectWithNullIdProject() {
+		ProjectManager.deleteProject(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteProjectWithWrongIdProject() {
+		ProjectManager.deleteProject("MarcChagall");
+	}
+	
+	@Test
+	public void testDeleteProject() {
+		
+		File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + System.getProperty("file.separator") + AllTests.TEST_PROJECT_ID);
+		Assert.assertTrue(lFile.exists());
+		
+		ProjectManager.deleteProject(AllTests.TEST_PROJECT_ID);
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		Projects lProjects;
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+		} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertNull(lProjects);
+		Assert.assertFalse(lFile.exists());
+	}
+	
+	@Test
+	public void testExportProjectAsArchive() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		File lFile = ProjectManager.exportProjectAsArchive();
+		Assert.assertNotNull(lFile);
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lFile.getParent());
+		Assert.assertTrue(lFile.getName().startsWith("Test_archive"));
+		Assert.assertTrue(lFile.getName().endsWith(".bibisco"));
+		Assert.assertTrue(lFile.getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
+		lFile = ProjectManager.exportProjectAsArchive();
+		Assert.assertNotNull(lFile);
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lFile.getParent());
+		Assert.assertTrue(lFile.getName().startsWith("Test2_archive"));
+		Assert.assertTrue(lFile.getName().endsWith(".bibisco"));
+		Assert.assertTrue(lFile.getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
+		lFile = ProjectManager.exportProjectAsArchive();
+		Assert.assertNotNull(lFile);
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lFile.getParent());
+		Assert.assertTrue(lFile.getName().startsWith("Test3_archive"));
+		Assert.assertTrue(lFile.getName().endsWith(".bibisco"));
+		Assert.assertTrue(lFile.getTotalSpace() > 0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsArchiveWithEmptyIdProject() {
+		ContextManager.getInstance().setIdProject("");
+		ProjectManager.exportProjectAsArchive();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsArchiveWithNullIdProject() {
+		ContextManager.getInstance().setIdProject(null);
+		ProjectManager.exportProjectAsArchive();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsArchiveWitWrongIdProject() {
+		ContextManager.getInstance().setIdProject("Smashing Pumpkins");
+		ProjectManager.exportProjectAsArchive();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsArchiveWithNoProjectInContext() {
+		ProjectManager.exportProjectAsArchive();
 	}
 	
 }
