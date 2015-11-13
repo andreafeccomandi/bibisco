@@ -201,27 +201,6 @@ public class AllTests {
 		return mSqlSessionFactory;
 	}
 	
-	public static SqlSessionFactory getTestProjectSqlSessionFactory()  {
-
-		SqlSessionFactory mSqlSessionFactory;
-		try {
-			if (!mBlnEnvironmentInitialized) {
-				init();
-			}
-			Reader lReader = Resources.getResourceAsReader(RESOURCE_FILE_NAME);
-			Properties lProperties = new Properties();
-			lProperties.setProperty("url", mStrTestProjectDBUrl);
-			lProperties.setProperty("username", DB_USERNAME);
-			lProperties.setProperty("password", DB_PASSWORD);
-
-			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader, lProperties);
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-
-		return mSqlSessionFactory;
-	}
-	
 	public static SqlSessionFactory getProjectSqlSessionFactoryById(String pStrIdProject)  {
 
 		SqlSessionFactory mSqlSessionFactory;

@@ -586,4 +586,62 @@ public class ProjectManagerTest {
 		Assert.assertFalse(lProjectDTO.getSecondaryCharacterList().get(2).isMainCharacter());
 
 	}
+	
+	@Test
+	public void testLoadAllWithNoProjects() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjectMapper.deleteByExample(new ProjectsExample());
+			lSqlSession.commit();
+		} finally {
+			lSqlSession.close();
+		}	
+		
+		List<ProjectDTO> lListProjectDTOs = ProjectManager.loadAll();
+		Assert.assertNull(lListProjectDTOs);
+	}
+	
+	@Test
+	public void testLoadAll() {
+		
+		List<ProjectDTO> lListProjectDTOs = ProjectManager.loadAll();
+		
+		Assert.assertEquals(3, lListProjectDTOs.size());
+		Assert.assertNull(lListProjectDTOs.get(0).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(0).getBibiscoVersion());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lListProjectDTOs.get(0).getIdProject());
+		Assert.assertNull(lListProjectDTOs.get(0).getLanguage());
+		Assert.assertEquals("Test", lListProjectDTOs.get(0).getName());
+		Assert.assertNull(lListProjectDTOs.get(0).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(0).getChapterList());
+		Assert.assertNull(lListProjectDTOs.get(0).getLocationList());
+		Assert.assertNull(lListProjectDTOs.get(0).getMainCharacterList());
+		Assert.assertNull(lListProjectDTOs.get(0).getSecondaryCharacterList());
+		
+		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(1).getBibiscoVersion());
+		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lListProjectDTOs.get(1).getIdProject());
+		Assert.assertNull(lListProjectDTOs.get(1).getLanguage());
+		Assert.assertEquals("Test 2", lListProjectDTOs.get(1).getName());
+		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(1).getChapterList());
+		Assert.assertNull(lListProjectDTOs.get(1).getLocationList());
+		Assert.assertNull(lListProjectDTOs.get(1).getMainCharacterList());
+		Assert.assertNull(lListProjectDTOs.get(1).getSecondaryCharacterList());
+		
+		Assert.assertNull(lListProjectDTOs.get(2).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(2).getBibiscoVersion());
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(2).getIdProject());
+		Assert.assertNull(lListProjectDTOs.get(2).getLanguage());
+		Assert.assertEquals("Test 3", lListProjectDTOs.get(2).getName());
+		Assert.assertNull(lListProjectDTOs.get(2).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(2).getChapterList());
+		Assert.assertNull(lListProjectDTOs.get(2).getLocationList());
+		Assert.assertNull(lListProjectDTOs.get(2).getMainCharacterList());
+		Assert.assertNull(lListProjectDTOs.get(2).getSecondaryCharacterList());
+	}
+	
 }
