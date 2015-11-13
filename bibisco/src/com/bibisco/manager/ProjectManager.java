@@ -263,9 +263,9 @@ public class ProjectManager {
 		mLog.debug("End insertIntoBibiscoDB(ProjectDTO)");
 	}
 	
-	public static void deleteProject(String pStrIdProject) {
+	public static void delete(String pStrIdProject) {
 		
-		mLog.debug("Start deleteProject(String)");
+		mLog.debug("Start delete(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(pStrIdProject, "There is no project in context");
@@ -292,7 +292,7 @@ public class ProjectManager {
 			lSqlSession.close();
 		}
 		
-		mLog.debug("End deleteProject(String)");
+		mLog.debug("End delete(String)");
 	}
 
 	private static void insertIntoBibiscoDB(ProjectDTO pProjectDTO) {

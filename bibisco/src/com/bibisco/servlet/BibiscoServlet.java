@@ -1426,7 +1426,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start deleteProject(HttpServletRequest, HttpServletResponse)");
 		
-		ProjectManager.deleteProject(pRequest.getParameter("idProject"));
+		ProjectManager.delete(pRequest.getParameter("idProject"));
 		
 		mLog.debug("End deleteProject(HttpServletRequest, HttpServletResponse)");
 	}

@@ -646,17 +646,17 @@ public class ProjectManagerTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteProjectWithEmptyIdProject() {
-		ProjectManager.deleteProject("");
+		ProjectManager.delete("");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteProjectWithNullIdProject() {
-		ProjectManager.deleteProject(null);
+		ProjectManager.delete(null);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteProjectWithWrongIdProject() {
-		ProjectManager.deleteProject("MarcChagall");
+		ProjectManager.delete("MarcChagall");
 	}
 	
 	@Test
@@ -665,7 +665,7 @@ public class ProjectManagerTest {
 		File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + System.getProperty("file.separator") + AllTests.TEST_PROJECT_ID);
 		Assert.assertTrue(lFile.exists());
 		
-		ProjectManager.deleteProject(AllTests.TEST_PROJECT_ID);
+		ProjectManager.delete(AllTests.TEST_PROJECT_ID);
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
