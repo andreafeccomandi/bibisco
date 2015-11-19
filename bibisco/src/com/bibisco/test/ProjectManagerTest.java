@@ -7,7 +7,6 @@
  *
  *      http://www.gnu.org/licenses/gpl-2.0.html
  *
- * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY. 
  * See the GNU General Public License for more details.
  * 
@@ -16,13 +15,16 @@ package com.bibisco.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.json.JSONException;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -315,7 +317,7 @@ public class ProjectManagerTest {
 		ProjectManager.importProjectsFromProjectsDirectory();
 	}
 	
-	@Test
+	
 	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -660,19 +662,19 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testDeleteProject() {
-		
-		File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + System.getProperty("file.separator") + AllTests.TEST_PROJECT_ID);
+	public void testDeleteProject() throws ConfigurationException, IOException, SQLException {
+				
+		File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + System.getProperty("file.separator") + AllTests.TEST_PROJECT3_ID);
 		Assert.assertTrue(lFile.exists());
 		
-		ProjectManager.delete(AllTests.TEST_PROJECT_ID);
+		ProjectManager.delete(AllTests.TEST_PROJECT3_ID);
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
 		Projects lProjects;
 		try {
 			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
-			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
 		} finally {
 			lSqlSession.close();
 		}	
@@ -727,8 +729,146 @@ public class ProjectManagerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testExportProjectAsArchiveWithNoProjectInContext() {
-		ProjectManager.exportProjectAsArchive();
+	public void testExportProjectAsPdfWithEmptyIdProject() {
+		ContextManager.getInstance().setIdProject("");
+		ProjectManager.exportProjectAsPdf();
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsPdfWithNullIdProject() {
+		ContextManager.getInstance().setIdProject(null);
+		ProjectManager.exportProjectAsPdf();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsPdfWitWrongIdProject() {
+		ContextManager.getInstance().setIdProject("Smashing Pumpkins");
+		ProjectManager.exportProjectAsPdf();
+	}
+	
+	@Test
+	public void testExportProjectAsPdf() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		List<File> lListFile = ProjectManager.exportProjectAsPdf();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
+		lListFile = ProjectManager.exportProjectAsPdf();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test2_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test2_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
+		lListFile = ProjectManager.exportProjectAsPdf();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test3_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test3_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".pdf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsWordWithEmptyIdProject() {
+		ContextManager.getInstance().setIdProject("");
+		ProjectManager.exportProjectAsWord();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsWordWithNullIdProject() {
+		ContextManager.getInstance().setIdProject(null);
+		ProjectManager.exportProjectAsWord();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExportProjectAsWordWitWrongIdProject() {
+		ContextManager.getInstance().setIdProject("Smashing Pumpkins");
+		ProjectManager.exportProjectAsWord();
+	}
+	
+	@Test
+	public void testExportProjectAsWord() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		List<File> lListFile = ProjectManager.exportProjectAsWord();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
+		lListFile = ProjectManager.exportProjectAsWord();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test2_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test2_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
+		lListFile = ProjectManager.exportProjectAsWord();
+		Assert.assertNotNull(lListFile);
+		Assert.assertEquals(2, lListFile.size());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(0).getParent());
+		Assert.assertEquals("C:\\Users\\afeccomandi\\git\\bibisco\\bibisco\\export", lListFile.get(1).getParent());
+		Assert.assertTrue(lListFile.get(0).getName().startsWith("Test3_novel"));
+		Assert.assertTrue(lListFile.get(0).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(0).getTotalSpace() > 0);
+		Assert.assertTrue(lListFile.get(1).getName().startsWith("Test3_project"));
+		Assert.assertTrue(lListFile.get(1).getName().endsWith(".rtf"));
+		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetDBProjectDirectoryWithEmptyIdProject() {
+		ProjectManager.getDBProjectDirectory("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetDBProjectDirectoryWithNullIdProject() {
+		ProjectManager.getDBProjectDirectory(null);
+	}
+	
+	@Test
+	public void testGetDBProjectDirectory() {
+		Assert.assertEquals(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + AllTests.getPathSeparator() + 
+				AllTests.TEST_PROJECT_ID + AllTests.getPathSeparator(), 
+				ProjectManager.getDBProjectDirectory(AllTests.TEST_PROJECT_ID));
+	}
+	
+	@AfterClass
+	public static void cleanExportDirectory() throws IOException, ConfigurationException {		
+		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
+	}
 }

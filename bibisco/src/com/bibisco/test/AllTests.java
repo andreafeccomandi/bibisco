@@ -32,9 +32,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.bibisco.manager.ContextManager;
+
 
 @RunWith(Suite.class)
-@SuiteClasses({ PropertiesManagerTest.class, LocaleManagerTest.class, RichTextEditorSettingsManagerTest.class, VersionManagerTest.class,
+@SuiteClasses({ ContextManagerTest.class, PropertiesManagerTest.class, LocaleManagerTest.class, RichTextEditorSettingsManagerTest.class, VersionManagerTest.class,
 		TipManagerTest.class, ProjectManagerTest.class })
 public class AllTests {
 
@@ -44,7 +46,9 @@ public class AllTests {
 	public static final String DB_USERNAME = "root";
 	public static final String DB_PASSWORD = "password";
 	public static final String RESOURCE_FILE_NAME = "dbConfiguration.xml";
-	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = "C:/temp/bibisco/projects/_internal_bibisco_projects_db_";
+	public static final String SQL_SESSION_ENVIRONMENT_JUNIT_TEST = "junitTest";
+	public static final String SQL_SESSION_ENVIRONMENT_STANDARD = "standard";
+	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = "C:/temp/bibisco/projects"+ System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
 	public static final String TEST_PROJECT_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4c";
 	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
 	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";
@@ -54,15 +58,20 @@ public class AllTests {
 	private static String mStrAbsolutePath;
 	private static String mStrPathSeparator = System.getProperty("file.separator");
 	private static String mStrTestBibiscoDBFilePath;
-	private static String mStrTestProject2DBFilePath;
-	private static String mStrTestProject3DBFilePath;
+	private static String mStrTestBibiscoLockDBFilePath;
 	private static String mStrTestProjectDBFilePath;
+	private static String mStrTestProjectLockDBFilePath;
+	private static String mStrTestProject2DBFilePath;
+	private static String mStrTestProject2LockDBFilePath;
+	private static String mStrTestProject3DBFilePath;
+	private static String mStrTestProject3LockDBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
 	
 	@BeforeClass
 	public static void cleanProjectsDirectory() throws IOException, ConfigurationException {
+		
 		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
 		FileUtils.cleanDirectory(new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
@@ -89,8 +98,8 @@ public class AllTests {
 		lStringBuilderTestDBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestDBFilePath.append("test");
 		lStringBuilderTestDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestDBFilePath.append("bibisco.h2.db");
-		mStrTestBibiscoDBFilePath = lStringBuilderTestDBFilePath.toString();
+		mStrTestBibiscoDBFilePath = lStringBuilderTestDBFilePath.toString() + ("bibisco.h2.db");
+		mStrTestBibiscoLockDBFilePath = lStringBuilderTestDBFilePath.toString() + ("bibisco.lock.db");
 		
 		// test project 1 db file path
 		StringBuilder lStringBuilderTestProjectDBFilePath = new StringBuilder();
@@ -102,6 +111,16 @@ public class AllTests {
 		lStringBuilderTestProjectDBFilePath.append(TEST_PROJECT_ID);
 		mStrTestProjectDBFilePath = lStringBuilderTestProjectDBFilePath.toString();
 		
+		// test project 1 lock file
+		StringBuilder lStringBuilderTestProjectLockDBFilePath = new StringBuilder();
+		lStringBuilderTestProjectLockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
+		lStringBuilderTestProjectLockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectLockDBFilePath.append(TEST_PROJECT_ID);
+		lStringBuilderTestProjectLockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectLockDBFilePath.append(TEST_PROJECT_ID);
+		lStringBuilderTestProjectLockDBFilePath.append(".lock.db");
+		mStrTestProjectLockDBFilePath = lStringBuilderTestProjectLockDBFilePath.toString();
+		
 		// test project 2 db file path
 		StringBuilder lStringBuilderTestProject2DBFilePath = new StringBuilder();
 		lStringBuilderTestProject2DBFilePath.append(mStrAbsolutePath);
@@ -112,6 +131,16 @@ public class AllTests {
 		lStringBuilderTestProject2DBFilePath.append(TEST_PROJECT2_ID);
 		mStrTestProject2DBFilePath = lStringBuilderTestProject2DBFilePath.toString();
 		
+		// test project 2 lock file
+		StringBuilder lStringBuilderTestProject2LockDBFilePath = new StringBuilder();
+		lStringBuilderTestProject2LockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
+		lStringBuilderTestProject2LockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject2LockDBFilePath.append(TEST_PROJECT2_ID);
+		lStringBuilderTestProject2LockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject2LockDBFilePath.append(TEST_PROJECT2_ID);
+		lStringBuilderTestProject2LockDBFilePath.append(".lock.db");
+		mStrTestProject2LockDBFilePath = lStringBuilderTestProject2LockDBFilePath.toString();
+		
 		// test project 3 db file path
 		StringBuilder lStringBuilderTestProject3DBFilePath = new StringBuilder();
 		lStringBuilderTestProject3DBFilePath.append(mStrAbsolutePath);
@@ -121,6 +150,16 @@ public class AllTests {
 		lStringBuilderTestProject3DBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProject3DBFilePath.append(TEST_PROJECT3_ID);
 		mStrTestProject3DBFilePath = lStringBuilderTestProject3DBFilePath.toString();
+	
+		// test project 3 lock file
+		StringBuilder lStringBuilderTestProject3LockDBFilePath = new StringBuilder();
+		lStringBuilderTestProject3LockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
+		lStringBuilderTestProject3LockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject3LockDBFilePath.append(TEST_PROJECT3_ID);
+		lStringBuilderTestProject3LockDBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject3LockDBFilePath.append(TEST_PROJECT3_ID);
+		lStringBuilderTestProject3LockDBFilePath.append(".lock.db");
+		mStrTestProject3LockDBFilePath = lStringBuilderTestProject3LockDBFilePath.toString();
 		
 		// clean db file path
 		StringBuilder lStringBuilderCleanDBFilePath = new StringBuilder();
@@ -152,6 +191,10 @@ public class AllTests {
 		
 		cleanProjectsDirectory();
 		
+		// set junit test running: SqlSessionFactoryManager reads from dbconfiguration_test.xml 
+		// instead of dbconfiguration_test.xml
+		ContextManager.getInstance().setJunitTestRunning(true);
+		
 		mBlnEnvironmentInitialized = true;
 	}
 	
@@ -181,7 +224,7 @@ public class AllTests {
 			lProperties.setProperty("username", DB_USERNAME);
 			lProperties.setProperty("password", DB_PASSWORD);
 
-			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader, lProperties);
+			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader, SQL_SESSION_ENVIRONMENT_JUNIT_TEST, lProperties);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -217,5 +260,49 @@ public class AllTests {
 		}
 
 		return mSqlSessionFactory;
+	}
+
+	public static String getTestBibiscoLockDBFilePath() {
+		return mStrTestBibiscoLockDBFilePath;
+	}
+
+	public static String getTestProjectLockDBFilePath() throws ConfigurationException, IOException {
+		if (!mBlnEnvironmentInitialized) {
+			init();
+		}
+		
+		return mStrTestProjectLockDBFilePath;
+	}
+
+	public static String getTestProject2LockDBFilePath() throws ConfigurationException, IOException {
+		if (!mBlnEnvironmentInitialized) {
+			init();
+		}
+		
+		return mStrTestProject2LockDBFilePath;
+	}
+
+	public static String getTestProject3LockDBFilePath() throws ConfigurationException, IOException {
+		if (!mBlnEnvironmentInitialized) {
+			init();
+		}
+		return mStrTestProject3LockDBFilePath;
+	}
+	
+	public static String getCleanDBFilePath() {
+		return mStrCleanDBFilePath;
+	}
+
+	public static String getPathSeparator() {
+		return mStrPathSeparator;
+	}
+
+	public static String getAbsolutePath() {
+		return mStrAbsolutePath;
+	}
+
+	
+	public static String getExportPath() {
+		return mStrAbsolutePath + mStrPathSeparator + "export";
 	}
 }

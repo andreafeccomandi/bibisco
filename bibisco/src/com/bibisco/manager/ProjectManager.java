@@ -95,7 +95,7 @@ public class ProjectManager {
 		mLog.debug("Start load(String)");
 		
 		// validate preconditions
-		Validate.notEmpty(pStrIdProject, "There is no project in context");
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
 		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
 		
 		// set project name to context
@@ -268,7 +268,7 @@ public class ProjectManager {
 		mLog.debug("Start delete(String)");
 		
 		// validate preconditions
-		Validate.notEmpty(pStrIdProject, "There is no project in context");
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
 		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
@@ -395,6 +395,9 @@ public class ProjectManager {
 	
 	public static String getDBProjectDirectory(String pStrIdProject) {
 		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+				
 		// create db directory path
 		String lStrProjectsDirectory = getProjectsDirectory();
 		
@@ -412,6 +415,10 @@ public class ProjectManager {
 		File lFile = null;
 		
 		mLog.debug("Start exportProjectAsArchive()");
+		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
 		
 		// load project name
 		ProjectDTO lProjectDTO = load();
@@ -436,7 +443,11 @@ public class ProjectManager {
 		List<File> lListFile = null;
 		
 		mLog.debug("Start exportProjectAsPdf(");
-			
+		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
+				
 		// get file object to return
 		lListFile = exportAsWordOrPdf(ExportType.PDF);
 		
@@ -451,6 +462,10 @@ public class ProjectManager {
 		
 		mLog.debug("Start exportProjectAsWord()");
 		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
+				
 		// get file object to return
 		lListFile = exportAsWordOrPdf(ExportType.WORD);
 		
