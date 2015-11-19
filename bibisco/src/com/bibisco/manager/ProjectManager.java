@@ -898,7 +898,7 @@ public class ProjectManager {
 	}
 	
 	
-	public static void zipIt(String zipFile) {
+	private static void zipIt(String zipFile) {
 		
 		mLog.debug("Start zipIt(String)");
 		
@@ -943,7 +943,7 @@ public class ProjectManager {
 		mLog.debug("End zipIt(String)");
 	}
 	
-	public static List<String> getDirectoryFileList(File pFileNode) {
+	private static List<String> getDirectoryFileList(File pFileNode) {
 
 		List<String> lFileList = new ArrayList<String>();
 
@@ -1070,7 +1070,7 @@ public class ProjectManager {
 		return lImportProjectArchiveDTO;
 	}
 
-	public static void unZipIt(String pStrZipFile) {
+	private static void unZipIt(String pStrZipFile) {
 
 		mLog.debug("Start unZipIt(String)");
 
