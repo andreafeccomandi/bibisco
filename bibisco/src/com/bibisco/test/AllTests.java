@@ -58,13 +58,9 @@ public class AllTests {
 	private static String mStrAbsolutePath;
 	private static String mStrPathSeparator = System.getProperty("file.separator");
 	private static String mStrTestBibiscoDBFilePath;
-	private static String mStrTestBibiscoLockDBFilePath;
 	private static String mStrTestProjectDBFilePath;
-	private static String mStrTestProjectLockDBFilePath;
 	private static String mStrTestProject2DBFilePath;
-	private static String mStrTestProject2LockDBFilePath;
 	private static String mStrTestProject3DBFilePath;
-	private static String mStrTestProject3LockDBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
@@ -99,8 +95,7 @@ public class AllTests {
 		lStringBuilderTestDBFilePath.append("test");
 		lStringBuilderTestDBFilePath.append(mStrPathSeparator);
 		mStrTestBibiscoDBFilePath = lStringBuilderTestDBFilePath.toString() + ("bibisco.h2.db");
-		mStrTestBibiscoLockDBFilePath = lStringBuilderTestDBFilePath.toString() + ("bibisco.lock.db");
-		
+
 		// test project 1 db file path
 		StringBuilder lStringBuilderTestProjectDBFilePath = new StringBuilder();
 		lStringBuilderTestProjectDBFilePath.append(mStrAbsolutePath);
@@ -110,17 +105,7 @@ public class AllTests {
 		lStringBuilderTestProjectDBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProjectDBFilePath.append(TEST_PROJECT_ID);
 		mStrTestProjectDBFilePath = lStringBuilderTestProjectDBFilePath.toString();
-		
-		// test project 1 lock file
-		StringBuilder lStringBuilderTestProjectLockDBFilePath = new StringBuilder();
-		lStringBuilderTestProjectLockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
-		lStringBuilderTestProjectLockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProjectLockDBFilePath.append(TEST_PROJECT_ID);
-		lStringBuilderTestProjectLockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProjectLockDBFilePath.append(TEST_PROJECT_ID);
-		lStringBuilderTestProjectLockDBFilePath.append(".lock.db");
-		mStrTestProjectLockDBFilePath = lStringBuilderTestProjectLockDBFilePath.toString();
-		
+				
 		// test project 2 db file path
 		StringBuilder lStringBuilderTestProject2DBFilePath = new StringBuilder();
 		lStringBuilderTestProject2DBFilePath.append(mStrAbsolutePath);
@@ -130,17 +115,7 @@ public class AllTests {
 		lStringBuilderTestProject2DBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProject2DBFilePath.append(TEST_PROJECT2_ID);
 		mStrTestProject2DBFilePath = lStringBuilderTestProject2DBFilePath.toString();
-		
-		// test project 2 lock file
-		StringBuilder lStringBuilderTestProject2LockDBFilePath = new StringBuilder();
-		lStringBuilderTestProject2LockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
-		lStringBuilderTestProject2LockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProject2LockDBFilePath.append(TEST_PROJECT2_ID);
-		lStringBuilderTestProject2LockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProject2LockDBFilePath.append(TEST_PROJECT2_ID);
-		lStringBuilderTestProject2LockDBFilePath.append(".lock.db");
-		mStrTestProject2LockDBFilePath = lStringBuilderTestProject2LockDBFilePath.toString();
-		
+				
 		// test project 3 db file path
 		StringBuilder lStringBuilderTestProject3DBFilePath = new StringBuilder();
 		lStringBuilderTestProject3DBFilePath.append(mStrAbsolutePath);
@@ -150,16 +125,6 @@ public class AllTests {
 		lStringBuilderTestProject3DBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProject3DBFilePath.append(TEST_PROJECT3_ID);
 		mStrTestProject3DBFilePath = lStringBuilderTestProject3DBFilePath.toString();
-	
-		// test project 3 lock file
-		StringBuilder lStringBuilderTestProject3LockDBFilePath = new StringBuilder();
-		lStringBuilderTestProject3LockDBFilePath.append(BIBISCO_INTERNAL_PROJECTS_DIR);
-		lStringBuilderTestProject3LockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProject3LockDBFilePath.append(TEST_PROJECT3_ID);
-		lStringBuilderTestProject3LockDBFilePath.append(mStrPathSeparator);
-		lStringBuilderTestProject3LockDBFilePath.append(TEST_PROJECT3_ID);
-		lStringBuilderTestProject3LockDBFilePath.append(".lock.db");
-		mStrTestProject3LockDBFilePath = lStringBuilderTestProject3LockDBFilePath.toString();
 		
 		// clean db file path
 		StringBuilder lStringBuilderCleanDBFilePath = new StringBuilder();
@@ -191,8 +156,7 @@ public class AllTests {
 		
 		cleanProjectsDirectory();
 		
-		// set junit test running: SqlSessionFactoryManager reads from dbconfiguration_test.xml 
-		// instead of dbconfiguration_test.xml
+		// set junit test running
 		ContextManager.getInstance().setJunitTestRunning(true);
 		
 		mBlnEnvironmentInitialized = true;
@@ -262,33 +226,6 @@ public class AllTests {
 		return mSqlSessionFactory;
 	}
 
-	public static String getTestBibiscoLockDBFilePath() {
-		return mStrTestBibiscoLockDBFilePath;
-	}
-
-	public static String getTestProjectLockDBFilePath() throws ConfigurationException, IOException {
-		if (!mBlnEnvironmentInitialized) {
-			init();
-		}
-		
-		return mStrTestProjectLockDBFilePath;
-	}
-
-	public static String getTestProject2LockDBFilePath() throws ConfigurationException, IOException {
-		if (!mBlnEnvironmentInitialized) {
-			init();
-		}
-		
-		return mStrTestProject2LockDBFilePath;
-	}
-
-	public static String getTestProject3LockDBFilePath() throws ConfigurationException, IOException {
-		if (!mBlnEnvironmentInitialized) {
-			init();
-		}
-		return mStrTestProject3LockDBFilePath;
-	}
-	
 	public static String getCleanDBFilePath() {
 		return mStrCleanDBFilePath;
 	}
