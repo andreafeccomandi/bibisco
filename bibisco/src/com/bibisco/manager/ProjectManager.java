@@ -851,6 +851,13 @@ public class ProjectManager {
 		ProjectDTO lProjectDTO = null;
 
 		mLog.debug("Start exportProject(String)");
+		
+		// validate preconditions
+		Validate.notNull(pImportProjectArchiveDTO, "ImportProjectArchiveDTO cannot be null");
+		Validate.notNull(pImportProjectArchiveDTO.getIdProject(), "id project cannot be null");
+		Validate.notEmpty(pImportProjectArchiveDTO.getProjectName(), "project name cannot be null");
+		Validate.isTrue(pImportProjectArchiveDTO.isArchiveFileValid());
+		
 		try {
 			
 			ContextManager lContextManager = ContextManager.getInstance();
@@ -865,12 +872,12 @@ public class ProjectManager {
 			
 			// copy files to db project directory
 			FileUtils.copyDirectoryToDirectory(new File(lStrTempDirectory + pImportProjectArchiveDTO.getIdProject()), 
-					new File(lContextManager.getDbDirectoryPath()));
+					new File(getProjectsDirectory()));
 			    
 			// set project name to context
 	    	ContextManager.getInstance().setIdProject(pImportProjectArchiveDTO.getIdProject());
 	    	
-	    	// check if project is created with previuos version of bibisco and update it
+	    	// check if project is created with previous version of bibisco and update it
 	    	checkProjectVersionAndUpdateIfNecessary(pImportProjectArchiveDTO.getIdProject());
 	    	
 	    	// load project

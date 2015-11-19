@@ -52,6 +52,7 @@ public class AllTests {
 	public static final String TEST_PROJECT_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4c";
 	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
 	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";
+	public static final String TEST_PROJECT4_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4f";
 	
 	private static boolean mBlnEnvironmentInitialized = false;
 	private static String mStrOS;
@@ -61,6 +62,7 @@ public class AllTests {
 	private static String mStrTestProjectDBFilePath;
 	private static String mStrTestProject2DBFilePath;
 	private static String mStrTestProject3DBFilePath;
+	private static String mStrTestProject4DBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
@@ -125,6 +127,16 @@ public class AllTests {
 		lStringBuilderTestProject3DBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProject3DBFilePath.append(TEST_PROJECT3_ID);
 		mStrTestProject3DBFilePath = lStringBuilderTestProject3DBFilePath.toString();
+		
+		// test project 4 db file path
+		StringBuilder lStringBuilderTestProject4DBFilePath = new StringBuilder();
+		lStringBuilderTestProject4DBFilePath.append(mStrAbsolutePath);
+		lStringBuilderTestProject4DBFilePath.append("db");
+		lStringBuilderTestProject4DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject4DBFilePath.append("test");
+		lStringBuilderTestProject4DBFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProject4DBFilePath.append(TEST_PROJECT4_ID);
+		mStrTestProject4DBFilePath = lStringBuilderTestProject4DBFilePath.toString();
 		
 		// clean db file path
 		StringBuilder lStringBuilderCleanDBFilePath = new StringBuilder();
@@ -238,8 +250,27 @@ public class AllTests {
 		return mStrAbsolutePath;
 	}
 
+	public static String getTempPath() {
+		return mStrAbsolutePath + mStrPathSeparator + "temp";
+	}
 	
 	public static String getExportPath() {
 		return mStrAbsolutePath + mStrPathSeparator + "export";
+	}
+	
+	public static String getTestProjectDBFilePath() {
+		return mStrTestProjectDBFilePath;
+	}
+	
+	public static String getTestProject2DBFilePath() {
+		return mStrTestProject2DBFilePath;
+	}
+	
+	public static String getTestProject3DBFilePath() {
+		return mStrTestProject3DBFilePath;
+	}
+	
+	public static String getTestProject4DBFilePath() {
+		return mStrTestProject4DBFilePath;
 	}
 }

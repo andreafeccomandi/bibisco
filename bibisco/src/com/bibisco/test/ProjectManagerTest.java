@@ -24,11 +24,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.json.JSONException;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bibisco.bean.ImportProjectArchiveDTO;
 import com.bibisco.bean.ProjectDTO;
 import com.bibisco.dao.client.ProjectMapper;
 import com.bibisco.dao.client.ProjectsMapper;
@@ -317,7 +317,7 @@ public class ProjectManagerTest {
 		ProjectManager.importProjectsFromProjectsDirectory();
 	}
 	
-	
+	@Test
 	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -357,7 +357,14 @@ public class ProjectManagerTest {
     	} finally {
 			lSqlSession.close();
 		}	
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
 		
 		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT2_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
@@ -367,7 +374,14 @@ public class ProjectManagerTest {
     	} finally {
 			lSqlSession.close();
 		}	
+		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test 2", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
 		
 		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT3_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
@@ -377,7 +391,14 @@ public class ProjectManagerTest {
     	} finally {
 			lSqlSession.close();
 		}	
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
 		
 	}
 	
@@ -867,8 +888,150 @@ public class ProjectManagerTest {
 				ProjectManager.getDBProjectDirectory(AllTests.TEST_PROJECT_ID));
 	}
 	
-	@AfterClass
-	public static void cleanExportDirectory() throws IOException, ConfigurationException {		
+	@Test
+	public void testGetProjectsDirectory() {
+		Assert.assertEquals(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + AllTests.getPathSeparator(), ProjectManager.getProjectsDirectory());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testImportProjectWithNullImportProjectArchiveDTO() {
+		ProjectManager.importProject(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testImportProjectWithNullIdProject() {
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setProjectName("Test 4");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testImportProjectWithNullProjectName() {
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT4_ID);
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testImportProjectWithEmptyProjectName() {
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT4_ID);
+		lImportProjectArchiveDTO.setProjectName("");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testImportProjectWithArchiveFileNotValid() {
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT4_ID);
+		lImportProjectArchiveDTO.setProjectName("");
+		lImportProjectArchiveDTO.setArchiveFileValid(false);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(null);
+	}
+	
+	@Test
+	public void testImportProjectWithNonExistingProject() throws IOException {
+		
+		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProject4DBFilePath()), new File(AllTests.getTempPath()));
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT4_ID);
+		lImportProjectArchiveDTO.setProjectName("Test 4");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		Projects lProjects;
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT4_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertNotNull(lProjects);
+		Assert.assertEquals(AllTests.TEST_PROJECT4_ID, lProjects.getIdProject());
+		Assert.assertEquals("Test 4", lProjects.getName());
+		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT4_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		Project lProject;
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT4_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertEquals(AllTests.TEST_PROJECT4_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test 4", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+	}
+	
+	@Test
+	public void testImportProjectWithExistingProject() throws IOException {
+		
+		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProject3DBFilePath()), new File(AllTests.getTempPath()));
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT3_ID);
+		lImportProjectArchiveDTO.setProjectName("Test 3 à è ì ç ù £ $ ! /");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(true);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		Projects lProjects;
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertNotNull(lProjects);
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProjects.getIdProject());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProjects.getName());
+		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT3_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		Project lProject;
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
+    	} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+	}
+	
+	@After
+	public void cleanExportDirectory() throws IOException, ConfigurationException {		
 		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
+		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
 	}
 }
