@@ -3,15 +3,24 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<environments default="development">
-		<environment id="development">
+	<environments default="standard">
+		<environment id="standard">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
 				<property name="driver" value="org.h2.Driver" />
-				<property name="url" value="${url}" />
+				<property name="url" value="${url};TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0" />
 				<property name="username" value="${username}" />
 				<property name="password" value="${password}" />
 				<property name="poolMaximumActiveConnections" value="1" />		
+			</dataSource>
+		</environment>
+		<environment id="junitTest">
+			<transactionManager type="JDBC" />
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="org.h2.Driver" />
+				<property name="url" value="${url};TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
 			</dataSource>
 		</environment>
 	</environments>

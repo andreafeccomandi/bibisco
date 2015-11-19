@@ -39,6 +39,9 @@ import com.bibisco.manager.ProjectManager;
  */
 public class SqlSessionFactoryManager { 
 		
+	public static final String SQL_SESSION_ENVIRONMENT_JUNIT_TEST = "junitTest";
+	public static final String SQL_SESSION_ENVIRONMENT_STANDARD = "standard";
+	
 	private static final String DB_USERNAME = "root";
 	private static final String DB_PASSWORD = "password";
 	private static final String RESOURCE_FILE_NAME = "dbConfiguration.xml";
@@ -74,12 +77,21 @@ public class SqlSessionFactoryManager {
 		
 		try {
 			Reader lReader = Resources.getResourceAsReader(RESOURCE_FILE_NAME);
+			
+			// set environment
+			String lStrEnvironment; 
+			if (ContextManager.getInstance().isJunitTestRunning()) {
+				lStrEnvironment = SQL_SESSION_ENVIRONMENT_JUNIT_TEST;
+			} else {
+				lStrEnvironment = SQL_SESSION_ENVIRONMENT_STANDARD;
+			}
+			
 			Properties lProperties = new Properties();
 			lProperties.setProperty("url", pStrDBUrl);
 			lProperties.setProperty("username", DB_USERNAME);
 			lProperties.setProperty("password", DB_PASSWORD);
 			
-			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader,lProperties);
+			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader, lStrEnvironment, lProperties);
 			mLog.debug("SqlSessionFactory built.");
 			
 		} catch (IOException e) {

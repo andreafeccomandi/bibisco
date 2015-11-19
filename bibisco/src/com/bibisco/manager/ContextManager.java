@@ -48,7 +48,7 @@ public class ContextManager {
 	private String mStrIdProject;
 	private String mStrProjectLanguage;
 	private URI mURIWeb;
-
+	private boolean mBlnJunitTestRunning = false;
 
 	public String getProjectLanguage() {
 		return mStrProjectLanguage;
@@ -204,6 +204,14 @@ public class ContextManager {
 
 	public String getXulRunnerDirectoryPath() {
 		return mStrXulRunnerDirectoryPath;
+	}
+
+	public boolean isJunitTestRunning() {
+		return mBlnJunitTestRunning;
+	}
+
+	public void setJunitTestRunning(boolean pBlnJunitTestRunning) {
+		mBlnJunitTestRunning = pBlnJunitTestRunning;
 	}
 	
 		
