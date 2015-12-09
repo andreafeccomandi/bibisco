@@ -997,15 +997,78 @@ public class ProjectManagerTest {
 		Assert.assertEquals(AllTests.TEST_PROJECT4_ID, lProjects.getIdProject());
 		Assert.assertEquals("Test 4", lProjects.getName());
 		
+	
+		ProjectWithBLOBs lProject;
+		List<ChaptersWithBLOBs> lListChapters;
+		List<CharactersWithBLOBs> lListMainCharacters;
+		List<CharactersWithBLOBs> lListSecondaryCharacters;
+		List<CharacterInfos> lListCharacterInfos;
+		List<Locations> lListLocations;
+		List<Scenes> lListScenes;
+		List<SceneRevisions> lListSceneRevisions;
+		List<SceneRevisionCharactersKey> lListRevisionCharactersKeys;
+		List<SceneRevisionStrandsKey> lListRevisionStrandsKeys;
+		List<Strands> lListStrands;
+		
 		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT4_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
-		Project lProject;
 		try {
 			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
 			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT4_ID);
-    	} finally {
+			
+			ChaptersMapper lChaptersMapper = lSqlSession.getMapper(ChaptersMapper.class);
+			ChaptersExample lChaptersExample = new ChaptersExample();
+			lChaptersExample.setOrderByClause("position");
+			lListChapters = lChaptersMapper.selectByExampleWithBLOBs(lChaptersExample);
+		
+			CharactersMapper lCharactersMapper = lSqlSession.getMapper(CharactersMapper.class);
+			CharactersExample lMainCharactersExample = new CharactersExample();
+			lMainCharactersExample.createCriteria().andMainCharacterEqualTo("Y");
+			lMainCharactersExample.setOrderByClause("position");
+			lListMainCharacters = lCharactersMapper.selectByExampleWithBLOBs(lMainCharactersExample);
+			
+			CharactersExample lSecondaryCharactersExample = new CharactersExample();
+			lSecondaryCharactersExample.createCriteria().andMainCharacterEqualTo("N");
+			lSecondaryCharactersExample.setOrderByClause("position");
+			lListSecondaryCharacters = lCharactersMapper.selectByExampleWithBLOBs(lSecondaryCharactersExample);
+			
+			CharacterInfosMapper lCharacterInfosMapper = lSqlSession.getMapper(CharacterInfosMapper.class);
+			lListCharacterInfos = lCharacterInfosMapper.selectByExampleWithBLOBs(new CharacterInfosExample());
+				
+			LocationsMapper lLocationsMapper = lSqlSession.getMapper(LocationsMapper.class);
+			LocationsExample lLocationsExample = new LocationsExample();
+			lLocationsExample.setOrderByClause("position");
+			lListLocations = lLocationsMapper.selectByExampleWithBLOBs(lLocationsExample);
+			
+			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
+			ScenesExample lScenesExample = new ScenesExample();
+			lScenesExample.setOrderByClause("position");
+			lListScenes = lScenesMapper.selectByExample(lScenesExample);
+			
+			SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
+			SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
+			lSceneRevisionsExample.setOrderByClause("id_scene, revision_number");
+			lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(lSceneRevisionsExample);
+			
+			SceneRevisionCharactersMapper lSceneRevisionCharactersMapper = lSqlSession.getMapper(SceneRevisionCharactersMapper.class);
+			SceneRevisionCharactersExample lSceneRevisionCharactersExample = new SceneRevisionCharactersExample();
+			lSceneRevisionCharactersExample.setOrderByClause("id_scene_revision, id_character");
+			lListRevisionCharactersKeys = lSceneRevisionCharactersMapper.selectByExample(lSceneRevisionCharactersExample);
+			
+			SceneRevisionStrandsMapper lSceneRevisionStrandsMapper = lSqlSession.getMapper(SceneRevisionStrandsMapper.class);
+			SceneRevisionStrandsExample lSceneRevisionStrandsExample = new SceneRevisionStrandsExample();
+			lSceneRevisionStrandsExample.setOrderByClause("id_scene_revision, id_strand");
+			lListRevisionStrandsKeys = lSceneRevisionStrandsMapper.selectByExample(lSceneRevisionStrandsExample);
+			
+			StrandsMapper lStrandsMapper = lSqlSession.getMapper(StrandsMapper.class);
+			StrandsExample lStrandsExample = new StrandsExample();
+			lStrandsExample.setOrderByClause("id_strand");
+			lListStrands = lStrandsMapper.selectByExampleWithBLOBs(lStrandsExample);
+	
+		} finally {
 			lSqlSession.close();
 		}	
+			
 		Assert.assertEquals(AllTests.TEST_PROJECT4_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
@@ -1014,6 +1077,17 @@ public class ProjectManagerTest {
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+		
+		Assert.assertEquals(0, lListChapters.size());
+		Assert.assertEquals(0, lListMainCharacters.size());
+		Assert.assertEquals(0, lListSecondaryCharacters.size());
+		Assert.assertEquals(0, lListCharacterInfos.size());
+		Assert.assertEquals(0, lListLocations.size());
+		Assert.assertEquals(0, lListScenes.size());
+		Assert.assertEquals(0, lListSceneRevisions.size());
+		Assert.assertEquals(0, lListRevisionCharactersKeys.size());
+		Assert.assertEquals(0, lListRevisionStrandsKeys.size());
+		Assert.assertEquals(0, lListStrands.size());
 	}
 	
 	@Test
@@ -1041,8 +1115,6 @@ public class ProjectManagerTest {
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjects.getIdProject());
 		Assert.assertEquals("Test", lProjects.getName());
 		
-		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
-		lSqlSession = lSqlSessionFactory.openSession();
 		ProjectWithBLOBs lProject;
 		List<ChaptersWithBLOBs> lListChapters;
 		List<CharactersWithBLOBs> lListMainCharacters;
@@ -1057,6 +1129,8 @@ public class ProjectManagerTest {
 		List<SceneRevisionStrandsKey> lListRevisionStrandsKeys;
 		List<Strands> lListStrands;
 		
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
 		try {
 			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
 			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
