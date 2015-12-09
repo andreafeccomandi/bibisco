@@ -16,6 +16,8 @@ package com.bibisco.test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -30,14 +32,43 @@ import org.junit.Test;
 
 import com.bibisco.bean.ImportProjectArchiveDTO;
 import com.bibisco.bean.ProjectDTO;
+import com.bibisco.dao.client.ChaptersMapper;
+import com.bibisco.dao.client.CharacterInfosMapper;
+import com.bibisco.dao.client.CharactersMapper;
+import com.bibisco.dao.client.LocationsMapper;
 import com.bibisco.dao.client.ProjectMapper;
 import com.bibisco.dao.client.ProjectsMapper;
 import com.bibisco.dao.client.PropertiesMapper;
+import com.bibisco.dao.client.SceneRevisionCharactersMapper;
+import com.bibisco.dao.client.SceneRevisionStrandsMapper;
+import com.bibisco.dao.client.SceneRevisionsMapper;
+import com.bibisco.dao.client.ScenesMapper;
+import com.bibisco.dao.client.StrandsMapper;
+import com.bibisco.dao.model.ChaptersExample;
+import com.bibisco.dao.model.ChaptersWithBLOBs;
+import com.bibisco.dao.model.CharacterInfos;
+import com.bibisco.dao.model.CharacterInfosExample;
+import com.bibisco.dao.model.CharactersExample;
+import com.bibisco.dao.model.CharactersWithBLOBs;
+import com.bibisco.dao.model.Locations;
+import com.bibisco.dao.model.LocationsExample;
 import com.bibisco.dao.model.Project;
 import com.bibisco.dao.model.ProjectExample;
+import com.bibisco.dao.model.ProjectWithBLOBs;
 import com.bibisco.dao.model.Projects;
 import com.bibisco.dao.model.ProjectsExample;
 import com.bibisco.dao.model.Properties;
+import com.bibisco.dao.model.SceneRevisionCharactersExample;
+import com.bibisco.dao.model.SceneRevisionCharactersKey;
+import com.bibisco.dao.model.SceneRevisionStrandsExample;
+import com.bibisco.dao.model.SceneRevisionStrandsKey;
+import com.bibisco.dao.model.SceneRevisions;
+import com.bibisco.dao.model.SceneRevisionsExample;
+import com.bibisco.dao.model.Scenes;
+import com.bibisco.dao.model.ScenesExample;
+import com.bibisco.dao.model.Strands;
+import com.bibisco.dao.model.StrandsExample;
+import com.bibisco.enums.CharacterInfoQuestions;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.LocaleManager;
@@ -986,13 +1017,13 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testImportProjectWithExistingProject() throws IOException {
+	public void testImportProjectWithExistingProject() throws IOException, ParseException {
 		
-		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProject3DBFilePath()), new File(AllTests.getTempPath()));
+		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProjectDBFilePath()), new File(AllTests.getTempPath()));
 		
 		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
-		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT3_ID);
-		lImportProjectArchiveDTO.setProjectName("Test 3 à è ì ç ù £ $ ! /");
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
+		lImportProjectArchiveDTO.setProjectName("Test");
 		lImportProjectArchiveDTO.setArchiveFileValid(true);
 		lImportProjectArchiveDTO.setAlreadyPresent(true);
 		ProjectManager.importProject(lImportProjectArchiveDTO);
@@ -1002,31 +1033,633 @@ public class ProjectManagerTest {
 		Projects lProjects;
 		try {
 			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
-			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
     	} finally {
 			lSqlSession.close();
 		}	
 		Assert.assertNotNull(lProjects);
-		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProjects.getIdProject());
-		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProjects.getName());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjects.getIdProject());
+		Assert.assertEquals("Test", lProjects.getName());
 		
-		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT3_ID);
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
-		Project lProject;
+		ProjectWithBLOBs lProject;
+		List<ChaptersWithBLOBs> lListChapters;
+		List<CharactersWithBLOBs> lListMainCharacters;
+		List<CharactersWithBLOBs> lListSecondaryCharacters;
+		List<CharacterInfos> lListCharacterInfosMainCharacter1;
+		List<CharacterInfos> lListCharacterInfosMainCharacter2;
+		List<CharacterInfos> lListCharacterInfosMainCharacter3;
+		List<Locations> lListLocations;
+		List<Scenes> lListScenes;
+		List<SceneRevisions> lListSceneRevisions;
+		List<SceneRevisionCharactersKey> lListRevisionCharactersKeys;
+		List<SceneRevisionStrandsKey> lListRevisionStrandsKeys;
+		List<Strands> lListStrands;
+		
 		try {
 			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
-			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT3_ID);
-    	} finally {
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+			
+			ChaptersMapper lChaptersMapper = lSqlSession.getMapper(ChaptersMapper.class);
+			ChaptersExample lChaptersExample = new ChaptersExample();
+			lChaptersExample.setOrderByClause("position");
+			lListChapters = lChaptersMapper.selectByExampleWithBLOBs(lChaptersExample);
+		
+			CharactersMapper lCharactersMapper = lSqlSession.getMapper(CharactersMapper.class);
+			CharactersExample lMainCharactersExample = new CharactersExample();
+			lMainCharactersExample.createCriteria().andMainCharacterEqualTo("Y");
+			lMainCharactersExample.setOrderByClause("position");
+			lListMainCharacters = lCharactersMapper.selectByExampleWithBLOBs(lMainCharactersExample);
+			
+			CharactersExample lSecondaryCharactersExample = new CharactersExample();
+			lSecondaryCharactersExample.createCriteria().andMainCharacterEqualTo("N");
+			lSecondaryCharactersExample.setOrderByClause("position");
+			lListSecondaryCharacters = lCharactersMapper.selectByExampleWithBLOBs(lSecondaryCharactersExample);
+			
+			CharacterInfosMapper lCharacterInfosMapper = lSqlSession.getMapper(CharacterInfosMapper.class);
+			CharacterInfosExample lCharacterInfosExample = new CharacterInfosExample();
+			lCharacterInfosExample.createCriteria().andIdCharacterEqualTo(67);
+			lCharacterInfosExample.setOrderByClause("character_info_type, question");
+			lListCharacterInfosMainCharacter1 = lCharacterInfosMapper.selectByExampleWithBLOBs(lCharacterInfosExample);
+			
+			lCharacterInfosExample = new CharacterInfosExample();
+			lCharacterInfosExample.createCriteria().andIdCharacterEqualTo(68);
+			lCharacterInfosExample.setOrderByClause("character_info_type, question");
+			lListCharacterInfosMainCharacter2 = lCharacterInfosMapper.selectByExampleWithBLOBs(lCharacterInfosExample);
+			
+			lCharacterInfosExample = new CharacterInfosExample();
+			lCharacterInfosExample.createCriteria().andIdCharacterEqualTo(69);
+			lCharacterInfosExample.setOrderByClause("character_info_type, question");
+			lListCharacterInfosMainCharacter3 = lCharacterInfosMapper.selectByExampleWithBLOBs(lCharacterInfosExample);
+			
+			LocationsMapper lLocationsMapper = lSqlSession.getMapper(LocationsMapper.class);
+			LocationsExample lLocationsExample = new LocationsExample();
+			lLocationsExample.setOrderByClause("position");
+			lListLocations = lLocationsMapper.selectByExampleWithBLOBs(lLocationsExample);
+			
+			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
+			ScenesExample lScenesExample = new ScenesExample();
+			lScenesExample.setOrderByClause("position");
+			lListScenes = lScenesMapper.selectByExample(lScenesExample);
+			
+			SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
+			SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
+			lSceneRevisionsExample.setOrderByClause("id_scene, revision_number");
+			lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(lSceneRevisionsExample);
+			
+			SceneRevisionCharactersMapper lSceneRevisionCharactersMapper = lSqlSession.getMapper(SceneRevisionCharactersMapper.class);
+			SceneRevisionCharactersExample lSceneRevisionCharactersExample = new SceneRevisionCharactersExample();
+			lSceneRevisionCharactersExample.setOrderByClause("id_scene_revision, id_character");
+			lListRevisionCharactersKeys = lSceneRevisionCharactersMapper.selectByExample(lSceneRevisionCharactersExample);
+			
+			SceneRevisionStrandsMapper lSceneRevisionStrandsMapper = lSqlSession.getMapper(SceneRevisionStrandsMapper.class);
+			SceneRevisionStrandsExample lSceneRevisionStrandsExample = new SceneRevisionStrandsExample();
+			lSceneRevisionStrandsExample.setOrderByClause("id_scene_revision, id_strand");
+			lListRevisionStrandsKeys = lSceneRevisionStrandsMapper.selectByExample(lSceneRevisionStrandsExample);
+			
+			StrandsMapper lStrandsMapper = lSqlSession.getMapper(StrandsMapper.class);
+			StrandsExample lStrandsExample = new StrandsExample();
+			lStrandsExample.setOrderByClause("id_strand");
+			lListStrands = lStrandsMapper.selectByExampleWithBLOBs(lStrandsExample);
+
+			
+		} finally {
 			lSqlSession.close();
 		}	
-		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProject.getIdProject());
+		
+		// PROJECT
+		
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
-		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProject.getName());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		Assert.assertEquals("Test", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+		Assert.assertEquals("<p>Fabula</p>", lProject.getFabula());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("<p>Premise</p>", lProject.getPremise());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals("<p>Setting</p>", lProject.getSetting());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
+		
+		// CHAPTERS
+		
+		Assert.assertEquals(new Long(1), lListChapters.get(0).getIdChapter());
+		Assert.assertEquals("<p>Notes 1</p>", lListChapters.get(0).getNote());
+		Assert.assertEquals(new Integer(1), lListChapters.get(0).getPosition());
+		Assert.assertEquals("<p>Reason 1</p>", lListChapters.get(0).getReason());
+		Assert.assertEquals(new Integer(0), lListChapters.get(0).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 1", lListChapters.get(0).getTitle());
+		
+		Assert.assertEquals(new Long(2), lListChapters.get(1).getIdChapter());
+		Assert.assertEquals("<p>Notes 2</p>", lListChapters.get(1).getNote());
+		Assert.assertEquals(new Integer(2), lListChapters.get(1).getPosition());
+		Assert.assertEquals("<p>Reason 2</p>", lListChapters.get(1).getReason());
+		Assert.assertEquals(new Integer(1), lListChapters.get(1).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 2", lListChapters.get(1).getTitle());
+		
+		Assert.assertEquals(new Long(3), lListChapters.get(2).getIdChapter());
+		Assert.assertEquals("<p>Notes 3</p>", lListChapters.get(2).getNote());
+		Assert.assertEquals(new Integer(3), lListChapters.get(2).getPosition());
+		Assert.assertEquals("<p>Reason 3</p>", lListChapters.get(2).getReason());
+		Assert.assertEquals(new Integer(2), lListChapters.get(2).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 3", lListChapters.get(2).getTitle());
+		
+		// CHARACTERS
+		
+		Assert.assertEquals("<p>Behaviors, attitudes free text</p>", lListMainCharacters.get(0).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getBehaviorsTaskStatus());
+		Assert.assertEquals("<p>Conflict</p>", lListMainCharacters.get(0).getConflict());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getConflictTaskStatus());
+		Assert.assertEquals("<p>Evolution</p>", lListMainCharacters.get(0).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(67), lListMainCharacters.get(0).getIdCharacter());
+		Assert.assertEquals("<p>Ideas and passions free text</p>", lListMainCharacters.get(0).getIdeasFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getIdeasInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getIdeasTaskStatus());
+		Assert.assertEquals("<p>Life before the story&#39;s beginning</p>", lListMainCharacters.get(0).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getMainCharacter());
+		Assert.assertEquals("Main character 1", lListMainCharacters.get(0).getName());
+		Assert.assertEquals("<p>Personal data free text</p>", lListMainCharacters.get(0).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getPersonalDataTaskStatus());
+		Assert.assertEquals("<p>Physical features free text</p>", lListMainCharacters.get(0).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(1), lListMainCharacters.get(0).getPosition());
+		Assert.assertEquals("<p>Psychology free text</p>", lListMainCharacters.get(0).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getPsychologyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getPsychologyTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(0).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertEquals("<p>Sociology free text</p>", lListMainCharacters.get(0).getSociologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(0).getSociologyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(0).getSociologyTaskStatus());
+		
+		Assert.assertNull(lListMainCharacters.get(1).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getBehaviorsTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getConflict());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getConflictTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(68), lListMainCharacters.get(1).getIdCharacter());
+		Assert.assertNull(lListMainCharacters.get(1).getIdeasFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getIdeasInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getIdeasTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getMainCharacter());
+		Assert.assertEquals("Main character 2", lListMainCharacters.get(1).getName());
+		Assert.assertNull(lListMainCharacters.get(1).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(1), lListMainCharacters.get(1).getPersonalDataTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(1).getPosition());
+		Assert.assertNull(lListMainCharacters.get(1).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getPsychologyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getPsychologyTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(1).getSociologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(1).getSociologyInterview());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(1).getSociologyTaskStatus());
+		
+		Assert.assertNull(lListMainCharacters.get(2).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getBehaviorsTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getConflict());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getConflictTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(69), lListMainCharacters.get(2).getIdCharacter());
+		Assert.assertNull(lListMainCharacters.get(2).getIdeasFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getIdeasInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getIdeasTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getMainCharacter());
+		Assert.assertEquals("Main character 3", lListMainCharacters.get(2).getName());
+		Assert.assertNull(lListMainCharacters.get(2).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getPersonalDataTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(3), lListMainCharacters.get(2).getPosition());
+		Assert.assertNull(lListMainCharacters.get(2).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getPsychologyInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getPsychologyTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(0), lListMainCharacters.get(2).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertNull(lListMainCharacters.get(2).getSociologyFreeText());
+		Assert.assertEquals("Y", lListMainCharacters.get(2).getSociologyInterview());
+		Assert.assertEquals(new Integer(2), lListMainCharacters.get(2).getSociologyTaskStatus());
+		
+		Assert.assertNull(lListSecondaryCharacters.get(0).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getBehaviorsTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getConflict());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getConflictTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(70), lListSecondaryCharacters.get(0).getIdCharacter());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getIdeasFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getIdeasInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getIdeasTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("N", lListSecondaryCharacters.get(0).getMainCharacter());
+		Assert.assertEquals("Secondary character 1", lListSecondaryCharacters.get(0).getName());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getPersonalDataTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(1), lListSecondaryCharacters.get(0).getPosition());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getPsychologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getPsychologyTaskStatus());
+		Assert.assertEquals("<p>Secondary character 1</p>", lListSecondaryCharacters.get(0).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getSociologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(0).getSociologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(0).getSociologyTaskStatus());
+		
+		Assert.assertNull(lListSecondaryCharacters.get(1).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getBehaviorsTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getConflict());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getConflictTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(71), lListSecondaryCharacters.get(1).getIdCharacter());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getIdeasFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getIdeasInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getIdeasTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("N", lListSecondaryCharacters.get(1).getMainCharacter());
+		Assert.assertEquals("Secondary character 2", lListSecondaryCharacters.get(1).getName());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getPersonalDataTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(2), lListSecondaryCharacters.get(1).getPosition());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getPsychologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getPsychologyTaskStatus());
+		Assert.assertEquals("<p>Secondary character 2</p>", lListSecondaryCharacters.get(1).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(1), lListSecondaryCharacters.get(1).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(1).getSociologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(1).getSociologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(1).getSociologyTaskStatus());
+		
+		Assert.assertNull(lListSecondaryCharacters.get(2).getBehaviorsFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getBehaviorsInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getBehaviorsTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getConflict());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getConflictTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getEvolutionduringthestory());
+		Assert.assertEquals(new Long(72), lListSecondaryCharacters.get(2).getIdCharacter());
+		Assert.assertNull(lListSecondaryCharacters.get(0).getIdeasFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getIdeasInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getIdeasTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getLifebeforestorybeginning());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getLifebeforestorybeginningTaskStatus());
+		Assert.assertEquals("N", lListSecondaryCharacters.get(2).getMainCharacter());
+		Assert.assertEquals("Secondary character 3", lListSecondaryCharacters.get(2).getName());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getPersonalDataFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getPersonalDataInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getPersonalDataTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getPhysionomyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getPhysionomyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getPhysionomyTaskStatus());
+		Assert.assertEquals(new Integer(3), lListSecondaryCharacters.get(2).getPosition());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getPsychologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getPsychologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getPsychologyTaskStatus());
+		Assert.assertEquals("<p>Secondary character 3</p>", lListSecondaryCharacters.get(2).getSecondaryCharacterDescription());
+		Assert.assertEquals(new Integer(2), lListSecondaryCharacters.get(2).getSecondaryCharacterDescriptionTaskStatus());
+		Assert.assertNull(lListSecondaryCharacters.get(2).getSociologyFreeText());
+		Assert.assertEquals("Y", lListSecondaryCharacters.get(2).getSociologyInterview());
+		Assert.assertEquals(new Integer(0), lListSecondaryCharacters.get(2).getSociologyTaskStatus());
+		
+		// CHARACTER INFO
+		
+		int lIntBehaviorsStart = 0;
+		int lIntBehaviorsEnd = CharacterInfoQuestions.BEHAVIORS.getTotalQuestions();
+		int lIntIdeasStart = lIntBehaviorsEnd;
+		int lIntIdeasEnd = lIntIdeasStart + CharacterInfoQuestions.IDEAS.getTotalQuestions();
+		int lIntPersonalDataStart = lIntIdeasEnd;
+		int lIntPersonalDataEnd = lIntPersonalDataStart + CharacterInfoQuestions.PERSONAL_DATA.getTotalQuestions();
+		int lIntPhysionomyStart = lIntPersonalDataEnd;
+		int lIntPhysionomyEnd = lIntPhysionomyStart + CharacterInfoQuestions.PHYSIONOMY.getTotalQuestions();
+		int lIntPhychologyStart = lIntPhysionomyEnd;
+		int lIntPhychologyEnd = lIntPhychologyStart + CharacterInfoQuestions.PSYCHOLOGY.getTotalQuestions();
+		int lIntSociologyStart = lIntPhychologyEnd;
+		int lIntSociologyEnd = lIntSociologyStart + CharacterInfoQuestions.SOCIOLOGY.getTotalQuestions();
+		
+		for (int i = 0; i < lListCharacterInfosMainCharacter1.size(); i++) {
+			if (i>=lIntBehaviorsStart && i<lIntBehaviorsEnd) {
+				Assert.assertEquals(new Integer(i+1), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.BEHAVIORS.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Behaviors, attitudes "+(i+1)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+			
+			else if (i>=lIntIdeasStart && i<lIntIdeasEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntIdeasStart), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.IDEAS.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Ideas and passions "+(i+1-lIntIdeasStart)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPersonalDataStart && i<lIntPersonalDataEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPersonalDataStart), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PERSONAL_DATA.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Personal data "+(i+1-lIntPersonalDataStart)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhysionomyStart && i<lIntPhysionomyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhysionomyStart), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PHYSIONOMY.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Physical features "+(i+1-lIntPhysionomyStart)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhychologyStart && i<lIntPhychologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhychologyStart), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PSYCHOLOGY.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Psychology "+(i+1-lIntPhychologyStart)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+			
+			else if (i>=lIntSociologyStart && i<lIntSociologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntSociologyStart), lListCharacterInfosMainCharacter1.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.SOCIOLOGY.name(), lListCharacterInfosMainCharacter1.get(i).getCharacterInfoType());
+				Assert.assertEquals("<p>Sociology "+(i+1-lIntSociologyStart)+"</p>", lListCharacterInfosMainCharacter1.get(i).getInfo());
+			}
+		}
+		
+		for (int i = 0; i < lListCharacterInfosMainCharacter2.size(); i++) {
+			if (i>=lIntBehaviorsStart && i<lIntBehaviorsEnd) {
+				Assert.assertEquals(new Integer(i+1), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.BEHAVIORS.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+			
+			else if (i>=lIntIdeasStart && i<lIntIdeasEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntIdeasStart), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.IDEAS.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPersonalDataStart && i<lIntPersonalDataEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPersonalDataStart), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PERSONAL_DATA.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhysionomyStart && i<lIntPhysionomyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhysionomyStart), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PHYSIONOMY.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhychologyStart && i<lIntPhychologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhychologyStart), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PSYCHOLOGY.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+			
+			else if (i>=lIntSociologyStart && i<lIntSociologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntSociologyStart), lListCharacterInfosMainCharacter2.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.SOCIOLOGY.name(), lListCharacterInfosMainCharacter2.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter2.get(i).getInfo());
+			}
+		}
+		
+		for (int i = 0; i < lListCharacterInfosMainCharacter3.size(); i++) {
+			if (i>=lIntBehaviorsStart && i<lIntBehaviorsEnd) {
+				Assert.assertEquals(new Integer(i+1), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.BEHAVIORS.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+			
+			else if (i>=lIntIdeasStart && i<lIntIdeasEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntIdeasStart), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.IDEAS.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPersonalDataStart && i<lIntPersonalDataEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPersonalDataStart), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PERSONAL_DATA.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhysionomyStart && i<lIntPhysionomyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhysionomyStart), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PHYSIONOMY.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+			
+			else if (i>=lIntPhychologyStart && i<lIntPhychologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntPhychologyStart), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.PSYCHOLOGY.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+			
+			else if (i>=lIntSociologyStart && i<lIntSociologyEnd) {
+				Assert.assertEquals(new Integer(i+1-lIntSociologyStart), lListCharacterInfosMainCharacter3.get(i).getQuestion());
+				Assert.assertEquals(CharacterInfoQuestions.SOCIOLOGY.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
+				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
+			}
+		}
+		
+		// LOCATIONS
+		
+		Assert.assertEquals("City 1", lListLocations.get(0).getCity());
+		Assert.assertEquals("<p>Location 1</p>", lListLocations.get(0).getDescription());
+		Assert.assertEquals(new Long(71), lListLocations.get(0).getIdLocation());
+		Assert.assertEquals("Location's name 1", lListLocations.get(0).getName());
+		Assert.assertEquals("Nation 1", lListLocations.get(0).getNation());
+		Assert.assertEquals(new Integer(1), lListLocations.get(0).getPosition());
+		Assert.assertEquals("State 1", lListLocations.get(0).getState());
+		Assert.assertEquals(new Integer(0), lListLocations.get(0).getTaskStatus());
+		
+		Assert.assertEquals("City 2", lListLocations.get(1).getCity());
+		Assert.assertEquals("<p>Location 2</p>", lListLocations.get(1).getDescription());
+		Assert.assertEquals(new Long(72), lListLocations.get(1).getIdLocation());
+		Assert.assertEquals("Location's name 2", lListLocations.get(1).getName());
+		Assert.assertEquals("Nation 2", lListLocations.get(1).getNation());
+		Assert.assertEquals(new Integer(2), lListLocations.get(1).getPosition());
+		Assert.assertEquals("State 2", lListLocations.get(1).getState());
+		Assert.assertEquals(new Integer(1), lListLocations.get(1).getTaskStatus());
+		
+		Assert.assertEquals("City 3", lListLocations.get(2).getCity());
+		Assert.assertEquals("<p>Location 3</p>", lListLocations.get(2).getDescription());
+		Assert.assertEquals(new Long(73), lListLocations.get(2).getIdLocation());
+		Assert.assertEquals("Location's name 3", lListLocations.get(2).getName());
+		Assert.assertEquals("Nation 3", lListLocations.get(2).getNation());
+		Assert.assertEquals(new Integer(3), lListLocations.get(2).getPosition());
+		Assert.assertEquals("State 3", lListLocations.get(2).getState());
+		Assert.assertEquals(new Integer(2), lListLocations.get(2).getTaskStatus());
+		
+		// SCENES
+		
+		Assert.assertEquals("Scene 1.1", lListScenes.get(0).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(0).getIdChapter());
+		Assert.assertEquals(new Long(10), lListScenes.get(0).getIdScene());
+		Assert.assertEquals(new Integer(1), lListScenes.get(0).getPosition());
+		Assert.assertEquals(new Integer(0), lListScenes.get(0).getTaskStatus());
+		
+		Assert.assertEquals("Scene 1.2", lListScenes.get(1).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(1).getIdChapter());
+		Assert.assertEquals(new Long(11), lListScenes.get(1).getIdScene());
+		Assert.assertEquals(new Integer(2), lListScenes.get(1).getPosition());
+		Assert.assertEquals(new Integer(1), lListScenes.get(1).getTaskStatus());
+		
+		Assert.assertEquals("Scene 1.3", lListScenes.get(2).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(2).getIdChapter());
+		Assert.assertEquals(new Long(12), lListScenes.get(2).getIdScene());
+		Assert.assertEquals(new Integer(3), lListScenes.get(2).getPosition());
+		Assert.assertEquals(new Integer(2), lListScenes.get(2).getTaskStatus());
+		
+		
+		// SCENE REVISIONS
+		
+		SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(0).getCharacters());
+		Assert.assertEquals(new Integer(71), lListSceneRevisions.get(0).getIdLocation());
+		Assert.assertEquals(new Integer(10), lListSceneRevisions.get(0).getIdScene());
+		Assert.assertEquals(new Long(1), lListSceneRevisions.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(0), lListSceneRevisions.get(0).getPointOfView());
+		Assert.assertEquals(new Integer(67), lListSceneRevisions.get(0).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(0).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.1 Revision 1</p>", lListSceneRevisions.get(0).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1975-04-23 22:14:00.0"), lListSceneRevisions.get(0).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(0).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(0).getTense());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(0).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(1).getCharacters());
+		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(1).getIdLocation());
+		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(1).getIdScene());
+		Assert.assertEquals(new Long(2), lListSceneRevisions.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getPointOfView());
+		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(1).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.2 Revision 1</p>", lListSceneRevisions.get(1).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(1).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(1).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(1).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(1).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(2).getCharacters());
+		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(2).getIdLocation());
+		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(2).getIdScene());
+		Assert.assertEquals(new Long(4), lListSceneRevisions.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(2).getPointOfView());
+		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(2).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(2).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.2 Revision 2</p>", lListSceneRevisions.get(2).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(2).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(2).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(2).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(2).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(3).getCharacters());
+		Assert.assertNull(lListSceneRevisions.get(3).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(3).getIdScene());
+		Assert.assertEquals(new Long(3), lListSceneRevisions.get(3).getIdSceneRevision());
+		Assert.assertNull(lListSceneRevisions.get(3).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(3).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(3).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 1</p>", lListSceneRevisions.get(3).getScene());
+		Assert.assertNull(lListSceneRevisions.get(3).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(3).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(3).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(3).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(4).getCharacters());
+		Assert.assertNull(lListSceneRevisions.get(4).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(4).getIdScene());
+		Assert.assertEquals(new Long(5), lListSceneRevisions.get(4).getIdSceneRevision());
+		Assert.assertNull(lListSceneRevisions.get(4).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(4).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(4).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 2</p>", lListSceneRevisions.get(4).getScene());
+		Assert.assertNull(lListSceneRevisions.get(4).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(4).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(4).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(4).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(5).getCharacters());
+		Assert.assertEquals(new Integer(73), lListSceneRevisions.get(5).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(5).getIdScene());
+		Assert.assertEquals(new Long(6), lListSceneRevisions.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(5).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 3</p>", lListSceneRevisions.get(5).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("2004-01-01 09:17:00.0"), lListSceneRevisions.get(5).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(5).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(5).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(5).getWords());
+		
+		// SCENE REVISION CHARACTERS
+		
+		Assert.assertEquals(new Integer(1), lListRevisionCharactersKeys.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(0).getIdCharacter());
+		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(1).getIdCharacter());
+		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(2).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(3).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(3).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(4).getIdSceneRevision());
+		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(4).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(69), lListRevisionCharactersKeys.get(5).getIdCharacter());
+		
+		// SCENE REVISION STRANDS
+		
+		Assert.assertEquals(new Integer(1), lListRevisionStrandsKeys.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(0).getIdStrand());
+		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(1).getIdStrand());
+		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(2).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(3).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(3).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(4).getIdSceneRevision());
+		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(4).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(17), lListRevisionStrandsKeys.get(5).getIdStrand());
+		
+		// STRANDS
+		
+		Assert.assertEquals("<p>Strand 1</p>", lListStrands.get(0).getDescription());
+		Assert.assertEquals(new Long(15), lListStrands.get(0).getIdStrand());
+		Assert.assertEquals("Strand 1", lListStrands.get(0).getName());
+		Assert.assertEquals(new Integer(1), lListStrands.get(0).getPosition());
+		Assert.assertEquals(new Integer(0), lListStrands.get(0).getTaskStatus());
+		
+		Assert.assertEquals("<p>Strand 2</p>", lListStrands.get(1).getDescription());
+		Assert.assertEquals(new Long(16), lListStrands.get(1).getIdStrand());
+		Assert.assertEquals("Strand 2", lListStrands.get(1).getName());
+		Assert.assertEquals(new Integer(2), lListStrands.get(1).getPosition());
+		Assert.assertEquals(new Integer(1), lListStrands.get(1).getTaskStatus());
+		
+		Assert.assertEquals("<p>Strand 3</p>", lListStrands.get(2).getDescription());
+		Assert.assertEquals(new Long(17), lListStrands.get(2).getIdStrand());
+		Assert.assertEquals("Strand 3", lListStrands.get(2).getName());
+		Assert.assertEquals(new Integer(3), lListStrands.get(2).getPosition());
+		Assert.assertEquals(new Integer(2), lListStrands.get(2).getTaskStatus());
+
+		
 	}
 	
 	@After
