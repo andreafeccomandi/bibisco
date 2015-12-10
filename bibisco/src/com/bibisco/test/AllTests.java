@@ -53,6 +53,9 @@ public class AllTests {
 	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
 	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";
 	public static final String TEST_PROJECT4_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4f";
+	public static final String TEST_PROJECT_ARCHIVE_NOT_PRESENT_ID = "fdcf96e8-f533-4b8e-af47-d31ec35ff3fc";
+	public static final String TEST_PROJECT_ARCHIVE_FILE = "Test_archive_20151210090211.bibisco";
+	public static final String TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE = "Testprojectnewarchive_archive_20151210225455.bibisco";
 	
 	private static boolean mBlnEnvironmentInitialized = false;
 	private static String mStrOS;
@@ -60,8 +63,11 @@ public class AllTests {
 	private static String mStrPathSeparator = System.getProperty("file.separator");
 	private static String mStrTestBibiscoDBFilePath;
 	private static String mStrTestProjectDBFilePath;
+	private static String mStrTestProjectArchiveFilePath;
 	private static String mStrTestProject2DBFilePath;
 	private static String mStrTestProject3DBFilePath;
+	private static String mStrTestProjectArchiveNotPresentFilePath;
+	
 	private static String mStrTestProject4DBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
@@ -107,6 +113,16 @@ public class AllTests {
 		lStringBuilderTestProjectDBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProjectDBFilePath.append(TEST_PROJECT_ID);
 		mStrTestProjectDBFilePath = lStringBuilderTestProjectDBFilePath.toString();
+		
+		// test project 1 archive path
+		StringBuilder lStringBuilderTestProjectArchiveFilePath = new StringBuilder();
+		lStringBuilderTestProjectArchiveFilePath.append(mStrAbsolutePath);
+		lStringBuilderTestProjectArchiveFilePath.append("db");
+		lStringBuilderTestProjectArchiveFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectArchiveFilePath.append("test");
+		lStringBuilderTestProjectArchiveFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectArchiveFilePath.append(TEST_PROJECT_ARCHIVE_FILE);
+		mStrTestProjectArchiveFilePath = lStringBuilderTestProjectArchiveFilePath.toString();
 				
 		// test project 2 db file path
 		StringBuilder lStringBuilderTestProject2DBFilePath = new StringBuilder();
@@ -137,6 +153,16 @@ public class AllTests {
 		lStringBuilderTestProject4DBFilePath.append(mStrPathSeparator);
 		lStringBuilderTestProject4DBFilePath.append(TEST_PROJECT4_ID);
 		mStrTestProject4DBFilePath = lStringBuilderTestProject4DBFilePath.toString();
+		
+		// test project 1 archive path
+		StringBuilder lStringBuilderTestProjectArchiveNotPresentFilePath = new StringBuilder();
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append(mStrAbsolutePath);
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append("db");
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append("test");
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append(mStrPathSeparator);
+		lStringBuilderTestProjectArchiveNotPresentFilePath.append(TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE);
+		mStrTestProjectArchiveNotPresentFilePath = lStringBuilderTestProjectArchiveNotPresentFilePath.toString();
 		
 		// clean db file path
 		StringBuilder lStringBuilderCleanDBFilePath = new StringBuilder();
@@ -174,6 +200,10 @@ public class AllTests {
 		mBlnEnvironmentInitialized = true;
 	}
 	
+	public static String getTestProjectArchiveFilePath() {
+		return mStrTestProjectArchiveFilePath;
+	}
+
 	private static XMLConfiguration getXMLConfiguration() throws ConfigurationException {
 
 		XMLConfiguration lXMLConfiguration = null;
@@ -272,5 +302,9 @@ public class AllTests {
 	
 	public static String getTestProject4DBFilePath() {
 		return mStrTestProject4DBFilePath;
+	}
+	
+	public static String getTestProjectArchiveNotPresentFilePath() {
+		return mStrTestProjectArchiveNotPresentFilePath;
 	}
 }

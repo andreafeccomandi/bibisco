@@ -14,6 +14,7 @@
 package com.bibisco.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.json.JSONException;
@@ -101,9 +103,14 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testIsProjectsDirectoryEmpty() {
+	public void testIsProjectsDirectoryEmptyWithEmptyProjectsDirectory() {
 		emptyProjectsDirectory();
-		Assert.assertEquals(ProjectManager.isProjectsDirectoryEmpty(), true);
+		Assert.assertTrue(ProjectManager.isProjectsDirectoryEmpty());
+	}
+	
+	@Test
+	public void testIsProjectsDirectoryEmptyWithExistingProjectsDirectory() {
+		Assert.assertFalse(ProjectManager.isProjectsDirectoryEmpty());
 	}
 	
 	@Test
@@ -349,7 +356,7 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException {
+	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException, ParseException {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
@@ -379,24 +386,9 @@ public class ProjectManagerTest {
 		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lListProjects.get(1).getIdProject());
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjects.get(2).getIdProject());
 		
-		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
-		lSqlSession = lSqlSessionFactory.openSession();
-		Project lProject;
-		try {
-			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
-			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
-    	} finally {
-			lSqlSession.close();
-		}	
-		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
-		Assert.assertEquals("en_US", lProject.getLanguage());
-		Assert.assertEquals("Test", lProject.getName());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+		checkTestProjectDB();
 		
+		Project lProject;
 		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT2_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
 		try {
@@ -512,11 +504,11 @@ public class ProjectManagerTest {
 		Assert.assertEquals(new Integer(1), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("position"));
 		Assert.assertEquals(TaskStatus.TOCOMPLETE, (TaskStatus) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("taskStatus"));
 		Assert.assertEquals(new Integer(13), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("wordCount"));
-		Assert.assertEquals(new Integer(49), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("characterCount"));
+		Assert.assertEquals(new Integer(60), (Integer) lProjectDTO.getChapterList().get(0).getWordCountTaskStatusAsJSONObject().get("characterCount"));
 		Assert.assertEquals(0, lProjectDTO.getChapterList().get(0).getSceneList().size());
 		Assert.assertEquals(TaskStatus.TOCOMPLETE, lProjectDTO.getChapterList().get(0).getTaskStatus());
 		Assert.assertEquals(new Integer(13), lProjectDTO.getChapterList().get(0).getWordCount());
-		Assert.assertEquals(new Integer(49), lProjectDTO.getChapterList().get(0).getCharacterCount());
+		Assert.assertEquals(new Integer(60), lProjectDTO.getChapterList().get(0).getCharacterCount());
 		
 		Assert.assertEquals(new Integer(2), lProjectDTO.getChapterList().get(1).getIdChapter());
 		Assert.assertEquals(null, lProjectDTO.getChapterList().get(1).getNote());
@@ -1091,24 +1083,15 @@ public class ProjectManagerTest {
 	}
 	
 	@Test
-	public void testImportProjectWithExistingProject() throws IOException, ParseException {
-		
-		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProjectDBFilePath()), new File(AllTests.getTempPath()));
-		
-		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
-		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
-		lImportProjectArchiveDTO.setProjectName("Test");
-		lImportProjectArchiveDTO.setArchiveFileValid(true);
-		lImportProjectArchiveDTO.setAlreadyPresent(true);
-		ProjectManager.importProject(lImportProjectArchiveDTO);
-		
+	public void checkTestProjectDB() throws IOException, ParseException {
+			
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
 		Projects lProjects;
 		try {
 			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
 			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
-    	} finally {
+		} finally {
 			lSqlSession.close();
 		}	
 		Assert.assertNotNull(lProjects);
@@ -1736,9 +1719,95 @@ public class ProjectManagerTest {
 		
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithEmptyFileName() {
+		byte[] lBytes = new byte[100];
+		ProjectManager.importProjectArchiveFile(null, lBytes);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithNullFileName() {
+		byte[] lBytes = new byte[100];
+		ProjectManager.importProjectArchiveFile("", lBytes);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithNullByteArray() {
+		ProjectManager.importProjectArchiveFile("test", null);
+	}
+	
+	@Test
+	public void testimportProjectArchiveFileNotValid() {
+		byte[] lBytes = new byte[100];
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile("test.zip", lBytes);
+		Assert.assertFalse(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertNull(lImportProjectArchiveDTO.getIdProject());
+		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
+		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ "test.zip");
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+	}
+	
+	@Test
+	public void testimportProjectArchiveAlreadyPresent() throws IOException {
+		
+		File lFile = new File(AllTests.getTestProjectArchiveFilePath());
+		FileInputStream lFileInputStream = new FileInputStream(lFile);
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_FILE, IOUtils.toByteArray(lFileInputStream));
+		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertTrue(lImportProjectArchiveDTO.isAlreadyPresent());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lImportProjectArchiveDTO.getIdProject());
+		Assert.assertEquals("Test", lImportProjectArchiveDTO.getProjectName());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_FILE);
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+		
+		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
+		Assert.assertTrue(lFileProjectToImportDir.exists());
+	}
+	
+	@Test
+	public void testimportProjectArchiveNotPresent() throws IOException {
+		
+		File lFile = new File(AllTests.getTestProjectArchiveNotPresentFilePath());
+		FileInputStream lFileInputStream = new FileInputStream(lFile);
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE, IOUtils.toByteArray(lFileInputStream));
+		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_ID, lImportProjectArchiveDTO.getIdProject());
+		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE);
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+		
+		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
+		Assert.assertTrue(lFileProjectToImportDir.exists());
+	}
+	
 	@After
-	public void cleanExportDirectory() throws IOException, ConfigurationException {		
+	public void cleanExportAndTempDirectory() throws IOException, ConfigurationException {		
 		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
 		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
+	}
+
+	@Test
+	public void testImportProjectWithExistingProject() throws IOException, ParseException {
+		
+		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProjectDBFilePath()), new File(AllTests.getTempPath()));
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
+		lImportProjectArchiveDTO.setProjectName("Test");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(true);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
+		
+		checkTestProjectDB();	
 	}
 }

@@ -978,6 +978,10 @@ public class ProjectManager {
 		
 		mLog.debug("Start importProjectArchiveFile(String, byte[])");
 		
+		// validate preconditions
+		Validate.notEmpty(pStrFileName, "file name cannot be null");
+		Validate.notNull(pBytes, "byte array cannot be null");
+		
 		try {
 			
 			ContextManager lContextManager = ContextManager.getInstance();
