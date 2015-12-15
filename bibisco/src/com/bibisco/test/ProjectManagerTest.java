@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -32,7 +33,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bibisco.bean.ArchitectureDTO;
+import com.bibisco.bean.ChapterDTO;
+import com.bibisco.bean.CharacterDTO;
 import com.bibisco.bean.ImportProjectArchiveDTO;
+import com.bibisco.bean.LocationDTO;
 import com.bibisco.bean.ProjectDTO;
 import com.bibisco.dao.client.ChaptersMapper;
 import com.bibisco.dao.client.CharacterInfosMapper;
@@ -121,20 +126,7 @@ public class ProjectManagerTest {
 	
 	@Test
 	public void testProjectsDirectoryExistsWithWrongProjectsDirectory() {
-		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			Properties lProperties = new Properties();
-			lProperties.setProperty("projectsDirectory");
-			lProperties.setValue("C:/temp/bibiscotto/projects");
-			lPropertiesMapper.updateByPrimaryKey(lProperties);	
-			lSqlSession.commit();
-    	} catch (Throwable t) {	
-			lSqlSession.rollback();
-    	} finally {
-			lSqlSession.close();
-		}
+		setNonExistentProjectDir();
     	
     	PropertiesManager.getInstance().reload();
 		Assert.assertEquals(ProjectManager.projectsDirectoryExists(), false);
@@ -244,9 +236,7 @@ public class ProjectManagerTest {
 		ProjectManager.insert(lProjectDTO);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testInsertProjectAndProjectsDirectroryNotExists() {
-		
+	private void setNonExistentProjectDir() {
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -263,12 +253,6 @@ public class ProjectManagerTest {
 		}
     	
     	PropertiesManager.getInstance().reload();
-		
-		ProjectDTO lProjectDTO = new ProjectDTO();
-		lProjectDTO.setName("Test Insert");
-		lProjectDTO.setLanguage(LocaleManager.getInstance().getLocale().getLanguage());
-		lProjectDTO.setBibiscoVersion(VersionManager.getInstance().getVersion());
-		lProjectDTO = ProjectManager.insert(lProjectDTO);
 	}
 	
 	
@@ -335,27 +319,14 @@ public class ProjectManagerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testImportProjectsFromProjectsDirectoryWithWrongProjectsDirectory() {
 		
-		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			Properties lProperties = new Properties();
-			lProperties.setProperty("projectsDirectory");
-			lProperties.setValue("C:/temp/bibiscotto/projects");
-			lPropertiesMapper.updateByPrimaryKey(lProperties);	
-			lSqlSession.commit();
-    	} catch (Throwable t) {	
-			lSqlSession.rollback();
-    	} finally {
-			lSqlSession.close();
-		}
+		setNonExistentProjectDir();
     	
     	PropertiesManager.getInstance().reload();
 		
 		ProjectManager.importProjectsFromProjectsDirectory();
 	}
 	
-	@Test
+
 	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException, ParseException {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -961,9 +932,20 @@ public class ProjectManagerTest {
 		lImportProjectArchiveDTO.setProjectName("");
 		lImportProjectArchiveDTO.setArchiveFileValid(false);
 		lImportProjectArchiveDTO.setAlreadyPresent(false);
-		ProjectManager.importProject(null);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testImportProjectWithNonExistentProjectDir() {
+		setNonExistentProjectDir();
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
+		lImportProjectArchiveDTO.setProjectName("Test");
+		lImportProjectArchiveDTO.setArchiveFileValid(false);
+		lImportProjectArchiveDTO.setAlreadyPresent(false);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
+	}
+		
 	@Test
 	public void testImportProjectWithNonExistingProject() throws IOException {
 		
@@ -1082,9 +1064,131 @@ public class ProjectManagerTest {
 		Assert.assertEquals(0, lListStrands.size());
 	}
 	
-	@Test
 	public void checkTestProjectDB() throws IOException, ParseException {
-			
+		checkTestProjectDBProject();
+		checkTestProjectDBChapters();
+		checkTestProjectDBStrands();
+		checkTestProjectDBLocations();
+		checkTestProjectDBCharacters();		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithEmptyFileName() {
+		byte[] lBytes = new byte[100];
+		ProjectManager.importProjectArchiveFile(null, lBytes);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithNullFileName() {
+		byte[] lBytes = new byte[100];
+		ProjectManager.importProjectArchiveFile("", lBytes);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testimportProjectArchiveFileWithNullByteArray() {
+		ProjectManager.importProjectArchiveFile("test", null);
+	}
+	
+	@Test
+	public void testimportProjectArchiveFileNotValid() {
+		byte[] lBytes = new byte[100];
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile("test.zip", lBytes);
+		Assert.assertFalse(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertNull(lImportProjectArchiveDTO.getIdProject());
+		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
+		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ "test.zip");
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+	}
+	
+	@Test
+	public void testimportProjectArchiveAlreadyPresent() throws IOException {
+		
+		File lFile = new File(AllTests.getTestProjectArchiveFilePath());
+		FileInputStream lFileInputStream = new FileInputStream(lFile);
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_FILE, IOUtils.toByteArray(lFileInputStream));
+		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertTrue(lImportProjectArchiveDTO.isAlreadyPresent());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lImportProjectArchiveDTO.getIdProject());
+		Assert.assertEquals("Test", lImportProjectArchiveDTO.getProjectName());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_FILE);
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+		
+		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
+		Assert.assertTrue(lFileProjectToImportDir.exists());
+	}
+	
+	@Test
+	public void testimportProjectArchiveNotPresent() throws IOException {
+		
+		File lFile = new File(AllTests.getTestProjectArchiveNotPresentFilePath());
+		FileInputStream lFileInputStream = new FileInputStream(lFile);
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE, IOUtils.toByteArray(lFileInputStream));
+		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
+		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_ID, lImportProjectArchiveDTO.getIdProject());
+		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
+		
+		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE);
+		Assert.assertTrue(lFileProjectToImportZip.exists());
+		
+		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
+		Assert.assertTrue(lFileProjectToImportDir.exists());
+	}
+	
+
+	@Test
+	public void testImportProjectWithExistingProject() throws IOException, ParseException {
+		
+		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProjectDBFilePath()), new File(AllTests.getTempPath()));
+		
+		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
+		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
+		lImportProjectArchiveDTO.setProjectName("Test");
+		lImportProjectArchiveDTO.setArchiveFileValid(true);
+		lImportProjectArchiveDTO.setAlreadyPresent(true);
+		ProjectManager.importProject(lImportProjectArchiveDTO);
+		
+		checkTestProjectDB();	
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testSaveWithNullProjectDTO() {
+		ProjectManager.save(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveWithNullIdProject() {
+		ProjectManager.save(new ProjectDTO());
+	}
+	
+	@Test
+	public void testSave() throws IOException, ParseException, ConfigurationException, InterruptedException {
+	
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		
+		ProjectDTO lProjectDTO = new ProjectDTO(); 
+		lProjectDTO.setIdProject(AllTests.TEST_PROJECT_ID);
+		lProjectDTO.setName("Test name updated");
+		
+		lProjectDTO.setArchitecture(new ArchitectureDTO());
+		lProjectDTO.setBibiscoVersion("X.X.X");
+		lProjectDTO.setChapterList(new ArrayList<ChapterDTO>());
+		lProjectDTO.setLanguage("xx_XX");
+		lProjectDTO.setLocationList(new ArrayList<LocationDTO>());
+		lProjectDTO.setMainCharacterList(new ArrayList<CharacterDTO>());
+		lProjectDTO.setSecondaryCharacterList(new ArrayList<CharacterDTO>());
+		
+		ProjectManager.save(lProjectDTO);
+		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
 		Projects lProjects;
@@ -1096,33 +1200,349 @@ public class ProjectManagerTest {
 		}	
 		Assert.assertNotNull(lProjects);
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjects.getIdProject());
-		Assert.assertEquals("Test", lProjects.getName());
+		Assert.assertEquals("Test name updated", lProjects.getName());
 		
 		ProjectWithBLOBs lProject;
-		List<ChaptersWithBLOBs> lListChapters;
-		List<CharactersWithBLOBs> lListMainCharacters;
-		List<CharactersWithBLOBs> lListSecondaryCharacters;
-		List<CharacterInfos> lListCharacterInfosMainCharacter1;
-		List<CharacterInfos> lListCharacterInfosMainCharacter2;
-		List<CharacterInfos> lListCharacterInfosMainCharacter3;
-		List<Locations> lListLocations;
-		List<Scenes> lListScenes;
-		List<SceneRevisions> lListSceneRevisions;
-		List<SceneRevisionCharactersKey> lListRevisionCharactersKeys;
-		List<SceneRevisionStrandsKey> lListRevisionStrandsKeys;
-		List<Strands> lListStrands;
 		
 		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
 		lSqlSession = lSqlSessionFactory.openSession();
 		try {
 			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
 			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+				
+		} finally {
+			lSqlSession.close();
+		}	
+		
+		// PROJECT
+		
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test name updated", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+		Assert.assertEquals("<p>Fabula</p>", lProject.getFabula());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("<p>Premise</p>", lProject.getPremise());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals("<p>Setting</p>", lProject.getSetting());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());		
+
+		
+		checkTestProjectDBChapters();
+		checkTestProjectDBStrands();
+		checkTestProjectDBLocations();
+		checkTestProjectDBCharacters();	
+		
+		AllTests.cleanTestProjectDB();
+	}
+		
+	@After
+	public void cleanExportAndTempDirectory() throws IOException, ConfigurationException {		
+		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
+		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
+	}
+
+	
+	public void checkTestProjectDBChapters() throws IOException, ParseException {
 			
+		List<ChaptersWithBLOBs> lListChapters;
+		List<Scenes> lListScenes;
+		List<SceneRevisions> lListSceneRevisions;
+		List<SceneRevisionCharactersKey> lListRevisionCharactersKeys;
+		List<SceneRevisionStrandsKey> lListRevisionStrandsKeys;
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
 			ChaptersMapper lChaptersMapper = lSqlSession.getMapper(ChaptersMapper.class);
 			ChaptersExample lChaptersExample = new ChaptersExample();
 			lChaptersExample.setOrderByClause("position");
 			lListChapters = lChaptersMapper.selectByExampleWithBLOBs(lChaptersExample);
+			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
+			ScenesExample lScenesExample = new ScenesExample();
+			lScenesExample.setOrderByClause("position");
+			lListScenes = lScenesMapper.selectByExample(lScenesExample);
+			
+			SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
+			SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
+			lSceneRevisionsExample.setOrderByClause("id_scene, revision_number");
+			lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(lSceneRevisionsExample);
+			
+			SceneRevisionCharactersMapper lSceneRevisionCharactersMapper = lSqlSession.getMapper(SceneRevisionCharactersMapper.class);
+			SceneRevisionCharactersExample lSceneRevisionCharactersExample = new SceneRevisionCharactersExample();
+			lSceneRevisionCharactersExample.setOrderByClause("id_scene_revision, id_character");
+			lListRevisionCharactersKeys = lSceneRevisionCharactersMapper.selectByExample(lSceneRevisionCharactersExample);
+			
+			SceneRevisionStrandsMapper lSceneRevisionStrandsMapper = lSqlSession.getMapper(SceneRevisionStrandsMapper.class);
+			SceneRevisionStrandsExample lSceneRevisionStrandsExample = new SceneRevisionStrandsExample();
+			lSceneRevisionStrandsExample.setOrderByClause("id_scene_revision, id_strand");
+			lListRevisionStrandsKeys = lSceneRevisionStrandsMapper.selectByExample(lSceneRevisionStrandsExample);
+			
+		} finally {
+			lSqlSession.close();
+		}	
 		
+
+		// CHAPTERS
+		
+		Assert.assertEquals(new Long(1), lListChapters.get(0).getIdChapter());
+		Assert.assertEquals("<p>Notes 1</p>", lListChapters.get(0).getNote());
+		Assert.assertEquals(new Integer(1), lListChapters.get(0).getPosition());
+		Assert.assertEquals("<p>Reason 1</p>", lListChapters.get(0).getReason());
+		Assert.assertEquals(new Integer(0), lListChapters.get(0).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 1", lListChapters.get(0).getTitle());
+		
+		Assert.assertEquals(new Long(2), lListChapters.get(1).getIdChapter());
+		Assert.assertEquals("<p>Notes 2</p>", lListChapters.get(1).getNote());
+		Assert.assertEquals(new Integer(2), lListChapters.get(1).getPosition());
+		Assert.assertEquals("<p>Reason 2</p>", lListChapters.get(1).getReason());
+		Assert.assertEquals(new Integer(1), lListChapters.get(1).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 2", lListChapters.get(1).getTitle());
+		
+		Assert.assertEquals(new Long(3), lListChapters.get(2).getIdChapter());
+		Assert.assertEquals("<p>Notes 3</p>", lListChapters.get(2).getNote());
+		Assert.assertEquals(new Integer(3), lListChapters.get(2).getPosition());
+		Assert.assertEquals("<p>Reason 3</p>", lListChapters.get(2).getReason());
+		Assert.assertEquals(new Integer(2), lListChapters.get(2).getReasonTaskStatus());
+		Assert.assertEquals("Chapter 3", lListChapters.get(2).getTitle());
+		
+		// SCENES
+		
+		Assert.assertEquals("Scene 1.1", lListScenes.get(0).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(0).getIdChapter());
+		Assert.assertEquals(new Long(10), lListScenes.get(0).getIdScene());
+		Assert.assertEquals(new Integer(1), lListScenes.get(0).getPosition());
+		Assert.assertEquals(new Integer(0), lListScenes.get(0).getTaskStatus());
+		
+		Assert.assertEquals("Scene 1.2", lListScenes.get(1).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(1).getIdChapter());
+		Assert.assertEquals(new Long(11), lListScenes.get(1).getIdScene());
+		Assert.assertEquals(new Integer(2), lListScenes.get(1).getPosition());
+		Assert.assertEquals(new Integer(1), lListScenes.get(1).getTaskStatus());
+		
+		Assert.assertEquals("Scene 1.3", lListScenes.get(2).getDescription());
+		Assert.assertEquals(new Integer(1), lListScenes.get(2).getIdChapter());
+		Assert.assertEquals(new Long(12), lListScenes.get(2).getIdScene());
+		Assert.assertEquals(new Integer(3), lListScenes.get(2).getPosition());
+		Assert.assertEquals(new Integer(2), lListScenes.get(2).getTaskStatus());
+		
+		
+		// SCENE REVISIONS
+		
+		SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(0).getCharacters());
+		Assert.assertEquals(new Integer(71), lListSceneRevisions.get(0).getIdLocation());
+		Assert.assertEquals(new Integer(10), lListSceneRevisions.get(0).getIdScene());
+		Assert.assertEquals(new Long(1), lListSceneRevisions.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(0), lListSceneRevisions.get(0).getPointOfView());
+		Assert.assertEquals(new Integer(67), lListSceneRevisions.get(0).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(0).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.1 Revision 1</p>", lListSceneRevisions.get(0).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1975-04-23 22:14:00.0"), lListSceneRevisions.get(0).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(0).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(0).getTense());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(0).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(1).getCharacters());
+		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(1).getIdLocation());
+		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(1).getIdScene());
+		Assert.assertEquals(new Long(2), lListSceneRevisions.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getPointOfView());
+		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(1).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.2 Revision 1</p>", lListSceneRevisions.get(1).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(1).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(1).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(1).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(1).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(2).getCharacters());
+		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(2).getIdLocation());
+		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(2).getIdScene());
+		Assert.assertEquals(new Long(4), lListSceneRevisions.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(2).getPointOfView());
+		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(2).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(2).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.2 Revision 2</p>", lListSceneRevisions.get(2).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(2).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(2).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(2).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(2).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(3).getCharacters());
+		Assert.assertNull(lListSceneRevisions.get(3).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(3).getIdScene());
+		Assert.assertEquals(new Long(3), lListSceneRevisions.get(3).getIdSceneRevision());
+		Assert.assertNull(lListSceneRevisions.get(3).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(3).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(3).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 1</p>", lListSceneRevisions.get(3).getScene());
+		Assert.assertNull(lListSceneRevisions.get(3).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(3).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(3).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(3).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(4).getCharacters());
+		Assert.assertNull(lListSceneRevisions.get(4).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(4).getIdScene());
+		Assert.assertEquals(new Long(5), lListSceneRevisions.get(4).getIdSceneRevision());
+		Assert.assertNull(lListSceneRevisions.get(4).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(4).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(4).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 2</p>", lListSceneRevisions.get(4).getScene());
+		Assert.assertNull(lListSceneRevisions.get(4).getSceneDate());
+		Assert.assertEquals("N", lListSceneRevisions.get(4).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(4).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(4).getWords());
+		
+		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(5).getCharacters());
+		Assert.assertEquals(new Integer(73), lListSceneRevisions.get(5).getIdLocation());
+		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(5).getIdScene());
+		Assert.assertEquals(new Long(6), lListSceneRevisions.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getPointOfView());
+		Assert.assertNull(lListSceneRevisions.get(5).getPointOfViewIdCharacter());
+		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getRevisionNumber());
+		Assert.assertEquals("<p>Scene 1.3 Revision 3</p>", lListSceneRevisions.get(5).getScene());
+		Assert.assertEquals(lSimpleDateFormat.parse("2004-01-01 09:17:00.0"), lListSceneRevisions.get(5).getSceneDate());
+		Assert.assertEquals("Y", lListSceneRevisions.get(5).getSelected());
+		Assert.assertNull(lListSceneRevisions.get(5).getTense());
+		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(5).getWords());
+		
+		// SCENE REVISION CHARACTERS
+		
+		Assert.assertEquals(new Integer(1), lListRevisionCharactersKeys.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(0).getIdCharacter());
+		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(1).getIdCharacter());
+		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(2).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(3).getIdSceneRevision());
+		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(3).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(4).getIdSceneRevision());
+		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(4).getIdCharacter());
+		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(69), lListRevisionCharactersKeys.get(5).getIdCharacter());
+		
+		// SCENE REVISION STRANDS
+		
+		Assert.assertEquals(new Integer(1), lListRevisionStrandsKeys.get(0).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(0).getIdStrand());
+		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(1).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(1).getIdStrand());
+		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(2).getIdSceneRevision());
+		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(2).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(3).getIdSceneRevision());
+		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(3).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(4).getIdSceneRevision());
+		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(4).getIdStrand());
+		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(5).getIdSceneRevision());
+		Assert.assertEquals(new Integer(17), lListRevisionStrandsKeys.get(5).getIdStrand());
+				
+	}
+
+
+	public void checkTestProjectDBStrands() throws IOException, ParseException {
+			
+		List<Strands> lListStrands;
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			
+			StrandsMapper lStrandsMapper = lSqlSession.getMapper(StrandsMapper.class);
+			StrandsExample lStrandsExample = new StrandsExample();
+			lStrandsExample.setOrderByClause("id_strand");
+			lListStrands = lStrandsMapper.selectByExampleWithBLOBs(lStrandsExample);
+			
+		} finally {
+			lSqlSession.close();
+		}	
+			
+		// STRANDS
+		
+		Assert.assertEquals("<p>Strand 1</p>", lListStrands.get(0).getDescription());
+		Assert.assertEquals(new Long(15), lListStrands.get(0).getIdStrand());
+		Assert.assertEquals("Strand 1", lListStrands.get(0).getName());
+		Assert.assertEquals(new Integer(1), lListStrands.get(0).getPosition());
+		Assert.assertEquals(new Integer(0), lListStrands.get(0).getTaskStatus());
+		
+		Assert.assertEquals("<p>Strand 2</p>", lListStrands.get(1).getDescription());
+		Assert.assertEquals(new Long(16), lListStrands.get(1).getIdStrand());
+		Assert.assertEquals("Strand 2", lListStrands.get(1).getName());
+		Assert.assertEquals(new Integer(2), lListStrands.get(1).getPosition());
+		Assert.assertEquals(new Integer(1), lListStrands.get(1).getTaskStatus());
+		
+		Assert.assertEquals("<p>Strand 3</p>", lListStrands.get(2).getDescription());
+		Assert.assertEquals(new Long(17), lListStrands.get(2).getIdStrand());
+		Assert.assertEquals("Strand 3", lListStrands.get(2).getName());
+		Assert.assertEquals(new Integer(3), lListStrands.get(2).getPosition());
+		Assert.assertEquals(new Integer(2), lListStrands.get(2).getTaskStatus());
+	}
+
+	
+	public void checkTestProjectDBLocations() throws IOException, ParseException {
+			
+		List<Locations> lListLocations;
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			
+			LocationsMapper lLocationsMapper = lSqlSession.getMapper(LocationsMapper.class);
+			LocationsExample lLocationsExample = new LocationsExample();
+			lLocationsExample.setOrderByClause("position");
+			lListLocations = lLocationsMapper.selectByExampleWithBLOBs(lLocationsExample);
+			
+		} finally {
+			lSqlSession.close();
+		}	
+		
+		// LOCATIONS
+		
+		Assert.assertEquals("City 1", lListLocations.get(0).getCity());
+		Assert.assertEquals("<p>Location 1</p>", lListLocations.get(0).getDescription());
+		Assert.assertEquals(new Long(71), lListLocations.get(0).getIdLocation());
+		Assert.assertEquals("Location's name 1", lListLocations.get(0).getName());
+		Assert.assertEquals("Nation 1", lListLocations.get(0).getNation());
+		Assert.assertEquals(new Integer(1), lListLocations.get(0).getPosition());
+		Assert.assertEquals("State 1", lListLocations.get(0).getState());
+		Assert.assertEquals(new Integer(0), lListLocations.get(0).getTaskStatus());
+		
+		Assert.assertEquals("City 2", lListLocations.get(1).getCity());
+		Assert.assertEquals("<p>Location 2</p>", lListLocations.get(1).getDescription());
+		Assert.assertEquals(new Long(72), lListLocations.get(1).getIdLocation());
+		Assert.assertEquals("Location's name 2", lListLocations.get(1).getName());
+		Assert.assertEquals("Nation 2", lListLocations.get(1).getNation());
+		Assert.assertEquals(new Integer(2), lListLocations.get(1).getPosition());
+		Assert.assertEquals("State 2", lListLocations.get(1).getState());
+		Assert.assertEquals(new Integer(1), lListLocations.get(1).getTaskStatus());
+		
+		Assert.assertEquals("City 3", lListLocations.get(2).getCity());
+		Assert.assertEquals("<p>Location 3</p>", lListLocations.get(2).getDescription());
+		Assert.assertEquals(new Long(73), lListLocations.get(2).getIdLocation());
+		Assert.assertEquals("Location's name 3", lListLocations.get(2).getName());
+		Assert.assertEquals("Nation 3", lListLocations.get(2).getNation());
+		Assert.assertEquals(new Integer(3), lListLocations.get(2).getPosition());
+		Assert.assertEquals("State 3", lListLocations.get(2).getState());
+		Assert.assertEquals(new Integer(2), lListLocations.get(2).getTaskStatus());		
+	}
+
+	
+	public void checkTestProjectDBCharacters() throws IOException, ParseException {
+			
+		List<CharactersWithBLOBs> lListMainCharacters;
+		List<CharactersWithBLOBs> lListSecondaryCharacters;
+		List<CharacterInfos> lListCharacterInfosMainCharacter1;
+		List<CharacterInfos> lListCharacterInfosMainCharacter2;
+		List<CharacterInfos> lListCharacterInfosMainCharacter3;
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+
 			CharactersMapper lCharactersMapper = lSqlSession.getMapper(CharactersMapper.class);
 			CharactersExample lMainCharactersExample = new CharactersExample();
 			lMainCharactersExample.createCriteria().andMainCharacterEqualTo("Y");
@@ -1150,79 +1570,10 @@ public class ProjectManagerTest {
 			lCharacterInfosExample.setOrderByClause("character_info_type, question");
 			lListCharacterInfosMainCharacter3 = lCharacterInfosMapper.selectByExampleWithBLOBs(lCharacterInfosExample);
 			
-			LocationsMapper lLocationsMapper = lSqlSession.getMapper(LocationsMapper.class);
-			LocationsExample lLocationsExample = new LocationsExample();
-			lLocationsExample.setOrderByClause("position");
-			lListLocations = lLocationsMapper.selectByExampleWithBLOBs(lLocationsExample);
-			
-			ScenesMapper lScenesMapper = lSqlSession.getMapper(ScenesMapper.class);
-			ScenesExample lScenesExample = new ScenesExample();
-			lScenesExample.setOrderByClause("position");
-			lListScenes = lScenesMapper.selectByExample(lScenesExample);
-			
-			SceneRevisionsMapper lSceneRevisionsMapper = lSqlSession.getMapper(SceneRevisionsMapper.class);
-			SceneRevisionsExample lSceneRevisionsExample = new SceneRevisionsExample();
-			lSceneRevisionsExample.setOrderByClause("id_scene, revision_number");
-			lListSceneRevisions = lSceneRevisionsMapper.selectByExampleWithBLOBs(lSceneRevisionsExample);
-			
-			SceneRevisionCharactersMapper lSceneRevisionCharactersMapper = lSqlSession.getMapper(SceneRevisionCharactersMapper.class);
-			SceneRevisionCharactersExample lSceneRevisionCharactersExample = new SceneRevisionCharactersExample();
-			lSceneRevisionCharactersExample.setOrderByClause("id_scene_revision, id_character");
-			lListRevisionCharactersKeys = lSceneRevisionCharactersMapper.selectByExample(lSceneRevisionCharactersExample);
-			
-			SceneRevisionStrandsMapper lSceneRevisionStrandsMapper = lSqlSession.getMapper(SceneRevisionStrandsMapper.class);
-			SceneRevisionStrandsExample lSceneRevisionStrandsExample = new SceneRevisionStrandsExample();
-			lSceneRevisionStrandsExample.setOrderByClause("id_scene_revision, id_strand");
-			lListRevisionStrandsKeys = lSceneRevisionStrandsMapper.selectByExample(lSceneRevisionStrandsExample);
-			
-			StrandsMapper lStrandsMapper = lSqlSession.getMapper(StrandsMapper.class);
-			StrandsExample lStrandsExample = new StrandsExample();
-			lStrandsExample.setOrderByClause("id_strand");
-			lListStrands = lStrandsMapper.selectByExampleWithBLOBs(lStrandsExample);
-
-			
 		} finally {
 			lSqlSession.close();
 		}	
-		
-		// PROJECT
-		
-		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
-		Assert.assertEquals("en_US", lProject.getLanguage());
-		Assert.assertEquals("Test", lProject.getName());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
-		Assert.assertEquals("<p>Fabula</p>", lProject.getFabula());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("<p>Premise</p>", lProject.getPremise());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
-		Assert.assertEquals("<p>Setting</p>", lProject.getSetting());
-		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
-		
-		// CHAPTERS
-		
-		Assert.assertEquals(new Long(1), lListChapters.get(0).getIdChapter());
-		Assert.assertEquals("<p>Notes 1</p>", lListChapters.get(0).getNote());
-		Assert.assertEquals(new Integer(1), lListChapters.get(0).getPosition());
-		Assert.assertEquals("<p>Reason 1</p>", lListChapters.get(0).getReason());
-		Assert.assertEquals(new Integer(0), lListChapters.get(0).getReasonTaskStatus());
-		Assert.assertEquals("Chapter 1", lListChapters.get(0).getTitle());
-		
-		Assert.assertEquals(new Long(2), lListChapters.get(1).getIdChapter());
-		Assert.assertEquals("<p>Notes 2</p>", lListChapters.get(1).getNote());
-		Assert.assertEquals(new Integer(2), lListChapters.get(1).getPosition());
-		Assert.assertEquals("<p>Reason 2</p>", lListChapters.get(1).getReason());
-		Assert.assertEquals(new Integer(1), lListChapters.get(1).getReasonTaskStatus());
-		Assert.assertEquals("Chapter 2", lListChapters.get(1).getTitle());
-		
-		Assert.assertEquals(new Long(3), lListChapters.get(2).getIdChapter());
-		Assert.assertEquals("<p>Notes 3</p>", lListChapters.get(2).getNote());
-		Assert.assertEquals(new Integer(3), lListChapters.get(2).getPosition());
-		Assert.assertEquals("<p>Reason 3</p>", lListChapters.get(2).getReason());
-		Assert.assertEquals(new Integer(2), lListChapters.get(2).getReasonTaskStatus());
-		Assert.assertEquals("Chapter 3", lListChapters.get(2).getTitle());
-		
+					
 		// CHARACTERS
 		
 		Assert.assertEquals("<p>Behaviors, attitudes free text</p>", lListMainCharacters.get(0).getBehaviorsFreeText());
@@ -1532,282 +1883,50 @@ public class ProjectManagerTest {
 				Assert.assertEquals(CharacterInfoQuestions.SOCIOLOGY.name(), lListCharacterInfosMainCharacter3.get(i).getCharacterInfoType());
 				Assert.assertNull(lListCharacterInfosMainCharacter3.get(i).getInfo());
 			}
-		}
-		
-		// LOCATIONS
-		
-		Assert.assertEquals("City 1", lListLocations.get(0).getCity());
-		Assert.assertEquals("<p>Location 1</p>", lListLocations.get(0).getDescription());
-		Assert.assertEquals(new Long(71), lListLocations.get(0).getIdLocation());
-		Assert.assertEquals("Location's name 1", lListLocations.get(0).getName());
-		Assert.assertEquals("Nation 1", lListLocations.get(0).getNation());
-		Assert.assertEquals(new Integer(1), lListLocations.get(0).getPosition());
-		Assert.assertEquals("State 1", lListLocations.get(0).getState());
-		Assert.assertEquals(new Integer(0), lListLocations.get(0).getTaskStatus());
-		
-		Assert.assertEquals("City 2", lListLocations.get(1).getCity());
-		Assert.assertEquals("<p>Location 2</p>", lListLocations.get(1).getDescription());
-		Assert.assertEquals(new Long(72), lListLocations.get(1).getIdLocation());
-		Assert.assertEquals("Location's name 2", lListLocations.get(1).getName());
-		Assert.assertEquals("Nation 2", lListLocations.get(1).getNation());
-		Assert.assertEquals(new Integer(2), lListLocations.get(1).getPosition());
-		Assert.assertEquals("State 2", lListLocations.get(1).getState());
-		Assert.assertEquals(new Integer(1), lListLocations.get(1).getTaskStatus());
-		
-		Assert.assertEquals("City 3", lListLocations.get(2).getCity());
-		Assert.assertEquals("<p>Location 3</p>", lListLocations.get(2).getDescription());
-		Assert.assertEquals(new Long(73), lListLocations.get(2).getIdLocation());
-		Assert.assertEquals("Location's name 3", lListLocations.get(2).getName());
-		Assert.assertEquals("Nation 3", lListLocations.get(2).getNation());
-		Assert.assertEquals(new Integer(3), lListLocations.get(2).getPosition());
-		Assert.assertEquals("State 3", lListLocations.get(2).getState());
-		Assert.assertEquals(new Integer(2), lListLocations.get(2).getTaskStatus());
-		
-		// SCENES
-		
-		Assert.assertEquals("Scene 1.1", lListScenes.get(0).getDescription());
-		Assert.assertEquals(new Integer(1), lListScenes.get(0).getIdChapter());
-		Assert.assertEquals(new Long(10), lListScenes.get(0).getIdScene());
-		Assert.assertEquals(new Integer(1), lListScenes.get(0).getPosition());
-		Assert.assertEquals(new Integer(0), lListScenes.get(0).getTaskStatus());
-		
-		Assert.assertEquals("Scene 1.2", lListScenes.get(1).getDescription());
-		Assert.assertEquals(new Integer(1), lListScenes.get(1).getIdChapter());
-		Assert.assertEquals(new Long(11), lListScenes.get(1).getIdScene());
-		Assert.assertEquals(new Integer(2), lListScenes.get(1).getPosition());
-		Assert.assertEquals(new Integer(1), lListScenes.get(1).getTaskStatus());
-		
-		Assert.assertEquals("Scene 1.3", lListScenes.get(2).getDescription());
-		Assert.assertEquals(new Integer(1), lListScenes.get(2).getIdChapter());
-		Assert.assertEquals(new Long(12), lListScenes.get(2).getIdScene());
-		Assert.assertEquals(new Integer(3), lListScenes.get(2).getPosition());
-		Assert.assertEquals(new Integer(2), lListScenes.get(2).getTaskStatus());
-		
-		
-		// SCENE REVISIONS
-		
-		SimpleDateFormat lSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(0).getCharacters());
-		Assert.assertEquals(new Integer(71), lListSceneRevisions.get(0).getIdLocation());
-		Assert.assertEquals(new Integer(10), lListSceneRevisions.get(0).getIdScene());
-		Assert.assertEquals(new Long(1), lListSceneRevisions.get(0).getIdSceneRevision());
-		Assert.assertEquals(new Integer(0), lListSceneRevisions.get(0).getPointOfView());
-		Assert.assertEquals(new Integer(67), lListSceneRevisions.get(0).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(0).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.1 Revision 1</p>", lListSceneRevisions.get(0).getScene());
-		Assert.assertEquals(lSimpleDateFormat.parse("1975-04-23 22:14:00.0"), lListSceneRevisions.get(0).getSceneDate());
-		Assert.assertEquals("Y", lListSceneRevisions.get(0).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(0).getTense());
-		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(0).getWords());
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(1).getCharacters());
-		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(1).getIdLocation());
-		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(1).getIdScene());
-		Assert.assertEquals(new Long(2), lListSceneRevisions.get(1).getIdSceneRevision());
-		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getPointOfView());
-		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(1).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(1).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.2 Revision 1</p>", lListSceneRevisions.get(1).getScene());
-		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(1).getSceneDate());
-		Assert.assertEquals("N", lListSceneRevisions.get(1).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(1).getTense());
-		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(1).getWords());
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(2).getCharacters());
-		Assert.assertEquals(new Integer(72), lListSceneRevisions.get(2).getIdLocation());
-		Assert.assertEquals(new Integer(11), lListSceneRevisions.get(2).getIdScene());
-		Assert.assertEquals(new Long(4), lListSceneRevisions.get(2).getIdSceneRevision());
-		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(2).getPointOfView());
-		Assert.assertEquals(new Integer(68), lListSceneRevisions.get(2).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(2).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.2 Revision 2</p>", lListSceneRevisions.get(2).getScene());
-		Assert.assertEquals(lSimpleDateFormat.parse("1976-10-22 14:25:00.0"), lListSceneRevisions.get(2).getSceneDate());
-		Assert.assertEquals("Y", lListSceneRevisions.get(2).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(2).getTense());
-		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(2).getWords());
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(3).getCharacters());
-		Assert.assertNull(lListSceneRevisions.get(3).getIdLocation());
-		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(3).getIdScene());
-		Assert.assertEquals(new Long(3), lListSceneRevisions.get(3).getIdSceneRevision());
-		Assert.assertNull(lListSceneRevisions.get(3).getPointOfView());
-		Assert.assertNull(lListSceneRevisions.get(3).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(1), lListSceneRevisions.get(3).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.3 Revision 1</p>", lListSceneRevisions.get(3).getScene());
-		Assert.assertNull(lListSceneRevisions.get(3).getSceneDate());
-		Assert.assertEquals("N", lListSceneRevisions.get(3).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(3).getTense());
-		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(3).getWords());
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(4).getCharacters());
-		Assert.assertNull(lListSceneRevisions.get(4).getIdLocation());
-		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(4).getIdScene());
-		Assert.assertEquals(new Long(5), lListSceneRevisions.get(4).getIdSceneRevision());
-		Assert.assertNull(lListSceneRevisions.get(4).getPointOfView());
-		Assert.assertNull(lListSceneRevisions.get(4).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(2), lListSceneRevisions.get(4).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.3 Revision 2</p>", lListSceneRevisions.get(4).getScene());
-		Assert.assertNull(lListSceneRevisions.get(4).getSceneDate());
-		Assert.assertEquals("N", lListSceneRevisions.get(4).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(4).getTense());
-		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(4).getWords());
-		
-		Assert.assertEquals(new Integer(20), lListSceneRevisions.get(5).getCharacters());
-		Assert.assertEquals(new Integer(73), lListSceneRevisions.get(5).getIdLocation());
-		Assert.assertEquals(new Integer(12), lListSceneRevisions.get(5).getIdScene());
-		Assert.assertEquals(new Long(6), lListSceneRevisions.get(5).getIdSceneRevision());
-		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getPointOfView());
-		Assert.assertNull(lListSceneRevisions.get(5).getPointOfViewIdCharacter());
-		Assert.assertEquals(new Integer(3), lListSceneRevisions.get(5).getRevisionNumber());
-		Assert.assertEquals("<p>Scene 1.3 Revision 3</p>", lListSceneRevisions.get(5).getScene());
-		Assert.assertEquals(lSimpleDateFormat.parse("2004-01-01 09:17:00.0"), lListSceneRevisions.get(5).getSceneDate());
-		Assert.assertEquals("Y", lListSceneRevisions.get(5).getSelected());
-		Assert.assertNull(lListSceneRevisions.get(5).getTense());
-		Assert.assertEquals(new Integer(5), lListSceneRevisions.get(5).getWords());
-		
-		// SCENE REVISION CHARACTERS
-		
-		Assert.assertEquals(new Integer(1), lListRevisionCharactersKeys.get(0).getIdSceneRevision());
-		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(0).getIdCharacter());
-		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(1).getIdSceneRevision());
-		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(1).getIdCharacter());
-		Assert.assertEquals(new Integer(2), lListRevisionCharactersKeys.get(2).getIdSceneRevision());
-		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(2).getIdCharacter());
-		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(3).getIdSceneRevision());
-		Assert.assertEquals(new Integer(67), lListRevisionCharactersKeys.get(3).getIdCharacter());
-		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(4).getIdSceneRevision());
-		Assert.assertEquals(new Integer(68), lListRevisionCharactersKeys.get(4).getIdCharacter());
-		Assert.assertEquals(new Integer(6), lListRevisionCharactersKeys.get(5).getIdSceneRevision());
-		Assert.assertEquals(new Integer(69), lListRevisionCharactersKeys.get(5).getIdCharacter());
-		
-		// SCENE REVISION STRANDS
-		
-		Assert.assertEquals(new Integer(1), lListRevisionStrandsKeys.get(0).getIdSceneRevision());
-		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(0).getIdStrand());
-		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(1).getIdSceneRevision());
-		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(1).getIdStrand());
-		Assert.assertEquals(new Integer(2), lListRevisionStrandsKeys.get(2).getIdSceneRevision());
-		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(2).getIdStrand());
-		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(3).getIdSceneRevision());
-		Assert.assertEquals(new Integer(15), lListRevisionStrandsKeys.get(3).getIdStrand());
-		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(4).getIdSceneRevision());
-		Assert.assertEquals(new Integer(16), lListRevisionStrandsKeys.get(4).getIdStrand());
-		Assert.assertEquals(new Integer(6), lListRevisionStrandsKeys.get(5).getIdSceneRevision());
-		Assert.assertEquals(new Integer(17), lListRevisionStrandsKeys.get(5).getIdStrand());
-		
-		// STRANDS
-		
-		Assert.assertEquals("<p>Strand 1</p>", lListStrands.get(0).getDescription());
-		Assert.assertEquals(new Long(15), lListStrands.get(0).getIdStrand());
-		Assert.assertEquals("Strand 1", lListStrands.get(0).getName());
-		Assert.assertEquals(new Integer(1), lListStrands.get(0).getPosition());
-		Assert.assertEquals(new Integer(0), lListStrands.get(0).getTaskStatus());
-		
-		Assert.assertEquals("<p>Strand 2</p>", lListStrands.get(1).getDescription());
-		Assert.assertEquals(new Long(16), lListStrands.get(1).getIdStrand());
-		Assert.assertEquals("Strand 2", lListStrands.get(1).getName());
-		Assert.assertEquals(new Integer(2), lListStrands.get(1).getPosition());
-		Assert.assertEquals(new Integer(1), lListStrands.get(1).getTaskStatus());
-		
-		Assert.assertEquals("<p>Strand 3</p>", lListStrands.get(2).getDescription());
-		Assert.assertEquals(new Long(17), lListStrands.get(2).getIdStrand());
-		Assert.assertEquals("Strand 3", lListStrands.get(2).getName());
-		Assert.assertEquals(new Integer(3), lListStrands.get(2).getPosition());
-		Assert.assertEquals(new Integer(2), lListStrands.get(2).getTaskStatus());
-
-		
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testimportProjectArchiveFileWithEmptyFileName() {
-		byte[] lBytes = new byte[100];
-		ProjectManager.importProjectArchiveFile(null, lBytes);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testimportProjectArchiveFileWithNullFileName() {
-		byte[] lBytes = new byte[100];
-		ProjectManager.importProjectArchiveFile("", lBytes);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testimportProjectArchiveFileWithNullByteArray() {
-		ProjectManager.importProjectArchiveFile("test", null);
-	}
-	
-	@Test
-	public void testimportProjectArchiveFileNotValid() {
-		byte[] lBytes = new byte[100];
-		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile("test.zip", lBytes);
-		Assert.assertFalse(lImportProjectArchiveDTO.isArchiveFileValid());
-		Assert.assertNull(lImportProjectArchiveDTO.getIdProject());
-		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
-		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
-		
-		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ "test.zip");
-		Assert.assertTrue(lFileProjectToImportZip.exists());
-	}
-	
-	@Test
-	public void testimportProjectArchiveAlreadyPresent() throws IOException {
-		
-		File lFile = new File(AllTests.getTestProjectArchiveFilePath());
-		FileInputStream lFileInputStream = new FileInputStream(lFile);
-		
-		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_FILE, IOUtils.toByteArray(lFileInputStream));
-		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
-		Assert.assertTrue(lImportProjectArchiveDTO.isAlreadyPresent());
-		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lImportProjectArchiveDTO.getIdProject());
-		Assert.assertEquals("Test", lImportProjectArchiveDTO.getProjectName());
-		
-		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_FILE);
-		Assert.assertTrue(lFileProjectToImportZip.exists());
-		
-		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
-		Assert.assertTrue(lFileProjectToImportDir.exists());
-	}
-	
-	@Test
-	public void testimportProjectArchiveNotPresent() throws IOException {
-		
-		File lFile = new File(AllTests.getTestProjectArchiveNotPresentFilePath());
-		FileInputStream lFileInputStream = new FileInputStream(lFile);
-		
-		ImportProjectArchiveDTO lImportProjectArchiveDTO = ProjectManager.importProjectArchiveFile(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE, IOUtils.toByteArray(lFileInputStream));
-		Assert.assertTrue(lImportProjectArchiveDTO.isArchiveFileValid());
-		Assert.assertFalse(lImportProjectArchiveDTO.isAlreadyPresent());
-		Assert.assertEquals(AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_ID, lImportProjectArchiveDTO.getIdProject());
-		Assert.assertNull(lImportProjectArchiveDTO.getProjectName());
-		
-		File lFileProjectToImportZip = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ AllTests.TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE);
-		Assert.assertTrue(lFileProjectToImportZip.exists());
-		
-		File lFileProjectToImportDir = new File(AllTests.getTempPath()+AllTests.getPathSeparator()+ lImportProjectArchiveDTO.getIdProject());
-		Assert.assertTrue(lFileProjectToImportDir.exists());
-	}
-	
-	@After
-	public void cleanExportAndTempDirectory() throws IOException, ConfigurationException {		
-		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
-		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
+		}		
 	}
 
-	@Test
-	public void testImportProjectWithExistingProject() throws IOException, ParseException {
+
+	public void checkTestProjectDBProject() throws IOException, ParseException {
+			
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		Projects lProjects;
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjects = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+		} finally {
+			lSqlSession.close();
+		}	
+		Assert.assertNotNull(lProjects);
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjects.getIdProject());
+		Assert.assertEquals("Test", lProjects.getName());
 		
-		FileUtils.copyDirectoryToDirectory(new File(AllTests.getTestProjectDBFilePath()), new File(AllTests.getTempPath()));
+		ProjectWithBLOBs lProject;
 		
-		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
-		lImportProjectArchiveDTO.setIdProject(AllTests.TEST_PROJECT_ID);
-		lImportProjectArchiveDTO.setProjectName("Test");
-		lImportProjectArchiveDTO.setArchiveFileValid(true);
-		lImportProjectArchiveDTO.setAlreadyPresent(true);
-		ProjectManager.importProject(lImportProjectArchiveDTO);
+		lSqlSessionFactory = AllTests.getProjectSqlSessionFactoryById(AllTests.TEST_PROJECT_ID);
+		lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectMapper lProjectMapper = lSqlSession.getMapper(ProjectMapper.class);
+			lProject = lProjectMapper.selectByPrimaryKey(AllTests.TEST_PROJECT_ID);
+				
+		} finally {
+			lSqlSession.close();
+		}	
 		
-		checkTestProjectDB();	
+		// PROJECT
+		
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
+		Assert.assertEquals("en_US", lProject.getLanguage());
+		Assert.assertEquals("Test", lProject.getName());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
+		Assert.assertEquals("<p>Fabula</p>", lProject.getFabula());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
+		Assert.assertEquals("<p>Premise</p>", lProject.getPremise());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
+		Assert.assertEquals("<p>Setting</p>", lProject.getSetting());
+		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());		
 	}
 }

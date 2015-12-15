@@ -201,8 +201,6 @@ public class ProjectManager {
 		Validate.notEmpty(pProjectDTO.getName(), "argument ProjectDTO.name cannot be empty");
 		Validate.notEmpty(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be empty");
 		Validate.notEmpty(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be empty");
-		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
-		Validate.isTrue(projectsDirectoryExists(), "projects directory not exists");
 		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
@@ -1155,6 +1153,11 @@ public class ProjectManager {
 	public static void save(ProjectDTO pProjectDTO) {
 		
 		mLog.debug("Start save(ProjectDTO)");
+		
+		// validate preconditions
+		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
+		Validate.notEmpty(pProjectDTO.getIdProject(), "argument ProjectDTO.idProject cannot be empty");
+
 		
 		// open session in bibisco db
 		SqlSessionFactory lSqlSessionFactoryBibisco = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();

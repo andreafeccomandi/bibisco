@@ -74,13 +74,18 @@ public class AllTests {
 	private static String mStrBibiscoDBUrl;
 	
 	@BeforeClass
-	public static void cleanProjectsDirectory() throws IOException, ConfigurationException {
+	public static void cleanProjectsDirectory() throws IOException, ConfigurationException, InterruptedException {
 		
 		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
-		FileUtils.cleanDirectory(new File(BIBISCO_INTERNAL_PROJECTS_DIR));
+		FileUtils.cleanDirectory(new File(BIBISCO_INTERNAL_PROJECTS_DIR));		
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject2DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject3DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
+	}
+	
+	public static void cleanTestProjectDB() throws IOException {
+		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 	}
 	
 	@AfterClass
@@ -89,7 +94,7 @@ public class AllTests {
 	}
 	
 	@BeforeClass
-	public static void init() throws ConfigurationException, IOException {
+	public static void init() throws ConfigurationException, IOException, InterruptedException {
 		
 		XMLConfiguration lXMLConfiguration = getXMLConfiguration();
 		mStrOS = lXMLConfiguration.getString("os/@value");
