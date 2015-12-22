@@ -593,12 +593,12 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// get file item
 		FileItem lFileItem = (FileItem) pRequest.getAttribute("file-document_file");
-		if (lFileItem.getName() == null || lFileItem.getName().length() == 0) {
-			lFileItem = null;
-		} else {
-			lImageDTO.setFileItem(lFileItem);
-			mLog.debug("FileItem " + lFileItem.getName());
+		if (lFileItem != null) {
+			lImageDTO.setInputStream(lFileItem.getInputStream());
+			lImageDTO.setSourceFileName(lFileItem.getName());
+			mLog.debug("FileItem " + lFileItem.getName());			
 		}
+				
 		lImageDTO.setDescription(pRequest.getParameter("bibiscoAddImageDescription"));
 		lImageDTO.setIdElement(Integer.valueOf(pRequest.getParameter("idElement")));
 		lImageDTO.setElementType(ElementType.valueOf(pRequest.getParameter("elementType")));

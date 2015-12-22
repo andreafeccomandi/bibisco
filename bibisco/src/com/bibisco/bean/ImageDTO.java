@@ -14,7 +14,7 @@
  */
 package com.bibisco.bean;
 
-import org.apache.commons.fileupload.FileItem;
+import java.io.InputStream;
 
 import com.bibisco.enums.ElementType;
 
@@ -29,8 +29,28 @@ public class ImageDTO {
 	private String description;
 	private Integer idElement;
 	private ElementType elementType;
-	private FileItem fileItem;
+	private InputStream inputStream;
+	private String sourceFileName;
+	private String targetFileName;
 	
+	public String getTargetFileName() {
+		return targetFileName;
+	}
+	public void setTargetFileName(String targetFileName) {
+		this.targetFileName = targetFileName;
+	}
+	public String getSourceFileName() {
+		return sourceFileName;
+	}
+	public void setSourceFileName(String sourceFileName) {
+		this.sourceFileName = sourceFileName;
+	}
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -54,11 +74,5 @@ public class ImageDTO {
 	}
 	public void setIdElement(Integer idElement) {
 		this.idElement = idElement;
-	}
-	public FileItem getFileItem() {
-		return fileItem;
-	}
-	public void setFileItem(FileItem pFileItem) {
-		this.fileItem = pFileItem;
 	}
 }

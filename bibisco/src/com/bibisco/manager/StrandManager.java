@@ -29,7 +29,6 @@ import com.bibisco.dao.model.SceneRevisionStrandsExample;
 import com.bibisco.dao.model.SceneRevisionStrandsKey;
 import com.bibisco.dao.model.Strands;
 import com.bibisco.dao.model.StrandsExample;
-import com.bibisco.enums.ElementType;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 
@@ -138,9 +137,6 @@ public class StrandManager {
 
 				// shift down other strand
 				lStrandsMapper.shiftDown(pIntPosition, Integer.MAX_VALUE);
-
-				// delete images
-				ImageManager.deleteImagesByElement(lSqlSession, lStrands.getIdStrand().intValue(), ElementType.CHARACTERS);
 
 				lBlnResult = true;
 			}

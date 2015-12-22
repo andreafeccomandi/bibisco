@@ -15,12 +15,14 @@
 package com.bibisco.manager;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -47,11 +49,20 @@ public class ImageManager {
 		
 		mLog.debug("Start insert(ImageDTO)");
 		
+		// validate preconditions
+		Validate.notNull(pImageDTO, "argument ImageDTO cannot be null");
+		Validate.notNull(pImageDTO.getIdElement(), "argument ImageDTO.idElement cannot be null");
+		Validate.notNull(pImageDTO.getElementType(), "argument ImageDTO.elementType cannot be null");
+		Validate.notNull(pImageDTO.getInputStream(), "argument ImageDTO.inputStream cannot be null");
+		Validate.notEmpty(pImageDTO.getSourceFileName(), "argument ImageDTO.sourceFileName cannot be empty");
+		Validate.notEmpty(pImageDTO.getDescription(), "argument ImageDTO.description cannot be empty");
+		
+		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
     		// write file to file system
-    		String lStrFileName = writeFile(pImageDTO.getFileItem());
+    		String lStrFileName = writeFile(pImageDTO);
     		
     		Images lImages = new Images();
     		lImages.setDescription(pImageDTO.getDescription());
@@ -63,6 +74,7 @@ public class ImageManager {
 			lImagesMapper.insert(lImages);
 			
 			pImageDTO.setIdImage(lImages.getIdImage().intValue());
+			pImageDTO.setTargetFileName(lStrFileName);
 
 			lSqlSession.commit();
 			
@@ -80,18 +92,14 @@ public class ImageManager {
 
 	}
 	
-	private static String writeFile(FileItem pFileItem) {
+	private static String writeFile(ImageDTO pImageDTO) {
 
 		String lStrFileName = null;
-		
-		mLog.debug("Start writeFile(FileItem, String)");
 
-		String lStrFileItemFileName = pFileItem.getName();
-		if (lStrFileItemFileName == null) {
-			mLog.error("File name is null");
-			throw new BibiscoException(BibiscoException.IO_EXCEPTION);
-		}
-		
+		mLog.debug("Start writeFile(ImageDTO)");
+
+		String lStrFileItemFileName = pImageDTO.getSourceFileName();
+
 		// build file name
 		StringBuilder lStringBuilderFileName = new StringBuilder();
 		lStringBuilderFileName.append(UUID.randomUUID().toString());
@@ -101,17 +109,32 @@ public class ImageManager {
 
 		// get file path
 		String lStrFilePath = getFilePath(lStrFileName);
-		
+
 		// write file to disk
-		File lFile = new File(lStrFilePath);
+		InputStream lInputStream = pImageDTO.getInputStream();
+
 		try {
-			pFileItem.write(lFile);
+
+			File lFile = new File(lStrFilePath);
+			FileOutputStream lFileOutputStream = new FileOutputStream(lFile);
+
+			int lIntRead = 0;
+			byte[] lBytes = new byte[1024];
+			while ((lIntRead = lInputStream.read(lBytes)) != -1) {
+				lFileOutputStream.write(lBytes, 0, lIntRead);
+			}
+			lInputStream.close();
+			lFileOutputStream.close();
+
 		} catch (Throwable t) {
-			mLog.error(t, "insert() Error writing file: lFile=" + lFile);
+			mLog.error(
+					t,
+					"insert() Error writing file: lFile="
+							+ pImageDTO.getSourceFileName());
 			throw new BibiscoException(BibiscoException.IO_EXCEPTION);
 		}
-		
-		mLog.debug("End writeFile(FileItem): return ", lStrFileName);
+
+		mLog.debug("End writeFile(ImageDTO): return ", lStrFileName);
 
 		return lStrFileName;
 	}
@@ -146,6 +169,10 @@ public class ImageManager {
 		
 		mLog.debug("Start load(ImageDTO)");
 		
+		// validate preconditions
+		Validate.notNull(pIntIdImage, "argument idImage cannot be null");
+		
+		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -173,6 +200,11 @@ public class ImageManager {
 		List<ImageDTO> lListImageDTO = new ArrayList<ImageDTO>();
 		
 		mLog.debug("Start loadImagesByElement(Integer, ElementType");
+		
+		// validate preconditions
+		Validate.notNull(pIntIdElement, "argument idElement cannot be null");
+		Validate.notNull(pIntIdElement, "argument ElementType cannot be null");
+		
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
@@ -210,6 +242,9 @@ public class ImageManager {
 		
 		mLog.debug("Start delete(Integer)");
 		
+		// validate preconditions
+		Validate.notNull(pIntIdImage, "argument idImage cannot be null");
+		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -237,16 +272,21 @@ public class ImageManager {
     	mLog.debug("End delete(Integer)");
 	}
 
-	public static void deleteImagesByElement(SqlSession lSqlSession, Integer pIntIdElement, ElementType pElementType) {
+	public static void deleteImagesByElement(SqlSession pSqlSession, Integer pIntIdElement, ElementType pElementType) {
 		
 		mLog.debug("Start deleteImagesByElement(SqlSession, Integer, ElementType)");
+		
+		// validate preconditions
+		Validate.notNull(pSqlSession, "argument SqlSession cannot be null");
+		Validate.notNull(pIntIdElement, "argument idElement cannot be null");
+		Validate.notNull(pIntIdElement, "argument ElementType cannot be null");
 		
     	try {
     		ImagesExample lImagesExample = new ImagesExample();
     		lImagesExample.createCriteria().andIdElementEqualTo(pIntIdElement)
     			.andElementTypeEqualTo(pElementType.getValue());
  
-			ImagesMapper lImagesMapper = lSqlSession.getMapper(ImagesMapper.class);
+			ImagesMapper lImagesMapper = pSqlSession.getMapper(ImagesMapper.class);
 			
 			// load images to delete
 			List<Images> lListImages = lImagesMapper.selectByExample(lImagesExample);

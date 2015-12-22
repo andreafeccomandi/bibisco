@@ -68,6 +68,13 @@ public class AllTests {
 	private static String mStrTestProject3DBFilePath;
 	private static String mStrTestProjectArchiveNotPresentFilePath;
 	
+	private static String mStrImage1FilePath;
+	private static String mStrImage2FilePath;
+	private static String mStrImage3FilePath;
+	private static String mStrImage4FilePath;
+	private static String mStrImage5FilePath;
+	private static String mStrImage6FilePath;
+	
 	private static String mStrTestProject4DBFilePath;
 	private static String mStrCleanDBFilePath;
 	private static String mStrDBFilePath;
@@ -197,6 +204,66 @@ public class AllTests {
 		lStringBuilderBibiscoDBUrl.append("bibisco");
 		mStrBibiscoDBUrl = lStringBuilderBibiscoDBUrl.toString();
 		
+		// image1 file path
+		StringBuilder lStringBuilderImage1FilePath = new StringBuilder();
+		lStringBuilderImage1FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage1FilePath.append("db");
+		lStringBuilderImage1FilePath.append(mStrPathSeparator);
+		lStringBuilderImage1FilePath.append("test");
+		lStringBuilderImage1FilePath.append(mStrPathSeparator);
+		lStringBuilderImage1FilePath.append("image1.jpg");
+		mStrImage1FilePath = lStringBuilderImage1FilePath.toString();
+		
+		// image2 file path
+		StringBuilder lStringBuilderImage2FilePath = new StringBuilder();
+		lStringBuilderImage2FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage2FilePath.append("db");
+		lStringBuilderImage2FilePath.append(mStrPathSeparator);
+		lStringBuilderImage2FilePath.append("test");
+		lStringBuilderImage2FilePath.append(mStrPathSeparator);
+		lStringBuilderImage2FilePath.append("image2.jpg");
+		mStrImage2FilePath = lStringBuilderImage2FilePath.toString();
+		
+		// image3 file path
+		StringBuilder lStringBuilderImage3FilePath = new StringBuilder();
+		lStringBuilderImage3FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage3FilePath.append("db");
+		lStringBuilderImage3FilePath.append(mStrPathSeparator);
+		lStringBuilderImage3FilePath.append("test");
+		lStringBuilderImage3FilePath.append(mStrPathSeparator);
+		lStringBuilderImage3FilePath.append("image3.jpg");
+		mStrImage3FilePath = lStringBuilderImage3FilePath.toString();
+		
+		// image4 file path
+		StringBuilder lStringBuilderImage4FilePath = new StringBuilder();
+		lStringBuilderImage4FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage4FilePath.append("db");
+		lStringBuilderImage4FilePath.append(mStrPathSeparator);
+		lStringBuilderImage4FilePath.append("test");
+		lStringBuilderImage4FilePath.append(mStrPathSeparator);
+		lStringBuilderImage4FilePath.append("image4.jpg");
+		mStrImage4FilePath = lStringBuilderImage4FilePath.toString();
+		
+		// image5 file path
+		StringBuilder lStringBuilderImage5FilePath = new StringBuilder();
+		lStringBuilderImage5FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage5FilePath.append("db");
+		lStringBuilderImage5FilePath.append(mStrPathSeparator);
+		lStringBuilderImage5FilePath.append("test");
+		lStringBuilderImage5FilePath.append(mStrPathSeparator);
+		lStringBuilderImage5FilePath.append("image5.jpg");
+		mStrImage5FilePath = lStringBuilderImage5FilePath.toString();
+		
+		// image6 file path
+		StringBuilder lStringBuilderImage6FilePath = new StringBuilder();
+		lStringBuilderImage6FilePath.append(mStrAbsolutePath);
+		lStringBuilderImage6FilePath.append("db");
+		lStringBuilderImage6FilePath.append(mStrPathSeparator);
+		lStringBuilderImage6FilePath.append("test");
+		lStringBuilderImage6FilePath.append(mStrPathSeparator);
+		lStringBuilderImage6FilePath.append("image6.jpg");
+		mStrImage6FilePath = lStringBuilderImage6FilePath.toString();
+		
 		cleanProjectsDirectory();
 		
 		// set junit test running
@@ -311,5 +378,29 @@ public class AllTests {
 	
 	public static String getTestProjectArchiveNotPresentFilePath() {
 		return mStrTestProjectArchiveNotPresentFilePath;
+	}
+	
+	public static String getImage1FilePath() {
+		return mStrImage1FilePath;
+	}
+
+	public static String getImage2FilePath() {
+		return mStrImage2FilePath;
+	}
+
+	public static String getImage3FilePath() {
+		return mStrImage3FilePath;
+	}
+
+	public static String getImage4FilePath() {
+		return mStrImage4FilePath;
+	}
+
+	public static String getImage5FilePath() {
+		return mStrImage5FilePath;
+	}
+
+	public static String getImage6FilePath() {
+		return mStrImage6FilePath;
 	}
 }
