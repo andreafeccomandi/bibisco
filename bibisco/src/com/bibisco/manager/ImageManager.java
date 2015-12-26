@@ -172,7 +172,6 @@ public class ImageManager {
 		// validate preconditions
 		Validate.notNull(pIntIdImage, "argument idImage cannot be null");
 		
-		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -213,6 +212,7 @@ public class ImageManager {
     		ImagesExample lImagesExample = new ImagesExample();
     		lImagesExample.createCriteria().andIdElementEqualTo(pIntIdElement)
     			.andElementTypeEqualTo(pElementType.getValue());
+    		lImagesExample.setOrderByClause("id_image");
 			
 			ImagesMapper lImagesMapper = lSqlSession.getMapper(ImagesMapper.class);
 			List<Images> lListImages = lImagesMapper.selectByExample(lImagesExample);
@@ -221,6 +221,8 @@ public class ImageManager {
 				ImageDTO lImageDTO = new ImageDTO();
 				lImageDTO.setIdImage(lImages.getIdImage().intValue());
 				lImageDTO.setDescription(lImages.getDescription());
+				lImageDTO.setElementType(pElementType);
+				lImageDTO.setIdElement(pIntIdElement);
 				lListImageDTO.add(lImageDTO);
 			}
 

@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
@@ -28,20 +29,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bibisco.bean.ImageDTO;
-import com.bibisco.dao.client.ChaptersMapper;
 import com.bibisco.dao.client.ImagesMapper;
 import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.client.SceneRevisionCharactersMapper;
-import com.bibisco.dao.client.SceneRevisionStrandsMapper;
-import com.bibisco.dao.client.SceneRevisionsMapper;
-import com.bibisco.dao.client.ScenesMapper;
-import com.bibisco.dao.model.ChaptersExample;
 import com.bibisco.dao.model.Images;
 import com.bibisco.dao.model.Properties;
-import com.bibisco.dao.model.SceneRevisionCharactersExample;
-import com.bibisco.dao.model.SceneRevisionStrandsExample;
-import com.bibisco.dao.model.SceneRevisionsExample;
-import com.bibisco.dao.model.ScenesExample;
 import com.bibisco.enums.ElementType;
 import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.ImageManager;
@@ -152,7 +143,7 @@ public class ImageManagerTest {
 		lImageDTO.setSourceFileName(lFile.getName());
 		lImageDTO.setDescription("description");
 		lImageDTO.setElementType(ElementType.CHARACTERS);
-		lImageDTO.setIdElement(1);
+		lImageDTO.setIdElement(67);
 		lImageDTO = ImageManager.insert(lImageDTO);
 		
 		File lFileInserted = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + 
@@ -168,8 +159,8 @@ public class ImageManagerTest {
 			Assert.assertEquals("description", lImages.getDescription());
 			Assert.assertEquals(ElementType.CHARACTERS.getValue(), lImages.getElementType());
 			Assert.assertEquals(lImageDTO.getTargetFileName(), lImages.getFileName());
-			Assert.assertEquals(new Integer(1), lImages.getIdElement());
-			Assert.assertEquals(new Long(1), lImages.getIdImage());
+			Assert.assertEquals(new Integer(67), lImages.getIdElement());
+			Assert.assertEquals(lImageDTO.getIdImage(), lImages.getIdImage());
 			
 		} finally {
 			lSqlSession.close();
@@ -178,5 +169,114 @@ public class ImageManagerTest {
 		
 		AllTests.cleanTestProjectDB();
 		FileUtils.forceDelete(lFileInserted);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoadImagesByElementWithNullIdElement() {
+		ImageManager.loadImagesByElement(null, ElementType.CHARACTERS);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoadImagesByElementWithNullElementType() {
+		ImageManager.loadImagesByElement(67, null);
+	}
+	
+	@Test
+	public void testLoadImagesByElementForSecondaryCharacters() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		
+		List<ImageDTO> lListImageDTO = ImageManager.loadImagesByElement(70, ElementType.CHARACTERS);
+		Assert.assertEquals(3, lListImageDTO.size());
+		
+		Assert.assertEquals("Image4", lListImageDTO.get(0).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(0).getElementType());
+		Assert.assertEquals(new Integer(70), lListImageDTO.get(0).getIdElement());
+		Assert.assertEquals(new Integer(1), lListImageDTO.get(0).getIdImage());
+		Assert.assertNull(lListImageDTO.get(0).getInputStream());
+		Assert.assertNull(lListImageDTO.get(0).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(0).getTargetFileName());
+		
+		Assert.assertEquals("Image5", lListImageDTO.get(1).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(1).getElementType());
+		Assert.assertEquals(new Integer(70), lListImageDTO.get(1).getIdElement());
+		Assert.assertEquals(new Integer(2), lListImageDTO.get(1).getIdImage());
+		Assert.assertNull(lListImageDTO.get(1).getInputStream());
+		Assert.assertNull(lListImageDTO.get(1).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(1).getTargetFileName());
+		
+		Assert.assertEquals("Image6", lListImageDTO.get(2).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(2).getElementType());
+		Assert.assertEquals(new Integer(70), lListImageDTO.get(2).getIdElement());
+		Assert.assertEquals(new Integer(3), lListImageDTO.get(2).getIdImage());
+		Assert.assertNull(lListImageDTO.get(2).getInputStream());
+		Assert.assertNull(lListImageDTO.get(2).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(2).getTargetFileName());
+	}
+
+	@Test
+	public void testLoadImagesByElementForMainCharacters() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		
+		List<ImageDTO> lListImageDTO = ImageManager.loadImagesByElement(67, ElementType. CHARACTERS);
+		Assert.assertEquals(3, lListImageDTO.size());
+		
+		Assert.assertEquals("Image1", lListImageDTO.get(0).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(0).getElementType());
+		Assert.assertEquals(new Integer(67), lListImageDTO.get(0).getIdElement());
+		Assert.assertEquals(new Integer(1), lListImageDTO.get(0).getIdImage());
+		Assert.assertNull(lListImageDTO.get(0).getInputStream());
+		Assert.assertNull(lListImageDTO.get(0).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(0).getTargetFileName());
+		
+		Assert.assertEquals("Image2", lListImageDTO.get(1).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(1).getElementType());
+		Assert.assertEquals(new Integer(67), lListImageDTO.get(1).getIdElement());
+		Assert.assertEquals(new Integer(2), lListImageDTO.get(1).getIdImage());
+		Assert.assertNull(lListImageDTO.get(1).getInputStream());
+		Assert.assertNull(lListImageDTO.get(1).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(1).getTargetFileName());
+		
+		Assert.assertEquals("Image3", lListImageDTO.get(2).getDescription());
+		Assert.assertEquals(ElementType. CHARACTERS, lListImageDTO.get(2).getElementType());
+		Assert.assertEquals(new Integer(67), lListImageDTO.get(2).getIdElement());
+		Assert.assertEquals(new Integer(3), lListImageDTO.get(2).getIdImage());
+		Assert.assertNull(lListImageDTO.get(2).getInputStream());
+		Assert.assertNull(lListImageDTO.get(2).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(2).getTargetFileName());
+	}
+	
+	@Test
+	public void testLoadImagesByElementForLocations() {
+		
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		
+		List<ImageDTO> lListImageDTO = ImageManager.loadImagesByElement(71, ElementType.LOCATIONS);
+		Assert.assertEquals(3, lListImageDTO.size());
+		
+		Assert.assertEquals("Image1", lListImageDTO.get(0).getDescription());
+		Assert.assertEquals(ElementType. LOCATIONS, lListImageDTO.get(0).getElementType());
+		Assert.assertEquals(new Integer(71), lListImageDTO.get(0).getIdElement());
+		Assert.assertEquals(new Integer(7), lListImageDTO.get(0).getIdImage());
+		Assert.assertNull(lListImageDTO.get(0).getInputStream());
+		Assert.assertNull(lListImageDTO.get(0).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(0).getTargetFileName());
+		
+		Assert.assertEquals("Image2", lListImageDTO.get(1).getDescription());
+		Assert.assertEquals(ElementType. LOCATIONS, lListImageDTO.get(1).getElementType());
+		Assert.assertEquals(new Integer(71), lListImageDTO.get(1).getIdElement());
+		Assert.assertEquals(new Integer(8), lListImageDTO.get(1).getIdImage());
+		Assert.assertNull(lListImageDTO.get(1).getInputStream());
+		Assert.assertNull(lListImageDTO.get(1).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(1).getTargetFileName());
+		
+		Assert.assertEquals("Image3", lListImageDTO.get(2).getDescription());
+		Assert.assertEquals(ElementType. LOCATIONS, lListImageDTO.get(2).getElementType());
+		Assert.assertEquals(new Integer(71), lListImageDTO.get(2).getIdElement());
+		Assert.assertEquals(new Integer(9), lListImageDTO.get(2).getIdImage());
+		Assert.assertNull(lListImageDTO.get(2).getInputStream());
+		Assert.assertNull(lListImageDTO.get(2).getSourceFileName());
+		Assert.assertNull(lListImageDTO.get(2).getTargetFileName());
 	}
 }
