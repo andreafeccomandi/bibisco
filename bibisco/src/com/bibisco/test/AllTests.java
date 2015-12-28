@@ -37,7 +37,7 @@ import com.bibisco.manager.ContextManager;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ContextManagerTest.class, PropertiesManagerTest.class, LocaleManagerTest.class, RichTextEditorSettingsManagerTest.class, VersionManagerTest.class,
-		TipManagerTest.class, ProjectManagerTest.class })
+		TipManagerTest.class, ProjectManagerTest.class, ImageManagerTest.class })
 public class AllTests {
 
 	public static final String CONFIG_DIR = "";
@@ -56,6 +56,15 @@ public class AllTests {
 	public static final String TEST_PROJECT_ARCHIVE_NOT_PRESENT_ID = "fdcf96e8-f533-4b8e-af47-d31ec35ff3fc";
 	public static final String TEST_PROJECT_ARCHIVE_FILE = "Test_archive_20151210090211.bibisco";
 	public static final String TEST_PROJECT_ARCHIVE_NOT_PRESENT_FILE = "Testprojectnewarchive_archive_20151210225455.bibisco";
+	public static final String TEST_PROJECT_IMAGE_1 = "d7f1d2bf-bebd-4c0f-a82f-798a39b2e190.jpg";
+	public static final String TEST_PROJECT_IMAGE_2 = "aa6fb1ee-6235-4b9c-82b1-4a822c22194c.jpg";
+	public static final String TEST_PROJECT_IMAGE_3 = "53722941-51f0-4bca-a7b2-cf8ab8f21b4b.jpg";
+	public static final String TEST_PROJECT_IMAGE_4 = "8c82f96c-3c73-40c6-8c19-b52d7bfa42da.jpg";
+	public static final String TEST_PROJECT_IMAGE_5 = "3a500f6c-a6b1-4364-b5cd-15d6054eec96.jpg";
+	public static final String TEST_PROJECT_IMAGE_6 = "40c2ab94-ac20-41ea-87cf-20fff7b447e3.jpg";
+	public static final String TEST_PROJECT_IMAGE_7 = "16e5f733-3a97-439c-a95c-321e6fbc737e.jpg";
+	public static final String TEST_PROJECT_IMAGE_8 = "cb8c9b37-406b-436d-8eab-4d69a0fa2a7f.jpg";
+	public static final String TEST_PROJECT_IMAGE_9 = "7b439448-db3c-48e3-868e-6ec4b3f1e97b.jpg";
 	
 	private static boolean mBlnEnvironmentInitialized = false;
 	private static String mStrOS;

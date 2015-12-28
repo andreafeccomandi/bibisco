@@ -178,8 +178,9 @@ public class ImageManager {
     		
 			ImagesMapper lImagesMapper = lSqlSession.getMapper(ImagesMapper.class);
 			Images lImages = lImagesMapper.selectByPrimaryKey(pIntIdImage.longValue());
-			
-			lStrFileName = lImages.getFileName();
+			if (lImages != null) {				
+				lStrFileName = lImages.getFileName();
+			}
 
     	} catch(Throwable t) {
 			mLog.error(t);
@@ -202,7 +203,7 @@ public class ImageManager {
 		
 		// validate preconditions
 		Validate.notNull(pIntIdElement, "argument idElement cannot be null");
-		Validate.notNull(pIntIdElement, "argument ElementType cannot be null");
+		Validate.notNull(pElementType, "argument ElementType cannot be null");
 		
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
@@ -255,14 +256,16 @@ public class ImageManager {
     		// load image to delete
     		Images lImages = lImagesMapper.selectByPrimaryKey(pIntIdImage.longValue());
     		
-    		// delete image file on disk
-    		deleteFile(lImages.getFileName());
-    		
-    		// delete image on db
-			lImagesMapper.deleteByPrimaryKey(pIntIdImage.longValue());
+    		if (lImages != null) {    			
+    			// delete image file on disk
+    			deleteFile(lImages.getFileName());
+    			
+    			// delete image on db
+    			lImagesMapper.deleteByPrimaryKey(pIntIdImage.longValue());
 
-			lSqlSession.commit();
-			
+    			lSqlSession.commit();
+    		}
+    					
     	} catch(Throwable t) {
 			mLog.error(t);
 			lSqlSession.rollback();
@@ -281,7 +284,7 @@ public class ImageManager {
 		// validate preconditions
 		Validate.notNull(pSqlSession, "argument SqlSession cannot be null");
 		Validate.notNull(pIntIdElement, "argument idElement cannot be null");
-		Validate.notNull(pIntIdElement, "argument ElementType cannot be null");
+		Validate.notNull(pElementType, "argument ElementType cannot be null");
 		
     	try {
     		ImagesExample lImagesExample = new ImagesExample();
