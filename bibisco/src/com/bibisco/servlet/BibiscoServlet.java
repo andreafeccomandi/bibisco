@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -168,9 +168,16 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
 		
+		// check if project's directory is empty
+		if (ProjectManager.isProjectsDirectoryEmpty()) {
+			pRequest.setAttribute("projectsDirectoryEmpty", true);	
+		}
+		
 		// get messages from bibisco.com
-		WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
-		pRequest.setAttribute("webMessage", lWebMessage);
+		else {			
+			WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
+			pRequest.setAttribute("webMessage", lWebMessage);
+		}
 
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
@@ -1642,6 +1649,24 @@ public class BibiscoServlet extends HttpServlet {
 		CharacterManager.changeCharacterName(lCharacterDTO);
 		
 		mLog.debug("End changeTitleCharacter(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void saveProjectsDirectory(HttpServletRequest pRequest, HttpServletResponse pResponse) throws IOException {
+		
+		mLog.debug("Start saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrDirectory = pRequest.getParameter("directory");
+		boolean lBlnResult = ProjectManager.setProjectsDirectory(lStrDirectory);
+		
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		if(lBlnResult) {			
+			lWriter.write("ok");
+		} else {
+			lWriter.write("forbidden");
+		}
+		
+		mLog.debug("End saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void openUrlExternalBrowser(HttpServletRequest pRequest,

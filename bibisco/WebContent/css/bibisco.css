@@ -866,3 +866,9 @@ div.bibiscoTip h4 {
 .bibiscoSocialMediaButtonTwitter {
     margin-left: 5px;
 }
+
+/* SELECT PROJECTS' DIRECTORY */
+.bibiscoSelectProjectsDirectoryInfo {
+	margin-top: 5px;
+	text-align: justify;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class ProjectManagerTest {
 			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
 			Properties lProperties = new Properties();
 			lProperties.setProperty("projectsDirectory");
-			lProperties.setValue("C:/temp/bibisco/projects");
+			lProperties.setValue(AllTests.BIBISCO_PROJECTS_DIR);
 			lPropertiesMapper.updateByPrimaryKey(lProperties);	
 			lSqlSession.commit();
     	} catch (Throwable t) {	
@@ -161,7 +161,48 @@ public class ProjectManagerTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testSetProjectsDirectoryWithEmptyDirectory() {
+	public void testCheckProjectDirectoryStatusWithEmptyDirectory() {
+		ProjectManager.checkProjectDirectoryStatus("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testCheckProjectDirectoryStatusWithNullDirectory() {
+		ProjectManager.checkProjectDirectoryStatus(null);
+	}
+	
+	@Test
+	public void testCheckProjectDirectoryStatusWithNewDirectory() {
+		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_NEW_PROJECTS_DIR);
+		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.NEW, lProjectDirectoryStatus);
+	}
+	
+	@Test
+	public void testCheckProjectDirectoryStatusWithExistingDirectory() {
+		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_PROJECTS_DIR);
+		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.EXISTING, lProjectDirectoryStatus);
+	}
+	
+	@Test
+	public void testCheckProjectDirectoryStatusWithInternalBibiscoProjectsDbDir() {
+		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR);
+		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR, lProjectDirectoryStatus);
+	}
+	
+	@Test
+	public void testCheckProjectDirectoryStatusWithForbidddenDirectory() {
+		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR);
+		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.NEW, lProjectDirectoryStatus);
+	}
+	
+	@Test
+	public void testSetProjectsDirectoryWithForbiddenDirectory() {
+		Assert.assertFalse(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testSetProjectsDirectoryWithNullDirectory() {
 		ProjectManager.setProjectsDirectory(null);
 	}
 	
@@ -170,8 +211,14 @@ public class ProjectManagerTest {
 		ProjectManager.setProjectsDirectory("C:\\Users\\AndreaDocuments\\");
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testSetProjectsDirectoryWithEmptyDirectory() {
+		ProjectManager.setProjectsDirectory("");
+	}
+	
 	@Test
-	public void testSetProjectsDirectory() {
+	public void testSetProjectsDirectoryWithExistingDirectory() {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
 		SqlSession lSqlSession = lSqlSessionFactory.openSession();
@@ -183,7 +230,7 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}	
 		
-		ProjectManager.setProjectsDirectory("C:/temp/bibisco/projects");
+		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_PROJECTS_DIR));
 		
     	lSqlSession = lSqlSessionFactory.openSession();
     	Properties lProperties;
@@ -194,7 +241,73 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}
     	
-    	Assert.assertEquals(lProperties.getValue(), "C:/temp/bibisco/projects");
+    	Assert.assertEquals(lProperties.getValue(), AllTests.BIBISCO_PROJECTS_DIR);
+    	
+    	File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR);
+    	Assert.assertTrue(lFile.exists());
+	}
+	
+	@Test
+	public void testSetProjectsDirectoryWithBibiscoInternalProjectsDirectory() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjectMapper.deleteByExample(new ProjectsExample());
+			lSqlSession.commit();
+    	} finally {
+			lSqlSession.close();
+		}	
+		
+		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR));
+		
+    	lSqlSession = lSqlSessionFactory.openSession();
+    	Properties lProperties;
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			lProperties = lPropertiesMapper.selectByPrimaryKey("projectsDirectory");
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	Assert.assertEquals(lProperties.getValue(), AllTests.BIBISCO_PROJECTS_DIR);
+    	
+    	File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR);
+    	Assert.assertTrue(lFile.exists());
+	}
+	
+	@Test
+	public void testSetProjectsDirectoryWithNewDirectory() {
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lProjectMapper.deleteByExample(new ProjectsExample());
+			lSqlSession.commit();
+    	} finally {
+			lSqlSession.close();
+		}	
+		
+		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_NEW_PROJECTS_DIR));
+		
+    	lSqlSession = lSqlSessionFactory.openSession();
+    	Properties lProperties;
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			lProperties = lPropertiesMapper.selectByPrimaryKey("projectsDirectory");
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	Assert.assertEquals(lProperties.getValue(), AllTests.BIBISCO_NEW_PROJECTS_DIR);
+    	
+    	File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR_NEW_PROJECTS);
+
+    	Assert.assertTrue(lFile.exists());
+    	
+    	lFile.delete();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -623,7 +736,7 @@ public class ProjectManagerTest {
 	
 	@Test
 	public void testLoadAll() {
-		
+				
 		List<ProjectDTO> lListProjectDTOs = ProjectManager.loadAll();
 		
 		Assert.assertEquals(3, lListProjectDTOs.size());
@@ -817,7 +930,7 @@ public class ProjectManagerTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testExportProjectAsWordWitWrongIdProject() {
+	public void testExportProjectAsWordWithWrongIdProject() {
 		ContextManager.getInstance().setIdProject("Smashing Pumpkins");
 		ProjectManager.exportProjectAsWord();
 	}
@@ -1234,14 +1347,37 @@ public class ProjectManagerTest {
 		checkTestProjectDBStrands();
 		checkTestProjectDBLocations();
 		checkTestProjectDBCharacters();	
+	}
+	
+	@Test
+	public void testForbiddenDirectory() {
+		File lFile = new File(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR + AllTests.getPathSeparator() + "test");
+		Assert.assertFalse(lFile.mkdir());	
+	}
+	
+	@Test
+	public void testDeleteProjectsEntriesOnBibiscoDB() {
+		Assert.assertEquals(3, ProjectManager.deleteProjectsEntriesOnBibiscoDB());
 		
-		AllTests.cleanTestProjectDB();
+		List<Projects> lListProjects;
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+		SqlSession lSqlSession = lSqlSessionFactory.openSession();
+		try {
+			ProjectsMapper lProjectMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			ProjectsExample lProjectsExample = new ProjectsExample();
+			lListProjects = lProjectMapper.selectByExample(lProjectsExample);
+    	} finally {
+			lSqlSession.close();
+		}
+		
+		Assert.assertEquals(0, lListProjects.size());
 	}
 		
 	@After
 	public void cleanExportAndTempDirectory() throws IOException, ConfigurationException {		
 		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
 		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
+		AllTests.cleanTestProjectDB();
 	}
 
 	

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,11 @@ public class AllTests {
 	public static final String RESOURCE_FILE_NAME = "dbConfiguration.xml";
 	public static final String SQL_SESSION_ENVIRONMENT_JUNIT_TEST = "junitTest";
 	public static final String SQL_SESSION_ENVIRONMENT_STANDARD = "standard";
-	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = "C:/temp/bibisco/projects"+ System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
+	public static final String BIBISCO_PROJECTS_DIR = "C:\\temp\\bibisco\\projects";
+	public static final String BIBISCO_NEW_PROJECTS_DIR = "C:\\temp\\bibisco\\new_projects";
+	public static final String BIBISCO_FORBIDDEN_PROJECTS_DIR = "C:\\temp\\bibisco\\forbidden_projects";
+	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = BIBISCO_PROJECTS_DIR + System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
+	public static final String BIBISCO_INTERNAL_PROJECTS_DIR_NEW_PROJECTS = BIBISCO_NEW_PROJECTS_DIR + System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
 	public static final String TEST_PROJECT_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4c";
 	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
 	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";

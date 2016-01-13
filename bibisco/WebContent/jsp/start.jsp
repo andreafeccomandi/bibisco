@@ -74,10 +74,22 @@ $(function() {
 		  
 		  bibiscoOpenAjaxDialog(ajaxDialogContent);
 	});
-	
-	<c:if test="${not empty webMessage}">
-	   bibiscoAlert('${webMessage.message}');
-	</c:if>
+		
+	<c:choose>
+	 <c:when test="${projectsDirectoryEmpty}">
+	  bibiscoOpenAjaxDialog({ 
+		  idCaller: 'bibiscoStartProjectsDirectoryEmptyCondition',
+		  url : 'jsp/selectProjectsDirectory.jsp',
+		  title: '<fmt:message key="jsp.start.dialog.title.selectProjectsDirectory"/>',  
+		  init: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryInit(idAjaxDialog, idCaller); },
+		  close: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryClose(idAjaxDialog, idCaller); },
+		  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryBeforeClose(idAjaxDialog, idCaller); }, 
+		  resizable: false,  modal: true,
+		  width: 550, height: 470, positionTop: 100
+  		});
+	 </c:when>
+	 <c:when test="${not empty webMessage}">bibiscoAlert('${webMessage.message}');</c:when>
+	</c:choose>	 
 	
 	// open default browser
     $('.bibiscoDefaultBrowserUrl').click(function() {
