@@ -33,12 +33,19 @@ $(function() {
 });
 
 </script>
-
-<c:if test="${empty project}">
+<c:choose>
+<c:when test="${firstAccess}">
+	<%@ include file="welcome.jsp" %>
+</c:when>
+<c:when test="${empty project}">
 	<%@ include file="start.jsp" %>
-</c:if>
-<c:if test="${not empty project}">
+</c:when>
+<c:otherwise>
 	<%@ include file="main.jsp" %>
-</c:if>
+</c:otherwise>
+
+</c:choose>
+
+
 </body>
 </html>

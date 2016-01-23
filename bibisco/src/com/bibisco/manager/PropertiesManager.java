@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import com.bibisco.dao.model.PropertiesExample;
 import com.bibisco.log.Log;
 
 /**
- * Properties manager: manage proeprties stored on bibisco db
+ * Properties manager: manage properties stored on bibisco db
  * 
  * @author Andrea Feccomandi
  *

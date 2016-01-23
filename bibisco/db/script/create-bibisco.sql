@@ -1,6 +1,6 @@
 CREATE TABLE properties (
   property VARCHAR(50)   NOT NULL ,
-  value VARCHAR(50)   NOT NULL   ,
+  value VARCHAR(500)   NOT NULL   ,
 PRIMARY KEY(property));
 
 

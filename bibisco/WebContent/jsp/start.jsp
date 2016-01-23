@@ -69,27 +69,32 @@ $(function() {
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 
 				  resizable: false, modal: true,
-				  width: 600, height: 240, positionTop: 100
+				  width: 400, height: 240, positionTop: 100
 		  };
 		  
 		  bibiscoOpenAjaxDialog(ajaxDialogContent);
 	});
+	
+	$('#bibiscoProjectsAChangeProjectsDirectory').click(function() {
+		 var ajaxDialogContent = { 
+				  idCaller: 'bibiscoStartProjectsDirectoryEmptyCondition',
+				  url : 'jsp/changeProjectsDirectory.jsp',
+				  title: "<fmt:message key="jsp.start.dialog.title.changeProjectsDirectory"/>",  
+				  init: function (idAjaxDialog, idCaller) { return bibiscoChangeProjectsDirectoryInit(idAjaxDialog, idCaller); },
+				  close: function (idAjaxDialog, idCaller) { 
+					  return bibiscoChangeProjectsDirectoryClose(idAjaxDialog, idCaller); 
+				  },
+				  beforeClose: function (idAjaxDialog, idCaller) {
+					  return bibiscoChangeProjectsDirectoryBeforeClose(idAjaxDialog, idCaller); 
+				  },
+				  resizable: false,  modal: true,
+				  width: 750, height: 280, positionTop: 100
+		 		};
+		  
+		  bibiscoOpenAjaxDialog(ajaxDialogContent);
+	});
 		
-	<c:choose>
-	 <c:when test="${projectsDirectoryEmpty}">
-	  bibiscoOpenAjaxDialog({ 
-		  idCaller: 'bibiscoStartProjectsDirectoryEmptyCondition',
-		  url : 'jsp/selectProjectsDirectory.jsp',
-		  title: '<fmt:message key="jsp.start.dialog.title.selectProjectsDirectory"/>',  
-		  init: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryInit(idAjaxDialog, idCaller); },
-		  close: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryClose(idAjaxDialog, idCaller); },
-		  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectsDirectoryBeforeClose(idAjaxDialog, idCaller); }, 
-		  resizable: false,  modal: true,
-		  width: 550, height: 470, positionTop: 100
-  		});
-	 </c:when>
-	 <c:when test="${not empty webMessage}">bibiscoAlert('${webMessage.message}');</c:when>
-	</c:choose>	 
+	 <c:if test="${not empty webMessage}">bibiscoAlert('${webMessage.message}');</c:if>	 
 	
 	// open default browser
     $('.bibiscoDefaultBrowserUrl').click(function() {
@@ -103,7 +108,7 @@ $(function() {
 	<div class="span12">
     	<div class="hero-unit bibiscoStartMotivational">
 				<h1 class="bibiscoNotSelectableText"><fmt:message key="jsp.start.h1" /></h1>
-				<p class="bibiscoNotSelectableText">
+				<div class="btn-toolbar bibiscoStartBtnToolbar">
 					<c:if test="${not empty projectList}">
 						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsAOpenProject"><fmt:message key="jsp.start.button.openProject" /></a>
 						<a href="#" class="btn btn-large" id="bibiscoProjectsACreateProject"><fmt:message key="jsp.start.button.createProject" /></a>
@@ -113,8 +118,17 @@ $(function() {
 						<a href="#" class="btn btn-large btn-primary" id="bibiscoProjectsACreateProject"><fmt:message key="jsp.start.button.createFirstProject" /></a>
 						<a href="#" class="btn btn-large" id="bibiscoProjectsAImportProject"><fmt:message key="jsp.start.button.importFirstProject" /></a>				
 					</c:if>	
-					<a href="#" class="btn btn-large" id="bibiscoProjectsAChangeLanguage"><fmt:message key="jsp.start.button.changeLanguage" /></a>
-				</p>
+					<div class="btn-group bibiscoStartSettings">
+					  <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+					    <fmt:message key="jsp.start.button.settings" />
+					    <span class="caret"></span>
+					  </a>
+					  <ul class="dropdown-menu pull-right">
+						<li><a href="#" id="bibiscoProjectsAChangeLanguage"><fmt:message key="jsp.start.button.changeLanguage" /></a></li>
+						<li><a href="#" id="bibiscoProjectsAChangeProjectsDirectory"><fmt:message key="jsp.start.button.changeProjectsDirectory" /></a></li>
+					  </ul>
+					</div>
+				</div>
 		</div>  	  	
     </div>
 </div>

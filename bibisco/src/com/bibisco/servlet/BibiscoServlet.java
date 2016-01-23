@@ -87,6 +87,7 @@ import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
 import com.bibisco.manager.ProjectFromSceneManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.ResourceBundleManager;
 import com.bibisco.manager.RichTextEditorSettingsManager;
 import com.bibisco.manager.SceneManager;
@@ -168,22 +169,54 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
 		
-		// check if project's directory is empty
-		if (ProjectManager.isProjectsDirectoryEmpty()) {
-			pRequest.setAttribute("projectsDirectoryEmpty", true);	
+		// check if is first access to bibisco
+		boolean lBlnFirstAccess = Boolean.valueOf(PropertiesManager.getInstance().getProperty("firstAccess"));
+		if (lBlnFirstAccess) {
+			pRequest.setAttribute("firstAccess", lBlnFirstAccess);
+			pRequest.setAttribute("wizardStep", 1);
+		} 
+		else {			
+			// get messages from bibisco.com
+			WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
+			pRequest.setAttribute("webMessage", lWebMessage);						
 		}
 		
-		// get messages from bibisco.com
-		else {			
-			WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
-			pRequest.setAttribute("webMessage", lWebMessage);
-		}
-
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
 		mLog.debug("End start(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void completeWizardStep1(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start completeWizardStep1(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrLocale = pRequest.getParameter("locale");
+		LocaleManager.getInstance().saveLocale(lStrLocale);
+		
+		// set new language to servlet context
+		pRequest.getSession().getServletContext().setAttribute("language", LocaleManager.getInstance().getLocale().getLanguage());
+				
+		pRequest.setAttribute("firstAccess", true);
+		pRequest.setAttribute("wizardStep", 2);
+		
+		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
+		
+		mLog.debug("End completeWizardStep1(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void completeWizardStep2(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start completeWizardStep2(HttpServletRequest, HttpServletResponse)");
+
+		PropertiesManager.getInstance().updateProperty("firstAccess", "false");
+						
+		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
+		
+		mLog.debug("End completeWizardStep2(HttpServletRequest, HttpServletResponse)");
+	}
+		
 	public void selectProject(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws ServletException, IOException {
 
@@ -731,8 +764,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// get projects
 		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
-		pRequest.getSession().getServletContext().setAttribute("projectList", lListProjectDTO);
-		
+		pRequest.getSession().getServletContext().setAttribute("projectList", lListProjectDTO);		
 		pRequest.getRequestDispatcher(START).forward(pRequest, pResponse);
 
 		mLog.debug("End exitProject(HttpServletRequest, HttpServletResponse)");
@@ -1251,6 +1283,7 @@ public class BibiscoServlet extends HttpServlet {
 			ProjectDTO lProjectDTO = ProjectManager.load(ContextManager.getInstance().getIdProject());
 			pRequest.setAttribute("project", lProjectDTO);
 		} 
+		
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 		
 		mLog.debug("End saveLocale(HttpServletRequest, HttpServletResponse)");

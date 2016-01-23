@@ -12,3 +12,4 @@ insert into properties (property,value) values ('donationTip','');
 insert into properties (property,value) values ('socialMediaTip','true');
 insert into properties (property,value) values ('projectsDirectory','');
 insert into properties (property,value) values ('locale','');
+insert into properties (property,value) values ('firstAccess','true');

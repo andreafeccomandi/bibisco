@@ -1,9 +1,9 @@
-/com/
 /ApplicationResources.properties
 /ApplicationResources_en.properties
 /ApplicationResources_es.properties
 /ApplicationResources_it.properties
 /bibiscoConfig.xml
+/com/
 /dbConfiguration.xml
 /log4j.dtd
 /log4j.xml

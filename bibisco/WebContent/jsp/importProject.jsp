@@ -120,7 +120,7 @@
 		<div class="control-group">
 			<label id="bibiscoImportProjectInputFileLabel" class="control-label" for="bibiscoImportProjectInputFile"><fmt:message key="jsp.importProject.label.file" /></label>
 			<div class="controls">
-				<input id="document_file" type="file" name="document_file" >
+				<input id="document_file" type="file" name="document_file" class="span5">
 			</div>
 		</div>
 	</form>
