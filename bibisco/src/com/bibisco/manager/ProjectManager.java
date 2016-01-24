@@ -166,7 +166,6 @@ public class ProjectManager {
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
-    		
     		ProjectsMapper lProjectsMapper = lSqlSession.getMapper(ProjectsMapper.class);
     		ProjectsExample lProjectsExample = new ProjectsExample();
     		lProjectsExample.setOrderByClause("UPPER(name) asc");
@@ -176,16 +175,22 @@ public class ProjectManager {
 				lListProjectDTO = new ArrayList<ProjectDTO>();
 				for (Projects lProjects : lListProjects) {
 					
-					ProjectDTO lProjectDTO = new ProjectDTO();
-					lProjectDTO.setIdProject(lProjects.getIdProject());
-					lProjectDTO.setName(lProjects.getName());
-					
-					lListProjectDTO.add(lProjectDTO);
+					if (projectExists(lProjects.getIdProject())) {
+						ProjectDTO lProjectDTO = new ProjectDTO();
+						lProjectDTO.setIdProject(lProjects.getIdProject());
+						lProjectDTO.setName(lProjects.getName());						
+						lListProjectDTO.add(lProjectDTO);
+					} else {
+						lProjectsMapper.deleteByPrimaryKey(lProjects.getIdProject());
+					}
 				}
 			}
+			
+			lSqlSession.commit();
 		
     	} catch(Throwable t) {
 			mLog.error(t);
+			lSqlSession.rollback();
 			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
 		} finally {
 			lSqlSession.close();
@@ -1349,9 +1354,11 @@ public class ProjectManager {
 		else {
 			lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.NEW;
 			File[] lFilesChildren = lFileSelectedDirectory.listFiles();
-			for (int i = 0; i < lFilesChildren.length; i++) {
-				if (lFilesChildren[i].getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
-					lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.EXISTING;
+			if (lFilesChildren!=null) {				
+				for (int i = 0; i < lFilesChildren.length; i++) {
+					if (lFilesChildren[i].getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
+						lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.EXISTING;
+					}
 				}
 			}
 		}

@@ -774,6 +774,39 @@ public class ProjectManagerTest {
 		Assert.assertNull(lListProjectDTOs.get(2).getSecondaryCharacterList());
 	}
 	
+	@Test
+	public void testLoadAllWithManuallyDeletedProjectFromDirectory() throws IOException {
+		
+		File lFile = new File(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR + System.getProperty("file.separator") + AllTests.TEST_PROJECT2_ID);
+		FileUtils.deleteDirectory(lFile);
+		
+		List<ProjectDTO> lListProjectDTOs = ProjectManager.loadAll();
+		
+		Assert.assertEquals(2, lListProjectDTOs.size());
+		Assert.assertNull(lListProjectDTOs.get(0).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(0).getBibiscoVersion());
+		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lListProjectDTOs.get(0).getIdProject());
+		Assert.assertNull(lListProjectDTOs.get(0).getLanguage());
+		Assert.assertEquals("Test", lListProjectDTOs.get(0).getName());
+		Assert.assertNull(lListProjectDTOs.get(0).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(0).getChapterList());
+		Assert.assertNull(lListProjectDTOs.get(0).getLocationList());
+		Assert.assertNull(lListProjectDTOs.get(0).getMainCharacterList());
+		Assert.assertNull(lListProjectDTOs.get(0).getSecondaryCharacterList());
+				
+		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(1).getBibiscoVersion());
+		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(1).getIdProject());
+		Assert.assertNull(lListProjectDTOs.get(1).getLanguage());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lListProjectDTOs.get(1).getName());
+		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
+		Assert.assertNull(lListProjectDTOs.get(1).getChapterList());
+		Assert.assertNull(lListProjectDTOs.get(1).getLocationList());
+		Assert.assertNull(lListProjectDTOs.get(1).getMainCharacterList());
+		Assert.assertNull(lListProjectDTOs.get(1).getSecondaryCharacterList());
+	}
+	
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteProjectWithEmptyIdProject() {
 		ProjectManager.delete("");

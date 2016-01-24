@@ -50,14 +50,13 @@
 							directory: $('#bibiscoChangeProjectsDirectorySelectedDirectory').val()
 						},
 						beforeSend : function() {
+							bibiscoBlockUI();
 							bibiscoOpenLoadingBanner();
 						},
 						success : function(data) {
 							if (data == 'ok') {
-								bibiscoProjectsDirectoryEmpty = false;
 								bibiscoCloseLoadingBannerSuccess();
-								$('#bibiscoChangeProjectsDirectoryASave').tooltip('hide');
-								ajaxDialog.close();
+								window.location.href='BibiscoServlet?action=start'
 							} else {
 								bibiscoCloseLoadingBannerError();
 								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.forbidden.message" />");		

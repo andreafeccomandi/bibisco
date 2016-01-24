@@ -72,11 +72,11 @@
 					directory: $('#bibiscoStartWizardSelectedDirectory').val()
 				},
 				beforeSend : function() {
+					bibiscoBlockUI();
 					bibiscoOpenLoadingBanner();
 				},
 				success : function(data) {
 					if (data == 'ok') {
-						bibiscoProjectsDirectoryEmpty = false;
 						bibiscoCloseLoadingBannerSuccess();
 						$('#bibiscoSelectProjectsDirectoryASave').tooltip('hide');
 						window.location.href = 'BibiscoServlet?action=completeWizardStep2';

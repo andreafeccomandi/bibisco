@@ -176,6 +176,11 @@ public class BibiscoServlet extends HttpServlet {
 			pRequest.setAttribute("wizardStep", 1);
 		} 
 		else {			
+			
+			// get projects
+			List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
+			getServletContext().setAttribute("projectList", lListProjectDTO);
+			
 			// get messages from bibisco.com
 			WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
 			pRequest.setAttribute("webMessage", lWebMessage);						
@@ -211,6 +216,10 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start completeWizardStep2(HttpServletRequest, HttpServletResponse)");
 
 		PropertiesManager.getInstance().updateProperty("firstAccess", "false");
+		
+		// get projects
+		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
+		getServletContext().setAttribute("projectList", lListProjectDTO);
 						
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 		
@@ -1752,10 +1761,6 @@ public class BibiscoServlet extends HttpServlet {
 		// get tip settings
 		TipSettings lTipSettings = TipManager.load();
 		getServletContext().setAttribute("tipSettings", lTipSettings);
-
-		// get projects
-		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
-		getServletContext().setAttribute("projectList", lListProjectDTO);
 		
 		mLog.debug("End init()");
 	}
