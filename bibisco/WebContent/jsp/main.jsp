@@ -10,6 +10,7 @@
 			$('#bibiscoMainDivLocations').hide();
 			$('#bibiscoMainDivSettings').hide();
 			$('#bibiscoMainDivInfo').hide();
+			$('#bibiscoMainDivSuggestedReadings').hide();
 						
 			// set body height: this is necessary to avoid strange behaviours of dialog dragged outside body height
 			$('body').css('height', window.innerHeight-50);
@@ -33,5 +34,6 @@
     	<div id="bibiscoMainDivLocations"><%@ include file="locations.jsp" %></div>
     	<div id="bibiscoMainDivSettings"><%@ include file="settings.jsp" %></div>
     	<div id="bibiscoMainDivInfo"><%@ include file="info.jsp" %></div>
+    	<div id="bibiscoMainDivSuggestedReadings"><%@ include file="suggestedReadings.jsp" %></div>
 	</div> <!-- /container -->
 	

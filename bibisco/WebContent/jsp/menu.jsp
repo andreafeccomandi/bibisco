@@ -26,6 +26,7 @@
 			 <li id="bibiscoMenuLiExport" data-div="Export"><a href="javascript: bibiscoSelectTopMenuItem('Export');"><fmt:message key="jsp.menu.export" /></a></li> 	
              <li id="bibiscoMenuLiSettings" data-div="Settings"><a href="javascript: bibiscoSelectTopMenuItem('Settings');"><fmt:message key="jsp.menu.settings" /></a></li>
              <li id="bibiscoMenuLiInfo" data-div="Info"><a href="javascript: bibiscoSelectTopMenuItem('Info');"><fmt:message key="jsp.menu.info" /></a></li>
+             <li id="bibiscoMenuLiSuggestedReadings" data-div="SuggestedReadings"><a href="javascript: bibiscoSelectTopMenuItem('SuggestedReadings');"><fmt:message key="jsp.menu.suggestedReadings" /></a></li>
            </ul>
          </div><!--/.nav-collapse -->
        </div>
