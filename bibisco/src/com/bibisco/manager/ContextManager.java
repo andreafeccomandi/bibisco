@@ -43,6 +43,7 @@ public class ContextManager {
 	private String mStrTempDirectoryPath;
 	private String mStrTemplateDbDirectoryPath;
 	private String mStrXulRunnerDirectoryPath;
+	private String mStrXulRunnerAppDataDirectoryPath;
 	private String mStrPathSeparator;
 	private String mStrOS;
 	private String mStrIdProject;
@@ -132,6 +133,14 @@ public class ContextManager {
 		lStringBuilder.append(mStrPathSeparator);
 		lStringBuilder.append(mStrOS);
 		mStrXulRunnerDirectoryPath = lStringBuilder.toString();
+		
+		// xulrunner app data directory path
+		lStringBuilder = new StringBuilder();
+		lStringBuilder.append(mStrAbsolutePath);
+		lStringBuilder.append("xulrunner");
+		lStringBuilder.append(mStrPathSeparator);
+		lStringBuilder.append("appdata");
+		mStrXulRunnerAppDataDirectoryPath = lStringBuilder.toString();
 				
 		mLog.info("*** OS: ", mStrOS);		
 		mLog.info("*** Absolute path: ", mStrAbsolutePath);
@@ -140,6 +149,7 @@ public class ContextManager {
 		mLog.info("*** temp: ", mStrTempDirectoryPath);
 		mLog.info("*** Template db directory path: ", mStrTemplateDbDirectoryPath);
 		mLog.info("*** Xulrunner directory path: ", mStrXulRunnerDirectoryPath);
+		mLog.info("*** Xulrunner app data directory path: ", mStrXulRunnerAppDataDirectoryPath);
 	}
 	
 	public String getOS() {
@@ -204,6 +214,10 @@ public class ContextManager {
 
 	public String getXulRunnerDirectoryPath() {
 		return mStrXulRunnerDirectoryPath;
+	}
+	
+	public String getXulRunnerAppDataDirectoryPath() {
+		return mStrXulRunnerAppDataDirectoryPath;
 	}
 
 	public boolean isJunitTestRunning() {
