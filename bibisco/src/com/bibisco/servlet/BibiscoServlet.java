@@ -691,6 +691,7 @@ public class BibiscoServlet extends HttpServlet {
 		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
 		lImportProjectArchiveDTO.setIdProject(pRequest.getParameter("idProject"));
 		lImportProjectArchiveDTO.setAlreadyPresent(Boolean.parseBoolean(pRequest.getParameter("alreadyPresent")));
+		lImportProjectArchiveDTO.setArchiveFileValid(Boolean.parseBoolean(pRequest.getParameter("archiveFileValid")));
 		
 		ProjectDTO lProjectDTO = ProjectManager.importProject(lImportProjectArchiveDTO);
 		

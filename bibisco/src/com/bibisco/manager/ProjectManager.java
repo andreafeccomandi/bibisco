@@ -862,7 +862,6 @@ public class ProjectManager {
 		// validate preconditions
 		Validate.notNull(pImportProjectArchiveDTO, "ImportProjectArchiveDTO cannot be null");
 		Validate.notNull(pImportProjectArchiveDTO.getIdProject(), "id project cannot be null");
-		Validate.notEmpty(pImportProjectArchiveDTO.getProjectName(), "project name cannot be null");
 		Validate.isTrue(pImportProjectArchiveDTO.isArchiveFileValid());
 		
 		try {
@@ -912,18 +911,18 @@ public class ProjectManager {
 	}
 	
 	
-	private static void zipIt(String zipFile) {
+	private static void zipIt(String pZipFile) {
 		
 		mLog.debug("Start zipIt(String)");
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		
-		String lStrDBDirectoryPath = lContextManager.getDbDirectoryPath();
+		String lStrProjectsDirectory = getProjectsDirectory();
 		String lStrDbProjectDirectory = getDBProjectDirectory(lContextManager.getIdProject());
 		List<String> lFileList = getDirectoryFileList(new File(lStrDbProjectDirectory));
 		
 		try {
-			File lFile = new File(zipFile);
+			File lFile = new File(pZipFile);
 			
 			lFile.createNewFile();
 			FileOutputStream lFileOutputStream = new FileOutputStream(lFile);
@@ -932,7 +931,7 @@ public class ProjectManager {
 			byte[] buffer = new byte[1024];
 			for (String lStrFile : lFileList) {
 
-				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrDBDirectoryPath.length(), lStrFile.length()));
+				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrProjectsDirectory.length(), lStrFile.length()));
 				lZipOutputStream.putNextEntry(lZipEntry);
 
 				FileInputStream lFileInputStream = new FileInputStream(lStrFile);
@@ -1106,9 +1105,42 @@ public class ProjectManager {
 
 				String lStrFileName = lZipEntry.getName();
 				File lFileZipEntry = new File(lStrTempDirectory + File.separator + lStrFileName);
+				
+				String lStrParent =lFileZipEntry.getParent(); 
+				
+				// the archive was created with another OS
+				if ((lStrParent + File.separator).equals(lStrTempDirectory)) {
+					
+					if (ContextManager.getInstance().getOS().contains("linux")) {
+						//manage windows archive
+						String[] lStrFileNameSplitted = StringUtils.split(lStrFileName, "\\");
+						
+						StringBuilder lStringBuilderDirectoryPath = new StringBuilder();
+						lStringBuilderDirectoryPath.append(lStrTempDirectory);
+						for (int i = 0; i < lStrFileNameSplitted.length; i++) {
+							
+							if(i>0) {
+								lStringBuilderDirectoryPath.append(File.separator);
+							}
+							
+							lStringBuilderDirectoryPath.append(lStrFileNameSplitted[i]);
+							File lFile = new File(lStringBuilderDirectoryPath.toString());
+							if (i<lStrFileNameSplitted.length-1) {
+								lFile.mkdir();
+							} else {								
+								lFileZipEntry = lFile;
+							}
+						}
+						
+					}
+				} 
+				
+				// the archive was created with same OS
+				else {					
+					// create all non exists folders
+					new File(lStrParent).mkdirs();
+				}
 
-				// create all non exists folders
-				new File(lFileZipEntry.getParent()).mkdirs();
 
 				FileOutputStream lFileOutputStream = new FileOutputStream(lFileZipEntry);
 
