@@ -74,11 +74,11 @@
 			if (alreadyPresent) {
 				bibiscoConfirm(confirmMessage, function(result) {
 				    if (result) {
-				    	bibiscoImportProject(idProject, alreadyPresent);
+				    	bibiscoImportProject(idProject, alreadyPresent, archiveFileValid);
 				    } 
 				});
 			} else {
-				bibiscoImportProject(idProject, alreadyPresent);
+				bibiscoImportProject(idProject, alreadyPresent, archiveFileValid);
 			}	
 		} else {
 			// archive file is not valid
@@ -89,13 +89,14 @@
 		
 	}
 	
-	function bibiscoImportProject(idProject, alreadyPresent) {
+	function bibiscoImportProject(idProject, alreadyPresent, archiveFileValid) {
 		$.ajax({
 			type : 'POST',
 			url : 'BibiscoServlet?action=importProject',
 			data : {
 				idProject: idProject,
-				alreadyPresent: alreadyPresent
+				alreadyPresent: alreadyPresent,
+				archiveFileValid: archiveFileValid
 			},
 			beforeSend : function() {
 				bibiscoBlockUI();
