@@ -1197,8 +1197,6 @@ public class ProjectManager {
 		
 		// validate preconditions
 		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
-		Validate.notEmpty(pProjectDTO.getIdProject(), "argument ProjectDTO.idProject cannot be empty");
-
 		
 		// open session in bibisco db
 		SqlSessionFactory lSqlSessionFactoryBibisco = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();

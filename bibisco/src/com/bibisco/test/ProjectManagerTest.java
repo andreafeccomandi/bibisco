@@ -1311,11 +1311,6 @@ public class ProjectManagerTest {
 		ProjectManager.save(null);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testSaveWithNullIdProject() {
-		ProjectManager.save(new ProjectDTO());
-	}
-	
 	@Test
 	public void testSave() throws IOException, ParseException, ConfigurationException, InterruptedException {
 	
