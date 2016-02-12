@@ -106,7 +106,7 @@ function bibiscoSelectChapter(position,config) {
     	<div id="bibiscoChaptersDivEmptyChapters" data-thumbnailFamily="chapter" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapters.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapters.a.createFirstChapter" createButtonId="bibiscoChaptersACreateFirstChapter"  />
 		</div>	
-    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoChaptersNotEmptyThumbnailListElements" data-thumbnailFamily="chapter">
+    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoChaptersNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="chapter">
 	    	<c:forEach items="${project.chapterList}" var="chapter" varStatus="chapterNumber">
 	    		
 	    		<c:if test="${chapterNumber.count % 4 == 1}">

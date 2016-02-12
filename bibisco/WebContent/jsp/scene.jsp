@@ -143,9 +143,7 @@
         $('#bibiscoSceneDivCharacters').hide();
         
         $('#bibiscoSceneDivTags').css("height", ajaxDialog.getHeight() - 150);
-        $('#bibiscoSceneDivTags').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+        $('#bibiscoSceneDivTags').perfectScrollbar(); 
         
         
         // point of view
@@ -458,7 +456,7 @@
         <tags:bibiscoRichTextEditor />
     </div>
 </div>
-<div id="bibiscoSceneDivTags" class="bibiscoNotSelectableText bibiscoSceneTags">
+<div id="bibiscoSceneDivTags" class="bibiscoNotSelectableText bibiscoSceneTags bibiscoScrollable">
     <div class="accordion" id="sceneAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">

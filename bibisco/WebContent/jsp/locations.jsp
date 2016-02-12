@@ -111,7 +111,7 @@ function bibiscoSelectLocation(position,config) {
     	<div id="bibiscoLocationsDivEmptyLocations" data-thumbnailFamily="location" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.locations.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.locations.a.createFirstLocation" createButtonId="bibiscoLocationsACreateFirstLocation"  />
 		</div>	    	
-    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoLocationsNotEmptyThumbnailListElements" data-thumbnailFamily="location" >
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoLocationsNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="location" >
 	    	<c:forEach items="${project.locationList}" var="location" varStatus="locationNumber">
 	    		
 	    		<c:if test="${locationNumber.count % 4 == 1}">

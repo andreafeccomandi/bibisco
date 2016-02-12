@@ -188,7 +188,7 @@ function bibiscoSelectScene(position,configScene) {
     	<div id="bibiscoChapterDivEmptyScenes" data-thumbnailFamily="scene" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapter.a.createFirstScene" createButtonId="bibiscoChapterACreateFirstScene"  />
 		</div>    	
-    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoScenesNotEmptyThumbnailListElements" data-thumbnailFamily="scene">
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoScenesNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="scene">
 	    	<c:forEach items="${chapter.sceneList}" var="scene" varStatus="sceneNumber">
 	    		
 	    		<c:if test="${sceneNumber.count % 4 == 1}">

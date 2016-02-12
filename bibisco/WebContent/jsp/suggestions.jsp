@@ -30,9 +30,7 @@ function bibiscoSuggestionsInit(idAjaxDialog, idCaller) {
 	});
 	
 	// initialize scrollbar
-	$('#bibiscoSuggestionsDiv').jScrollPane({
-		autoReinitialise: true, animateScroll: true, verticalGutter: 30
-	}).data('jsp');
+	$('#bibiscoSuggestionsDiv').perfectScrollbar();   
 }
 
 function bibiscoSuggestionsBeforeClose(idAjaxDialog, idCaller) {
@@ -66,6 +64,9 @@ function showSuggestion(i) {
 		$('#bibiscoSuggestionsABack').show();
 		$('#bibiscoSuggestionsAForward').show();
 	}
+	
+	// update scrollbar
+	$('#bibiscoSuggestionsDiv').perfectScrollbar('update');   
 }
 
 function getActualSuggestion() {
@@ -75,7 +76,7 @@ function getActualSuggestion() {
 	
 </script>
 
-<div id="bibiscoSuggestionsDiv" class="bibiscoSuggestionsCarousel" data-actual-suggestion="0" data-total-suggestions="6" >
+<div id="bibiscoSuggestionsDiv" class="bibiscoSuggestionsCarousel bibiscoScrollable" data-actual-suggestion="0" data-total-suggestions="6" >
 	<div class="bibiscoSuggestions" data-suggestion="0">
 	<jsp:include page="suggestions/${language}/characters.html" />
 	</div>

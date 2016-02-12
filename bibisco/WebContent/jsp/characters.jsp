@@ -180,7 +180,7 @@ function bibiscoSelectSecondaryCharacter(position,config) {
     	<div id="bibiscoCharactersDivEmptyMainCharacters" data-thumbnailFamily="maincharacter" class="bibiscoEmptyThumbnailListElements bibiscoMainCharactersEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.characters.bibiscoEmptyThumbnailListBox.text.main" createButtonText="jsp.characters.a.createFirstMainCharacter" createButtonId="bibiscoCharactersACreateFirstMainCharacter"  />
 		</div>	    	
-    	<div id="bibiscoCharactersDivNotEmptyMainCharacters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoMainCharactersNotEmptyThumbnailListElements" data-thumbnailFamily="maincharacter">
+    	<div id="bibiscoCharactersDivNotEmptyMainCharacters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoMainCharactersNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="maincharacter">
 	    	<c:forEach items="${project.mainCharacterList}" var="maincharacter" varStatus="mainCharacterNumber">
 	    		
 	    		<c:if test="${mainCharacterNumber.count % 4 == 1}">
@@ -215,7 +215,7 @@ function bibiscoSelectSecondaryCharacter(position,config) {
 	<div id="bibiscoCharactersDivEmptySecondaryCharacters" data-thumbnailFamily="secondarycharacter" class="bibiscoEmptyThumbnailListElements" >
 		<tags:bibiscoEmptyThumbnailListBox text="jsp.characters.bibiscoEmptyThumbnailListBox.text.secondary" createButtonText="jsp.characters.a.createFirstSecondaryCharacter" createButtonId="bibiscoCharactersACreateFirstSecondaryCharacter"  />
 	</div>	  
-   	<div id="bibiscoCharactersDivNotEmptySecondaryCharacters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoSecondaryCharactersNotEmptyThumbnailListElements" data-thumbnailFamily="secondarycharacter">
+   	<div id="bibiscoCharactersDivNotEmptySecondaryCharacters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoSecondaryCharactersNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="secondarycharacter">
 	    	<c:forEach items="${project.secondaryCharacterList}" var="secondarycharacter" varStatus="secondaryCharacterNumber">
 	    		<c:if test="${secondaryCharacterNumber.count % 4 == 1}">
 	    			<section>

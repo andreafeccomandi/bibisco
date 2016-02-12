@@ -18,10 +18,7 @@
     	$('#bibiscoAnalysisCharacterSceneDiv').css('height', window.innerHeight - 200);
     	
     	// initialize scrollbar
-		$('#bibiscoAnalysisCharacterSceneDiv').jScrollPane({
-			autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		}).data('jsp');
-	
+    	$('#bibiscoAnalysisCharacterSceneDiv').perfectScrollbar();   
     }     
     
  	// close dialog callback
@@ -50,7 +47,7 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisCharacterSceneDiv" class="bibiscoAnalysisCharacterScene bibiscoNotSelectableText">
+        <div id="bibiscoAnalysisCharacterSceneDiv" class="bibiscoAnalysisCharacterScene bibiscoNotSelectableText bibiscoScrollable">
 		    <c:forEach items="${characters}" var="character" varStatus="characterNumber">
 		        <h4>${character.name}</h4>
 		        <c:if test="${empty characterSceneAnalysis[character.idCharacter]}">

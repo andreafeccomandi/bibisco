@@ -32,7 +32,11 @@
 
 .bibiscoNotEmptyThumbnailListElements {
     width: 100%; 
-    overflow: scroll;
+    overflow: auto;
+}
+
+.bibiscoScrollable {
+	position: relative;
 }
 
 .bibiscoDialogFooter table {
@@ -471,7 +475,6 @@ div.bibiscoTip h4 {
 
 .bibiscoSelectProject {
 	margin-top: 10px; 
-	overflow: scroll; 
 	width: 100%; 
 	height: 250px;
 }
@@ -679,7 +682,6 @@ div.bibiscoTip h4 {
 .bibiscoProjectFromSceneTabContent {
     text-align: justify; 
     width: 100%; 
-    overflow: scroll;
 }
 
 .bibiscoProjectFromSceneImage {

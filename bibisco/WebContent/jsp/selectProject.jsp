@@ -55,6 +55,7 @@
 						},
 						success : function(data) {
 							tr.remove();
+							$('#bibiscoSelectProjectDiv').perfectScrollbar('update'); 
 							bibiscoCloseLoadingBannerSuccess();						
 						},
 						error : function() {
@@ -68,9 +69,7 @@
 		
 		
 		// initialize scrollbar
-		$('#bibiscoSelectProjectDiv').jScrollPane({
-			autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		}).data('jsp');
+		$('#bibiscoSelectProjectDiv').perfectScrollbar();   
 	}
 	
 	// close dialog callback
@@ -84,7 +83,7 @@
 	}
 </script>
 
-<div id="bibiscoSelectProjectDiv" class="bibiscoSelectProject">
+<div id="bibiscoSelectProjectDiv" class="bibiscoSelectProject bibiscoScrollable">
 	<table class="table table-striped table-bordered">
   		<tbody>
   			<c:forEach items="${projectList}" var="project" varStatus="projectNumber">
