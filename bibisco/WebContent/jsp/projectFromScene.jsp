@@ -403,7 +403,7 @@
                   },
                   success:function(projectFromSceneLocation){
                       populateLocation(projectFromSceneLocation, dialogConfig.height);
-                      $('#bibiscoProjectFromSceneDivLocationContent').;
+                      $('#bibiscoProjectFromSceneDivLocationContent').perfectScrollbar('update');
                       bibiscoCloseLoadingBannerSuccess();
                   },
                   error:function(){
