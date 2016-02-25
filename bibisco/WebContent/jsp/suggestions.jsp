@@ -78,22 +78,47 @@ function getActualSuggestion() {
 
 <div id="bibiscoSuggestionsDiv" class="bibiscoSuggestionsCarousel bibiscoScrollable" data-actual-suggestion="0" data-total-suggestions="6" >
 	<div class="bibiscoSuggestions" data-suggestion="0">
-	<jsp:include page="suggestions/${language}/characters.html" />
+	<h4><fmt:message key="jsp.suggestions.characters.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.characters.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.characters.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.characters.p3" /></p>
+	<p><fmt:message key="jsp.suggestions.characters.p4" /></p>
 	</div>
 	<div class="bibiscoSuggestions" data-suggestion="1" >
-	<jsp:include page="suggestions/${language}/conflict.html" />
+	<h4><fmt:message key="jsp.suggestions.conflict.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.conflict.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.conflict.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.conflict.p3" /></p>
+	<p><fmt:message key="jsp.suggestions.conflict.p4" /></p>
 	</div>
 	<div class="bibiscoSuggestions" data-suggestion="2" >
-	<jsp:include page="suggestions/${language}/premise.html" />
+	<h4><fmt:message key="jsp.suggestions.premise.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.premise.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.premise.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.premise.p3" /></p>
+	<p><fmt:message key="jsp.suggestions.premise.p4" /></p>
 	</div>
 	<div class="bibiscoSuggestions" data-suggestion="3" >
-	<jsp:include page="suggestions/${language}/setting.html" />
+	<h4><fmt:message key="jsp.suggestions.setting.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.setting.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.setting.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.setting.p3" /></p>
 	</div>
 	<div class="bibiscoSuggestions" data-suggestion="4">
-	<jsp:include page="suggestions/${language}/fabula.html" />
+	<h4><fmt:message key="jsp.suggestions.fabula.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.fabula.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.fabula.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.fabula.p3" /></p>
 	</div>
 	<div class="bibiscoSuggestions" data-suggestion="5">
-	<jsp:include page="suggestions/${language}/pointofview.html" />
+	<h4><fmt:message key="jsp.suggestions.pointofview.h4" /></h4>
+	<p><fmt:message key="jsp.suggestions.pointofview.p1" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p2" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p3" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p4" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p5" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p6" /></p>
+	<p><fmt:message key="jsp.suggestions.pointofview.p7" /></p>
 	</div>
 </div>
 
