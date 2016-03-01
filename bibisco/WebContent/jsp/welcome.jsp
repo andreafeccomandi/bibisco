@@ -118,11 +118,10 @@
 							<option value="de_DE"><fmt:message key="jsp.language.form.selectLanguage.option.de" /></option>
 							<option value="en_US"><fmt:message key="jsp.language.form.selectLanguage.option.en" /></option>
 							<option value="es_ES"><fmt:message key="jsp.language.form.selectLanguage.option.es" /></option>					
+							<option value="fr_FR"><fmt:message key="jsp.language.form.selectLanguage.option.fr" /></option>
 							<option value="it_IT"><fmt:message key="jsp.language.form.selectLanguage.option.it" /></option>
 							<option value="pl_PL"><fmt:message key="jsp.language.form.selectLanguage.option.pl" /></option>
-							<!--  <option value="fr_FR"><fmt:message key="jsp.language.form.selectLanguage.option.fr" /></option>
-							<option value="pt_BR"><fmt:message key="jsp.language.form.selectLanguage.option.pt" /></option>
-							-->	
+							<!-- <option value="pt_BR"><fmt:message key="jsp.language.form.selectLanguage.option.pt" /></option>-->	
 						</select>					
 					</div>
 					<div class="bibiscoWizardButtons">
