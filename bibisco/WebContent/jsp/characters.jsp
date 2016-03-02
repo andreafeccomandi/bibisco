@@ -90,7 +90,7 @@ function bibiscoCreateMainCharacter(config) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoCharactersACreateMainCharacter',
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-			  title: '<fmt:message key="jsp.characters.dialog.title.createMainCharacter" />', 
+			  title: "<fmt:message key="jsp.characters.dialog.title.createMainCharacter" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
@@ -106,7 +106,7 @@ function bibiscoCreateSecondaryCharacter(configSecondary) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoCharactersACreateSecondaryCharacter',
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-			  title: '<fmt:message key="jsp.characters.dialog.title.createSecondaryCharacter" />', 
+			  title: "<fmt:message key="jsp.characters.dialog.title.createSecondaryCharacter" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configSecondary); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },

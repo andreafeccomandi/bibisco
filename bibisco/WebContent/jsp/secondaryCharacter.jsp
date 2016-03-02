@@ -61,7 +61,7 @@
     		var ajaxDialogContent = { 
   				  idCaller: 'bibiscoSecondaryCharacterAImages',
   				  url: 'BibiscoServlet?action=openCarouselImage&idElement='+id+'&elementType=CHARACTERS',	    
-  				  title: '<fmt:message key="jsp.carouselImage.dialog.title" /> ' +secondaryCharacter.name, 
+  				  title: "<fmt:message key="jsp.carouselImage.dialog.title" /> " +secondaryCharacter.name, 
   				  init: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageInitCallback(idAjaxDialog, idCaller); },
   				  close: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageCloseCallback(idAjaxDialog, idCaller); },
   				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageBeforeCloseCallback(idAjaxDialog, idCaller); },

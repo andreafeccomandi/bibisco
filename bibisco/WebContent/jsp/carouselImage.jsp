@@ -83,7 +83,7 @@
     	var ajaxDialogContent = { 
 				  idCaller: 'bibiscoCarouselImageDivImages',
 				  url: 'jsp/addImageForm.jsp?idElement=${idElement}&elementType=${elementType}',	    
-				  title: '<fmt:message key="jsp.addImageForm.dialog.title" />', 
+				  title: "<fmt:message key="jsp.addImageForm.dialog.title" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoAddImageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoAddImageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoAddImageBeforeClose(idAjaxDialog, idCaller); },

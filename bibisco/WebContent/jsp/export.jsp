@@ -21,8 +21,8 @@ $(function() {
 		exportProject('PDF');
 	});
 	
-	$('#bibiscoExportAArchive').popover({placement	: 'bottom', content: '<fmt:message key="jsp.export.button.bibiscoExportAArchive.popover" />'});
-	$('#bibiscoExportAWord').popover({placement	: 'bottom', content: '<fmt:message key="jsp.export.button.bibiscoExportAWord.popover" />'});
+	$('#bibiscoExportAArchive').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAArchive.popover" />"});
+	$('#bibiscoExportAWord').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAWord.popover" />"});
 });
 
 function exportProject(type) {

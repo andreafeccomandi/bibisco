@@ -53,7 +53,7 @@ function bibiscoCreateStrand(config) {
 	var ajaxDialogContent = { 
 		  idCaller: 'bibiscoStrandACreateStrand',
 		  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-		  title: '<fmt:message key="jsp.architecture.strand.dialog.title.createStrand" />', 
+		  title: "<fmt:message key="jsp.architecture.strand.dialog.title.createStrand" />", 
 		  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 		  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 		  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },

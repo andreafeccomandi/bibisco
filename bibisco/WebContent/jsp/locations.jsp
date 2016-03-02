@@ -54,7 +54,7 @@ function bibiscoCreateLocation(config) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoLocationsACreateLocation',
 			  url: 'BibiscoServlet?action=startCreateLocation&position='+position,
-			  title: '<fmt:message key="jsp.locations.dialog.title.createLocation" />', 
+			  title: "<fmt:message key="jsp.locations.dialog.title.createLocation" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },

@@ -16,7 +16,7 @@ $(function() {
 		var ajaxDialogContent = { 
 				  idCaller: 'bibiscoChaptersACreateProject',
 				  url: 'jsp/createProject.jsp',
-				  title: '<fmt:message key="jsp.projects.dialog.title.createProject" />', 
+				  title: "<fmt:message key="jsp.projects.dialog.title.createProject" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCreateProjectFormBeforeClose(idAjaxDialog, idCaller); },
@@ -33,7 +33,7 @@ $(function() {
 		var ajaxDialogContent = { 
 				  idCaller: 'bibiscoProjectsAOpenProject',
 				  url: 'BibiscoServlet?action=selectProject',
-				  title: '<fmt:message key="jsp.projects.dialog.title.openProject" />', 
+				  title: "<fmt:message key="jsp.projects.dialog.title.openProject" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSelectProjectBeforeClose(idAjaxDialog, idCaller); },
@@ -48,7 +48,7 @@ $(function() {
 		var ajaxDialogContent = { 
 				  idCaller: 'bibiscoProjectsAImportProject',
 				  url: 'jsp/importProject.jsp',
-				  title: '<fmt:message key="jsp.projects.dialog.title.importProject" />', 
+				  title: "<fmt:message key="jsp.projects.dialog.title.importProject" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoImportProjectInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoImportProjectClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoImportProjectBeforeClose(idAjaxDialog, idCaller); },
@@ -64,7 +64,7 @@ $(function() {
 		 var ajaxDialogContent = { 
 				  idCaller: 'start',
 				  url : 'jsp/language.jsp',
-				  title: '<fmt:message key="jsp.projects.dialog.title.changeLanguage"/>',  
+				  title: "<fmt:message key="jsp.projects.dialog.title.changeLanguage"/>",  
 				  init: function (idAjaxDialog, idCaller) { return bibiscoLanguageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 

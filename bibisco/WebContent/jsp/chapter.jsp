@@ -96,9 +96,9 @@ function bibiscoShowDonationTip() {
 function bibiscoCreateScene(configScene) {
 	var position = bibiscoThumbnailCount('scene') + 1;
 	var ajaxDialogContent = { 
-			  idCaller: 'bibiscoChapterACreateScene',
+			  idCaller: "bibiscoChapterACreateScene",
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position+'&idParent=${chapter.idChapter}',
-			  title: '<fmt:message key="jsp.chapter.dialog.title.createScene" />', 
+			  title: "<fmt:message key="jsp.chapter.dialog.title.createScene" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configScene); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },

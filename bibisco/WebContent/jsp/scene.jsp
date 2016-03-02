@@ -278,7 +278,7 @@
                 var ajaxDialogContent = { 
                           idCaller: 'bibiscoSceneAProjectFromScene',
                           url: 'BibiscoServlet?action=openProjectFromScene&idScene=' + $('#bibiscoSceneIdScene').val(),
-                          title: '<fmt:message key="jsp.scene.projectFromScene.dialog.title" />', 
+                          title: "<fmt:message key="jsp.scene.projectFromScene.dialog.title" />", 
                           init: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneInitCallback(idAjaxDialog, idCaller, positions.projectFromSceneWidth, projectFromSceneDialogHeight); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {

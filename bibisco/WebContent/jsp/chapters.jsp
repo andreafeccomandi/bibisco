@@ -50,7 +50,7 @@ function bibiscoCreateChapter(config) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoChaptersACreateChapter',
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-			  title: '<fmt:message key="jsp.chapters.dialog.title.createChapter" />', 
+			  title: "<fmt:message key="jsp.chapters.dialog.title.createChapter" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },

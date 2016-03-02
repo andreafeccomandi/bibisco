@@ -54,7 +54,7 @@ $(function() {
 			var ajaxDialogContent = { 
 				  idCaller: 'bibiscoProjectSuggestions',
 				  url: 'jsp/suggestions.jsp',	    
-				  title: '<fmt:message key="jsp.project.dialog.title.suggestions" />', 
+				  title: "<fmt:message key="jsp.project.dialog.title.suggestions" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoSuggestionsInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoSuggestionsBeforeClose(idAjaxDialog, idCaller); },
