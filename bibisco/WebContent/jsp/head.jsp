@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <meta charset="utf-8">
 
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>

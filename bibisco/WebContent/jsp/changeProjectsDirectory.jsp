@@ -1,6 +1,6 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@page import="com.bibisco.manager.PropertiesManager"%>
 <%@page import="com.bibisco.manager.ProjectManager"%>
-<%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
