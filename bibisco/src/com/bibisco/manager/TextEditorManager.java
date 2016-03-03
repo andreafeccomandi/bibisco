@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -170,9 +170,9 @@ public class TextEditorManager {
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 91, 96);
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 123, 126);
 		lStrNodeText = replaceCharIntervalWithWhiteSpace(lStrNodeText, 161, 191);		
-		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '“', ' ');
-		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '”', ' ');	
-		lStrNodeText = StringUtils.replaceChars(lStrNodeText, '—', ' ');
+		lStrNodeText = StringUtils.replaceChars(lStrNodeText, 'ï¿½', ' ');
+		lStrNodeText = StringUtils.replaceChars(lStrNodeText, 'ï¿½', ' ');	
+		lStrNodeText = StringUtils.replaceChars(lStrNodeText, 'ï¿½', ' ');
 		lStrNodeText = lStrNodeText.trim();
 		
 		if (StringUtils.isNotBlank(lStrNodeText)) {
