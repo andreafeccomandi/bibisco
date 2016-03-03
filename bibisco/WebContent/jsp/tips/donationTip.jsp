@@ -12,12 +12,7 @@ $(function() {
     $('#bibiscoTipImgDonatePayPal').click(function() {
         bibiscoOpenDefaultBrowser('${baseURL}/donatePayPal');
     }); 
-    
-    // donate with Flattr
-    $('#bibiscoTipImgDonateFlattr').click(function() {
-        bibiscoOpenDefaultBrowser('${baseURL}/donateFlattr');
-    });      
-   
+        
 });
 
 </script>
@@ -25,7 +20,6 @@ $(function() {
 <p><fmt:message key="jsp.tip.donationTip.2"/></p>
 <p class="bibiscoDonationsButton">
 <img id="bibiscoTipImgDonatePayPal" class="bibiscoDonationButtonPaypal" src="img/<fmt:message key="jsp.info.img.donatepaypal"/>">
-<img id="bibiscoTipImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png">
 </p>
      
 

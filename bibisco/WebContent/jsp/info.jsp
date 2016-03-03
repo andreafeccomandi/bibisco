@@ -44,13 +44,7 @@ $(function() {
     // donate with PayPal
    	$('#bibiscoInfoImgDonatePayPal').click(function() {
         bibiscoOpenDefaultBrowser('${baseURL}/donatePayPal');
-    }); 
-    
-    // donate with Flattr
-    $('#bibiscoInfoImgDonateFlattr').click(function() {
-        bibiscoOpenDefaultBrowser('${baseURL}/donateFlattr');
-    }); 
-    
+    });     
 });
 
 </script>
@@ -109,6 +103,5 @@ $(function() {
      <p><fmt:message key="jsp.info.p.donations.1"/></p>
      <p><fmt:message key="jsp.info.p.donations.2"/></p>
      <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonatePayPal" class="bibiscoDonationButtonPaypal" src="img/<fmt:message key="jsp.info.img.donatepaypal"/>"></p>
-     <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png"></p>
      </div>
  </div>		
