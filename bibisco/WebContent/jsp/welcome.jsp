@@ -81,6 +81,7 @@
 						$('#bibiscoSelectProjectsDirectoryASave').tooltip('hide');
 						window.location.href = 'BibiscoServlet?action=completeWizardStep2';
 					} else {
+						bibiscoUnblockUI();
 						bibiscoCloseLoadingBannerError();
 						bibiscoAlert("<fmt:message key="jsp.welcome.step2.forbidden.message"/>");		
 					}
