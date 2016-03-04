@@ -28,12 +28,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.ibatis.datasource.pooled.PooledDataSource;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.h2.jdbcx.JdbcDataSource;
 
 import com.bibisco.BibiscoException;
 import com.bibisco.bean.ArchitectureDTO;
@@ -1392,7 +1398,7 @@ public class ProjectManager {
 				}
 			}
 		}
-		
+				
 		return lProjectDirectoryStatus;
 		
 	}
@@ -1455,6 +1461,9 @@ public class ProjectManager {
 	        	    	
 	        	    	// load project
 	        	    	ProjectDTO lProjectDTO = load();
+	        	    	
+	        	    	// close connection to project DB
+	        	    	closeConnection();
 	        			
 	        			//import project into bibisco db
 	        			insertIntoBibiscoDB(lProjectDTO);
@@ -1471,6 +1480,33 @@ public class ProjectManager {
 		return lIntResult;
 	}
 	
+	public static void closeConnection() {
+		
+		mLog.debug("Start closeConnection()");
+				
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+        Configuration lConfiguration = lSqlSessionFactory.getConfiguration();
+        Environment lEnvironment = lConfiguration.getEnvironment();
+        DataSource lDataSource = lEnvironment.getDataSource();
+       
+        //production
+        if (lDataSource instanceof PooledDataSource) {
+        	((PooledDataSource)lDataSource).forceCloseAll();
+        } 
+        //test
+        else if (lDataSource instanceof JdbcDataSource){
+        	try {
+        		lDataSource.getConnection().close();
+        	} catch (Throwable t) {
+        		mLog.error(t);
+        		throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
+        	}
+        }
+        
+        
+        mLog.debug("End closeConnection()");
+	}
+
 	private static void checkProjectVersionAndUpdateIfNecessary(String pStrIdProject) {
 
 		mLog.debug("Start checkProjectVersionAndUpdateIfNecessary(String)");

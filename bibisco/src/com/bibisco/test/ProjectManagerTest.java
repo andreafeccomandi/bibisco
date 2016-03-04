@@ -439,7 +439,7 @@ public class ProjectManagerTest {
 		ProjectManager.importProjectsFromProjectsDirectory();
 	}
 	
-
+	@Test
 	public void testImportProjectsFromProjectsDirectory() throws ConfigurationException, IOException, ParseException {
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -502,7 +502,7 @@ public class ProjectManagerTest {
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
 		Assert.assertEquals("1.3.0", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
-		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProject.getName());
+		Assert.assertEquals("Test 3 Ã  Ã¨ Ã¬ Ã§ Ã¹ Â£ $ ! /", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
@@ -766,7 +766,7 @@ public class ProjectManagerTest {
 		Assert.assertNull(lListProjectDTOs.get(2).getBibiscoVersion());
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(2).getIdProject());
 		Assert.assertNull(lListProjectDTOs.get(2).getLanguage());
-		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lListProjectDTOs.get(2).getName());
+		Assert.assertEquals("Test 3 ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ $ ! /", lListProjectDTOs.get(2).getName());
 		Assert.assertNull(lListProjectDTOs.get(2).getArchitecture());
 		Assert.assertNull(lListProjectDTOs.get(2).getChapterList());
 		Assert.assertNull(lListProjectDTOs.get(2).getLocationList());
@@ -798,7 +798,7 @@ public class ProjectManagerTest {
 		Assert.assertNull(lListProjectDTOs.get(1).getBibiscoVersion());
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(1).getIdProject());
 		Assert.assertNull(lListProjectDTOs.get(1).getLanguage());
-		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lListProjectDTOs.get(1).getName());
+		Assert.assertEquals("Test 3 ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ $ ! /", lListProjectDTOs.get(1).getName());
 		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
 		Assert.assertNull(lListProjectDTOs.get(1).getChapterList());
 		Assert.assertNull(lListProjectDTOs.get(1).getLocationList());
@@ -2093,4 +2093,16 @@ public class ProjectManagerTest {
 		Assert.assertEquals("<p>Setting</p>", lProject.getSetting());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getSettingTaskStatus());		
 	}
+	
+	@Test
+	public void testCloseConnection() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ProjectManager.closeConnection();
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCloseConnectionWithNullIdProject() {
+		ProjectManager.closeConnection();
+	}
+	
 }
