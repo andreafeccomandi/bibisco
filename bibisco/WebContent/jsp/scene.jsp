@@ -303,7 +303,7 @@
         // revisions
         $("#bibiscoSceneSelectRevision").on("change", function(e) { 
             if (bibiscoRichTextEditor.unSaved) {
-                bibiscoConfirm('<fmt:message key="jsp.scene.revision.change.message" />', function(result) {
+                bibiscoConfirm("<fmt:message key="jsp.scene.revision.change.message" />", function(result) {
                     if (result) {
                         bibiscoRichTextEditor.unSaved=false;
                         bibiscoSceneSelectRevisionChange(e);
@@ -388,7 +388,7 @@
         var selectedValue = $('#bibiscoSceneSelectRevision option:selected').val();
         
         if (selectedValue=='createRevision') {
-            bibiscoConfirm('<fmt:message key="jsp.scene.createRevisionFromActual.message" />', 
+            bibiscoConfirm("<fmt:message key="jsp.scene.createRevisionFromActual.message" />", 
                 function(result) {
                     if (result) {
                         bibiscoExecuteChangeRevision('createRevisionFromActual');
@@ -398,7 +398,7 @@
                 });
         } else if (selectedValue=='deleteCurrentRevision') {
             setSceneRevisionSelectToActualRevision();
-            bibiscoConfirm('<fmt:message key="jsp.scene.deleteCurrentRevision.message" />',
+            bibiscoConfirm("<fmt:message key="jsp.scene.deleteCurrentRevision.message" />",
                 function(result) {
                     if (result) {
                         bibiscoExecuteChangeRevision(selectedValue)

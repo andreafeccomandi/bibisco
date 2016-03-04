@@ -42,7 +42,7 @@
 		$('.bibiscoSelectProjectDeleteButton').click(function() {
 			var idProject = $(this).attr('data-idproject');
 			var tr = $(this).closest('tr');
-			bibiscoConfirm('<fmt:message key="jsp.selectProject.delete.confirm" />', function(result) {
+			bibiscoConfirm("<fmt:message key="jsp.selectProject.delete.confirm" />", function(result) {
 			    if (result) {
 			    	$.ajax({
 						type : 'POST',

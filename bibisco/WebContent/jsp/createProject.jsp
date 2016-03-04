@@ -62,7 +62,7 @@
 
 	function bibiscoCreateProjectFormSubmit(ajaxDialog) {
 		if ($('#bibiscoCreateProjectForm').valid()) {
-			bibiscoConfirm('<fmt:message key="jsp.createProject.save.confirm" />', function(result) {
+			bibiscoConfirm("<fmt:message key="jsp.createProject.save.confirm" />", function(result) {
 			    if (result) {
 			    	var name = $('#bibiscoCreateProjectName').val();
 					var language = $('#bibiscoCreateProjectSelectLanguage').val();

@@ -32,7 +32,7 @@
        	
     	// delete image button
     	$('#bibiscoCarouselImageADeleteCurrentImage').click(function() {
-    		bibiscoConfirm('<fmt:message key="jsp.carouselImage.dialog.deleteCurrentImage.confirm" />', function(result) {
+    		bibiscoConfirm("<fmt:message key="jsp.carouselImage.dialog.deleteCurrentImage.confirm" />", function(result) {
 			    if (result) {
 			    	// get id image to delete
 			    	var idImage = $('div.carousel-inner div.active img').attr('data-idimage');
