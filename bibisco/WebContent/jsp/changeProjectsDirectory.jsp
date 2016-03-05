@@ -58,6 +58,7 @@
 								bibiscoCloseLoadingBannerSuccess();
 								window.location.href='BibiscoServlet?action=start'
 							} else {
+								bibiscoUnblockUI();
 								bibiscoCloseLoadingBannerError();
 								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.forbidden.message" />");		
 							}
