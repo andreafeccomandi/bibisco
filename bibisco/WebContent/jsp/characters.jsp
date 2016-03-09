@@ -171,10 +171,10 @@ function bibiscoSelectSecondaryCharacter(position,config) {
 <div class="row-fluid">
 	<div class="span12">
 		<div class="row-fluid page-header">
-			<div class="span8">
+			<div class="span9">
 				<h1><fmt:message key="jsp.characters.h1.main" /><small>&nbsp;&nbsp;&nbsp;<fmt:message key="jsp.characters.h1.small.main" /></small></h1>
     		</div>
-    		<div class="span4 pagination-right">
+    		<div class="span3 pagination-right">
     			<a id="bibiscoCharactersACreateMainCharacter" class="btn btn-primary bibiscoHeaderButton" data-thumbnailFamily="maincharacter" href="#"><i class="icon-plus icon-white"></i>&nbsp;<fmt:message key="jsp.characters.a.createMainCharacter" /></a>
     		</div>
     	</div>

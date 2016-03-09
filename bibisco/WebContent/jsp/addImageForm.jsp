@@ -87,6 +87,9 @@
 		}
 		$('div.carousel-inner').append(imageToAppend);
 		
+		// init carousel
+		$('div.carousel').carousel('pause');
+		
 		// close save button tooltip
 		$('#bibiscoAddImageASave').tooltip('hide');
 		

@@ -208,7 +208,7 @@
 }
 
 .bibiscoRichTextEditorTaskStatusDialogDescriptionRow {
-	height: 16px;
+	
 }
 
 .bibiscoRichTextEditorTaskStatusDialogDescription {
@@ -552,7 +552,7 @@ div.bibiscoTip h4 {
 .bibiscoCharacterInfoInterview span {
 	height: 30px; 
 	text-align: left; 
-	font-size: 18px; 
+	font-size: 16px; 
 	line-height: 27px;
 }
 
