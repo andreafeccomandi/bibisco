@@ -209,24 +209,24 @@
     
     function addMainCharacterOptionToSelectCharacterSection() {
     	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Personaldata" id="bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData"><fmt:message key="jsp.projectFromScene.select.characters.personaldata" /></option>');   	   
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Physionomy"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPhysionomy"><fmt:message key="jsp.projectFromScene.select.characters.physionomy" /></option>'); 
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Behaviors"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionBehaviors"><fmt:message key="jsp.projectFromScene.select.characters.behaviors" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Psychology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPsychology"><fmt:message key="jsp.projectFromScene.select.characters.psychology" /></option>');  
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Ideas"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionIdeas"><fmt:message key="jsp.projectFromScene.select.characters.ideas" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Sociology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionSociology"><fmt:message key="jsp.projectFromScene.select.characters.sociology" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Lifebeforestorybeginning"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionLifebeforestorybeginning"><fmt:message key="jsp.projectFromScene.select.characters.lifebeforestorybeginning" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Conflict"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionConflict"><fmt:message key="jsp.projectFromScene.select.characters.conflict" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Evolutionduringthestory"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionEvolutionduringthestory"><fmt:message key="jsp.projectFromScene.select.characters.evolutionduringthestory" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Personaldata\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData\"><fmt:message key="jsp.projectFromScene.select.characters.personaldata" /></option>");   	   
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Physionomy\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPhysionomy\"><fmt:message key="jsp.projectFromScene.select.characters.physionomy" /></option>"); 
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Behaviors\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionBehaviors\"><fmt:message key="jsp.projectFromScene.select.characters.behaviors" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Psychology\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPsychology\"><fmt:message key="jsp.projectFromScene.select.characters.psychology" /></option>");  
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Ideas\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionIdeas\"><fmt:message key="jsp.projectFromScene.select.characters.ideas" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Sociology\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionSociology\"><fmt:message key="jsp.projectFromScene.select.characters.sociology" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Lifebeforestorybeginning\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionLifebeforestorybeginning\"><fmt:message key="jsp.projectFromScene.select.characters.lifebeforestorybeginning" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Conflict\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionConflict\"><fmt:message key="jsp.projectFromScene.select.characters.conflict" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Evolutionduringthestory\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionEvolutionduringthestory\"><fmt:message key="jsp.projectFromScene.select.characters.evolutionduringthestory" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Images\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionImages\"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>");
     	$('#bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData').attr('selected','selected'); 
     	$('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', true);
     }
     
     function addSecondaryCharacterOptionToSelectCharacterSection() {
     	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Description" id="bibiscoProjectFromSceneSelectCharacterSectionOptionDescription">Descrizione</option>');
-        $("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages">Immagini</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Description\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionDescription\"><fmt:message key="jsp.projectFromScene.select.characters.description" /></option>");
+        $("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Images\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionImages\"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>");
         $('#bibiscoProjectFromSceneSelectCharacterSectionOptionDescription').attr('selected','selected');
         $('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', false);
     }
