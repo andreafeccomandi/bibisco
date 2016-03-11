@@ -104,6 +104,7 @@ $(function() {
 
 </script>
 <%@ include file="menu.jsp" %>
+<div class="container">
 <div class="row-fluid">
 	<div class="span12">
     	<div class="hero-unit bibiscoStartMotivational">
@@ -132,4 +133,4 @@ $(function() {
 		</div>  	  	
     </div>
 </div>
-
+</div>
