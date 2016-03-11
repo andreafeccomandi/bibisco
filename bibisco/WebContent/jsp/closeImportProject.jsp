@@ -7,8 +7,10 @@
 <html>
 <body>
 <script>
+<fmt:message key="jsp.closeImportProject.importAlreadyPresent.confirm" var="confirmMessage"><fmt:param value="${importProjectArchive.projectName}"/></fmt:message>
+var confirmMessage = "<c:out value="${confirmMessage}"/>";
 window.top.window.bibiscoImportProjectCallback('${importProjectArchive.idProject}',${importProjectArchive.archiveFileValid},${importProjectArchive.alreadyPresent}, 
-		'<fmt:message key="jsp.closeImportProject.importAlreadyPresent.confirm"><fmt:param value="${importProjectArchive.projectName}"/></fmt:message>');
+		confirmMessage);
 </script>
 </body>
 </html>
