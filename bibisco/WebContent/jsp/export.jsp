@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
@@ -21,8 +21,8 @@ $(function() {
 		exportProject('PDF');
 	});
 	
-	$('#bibiscoExportAArchive').popover({placement	: 'bottom', content: '<fmt:message key="jsp.export.button.bibiscoExportAArchive.popover" />'});
-	$('#bibiscoExportAWord').popover({placement	: 'bottom', content: '<fmt:message key="jsp.export.button.bibiscoExportAWord.popover" />'});
+	$('#bibiscoExportAArchive').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAArchive.popover" />"});
+	$('#bibiscoExportAWord').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAWord.popover" />"});
 });
 
 function exportProject(type) {

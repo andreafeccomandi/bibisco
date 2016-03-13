@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -42,7 +42,7 @@
 		$('.bibiscoSelectProjectDeleteButton').click(function() {
 			var idProject = $(this).attr('data-idproject');
 			var tr = $(this).closest('tr');
-			bibiscoConfirm('<fmt:message key="jsp.selectProject.delete.confirm" />', function(result) {
+			bibiscoConfirm("<fmt:message key="jsp.selectProject.delete.confirm" />", function(result) {
 			    if (result) {
 			    	$.ajax({
 						type : 'POST',
@@ -55,6 +55,7 @@
 						},
 						success : function(data) {
 							tr.remove();
+							$('#bibiscoSelectProjectDiv').perfectScrollbar('update'); 
 							bibiscoCloseLoadingBannerSuccess();						
 						},
 						error : function() {
@@ -68,9 +69,7 @@
 		
 		
 		// initialize scrollbar
-		$('#bibiscoSelectProjectDiv').jScrollPane({
-			autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		}).data('jsp');
+		$('#bibiscoSelectProjectDiv').perfectScrollbar();   
 	}
 	
 	// close dialog callback
@@ -84,7 +83,7 @@
 	}
 </script>
 
-<div id="bibiscoSelectProjectDiv" class="bibiscoSelectProject">
+<div id="bibiscoSelectProjectDiv" class="bibiscoSelectProject bibiscoScrollable">
 	<table class="table table-striped table-bordered">
   		<tbody>
   			<c:forEach items="${projectList}" var="project" varStatus="projectNumber">

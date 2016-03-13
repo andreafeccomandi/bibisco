@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,6 @@ package com.bibisco.manager;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-
-import com.bibisco.BibiscoException;
-import com.bibisco.dao.SqlSessionFactoryManager;
-import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.model.Properties;
 import com.bibisco.log.Log;
 
 /**
@@ -40,7 +33,7 @@ public class VersionManager {
 	private String mStrVersion;
 	
 	private VersionManager() {
-		mStrVersion = initVersion();
+		mStrVersion = PropertiesManager.getInstance().getProperty("version");
 	}
 
 	public synchronized static VersionManager getInstance() {
@@ -55,36 +48,6 @@ public class VersionManager {
 		return mStrVersion;
 	}
 
-	private String initVersion() {
-
-		String lStrVersion = null;
-		
-		mLog.debug("Start initVersion()");
-		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-		SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-    	
-    		PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-    		Properties lProperties = lPropertiesMapper.selectByPrimaryKey("version");
-    		
-    		if (lProperties != null) {
-    			lStrVersion = lProperties.getValue();
-    		} 
-    		
-    	} catch(Throwable t) {
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}
-    	
-    	mLog.debug("End initVersion()");
-    	
-    	return lStrVersion;
-	}
-	
-	
 	public static int compare(String pStrVersion1, String pStrVersion2) {
 		
 		// check version numbers

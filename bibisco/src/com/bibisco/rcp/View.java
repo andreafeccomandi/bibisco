@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,12 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
 
 import com.bibisco.BibiscoException;
@@ -81,6 +84,9 @@ public class View extends ViewPart {
 			}
 		}
 		
+		// add bibiscoOpenDirectoryDialog js function
+		new BibiscoOpenDirectoryDialog(mBrowser, "bibiscoOpenDirectoryDialog", pCmpParent.getShell());
+		
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append("http://localhost:");
 		lStringBuilder.append(JettyManager.getInstance().getUsedPort());
@@ -113,5 +119,20 @@ public class View extends ViewPart {
 				break;
 			}
 		}
+	}
+}
+
+class BibiscoOpenDirectoryDialog extends BrowserFunction {
+
+	Shell mShell;
+
+	BibiscoOpenDirectoryDialog(Browser pBrowser, String pStrName, Shell pShell) {
+		super(pBrowser, pStrName);
+		mShell = pShell;
+	}
+
+	public Object function(Object[] arguments) {
+		DirectoryDialog dialog = new DirectoryDialog(mShell, SWT.OPEN);
+		return dialog.open();
 	}
 }

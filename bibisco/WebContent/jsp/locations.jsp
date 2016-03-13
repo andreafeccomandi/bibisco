@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <script type="text/javascript">
 $(function() {
 	
@@ -54,7 +55,7 @@ function bibiscoCreateLocation(config) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoLocationsACreateLocation',
 			  url: 'BibiscoServlet?action=startCreateLocation&position='+position,
-			  title: '<fmt:message key="jsp.locations.dialog.title.createLocation" />', 
+			  title: "<fmt:message key="jsp.locations.dialog.title.createLocation" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
@@ -111,7 +112,7 @@ function bibiscoSelectLocation(position,config) {
     	<div id="bibiscoLocationsDivEmptyLocations" data-thumbnailFamily="location" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.locations.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.locations.a.createFirstLocation" createButtonId="bibiscoLocationsACreateFirstLocation"  />
 		</div>	    	
-    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoLocationsNotEmptyThumbnailListElements" data-thumbnailFamily="location" >
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoLocationsNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="location" >
 	    	<c:forEach items="${project.locationList}" var="location" varStatus="locationNumber">
 	    		
 	    		<c:if test="${locationNumber.count % 4 == 1}">

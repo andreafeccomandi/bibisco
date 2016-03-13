@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -87,6 +87,7 @@ import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
 import com.bibisco.manager.ProjectFromSceneManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.ResourceBundleManager;
 import com.bibisco.manager.RichTextEditorSettingsManager;
 import com.bibisco.manager.SceneManager;
@@ -168,15 +169,63 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start start(HttpServletRequest, HttpServletResponse)");
 		
-		// get messages from bibisco.com
-		WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
-		pRequest.setAttribute("webMessage", lWebMessage);
-
+		// check if is first access to bibisco
+		boolean lBlnFirstAccess = Boolean.valueOf(PropertiesManager.getInstance().getProperty("firstAccess"));
+		if (lBlnFirstAccess) {
+			pRequest.setAttribute("firstAccess", lBlnFirstAccess);
+			pRequest.setAttribute("wizardStep", 1);
+		} 
+		else {			
+			
+			// get projects
+			List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
+			getServletContext().setAttribute("projectList", lListProjectDTO);
+			
+			// get messages from bibisco.com
+			WebMessage lWebMessage = HttpManager.getMessageFromBibiscoWebSite();
+			pRequest.setAttribute("webMessage", lWebMessage);						
+		}
+		
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
 		mLog.debug("End start(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void completeWizardStep1(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start completeWizardStep1(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrLocale = pRequest.getParameter("locale");
+		LocaleManager.getInstance().saveLocale(lStrLocale);
+		
+		// set new language to servlet context
+		pRequest.getSession().getServletContext().setAttribute("language", LocaleManager.getInstance().getLocale().getLanguage());
+				
+		pRequest.setAttribute("firstAccess", true);
+		pRequest.setAttribute("wizardStep", 2);
+		
+		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
+		
+		mLog.debug("End completeWizardStep1(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void completeWizardStep2(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start completeWizardStep2(HttpServletRequest, HttpServletResponse)");
+
+		PropertiesManager.getInstance().updateProperty("firstAccess", "false");
+		
+		// get projects
+		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
+		getServletContext().setAttribute("projectList", lListProjectDTO);
+						
+		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
+		
+		mLog.debug("End completeWizardStep2(HttpServletRequest, HttpServletResponse)");
+	}
+		
 	public void selectProject(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws ServletException, IOException {
 
@@ -593,12 +642,12 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// get file item
 		FileItem lFileItem = (FileItem) pRequest.getAttribute("file-document_file");
-		if (lFileItem.getName() == null || lFileItem.getName().length() == 0) {
-			lFileItem = null;
-		} else {
-			lImageDTO.setFileItem(lFileItem);
-			mLog.debug("FileItem " + lFileItem.getName());
+		if (lFileItem != null) {
+			lImageDTO.setInputStream(lFileItem.getInputStream());
+			lImageDTO.setSourceFileName(lFileItem.getName());
+			mLog.debug("FileItem " + lFileItem.getName());			
 		}
+				
 		lImageDTO.setDescription(pRequest.getParameter("bibiscoAddImageDescription"));
 		lImageDTO.setIdElement(Integer.valueOf(pRequest.getParameter("idElement")));
 		lImageDTO.setElementType(ElementType.valueOf(pRequest.getParameter("elementType")));
@@ -642,6 +691,7 @@ public class BibiscoServlet extends HttpServlet {
 		ImportProjectArchiveDTO lImportProjectArchiveDTO = new ImportProjectArchiveDTO();
 		lImportProjectArchiveDTO.setIdProject(pRequest.getParameter("idProject"));
 		lImportProjectArchiveDTO.setAlreadyPresent(Boolean.parseBoolean(pRequest.getParameter("alreadyPresent")));
+		lImportProjectArchiveDTO.setArchiveFileValid(Boolean.parseBoolean(pRequest.getParameter("archiveFileValid")));
 		
 		ProjectDTO lProjectDTO = ProjectManager.importProject(lImportProjectArchiveDTO);
 		
@@ -724,8 +774,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		// get projects
 		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
-		pRequest.getSession().getServletContext().setAttribute("projectList", lListProjectDTO);
-		
+		pRequest.getSession().getServletContext().setAttribute("projectList", lListProjectDTO);		
 		pRequest.getRequestDispatcher(START).forward(pRequest, pResponse);
 
 		mLog.debug("End exitProject(HttpServletRequest, HttpServletResponse)");
@@ -1244,6 +1293,7 @@ public class BibiscoServlet extends HttpServlet {
 			ProjectDTO lProjectDTO = ProjectManager.load(ContextManager.getInstance().getIdProject());
 			pRequest.setAttribute("project", lProjectDTO);
 		} 
+		
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 		
 		mLog.debug("End saveLocale(HttpServletRequest, HttpServletResponse)");
@@ -1426,7 +1476,7 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start deleteProject(HttpServletRequest, HttpServletResponse)");
 		
-		ProjectManager.deleteProject(pRequest.getParameter("idProject"));
+		ProjectManager.delete(pRequest.getParameter("idProject"));
 		
 		mLog.debug("End deleteProject(HttpServletRequest, HttpServletResponse)");
 	}
@@ -1644,6 +1694,24 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("End changeTitleCharacter(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void saveProjectsDirectory(HttpServletRequest pRequest, HttpServletResponse pResponse) throws IOException {
+		
+		mLog.debug("Start saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrDirectory = pRequest.getParameter("directory");
+		boolean lBlnResult = ProjectManager.setProjectsDirectory(lStrDirectory);
+		
+		pResponse.setContentType("text/html; charset=UTF-8");
+		Writer lWriter = pResponse.getWriter();
+		if(lBlnResult) {			
+			lWriter.write("ok");
+		} else {
+			lWriter.write("forbidden");
+		}
+		
+		mLog.debug("End saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");
+	}
+	
 	public void openUrlExternalBrowser(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws IOException {
 		mLog.debug("Start openUrlExternalBrowser(HttpServletRequest, HttpServletResponse)");
@@ -1694,10 +1762,6 @@ public class BibiscoServlet extends HttpServlet {
 		// get tip settings
 		TipSettings lTipSettings = TipManager.load();
 		getServletContext().setAttribute("tipSettings", lTipSettings);
-
-		// get projects
-		List<ProjectDTO> lListProjectDTO = ProjectManager.loadAll();
-		getServletContext().setAttribute("projectList", lListProjectDTO);
 		
 		mLog.debug("End init()");
 	}

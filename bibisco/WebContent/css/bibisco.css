@@ -32,7 +32,11 @@
 
 .bibiscoNotEmptyThumbnailListElements {
     width: 100%; 
-    overflow: scroll;
+    overflow: auto;
+}
+
+.bibiscoScrollable {
+	position: relative;
 }
 
 .bibiscoDialogFooter table {
@@ -204,7 +208,7 @@
 }
 
 .bibiscoRichTextEditorTaskStatusDialogDescriptionRow {
-	height: 16px;
+	
 }
 
 .bibiscoRichTextEditorTaskStatusDialogDescription {
@@ -324,6 +328,41 @@
      height: 50px;  
 }
 
+/* WELCOME */
+
+.bibiscoWelcomeMotivational {
+    margin-top: 60px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; 
+    height: 300px;
+}
+
+.bibiscoWelcomeMotivational form {
+	position: relative;
+}
+
+.bibiscoWelcomeMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoWelcomeMotivational p {
+    margin-top: 20px;
+}
+
+.bibiscoWizardButtons {
+	position: absolute;
+	top: 185px;
+}
+
+.bibiscoStartWizardNotes p {
+	margin-top: 10px; 
+	font-size: 14px;
+	line-height: 18px;
+}
+
 /* START */
 
 .bibiscoStartMotivational {
@@ -340,8 +379,8 @@
 	margin-top: 10px;
 }
 
-.bibiscoStartMotivational p {
-    margin-top: 40px;
+.bibiscoStartBtnToolbar {
+    margin-top: 20px;
 }
 
 .bibiscoStartMotivational a {
@@ -349,6 +388,9 @@
 }
 
 
+.bibiscoStartSettings {
+    top: 16px;
+}
 
 /* SUGGESTIONS */
 
@@ -416,21 +458,13 @@ div.bibiscoTip h4 {
 	margin-top: 10px;
 }
 
-.bibiscoCreateProject input {
-    width: 220px;
-}
-
-/* we know that select picker transforms select tag in a tag insiede a div... */
+/* we know that select picker transforms select tag in a tag inside a div... */
 .bibiscoCreateProject form div.control-group div.controls div.selectpicker {
     width: 230px;
 }
 
 .bibiscoImportProject {
     margin-top: 10px;
-}
-
-.bibiscoImportProject input {
-    width: 100px;
 }
 
 .bibiscoImportProjectIFrameUploadTarget {
@@ -441,7 +475,6 @@ div.bibiscoTip h4 {
 
 .bibiscoSelectProject {
 	margin-top: 10px; 
-	overflow: scroll; 
 	width: 100%; 
 	height: 250px;
 }
@@ -519,7 +552,7 @@ div.bibiscoTip h4 {
 .bibiscoCharacterInfoInterview span {
 	height: 30px; 
 	text-align: left; 
-	font-size: 18px; 
+	font-size: 16px; 
 	line-height: 27px;
 }
 
@@ -649,7 +682,6 @@ div.bibiscoTip h4 {
 .bibiscoProjectFromSceneTabContent {
     text-align: justify; 
     width: 100%; 
-    overflow: scroll;
 }
 
 .bibiscoProjectFromSceneImage {
@@ -845,11 +877,6 @@ div.bibiscoTip h4 {
 
 }
 
-.bibiscoDonationButtonFlattr {
-    margin-top: 10px;
-    margin-left: 25px;
-}
-
 .bibiscoSocialMediaButton {
     margin-top: 5px;
     text-align: center:
@@ -865,4 +892,36 @@ div.bibiscoTip h4 {
 
 .bibiscoSocialMediaButtonTwitter {
     margin-left: 5px;
+}
+
+/* SUGGESTED READINGS */
+
+.bibiscoSuggestedReadingsMotivational {
+    margin-top: 60px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; 
+    height: 260px;
+}
+
+
+.bibiscoSuggestedReadingsMotivational p:first-child {
+	margin-top: 25px;
+}
+
+.bibiscoSuggestedReadingsMotivational p:last-child {
+	margin-top: 25px;
+}
+
+/* SELECT PROJECTS' DIRECTORY */
+
+.bibiscoSelectProjectsDirectory {
+	margin-top: 10px;
+}
+
+.bibiscoSelectProjectsDirectoryInfo {
+	margin-top: 5px;
+	text-align: justify;
 }

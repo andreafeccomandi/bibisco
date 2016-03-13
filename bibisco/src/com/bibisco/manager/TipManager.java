@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.bibisco.BibiscoException;
 import com.bibisco.bean.TipSettings;
-import com.bibisco.dao.SqlSessionFactoryManager;
-import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.model.Properties;
-import com.bibisco.dao.model.PropertiesExample;
 import com.bibisco.log.Log;
 
 /**
@@ -46,90 +39,46 @@ public class TipManager {
 
 	public static TipSettings load() {
 
-		TipSettings lTipSettings = null;
-		List<Properties> lListProperties = null;
-
 		mLog.debug("Start loadTipSettings()");
-		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			lListProperties = lPropertiesMapper.selectByExample(new PropertiesExample());
-    	} catch(Throwable t) {
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}
-		
-    	lTipSettings = new TipSettings();
-		for (Properties lProperties : lListProperties) {
-			if (lProperties.getProperty().equalsIgnoreCase("sceneTip")) {
-				lTipSettings.setSceneTip(Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("chaptersdndTip")) {
-				lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("scenesdndTip")) {
-				lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("locationsdndTip")) {
-				lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("charactersdndTip")) {
-				lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("strandsdndTip")) {
-				lTipSettings.getDndTipMap().put(lProperties.getProperty(), Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("socialMediaTip")) {
-				lTipSettings.setSocialMediaTip(Boolean.parseBoolean(lProperties.getValue()));
-				continue;
-			} else if (lProperties.getProperty().equalsIgnoreCase("donationTip")) {
-				lTipSettings.setDonationTip(getDonationTip(lProperties));
-			}
-		}
+
+		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
+		TipSettings lTipSettings = new TipSettings();
     	
+    	lTipSettings.setSceneTip(Boolean.parseBoolean(lPropertiesManager.getProperty("sceneTip")));
+    	lTipSettings.getDndTipMap().put("chaptersdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("chaptersdndTip")));
+    	lTipSettings.getDndTipMap().put("scenesdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("scenesdndTip")));
+    	lTipSettings.getDndTipMap().put("locationsdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("locationsdndTip")));
+    	lTipSettings.getDndTipMap().put("charactersdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("charactersdndTip")));
+    	lTipSettings.getDndTipMap().put("strandsdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("strandsdndTip")));
+    	lTipSettings.setSocialMediaTip(Boolean.parseBoolean(lPropertiesManager.getProperty("socialMediaTip")));
+    	lTipSettings.setDonationTip(getDonationTip());
+    	    	
     	mLog.debug("End loadTipSettings()");
 		
 		return lTipSettings;
 	}
 
-	private static boolean getDonationTip(Properties lProperties) {
+	private static boolean getDonationTip() {
 		
-		if (lProperties.getValue() == "false") {
+		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
+		
+		String lStrDonationTipValue = lPropertiesManager.getProperty("donationTip");
+		if (lStrDonationTipValue.equals("false")) {
 			return false;
 		} 
 		
 		// it's first time...
-		else if (StringUtils.isEmpty(lProperties.getValue())) {
-			
+		else if (StringUtils.isEmpty(lStrDonationTipValue)) {
 			DateFormat lDateFormat = new SimpleDateFormat(DATE_FORMAT);
 			String lStrDate = lDateFormat.format(new Date());
-			SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-	    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-	    	try {
-				PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-				Properties lPropertiesToInsert = new Properties();
-				lPropertiesToInsert.setProperty("donationTip");
-				lPropertiesToInsert.setValue(lStrDate);
-				lPropertiesMapper.updateByPrimaryKey(lPropertiesToInsert);
-				lSqlSession.commit();
-	    	} catch(Throwable t) {
-				mLog.error(t);
-				lSqlSession.rollback();
-				throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-			} finally {
-				lSqlSession.close();
-			}
-	    	return false;
+			lPropertiesManager.updateProperty("donationTip", lStrDate);
+			return false;
 		} 
 		
 		else {
 			try {
 				DateFormat lDateFormat = new SimpleDateFormat(DATE_FORMAT);
-				Date lDate = lDateFormat.parse(lProperties.getValue());
+				Date lDate = lDateFormat.parse(lStrDonationTipValue);
 				Date lDateNow = new Date();
 				if (lDateNow.after(DateUtils.addDays(lDate, 30))) {
 					return true;
@@ -146,27 +95,10 @@ public class TipManager {
 	public static void disableTip(String pStrTipCode) {
 
 		mLog.debug("Start disableTip("+pStrTipCode+")");
+		Validate.notEmpty(pStrTipCode, "tip code cannot be empty");
 		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			
-			Properties lProperties = new Properties();
-			lProperties.setProperty(pStrTipCode);
-			lProperties.setValue("false");
-			lPropertiesMapper.updateByPrimaryKey(lProperties);
-			
-			lSqlSession.commit();
-			
-    	} catch(Throwable t) {
-			mLog.error(t);
-			lSqlSession.rollback();
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}
-		
+		PropertiesManager.getInstance().updateProperty(pStrTipCode, "false");
+				
     	mLog.debug("End disableTip("+pStrTipCode+")");
 	}
 }

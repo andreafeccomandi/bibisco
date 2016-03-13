@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -24,6 +24,7 @@
     	$('#bibiscoProjectFromSceneULMainMenu a').click(function (e) {
    		  e.preventDefault();
    		  $(this).tab('show');
+   		  $('.bibiscoScrollable').perfectScrollbar('update');
    		});
     		
     	// architecture
@@ -49,6 +50,7 @@
             var selectedArchitectureSection = $('#bibiscoProjectFromSceneSelectArchitectureSection option:selected').data('idarchitecturesection');
             $('.bibiscoArchitectureContentSection').hide();
             $('#bibiscoProjectFromSceneDivArchitecture'+selectedArchitectureSection).show();
+            $('#bibiscoProjectFromSceneDivArchitectureContent').perfectScrollbar('update');
         });
         
         populateArchitecture(${projectFromSceneArchitecture});
@@ -56,11 +58,8 @@
         $('.bibiscoArchitectureContentSection').hide();
         $('#bibiscoProjectFromSceneDivArchitecturePremise').show();
         
-        // init jScrollPane
         $('#bibiscoProjectFromSceneDivArchitectureContent').css("height", dialogConfig.height-250);
-        $('#bibiscoProjectFromSceneDivArchitectureContent').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+        $('#bibiscoProjectFromSceneDivArchitectureContent').perfectScrollbar();   
     }
     
     function initChaptersTab(dialogConfig) {
@@ -91,6 +90,7 @@
                   },
                   success:function(projectFromSceneChapter){
                       populateChapter(projectFromSceneChapter, dialogConfig.height);
+                      $('#bibiscoProjectFromSceneDivChapterContent').perfectScrollbar('update');
                       bibiscoCloseLoadingBannerSuccess();
                   },
                   error:function(){
@@ -107,16 +107,16 @@
             var selectedChapterSection = $('#bibiscoProjectFromSceneSelectChapterSection option:selected').data('idchaptersection');
             $('.bibiscoChapterContentSection').hide();
             $('#bibiscoProjectFromSceneDivChapter'+selectedChapterSection).show();
+            $('#bibiscoProjectFromSceneDivChapterContent').perfectScrollbar('update');
         });
         
         // populate chapter section
         populateChapter(${projectFromSceneChapter});
         
-        // init jScrollPane
-        var chapterDiv = $('#bibiscoProjectFromSceneDivChapterContent');
-        chapterDiv.jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+        // init scrollbar
+        $('#bibiscoProjectFromSceneDivChapterContent').css("height", dialogConfig.height-250);
+        $('#bibiscoProjectFromSceneDivChapterContent').perfectScrollbar();
+        
             	
     }
     
@@ -176,6 +176,7 @@
                     	  }
                           populateSecondaryCharacter(projectFromSceneCharacter, dialogConfig);
                       }
+                      $('#bibiscoProjectFromSceneDivCharacterContent').perfectScrollbar('update');   
                       bibiscoCloseLoadingBannerSuccess();
                   },
                   error:function(){
@@ -201,30 +202,31 @@
         $('#bibiscoProjectFromSceneSelectCharacterSection').on("change", function(e) { 
             var selectedCharacterSection = $('#bibiscoProjectFromSceneSelectCharacterSection option:selected').data('idcharactersection');
             $('.bibiscoCharacterContentSection').hide();
-            $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();                  
+            $('#bibiscoProjectFromSceneDivCharacter'+selectedCharacterSection).show();         
+            $('#bibiscoProjectFromSceneDivCharacterContent').perfectScrollbar('update');  
         });
     }
     
     function addMainCharacterOptionToSelectCharacterSection() {
     	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Personaldata" id="bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData"><fmt:message key="jsp.projectFromScene.select.characters.personaldata" /></option>');   	   
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Physionomy"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPhysionomy"><fmt:message key="jsp.projectFromScene.select.characters.physionomy" /></option>'); 
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Behaviors"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionBehaviors"><fmt:message key="jsp.projectFromScene.select.characters.behaviors" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Psychology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionPsychology"><fmt:message key="jsp.projectFromScene.select.characters.psychology" /></option>');  
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Ideas"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionIdeas"><fmt:message key="jsp.projectFromScene.select.characters.ideas" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Sociology"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionSociology"><fmt:message key="jsp.projectFromScene.select.characters.sociology" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Lifebeforestorybeginning"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionLifebeforestorybeginning"><fmt:message key="jsp.projectFromScene.select.characters.lifebeforestorybeginning" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Conflict"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionConflict"><fmt:message key="jsp.projectFromScene.select.characters.conflict" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Evolutionduringthestory"  id="bibiscoProjectFromSceneSelectCharacterSectionOptionEvolutionduringthestory"><fmt:message key="jsp.projectFromScene.select.characters.evolutionduringthestory" /></option>');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Personaldata\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData\"><fmt:message key="jsp.projectFromScene.select.characters.personaldata" /></option>");   	   
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Physionomy\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPhysionomy\"><fmt:message key="jsp.projectFromScene.select.characters.physionomy" /></option>"); 
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Behaviors\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionBehaviors\"><fmt:message key="jsp.projectFromScene.select.characters.behaviors" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Psychology\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionPsychology\"><fmt:message key="jsp.projectFromScene.select.characters.psychology" /></option>");  
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Ideas\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionIdeas\"><fmt:message key="jsp.projectFromScene.select.characters.ideas" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Sociology\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionSociology\"><fmt:message key="jsp.projectFromScene.select.characters.sociology" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Lifebeforestorybeginning\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionLifebeforestorybeginning\"><fmt:message key="jsp.projectFromScene.select.characters.lifebeforestorybeginning" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Conflict\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionConflict\"><fmt:message key="jsp.projectFromScene.select.characters.conflict" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Evolutionduringthestory\"  id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionEvolutionduringthestory\"><fmt:message key="jsp.projectFromScene.select.characters.evolutionduringthestory" /></option>");
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Images\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionImages\"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>");
     	$('#bibiscoProjectFromSceneSelectCharacterSectionOptionPersonalData').attr('selected','selected'); 
     	$('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', true);
     }
     
     function addSecondaryCharacterOptionToSelectCharacterSection() {
     	$("#bibiscoProjectFromSceneSelectCharacterSection").html('');
-    	$("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Description" id="bibiscoProjectFromSceneSelectCharacterSectionOptionDescription">Descrizione</option>');
-        $("#bibiscoProjectFromSceneSelectCharacterSection").append('<option data-idcharactersection="Images" id="bibiscoProjectFromSceneSelectCharacterSectionOptionImages">Immagini</option>');
+    	$("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Description\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionDescription\"><fmt:message key="jsp.projectFromScene.select.characters.description" /></option>");
+        $("#bibiscoProjectFromSceneSelectCharacterSection").append("<option data-idcharactersection=\"Images\" id=\"bibiscoProjectFromSceneSelectCharacterSectionOptionImages\"><fmt:message key="jsp.projectFromScene.select.characters.images" /></option>");
         $('#bibiscoProjectFromSceneSelectCharacterSectionOptionDescription').attr('selected','selected');
         $('#bibiscoProjectFromSceneSelectCharacterSection').data('showingmaincharacter', false);
     }
@@ -238,9 +240,7 @@
         	$('#bibiscoProjectFromSceneDivCharacterDescription').show();
         }
 	    $('#bibiscoProjectFromSceneDivCharacterContent').css("height", dialogConfig.height-250);
-	    $('#bibiscoProjectFromSceneDivCharacterContent').jScrollPane({
-	        autoReinitialise: true, animateScroll: true, verticalGutter: 30
-	    }).data('jsp');
+	    $('#bibiscoProjectFromSceneDivCharacterContent').perfectScrollbar();   
     }
    
     
@@ -403,6 +403,7 @@
                   },
                   success:function(projectFromSceneLocation){
                       populateLocation(projectFromSceneLocation, dialogConfig.height);
+                      $('#bibiscoProjectFromSceneDivLocationContent').perfectScrollbar('update');
                       bibiscoCloseLoadingBannerSuccess();
                   },
                   error:function(){
@@ -419,7 +420,8 @@
         $('#bibiscoProjectFromSceneSelectLocationSection').on("change", function(e) { 
             var selectedLocationSection = $('#bibiscoProjectFromSceneSelectLocationSection option:selected').data('idlocationsection');
             $('.bibiscoLocationContentSection').hide();
-            $('#bibiscoProjectFromSceneDivLocation'+selectedLocationSection).show();                  
+            $('#bibiscoProjectFromSceneDivLocation'+selectedLocationSection).show();      
+            $('#bibiscoProjectFromSceneDivLocationContent').perfectScrollbar('update');
         });
         
         // location content
@@ -428,11 +430,9 @@
         // populate
         populateLocation(${projectFromSceneLocation}, dialogConfig);
         
-        // init jScrollPane
+        // init scrollbar
         $('#bibiscoProjectFromSceneDivLocationContent').css("height", dialogConfig.height-250);
-        $('#bibiscoProjectFromSceneDivLocationContent').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+        $('#bibiscoProjectFromSceneDivLocationContent').perfectScrollbar();   
         
         </c:if>
 
@@ -476,7 +476,7 @@
                <option data-idarchitecturesection="Strands"><fmt:message key="jsp.projectFromScene.select.architecture.strands" /></option>  
 		   </select>    
 		   <hr/>
-		   <div id="bibiscoProjectFromSceneDivArchitectureContent">
+		   <div id="bibiscoProjectFromSceneDivArchitectureContent" class="bibiscoScrollable">
 		      <div id="bibiscoProjectFromSceneDivArchitecturePremise" class="bibiscoArchitectureContentSection"></div>
               <div id="bibiscoProjectFromSceneDivArchitectureFabula" class="bibiscoArchitectureContentSection"></div> 
               <div id="bibiscoProjectFromSceneDivArchitectureSetting" class="bibiscoArchitectureContentSection"></div>
@@ -504,7 +504,7 @@
               <option data-idchaptersection="Notes"><fmt:message key="jsp.projectFromScene.select.chapter.notes" /></option>  
            </select>
 		   <hr />
-		   <div id="bibiscoProjectFromSceneDivChapterContent" class="bibiscoProjectFromSceneTabContent">
+		   <div id="bibiscoProjectFromSceneDivChapterContent" class="bibiscoProjectFromSceneTabContent bibiscoScrollable">
 		      <div id="bibiscoProjectFromSceneDivChapterText" class="bibiscoChapterContentSection"></div>
 		      <div id="bibiscoProjectFromSceneDivChapterReason" class="bibiscoChapterContentSection"></div>
 		      <div id="bibiscoProjectFromSceneDivChapterNotes" class="bibiscoChapterContentSection"></div>
@@ -530,7 +530,7 @@
              <select class="selectpicker" id="bibiscoProjectFromSceneSelectCharacterSection">
             </select>
 	        <hr />
-            <div id="bibiscoProjectFromSceneDivCharacterContent" class="bibiscoProjectFromSceneTabContent">
+            <div id="bibiscoProjectFromSceneDivCharacterContent" class="bibiscoProjectFromSceneTabContent bibiscoScrollable">
               <div id="bibiscoProjectFromSceneDivCharacterPersonaldata" class="bibiscoCharacterContentSection"></div>
               <div id="bibiscoProjectFromSceneDivCharacterPhysionomy" class="bibiscoCharacterContentSection"></div>
               <div id="bibiscoProjectFromSceneDivCharacterBehaviors" class="bibiscoCharacterContentSection"></div>
@@ -572,7 +572,7 @@
 	              <option data-idlocationsection="Images"><fmt:message key="jsp.projectFromScene.select.location.images" /></option>  
 	         </select>
              <hr />
-	           <div id="bibiscoProjectFromSceneDivLocationContent" class="bibiscoProjectFromSceneTabContent">
+	           <div id="bibiscoProjectFromSceneDivLocationContent" class="bibiscoProjectFromSceneTabContent bibiscoScrollable">
 	              <div id="bibiscoProjectFromSceneDivLocationDescription" class="bibiscoLocationContentSection"></div>
 	              <div id="bibiscoProjectFromSceneDivLocationImages" class="bibiscoLocationContentSection"></div>
 	           </div>	          

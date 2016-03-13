@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  */
 package com.bibisco.manager;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.bibisco.BibiscoException;
+import org.apache.commons.lang.Validate;
+
 import com.bibisco.bean.RichTextEditorSettings;
-import com.bibisco.dao.SqlSessionFactoryManager;
-import com.bibisco.dao.client.PropertiesMapper;
-import com.bibisco.dao.model.Properties;
 import com.bibisco.log.Log;
 
 /**
@@ -36,34 +34,20 @@ public class RichTextEditorSettingsManager {
 
 	public static RichTextEditorSettings load() {
 
-		RichTextEditorSettings lRichTextEditorSettings;
-
 		mLog.debug("Start load()");
 		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-    		lRichTextEditorSettings = new RichTextEditorSettings();
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			
-			// font
-			Properties lProperties = lPropertiesMapper.selectByPrimaryKey("font");
-			lRichTextEditorSettings.setFont(lProperties.getValue());
-			
-			// font size
-			lProperties = lPropertiesMapper.selectByPrimaryKey("font-size");
-			lRichTextEditorSettings.setSize(lProperties.getValue());
-			
-			// font size
-			lProperties = lPropertiesMapper.selectByPrimaryKey("spellCheckEnabled");
-			lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lProperties.getValue()));
-			
-    	} catch(Throwable t) {
-			mLog.error(t);
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}
+		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
+		
+		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
+		
+		// font
+		lRichTextEditorSettings.setFont(lPropertiesManager.getProperty("font"));
+
+		// font size
+		lRichTextEditorSettings.setSize(lPropertiesManager.getProperty("font-size"));
+		
+		// spell check enabled
+		lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lPropertiesManager.getProperty("spellCheckEnabled")));
 		
 		mLog.debug("End load()");
 		
@@ -73,39 +57,22 @@ public class RichTextEditorSettingsManager {
 	public static void save(RichTextEditorSettings pRichTextEditorSettings) {
 
 		mLog.debug("Start save()");
-		
-		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
-    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
-    	try {
-			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
-			
-			// font
-			Properties lProperties = new Properties();
-			lProperties.setProperty("font");
-			lProperties.setValue(pRichTextEditorSettings.getFont());
-			lPropertiesMapper.updateByPrimaryKey(lProperties);
 
-			// font size
-			lProperties = new Properties();
-			lProperties.setProperty("font-size");
-			lProperties.setValue(pRichTextEditorSettings.getSize());
-			lPropertiesMapper.updateByPrimaryKey(lProperties);
-			
-			// spell check enabled
-			lProperties = new Properties();
-			lProperties.setProperty("spellCheckEnabled");
-			lProperties.setValue(String.valueOf(pRichTextEditorSettings.isSpellCheckEnabled()));
-			lPropertiesMapper.updateByPrimaryKey(lProperties);
-			
-			lSqlSession.commit();
-			
-    	} catch(Throwable t) {
-			mLog.error(t);
-			lSqlSession.rollback();
-			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
-		} finally {
-			lSqlSession.close();
-		}
+		Validate.notNull(pRichTextEditorSettings, "RichTextEditorSettings cannot be null");
+		Validate.notEmpty(pRichTextEditorSettings.getFont(), "RichTextEditorSettings.font cannot be empty");
+		Validate.notEmpty(pRichTextEditorSettings.getSize(), "RichTextEditorSettings.size cannot be empty");
+		Validate.isTrue(pRichTextEditorSettings.getFont().equals("courier") || 
+				pRichTextEditorSettings.getFont().equals("times") ||
+				pRichTextEditorSettings.getFont().equals("arial"), "RichTextEditorSettings.size can be courier, times, arial");
+		Validate.isTrue(pRichTextEditorSettings.getSize().equals("small") || 
+				pRichTextEditorSettings.getSize().equals("medium") ||
+				pRichTextEditorSettings.getSize().equals("big"), "RichTextEditorSettings.size can be small, medium, big");
+		
+		Map<String, String> lMapProperties = new HashMap<String, String>();
+		lMapProperties.put("font", pRichTextEditorSettings.getFont());
+		lMapProperties.put("font-size", pRichTextEditorSettings.getSize());
+		lMapProperties.put("spellCheckEnabled", String.valueOf(pRichTextEditorSettings.isSpellCheckEnabled()));
+		PropertiesManager.getInstance().updateProperties(lMapProperties);
 		
 		mLog.debug("End save()");
 	}

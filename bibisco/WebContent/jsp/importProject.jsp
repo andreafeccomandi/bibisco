@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -74,11 +74,11 @@
 			if (alreadyPresent) {
 				bibiscoConfirm(confirmMessage, function(result) {
 				    if (result) {
-				    	bibiscoImportProject(idProject, alreadyPresent);
+				    	bibiscoImportProject(idProject, alreadyPresent, archiveFileValid);
 				    } 
 				});
 			} else {
-				bibiscoImportProject(idProject, alreadyPresent);
+				bibiscoImportProject(idProject, alreadyPresent, archiveFileValid);
 			}	
 		} else {
 			// archive file is not valid
@@ -89,13 +89,14 @@
 		
 	}
 	
-	function bibiscoImportProject(idProject, alreadyPresent) {
+	function bibiscoImportProject(idProject, alreadyPresent, archiveFileValid) {
 		$.ajax({
 			type : 'POST',
 			url : 'BibiscoServlet?action=importProject',
 			data : {
 				idProject: idProject,
-				alreadyPresent: alreadyPresent
+				alreadyPresent: alreadyPresent,
+				archiveFileValid: archiveFileValid
 			},
 			beforeSend : function() {
 				bibiscoBlockUI();
@@ -120,7 +121,7 @@
 		<div class="control-group">
 			<label id="bibiscoImportProjectInputFileLabel" class="control-label" for="bibiscoImportProjectInputFile"><fmt:message key="jsp.importProject.label.file" /></label>
 			<div class="controls">
-				<input id="document_file" type="file" name="document_file" >
+				<input id="document_file" type="file" name="document_file" class="span5">
 			</div>
 		</div>
 	</form>

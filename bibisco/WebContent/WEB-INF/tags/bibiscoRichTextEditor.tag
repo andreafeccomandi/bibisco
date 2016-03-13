@@ -136,7 +136,7 @@
                  var ajaxDialogContent = { 
                           idCaller: 'bibiscoTagRichTextEditorButtonSettings',
                           url : 'jsp/richTextEditorSettings.jsp',
-                          title: '<fmt:message key="tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title"/>', 
+                          title: "<fmt:message key="tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title"/>", 
                           init: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsInit(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },

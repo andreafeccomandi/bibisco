@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.ibatis.datasource.pooled.PooledDataSource;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.h2.jdbcx.JdbcDataSource;
 
 import com.bibisco.BibiscoException;
 import com.bibisco.bean.ArchitectureDTO;
@@ -84,13 +91,22 @@ import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
  */
 public class ProjectManager {
 
+	public enum PROJECT_DIRECTORY_STATUS {NEW, EXISTING, INTERNAL_BIBISCO_PROJECTS_DB_DIR};
+	
 	private static Log mLog = Log.getInstance(ProjectManager.class);
+	private static String INTERNAL_BIBISCO_PROJECTS_DB_DIR = "_internal_bibisco_projects_db_";
+	
+	
 	
 	public static ProjectDTO load(String pStrIdProject) {
 		
 		ProjectDTO lProjectDTO;
 		
 		mLog.debug("Start load(String)");
+		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
 		
 		// set project name to context
 		ContextManager.getInstance().setIdProject(pStrIdProject);
@@ -133,7 +149,6 @@ public class ProjectManager {
 		ArchitectureDTO lArchitectureDTO = new ArchitectureDTO();
 		lArchitectureDTO.setPremiseTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getPremiseTaskStatus()));
 		lArchitectureDTO.setFabulaTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getFabulaTaskStatus()));
-		lArchitectureDTO.setStrandsTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getStrandTaskStatus()));
 		lArchitectureDTO.setSettingTaskStatus(TaskStatus.getTaskStatusFromValue(lProject.getSettingTaskStatus()));
 		lArchitectureDTO.setStrandList(StrandManager.loadAll());
 		
@@ -157,7 +172,6 @@ public class ProjectManager {
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
-    		
     		ProjectsMapper lProjectsMapper = lSqlSession.getMapper(ProjectsMapper.class);
     		ProjectsExample lProjectsExample = new ProjectsExample();
     		lProjectsExample.setOrderByClause("UPPER(name) asc");
@@ -167,16 +181,22 @@ public class ProjectManager {
 				lListProjectDTO = new ArrayList<ProjectDTO>();
 				for (Projects lProjects : lListProjects) {
 					
-					ProjectDTO lProjectDTO = new ProjectDTO();
-					lProjectDTO.setIdProject(lProjects.getIdProject());
-					lProjectDTO.setName(lProjects.getName());
-					
-					lListProjectDTO.add(lProjectDTO);
+					if (projectExists(lProjects.getIdProject())) {
+						ProjectDTO lProjectDTO = new ProjectDTO();
+						lProjectDTO.setIdProject(lProjects.getIdProject());
+						lProjectDTO.setName(lProjects.getName());						
+						lListProjectDTO.add(lProjectDTO);
+					} else {
+						lProjectsMapper.deleteByPrimaryKey(lProjects.getIdProject());
+					}
 				}
 			}
+			
+			lSqlSession.commit();
 		
     	} catch(Throwable t) {
 			mLog.error(t);
+			lSqlSession.rollback();
 			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
 		} finally {
 			lSqlSession.close();
@@ -190,6 +210,12 @@ public class ProjectManager {
 	public static ProjectDTO insert(ProjectDTO pProjectDTO) {
 		
 		mLog.debug("Start insert(ProjectDTO)");
+		
+		// validate preconditions
+		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
+		Validate.notEmpty(pProjectDTO.getName(), "argument ProjectDTO.name cannot be empty");
+		Validate.notEmpty(pProjectDTO.getLanguage(), "argument ProjectDTO.language cannot be empty");
+		Validate.notEmpty(pProjectDTO.getBibiscoVersion(), "argument ProjectDTO.bibiscoVersion cannot be empty");
 		
 		// generate random UUID to use as db project name
 		String lStrIdProject = UUID.randomUUID().toString();
@@ -212,9 +238,6 @@ public class ProjectManager {
     	
     	// load project
     	pProjectDTO = load();
-    	
-    	
-    	
     	
 		mLog.debug("End insert(ProjectDTO)");
 
@@ -253,9 +276,13 @@ public class ProjectManager {
 		mLog.debug("End insertIntoBibiscoDB(ProjectDTO)");
 	}
 	
-	public static void deleteProject(String pStrIdProject) {
+	public static void delete(String pStrIdProject) {
 		
-		mLog.debug("Start deleteProject(String)");
+		mLog.debug("Start delete(String)");
+		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+		Validate.isTrue(ProjectManager.projectExists(pStrIdProject), "Project references non existent directory");
 		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
@@ -278,7 +305,7 @@ public class ProjectManager {
 			lSqlSession.close();
 		}
 		
-		mLog.debug("End deleteProject(String)");
+		mLog.debug("End delete(String)");
 	}
 
 	private static void insertIntoBibiscoDB(ProjectDTO pProjectDTO) {
@@ -381,14 +408,15 @@ public class ProjectManager {
 	
 	public static String getDBProjectDirectory(String pStrIdProject) {
 		
-		ContextManager lContextManager = ContextManager.getInstance();
-		
+		// validate preconditions
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+				
 		// create db directory path
-		String lStrDbDirectory = lContextManager.getDbDirectoryPath();
+		String lStrProjectsDirectory = getProjectsDirectory();
 		
 		// create project db file path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lStrDbDirectory);
+		lStringBuilder.append(lStrProjectsDirectory);
 		lStringBuilder.append(pStrIdProject);
 		lStringBuilder.append(ContextManager.getPathSeparator());
 		
@@ -400,6 +428,10 @@ public class ProjectManager {
 		File lFile = null;
 		
 		mLog.debug("Start exportProjectAsArchive()");
+		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
 		
 		// load project name
 		ProjectDTO lProjectDTO = load();
@@ -424,7 +456,11 @@ public class ProjectManager {
 		List<File> lListFile = null;
 		
 		mLog.debug("Start exportProjectAsPdf(");
-			
+		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
+				
 		// get file object to return
 		lListFile = exportAsWordOrPdf(ExportType.PDF);
 		
@@ -439,6 +475,10 @@ public class ProjectManager {
 		
 		mLog.debug("Start exportProjectAsWord()");
 		
+		// validate preconditions
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
+				
 		// get file object to return
 		lListFile = exportAsWordOrPdf(ExportType.WORD);
 		
@@ -824,6 +864,12 @@ public class ProjectManager {
 		ProjectDTO lProjectDTO = null;
 
 		mLog.debug("Start exportProject(String)");
+		
+		// validate preconditions
+		Validate.notNull(pImportProjectArchiveDTO, "ImportProjectArchiveDTO cannot be null");
+		Validate.notNull(pImportProjectArchiveDTO.getIdProject(), "id project cannot be null");
+		Validate.isTrue(pImportProjectArchiveDTO.isArchiveFileValid());
+		
 		try {
 			
 			ContextManager lContextManager = ContextManager.getInstance();
@@ -838,12 +884,12 @@ public class ProjectManager {
 			
 			// copy files to db project directory
 			FileUtils.copyDirectoryToDirectory(new File(lStrTempDirectory + pImportProjectArchiveDTO.getIdProject()), 
-					new File(lContextManager.getDbDirectoryPath()));
+					new File(getProjectsDirectory()));
 			    
 			// set project name to context
 	    	ContextManager.getInstance().setIdProject(pImportProjectArchiveDTO.getIdProject());
 	    	
-	    	// check if project is created with previuos version of bibisco and update it
+	    	// check if project is created with previous version of bibisco and update it
 	    	checkProjectVersionAndUpdateIfNecessary(pImportProjectArchiveDTO.getIdProject());
 	    	
 	    	// load project
@@ -871,18 +917,18 @@ public class ProjectManager {
 	}
 	
 	
-	public static void zipIt(String zipFile) {
+	private static void zipIt(String pZipFile) {
 		
 		mLog.debug("Start zipIt(String)");
 		
 		ContextManager lContextManager = ContextManager.getInstance();
 		
-		String lStrDBDirectoryPath = lContextManager.getDbDirectoryPath();
+		String lStrProjectsDirectory = getProjectsDirectory();
 		String lStrDbProjectDirectory = getDBProjectDirectory(lContextManager.getIdProject());
 		List<String> lFileList = getDirectoryFileList(new File(lStrDbProjectDirectory));
 		
 		try {
-			File lFile = new File(zipFile);
+			File lFile = new File(pZipFile);
 			
 			lFile.createNewFile();
 			FileOutputStream lFileOutputStream = new FileOutputStream(lFile);
@@ -891,7 +937,7 @@ public class ProjectManager {
 			byte[] buffer = new byte[1024];
 			for (String lStrFile : lFileList) {
 
-				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrDBDirectoryPath.length(), lStrFile.length()));
+				ZipEntry lZipEntry = new ZipEntry(lStrFile.substring(lStrProjectsDirectory.length(), lStrFile.length()));
 				lZipOutputStream.putNextEntry(lZipEntry);
 
 				FileInputStream lFileInputStream = new FileInputStream(lStrFile);
@@ -916,7 +962,7 @@ public class ProjectManager {
 		mLog.debug("End zipIt(String)");
 	}
 	
-	public static List<String> getDirectoryFileList(File pFileNode) {
+	private static List<String> getDirectoryFileList(File pFileNode) {
 
 		List<String> lFileList = new ArrayList<String>();
 
@@ -943,6 +989,10 @@ public class ProjectManager {
 		ImportProjectArchiveDTO lImportProjectArchiveDTO = null;
 		
 		mLog.debug("Start importProjectArchiveFile(String, byte[])");
+		
+		// validate preconditions
+		Validate.notEmpty(pStrFileName, "file name cannot be null");
+		Validate.notNull(pBytes, "byte array cannot be null");
 		
 		try {
 			
@@ -1043,7 +1093,7 @@ public class ProjectManager {
 		return lImportProjectArchiveDTO;
 	}
 
-	public static void unZipIt(String pStrZipFile) {
+	private static void unZipIt(String pStrZipFile) {
 
 		mLog.debug("Start unZipIt(String)");
 
@@ -1061,9 +1111,42 @@ public class ProjectManager {
 
 				String lStrFileName = lZipEntry.getName();
 				File lFileZipEntry = new File(lStrTempDirectory + File.separator + lStrFileName);
+				
+				String lStrParent =lFileZipEntry.getParent(); 
+				
+				// the archive was created with another OS
+				if ((lStrParent + File.separator).equals(lStrTempDirectory)) {
+					
+					if (ContextManager.getInstance().getOS().contains("linux")) {
+						//manage windows archive
+						String[] lStrFileNameSplitted = StringUtils.split(lStrFileName, "\\");
+						
+						StringBuilder lStringBuilderDirectoryPath = new StringBuilder();
+						lStringBuilderDirectoryPath.append(lStrTempDirectory);
+						for (int i = 0; i < lStrFileNameSplitted.length; i++) {
+							
+							if(i>0) {
+								lStringBuilderDirectoryPath.append(File.separator);
+							}
+							
+							lStringBuilderDirectoryPath.append(lStrFileNameSplitted[i]);
+							File lFile = new File(lStringBuilderDirectoryPath.toString());
+							if (i<lStrFileNameSplitted.length-1) {
+								lFile.mkdir();
+							} else {								
+								lFileZipEntry = lFile;
+							}
+						}
+						
+					}
+				} 
+				
+				// the archive was created with same OS
+				else {					
+					// create all non exists folders
+					new File(lStrParent).mkdirs();
+				}
 
-				// create all non exists folders
-				new File(lFileZipEntry.getParent()).mkdirs();
 
 				FileOutputStream lFileOutputStream = new FileOutputStream(lFileZipEntry);
 
@@ -1118,6 +1201,9 @@ public class ProjectManager {
 		
 		mLog.debug("Start save(ProjectDTO)");
 		
+		// validate preconditions
+		Validate.notNull(pProjectDTO, "argument ProjectDTO cannot be null");
+		
 		// open session in bibisco db
 		SqlSessionFactory lSqlSessionFactoryBibisco = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSessionBibisco = lSqlSessionFactoryBibisco.openSession();
@@ -1158,6 +1244,269 @@ public class ProjectManager {
     	mLog.debug("End save(ProjectDTO)");
 	}
 	
+	public static boolean isProjectsDirectoryEmpty() {
+		
+		boolean lBlnResult;
+		
+		mLog.debug("Start isProjectsDirectoryEmpty()");
+		lBlnResult = StringUtils.isBlank(PropertiesManager.getInstance().getProperty("projectsDirectory"));
+		mLog.debug("End isProjectsDirectoryEmpty(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static boolean projectsDirectoryExists() {
+		
+		boolean lBlnResult = false;
+		
+		mLog.debug("Start doesProjectsDirectoryExists()");
+		if (!isProjectsDirectoryEmpty()) {
+			File lFile = new File(getProjectsDirectory());
+			lBlnResult = lFile.exists();
+		}
+		mLog.debug("End doesProjectsDirectoryExists(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static boolean projectExists(String pStrIdProject) {
+		
+		boolean lBlnResult = false;
+		
+		mLog.debug("Start doesProjectsDirectoryExists()");
+		
+		Validate.notEmpty(pStrIdProject, "Id project cannot be empty");
+		
+		if (!isProjectsDirectoryEmpty()) {
+			StringBuilder lStringBuilder = new StringBuilder();
+			lStringBuilder.append(getProjectsDirectory());
+			lStringBuilder.append(pStrIdProject);
+			lStringBuilder.append(ContextManager.getPathSeparator());
+			lStringBuilder.append(pStrIdProject);
+			lStringBuilder.append(".h2.db");
+			
+			File lFile = new File(lStringBuilder.toString());
+			lBlnResult = lFile.exists();
+		}
+		mLog.debug("End doesProjectsDirectoryExists(): return " + lBlnResult);
+		
+		return lBlnResult;
+	}
+	
+	public static String getProjectsDirectory() {
+		
+		String lStrProjectsDirectory;
+		
+		mLog.debug("Start getProjectsDirectory()");
+		
+		lStrProjectsDirectory = PropertiesManager.getInstance().getProperty("projectsDirectory");
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append(lStrProjectsDirectory);
+		lStringBuilder.append(ContextManager.getPathSeparator());
+		lStringBuilder.append(INTERNAL_BIBISCO_PROJECTS_DB_DIR);
+		lStringBuilder.append(ContextManager.getPathSeparator());
+		
+		mLog.debug("End getProjectsDirectory()");
+		
+		return lStringBuilder.toString();
+	}
+	
+	public static boolean setProjectsDirectory(String pStrProjectsDirectory) {
+		
+		boolean lBlnResult = true;
+		String lStrProjectsDirectory = pStrProjectsDirectory;
+		int lIntImportedProjects = 0;
+		
+		mLog.debug("Start setProjectsDirectory(", pStrProjectsDirectory , ")");
+	
+		// validate preconditions
+		Validate.notEmpty(pStrProjectsDirectory, "projects directory cannot be empty");
+		Validate.isTrue(new File(pStrProjectsDirectory).exists(), "projects directory not exists");
+	
+		// check projects directory
+		PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = checkProjectDirectoryStatus(pStrProjectsDirectory); 
+		mLog.info("Selected project directory: ", pStrProjectsDirectory, " - status: ", lProjectDirectoryStatus.name());
+		
+		if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.EXISTING) {
+			
+			// delete projects entries on bibisco db
+			ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+			
+			// update property
+			PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
+
+			// import projects
+			lIntImportedProjects = importProjectsFromProjectsDirectory();
+		}
+		
+		else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR) {			
+			// if selected projects directory is INTERNAL_BIBISCO_PROJECTS_DB_DIR, select the parent directory
+			lStrProjectsDirectory = (new File(pStrProjectsDirectory)).getParentFile().getAbsolutePath();
+			
+			// delete projects entries on bibisco db
+			ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+			
+			// update property
+			PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);			
+			
+			// import projects
+			lIntImportedProjects = importProjectsFromProjectsDirectory();
+			
+		} else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.NEW) {
+			// create INTERNAL_BIBISCO_PROJECTS_DB_DIR
+			lBlnResult = new File(lStrProjectsDirectory + ContextManager.getPathSeparator() + INTERNAL_BIBISCO_PROJECTS_DB_DIR).mkdir();
+			
+			if (lBlnResult) {
+				// delete projects entries on bibisco db
+				ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+								
+				// update property
+				PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
+			}
+		}
+		
+		mLog.info("Set project directory: ", pStrProjectsDirectory, " - " + lIntImportedProjects, " imported projects.");
+		
+		mLog.debug("End setProjectsDirectory(", pStrProjectsDirectory , ")");
+		
+		return lBlnResult;
+	}
+	
+	public static PROJECT_DIRECTORY_STATUS checkProjectDirectoryStatus(String pStrProjectsDirectory) {
+		
+		PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = null;
+		
+		// validate preconditions
+		Validate.notEmpty(pStrProjectsDirectory, "projects directory cannot be empty");		
+		File lFileSelectedDirectory = new File(pStrProjectsDirectory);
+		Validate.isTrue(lFileSelectedDirectory.exists(), "projects directory not exists");
+					
+		// check if the selected directory is INTERNAL_BIBISCO_PROJECTS_DB_DIR
+		if (lFileSelectedDirectory.getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
+			lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR;
+		}
+		
+		// check if the selected directory contains INTERNAL_BIBISCO_PROJECTS_DB_DIR
+		else {
+			lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.NEW;
+			File[] lFilesChildren = lFileSelectedDirectory.listFiles();
+			if (lFilesChildren!=null) {				
+				for (int i = 0; i < lFilesChildren.length; i++) {
+					if (lFilesChildren[i].getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
+						lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.EXISTING;
+					}
+				}
+			}
+		}
+				
+		return lProjectDirectoryStatus;
+		
+	}
+	
+	public static int deleteProjectsEntriesOnBibiscoDB() {
+		
+		int lIntResult = 0;
+		
+		mLog.debug("Start importProjectsFromProjectsDirectory()");
+		
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	try {
+    		
+    		// delete entry on bibisco db
+			ProjectsMapper lProjectsMapper = lSqlSession.getMapper(ProjectsMapper.class);
+			lIntResult = lProjectsMapper.deleteByExample(new ProjectsExample());
+			
+			lSqlSession.commit();
+			
+    	} catch(Throwable t) {
+			mLog.error(t);
+			lSqlSession.rollback();
+			throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
+		} finally {
+			lSqlSession.close();
+		}
+		
+		mLog.debug("End importProjectsFromProjectsDirectory()");
+		
+		return lIntResult;
+	}
+
+	public static int importProjectsFromProjectsDirectory() {
+		
+		int lIntResult = 0;
+		
+		mLog.debug("Start importProjectsFromProjectsDirectory()");
+		
+		// validate preconditions
+		Validate.notEmpty(getProjectsDirectory(), "projects directory cannot be empty");
+		Validate.isTrue(projectsDirectoryExists(), "projects directory not exists");
+		
+		File[] lFiles = new File(getProjectsDirectory()).listFiles();
+	    
+		// search file with extensions h2.db
+		boolean lBlnIsProjectValid = false;
+		if(lFiles!=null) { 
+	        for(File lFile: lFiles) {
+	        	if (lFile.isDirectory()) {
+	        		String lStrIdProject = lFile.getName();
+	        		lBlnIsProjectValid = lStrIdProject.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+	        		if (lBlnIsProjectValid) {
+	        			
+	        			// set project name to context
+	        	    	ContextManager.getInstance().setIdProject(lStrIdProject);
+	        	    	
+	        	    	// check if project is created with previous version of bibisco and update it
+	        	    	checkProjectVersionAndUpdateIfNecessary(lStrIdProject);
+	        	    	
+	        	    	// load project
+	        	    	ProjectDTO lProjectDTO = load();
+	        	    	
+	        	    	// close connection to project DB
+	        	    	closeConnection();
+	        			
+	        			//import project into bibisco db
+	        			insertIntoBibiscoDB(lProjectDTO);
+	        			
+	        			//increment counter
+	        			lIntResult++;
+	        		}
+	        	}
+	        }
+	    }
+		
+		mLog.debug("End importProjectsFromProjectsDirectory(), imported projects: " + lIntResult);
+		
+		return lIntResult;
+	}
+	
+	public static void closeConnection() {
+		
+		mLog.debug("Start closeConnection()");
+				
+		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryProject();
+        Configuration lConfiguration = lSqlSessionFactory.getConfiguration();
+        Environment lEnvironment = lConfiguration.getEnvironment();
+        DataSource lDataSource = lEnvironment.getDataSource();
+       
+        //production
+        if (lDataSource instanceof PooledDataSource) {
+        	((PooledDataSource)lDataSource).forceCloseAll();
+        } 
+        //test
+        else if (lDataSource instanceof JdbcDataSource){
+        	try {
+        		lDataSource.getConnection().close();
+        	} catch (Throwable t) {
+        		mLog.error(t);
+        		throw new BibiscoException(t, BibiscoException.SQL_EXCEPTION);
+        	}
+        }
+        
+        
+        mLog.debug("End closeConnection()");
+	}
+
 	private static void checkProjectVersionAndUpdateIfNecessary(String pStrIdProject) {
 
 		mLog.debug("Start checkProjectVersionAndUpdateIfNecessary(String)");

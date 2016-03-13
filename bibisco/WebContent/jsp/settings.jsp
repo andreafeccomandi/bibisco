@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
@@ -13,7 +13,7 @@ $(function() {
 		 var ajaxDialogContent = { 
 				  idCaller: 'bibiscoSettingsALanguage',
 				  url : 'jsp/language.jsp',
-				  title: '<fmt:message key="jsp.settings.dialog.title.language"/>',  
+				  title: "<fmt:message key="jsp.settings.dialog.title.language"/>",  
 				  init: function (idAjaxDialog, idCaller) { return bibiscoLanguageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoLanguageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLanguageBeforeClose(idAjaxDialog, idCaller); }, 
@@ -26,9 +26,9 @@ $(function() {
 	
 	$('#bibiscoSettingsARichTextEditorSettings').click(function() {
 		 var ajaxDialogContent = { 
-				  idCaller: 'bibiscoSettingsARichTextEditorSettings',
-				  url : 'jsp/richTextEditorSettings.jsp',
-				  title: '<fmt:message key="jsp.settings.dialog.title.richTextEditorSettings"/>', 
+				  idCaller: "bibiscoSettingsARichTextEditorSettings",
+				  url : "jsp/richTextEditorSettings.jsp",
+				  title: "<fmt:message key="jsp.settings.dialog.title.richTextEditorSettings"/>", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },

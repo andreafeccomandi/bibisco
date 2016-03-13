@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
@@ -10,9 +10,7 @@ function bibiscoLicenseInit(idAjaxDialog, idCaller) {
     $('#bibiscoLicenseAClose').tooltip();
     
     // initialize scrollbar
-    $('#bibiscoLicenseDiv').jScrollPane({
-        autoReinitialise: true, animateScroll: true, verticalGutter: 30
-    }).data('jsp');
+    $('#bibiscoLicenseDiv').perfectScrollbar();   
 }
 
 function bibiscoLicenseBeforeClose(idAjaxDialog, idCaller) {
@@ -23,7 +21,7 @@ function bibiscoLicenseBeforeClose(idAjaxDialog, idCaller) {
 
 
 
-<div id="bibiscoLicenseDiv" class="bibiscoNotSelectableText bibiscoLicense" >
+<div id="bibiscoLicenseDiv" class="bibiscoNotSelectableText bibiscoLicense bibiscoScrollable" >
 <p>GNU GENERAL PUBLIC LICENSE</p>
 <p>Version 2, June 1991</p> 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
     
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void createWindowContents(final Shell shell) {
         
     	final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();

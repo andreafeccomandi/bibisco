@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@page import="com.bibisco.manager.VersionManager"%>
 <%@page import="com.bibisco.manager.ConfigManager"%>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
@@ -15,7 +15,7 @@ $(function() {
     	var ajaxDialogContent = { 
                 idCaller: 'bibiscoInfoLicense',
                 url: 'jsp/license.jsp',       
-                title: 'GNU GPL License', 
+                title: "GNU GPL License", 
                 init: function (idAjaxDialog, idCaller) { return bibiscoLicenseInit(idAjaxDialog, idCaller); },
                 close: function (idAjaxDialog, idCaller) { },
                 beforeClose: function (idAjaxDialog, idCaller) { return bibiscoLicenseBeforeClose(idAjaxDialog, idCaller); },
@@ -44,13 +44,7 @@ $(function() {
     // donate with PayPal
    	$('#bibiscoInfoImgDonatePayPal').click(function() {
         bibiscoOpenDefaultBrowser('${baseURL}/donatePayPal');
-    }); 
-    
-    // donate with Flattr
-    $('#bibiscoInfoImgDonateFlattr').click(function() {
-        bibiscoOpenDefaultBrowser('${baseURL}/donateFlattr');
-    }); 
-    
+    });     
 });
 
 </script>
@@ -76,6 +70,13 @@ $(function() {
      <p><fmt:message key="jsp.info.p.credits.2"/></p>
      <p><fmt:message key="jsp.info.p.credits.3"/></p>
      <p><fmt:message key="jsp.info.p.credits.4"/></p>
+     <p><fmt:message key="jsp.info.p.credits.5"/></p>
+     <p><fmt:message key="jsp.info.p.credits.6"/></p>
+     <p><fmt:message key="jsp.info.p.credits.7"/></p>
+     <p><fmt:message key="jsp.info.p.credits.8"/></p>
+     <p><fmt:message key="jsp.info.p.credits.9"/></p>
+     <p><fmt:message key="jsp.info.p.credits.10"/></p>
+     <p><fmt:message key="jsp.info.p.credits.11"/></p>
      </div>
      <div class="span3">
      <h3><fmt:message key="jsp.info.h3.license"/></h3>
@@ -103,6 +104,5 @@ $(function() {
      <p><fmt:message key="jsp.info.p.donations.1"/></p>
      <p><fmt:message key="jsp.info.p.donations.2"/></p>
      <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonatePayPal" class="bibiscoDonationButtonPaypal" src="img/<fmt:message key="jsp.info.img.donatepaypal"/>"></p>
-     <p class="bibiscoDonationsButton"><img id="bibiscoInfoImgDonateFlattr" class="bibiscoDonationButtonFlattr" src="img/flattr-badge.png"></p>
      </div>
  </div>		

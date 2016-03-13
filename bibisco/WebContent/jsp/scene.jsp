@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -143,9 +143,7 @@
         $('#bibiscoSceneDivCharacters').hide();
         
         $('#bibiscoSceneDivTags').css("height", ajaxDialog.getHeight() - 150);
-        $('#bibiscoSceneDivTags').jScrollPane({
-            autoReinitialise: true, animateScroll: true, verticalGutter: 30
-        }).data('jsp');
+        $('#bibiscoSceneDivTags').perfectScrollbar(); 
         
         
         // point of view
@@ -280,7 +278,7 @@
                 var ajaxDialogContent = { 
                           idCaller: 'bibiscoSceneAProjectFromScene',
                           url: 'BibiscoServlet?action=openProjectFromScene&idScene=' + $('#bibiscoSceneIdScene').val(),
-                          title: '<fmt:message key="jsp.scene.projectFromScene.dialog.title" />', 
+                          title: "<fmt:message key="jsp.scene.projectFromScene.dialog.title" />", 
                           init: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneInitCallback(idAjaxDialog, idCaller, positions.projectFromSceneWidth, projectFromSceneDialogHeight); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoProjectFromSceneBeforeCloseCallback(idAjaxDialog, idCaller); },
                           close: function (idAjaxDialog, idCaller) {
@@ -305,7 +303,7 @@
         // revisions
         $("#bibiscoSceneSelectRevision").on("change", function(e) { 
             if (bibiscoRichTextEditor.unSaved) {
-                bibiscoConfirm('<fmt:message key="jsp.scene.revision.change.message" />', function(result) {
+                bibiscoConfirm("<fmt:message key="jsp.scene.revision.change.message" />", function(result) {
                     if (result) {
                         bibiscoRichTextEditor.unSaved=false;
                         bibiscoSceneSelectRevisionChange(e);
@@ -390,7 +388,7 @@
         var selectedValue = $('#bibiscoSceneSelectRevision option:selected').val();
         
         if (selectedValue=='createRevision') {
-            bibiscoConfirm('<fmt:message key="jsp.scene.createRevisionFromActual.message" />', 
+            bibiscoConfirm("<fmt:message key="jsp.scene.createRevisionFromActual.message" />", 
                 function(result) {
                     if (result) {
                         bibiscoExecuteChangeRevision('createRevisionFromActual');
@@ -400,7 +398,7 @@
                 });
         } else if (selectedValue=='deleteCurrentRevision') {
             setSceneRevisionSelectToActualRevision();
-            bibiscoConfirm('<fmt:message key="jsp.scene.deleteCurrentRevision.message" />',
+            bibiscoConfirm("<fmt:message key="jsp.scene.deleteCurrentRevision.message" />",
                 function(result) {
                     if (result) {
                         bibiscoExecuteChangeRevision(selectedValue)
@@ -458,7 +456,7 @@
         <tags:bibiscoRichTextEditor />
     </div>
 </div>
-<div id="bibiscoSceneDivTags" class="bibiscoNotSelectableText bibiscoSceneTags">
+<div id="bibiscoSceneDivTags" class="bibiscoNotSelectableText bibiscoSceneTags bibiscoScrollable">
     <div class="accordion" id="sceneAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">

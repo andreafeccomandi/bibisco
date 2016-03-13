@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <meta charset="utf-8">
 
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
@@ -14,10 +14,9 @@
 <link rel="stylesheet" href="js/bootstrap/select2-3.4.3/select2.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="js/bootstrap/bootstrap-switch/bootstrapSwitch.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="js/fontawesome/font-awesome.css?version=${version}" type="text/css" media="print, projection, screen" />
-<link rel="stylesheet" href="js/jscrollpane/jquery.jscrollpane.css?version=${version}" type="text/css" media="print, projection, screen" />
-<link rel="stylesheet" href="js/jscrollpane/jquery.jscrollpane.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="js/jqplot/jquery.jqplot.css?version=${version}" type="text/css" media="print, projection, screen" />
 <link rel="stylesheet" href="css/bibisco.css?version=${version}" type="text/css" media="print, projection, screen" />
+<link rel="stylesheet" href="js/perfect-scrollbar/perfect-scrollbar.css?version=${version}" type="text/css" media="print, projection, screen" />
 
 <script type="text/javascript" src="js/jsMessages.jsp?version=${version}"></script>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js?version=${version}"></script>
@@ -44,8 +43,6 @@
 <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.js?version=${version}"></script>
 <script type="text/javascript" src="js/bootstrap/bootstrap-switch/bootstrapSwitch.js?version=${version}"></script>
 <script type="text/javascript" src="js/bootstrap/bootbox.js?version=${version}"></script>
-<script type="text/javascript" src="js/jscrollpane/jquery.jscrollpane.min.js?version=${version}"></script>
-<script type="text/javascript" src="js/jscrollpane/jquery.mousewheel.js?version=${version}"></script>
 <script type="text/javascript" src="js/jquery-dateFormat/jquery.dateFormat-1.0.js?version=${version}"></script>
 <script type="text/javascript" src="js/jqplot/jquery.jqplot.js"></script>
 <script type="text/javascript" src="js/jqplot/plugins/jqplot.barRenderer.js"></script>
@@ -55,7 +52,7 @@
 <script type="text/javascript" src="js/jqplot/plugins/jqplot.categoryAxisRenderer.js"></script>
 <script type="text/javascript" src="js/jqplot/plugins/jqplot.dateAxisRenderer.js"></script>
 <script type="text/javascript" src="js/jqplot/plugins/jqplot.pointLabels.js"></script>
-
+<script type="text/javascript" src="js/perfect-scrollbar/perfect-scrollbar.jquery.js"></script>
 
 
 <c:if test="${language != 'en'}">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ public class ChapterDTO {
 		this.characterCount = characterCount;
 	}
 
-	public Object getWordCountTaskStatusAsJSONObject() {
+	public JSONObject getWordCountTaskStatusAsJSONObject() {
 		
 		JSONObject lJSONObject;
 

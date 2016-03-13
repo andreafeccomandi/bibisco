@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ function bibiscoSelectTopMenuItem(item) {
 	div2Hide.hide();
 	var div2Show = $("#bibiscoMainDiv" + newActiveLi.attr("data-div"));
 	div2Show.show();
+	
+	div2Show.find(".bibiscoScrollable").perfectScrollbar('update');   
 }
 
 
@@ -393,7 +395,7 @@ function bibiscoRichTextEditorSpellCheck(pRichTextEditor, pSync) {
 					for ( var i = 0; i < spellCheckResult.misspelledWords.length; i++) {
 						var misspelledWord = spellCheckResult.misspelledWords[i].misspelledWord;
 						
-						var misspelledWordRegEx = new RegExp("(^|[^a-zA-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŒœŠšŸ])("+misspelledWord+")([^a-zA-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŒœŠšŸ]|$)");
+						var misspelledWordRegEx = new RegExp("(^|[^a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½])("+misspelledWord+")([^a-zA-zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]|$)");
 						var misspelledWordOccurences = spellCheckResult.misspelledWords[i].occurences;
 						var misspelledWordOccurencesFound = 0;
 						var suggestions = spellCheckResult.misspelledWords[i].suggestions;
@@ -462,18 +464,16 @@ function bibiscoReturnFalse() {
 
 // initialize all thumbanil of a family
 function bibiscoInitAllThumbnail(config) {
-
-	// initialize scrollbar
-	config.scrollbar = $('.bibiscoThumbnailPages[data-thumbnailFamily="' + config.family + '"]').jScrollPane({
-		autoReinitialise: true, animateScroll: true, verticalGutter: 30
-	}).data('jsp');
-	
+		
 	var thumbnailCount = bibiscoThumbnailCount(config.family);
 	for ( var i = 1; i <= thumbnailCount; i++) {
 		bibiscoInitThumbnail(i, config);
 	}
 	
 	bibiscoSetTooltipOnThumbnailFamily(config.family)
+	
+	$('.bibiscoThumbnailPages[data-thumbnailFamily="' + config.family + '"]').perfectScrollbar();   
+	$('.bibiscoThumbnailPages[data-thumbnailFamily="' + config.family + '"]').perfectScrollbar('update');
 }
 
 // count all thumbnails of a family
@@ -707,11 +707,13 @@ function bibiscoAddThumbnail(data, position, config) {
 	}
 
 	bibiscoInitAllThumbnail(config);
-	config.scrollbar.scrollToPercentY(100);
 	
 	if (position > 1) {
 		bibiscoShowDndTip(config);
 	}
+	
+	var thumbnailFamilyDiv = $('.bibiscoThumbnailPages[data-thumbnailFamily="' + family + '"]');
+	thumbnailFamilyDiv.animate({ scrollTop: thumbnailFamilyDiv.height() }, "slow");
 }
 
 // open thumbnail title form

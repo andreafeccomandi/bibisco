@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,11 @@ package com.bibisco.dao;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.Validate;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -26,6 +29,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.bibisco.BibiscoException;
 import com.bibisco.log.Log;
 import com.bibisco.manager.ContextManager;
+import com.bibisco.manager.ProjectManager;
 
 /**
  * SqlSessionFactory manager.
@@ -34,8 +38,9 @@ import com.bibisco.manager.ContextManager;
  *
  */
 public class SqlSessionFactoryManager { 
-	
-	private static final String BIBISCO_DB_URL = "bibisco";
+		
+	public static final String SQL_SESSION_ENVIRONMENT_JUNIT_TEST = "junitTest";
+	public static final String SQL_SESSION_ENVIRONMENT_STANDARD = "standard";
 	
 	private static final String DB_USERNAME = "root";
 	private static final String DB_PASSWORD = "password";
@@ -43,7 +48,7 @@ public class SqlSessionFactoryManager {
 	
 	private static Log mLog = Log.getInstance(SqlSessionFactoryManager.class);
 	private SqlSessionFactory mSqlSessionFactoryBibisco; 
-	private SqlSessionFactory mSqlSessionFactoryProject;
+	private Map<String, SqlSessionFactory> mMapSqlSessionFactoryProjects;
 	private static SqlSessionFactoryManager mSqlSessionFactoryManager;
 
 	public synchronized static SqlSessionFactoryManager getInstance() {
@@ -55,7 +60,9 @@ public class SqlSessionFactoryManager {
 		return mSqlSessionFactoryManager;
 	}
 	
-	private SqlSessionFactoryManager() {}
+	private SqlSessionFactoryManager() {
+		mMapSqlSessionFactoryProjects = new HashMap<String, SqlSessionFactory>();
+	}
 	
 	public Object clone() throws CloneNotSupportedException {
 		return new CloneNotSupportedException();
@@ -70,12 +77,21 @@ public class SqlSessionFactoryManager {
 		
 		try {
 			Reader lReader = Resources.getResourceAsReader(RESOURCE_FILE_NAME);
+			
+			// set environment
+			String lStrEnvironment; 
+			if (ContextManager.getInstance().isJunitTestRunning()) {
+				lStrEnvironment = SQL_SESSION_ENVIRONMENT_JUNIT_TEST;
+			} else {
+				lStrEnvironment = SQL_SESSION_ENVIRONMENT_STANDARD;
+			}
+			
 			Properties lProperties = new Properties();
 			lProperties.setProperty("url", pStrDBUrl);
 			lProperties.setProperty("username", DB_USERNAME);
 			lProperties.setProperty("password", DB_PASSWORD);
 			
-			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader,lProperties);
+			mSqlSessionFactory = new SqlSessionFactoryBuilder().build(lReader, lStrEnvironment, lProperties);
 			mLog.debug("SqlSessionFactory built.");
 			
 		} catch (IOException e) {
@@ -89,23 +105,27 @@ public class SqlSessionFactoryManager {
 	}
 	
 	
-	private static String getDBURL(String pStrDBName) {
+	private static String getBibiscoDBURL() {
 		
-		ContextManager lContextManager = ContextManager.getInstance();
+		StringBuilder lStringBuilder = new StringBuilder();
+		lStringBuilder.append("jdbc:h2:file:");		
+		lStringBuilder.append(ContextManager.getPathSeparator());
+		lStringBuilder.append(ContextManager.getInstance().getDbDirectoryPath());
+		lStringBuilder.append("bibisco");
+		
+		return lStringBuilder.toString();
+
+	}
+	
+	private static String getProjectDBURL(String pStrIdProject) {
+
 		StringBuilder lStringBuilder = new StringBuilder();
 		lStringBuilder.append("jdbc:h2:file:");
-		
+
 		lStringBuilder.append(ContextManager.getPathSeparator());
-		lStringBuilder.append(lContextManager.getDbDirectoryPath());
-		
-		if(pStrDBName.equalsIgnoreCase(BIBISCO_DB_URL)) {
-			lStringBuilder.append("bibisco");
-		} else {
-			lStringBuilder.append(pStrDBName);
-			lStringBuilder.append(ContextManager.getPathSeparator());
-			lStringBuilder.append(pStrDBName);
-		}
-		
+		lStringBuilder.append(ProjectManager.getDBProjectDirectory(pStrIdProject));
+		lStringBuilder.append(pStrIdProject);
+
 		return lStringBuilder.toString();
 
 	}
@@ -113,7 +133,7 @@ public class SqlSessionFactoryManager {
 	public SqlSessionFactory getSqlSessionFactoryBibisco() {
 		
 		if (mSqlSessionFactoryBibisco == null) {
-			mSqlSessionFactoryBibisco = buildSqlSessionFactory(getDBURL(BIBISCO_DB_URL));
+			mSqlSessionFactoryBibisco = buildSqlSessionFactory(getBibiscoDBURL());
 		}
 		
 		return mSqlSessionFactoryBibisco;
@@ -121,20 +141,30 @@ public class SqlSessionFactoryManager {
 
 	public SqlSessionFactory getSqlSessionFactoryProject() {
 		
-		if (mSqlSessionFactoryProject == null) {
-			mSqlSessionFactoryProject = buildSqlSessionFactory(getDBURL(ContextManager.getInstance().getIdProject()));
+		String lStrIdProject = ContextManager.getInstance().getIdProject();
+		
+		Validate.notEmpty(lStrIdProject, "There is no project in context");
+		Validate.isTrue(ProjectManager.projectExists(lStrIdProject), "Project references non existent directory");
+		
+		if (mMapSqlSessionFactoryProjects.get(lStrIdProject) == null) {
+			SqlSessionFactory lSqlSessionFactoryProject = buildSqlSessionFactory(getProjectDBURL(lStrIdProject));
+			mMapSqlSessionFactoryProjects.put(lStrIdProject, lSqlSessionFactoryProject);
 		}
 		
-		return mSqlSessionFactoryProject;
+		return mMapSqlSessionFactoryProjects.get(lStrIdProject);
 	}
 	
 	public void cleanSqlSessionFactoryProject() {
 
 		mLog.debug("Start cleanSqlSessionFactoryProject()");
 
-		PooledDataSource lPooledDataSource = (PooledDataSource) mSqlSessionFactoryProject.getConfiguration().getEnvironment().getDataSource();
-		lPooledDataSource.forceCloseAll();
-		mSqlSessionFactoryProject = null;
+		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
+		
+		String lStrProjectId = ContextManager.getInstance().getIdProject();
+		SqlSessionFactory lSqlSessionFactoryProject = mMapSqlSessionFactoryProjects.get(lStrProjectId);
+		PooledDataSource lPooledDataSource = (PooledDataSource) lSqlSessionFactoryProject.getConfiguration().getEnvironment().getDataSource();
+		lPooledDataSource.forceCloseAll();	
+		mMapSqlSessionFactoryProjects.remove(lStrProjectId);
 
 		mLog.debug("End cleanSqlSessionFactoryProject()");
 	}

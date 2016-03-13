@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -66,7 +66,7 @@
     		var ajaxDialogContent = { 
   				  idCaller: 'bibiscoLocationDivImages',
   				  url: 'BibiscoServlet?action=openCarouselImage&idElement='+id+'&elementType=LOCATIONS',	    
-  				  title: '<fmt:message key="jsp.carouselImage.dialog.title" /> ' +location.name + ' (' + location.fullyQualifiedArea + ')', 
+  				  title: "<fmt:message key="jsp.carouselImage.dialog.title" /> " +location.name + " (" + location.fullyQualifiedArea + ")", 
   				  init: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageInitCallback(idAjaxDialog, idCaller); },
   				  close: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageCloseCallback(idAjaxDialog, idCaller); },
   				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoCarouselImageBeforeCloseCallback(idAjaxDialog, idCaller); },

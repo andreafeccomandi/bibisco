@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 Andrea Feccomandi
+ * Copyright (C) 2014-2016 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import com.bibisco.dao.model.SceneRevisionStrandsExample;
 import com.bibisco.dao.model.SceneRevisionStrandsKey;
 import com.bibisco.dao.model.Strands;
 import com.bibisco.dao.model.StrandsExample;
-import com.bibisco.enums.ElementType;
 import com.bibisco.enums.TaskStatus;
 import com.bibisco.log.Log;
 
@@ -138,9 +137,6 @@ public class StrandManager {
 
 				// shift down other strand
 				lStrandsMapper.shiftDown(pIntPosition, Integer.MAX_VALUE);
-
-				// delete images
-				ImageManager.deleteImagesByElement(lSqlSession, lStrands.getIdStrand().intValue(), ElementType.CHARACTERS);
 
 				lBlnResult = true;
 			}

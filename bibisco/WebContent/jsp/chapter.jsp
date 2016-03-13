@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
@@ -96,9 +96,9 @@ function bibiscoShowDonationTip() {
 function bibiscoCreateScene(configScene) {
 	var position = bibiscoThumbnailCount('scene') + 1;
 	var ajaxDialogContent = { 
-			  idCaller: 'bibiscoChapterACreateScene',
+			  idCaller: "bibiscoChapterACreateScene",
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position+'&idParent=${chapter.idChapter}',
-			  title: '<fmt:message key="jsp.chapter.dialog.title.createScene" />', 
+			  title: "<fmt:message key="jsp.chapter.dialog.title.createScene" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, configScene); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
@@ -188,7 +188,7 @@ function bibiscoSelectScene(position,configScene) {
     	<div id="bibiscoChapterDivEmptyScenes" data-thumbnailFamily="scene" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapter.a.createFirstScene" createButtonId="bibiscoChapterACreateFirstScene"  />
 		</div>    	
-    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoScenesNotEmptyThumbnailListElements" data-thumbnailFamily="scene">
+    	<div class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoScenesNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="scene">
 	    	<c:forEach items="${chapter.sceneList}" var="scene" varStatus="sceneNumber">
 	    		
 	    		<c:if test="${sceneNumber.count % 4 == 1}">

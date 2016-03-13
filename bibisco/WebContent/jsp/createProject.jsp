@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -62,7 +62,7 @@
 
 	function bibiscoCreateProjectFormSubmit(ajaxDialog) {
 		if ($('#bibiscoCreateProjectForm').valid()) {
-			bibiscoConfirm('<fmt:message key="jsp.createProject.save.confirm" />', function(result) {
+			bibiscoConfirm("<fmt:message key="jsp.createProject.save.confirm" />", function(result) {
 			    if (result) {
 			    	var name = $('#bibiscoCreateProjectName').val();
 					var language = $('#bibiscoCreateProjectSelectLanguage').val();
@@ -131,6 +131,7 @@
 					<option value="it_IT"><fmt:message key="jsp.createProject.form.selectLanguage.option.it_IT" /></option>
 					<option value="nl_NL"><fmt:message key="jsp.createProject.form.selectLanguage.option.nl_NL" /></option>
 					<option value="no_NO"><fmt:message key="jsp.createProject.form.selectLanguage.option.no_NO" /></option>
+					<option value="pl_PL"><fmt:message key="jsp.createProject.form.selectLanguage.option.pl_PL" /></option>
 					<option value="pt_BR"><fmt:message key="jsp.createProject.form.selectLanguage.option.pt_BR" /></option>
 					<option value="pt_PT"><fmt:message key="jsp.createProject.form.selectLanguage.option.pt_PT" /></option>
 					<option value="sv_SE"><fmt:message key="jsp.createProject.form.selectLanguage.option.sv_SE" /></option>	

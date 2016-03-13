@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -146,25 +146,25 @@
 			<label id="bibiscoLocationTitleFormInputNationLabel" class="control-label" for="bibiscoLocationTitleFormInputNation"><fmt:message key="jsp.locationsTitleForm.label.nation" /></label>
 			<div class="control">
 				<input type="text" class="span5" name="bibiscoLocationTitleFormInputNation" tabindex="1"
-				value="${location.nation}" maxlength="30"
+				value="<c:out value="${location.nation}"></c:out>" maxlength="30"
 				id="bibiscoLocationTitleFormInputNation" data-provide="typeahead" data-source="${nations}">
 			</div>
 			<label id="bibiscoLocationTitleFormInputStateLabel" class="control-label" for="bibiscoLocationTitleFormInputState"><fmt:message key="jsp.locationsTitleForm.label.state" /></label>
 			<div class="control">
 				<input type="text" class="span5" tabindex="2" name="bibiscoLocationTitleFormInputState" 
-				value="${location.state}" maxlength="30"
+				value="<c:out value="${location.state}"></c:out>" maxlength="30"
 				id="bibiscoLocationTitleFormInputState" data-provide="typeahead" data-source="${states}">
 			</div>
 			<label id="bibiscoLocationTitleFormInputCityLabel" class="control-label" for="bibiscoLocationTitleFormInputCity"><fmt:message key="jsp.locationsTitleForm.label.city" /></label>
 			<div class="controls">
 				<input type="text" class="span5" tabindex="3" name="bibiscoLocationTitleFormInputCity" 
-				value="${location.city}" maxlength="30"
+				value="<c:out value="${location.city}"></c:out>" maxlength="30"
 				id="bibiscoLocationTitleFormInputCity" data-provide="typeahead" data-source="${cities}">
 			</div>
 			<label id="bibiscoThumbnailTitleFormInputTitleLabel" class="control-label" for="bibiscoThumbnailTitleFormInputTitle"><fmt:message key="jsp.locationsTitleForm.label.location" /></label>
 			<div class="control">
 				<input type="text" class="span5" tabindex="4" name="bibiscoThumbnailTitleFormInputTitle" 
-				value="${location.name}" maxlength="50"
+				value="<c:out value="${location.name}"></c:out>" maxlength="50"
 				id="bibiscoThumbnailTitleFormInputTitle">
 			</div>
 		</div>

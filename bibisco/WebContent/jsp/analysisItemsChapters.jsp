@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="/jstl/functions"%>
@@ -21,10 +21,7 @@
     	$('#bibiscoAnalysisCharactersChaptersDiv table').css('width', ${fn:length(chapters) * 27 + 120});
     	
     	// initialize scrollbar
-		$('#bibiscoAnalysisCharactersChaptersDiv').jScrollPane({
-			autoReinitialise: true, animateScroll: true, verticalGutter: 30
-		}).data('jsp');
-	
+    	$('#bibiscoAnalysisCharactersChaptersDiv').perfectScrollbar();
     }     
     
  	// close dialog callback
@@ -58,7 +55,7 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="bibiscoAnalysisCharactersChaptersDiv" class="bibiscoAnalysisCharactersChapters">
+        <div id="bibiscoAnalysisCharactersChaptersDiv" class="bibiscoAnalysisCharactersChapters bibiscoScrollable">
 		    <table class="table table-striped table-bordered table-condensed" >
 		        <thead>
 		            <tr>

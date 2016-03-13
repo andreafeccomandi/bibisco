@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -86,6 +86,9 @@
 			bibiscoShowNotEmptyThumbnailListElements('images');
 		}
 		$('div.carousel-inner').append(imageToAppend);
+		
+		// init carousel
+		$('div.carousel').carousel('pause');
 		
 		// close save button tooltip
 		$('#bibiscoAddImageASave').tooltip('hide');

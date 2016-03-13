@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
@@ -32,7 +32,7 @@
        	
     	// delete image button
     	$('#bibiscoCarouselImageADeleteCurrentImage').click(function() {
-    		bibiscoConfirm('<fmt:message key="jsp.carouselImage.dialog.deleteCurrentImage.confirm" />', function(result) {
+    		bibiscoConfirm("<fmt:message key="jsp.carouselImage.dialog.deleteCurrentImage.confirm" />", function(result) {
 			    if (result) {
 			    	// get id image to delete
 			    	var idImage = $('div.carousel-inner div.active img').attr('data-idimage');
@@ -83,7 +83,7 @@
     	var ajaxDialogContent = { 
 				  idCaller: 'bibiscoCarouselImageDivImages',
 				  url: 'jsp/addImageForm.jsp?idElement=${idElement}&elementType=${elementType}',	    
-				  title: '<fmt:message key="jsp.addImageForm.dialog.title" />', 
+				  title: "<fmt:message key="jsp.addImageForm.dialog.title" />", 
 				  init: function (idAjaxDialog, idCaller) { return bibiscoAddImageInit(idAjaxDialog, idCaller); },
 				  close: function (idAjaxDialog, idCaller) { return bibiscoAddImageClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoAddImageBeforeClose(idAjaxDialog, idCaller); },

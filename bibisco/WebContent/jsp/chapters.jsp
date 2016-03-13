@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <script type="text/javascript">
 $(function() {
 		
@@ -50,7 +51,7 @@ function bibiscoCreateChapter(config) {
 	var ajaxDialogContent = { 
 			  idCaller: 'bibiscoChaptersACreateChapter',
 			  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-			  title: '<fmt:message key="jsp.chapters.dialog.title.createChapter" />', 
+			  title: "<fmt:message key="jsp.chapters.dialog.title.createChapter" />", 
 			  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 			  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 			  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
@@ -106,7 +107,7 @@ function bibiscoSelectChapter(position,config) {
     	<div id="bibiscoChaptersDivEmptyChapters" data-thumbnailFamily="chapter" class="bibiscoEmptyThumbnailListElements">
 			<tags:bibiscoEmptyThumbnailListBox text="jsp.chapters.bibiscoEmptyThumbnailListBox.text" createButtonText="jsp.chapters.a.createFirstChapter" createButtonId="bibiscoChaptersACreateFirstChapter"  />
 		</div>	
-    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoChaptersNotEmptyThumbnailListElements" data-thumbnailFamily="chapter">
+    	<div id="bibiscoChaptersDivNotEmptyChapters" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoChaptersNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="chapter">
 	    	<c:forEach items="${project.chapterList}" var="chapter" varStatus="chapterNumber">
 	    		
 	    		<c:if test="${chapterNumber.count % 4 == 1}">

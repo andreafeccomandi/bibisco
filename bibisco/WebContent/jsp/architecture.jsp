@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <script type="text/javascript">
 $(function() {
 	
@@ -53,7 +54,7 @@ function bibiscoCreateStrand(config) {
 	var ajaxDialogContent = { 
 		  idCaller: 'bibiscoStrandACreateStrand',
 		  url: 'jsp/thumbnailTitleForm.jsp?action=createThumbnail&position='+position,
-		  title: '<fmt:message key="jsp.architecture.strand.dialog.title.createStrand" />', 
+		  title: "<fmt:message key="jsp.architecture.strand.dialog.title.createStrand" />", 
 		  init: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormInit(idAjaxDialog, idCaller, config); },
 		  close: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormClose(idAjaxDialog, idCaller); },
 		  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoThumbnailTitleFormBeforeClose(idAjaxDialog, idCaller); },
@@ -133,7 +134,7 @@ function bibiscoSelectStrand(position,config) {
 <div id="bibiscoStrandsDivEmptyStrands" data-thumbnailFamily="strand" class="bibiscoEmptyThumbnailListElements">
 	<tags:bibiscoEmptyThumbnailListBox text="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text" createButtonText="jsp.strands.a.createFirstStrand" createButtonId="bibiscoStrandsACreateFirstStrand"  />
 </div>
-<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoStrandsNotEmptyThumbnailListElements" data-thumbnailFamily="strand">
+<div id="bibiscoStrandsDivNotEmptyStrands" class="bibiscoThumbnailPages bibiscoNotEmptyThumbnailListElements bibiscoStrandsNotEmptyThumbnailListElements bibiscoScrollable" data-thumbnailFamily="strand">
 	    	<c:forEach items="${project.architecture.strandList}" var="strand" varStatus="strandNumber">
 	    		
 	    		<c:if test="${strandNumber.count % 4 == 1}">
