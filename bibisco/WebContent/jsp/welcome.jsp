@@ -106,6 +106,7 @@
 
 </script>
 <%@ include file="menu.jsp" %>
+<div class="container">
 <div class="row-fluid">
 	<div class="span12">
     	<div class="hero-unit bibiscoWelcomeMotivational">
@@ -151,4 +152,4 @@
 		</div>  	  	
     </div>
 </div>
-
+</div>
