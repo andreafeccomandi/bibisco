@@ -1519,8 +1519,8 @@ pref("gestures.enable_single_finger_input", true);
 pref("editor.resizing.preserve_ratio",       true);
 pref("editor.positioning.offset",            0);
 
-pref("dom.max_chrome_script_run_time", 20);
-pref("dom.max_script_run_time", 10);
+pref("dom.max_chrome_script_run_time", 0);
+pref("dom.max_script_run_time", 0);
 
 //@line 1474 "e:\builds\moz2_slave\rel-m-rel-xr-w32-bld\build\modules\libpref\src\init\all.js"
 // How long a plugin is allowed to process a synchronous IPC message
