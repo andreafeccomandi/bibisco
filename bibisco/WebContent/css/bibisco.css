@@ -896,22 +896,26 @@ div.bibiscoTip h4 {
 
 /* SUGGESTED READINGS */
 
+.bibiscoSuggestedReadings {
+	height: 550px;
+}
+
+div.bibiscoSuggestedReadings p {
+	text-align: justify;
+}
+
 .bibiscoSuggestedReadingsMotivational {
-    margin-top: 60px; 
+    margin-top: 10px; 
     margin-left: 30px; 
     margin-right: 150px; 
     padding-top: 30px; 
     padding-bottom: 35px; 
     padding-left: 40px; 
-    height: 260px;
+    /*height: 260px;*/
 }
 
 
 .bibiscoSuggestedReadingsMotivational p:first-child {
-	margin-top: 25px;
-}
-
-.bibiscoSuggestedReadingsMotivational p:last-child {
 	margin-top: 25px;
 }
 

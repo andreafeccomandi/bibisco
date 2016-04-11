@@ -751,7 +751,8 @@ function bibiscoOpenDefaultBrowser(url) {
 	$.ajax({
 		  type: 'GET',
 		  async: true,
-		  url: 'BibiscoServlet?action=openUrlExternalBrowser&url='+url,
+		  url: 'BibiscoServlet?action=openUrlExternalBrowser',
+		  data: { url: url },
 		  error:function(jqXHR, textStatus, errorThrown) {},
 		  success:function(spellCheckResult){},
 		});
