@@ -910,9 +910,7 @@ div.bibiscoSuggestedReadings p {
     margin-right: 150px; 
     padding-top: 30px; 
     padding-bottom: 35px; 
-    padding-left: 40px; 
-    /*height: 260px;*/
-}
+    padding-left: 40px; }
 
 
 .bibiscoSuggestedReadingsMotivational p:first-child {
@@ -928,4 +926,78 @@ div.bibiscoSuggestedReadings p {
 .bibiscoSelectProjectsDirectoryInfo {
 	margin-top: 5px;
 	text-align: justify;
+}
+
+@media (min-height:800px)  {
+	
+	/* STRANDS */
+	.bibiscoStrandsNotEmptyThumbnailListElements {
+		height: 415px;  
+	}
+	
+	/* LOCATIONS */
+	.bibiscoLocationsNotEmptyThumbnailListElements {
+	   height: 700px;
+	}
+	
+	/* CHARACTERS */
+	.bibiscoMainCharactersNotEmptyThumbnailListElements {
+		height: 210px; 
+	}
+	
+	.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
+	    height: 285px; 
+	}
+	
+	/* CHAPTERS */
+	.bibiscoChaptersNotEmptyThumbnailListElements {
+		height: 700px;
+	}
+	
+	/* CHAPTER */
+	.bibiscoScenesNotEmptyThumbnailListElements {
+	    height: 420px;
+	}
+	
+	/* SUGGESTED READINGS */
+	.bibiscoSuggestedReadings {
+		height: 575px;
+	}
+}
+
+@media (min-height:900px) {
+	
+	/* STRANDS */
+	.bibiscoStrandsNotEmptyThumbnailListElements {
+		height: 460px;  
+	}
+	
+	/* LOCATIONS */
+	.bibiscoLocationsNotEmptyThumbnailListElements {
+	   height: 785px;
+	}
+	
+	/* CHARACTERS */
+	.bibiscoMainCharactersNotEmptyThumbnailListElements {
+		height: 235px; 
+	}
+	
+	.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
+	    height: 355px; 
+	}
+	
+	/* CHAPTERS */
+	.bibiscoChaptersNotEmptyThumbnailListElements {
+		height: 785px;
+	}
+	
+	/* CHAPTER */
+	.bibiscoScenesNotEmptyThumbnailListElements {
+	    height: 525px;
+	}
+
+	/* SUGGESTED READINGS */
+	.bibiscoSuggestedReadings {
+		height: 750px;
+	}
 }
