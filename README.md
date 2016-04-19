@@ -31,8 +31,6 @@ You can support bibisco in a variuos way:
 * like [bibisco alternativeTo page](http://alternativeto.net/software/bibisco).
 * follow [bibisco Twitter account](https://twitter.com/bibiscotweet).
 * donate with [Paypal](http://www.bibisco.com/donatePayPal).
-* donate with [Flattr](http://www.bibisco.com/donateFlattr).
-* donate with [Gratipay](https://gratipay.com/~andrea.feccomandi).
 
 
 ## License
