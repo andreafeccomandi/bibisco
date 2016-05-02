@@ -80,10 +80,14 @@
 						bibiscoCloseLoadingBannerSuccess();
 						$('#bibiscoSelectProjectsDirectoryASave').tooltip('hide');
 						window.location.href = 'BibiscoServlet?action=completeWizardStep2';
-					} else {
+					} else if (data == 'forbidden') {
 						bibiscoUnblockUI();
 						bibiscoCloseLoadingBannerError();
 						bibiscoAlert("<fmt:message key="jsp.welcome.step2.forbidden.message"/>");		
+					} else if (data == 'invalid') {
+						bibiscoUnblockUI();
+						bibiscoCloseLoadingBannerError();
+						bibiscoAlert("<fmt:message key="jsp.welcome.step2.invalid.message"/>");		
 					}
 				},
 				error : function() {		
@@ -136,7 +140,7 @@
 					<input type="hidden" name="action" value="completeWizardStep2" />
 					<p class="bibiscoNotSelectableText"><fmt:message key="jsp.welcome.step2.p.1" /></p>
 					<div class="input-append">		
-						<input type="text" class="span8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" readonly="readonly" />
+						<input type="text" class="span8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" />
 						<button id="bibiscoStartWizardSelectProjectsDirectoryButton" class="btn" type="button"><fmt:message key="jsp.welcome.step2.button.select" /></button>
 					</div>	
 					<div class="bibiscoStartWizardNotes">
