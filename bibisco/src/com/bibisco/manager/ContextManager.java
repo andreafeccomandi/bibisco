@@ -20,6 +20,7 @@ import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Platform;
 
 import com.bibisco.log.Log;
@@ -50,6 +51,11 @@ public class ContextManager {
 	private String mStrProjectLanguage;
 	private URI mURIWeb;
 	private boolean mBlnJunitTestRunning = false;
+	private boolean mBlnNonAsciiCharactersInAbsolutePath;
+
+	public boolean hasNonAsciiCharactersInAbsolutePath() {
+		return mBlnNonAsciiCharactersInAbsolutePath;
+	}
 
 	public String getProjectLanguage() {
 		return mStrProjectLanguage;
@@ -87,6 +93,9 @@ public class ContextManager {
 			}
 			mStrAbsolutePath = FilenameUtils.separatorsToSystem(lStrPath);
 		}
+		
+		// non ascii characters in absolute path
+		mBlnNonAsciiCharactersInAbsolutePath = !StringUtils.isAsciiPrintable(mStrAbsolutePath);
 				
 		// web URI
 		mURIWeb = UriBuilder.fromUri(lConfigManager.getMandatoryProperty("web/@uri")).build();
@@ -144,6 +153,7 @@ public class ContextManager {
 				
 		mLog.info("*** OS: ", mStrOS);		
 		mLog.info("*** Absolute path: ", mStrAbsolutePath);
+		mLog.info("*** Non ascii characters in absolute path: ", String.valueOf(mBlnNonAsciiCharactersInAbsolutePath));
 		mLog.info("*** db: ", mStrDbDirectoryPath);
 		mLog.info("*** export: ", mStrExportDirectoryPath);
 		mLog.info("*** temp: ", mStrTempDirectoryPath);

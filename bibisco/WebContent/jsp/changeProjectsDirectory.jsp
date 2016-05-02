@@ -57,11 +57,15 @@
 							if (data == 'ok') {
 								bibiscoCloseLoadingBannerSuccess();
 								window.location.href='BibiscoServlet?action=start'
-							} else {
+							} else if (data == 'forbidden') {
 								bibiscoUnblockUI();
 								bibiscoCloseLoadingBannerError();
 								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.forbidden.message" />");		
-							}
+							} else if (data == 'invalid') {
+								bibiscoUnblockUI();
+								bibiscoCloseLoadingBannerError();
+								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.invalid.message" />");	
+							} 
 						},
 						error : function() {
 							bibiscoCloseLoadingBannerError();

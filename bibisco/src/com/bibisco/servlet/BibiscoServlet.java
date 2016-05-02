@@ -87,6 +87,7 @@ import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
 import com.bibisco.manager.ProjectFromSceneManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.ProjectManager.SET_PROJECTS_DIRECTORY_RESULT;
 import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.ResourceBundleManager;
 import com.bibisco.manager.RichTextEditorSettingsManager;
@@ -1699,14 +1700,16 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");
 		
 		String lStrDirectory = pRequest.getParameter("directory");
-		boolean lBlnResult = ProjectManager.setProjectsDirectory(lStrDirectory);
+		ProjectManager.SET_PROJECTS_DIRECTORY_RESULT lSetProjectsDirectoryResult = ProjectManager.setProjectsDirectory(lStrDirectory);
 		
 		pResponse.setContentType("text/html; charset=UTF-8");
 		Writer lWriter = pResponse.getWriter();
-		if(lBlnResult) {			
+		if(lSetProjectsDirectoryResult == SET_PROJECTS_DIRECTORY_RESULT.CREATED) {			
 			lWriter.write("ok");
-		} else {
+		} else if(lSetProjectsDirectoryResult == SET_PROJECTS_DIRECTORY_RESULT.FORBIDDEN) {		
 			lWriter.write("forbidden");
+		} else if(lSetProjectsDirectoryResult == SET_PROJECTS_DIRECTORY_RESULT.INVALID) {		
+			lWriter.write("invalid");
 		}
 		
 		mLog.debug("End saveProjectsDirectory(HttpServletRequest, HttpServletResponse)");

@@ -80,6 +80,7 @@ import com.bibisco.enums.TaskStatus;
 import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.ProjectManager.SET_PROJECTS_DIRECTORY_RESULT;
 import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.VersionManager;
 
@@ -192,12 +193,12 @@ public class ProjectManagerTest {
 	@Test
 	public void testCheckProjectDirectoryStatusWithForbidddenDirectory() {
 		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR);
-		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.NEW, lProjectDirectoryStatus);
+		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.FORBIDDEN, lProjectDirectoryStatus);
 	}
 	
 	@Test
 	public void testSetProjectsDirectoryWithForbiddenDirectory() {
-		Assert.assertFalse(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR));
+		Assert.assertEquals(SET_PROJECTS_DIRECTORY_RESULT.FORBIDDEN, ProjectManager.setProjectsDirectory(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -206,9 +207,8 @@ public class ProjectManagerTest {
 		ProjectManager.setProjectsDirectory(null);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
 	public void testSetProjectsDirectoryWithNonExistingDirectory() {
-		ProjectManager.setProjectsDirectory("C:\\Users\\AndreaDocuments\\");
+		Assert.assertEquals(SET_PROJECTS_DIRECTORY_RESULT.INVALID, ProjectManager.setProjectsDirectory("C:\\Users\\AndreaDocuments\\"));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -230,7 +230,7 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}	
 		
-		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_PROJECTS_DIR));
+		Assert.assertEquals(SET_PROJECTS_DIRECTORY_RESULT.CREATED, ProjectManager.setProjectsDirectory(AllTests.BIBISCO_PROJECTS_DIR));
 		
     	lSqlSession = lSqlSessionFactory.openSession();
     	Properties lProperties;
@@ -260,7 +260,7 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}	
 		
-		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR));
+		Assert.assertEquals(SET_PROJECTS_DIRECTORY_RESULT.CREATED, ProjectManager.setProjectsDirectory(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR));
 		
     	lSqlSession = lSqlSessionFactory.openSession();
     	Properties lProperties;
@@ -290,8 +290,8 @@ public class ProjectManagerTest {
 			lSqlSession.close();
 		}	
 		
-		Assert.assertTrue(ProjectManager.setProjectsDirectory(AllTests.BIBISCO_NEW_PROJECTS_DIR));
-		
+		Assert.assertEquals(SET_PROJECTS_DIRECTORY_RESULT.CREATED, ProjectManager.setProjectsDirectory(AllTests.BIBISCO_NEW_PROJECTS_DIR));
+
     	lSqlSession = lSqlSessionFactory.openSession();
     	Properties lProperties;
     	try {
@@ -453,7 +453,7 @@ public class ProjectManagerTest {
 		}	
 		
 		int lIntResult = ProjectManager.importProjectsFromProjectsDirectory();
-		Assert.assertEquals(3, lIntResult);
+		Assert.assertEquals(4, lIntResult);
 		
 		List<Projects> lListProjects;
 		lSqlSession = lSqlSessionFactory.openSession();
@@ -798,7 +798,7 @@ public class ProjectManagerTest {
 		Assert.assertNull(lListProjectDTOs.get(1).getBibiscoVersion());
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lListProjectDTOs.get(1).getIdProject());
 		Assert.assertNull(lListProjectDTOs.get(1).getLanguage());
-		Assert.assertEquals("Test 3 � � � � � � $ ! /", lListProjectDTOs.get(1).getName());
+		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lListProjectDTOs.get(1).getName());
 		Assert.assertNull(lListProjectDTOs.get(1).getArchitecture());
 		Assert.assertNull(lListProjectDTOs.get(1).getChapterList());
 		Assert.assertNull(lListProjectDTOs.get(1).getLocationList());
@@ -2100,7 +2100,6 @@ public class ProjectManagerTest {
 		ProjectManager.closeConnection();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
 	public void testCloseConnectionWithNullIdProject() {
 		ProjectManager.closeConnection();
 	}

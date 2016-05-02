@@ -15,7 +15,7 @@
 					accept: "bibisco"
 				}
 			},
-			messages: { document_file: '<fmt:message key="jsp.importProject.form.input.file.validationMessage" />' },
+			messages: { document_file: "<fmt:message key="jsp.importProject.form.input.file.validationMessage" />" },
 			highlight : function(label) {
 				$(label).closest('.control-group').addClass('error');
 			},
@@ -82,7 +82,7 @@
 			}	
 		} else {
 			// archive file is not valid
-			bibiscoAlert('<fmt:message key="jsp.importProject.form.input.file.validationMessage" />');
+			bibiscoAlert("<fmt:message key="jsp.importProject.form.input.file.validationMessage" />");
 		}
 		
 		
@@ -105,7 +105,6 @@
 			success : function(data) {
 				$('body').html(data);
 				bibiscoCloseLoadingBannerSuccess();
-				ajaxDialog.close();
 			},
 			error : function() {
 				bibiscoUnblockUI();
