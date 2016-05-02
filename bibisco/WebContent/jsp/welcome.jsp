@@ -1,10 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
+<%@page import="com.bibisco.manager.ContextManager"%>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <%@ taglib prefix="fn" uri="/jstl/functions"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
+<c:set var="nonAsciiCharactersInAbsolutePath" scope="page" value="<%=ContextManager.getInstance().hasNonAsciiCharactersInAbsolutePath()%>"/>
 
 <script type="text/javascript">
 
@@ -104,6 +106,11 @@
 		 $('#bibiscoStartWizardSelectedDirectory').val(directory);
 	});
 	
+	<c:if test="${nonAsciiCharactersInAbsolutePath}">
+		$('#bibiscoStartWizardSelectProjectsDirectoryButton').hide();
+		$('#bibiscoStartWizardSelectedDirectory').removeAttr('readonly');
+	</c:if>
+	
 });
 	
 
@@ -140,7 +147,7 @@
 					<input type="hidden" name="action" value="completeWizardStep2" />
 					<p class="bibiscoNotSelectableText"><fmt:message key="jsp.welcome.step2.p.1" /></p>
 					<div class="input-append">		
-						<input type="text" class="span8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" />
+						<input type="text" class="span8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" readonly="readonly"/>
 						<button id="bibiscoStartWizardSelectProjectsDirectoryButton" class="btn" type="button"><fmt:message key="jsp.welcome.step2.button.select" /></button>
 					</div>	
 					<div class="bibiscoStartWizardNotes">
