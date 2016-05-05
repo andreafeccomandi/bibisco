@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
-<%@page import="com.bibisco.manager.ContextManager"%>
+<%@ page import="com.bibisco.manager.ContextManager"%>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
