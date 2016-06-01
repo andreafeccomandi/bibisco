@@ -14,6 +14,9 @@
  */
 package com.bibisco.rcp;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Date;
 
 import org.eclipse.core.runtime.jobs.IJobManager;
@@ -23,9 +26,13 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import com.bibisco.BibiscoException;
@@ -54,7 +61,13 @@ public class View extends ViewPart {
 		
 		// create Browser instance
 		ContextManager lContextManager = ContextManager.getInstance();
-    	
+		
+		// calculate dev pixels per px
+		String lStrDevPixelsPerPx = calculateDevPixelsPerPx();
+		
+		// set dev pixels per px 
+		setDevPixelsPerPx(lStrDevPixelsPerPx);
+		
     	// if win or linux create MOZILLA browser
     	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux32") || lContextManager.getOS().equals("linux64")) {    
     		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
@@ -118,6 +131,60 @@ public class View extends ViewPart {
 				lJobs[i].cancel();
 				break;
 			}
+		}
+	}
+	
+	private Rectangle getMonitorDimensions() {
+				
+		Rectangle lRectangle = null;
+		
+		final Display lDisplay = PlatformUI.getWorkbench().getDisplay();
+		final Monitor lMonitor = lDisplay.getPrimaryMonitor();
+		if (lMonitor != null) {
+			lRectangle = lMonitor.getClientArea();
+			mLog.info("*** Monitor dimensions - width: " + lRectangle.width + ", height: " + lRectangle.height);
+		} else {
+			mLog.info("*** bibisco wasn't able to get monitor dimension!");
+		}
+		
+		return lRectangle;
+	}
+		
+	private String calculateDevPixelsPerPx() {
+		
+		String lStrDevPixelsPerPx = "1.0";
+		
+		Rectangle lRectangle = getMonitorDimensions();
+		if (lRectangle != null && lRectangle.width > 3500) {
+			return "2.0";
+		} 
+		
+		mLog.info("*** Dev Pixels Per Px: " + lStrDevPixelsPerPx);
+		
+		return lStrDevPixelsPerPx;
+	}
+	
+	
+	private void setDevPixelsPerPx(String pStrDevPixelsPerPx) {
+
+		String lStrXulRunnerAppDataDirectoryPath = ContextManager.getInstance()
+				.getXulRunnerAppDataDirectoryPath();
+		try {
+			File lFileAppData = new File(lStrXulRunnerAppDataDirectoryPath);
+			if (!lFileAppData.exists()) {
+				lFileAppData.mkdir();
+			}
+			File lFileUserPrefs = new File(lStrXulRunnerAppDataDirectoryPath
+					+ File.separator + "user.js");
+			FileWriter lFileWriter = new FileWriter(lFileUserPrefs);
+			BufferedWriter lBufferedWriter = new BufferedWriter(lFileWriter);
+			lBufferedWriter.write("user_pref(\"layout.css.devPixelsPerPx\", \""+pStrDevPixelsPerPx+"\");");
+			lBufferedWriter.newLine();
+			lBufferedWriter.close();
+
+		} catch (Exception e) {
+			// suffocated exception: bibisco start with default dev pixels per px.
+			mLog.error(e);
 		}
 	}
 }
