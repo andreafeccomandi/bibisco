@@ -170,6 +170,12 @@ public class ProjectManager {
 
 		mLog.debug("Start loadAll()");
 		
+		// delete projects entries on bibisco db
+		ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+					
+		// import projects
+		importProjectsFromProjectsDirectory();
+		
 		SqlSessionFactory lSqlSessionFactory = SqlSessionFactoryManager.getInstance().getSqlSessionFactoryBibisco();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
