@@ -104,6 +104,11 @@
             // set  word and character count
             bibiscoCharacterWordCount(text);
         }
+        
+        // create function for stop autosave
+        bibiscoRichTextEditor.stopAutoSave = function() {
+        	clearInterval(this.autoSave);
+        }
 
         // on instance ready initialize buttons
         bibiscoRichTextEditor.on('instanceReady', function(ev) {
@@ -248,6 +253,13 @@
             // editor is initialized: let's show it!
             $('#bibiscoTagRichTextEditorTextareaContainer').show();
             $('#bibiscoTagRichTextEditorDivToolbar').show();
+            
+            // autosave
+            bibiscoRichTextEditor.autoSave = setInterval(function() { 
+            	if (bibiscoRichTextEditorConfig.autoSaveCallback) {
+                    bibiscoRichTextEditorConfig.autoSaveCallback();
+                }
+            }, 60000);
         });
         
         return bibiscoRichTextEditor;
