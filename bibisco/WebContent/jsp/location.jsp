@@ -9,12 +9,14 @@
 //<![CDATA[
           
     var bibiscoRichTextEditor;    
-	
+    var bibiscoTaskStatusSelector;
+    var idCaller;
      
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoLocationInitCallback(ajaxDialog, idCaller, type, id, config) {
     	 
     	var location = ${location};
+    	idCaller = idCaller;
     	
     	// id location
     	$('#bibiscoLocationIdLocation').val(location.idLocation);
@@ -23,34 +25,17 @@
 		var bibiscoRichTextEditorVerticalPadding = 220;
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
 		
-		bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: location.description, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});
+		bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+			text: location.description, 
+			height: bibiscoRichTextEditorHeight, 
+			width: jsBibiscoRichTextEditorWidth, 
+			autoSaveCallback: function() {
+				bibiscoLocationAutoSave();
+			}});
 		bibiscoRichTextEditor.unSaved = false;
 		
     	// save button
-    	$('#bibiscoLocationASave').click(function() {
-    		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-    			
-        	$.ajax({
-      		  type: 'POST',
-      		  url: 'BibiscoServlet?action=saveLocation',
-      		  data: { 	idLocation: $('#bibiscoLocationIdLocation').val(),
-      			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-      			  		description: bibiscoRichTextEditor.getText()
-      			  	},
-      		  beforeSend:function(){
-      			  bibiscoOpenLoadingBanner();
-      		  },
-      		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-      			  bibiscoCloseLoadingBannerSuccess();
-      			  bibiscoRichTextEditor.unSaved = false;
-      		  },
-      		  error:function(){
-      			  bibiscoCloseLoadingBannerError();
-      		  }
-      		});
-    	});	  
+    	$('#bibiscoLocationASave').click(bibiscoLocationHumanSave);	  
     	$('#bibiscoLocationASave').tooltip();
     	
     	// close button
@@ -81,9 +66,51 @@
     	
     	
 		//task status
-    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+    	bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	
     }     
+    
+    function bibiscoLocationHumanSave() {
+    	bibiscoLocationSave(true);
+    }
+    
+    function bibiscoLocationAutoSave() {
+    	bibiscoLocationSave(false);
+    }
+    
+    function bibiscoLocationSave(humanSave) {
+    	
+    	if (humanSave) {
+			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
+    	}
+    	
+    	$.ajax({
+  		  type: 'POST',
+  		  url: 'BibiscoServlet?action=saveLocation',
+  		  data: { 	idLocation: $('#bibiscoLocationIdLocation').val(),
+  			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
+  			  		description: bibiscoRichTextEditor.getText()
+  			  	},
+  		  beforeSend:function(){
+  			  if (humanSave) {
+  			  	bibiscoOpenLoadingBanner();
+  			  }
+  		  },
+  		  success:function(data){
+  			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
+  			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
+	  		  if (humanSave) {
+	  			bibiscoCloseLoadingBannerSuccess();
+	  		  }
+  			  bibiscoRichTextEditor.unSaved = false;
+  		  },
+  		  error:function(){
+  			if (humanSave) {
+  			  bibiscoCloseLoadingBannerError();
+  			}
+  		  }
+  		});
+	}
     
     function bibiscoLocationButtonUpdateTitleInit(config, idLocation, position) {
     	
@@ -107,7 +134,8 @@
     
  	// close dialog callback
 	function bibiscoLocationCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.destroy();
+		bibiscoRichTextEditor.stopAutoSave();
+ 		bibiscoRichTextEditor.destroy();
 		$('#bibiscoLocationAClose').tooltip('hide');
     }
 	
