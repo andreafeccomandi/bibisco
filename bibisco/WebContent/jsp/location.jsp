@@ -9,18 +9,20 @@
 //<![CDATA[
           
     var bibiscoRichTextEditor;    
-    var bibiscoTaskStatusSelector;
-    var idCaller;
      
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoLocationInitCallback(ajaxDialog, idCaller, type, id, config) {
     	 
+    	var bibiscoTaskStatusSelector;
     	var location = ${location};
-    	idCaller = idCaller;
     	
     	// id location
     	$('#bibiscoLocationIdLocation').val(location.idLocation);
     	
+
+		//task status
+    	bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+		
 		//rich text editor height
 		var bibiscoRichTextEditorVerticalPadding = 220;
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
@@ -29,13 +31,20 @@
 			text: location.description, 
 			height: bibiscoRichTextEditorHeight, 
 			width: jsBibiscoRichTextEditorWidth, 
-			autoSaveCallback: function() {
-				bibiscoLocationAutoSave();
-			}});
+			save: {
+				idCaller: idCaller,
+				action: 'saveLocation',
+				idElement: location.idLocation,
+	  			taskStatusSelector: bibiscoTaskStatusSelector,
+		  		taskStatusToUpdate: true
+			}
+		});
 		bibiscoRichTextEditor.unSaved = false;
 		
     	// save button
-    	$('#bibiscoLocationASave').click(bibiscoLocationHumanSave);	  
+    	$('#bibiscoLocationASave').click(function() {
+    		bibiscoRichTextEditor.save();
+    	});	  
     	$('#bibiscoLocationASave').tooltip();
     	
     	// close button
@@ -65,53 +74,10 @@
     	});
     	
     	
-		//task status
-    	bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+
     	
     }     
-    
-    function bibiscoLocationHumanSave() {
-    	bibiscoLocationSave(true);
-    }
-    
-    function bibiscoLocationAutoSave() {
-    	bibiscoLocationSave(false);
-    }
-    
-    function bibiscoLocationSave(humanSave) {
-    	
-    	if (humanSave) {
-			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-    	}
-    	
-    	$.ajax({
-  		  type: 'POST',
-  		  url: 'BibiscoServlet?action=saveLocation',
-  		  data: { 	idLocation: $('#bibiscoLocationIdLocation').val(),
-  			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-  			  		description: bibiscoRichTextEditor.getText()
-  			  	},
-  		  beforeSend:function(){
-  			  if (humanSave) {
-  			  	bibiscoOpenLoadingBanner();
-  			  }
-  		  },
-  		  success:function(data){
-  			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-  			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-	  		  if (humanSave) {
-	  			bibiscoCloseLoadingBannerSuccess();
-	  		  }
-  			  bibiscoRichTextEditor.unSaved = false;
-  		  },
-  		  error:function(){
-  			if (humanSave) {
-  			  bibiscoCloseLoadingBannerError();
-  			}
-  		  }
-  		});
-	}
-    
+        
     function bibiscoLocationButtonUpdateTitleInit(config, idLocation, position) {
     	
     	$('#bibiscoLocationDialogTitle').append("&nbsp;<button id=\"bibiscoLocationButtonUpdateTitle\" title=\"<fmt:message key="jsp.location.button.updateTitle" />\" class=\"btn btn-mini\"><i class=\"icon-pencil\"></i></button>");
@@ -134,8 +100,7 @@
     
  	// close dialog callback
 	function bibiscoLocationCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.stopAutoSave();
- 		bibiscoRichTextEditor.destroy();
+		bibiscoRichTextEditor.close();
 		$('#bibiscoLocationAClose').tooltip('hide');
     }
 	

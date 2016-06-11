@@ -785,9 +785,9 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveLocation(HttpServletRequest, HttpServletResponse)");
 		
 		LocationDTO lLocationDTO = new LocationDTO();
-		lLocationDTO.setIdLocation(Integer.parseInt(pRequest.getParameter("idLocation")));
+		lLocationDTO.setIdLocation(Integer.parseInt(pRequest.getParameter("idElement")));
 		lLocationDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
-		lLocationDTO.setDescription(pRequest.getParameter("description"));
+		lLocationDTO.setDescription(pRequest.getParameter("text"));
 		
 		LocationManager.save(lLocationDTO);
 		
