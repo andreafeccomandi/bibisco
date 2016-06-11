@@ -38,7 +38,8 @@
             toolbar : [],
             bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}', 
             contentsCss : contentsCss,
-            spellCheckEnabled: ${richTextEditorSettings.spellCheckEnabled}
+            spellCheckEnabled: ${richTextEditorSettings.spellCheckEnabled},
+            autoSaveEnabled: true
         };
         
         // create instance of rich text editor
@@ -254,12 +255,24 @@
             $('#bibiscoTagRichTextEditorTextareaContainer').show();
             $('#bibiscoTagRichTextEditorDivToolbar').show();
             
+            
+            // save
+            bibiscoRichTextEditor.save = function() {
+            	bibiscoRichTextEditorHumanSave(bibiscoRichTextEditorConfig.save);
+            }
+            
             // autosave
             bibiscoRichTextEditor.autoSave = setInterval(function() { 
-            	if (bibiscoRichTextEditorConfig.autoSaveCallback) {
-                    bibiscoRichTextEditorConfig.autoSaveCallback();
+            	if (bibiscoRichTextEditor.config.autoSaveEnabled) {
+            		bibiscoRichTextEditorAutoSave(bibiscoRichTextEditorConfig.save);
                 }
             }, 60000);
+            
+            // close
+            bibiscoRichTextEditor.close = function() {
+            	bibiscoRichTextEditor.stopAutoSave();
+         		bibiscoRichTextEditor.destroy();
+            }
         });
         
         return bibiscoRichTextEditor;
@@ -319,6 +332,51 @@
         bibiscoRichTextEditor.config.spellCheckEnabled = pSpellCheckEnabled;
         bibiscoRichTextEditor.config.contentsCss = getContentsCss(pSpellCheckEnabled);
     }
+    
+    function bibiscoRichTextEditorHumanSave(saveConfig) {
+    	bibiscoRichTextEditorSave(true, saveConfig);
+    }
+    
+    function bibiscoRichTextEditorAutoSave(saveConfig) {
+    	bibiscoRichTextEditorSave(false, saveConfig);
+    }
+    
+	function bibiscoRichTextEditorSave(humanSave, saveConfig) {
+    	
+    	if (humanSave) {
+			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
+    	}
+    	
+    	$.ajax({
+  		  type: 'POST',
+  		  url: 'BibiscoServlet',
+  		  data: {
+  			  action: saveConfig.action,
+  			  text: bibiscoRichTextEditor.getText(),
+  			  idElement: saveConfig.idElement,
+  			  taskStatus: saveConfig.taskStatusSelector.getSelected()
+  		  },
+  		  beforeSend:function(){
+  			  if (humanSave) {
+  			  	bibiscoOpenLoadingBanner();
+  			  }
+  		  },
+  		  success:function(data){
+  			  if(saveConfig.taskStatusToUpdate) {  
+  			  	bibiscoUpdateTaskStatus(saveConfig.idCaller, saveConfig.taskStatusSelector.getSelected());
+  			  }
+	  		  if (humanSave) {
+	  			bibiscoCloseLoadingBannerSuccess();
+	  		  }
+  			  bibiscoRichTextEditor.unSaved = false;
+  		  },
+  		  error:function(){
+  			if (humanSave) {
+  			  bibiscoCloseLoadingBannerError();
+  			}
+  		  }
+  		});
+	}
     
     function getContentsCss(spellCheckEnabled) {
         

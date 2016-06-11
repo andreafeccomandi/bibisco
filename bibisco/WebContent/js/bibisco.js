@@ -296,6 +296,12 @@ function bibiscoGetBibiscoTaskStatus(taskStatus, wordCount, characterCount) {
 	return result;
 }
 
+/* Update task status banner */
+function bibiscoUpdateTaskStatus(idCaller, selectedTaskStatus) {
+	 $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(selectedTaskStatus));
+	 $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
+}
+
 /* Get array of word from text node */
 function bibiscoGetWordsFromNodeText(nodeText) {
 	nodeText = nodeText.replace(/\./g, ' ');
