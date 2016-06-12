@@ -17,38 +17,31 @@
     	
     	// id strand
     	$('#bibiscoStrandIdStrand').val(strand.idStrand);
+ 
+    	//task status
+    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: strand.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	
 		//rich text editor height
 		var bibiscoRichTextEditorVerticalPadding = 200;
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
-		bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: strand.description, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});		
+		bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+			text: strand.description, 
+			height: bibiscoRichTextEditorHeight, 
+			width: jsBibiscoRichTextEditorWidth,
+			save: {
+				idCaller: idCaller,
+				action: 'saveStrand',
+				idElement: strand.idStrand,
+	  			taskStatusSelector: bibiscoTaskStatusSelector,
+		  		taskStatusToUpdate: true
+			}
+		});		
 		bibiscoRichTextEditor.unSaved = false;
 		
 		
     	// save button
     	$('#bibiscoStrandASave').click(function() {
-    		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-    			
-        	$.ajax({
-      		  type: 'POST',
-      		  url: 'BibiscoServlet?action=saveStrand',
-      		  data: { 	idStrand: $('#bibiscoStrandIdStrand').val(),
-      			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-      			  		description: bibiscoRichTextEditor.getText()
-      			  	},
-      		  beforeSend:function(){
-      			  bibiscoOpenLoadingBanner();
-      		  },
-      		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-      			  bibiscoCloseLoadingBannerSuccess();
-      			  bibiscoRichTextEditor.unSaved = false;
-      		  },
-      		  error:function(){
-      			  bibiscoCloseLoadingBannerError();
-      		  }
-      		});
+    		bibiscoRichTextEditor.save();	
     	});	  
     	$('#bibiscoStrandASave').tooltip();
     	
@@ -58,10 +51,7 @@
 		// update title scene button
     	$('.ui-dialog-title').attr('id', 'bibiscoStrandDialogTitle');
     	bibiscoStrandButtonUpdateTitleInit(config, strand.idStrand, strand.position);
-    	
-		//task status
-    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: strand.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
-    	
+ 
     }     
     
 	function bibiscoStrandButtonUpdateTitleInit(config, idStrand, position) {
@@ -74,7 +64,7 @@
     }
  	// close dialog callback
 	function bibiscoStrandCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.destroy();
+ 		bibiscoRichTextEditor.close();
 		$('#bibiscoStrandAClose').tooltip('hide');
     }
 	

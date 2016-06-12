@@ -798,9 +798,9 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveStrand(HttpServletRequest, HttpServletResponse)");
 		
 		StrandDTO lStrandDTO = new StrandDTO();
-		lStrandDTO.setIdStrand(Integer.parseInt(pRequest.getParameter("idStrand")));
+		lStrandDTO.setIdStrand(Integer.parseInt(pRequest.getParameter("idElement")));
 		lStrandDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
-		lStrandDTO.setDescription(pRequest.getParameter("description"));
+		lStrandDTO.setDescription(pRequest.getParameter("text"));
 		
 		StrandManager.save(lStrandDTO);
 		
