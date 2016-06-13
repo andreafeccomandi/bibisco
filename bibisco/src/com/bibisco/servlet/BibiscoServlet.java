@@ -812,9 +812,9 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveSecondaryCharacter(HttpServletRequest, HttpServletResponse)");
 		
 		SecondaryCharacterDTO lSecondaryCharacterDTO = new SecondaryCharacterDTO();
-		lSecondaryCharacterDTO.setIdCharacter(Integer.parseInt(pRequest.getParameter("idCharacter")));
+		lSecondaryCharacterDTO.setIdCharacter(Integer.parseInt(pRequest.getParameter("idElement")));
 		lSecondaryCharacterDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
-		lSecondaryCharacterDTO.setDescription(pRequest.getParameter("description"));
+		lSecondaryCharacterDTO.setDescription(pRequest.getParameter("text"));
 		
 		CharacterManager.saveSecondaryCharacter(lSecondaryCharacterDTO);
 		

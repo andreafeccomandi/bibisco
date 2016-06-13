@@ -19,36 +19,29 @@
     	// id character
     	$('#bibiscoSecondaryCharacterIdSecondaryCharacter').val(secondaryCharacter.idCharacter);
     	
-		//rich text editor height
+    	//task status
+    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: secondaryCharacter.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+    	
+		// rich text editor height
 		var bibiscoRichTextEditorVerticalPadding = 200;
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;		
-		bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: secondaryCharacter.description, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});
+		bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+			text: secondaryCharacter.description, 
+			height: bibiscoRichTextEditorHeight, 
+			width: jsBibiscoRichTextEditorWidth,
+			save: {
+				idCaller: idCaller,
+				action: 'saveSecondaryCharacter',
+				idElement: secondaryCharacter.idCharacter,
+	  			taskStatusSelector: bibiscoTaskStatusSelector,
+		  		taskStatusToUpdate: true
+			}
+		});
 		bibiscoRichTextEditor.unSaved = false;
 		
     	// save button
     	$('#bibiscoSecondaryCharacterASave').click(function() {
-    		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-    			
-        	$.ajax({
-      		  type: 'POST',
-      		  url: 'BibiscoServlet?action=saveSecondaryCharacter',
-      		  data: { 	idCharacter: $('#bibiscoSecondaryCharacterIdSecondaryCharacter').val(),
-      			  		taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-      			  		description: bibiscoRichTextEditor.getText()
-      			  	},
-      		  beforeSend:function(){
-      			  bibiscoOpenLoadingBanner();
-      		  },
-      		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-      			  bibiscoCloseLoadingBannerSuccess();
-      			  bibiscoRichTextEditor.unSaved = false;
-      		  },
-      		  error:function(){
-      			  bibiscoCloseLoadingBannerError();
-      		  }
-      		});
+    		bibiscoRichTextEditor.save();	
     	});	  
     	$('#bibiscoSecondaryCharacterASave').tooltip();
     	
@@ -77,9 +70,6 @@
 		// update title scene button
     	$('.ui-dialog-title').attr('id', 'bibiscoSecondaryCharacterDialogTitle');
     	bibiscoSecondaryCharacterButtonUpdateTitleInit(config, secondaryCharacter.idCharacter, secondaryCharacter.position);
-		
-		//task status
-    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: secondaryCharacter.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     }     
     
     function bibiscoSecondaryCharacterButtonUpdateTitleInit(config, idSecondaryCharacter, position) {
@@ -93,7 +83,7 @@
     
  	// close dialog callback
 	function bibiscoSecondaryCharacterCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.destroy();
+		bibiscoRichTextEditor.close();
     }
 	
 	// before close dialog callback
