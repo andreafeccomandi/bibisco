@@ -32,7 +32,7 @@
 			save: {
 				idCaller: idCaller,
 				action: 'saveSecondaryCharacter',
-				idElement: secondaryCharacter.idCharacter,
+				id: secondaryCharacter.idCharacter,
 	  			taskStatusSelector: bibiscoTaskStatusSelector,
 		  		taskStatusToUpdate: true
 			}

@@ -785,7 +785,7 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveLocation(HttpServletRequest, HttpServletResponse)");
 		
 		LocationDTO lLocationDTO = new LocationDTO();
-		lLocationDTO.setIdLocation(Integer.parseInt(pRequest.getParameter("idElement")));
+		lLocationDTO.setIdLocation(Integer.parseInt(pRequest.getParameter("id")));
 		lLocationDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
 		lLocationDTO.setDescription(pRequest.getParameter("text"));
 		
@@ -798,7 +798,7 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveStrand(HttpServletRequest, HttpServletResponse)");
 		
 		StrandDTO lStrandDTO = new StrandDTO();
-		lStrandDTO.setIdStrand(Integer.parseInt(pRequest.getParameter("idElement")));
+		lStrandDTO.setIdStrand(Integer.parseInt(pRequest.getParameter("id")));
 		lStrandDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
 		lStrandDTO.setDescription(pRequest.getParameter("text"));
 		
@@ -812,7 +812,7 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start saveSecondaryCharacter(HttpServletRequest, HttpServletResponse)");
 		
 		SecondaryCharacterDTO lSecondaryCharacterDTO = new SecondaryCharacterDTO();
-		lSecondaryCharacterDTO.setIdCharacter(Integer.parseInt(pRequest.getParameter("idElement")));
+		lSecondaryCharacterDTO.setIdCharacter(Integer.parseInt(pRequest.getParameter("id")));
 		lSecondaryCharacterDTO.setTaskStatus(TaskStatus.valueOf(pRequest.getParameter("taskStatus")));
 		lSecondaryCharacterDTO.setDescription(pRequest.getParameter("text"));
 		

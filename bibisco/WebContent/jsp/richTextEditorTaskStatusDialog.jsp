@@ -13,32 +13,31 @@
     function bibiscoThumbnailInitCallback(ajaxDialog, idCaller, type, id) {
     	
     	var richTextEditorTaskStatus = ${richTextEditorTaskStatus};
-    	var bibiscoRichTextEditorVerticalPadding = 250;
-    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: richTextEditorTaskStatus.text, height: (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding), width: jsBibiscoRichTextEditorWidth});
     	
+    	//task status
     	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: richTextEditorTaskStatus.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	$('#bibiscoRichTextEditorTaskStatusDialogEmDescription').html(richTextEditorTaskStatus.description);
+    	    	
+    	var bibiscoRichTextEditorVerticalPadding = 250;
+    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+    		text: richTextEditorTaskStatus.text, 
+    		height: (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding), 
+    		width: jsBibiscoRichTextEditorWidth,
+			save: {
+				idCaller: idCaller,
+				action: 'thumbnailAction',
+				thumbnailAction: 'save',
+				id: id,
+				family: type,
+	  			taskStatusSelector: bibiscoTaskStatusSelector,
+		  		taskStatusToUpdate: true
+			}
+    	});
+    	
     	
     	// save button
     	$('#bibiscoRichTextEditorTaskStatusDialogASave').click(function() {
-    		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-        	$.ajax({
-      		  type: 'POST',
-      		  url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&family='+type+'&id='+id,
-      		  data: { taskStatus: bibiscoTaskStatusSelector.getSelected(), text: bibiscoRichTextEditor.getText() },
-      		  beforeSend:function(){
-      			  bibiscoOpenLoadingBanner();
-      		  },
-      		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-      			  bibiscoCloseLoadingBannerSuccess();
-      			  bibiscoRichTextEditor.unSaved = false;
-      		  },
-      		  error:function(){
-      			  bibiscoCloseLoadingBannerError();
-      		  }
-      		});
+    		bibiscoRichTextEditor.save();
     	});	  
     	$('#bibiscoRichTextEditorTaskStatusDialogASave').tooltip();
     	
@@ -49,7 +48,7 @@
     
  	// close dialog callback
 	function bibiscoThumbnailCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.destroy();
+		bibiscoRichTextEditor.close();
     }
 	
 	// before close dialog callback

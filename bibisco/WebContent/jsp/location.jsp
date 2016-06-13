@@ -34,7 +34,7 @@
 			save: {
 				idCaller: idCaller,
 				action: 'saveLocation',
-				idElement: location.idLocation,
+				id: location.idLocation,
 	  			taskStatusSelector: bibiscoTaskStatusSelector,
 		  		taskStatusToUpdate: true
 			}

@@ -352,8 +352,10 @@
   		  url: 'BibiscoServlet',
   		  data: {
   			  action: saveConfig.action,
+  			  thumbnailAction: saveConfig.thumbnailAction,
   			  text: bibiscoRichTextEditor.getText(),
-  			  idElement: saveConfig.idElement,
+  			  id: saveConfig.id,
+  			  family: saveConfig.family,
   			  taskStatus: saveConfig.taskStatusSelector.getSelected()
   		  },
   		  beforeSend:function(){

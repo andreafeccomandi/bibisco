@@ -31,7 +31,7 @@
 			save: {
 				idCaller: idCaller,
 				action: 'saveStrand',
-				idElement: strand.idStrand,
+				id: strand.idStrand,
 	  			taskStatusSelector: bibiscoTaskStatusSelector,
 		  		taskStatusToUpdate: true
 			}
