@@ -8,7 +8,8 @@
 <script type="text/javascript">
 //<![CDATA[
            
-    var bibiscoRichTextEditor;    
+    var bibiscoRichTextEditor;  
+    var characterInfoBean;
            
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoThumbnailInitCallback(ajaxDialog, idCaller, type, id) {
@@ -17,49 +18,12 @@
     		
     	// save button
     	$('#bibiscoCharacterInfoDialogASave').click(function() {
-    		bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-    		
-    		// save last answer to characterInfoBean
-    		if(characterInfoBean.interviewMode) {
-    			var actualQuestion = getActualQuestion();
-        		if (questionChangeStatus[actualQuestion]) {
-            		characterInfoBean.answers[actualQuestion] = bibiscoRichTextEditor.getText();
-            		questionChangeStatus[actualQuestion] = false;
-            	}
-    		} 
-    		// save freeText to characterInfoBean
-    		else {
-    			characterInfoBean.freeText = bibiscoRichTextEditor.getText();
-    		}
-    		
-        	$.ajax({
-      		  type: 'POST',
-      		  url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&family='+type+'&id='+id,
-      		  data: { taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-      			  	  answers: characterInfoBean.answers,
-      			  	  freeText: characterInfoBean.freeText,
-      			  	  interview: characterInfoBean.interviewMode
-      		  },
-      		  beforeSend:function(){
-      			  bibiscoOpenLoadingBanner();
-      		  },
-      		  success:function(data){
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected()));
-      			  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-      			  bibiscoCloseLoadingBannerSuccess();
-      			  bibiscoRichTextEditor.unSaved = false;
-      		  },
-      		  error:function(){
-      			  bibiscoCloseLoadingBannerError();
-      		  }
-      		});
+    		bibiscoRichTextEditor.save();	
     	});	  
     	$('#bibiscoCharacterInfoDialogASave').tooltip();
     	
     	// close button
     	$('#bibiscoCharacterInfoDialogAClose').tooltip();
-    	
-    	
     	
     	// interview button
     	$('#bibiscoCharacterInfoAInterview').click(function() {
@@ -181,11 +145,47 @@
     	    return false;
     	});
     	
+    	// task status selector
+    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: characterInfoBean.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+    	
     	// rich text editor	
     	var bibiscoRichTextEditorVerticalPadding = 300;
     	var bibiscoRichTextEditorHeight = (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding);
-    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: initialText, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth, changeCallback: function() {setActualQuestionChange();}});
-    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: characterInfoBean.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+    	bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+    		text: initialText, 
+    		height: bibiscoRichTextEditorHeight, 
+    		width: jsBibiscoRichTextEditorWidth, 
+    		save: {
+				idCaller: idCaller,
+				action: 'thumbnailAction',
+				thumbnailAction: 'save',
+				id: id,
+				family: type,
+	  			taskStatusSelector: bibiscoTaskStatusSelector,
+		  		taskStatusToUpdate: true,
+		  		extraData: function() {
+		  			// save last answer to characterInfoBean
+		    		if(characterInfoBean.interviewMode) {
+		    			var actualQuestion = getActualQuestion();
+		        		if (questionChangeStatus[actualQuestion]) {
+		            		characterInfoBean.answers[actualQuestion] = bibiscoRichTextEditor.getText();
+		            		questionChangeStatus[actualQuestion] = false;
+		            	}
+		    		} 
+		    		// save freeText to characterInfoBean
+		    		else {
+		    			characterInfoBean.freeText = bibiscoRichTextEditor.getText();
+		    		}
+		  			
+		  			return {
+	      			  	  answers: characterInfoBean.answers,
+	      			  	  freeText: characterInfoBean.freeText,
+	      			  	  interview: characterInfoBean.interviewMode
+		  			}
+		  		}
+			},
+    		changeCallback: function() {setActualQuestionChange();}
+    	});
     
     }     
     
@@ -216,7 +216,8 @@
     
  	// close dialog callback
 	function bibiscoThumbnailCloseCallback(ajaxDialog, idCaller, type) {
-		bibiscoRichTextEditor.destroy();
+		bibiscoRichTextEditor.stopAutoSave();
+ 		bibiscoRichTextEditor.destroy();
     }
 	
 	// before close dialog callback

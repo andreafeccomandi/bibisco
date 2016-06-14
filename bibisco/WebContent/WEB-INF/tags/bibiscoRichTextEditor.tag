@@ -347,17 +347,24 @@
 			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
     	}
     	
+    	var data;
+    	if (saveConfig.extraData) {
+    		data = saveConfig.extraData();
+    	} else {
+    		data = {};
+    	}
+    	
+    	data.action = saveConfig.action;
+    	data.thumbnailAction = saveConfig.thumbnailAction;
+    	data.text = bibiscoRichTextEditor.getText();
+    	data.id = saveConfig.id;
+    	data.family = saveConfig.family;
+    	data.taskStatus = saveConfig.taskStatusSelector.getSelected();
+    	
     	$.ajax({
   		  type: 'POST',
   		  url: 'BibiscoServlet',
-  		  data: {
-  			  action: saveConfig.action,
-  			  thumbnailAction: saveConfig.thumbnailAction,
-  			  text: bibiscoRichTextEditor.getText(),
-  			  id: saveConfig.id,
-  			  family: saveConfig.family,
-  			  taskStatus: saveConfig.taskStatusSelector.getSelected()
-  		  },
+  		  data: data,
   		  beforeSend:function(){
   			  if (humanSave) {
   			  	bibiscoOpenLoadingBanner();
