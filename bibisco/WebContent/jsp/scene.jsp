@@ -8,12 +8,14 @@
 <script type="text/javascript">
 //<![CDATA[
           
+    var scene;
     var bibiscoRichTextEditor;    
     var bibiscoRichTextEditorHeight;
     var bibiscoRichTextEditorVerticalPadding = 210;
+    var bibiscoTaskStatusSelector;
     var projectFromSceneDialog;
     
-    function populate(scene, changeRevision) {
+    function populate(scene, changeRevision, idCaller, id, type) {
         
         // id scene
         $('#bibiscoSceneIdScene').val(scene.idScene);
@@ -65,7 +67,43 @@
             bibiscoRichTextEditor.setText(scene.text);
         } else {
             // first open of scene dialog
-            bibiscoRichTextEditor = bibiscoRichTextEditorInit({text: scene.text, height: bibiscoRichTextEditorHeight, width: jsBibiscoRichTextEditorWidth});    
+            bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+            	text: scene.text, 
+            	height: bibiscoRichTextEditorHeight, 
+            	width: jsBibiscoRichTextEditorWidth,
+            	save: {
+    				idCaller: idCaller,
+    				action: 'thumbnailAction',
+    				thumbnailAction: 'save',
+    				id: id,
+    				family: type,
+    	  			taskStatusSelector: bibiscoTaskStatusSelector,
+    		  		taskStatusToUpdate: true,
+    		  		extraData: function() {
+    		  			 var characters = new Array();
+    		             $('button.sceneCharacter.active').each(function(index) {
+    		                 characters[index] = $(this).attr('data-id');
+    		             });
+    		             
+    		             var strands = new Array();
+    		             $('button.strand.active').each(function(index) {
+    		                 strands[index] = $(this).attr('data-id');
+    		             });
+    		  			
+    		  			return {
+    		  				idScene: $('#bibiscoSceneIdScene').val(),
+                            revision: $('#bibiscoSceneRevision').val(),
+                            idRevision: $("#bibiscoSceneSelectRevision").attr('data-actualRevision'),                        
+                            pointOfView: $('button.scenePointOfView.active').attr('data-id'),
+                            pointOfViewCharacter: $('button.scenePointOfViewCharacter.active').attr('data-id'),
+                            characters: characters,
+                            location: $('button.location.active').attr('data-id'),
+                            time: $('#bibiscoSceneInputTime').val(),
+                            strands: strands
+    		  			}
+    		  		}
+    			},
+            });    
         }
         
         bibiscoRichTextEditor.unSaved = false;
@@ -95,7 +133,6 @@
             formatSelection: formatRevisionActionSelectOption,
             escapeMarkup: function(m) { return m; }
         });
-        
     }
     
     function calculateDialogsPositionAndWidth() {
@@ -135,7 +172,8 @@
            
     <!-- START INIT DIALOG CALLBACK -->
     function bibiscoSceneInitCallback(ajaxDialog, idCaller, type, id, config) {
-                
+                  	
+    	scene = ${scene};
         var idDialog = $(ajaxDialog).attr('id');
         var positions = calculateDialogsPositionAndWidth();
         
@@ -180,55 +218,10 @@
         
         //rich text editor height
         bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
-        
+         
         // save button
         $('#bibiscoSceneASave').click(function() {
-            
-            bibiscoOpenLoadingBanner();
-            
-            bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
-            
-            var characters = new Array();
-            $('button.sceneCharacter.active').each(function(index) {
-                characters[index] = $(this).attr('data-id');
-            });
-            
-            var strands = new Array();
-            $('button.strand.active').each(function(index) {
-                strands[index] = $(this).attr('data-id');
-            });
-            
-            
-            $.ajax({
-              type: 'POST',
-              url: 'BibiscoServlet?action=saveScene',
-              data: {   idScene: $('#bibiscoSceneIdScene').val(),
-                        revision: $('#bibiscoSceneRevision').val(),
-                        idRevision: $("#bibiscoSceneSelectRevision").attr('data-actualRevision'),
-                        taskStatus: bibiscoTaskStatusSelector.getSelected(), 
-                        text: bibiscoRichTextEditor.getText(),
-                        wordCount: bibiscoRichTextEditor.getWordCount(),
-                        characterCount: bibiscoRichTextEditor.getCharacterCount(),
-                        pointOfView: $('button.scenePointOfView.active').attr('data-id'),
-                        pointOfViewCharacter: $('button.scenePointOfViewCharacter.active').attr('data-id'),
-                        characters: characters,
-                        location: $('button.location.active').attr('data-id'),
-                        time: $('#bibiscoSceneInputTime').val(),
-                        strands: strands
-                    },
-              beforeSend:function(){
-                  
-              },
-              success:function(data){
-                  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(bibiscoTaskStatusSelector.getSelected(), bibiscoRichTextEditor.getWordCount(), bibiscoRichTextEditor.getCharacterCount()));
-                  $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
-                  bibiscoCloseLoadingBannerSuccess();
-                  bibiscoRichTextEditor.unSaved = false;
-              },
-              error:function(){
-                  bibiscoCloseLoadingBannerError();
-              }
-            });
+        	bibiscoRichTextEditor.save();	
         });   
         $('#bibiscoSceneASave').tooltip();
         
@@ -296,7 +289,7 @@
               
             return true;
         });
-        
+            
         // locations
         $("#bibiscoSceneALocations").tooltip();
         
@@ -316,20 +309,18 @@
             }
         });
         
-        // populate scene page
-        var scene = ${scene};
-        populate(scene, false);
+        //task status
+        bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: scene.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+        
+        // populate scene page  
+        populate(scene, false, idCaller, id, type);
         
         // update title scene button
         $('.ui-dialog-title').attr('id', 'bibiscoSceneDialogTitle');
         bibiscoSceneButtonUpdateTitleInit(config, scene.idScene, scene.position);
         
-        //task status
-        var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: scene.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
-        
         //initial suggestions
-        bibiscoShowSceneTip();
-        
+        bibiscoShowSceneTip(); 
     }     
     <!-- END INIT DIALOG CALLBACK -->
     
@@ -344,7 +335,7 @@
     
     <!-- CLOSE DIALOG CALLBACK -->
     function bibiscoSceneCloseCallback(ajaxDialog, idCaller, type) {
-        bibiscoRichTextEditor.destroy();
+        bibiscoRichTextEditor.close();
     }
     
     <!-- BEFORE CLOSE DIALOG CALLBACK -->

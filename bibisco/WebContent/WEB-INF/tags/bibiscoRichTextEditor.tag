@@ -356,10 +356,12 @@
     	
     	data.action = saveConfig.action;
     	data.thumbnailAction = saveConfig.thumbnailAction;
-    	data.text = bibiscoRichTextEditor.getText();
     	data.id = saveConfig.id;
     	data.family = saveConfig.family;
     	data.taskStatus = saveConfig.taskStatusSelector.getSelected();
+    	data.text = bibiscoRichTextEditor.getText();
+    	data.wordCount = bibiscoRichTextEditor.getWordCount();
+    	data.characterCount = bibiscoRichTextEditor.getCharacterCount();
     	
     	$.ajax({
   		  type: 'POST',
