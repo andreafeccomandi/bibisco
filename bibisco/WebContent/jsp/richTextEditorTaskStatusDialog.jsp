@@ -23,14 +23,17 @@
     		text: richTextEditorTaskStatus.text, 
     		height: (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding), 
     		width: jsBibiscoRichTextEditorWidth,
-			save: {
-				idCaller: idCaller,
-				action: 'thumbnailAction',
-				thumbnailAction: 'save',
-				id: id,
-				family: type,
-	  			taskStatusSelector: bibiscoTaskStatusSelector,
-		  		taskStatusToUpdate: true
+	    	save: {
+				url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&id='+id
+						+'&family='+type,
+				successCallback: function() {
+					bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+				},
+				extraData: function() {
+					return {
+						taskStatus: bibiscoTaskStatusSelector.getSelected()
+					}
+				}
 			}
     	});
     	

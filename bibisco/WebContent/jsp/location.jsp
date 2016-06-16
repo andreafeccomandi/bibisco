@@ -13,15 +13,13 @@
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoLocationInitCallback(ajaxDialog, idCaller, type, id, config) {
     	 
-    	var bibiscoTaskStatusSelector;
     	var location = ${location};
     	
     	// id location
     	$('#bibiscoLocationIdLocation').val(location.idLocation);
     	
-
 		//task status
-    	bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
+    	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: location.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
 		
 		//rich text editor height
 		var bibiscoRichTextEditorVerticalPadding = 220;
@@ -32,11 +30,15 @@
 			height: bibiscoRichTextEditorHeight, 
 			width: jsBibiscoRichTextEditorWidth, 
 			save: {
-				idCaller: idCaller,
-				action: 'saveLocation',
-				id: location.idLocation,
-	  			taskStatusSelector: bibiscoTaskStatusSelector,
-		  		taskStatusToUpdate: true
+				url: 'BibiscoServlet?action=saveLocation&id='+location.idLocation,
+				successCallback: function() {
+					bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+				},
+				extraData: function() {
+					return {
+						taskStatus: bibiscoTaskStatusSelector.getSelected()
+					}
+				}
 			}
 		});
 		bibiscoRichTextEditor.unSaved = false;

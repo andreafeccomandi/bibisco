@@ -29,11 +29,15 @@
 			height: bibiscoRichTextEditorHeight, 
 			width: jsBibiscoRichTextEditorWidth,
 			save: {
-				idCaller: idCaller,
-				action: 'saveStrand',
-				id: strand.idStrand,
-	  			taskStatusSelector: bibiscoTaskStatusSelector,
-		  		taskStatusToUpdate: true
+				url: 'BibiscoServlet?action=saveStrand&id='+strand.idStrand,
+				successCallback: function() {
+					bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+				},
+				extraData: function() {
+					return {
+						taskStatus: bibiscoTaskStatusSelector.getSelected()
+					}
+				}
 			}
 		});		
 		bibiscoRichTextEditor.unSaved = false;

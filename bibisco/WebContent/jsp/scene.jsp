@@ -72,13 +72,11 @@
             	height: bibiscoRichTextEditorHeight, 
             	width: jsBibiscoRichTextEditorWidth,
             	save: {
-    				idCaller: idCaller,
-    				action: 'thumbnailAction',
-    				thumbnailAction: 'save',
-    				id: id,
-    				family: type,
-    	  			taskStatusSelector: bibiscoTaskStatusSelector,
-    		  		taskStatusToUpdate: true,
+            		url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&id='+id
+					+'&family='+type,
+					successCallback: function() {
+						bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+					},
     		  		extraData: function() {
     		  			 var characters = new Array();
     		             $('button.sceneCharacter.active').each(function(index) {
@@ -91,6 +89,7 @@
     		             });
     		  			
     		  			return {
+    		  				taskStatus: bibiscoTaskStatusSelector.getSelected(),
     		  				idScene: $('#bibiscoSceneIdScene').val(),
                             revision: $('#bibiscoSceneRevision').val(),
                             idRevision: $("#bibiscoSceneSelectRevision").attr('data-actualRevision'),                        

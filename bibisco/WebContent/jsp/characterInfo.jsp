@@ -156,14 +156,13 @@
     		height: bibiscoRichTextEditorHeight, 
     		width: jsBibiscoRichTextEditorWidth, 
     		save: {
-				idCaller: idCaller,
-				action: 'thumbnailAction',
-				thumbnailAction: 'save',
-				id: id,
-				family: type,
-	  			taskStatusSelector: bibiscoTaskStatusSelector,
-		  		taskStatusToUpdate: true,
+    			url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&id='+id
+				+'&family='+type,
+				successCallback: function() {
+					bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+				},
 		  		extraData: function() {
+		  			
 		  			// save last answer to characterInfoBean
 		    		if(characterInfoBean.interviewMode) {
 		    			var actualQuestion = getActualQuestion();
@@ -178,6 +177,7 @@
 		    		}
 		  			
 		  			return {
+			  			  taskStatus: bibiscoTaskStatusSelector.getSelected(),
 	      			  	  answers: characterInfoBean.answers,
 	      			  	  freeText: characterInfoBean.freeText,
 	      			  	  interview: characterInfoBean.interviewMode

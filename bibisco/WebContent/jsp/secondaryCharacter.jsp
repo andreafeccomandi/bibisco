@@ -10,7 +10,6 @@
           
     var bibiscoRichTextEditor;    
 	
-     
     <!-- INIT DIALOG CALLBACK -->
     function bibiscoSecondaryCharacterInitCallback(ajaxDialog, idCaller, type, id, config) {
     	
@@ -30,11 +29,15 @@
 			height: bibiscoRichTextEditorHeight, 
 			width: jsBibiscoRichTextEditorWidth,
 			save: {
-				idCaller: idCaller,
-				action: 'saveSecondaryCharacter',
-				id: secondaryCharacter.idCharacter,
-	  			taskStatusSelector: bibiscoTaskStatusSelector,
-		  		taskStatusToUpdate: true
+				url: 'BibiscoServlet?action=saveSecondaryCharacter&id='+secondaryCharacter.idCharacter,
+				successCallback: function() {
+					bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+				},
+				extraData: function() {
+					return {
+						taskStatus: bibiscoTaskStatusSelector.getSelected()
+					}
+				}
 			}
 		});
 		bibiscoRichTextEditor.unSaved = false;

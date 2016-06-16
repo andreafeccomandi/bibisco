@@ -354,18 +354,13 @@
     		data = {};
     	}
     	
-    	data.action = saveConfig.action;
-    	data.thumbnailAction = saveConfig.thumbnailAction;
-    	data.id = saveConfig.id;
-    	data.family = saveConfig.family;
-    	data.taskStatus = saveConfig.taskStatusSelector.getSelected();
     	data.text = bibiscoRichTextEditor.getText();
     	data.wordCount = bibiscoRichTextEditor.getWordCount();
     	data.characterCount = bibiscoRichTextEditor.getCharacterCount();
     	
     	$.ajax({
   		  type: 'POST',
-  		  url: 'BibiscoServlet',
+  		  url: saveConfig.url,
   		  data: data,
   		  beforeSend:function(){
   			  if (humanSave) {
@@ -373,8 +368,8 @@
   			  }
   		  },
   		  success:function(data){
-  			  if(saveConfig.taskStatusToUpdate) {  
-  			  	bibiscoUpdateTaskStatus(saveConfig.idCaller, saveConfig.taskStatusSelector.getSelected());
+  			  if(saveConfig.successCallback) {  
+  				saveConfig.successCallback();
   			  }
 	  		  if (humanSave) {
 	  			bibiscoCloseLoadingBannerSuccess();
