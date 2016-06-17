@@ -37,6 +37,7 @@ public class RichTextEditorSettingsManagerTest {
 		Assert.assertEquals(lRichTextEditorSettings.getFont(), "courier");
 		Assert.assertEquals(lRichTextEditorSettings.getSize(), "medium");
 		Assert.assertEquals(lRichTextEditorSettings.isSpellCheckEnabled(), true);	
+		Assert.assertEquals(lRichTextEditorSettings.isAutoSaveEnabled(), true);
 	}
 	
 	@Test
@@ -46,6 +47,7 @@ public class RichTextEditorSettingsManagerTest {
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("small");
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
+		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -54,6 +56,7 @@ public class RichTextEditorSettingsManagerTest {
     	String lStrFont;
     	String lStrFontSize;
     	String lStrSpellCheckEnabled;
+    	String lStrAutoSaveEnabled;
     	try {
 			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
 			lProperties = lPropertiesMapper.selectByPrimaryKey("font");
@@ -62,6 +65,8 @@ public class RichTextEditorSettingsManagerTest {
 			lStrFontSize = lProperties.getValue();
 			lProperties = lPropertiesMapper.selectByPrimaryKey("spellCheckEnabled");
 			lStrSpellCheckEnabled = lProperties.getValue();
+			lProperties = lPropertiesMapper.selectByPrimaryKey("autoSaveEnabled");
+			lStrAutoSaveEnabled = lProperties.getValue();
     	} finally {
 			lSqlSession.close();
 		}
@@ -69,6 +74,7 @@ public class RichTextEditorSettingsManagerTest {
 		Assert.assertEquals(lStrFont, "arial");
 		Assert.assertEquals(lStrFontSize, "small");
 		Assert.assertEquals(lStrSpellCheckEnabled, "false");
+		Assert.assertEquals(lStrAutoSaveEnabled, "false");
 	}
 		
 	@Before 
@@ -116,6 +122,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setSize("small");
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
+		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 	}
 	
@@ -133,6 +140,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
+		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 	}
 	
@@ -142,6 +150,7 @@ public class RichTextEditorSettingsManagerTest {
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("arial");
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
+		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 	}
 	
@@ -150,6 +159,8 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setSpellCheckEnabled(false);
+		lRichTextEditorSettings.setAutoSaveEnabled(true);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 		
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
@@ -165,5 +176,29 @@ public class RichTextEditorSettingsManagerTest {
 		}
     	
     	Assert.assertEquals(lStrSpellCheckEnabled, "false");
+	}
+	
+	@Test
+	public void testSaveSettingsWithoutAutoSaveEnabled() {
+		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
+		lRichTextEditorSettings.setFont("arial");
+		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setSpellCheckEnabled(true);
+		lRichTextEditorSettings.setAutoSaveEnabled(false);
+		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	Properties lProperties;
+    	String lStrAutoSaveEnabled;
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			lProperties = lPropertiesMapper.selectByPrimaryKey("autoSaveEnabled");
+			lStrAutoSaveEnabled = lProperties.getValue();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	Assert.assertEquals(lStrAutoSaveEnabled, "false");
 	}
 }

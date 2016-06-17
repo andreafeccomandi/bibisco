@@ -13,7 +13,8 @@
 		$('#bibiscoRichTextEditorSettingsButtonFont' + '${richTextEditorSettings.font}').addClass("active");
 		$('#bibiscoRichTextEditorSettingsButtonFontSize' + '${richTextEditorSettings.size}').addClass("active");
 		$('#bibiscoRichTextEditorSettingsButtonSpellCheck' + '${richTextEditorSettings.spellCheckEnabled}').addClass("active");
-
+		$('#bibiscoRichTextEditorSettingsButtonAutoSave' + '${richTextEditorSettings.autoSaveEnabled}').addClass("active");
+		
 		$('.fontFamily button').click(function() {
 			var id = $(this).attr('id');
 			var font = $('#' + id).attr('name');
@@ -34,12 +35,17 @@
 			richTextEditorSettingsUnsaved = true;
 		});
 		
+		$('.autoSave button').click(function() {
+			richTextEditorSettingsUnsaved = true;
+		});
+		
 
 		$('#bibiscoRichTextEditorSettingsASave').click(function() {
 			
 			var font = $('#bibiscoRichTextEditorSettingsDivFont .btn.active').attr('name');
 			var size = $('#bibiscoRichTextEditorSettingsDivFontSize .btn.active').attr('name');
 			var spellcheck = $('#bibiscoRichTextEditorSettingsDivSpellCheck .btn.active').attr('name') == 'true';
+			var autosave = $('#bibiscoRichTextEditorSettingsDivAutoSave .btn.active').attr('name') == 'true';
 			
 			$.ajax({
 				type : 'POST',
@@ -47,7 +53,8 @@
 				data : {
 					font : font,
 					size : size,
-					spellcheck: spellcheck
+					spellcheck: spellcheck,
+					autosave: autosave
 				},
 				beforeSend : function() {
 					bibiscoOpenLoadingBanner();
@@ -56,7 +63,7 @@
 					richTextEditorSettingsUnsaved = false;
 					$('#bibiscoRichTextEditorSettingsASave').tooltip('hide');
 					if (idCaller == 'bibiscoTagRichTextEditorButtonSettings') {
-						parent.bibiscoRichTextEditorUpdateSettings('bibiscoRichTextEditor-bodyClass-'+font+size, spellcheck);	
+						parent.bibiscoRichTextEditorUpdateSettings('bibiscoRichTextEditor-bodyClass-'+font+size, spellcheck, autosave);	
 					}
 					bibiscoCloseLoadingBannerSuccess();
 					ajaxDialog.close();
@@ -130,6 +137,15 @@
 				<div class="btn-group spellCheck" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivSpellCheck">
 					<button id="bibiscoRichTextEditorSettingsButtonSpellChecktrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.spellCheck.enabled" /></button>
 					<button id="bibiscoRichTextEditorSettingsButtonSpellCheckfalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.spellCheck.disabled" /></button>
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.autoSave" /></label>
+			<div class="controls">
+				<div class="btn-group autoSave" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivAutoSave">
+					<button id="bibiscoRichTextEditorSettingsButtonAutoSavetrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.autoSave.enabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonAutoSavefalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.autoSave.disabled" /></button>
 				</div>
 			</div>
 		</div>

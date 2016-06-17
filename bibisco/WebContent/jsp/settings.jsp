@@ -33,7 +33,7 @@ $(function() {
 				  close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
 				  beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },
 				  resizable: false,  modal: true,
-				  width: 600, height: 440, positionTop: 100
+				  width: 600, height: 540, positionTop: 100
 		  };
 		  
 		  bibiscoOpenAjaxDialog(ajaxDialogContent);

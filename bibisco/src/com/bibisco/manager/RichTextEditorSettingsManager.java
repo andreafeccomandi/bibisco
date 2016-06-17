@@ -49,6 +49,9 @@ public class RichTextEditorSettingsManager {
 		// spell check enabled
 		lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lPropertiesManager.getProperty("spellCheckEnabled")));
 		
+		// auto save enable
+		lRichTextEditorSettings.setAutoSaveEnabled(Boolean.valueOf(lPropertiesManager.getProperty("autoSaveEnabled")));
+		
 		mLog.debug("End load()");
 		
 		return lRichTextEditorSettings;
@@ -72,6 +75,7 @@ public class RichTextEditorSettingsManager {
 		lMapProperties.put("font", pRichTextEditorSettings.getFont());
 		lMapProperties.put("font-size", pRichTextEditorSettings.getSize());
 		lMapProperties.put("spellCheckEnabled", String.valueOf(pRichTextEditorSettings.isSpellCheckEnabled()));
+		lMapProperties.put("autoSaveEnabled", String.valueOf(pRichTextEditorSettings.isAutoSaveEnabled()));
 		PropertiesManager.getInstance().updateProperties(lMapProperties);
 		
 		mLog.debug("End save()");

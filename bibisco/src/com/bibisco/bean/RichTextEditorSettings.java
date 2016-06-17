@@ -25,7 +25,14 @@ public class RichTextEditorSettings {
 	private String font;
 	private String size;
 	private boolean spellCheckEnabled;
+	private boolean autoSaveEnabled;
 	
+	public boolean isAutoSaveEnabled() {
+		return autoSaveEnabled;
+	}
+	public void setAutoSaveEnabled(boolean autoSaveEnabled) {
+		this.autoSaveEnabled = autoSaveEnabled;
+	}
 	public String getFont() {
 		return font;
 	}

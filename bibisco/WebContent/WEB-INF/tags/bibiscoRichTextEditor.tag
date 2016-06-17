@@ -39,7 +39,7 @@
             bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}', 
             contentsCss : contentsCss,
             spellCheckEnabled: ${richTextEditorSettings.spellCheckEnabled},
-            autoSaveEnabled: true
+            autoSaveEnabled: ${richTextEditorSettings.autoSaveEnabled}
         };
         
         // create instance of rich text editor
@@ -147,7 +147,7 @@
                           close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },
                           resizable: false, modal: true, 
-                          width: 600, height: 440
+                          width: 600, height: 540
                   };
                   
                   bibiscoOpenAjaxDialog(ajaxDialogContent);
@@ -308,7 +308,7 @@
         $('#' + idButton).tooltip();
     }
     
-    function bibiscoRichTextEditorUpdateSettings(pBodyClass, pSpellCheckEnabled) {
+    function bibiscoRichTextEditorUpdateSettings(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled) {
     
         // update body class
         bibiscoRichTextEditor.document.getBody().removeClass(bibiscoRichTextEditor.config.bodyClass);
@@ -331,6 +331,7 @@
         
         bibiscoRichTextEditor.config.spellCheckEnabled = pSpellCheckEnabled;
         bibiscoRichTextEditor.config.contentsCss = getContentsCss(pSpellCheckEnabled);
+        bibiscoRichTextEditor.config.autoSaveEnabled = pAutoSaveEnabled;
     }
     
     function bibiscoRichTextEditorHumanSave(saveConfig) {
