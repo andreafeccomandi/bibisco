@@ -7,7 +7,7 @@
 	var richTextEditorSettingsUnsaved = false;
 
 	// init dialog callback
-	function bibiscoRichTextEditorSettingsInit(ajaxDialog, idCaller) {
+	function bibiscoRichTextEditorSettingsInit(ajaxDialog, idCaller, successCallback) {
 
 		// set active buttons
 		$('#bibiscoRichTextEditorSettingsButtonFont' + '${richTextEditorSettings.font}').addClass("active");
@@ -62,8 +62,8 @@
 				success : function(data) {
 					richTextEditorSettingsUnsaved = false;
 					$('#bibiscoRichTextEditorSettingsASave').tooltip('hide');
-					if (idCaller == 'bibiscoTagRichTextEditorButtonSettings') {
-						parent.bibiscoRichTextEditorUpdateSettings('bibiscoRichTextEditor-bodyClass-'+font+size, spellcheck, autosave);	
+					if (successCallback) {
+						successCallback('bibiscoRichTextEditor-bodyClass-'+font+size, spellcheck, autosave);
 					}
 					bibiscoCloseLoadingBannerSuccess();
 					ajaxDialog.close();

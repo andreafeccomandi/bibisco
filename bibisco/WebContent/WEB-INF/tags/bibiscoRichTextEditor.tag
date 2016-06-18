@@ -139,11 +139,16 @@
                                     
             // editor settings button
             $('#bibiscoTagRichTextEditorButtonSettings').click(function() {
+            	
+				var successCallback = function(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled) {
+					bibiscoRichTextEditorUpdateSettings(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled);
+				}            	
+            	
                  var ajaxDialogContent = { 
                           idCaller: 'bibiscoTagRichTextEditorButtonSettings',
                           url : 'jsp/richTextEditorSettings.jsp',
                           title: "<fmt:message key="tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title"/>", 
-                          init: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsInit(idAjaxDialog, idCaller); },
+                          init: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsInit(idAjaxDialog, idCaller, successCallback); },
                           close: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsClose(idAjaxDialog, idCaller); },
                           beforeClose: function (idAjaxDialog, idCaller) { return bibiscoRichTextEditorSettingsBeforeClose(idAjaxDialog, idCaller); },
                           resizable: false, modal: true, 
