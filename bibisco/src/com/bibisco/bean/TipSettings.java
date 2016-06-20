@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class TipSettings {
 	
+	private boolean richTextEditorTip = true;
 	private boolean sceneTip= true;
 	private boolean socialMediaTip = true;
 	private boolean donationTip = true;
@@ -54,6 +55,11 @@ public class TipSettings {
 	public void setDonationTip(boolean donationTip) {
 		this.donationTip = donationTip;
 	}
-	
+	public boolean isRichTextEditorTip() {
+		return richTextEditorTip;
+	}
+	public void setRichTextEditorTip(boolean richTextEditorTip) {
+		this.richTextEditorTip = richTextEditorTip;
+	}
 
 }

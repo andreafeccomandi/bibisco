@@ -44,6 +44,7 @@ public class TipManager {
 		PropertiesManager lPropertiesManager = PropertiesManager.getInstance();
 		TipSettings lTipSettings = new TipSettings();
     	
+		lTipSettings.setRichTextEditorTip(Boolean.parseBoolean(lPropertiesManager.getProperty("richTextEditorTip")));
     	lTipSettings.setSceneTip(Boolean.parseBoolean(lPropertiesManager.getProperty("sceneTip")));
     	lTipSettings.getDndTipMap().put("chaptersdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("chaptersdndTip")));
     	lTipSettings.getDndTipMap().put("scenesdndTip", Boolean.parseBoolean(lPropertiesManager.getProperty("scenesdndTip")));

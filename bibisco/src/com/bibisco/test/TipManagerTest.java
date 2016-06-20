@@ -46,6 +46,7 @@ public class TipManagerTest {
 		Assert.assertEquals(lTipSettings.getDndTipMap().get("locationsdndTip"), true);
 		Assert.assertEquals(lTipSettings.getDndTipMap().get("charactersdndTip"), true);
 		Assert.assertEquals(lTipSettings.getDndTipMap().get("strandsdndTip"), true);
+		Assert.assertEquals(lTipSettings.isRichTextEditorTip(), true);
 		Assert.assertEquals(lTipSettings.isSocialMediaTip(), true);
 	}
 	

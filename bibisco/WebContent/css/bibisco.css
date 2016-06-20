@@ -306,6 +306,9 @@
     font-family: Arial, Helvetica, sans-serif
 }
 
+.bibiscoRichTextEditorTipButton {
+	margin-right: 5px;
+}
 
 /* MENU */
 .bibiscoMenu {

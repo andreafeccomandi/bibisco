@@ -278,9 +278,18 @@
             	bibiscoRichTextEditor.stopAutoSave();
          		bibiscoRichTextEditor.destroy();
             }
+            
+            // show intial tip
+            bibiscoShowRichTextEditorTip();
         });
         
         return bibiscoRichTextEditor;
+    }
+    
+    function bibiscoShowRichTextEditorTip() {
+    	<c:if test="${tipSettings.richTextEditorTip}">
+    		bibiscoShowTip('richTextEditorTip', 180);
+    	</c:if>
     }
 
     // initialize button
