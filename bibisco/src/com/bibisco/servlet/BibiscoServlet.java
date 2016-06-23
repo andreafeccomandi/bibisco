@@ -1335,6 +1335,7 @@ public class BibiscoServlet extends HttpServlet {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont(pRequest.getParameter("font"));
 		lRichTextEditorSettings.setSize(pRequest.getParameter("size"));
+		lRichTextEditorSettings.setIndentParagraphEnabled(Boolean.valueOf(pRequest.getParameter("indentparagraph")));
 		lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(pRequest.getParameter("spellcheck")));
 		lRichTextEditorSettings.setAutoSaveEnabled(Boolean.valueOf(pRequest.getParameter("autosave")));
 		

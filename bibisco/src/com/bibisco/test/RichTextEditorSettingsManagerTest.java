@@ -36,6 +36,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = RichTextEditorSettingsManager.load();
 		Assert.assertEquals(lRichTextEditorSettings.getFont(), "courier");
 		Assert.assertEquals(lRichTextEditorSettings.getSize(), "medium");
+		Assert.assertEquals(lRichTextEditorSettings.isIndentParagraphEnabled(), true);
 		Assert.assertEquals(lRichTextEditorSettings.isSpellCheckEnabled(), true);	
 		Assert.assertEquals(lRichTextEditorSettings.isAutoSaveEnabled(), true);
 	}
@@ -46,6 +47,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
@@ -55,6 +57,7 @@ public class RichTextEditorSettingsManagerTest {
     	Properties lProperties;
     	String lStrFont;
     	String lStrFontSize;
+    	String lStrIndentParagraphEnabled;
     	String lStrSpellCheckEnabled;
     	String lStrAutoSaveEnabled;
     	try {
@@ -63,6 +66,8 @@ public class RichTextEditorSettingsManagerTest {
 			lStrFont = lProperties.getValue();
 			lProperties = lPropertiesMapper.selectByPrimaryKey("font-size");
 			lStrFontSize = lProperties.getValue();
+			lProperties = lPropertiesMapper.selectByPrimaryKey("indentParagraphEnabled");
+			lStrIndentParagraphEnabled = lProperties.getValue();
 			lProperties = lPropertiesMapper.selectByPrimaryKey("spellCheckEnabled");
 			lStrSpellCheckEnabled = lProperties.getValue();
 			lProperties = lPropertiesMapper.selectByPrimaryKey("autoSaveEnabled");
@@ -73,6 +78,7 @@ public class RichTextEditorSettingsManagerTest {
     	
 		Assert.assertEquals(lStrFont, "arial");
 		Assert.assertEquals(lStrFontSize, "small");
+		Assert.assertEquals(lStrIndentParagraphEnabled, "false");
 		Assert.assertEquals(lStrSpellCheckEnabled, "false");
 		Assert.assertEquals(lStrAutoSaveEnabled, "false");
 	}
@@ -97,7 +103,17 @@ public class RichTextEditorSettingsManagerTest {
 			lPropertiesMapper.updateByPrimaryKey(lProperties);
 			
 			lProperties = new Properties();
+			lProperties.setProperty("indentParagraphEnabled");
+			lProperties.setValue("true");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);
+			
+			lProperties = new Properties();
 			lProperties.setProperty("spellCheckEnabled");
+			lProperties.setValue("true");
+			lPropertiesMapper.updateByPrimaryKey(lProperties);
+			
+			lProperties = new Properties();
+			lProperties.setProperty("autoSaveEnabled");
 			lProperties.setValue("true");
 			lPropertiesMapper.updateByPrimaryKey(lProperties);
 			
@@ -121,6 +137,7 @@ public class RichTextEditorSettingsManagerTest {
 	public void testSaveSettingsWithNullFont() {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
@@ -131,6 +148,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("small");
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
 	}
@@ -139,6 +157,7 @@ public class RichTextEditorSettingsManagerTest {
 	public void testSaveSettingsWithNullFontSize() {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
@@ -149,9 +168,35 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("arial");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
+	}
+	
+	@Test
+	public void testSaveSettingsWithoutIndentParagraphEnabled() {
+		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
+		lRichTextEditorSettings.setFont("arial");
+		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(false);
+		lRichTextEditorSettings.setSpellCheckEnabled(true);
+		lRichTextEditorSettings.setAutoSaveEnabled(true);
+		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
+		
+		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
+    	SqlSession lSqlSession = lSqlSessionFactory.openSession();
+    	Properties lProperties;
+    	String lStrIndentParagraphEnabled;
+    	try {
+			PropertiesMapper lPropertiesMapper = lSqlSession.getMapper(PropertiesMapper.class);
+			lProperties = lPropertiesMapper.selectByPrimaryKey("indentParagraphEnabled");
+			lStrIndentParagraphEnabled = lProperties.getValue();
+    	} finally {
+			lSqlSession.close();
+		}
+    	
+    	Assert.assertEquals(lStrIndentParagraphEnabled, "false");
 	}
 	
 	@Test
@@ -159,6 +204,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(true);
 		lRichTextEditorSettings.setSpellCheckEnabled(false);
 		lRichTextEditorSettings.setAutoSaveEnabled(true);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);
@@ -183,6 +229,7 @@ public class RichTextEditorSettingsManagerTest {
 		RichTextEditorSettings lRichTextEditorSettings = new RichTextEditorSettings();
 		lRichTextEditorSettings.setFont("arial");
 		lRichTextEditorSettings.setSize("small");
+		lRichTextEditorSettings.setIndentParagraphEnabled(true);
 		lRichTextEditorSettings.setSpellCheckEnabled(true);
 		lRichTextEditorSettings.setAutoSaveEnabled(false);
 		RichTextEditorSettingsManager.save(lRichTextEditorSettings);

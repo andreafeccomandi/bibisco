@@ -12,14 +12,20 @@
 		// set active buttons
 		$('#bibiscoRichTextEditorSettingsButtonFont' + '${richTextEditorSettings.font}').addClass("active");
 		$('#bibiscoRichTextEditorSettingsButtonFontSize' + '${richTextEditorSettings.size}').addClass("active");
+		$('#bibiscoRichTextEditorSettingsButtonParagraphIndent' + '${richTextEditorSettings.indentParagraphEnabled}').addClass("active");
 		$('#bibiscoRichTextEditorSettingsButtonSpellCheck' + '${richTextEditorSettings.spellCheckEnabled}').addClass("active");
 		$('#bibiscoRichTextEditorSettingsButtonAutoSave' + '${richTextEditorSettings.autoSaveEnabled}').addClass("active");
+		
+		var font = $('#bibiscoRichTextEditorSettingsDivFont .btn.active').attr('name');
+		var size = $('#bibiscoRichTextEditorSettingsDivFontSize .btn.active').attr('name');
+		var indentparagraph = $('#bibiscoRichTextEditorSettingsDivParagraphIndent .btn.active').attr('name') == 'true';
 		
 		$('.fontFamily button').click(function() {
 			var id = $(this).attr('id');
 			var font = $('#' + id).attr('name');
 			var size = $('#bibiscoRichTextEditorSettingsDivFontSize .btn.active').attr('name');
-			updateDivSample('bibiscoRichTextEditor-bodyClass-' + font + size);
+			var indentparagraph = $('#bibiscoRichTextEditorSettingsDivParagraphIndent .btn.active').attr('name') == 'true';
+			updateDivSample(font, size, indentparagraph);
 			richTextEditorSettingsUnsaved = true;
 		});
 
@@ -27,7 +33,17 @@
 			var id = $(this).attr('id');
 			var font = $('#bibiscoRichTextEditorSettingsDivFont .btn.active').attr('name');
 			var size = $('#' + id).attr('name');
-			updateDivSample('bibiscoRichTextEditor-bodyClass-' + font + size);
+			var indentparagraph = $('#bibiscoRichTextEditorSettingsDivParagraphIndent .btn.active').attr('name') == 'true';
+			updateDivSample(font, size, indentparagraph);
+			richTextEditorSettingsUnsaved = true;
+		});
+		
+		$('.paragraphIndent button').click(function() {
+			var id = $(this).attr('id');
+			var font = $('#bibiscoRichTextEditorSettingsDivFont .btn.active').attr('name');
+			var size = $('#bibiscoRichTextEditorSettingsDivFontSize .btn.active').attr('name');
+			var indentparagraph = $('#' + id).attr('name');
+			updateDivSample(font, size, indentparagraph);
 			richTextEditorSettingsUnsaved = true;
 		});
 		
@@ -44,6 +60,7 @@
 			
 			var font = $('#bibiscoRichTextEditorSettingsDivFont .btn.active').attr('name');
 			var size = $('#bibiscoRichTextEditorSettingsDivFontSize .btn.active').attr('name');
+			var indentparagraph = $('#bibiscoRichTextEditorSettingsDivParagraphIndent .btn.active').attr('name') == 'true';
 			var spellcheck = $('#bibiscoRichTextEditorSettingsDivSpellCheck .btn.active').attr('name') == 'true';
 			var autosave = $('#bibiscoRichTextEditorSettingsDivAutoSave .btn.active').attr('name') == 'true';
 			
@@ -53,6 +70,7 @@
 				data : {
 					font : font,
 					size : size,
+					indentparagraph: indentparagraph,
 					spellcheck: spellcheck,
 					autosave: autosave
 				},
@@ -63,7 +81,7 @@
 					richTextEditorSettingsUnsaved = false;
 					$('#bibiscoRichTextEditorSettingsASave').tooltip('hide');
 					if (successCallback) {
-						successCallback('bibiscoRichTextEditor-bodyClass-'+font+size, spellcheck, autosave);
+						successCallback(font, size, indentparagraph, spellcheck, autosave);
 					}
 					bibiscoCloseLoadingBannerSuccess();
 					ajaxDialog.close();
@@ -101,11 +119,13 @@
 	}
 
 	// update sample div
-	function updateDivSample(styleClass) {
+	function updateDivSample(font, size, indentparagraph) {
+				
 		$('#bibiscoRichTextEditorSettingsDivSample').removeAttr('class');
 		$('#bibiscoRichTextEditorSettingsDivSample').addClass('well');
 		$('#bibiscoRichTextEditorSettingsDivSample').addClass('richTextEditor');
-		$('#bibiscoRichTextEditorSettingsDivSample').addClass(styleClass);
+		$('#bibiscoRichTextEditorSettingsDivSample').addClass('bibiscoRichTextEditor-bodyClass-' + font + size);
+		$('#bibiscoRichTextEditorSettingsDivSample').addClass('bibiscoRichTextEditor-bodyClass-indent-'+ indentparagraph);
 	}
 </script>
 
@@ -128,6 +148,15 @@
 					<button id="bibiscoRichTextEditorSettingsButtonFontSizebig" name="big" class="btn"><fmt:message key="jsp.richTextEditorSettings.fontsize.big" /></button>
 					<button id="bibiscoRichTextEditorSettingsButtonFontSizemedium" name="medium" class="btn"><fmt:message key="jsp.richTextEditorSettings.fontsize.medium" /></button>
 					<button id="bibiscoRichTextEditorSettingsButtonFontSizesmall" name="small" class="btn"><fmt:message key="jsp.richTextEditorSettings.fontsize.small" /></button>
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.paragraphIndent" /></label>
+			<div class="controls">
+				<div class="btn-group paragraphIndent" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivParagraphIndent">
+					<button id="bibiscoRichTextEditorSettingsButtonParagraphIndenttrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.paragraphIndent.enabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonParagraphIndentfalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.paragraphIndent.disabled" /></button>
 				</div>
 			</div>
 		</div>

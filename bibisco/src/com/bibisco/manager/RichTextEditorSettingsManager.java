@@ -46,6 +46,9 @@ public class RichTextEditorSettingsManager {
 		// font size
 		lRichTextEditorSettings.setSize(lPropertiesManager.getProperty("font-size"));
 		
+		// indent paragraph
+		lRichTextEditorSettings.setIndentParagraphEnabled(Boolean.valueOf(lPropertiesManager.getProperty("indentParagraphEnabled")));
+		
 		// spell check enabled
 		lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lPropertiesManager.getProperty("spellCheckEnabled")));
 		
@@ -74,6 +77,7 @@ public class RichTextEditorSettingsManager {
 		Map<String, String> lMapProperties = new HashMap<String, String>();
 		lMapProperties.put("font", pRichTextEditorSettings.getFont());
 		lMapProperties.put("font-size", pRichTextEditorSettings.getSize());
+		lMapProperties.put("indentParagraphEnabled", String.valueOf(pRichTextEditorSettings.isIndentParagraphEnabled()));
 		lMapProperties.put("spellCheckEnabled", String.valueOf(pRichTextEditorSettings.isSpellCheckEnabled()));
 		lMapProperties.put("autoSaveEnabled", String.valueOf(pRichTextEditorSettings.isAutoSaveEnabled()));
 		PropertiesManager.getInstance().updateProperties(lMapProperties);

@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <c:set var="req" value="${pageContext.request}" />
 <c:set var="baseURL" value="${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" />
+<c:set var="version" value="<%=new java.util.Date().getTime()%>" scope="request"/>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 
 <script type="text/javascript">
@@ -11,7 +12,7 @@
     function bibiscoRichTextEditorInit(bibiscoRichTextEditorConfig) {
             
         var contentsCss = getContentsCss(${richTextEditorSettings.spellCheckEnabled});
-        
+                
         // rich text editor configuration
         var config = {
             language : '<%=LocaleManager.getInstance().getLocale().getLanguage()%>',
@@ -36,7 +37,7 @@
                 [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
             ],
             toolbar : [],
-            bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size}', 
+            bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size} bibiscoRichTextEditor-bodyClass-indent-${richTextEditorSettings.indentParagraphEnabled}', 
             contentsCss : contentsCss,
             spellCheckEnabled: ${richTextEditorSettings.spellCheckEnabled},
             autoSaveEnabled: ${richTextEditorSettings.autoSaveEnabled}
@@ -140,8 +141,8 @@
             // editor settings button
             $('#bibiscoTagRichTextEditorButtonSettings').click(function() {
             	
-				var successCallback = function(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled) {
-					bibiscoRichTextEditorUpdateSettings(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled);
+				var successCallback = function(font, size, indentParagraphEnabled, spellCheckEnabled, autoSaveEnabled) {
+					bibiscoRichTextEditorUpdateSettings(font, size, indentParagraphEnabled, spellCheckEnabled, autoSaveEnabled);
 				}            	
             	
                  var ajaxDialogContent = { 
@@ -279,7 +280,7 @@
          		bibiscoRichTextEditor.destroy();
             }
             
-            // show intial tip
+            // show initial tip
             bibiscoShowRichTextEditorTip();
         });
         
@@ -322,16 +323,18 @@
         $('#' + idButton).tooltip();
     }
     
-    function bibiscoRichTextEditorUpdateSettings(pBodyClass, pSpellCheckEnabled, pAutoSaveEnabled) {
+    function bibiscoRichTextEditorUpdateSettings(font, size, indentParagraphEnabled, spellCheckEnabled, autoSaveEnabled) {
     
         // update body class
-        bibiscoRichTextEditor.document.getBody().removeClass(bibiscoRichTextEditor.config.bodyClass);
-        bibiscoRichTextEditor.config.bodyClass = pBodyClass;
-        bibiscoRichTextEditor.document.getBody().addClass(pBodyClass);
+        bibiscoRichTextEditor.document.getBody().removeClass();
+        //bibiscoRichTextEditor.config.bodyClass = pBodyClass;
+        bibiscoRichTextEditor.document.getBody().addClass('richTextEditor');
+        bibiscoRichTextEditor.document.getBody().addClass('bibiscoRichTextEditor-bodyClass-'+font+size);
+        bibiscoRichTextEditor.document.getBody().addClass('bibiscoRichTextEditor-bodyClass-indent-'+indentParagraphEnabled);
         
         // update spellcheck
         var spellErrorCssURL = '${baseURL}' + '/css/bibiscoSpellError.css';
-        if (bibiscoRichTextEditor.config.spellCheckEnabled != pSpellCheckEnabled) {
+        if (bibiscoRichTextEditor.config.spellCheckEnabled != spellCheckEnabled) {
             var linkTags= bibiscoRichTextEditor.document.$.getElementsByTagName('link');
             for (var i=0;i<linkTags.length;i++) {
                 var linkTag = linkTags[i];
@@ -343,9 +346,9 @@
             }   
         }
         
-        bibiscoRichTextEditor.config.spellCheckEnabled = pSpellCheckEnabled;
-        bibiscoRichTextEditor.config.contentsCss = getContentsCss(pSpellCheckEnabled);
-        bibiscoRichTextEditor.config.autoSaveEnabled = pAutoSaveEnabled;
+        bibiscoRichTextEditor.config.spellCheckEnabled = spellCheckEnabled;
+        bibiscoRichTextEditor.config.contentsCss = getContentsCss(spellCheckEnabled);
+        bibiscoRichTextEditor.config.autoSaveEnabled = autoSaveEnabled;
     }
     
     function bibiscoRichTextEditorHumanSave(saveConfig) {

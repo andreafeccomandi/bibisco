@@ -24,9 +24,16 @@ public class RichTextEditorSettings {
 	
 	private String font;
 	private String size;
+	private boolean indentParagraphEnabled;	
 	private boolean spellCheckEnabled;
 	private boolean autoSaveEnabled;
 	
+	public boolean isIndentParagraphEnabled() {
+		return indentParagraphEnabled;
+	}
+	public void setIndentParagraphEnabled(boolean indentParagraphEnabled) {
+		this.indentParagraphEnabled = indentParagraphEnabled;
+	}
 	public boolean isAutoSaveEnabled() {
 		return autoSaveEnabled;
 	}
