@@ -324,14 +324,13 @@
     }
     
     function bibiscoRichTextEditorUpdateSettings(font, size, indentParagraphEnabled, spellCheckEnabled, autoSaveEnabled) {
-    
+        	
         // update body class
-        bibiscoRichTextEditor.document.getBody().removeClass();
-        //bibiscoRichTextEditor.config.bodyClass = pBodyClass;
+        bibiscoRichTextEditor.document.getBody().removeAttribute("class");
         bibiscoRichTextEditor.document.getBody().addClass('richTextEditor');
         bibiscoRichTextEditor.document.getBody().addClass('bibiscoRichTextEditor-bodyClass-'+font+size);
         bibiscoRichTextEditor.document.getBody().addClass('bibiscoRichTextEditor-bodyClass-indent-'+indentParagraphEnabled);
-        
+        												   
         // update spellcheck
         var spellErrorCssURL = '${baseURL}' + '/css/bibiscoSpellError.css';
         if (bibiscoRichTextEditor.config.spellCheckEnabled != spellCheckEnabled) {
