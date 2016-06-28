@@ -34,6 +34,7 @@ public interface IExporter {
 	public void startSubSection(String pStrSubSectionTitle);
 	public void endSubSection();
 	public void startParagraph(ParagraphAligment pParagraphAligment);
+	public void startParagraph(ParagraphAligment pParagraphAligment, boolean pParagraphIndent);
 	public void endParagraph();
 	public void startUnorderedList();
 	public void endUnorderedList();

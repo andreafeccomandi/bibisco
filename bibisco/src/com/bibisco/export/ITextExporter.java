@@ -46,7 +46,7 @@ public class ITextExporter implements IExporter {
 
 	private static Log mLog = Log.getInstance(ITextExporter.class);
 	private static int LIST_INDENTATION_LEFT = 25;
-	private static final int PARAGRAPH_FIRST_LINE_INDENT = 0;
+	private static final int PARAGRAPH_FIRST_LINE_INDENT = 25;
 	
 	ExportType mExportType;
 	Document mDocument = new Document(PageSize.A4, 68, 68, 80, 80); 
@@ -59,6 +59,7 @@ public class ITextExporter implements IExporter {
 	ListItem mListItem = null;
     File mFile = null;
     Font mFont = null;
+    boolean mBlnParagraphIndent;
    
 	
 	public ITextExporter(ExportType pExportType) {
@@ -84,11 +85,24 @@ public class ITextExporter implements IExporter {
 	
 	@Override
 	public void startParagraph(ParagraphAligment pParagraphAligment) {
+		if (mBlnParagraphIndent) {
+			startParagraph(pParagraphAligment, true);
+		} else {
+			startParagraph(pParagraphAligment, false);
+		}
+	}
+	
+	@Override
+	public void startParagraph(ParagraphAligment pParagraphAligment, boolean pBlnParagraphIndent) {
 		
 		mLog.debug("Start startParagraph()");
 		
 		mParagraph = new Paragraph(22);
-		mParagraph.setFirstLineIndent(PARAGRAPH_FIRST_LINE_INDENT);
+		if (pBlnParagraphIndent) {			
+			mParagraph.setFirstLineIndent(PARAGRAPH_FIRST_LINE_INDENT);
+		} else {
+			mParagraph.setFirstLineIndent(0);
+		}
 		
 		switch (pParagraphAligment) {
 		case LEFT:
@@ -252,6 +266,7 @@ public class ITextExporter implements IExporter {
 			}
 			
 			initFont(pRichTextEditorSettings);
+			mBlnParagraphIndent = pRichTextEditorSettings.isIndentParagraphEnabled();
 			mDocument.open();			
 			
 		} catch (Throwable t) {

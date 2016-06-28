@@ -657,7 +657,7 @@ public class ProjectManager {
 			
 			if (lCharacterInfoQuestionsDTO.getInterviewMode().booleanValue()) {
 				for (int i = 0; i < lCharacterInfoQuestions.getQuestionList().size(); i++) {
-					pExporter.startParagraph(ParagraphAligment.JUSTIFY);
+					pExporter.startParagraph(ParagraphAligment.JUSTIFY, false);
 					TextFormatting lTextFormatting = new TextFormatting();
 					lTextFormatting.bold = true;
 					lTextFormatting.italic = true;
