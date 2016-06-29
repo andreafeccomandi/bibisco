@@ -281,7 +281,9 @@
             }
             
             // show initial tip
-            bibiscoShowRichTextEditorTip();
+            if (bibiscoRichTextEditorConfig.showTip == true) {
+            	bibiscoShowRichTextEditorTip();
+            }
         });
         
         return bibiscoRichTextEditor;

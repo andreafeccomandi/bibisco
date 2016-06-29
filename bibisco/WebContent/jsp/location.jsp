@@ -26,6 +26,7 @@
 		var bibiscoRichTextEditorHeight = ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding;
 		
 		bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+			showTip: true,
 			text: location.description, 
 			height: bibiscoRichTextEditorHeight, 
 			width: jsBibiscoRichTextEditorWidth, 

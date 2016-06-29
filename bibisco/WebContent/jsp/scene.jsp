@@ -68,6 +68,7 @@
         } else {
             // first open of scene dialog
             bibiscoRichTextEditor = bibiscoRichTextEditorInit({
+            	showTip: false,
             	text: scene.text, 
             	height: bibiscoRichTextEditorHeight, 
             	width: jsBibiscoRichTextEditorWidth,
