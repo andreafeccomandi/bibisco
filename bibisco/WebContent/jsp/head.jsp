@@ -1,8 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
+<%@ page import="com.bibisco.manager.LocaleManager"%>
 <meta charset="utf-8">
 
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
+<fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 <c:set var="patternTimestamp" scope="session"><fmt:message key="pattern.timestamp" /></c:set>
 <c:set var="version" value="<%=new java.util.Date().getTime()%>" scope="request"/>
 
