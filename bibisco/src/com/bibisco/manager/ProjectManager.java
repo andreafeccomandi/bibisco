@@ -359,13 +359,12 @@ public class ProjectManager {
 	}
 		
 	
-	private static String getProjectExportFilePath(ExportType pExportType, String pStrType, String pStrTimestamp, String pStrProjectName) {
-		
-		ContextManager lContextManager = ContextManager.getInstance();
-			
+	private static String getProjectExportFilePath(ExportType pExportType, String pStrExportProjectDirectory, String pStrType, String pStrTimestamp, String pStrProjectName) {
+					
 		// create export file path
 		StringBuilder lStringBuilder = new StringBuilder();
-		lStringBuilder.append(lContextManager.getExportDirectoryPath());
+		lStringBuilder.append(pStrExportProjectDirectory);
+		lStringBuilder.append(File.separator);
 		lStringBuilder.append(getProjectNameForExport(pStrProjectName));
 		lStringBuilder.append("_");
 		lStringBuilder.append(pStrType);
@@ -430,11 +429,11 @@ public class ProjectManager {
 		return lStringBuilder.toString(); 
 	}
 	
-	public static File exportProjectAsArchive() {
+	public static File exportProjectAsArchive(String pStrExportProjectDirectory) {
 				
 		File lFile = null;
 		
-		mLog.debug("Start exportProjectAsArchive()");
+		mLog.debug("Start exportProjectAsArchive(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
@@ -445,7 +444,7 @@ public class ProjectManager {
 		String lStrProjectName = lProjectDTO.getName();
 		
 		// generate archive file name
-		String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), lStrProjectName);
+		String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, pStrExportProjectDirectory, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), lStrProjectName);
 		
 		// create archive
 		zipIt(lStrZipFile);
@@ -453,50 +452,50 @@ public class ProjectManager {
 		// file object to return
 		lFile = new File(lStrZipFile);
 		
-		mLog.debug("End exportProjectAsArchive()");
+		mLog.debug("End exportProjectAsArchive(String)");
 		
 		return lFile;
 	}
 	
-	public static List<File> exportProjectAsPdf() {
+	public static List<File> exportProjectAsPdf(String pStrExportProjectDirectory) {
 		
 		List<File> lListFile = null;
 		
-		mLog.debug("Start exportProjectAsPdf(");
+		mLog.debug("Start exportProjectAsPdf(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
 				
 		// get file object to return
-		lListFile = exportAsWordOrPdf(ExportType.PDF);
+		lListFile = exportAsWordOrPdf(ExportType.PDF, pStrExportProjectDirectory);
 		
-		mLog.debug("End exportProjectAsPdf()");
+		mLog.debug("End exportProjectAsPdf(String)");
 		
 		return lListFile;
 	}
 
-	public static List<File> exportProjectAsWord() {
+	public static List<File> exportProjectAsWord(String pStrExportProjectDirectory) {
 
 		List<File> lListFile = null;
 		
-		mLog.debug("Start exportProjectAsWord()");
+		mLog.debug("Start exportProjectAsWord(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
 				
 		// get file object to return
-		lListFile = exportAsWordOrPdf(ExportType.WORD);
+		lListFile = exportAsWordOrPdf(ExportType.WORD, pStrExportProjectDirectory);
 		
-		mLog.debug("End exportProjectAsWord()");
+		mLog.debug("End exportProjectAsWord(String)");
 		
 		return lListFile;
 	}
 	
-	private static List<File> exportAsWordOrPdf(ExportType pExportType) {
+	private static List<File> exportAsWordOrPdf(ExportType pExportType, String pStrExportProjectDirectory) {
 
-		mLog.debug("Start exportAsWordOrPdf(ExportType)");
+		mLog.debug("Start exportAsWordOrPdf(ExportType, String)");
 		
 		// create File list
 		List<File> lListFile = new ArrayList<File>();
@@ -508,12 +507,12 @@ public class ProjectManager {
 		String pStrTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
 		// novel
-		lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, "novel", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
+		lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "novel", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
 		
 		// project
-		lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, "project", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
+		lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "project", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
 		
-		mLog.debug("End exportAsWordOrPdf(ExportType)");
+		mLog.debug("End exportAsWordOrPdf(ExportType, String)");
 		
 		return lListFile;
 	}

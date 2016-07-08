@@ -1425,18 +1425,19 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start exportProject(HttpServletRequest, HttpServletResponse)");
 				
 		ExportType lExportType = ExportType.valueOf(pRequest.getParameter("type"));
+		String lStrExportProjectDirectory = pRequest.getParameter("directory");
 		
 		List<File> lListFile = null;
 		switch (lExportType) {
 		case ARCHIVE:
 			lListFile = new ArrayList<File>();
-			lListFile.add(ProjectManager.exportProjectAsArchive());
+			lListFile.add(ProjectManager.exportProjectAsArchive(lStrExportProjectDirectory));
 			break;
 		case PDF:
-			lListFile = ProjectManager.exportProjectAsPdf();
+			lListFile = ProjectManager.exportProjectAsPdf(lStrExportProjectDirectory);
 			break;
 		case WORD:
-			lListFile = ProjectManager.exportProjectAsWord();
+			lListFile = ProjectManager.exportProjectAsWord(lStrExportProjectDirectory);
 			break;
 			
 		default:

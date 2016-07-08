@@ -23,35 +23,36 @@ $(function() {
 	
 	$('#bibiscoExportAArchive').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAArchive.popover" />"});
 	$('#bibiscoExportAWord').popover({placement	: 'bottom', content: "<fmt:message key="jsp.export.button.bibiscoExportAWord.popover" />"});
+
+});
+
+$('#bibiscoProjectsAChangeProjectsDirectory').click(function() {
+	 
 });
 
 function exportProject(type) {
-	var idProject = '${project.idProject}';
 	
-	$.ajax({
-		type : 'POST',
-		url : 'BibiscoServlet?action=exportProject',
-		data : {
-			idProject : idProject,
+	var config = {
+			idProject: '${project.idProject}',
 			type: type
-		},
-		beforeSend : function() {
-			bibiscoBlockUI();
-			bibiscoOpenLoadingBanner();
-		},
-		success : function(data) {
-			bibiscoCloseLoadingBannerSuccess();
-			bibiscoUnblockUI();
-			var message = '<fmt:message key="jsp.export.alert.archive.text"/>';
-			for (i=0;i<data.files.length;i++) {
-				message = message + '<br><strong>' + data.files[i].filepath + '</strong>';
-			}
-			bibiscoAlert(message);
-		},
-		error : function() {
-			bibiscoCloseLoadingBannerError();
-		}
-	});
+	}
+
+	var ajaxDialogContent = {
+			idCaller: 'bibiscoExportProject',
+			url : 'jsp/exportProjectDirectory.jsp',
+			title: "<fmt:message key="jsp.export.dialog.title.exportProjectDirectory"/>",  
+			init: function (idAjaxDialog, idCaller, type) { return bibiscoExportProjectDirectoryInit(idAjaxDialog, idCaller,config); },
+			close: function (idAjaxDialog, idCaller) { 
+				return bibiscoExportProjectDirectoryClose(idAjaxDialog, idCaller); 
+			},
+			beforeClose: function (idAjaxDialog, idCaller) {
+				return bibiscoExportProjectDirectoryBeforeClose(idAjaxDialog, idCaller); 
+			},
+			resizable: false,  modal: true,
+			width: 750, height: 200, positionTop: 100
+	 };
+	  
+	 bibiscoOpenAjaxDialog(ajaxDialogContent);
 }
 
 </script>
