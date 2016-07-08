@@ -17,6 +17,7 @@ package com.bibisco.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -52,7 +53,10 @@ public class AllTests {
 	public static final String BIBISCO_NEW_PROJECTS_DIR = "C:\\temp\\bibisco\\new_projects";
 	public static final String BIBISCO_FORBIDDEN_PROJECTS_DIR = "C:\\temp\\bibisco\\forbidden_projects";
 	public static final String BIBISCO_INTERNAL_PROJECTS_DIR = BIBISCO_PROJECTS_DIR + System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
+	public static final String BIBISCO_INTERNAL_PROJECTS_DIR_TO_DELETE = BIBISCO_PROJECTS_DIR + System.getProperty("file.separator") +"_internal_bibisco_projects_db_to_delete";
 	public static final String BIBISCO_INTERNAL_PROJECTS_DIR_NEW_PROJECTS = BIBISCO_NEW_PROJECTS_DIR + System.getProperty("file.separator") +"_internal_bibisco_projects_db_";
+	public static final String BIBISCO_EXPORT_PROJECT_DIR = "C:\\temp\\bibisco\\export";
+	public static final String BIBISCO_FORBIDDEN_EXPORT_PROJECT_DIR = "C:\\temp\\bibisco\\forbidden_export";
 	public static final String TEST_PROJECT_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4c";
 	public static final String TEST_PROJECT2_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4d";
 	public static final String TEST_PROJECT3_ID = "eee0acc0-0b59-4a41-84af-7a0d345d3d4e";
@@ -93,11 +97,12 @@ public class AllTests {
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
 	
-	@BeforeClass
 	public static void cleanProjectsDirectory() throws IOException, ConfigurationException, InterruptedException {
 		
+		(new File(BIBISCO_INTERNAL_PROJECTS_DIR)).renameTo(new File(BIBISCO_INTERNAL_PROJECTS_DIR_TO_DELETE + "_" + (new Date()).getTime()));
+		new File(BIBISCO_INTERNAL_PROJECTS_DIR).mkdir();
 		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
-		FileUtils.cleanDirectory(new File(BIBISCO_INTERNAL_PROJECTS_DIR));		
+		
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject2DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject3DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
@@ -277,7 +282,12 @@ public class AllTests {
 		lStringBuilderImage6FilePath.append("image6.jpg");
 		mStrImage6FilePath = lStringBuilderImage6FilePath.toString();
 		
-		cleanProjectsDirectory();
+		FileUtils.cleanDirectory(new File(BIBISCO_PROJECTS_DIR));
+		new File(BIBISCO_INTERNAL_PROJECTS_DIR).mkdir();
+		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProjectDBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject2DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
+		FileUtils.copyDirectoryToDirectory(new File(mStrTestProject3DBFilePath), new File(BIBISCO_INTERNAL_PROJECTS_DIR));
 		
 		// set junit test running
 		ContextManager.getInstance().setJunitTestRunning(true);
