@@ -93,7 +93,8 @@ public class ProjectManager {
 
 	public enum SET_PROJECTS_DIRECTORY_RESULT {INVALID, FORBIDDEN, CREATED};
 	public enum PROJECT_DIRECTORY_STATUS {INVALID, FORBIDDEN, NEW, EXISTING, INTERNAL_BIBISCO_PROJECTS_DB_DIR};
-	
+	public enum DIRECTORY_STATUS {EXISTING, INVALID, FORBIDDEN, NEW, INTERNAL_BIBISCO_PROJECTS_DB_DIR};
+		
 	private static Log mLog = Log.getInstance(ProjectManager.class);
 	private static String INTERNAL_BIBISCO_PROJECTS_DB_DIR = "_internal_bibisco_projects_db_";
 	private static String DUMMY_DIR = "bibisco_dummy_dir";
@@ -429,9 +430,39 @@ public class ProjectManager {
 		return lStringBuilder.toString(); 
 	}
 	
-	public static File exportProjectAsArchive(String pStrExportProjectDirectory) {
-				
-		File lFile = null;
+	public static DIRECTORY_STATUS checkDirectoryStatus(String pStrDirectory) {
+		
+		DIRECTORY_STATUS lDirectoryStatus = null;
+		
+		// validate preconditions
+		Validate.notEmpty(pStrDirectory);
+		
+		File lFileDirectory = new File(pStrDirectory);
+		File lFileDummyDirectory = new File(pStrDirectory + File.separator + DUMMY_DIR);
+		
+		// check if directory exists
+		if (!lFileDirectory.exists()) {
+			lDirectoryStatus = DIRECTORY_STATUS.INVALID;
+		}
+		
+		// check if directory is forbidden
+		else if (!lFileDummyDirectory.mkdir()) {
+			lDirectoryStatus = DIRECTORY_STATUS.FORBIDDEN;
+		}
+		
+		else {
+			// delete dummy directory
+			lFileDummyDirectory.delete();
+			
+			lDirectoryStatus = DIRECTORY_STATUS.EXISTING;
+		}
+		
+		return lDirectoryStatus;
+	}
+	
+	public static ExportResult exportProjectAsArchive(String pStrExportProjectDirectory) {
+			
+		ExportResult lExportResult = new ProjectManager().new ExportResult();
 		
 		mLog.debug("Start exportProjectAsArchive(String)");
 		
@@ -439,82 +470,100 @@ public class ProjectManager {
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
 		
-		// load project name
-		ProjectDTO lProjectDTO = load();
-		String lStrProjectName = lProjectDTO.getName();
+		DIRECTORY_STATUS lDirectoryStatus = checkDirectoryStatus(pStrExportProjectDirectory);
+		lExportResult.setDirectoryStatus(lDirectoryStatus);
 		
-		// generate archive file name
-		String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, pStrExportProjectDirectory, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), lStrProjectName);
-		
-		// create archive
-		zipIt(lStrZipFile);
-		
-		// file object to return
-		lFile = new File(lStrZipFile);
+		if(lDirectoryStatus == DIRECTORY_STATUS.EXISTING) {
+			
+			// load project name
+			ProjectDTO lProjectDTO = load();
+			String lStrProjectName = lProjectDTO.getName();
+			
+			// generate archive file name
+			String lStrZipFile = getProjectExportFilePath(ExportType.ARCHIVE, pStrExportProjectDirectory, "archive", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), lStrProjectName);
+			
+			// create archive
+			zipIt(lStrZipFile);
+			
+			// file object to return
+			File lFile = new File(lStrZipFile);
+			
+			List<File> lListFiles = new ArrayList<File>();
+			lListFiles.add(lFile);
+			
+			lExportResult.setCreatedFiles(lListFiles);
+		}
 		
 		mLog.debug("End exportProjectAsArchive(String)");
 		
-		return lFile;
+		return lExportResult;
 	}
 	
-	public static List<File> exportProjectAsPdf(String pStrExportProjectDirectory) {
-		
-		List<File> lListFile = null;
+	public static ExportResult exportProjectAsPdf(String pStrExportProjectDirectory) {
 		
 		mLog.debug("Start exportProjectAsPdf(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
-				
-		// get file object to return
-		lListFile = exportAsWordOrPdf(ExportType.PDF, pStrExportProjectDirectory);
+					
+		// get ExportResult to return
+		ExportResult lExportResult = exportAsWordOrPdf(ExportType.PDF, pStrExportProjectDirectory);
 		
 		mLog.debug("End exportProjectAsPdf(String)");
 		
-		return lListFile;
+		return lExportResult;
 	}
 
-	public static List<File> exportProjectAsWord(String pStrExportProjectDirectory) {
+	public static ExportResult exportProjectAsWord(String pStrExportProjectDirectory) {
 
-		List<File> lListFile = null;
-		
 		mLog.debug("Start exportProjectAsWord(String)");
 		
 		// validate preconditions
 		Validate.notEmpty(ContextManager.getInstance().getIdProject(), "There is no project in context");
 		Validate.isTrue(ProjectManager.projectExists(ContextManager.getInstance().getIdProject()), "Project references non existent directory");
-				
-		// get file object to return
-		lListFile = exportAsWordOrPdf(ExportType.WORD, pStrExportProjectDirectory);
+			
+		// get ExportResult to return
+		ExportResult lExportResult = exportAsWordOrPdf(ExportType.WORD, pStrExportProjectDirectory);
 		
 		mLog.debug("End exportProjectAsWord(String)");
 		
-		return lListFile;
+		return lExportResult;
 	}
 	
-	private static List<File> exportAsWordOrPdf(ExportType pExportType, String pStrExportProjectDirectory) {
+	
+	private static ExportResult exportAsWordOrPdf(ExportType pExportType, String pStrExportProjectDirectory) {
 
+		ExportResult lExportResult = new ProjectManager().new ExportResult();
+		
 		mLog.debug("Start exportAsWordOrPdf(ExportType, String)");
+	
+		DIRECTORY_STATUS lDirectoryStatus = checkDirectoryStatus(pStrExportProjectDirectory);
+		lExportResult.setDirectoryStatus(lDirectoryStatus);
 		
-		// create File list
-		List<File> lListFile = new ArrayList<File>();
-		
-		// load project name
-		ProjectDTO lProjectDTO = load();
-		String lStrProjectName = lProjectDTO.getName();
-		
-		String pStrTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		
-		// novel
-		lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "novel", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
-		
-		// project
-		lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "project", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
-		
+		if (lDirectoryStatus == DIRECTORY_STATUS.EXISTING) {
+			
+			// create File list
+			List<File> lListFile = new ArrayList<File>();
+			
+			// load project name
+			ProjectDTO lProjectDTO = load();
+			String lStrProjectName = lProjectDTO.getName();
+			
+			String pStrTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			
+			// novel
+			lListFile.add(exportNovelAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "novel", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
+			
+			// project
+			lListFile.add(exportProjectAsWordOrPdf(getProjectExportFilePath(pExportType, pStrExportProjectDirectory, "project", pStrTimestamp, lStrProjectName), pExportType, lStrProjectName));
+	
+			lExportResult.setCreatedFiles(lListFile);
+		}
+			
 		mLog.debug("End exportAsWordOrPdf(ExportType, String)");
 		
-		return lListFile;
+		return lExportResult;
 	}
 	
 	private static File exportProjectAsWordOrPdf(String pStrFilePath, ExportType pExportType, String pStrProjectName) {
@@ -1640,5 +1689,25 @@ public class ProjectManager {
 		pProjectMapper.update_to_1_2_0();
 
 		mLog.debug("End update_to_1_2_0(SqlSession, ProjectMapper");
+	}
+
+
+	public class ExportResult {
+		
+		private List<File> createdFiles;
+		private DIRECTORY_STATUS directoryStatus;
+		
+		public List<File> getCreatedFiles() {
+			return createdFiles;
+		}
+		public void setCreatedFiles(List<File> createdFiles) {
+			this.createdFiles = createdFiles;
+		}
+		public DIRECTORY_STATUS getDirectoryStatus() {
+			return directoryStatus;
+		}
+		public void setDirectoryStatus(DIRECTORY_STATUS directoryStatus) {
+			this.directoryStatus = directoryStatus;
+		}
 	}
 }

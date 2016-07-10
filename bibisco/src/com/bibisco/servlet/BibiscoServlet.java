@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
@@ -87,6 +88,8 @@ import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.LocationManager;
 import com.bibisco.manager.ProjectFromSceneManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.ProjectManager.DIRECTORY_STATUS;
+import com.bibisco.manager.ProjectManager.ExportResult;
 import com.bibisco.manager.ProjectManager.SET_PROJECTS_DIRECTORY_RESULT;
 import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.ResourceBundleManager;
@@ -1427,17 +1430,16 @@ public class BibiscoServlet extends HttpServlet {
 		ExportType lExportType = ExportType.valueOf(pRequest.getParameter("type"));
 		String lStrExportProjectDirectory = pRequest.getParameter("directory");
 		
-		List<File> lListFile = null;
+		ExportResult lExportResult = null;
 		switch (lExportType) {
 		case ARCHIVE:
-			lListFile = new ArrayList<File>();
-			lListFile.add(ProjectManager.exportProjectAsArchive(lStrExportProjectDirectory));
+			lExportResult = ProjectManager.exportProjectAsArchive(lStrExportProjectDirectory); 
 			break;
 		case PDF:
-			lListFile = ProjectManager.exportProjectAsPdf(lStrExportProjectDirectory);
+			lExportResult = ProjectManager.exportProjectAsPdf(lStrExportProjectDirectory); 
 			break;
 		case WORD:
-			lListFile = ProjectManager.exportProjectAsWord(lStrExportProjectDirectory);
+			lExportResult = ProjectManager.exportProjectAsWord(lStrExportProjectDirectory); 
 			break;
 			
 		default:
@@ -1446,9 +1448,9 @@ public class BibiscoServlet extends HttpServlet {
 		}
 		
 		// open folder in file system
-		if (Desktop.isDesktopSupported()) {
+		if (lExportResult.getDirectoryStatus() == DIRECTORY_STATUS.EXISTING && Desktop.isDesktopSupported()) {
 		    try {
-				Desktop.getDesktop().open(lListFile.get(0).getParentFile());
+				Desktop.getDesktop().open(lExportResult.getCreatedFiles().get(0).getParentFile());
 			} catch (Exception e) {
 				mLog.error(e);
 			}
@@ -1457,13 +1459,16 @@ public class BibiscoServlet extends HttpServlet {
 		JSONObject lJSONObject;
 		try {
 			lJSONObject = new JSONObject();
-			JSONArray lJSONArrayFiles = new JSONArray();
-			for (int j = 0; j < lListFile.size(); j++) {
-				JSONObject lJSONObjectFile = new JSONObject();
-				lJSONObjectFile.put("filepath", lListFile.get(j).getAbsolutePath());
-				lJSONArrayFiles.put(j, lJSONObjectFile);
+			lJSONObject.put("directoryStatus", lExportResult.getDirectoryStatus());
+			if (CollectionUtils.isNotEmpty(lExportResult.getCreatedFiles())) {				
+				JSONArray lJSONArrayFiles = new JSONArray();
+				for (int j = 0; j < lExportResult.getCreatedFiles().size(); j++) {
+					JSONObject lJSONObjectFile = new JSONObject();
+					lJSONObjectFile.put("filepath", lExportResult.getCreatedFiles().get(j).getAbsolutePath());
+					lJSONArrayFiles.put(j, lJSONObjectFile);
+				}
+				lJSONObject.put("files", lJSONArrayFiles);
 			}
-			lJSONObject.put("files", lJSONArrayFiles);
 		} catch (JSONException e) {
 			mLog.error(e);
 			throw new BibiscoException(e, BibiscoException.FATAL);

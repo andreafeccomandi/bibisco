@@ -52,24 +52,25 @@
 						bibiscoOpenLoadingBanner();
 					},
 					success : function(data) {
-						bibiscoCloseLoadingBannerSuccess();
-						bibiscoUnblockUI();
-						ajaxDialog.close();
-						var message = '<fmt:message key="jsp.export.alert.archive.text"/>';
-						for (i=0;i<data.files.length;i++) {
-							message = message + '<br><strong>' + data.files[i].filepath + '</strong>';
+
+						if (data.directoryStatus == 'FORBIDDEN') {
+							bibiscoUnblockUI();
+							bibiscoCloseLoadingBannerError();
+							bibiscoAlert("<fmt:message key="jsp.export.selectDirectory.forbidden.message" />");		
+						} else if (data.directoryStatus == 'INVALID') {
+							bibiscoUnblockUI();
+							bibiscoCloseLoadingBannerError();
+							bibiscoAlert("<fmt:message key="jsp.export.selectDirectory.invalid.message" />");	
+						} else {
+							bibiscoCloseLoadingBannerSuccess();
+							bibiscoUnblockUI();
+							ajaxDialog.close();
+							var message = '<fmt:message key="jsp.export.alert.archive.text"/>';
+							for (i=0;i<data.files.length;i++) {
+								message = message + '<br><strong>' + data.files[i].filepath + '</strong>';
+							}
+							bibiscoAlert(message);
 						}
-						bibiscoAlert(message);
-						
-						if (data == 'forbidden') {
-							bibiscoUnblockUI();
-							bibiscoCloseLoadingBannerError();
-							bibiscoAlert("<fmt:message key="jsp.ExportProjectDirectory.forbidden.message" />");		
-						} else if (data == 'invalid') {
-							bibiscoUnblockUI();
-							bibiscoCloseLoadingBannerError();
-							bibiscoAlert("<fmt:message key="jsp.ExportProjectDirectory.invalid.message" />");	
-						} 
 					},
 					error : function() {
 						bibiscoCloseLoadingBannerError();

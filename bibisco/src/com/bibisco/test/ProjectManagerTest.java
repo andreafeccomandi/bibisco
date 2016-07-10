@@ -79,6 +79,8 @@ import com.bibisco.enums.TaskStatus;
 import com.bibisco.manager.ContextManager;
 import com.bibisco.manager.LocaleManager;
 import com.bibisco.manager.ProjectManager;
+import com.bibisco.manager.ProjectManager.DIRECTORY_STATUS;
+import com.bibisco.manager.ProjectManager.ExportResult;
 import com.bibisco.manager.ProjectManager.SET_PROJECTS_DIRECTORY_RESULT;
 import com.bibisco.manager.PropertiesManager;
 import com.bibisco.manager.VersionManager;
@@ -849,7 +851,11 @@ public class ProjectManagerTest {
 	public void testExportProjectAsArchive() {
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
-		File lFile = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		
+		ExportResult lExportResult = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		Assert.assertEquals(1, lExportResult.getCreatedFiles().size());
+		File lFile = lExportResult.getCreatedFiles().get(0);
 		Assert.assertNotNull(lFile);
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lFile.getParent());
 		Assert.assertTrue(lFile.getName().startsWith("Test_archive"));
@@ -857,7 +863,10 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lFile.getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
-		lFile = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		Assert.assertEquals(1, lExportResult.getCreatedFiles().size());
+		lFile = lExportResult.getCreatedFiles().get(0);
 		Assert.assertNotNull(lFile);
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lFile.getParent());
 		Assert.assertTrue(lFile.getName().startsWith("Test2_archive"));
@@ -865,13 +874,40 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lFile.getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
-		lFile = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		Assert.assertEquals(1, lExportResult.getCreatedFiles().size());
+		lFile = lExportResult.getCreatedFiles().get(0);
 		Assert.assertNotNull(lFile);
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lFile.getParent());
 		Assert.assertTrue(lFile.getName().startsWith("Test3_archive"));
 		Assert.assertTrue(lFile.getName().endsWith(".bibisco"));
 		Assert.assertTrue(lFile.getTotalSpace() > 0);
 	}
+	
+	@Test
+	public void testExportProjectAsArchiveWithNonExistingDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsArchive("C:\\Users\\AndreaDocuments\\");
+		Assert.assertEquals(DIRECTORY_STATUS.INVALID, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testExportProjectAsArchiveWithEmptyDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ProjectManager.exportProjectAsArchive("");
+	}
+	
+	@Test
+	public void testExportProjectAsArchiveWithForbiddenDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsArchive(AllTests.BIBISCO_FORBIDDEN_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.FORBIDDEN, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testExportProjectAsArchiveWithEmptyIdProject() {
@@ -913,7 +949,9 @@ public class ProjectManagerTest {
 	public void testExportProjectAsPdf() {
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
-		List<File> lListFile = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		ExportResult lExportResult = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		List<File> lListFile = lExportResult.getCreatedFiles();
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -926,7 +964,9 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
-		lListFile = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		lListFile = lExportResult.getCreatedFiles();
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -939,7 +979,9 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
-		lListFile = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		lListFile = lExportResult.getCreatedFiles();
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -951,6 +993,30 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getName().endsWith(".pdf"));
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 	}
+	
+	@Test
+	public void testExportProjectAsPdfWithNonExistingDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsPdf("C:\\Users\\AndreaDocuments\\");
+		Assert.assertEquals(DIRECTORY_STATUS.INVALID, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testExportProjectAsPdfWithEmptyDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ProjectManager.exportProjectAsPdf("");
+	}
+	
+	@Test
+	public void testExportProjectAsPdfWithForbiddenDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsPdf(AllTests.BIBISCO_FORBIDDEN_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.FORBIDDEN, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testExportProjectAsWordWithEmptyIdProject() {
@@ -974,7 +1040,9 @@ public class ProjectManagerTest {
 	public void testExportProjectAsWord() {
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
-		List<File> lListFile = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		ExportResult lExportResult = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		List<File> lListFile = lExportResult.getCreatedFiles();
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -987,7 +1055,9 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT2_ID);
-		lListFile = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		lListFile = lExportResult.getCreatedFiles();
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -1000,7 +1070,10 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 		
 		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT3_ID);
-		lListFile = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		lExportResult = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, lExportResult.getDirectoryStatus());
+		lListFile = lExportResult.getCreatedFiles();
+		
 		Assert.assertNotNull(lListFile);
 		Assert.assertEquals(2, lListFile.size());
 		Assert.assertEquals(AllTests.BIBISCO_EXPORT_PROJECT_DIR, lListFile.get(0).getParent());
@@ -1012,6 +1085,30 @@ public class ProjectManagerTest {
 		Assert.assertTrue(lListFile.get(1).getName().endsWith(".rtf"));
 		Assert.assertTrue(lListFile.get(1).getTotalSpace() > 0);
 	}
+	
+	@Test
+	public void testExportProjectAsWordWithNonExistingDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsWord("C:\\Users\\AndreaDocuments\\");
+		Assert.assertEquals(DIRECTORY_STATUS.INVALID, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testExportProjectAsWordWithEmptyDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ProjectManager.exportProjectAsWord("");
+	}
+	
+	@Test
+	public void testExportProjectAsWordWithForbiddenDirectory() {
+		ContextManager.getInstance().setIdProject(AllTests.TEST_PROJECT_ID);
+		ExportResult lExportResult = ProjectManager.exportProjectAsWord(AllTests.BIBISCO_FORBIDDEN_EXPORT_PROJECT_DIR);
+		Assert.assertEquals(DIRECTORY_STATUS.FORBIDDEN, lExportResult.getDirectoryStatus());
+		Assert.assertNull(lExportResult.getCreatedFiles());		
+	}
+
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetDBProjectDirectoryWithEmptyIdProject() {
@@ -1405,9 +1502,9 @@ public class ProjectManagerTest {
 		
 	@Before
 	public void cleanExportAndTempDirectory() throws IOException, ConfigurationException, InterruptedException {		
-		FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
-		FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
-		AllTests.cleanProjectsDirectory();
+		//FileUtils.cleanDirectory(new File(AllTests.getExportPath()));
+		//FileUtils.cleanDirectory(new File(AllTests.getTempPath()));
+		//AllTests.cleanProjectsDirectory();
 	}
 
 	
@@ -2106,4 +2203,25 @@ public class ProjectManagerTest {
 		ProjectManager.closeConnection();
 	}
 	
+	
+	@Test(expected = IllegalArgumentException.class)
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
+	public void testCheckDirectoryStatusWithEmptyDirectory() {
+		ProjectManager.checkDirectoryStatus("");
+	}
+	
+	@Test
+	public void testCheckDirectoryStatusWithNonExistingDirectory() {
+		Assert.assertEquals(DIRECTORY_STATUS.INVALID, ProjectManager.checkDirectoryStatus("C:\\Users\\AndreaDocuments\\"));
+	}
+	
+	@Test
+	public void testCheckDirectoryStatusWithForbiddenDirectory() {
+		Assert.assertEquals(DIRECTORY_STATUS.FORBIDDEN, ProjectManager.checkDirectoryStatus(AllTests.BIBISCO_FORBIDDEN_EXPORT_PROJECT_DIR));
+	}
+	
+	@Test
+	public void testCheckDirectoryStatusWithExistingDirectory() {
+		Assert.assertEquals(DIRECTORY_STATUS.EXISTING, ProjectManager.checkDirectoryStatus(AllTests.BIBISCO_EXPORT_PROJECT_DIR));
+	}
 }
