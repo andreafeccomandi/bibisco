@@ -97,9 +97,18 @@ public class AllTests {
 	private static String mStrDBFilePath;
 	private static String mStrBibiscoDBUrl;
 	
+	@BeforeClass
 	public static void cleanProjectsDirectory() throws IOException, ConfigurationException, InterruptedException {
 		
-		(new File(BIBISCO_INTERNAL_PROJECTS_DIR)).renameTo(new File(BIBISCO_INTERNAL_PROJECTS_DIR_TO_DELETE + "_" + (new Date()).getTime()));
+		if (!mBlnEnvironmentInitialized) {
+			init();
+		}
+		
+		System.out.println("*************** cleanProjectsDirectory() ***********************");
+		String lStrTimestamp = String.valueOf((new Date()).getTime());
+		File lFileRenameTo = new File(BIBISCO_INTERNAL_PROJECTS_DIR_TO_DELETE + "_" + lStrTimestamp);
+		(new File(BIBISCO_INTERNAL_PROJECTS_DIR)).renameTo(lFileRenameTo);
+		
 		new File(BIBISCO_INTERNAL_PROJECTS_DIR).mkdir();
 		FileUtils.copyFile(new File(mStrTestBibiscoDBFilePath), new File(mStrDBFilePath));
 		

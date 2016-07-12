@@ -92,8 +92,7 @@ import com.bibisco.manager.ArchitectureItemManager.ArchitectureItemType;
 public class ProjectManager {
 
 	public enum SET_PROJECTS_DIRECTORY_RESULT {INVALID, FORBIDDEN, CREATED};
-	public enum PROJECT_DIRECTORY_STATUS {INVALID, FORBIDDEN, NEW, EXISTING, INTERNAL_BIBISCO_PROJECTS_DB_DIR};
-	public enum DIRECTORY_STATUS {EXISTING, INVALID, FORBIDDEN, NEW, INTERNAL_BIBISCO_PROJECTS_DB_DIR};
+	public enum DIRECTORY_STATUS {EXISTING, INVALID, FORBIDDEN};
 		
 	private static Log mLog = Log.getInstance(ProjectManager.class);
 	private static String INTERNAL_BIBISCO_PROJECTS_DB_DIR = "_internal_bibisco_projects_db_";
@@ -458,6 +457,24 @@ public class ProjectManager {
 		}
 		
 		return lDirectoryStatus;
+	}
+	
+	public static boolean checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(String pStrDirectory) {
+
+		// validate preconditions
+		Validate.notEmpty(pStrDirectory);
+		
+		File lFileDirectory = new File(pStrDirectory);
+		File[] lFilesChildren = lFileDirectory.listFiles();
+		if (lFilesChildren!=null) {				
+			for (int i = 0; i < lFilesChildren.length; i++) {
+				if (lFilesChildren[i].getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public static ExportResult exportProjectAsArchive(String pStrExportProjectDirectory) {
@@ -1378,58 +1395,55 @@ public class ProjectManager {
 		Validate.notEmpty(pStrProjectsDirectory, "projects directory cannot be empty");
 	
 		// check projects directory
-		PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = checkProjectDirectoryStatus(pStrProjectsDirectory); 
+		DIRECTORY_STATUS lProjectDirectoryStatus = checkDirectoryStatus(pStrProjectsDirectory); 
 		mLog.info("Selected project directory: ", pStrProjectsDirectory, " - status: ", lProjectDirectoryStatus.name());
 		
-		if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.INVALID) {
+		if (lProjectDirectoryStatus == DIRECTORY_STATUS.INVALID) {
 			lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.INVALID;
 		} 
 		
-		else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.FORBIDDEN) {
+		else if (lProjectDirectoryStatus == DIRECTORY_STATUS.FORBIDDEN) {
 			lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.FORBIDDEN;
 		}  
 		
-		else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.EXISTING) {
+		else if (lProjectDirectoryStatus == DIRECTORY_STATUS.EXISTING) { 
 			
-			// delete projects entries on bibisco db
-			ProjectManager.deleteProjectsEntriesOnBibiscoDB();
-			
-			// update property
-			PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
+			File lFile = new File(pStrProjectsDirectory);
+			if (lFile.getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)
+					|| checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(pStrProjectsDirectory)) {
 
-			// import projects
-			lIntImportedProjects = importProjectsFromProjectsDirectory();
+				// if selected projects directory is
+				// INTERNAL_BIBISCO_PROJECTS_DB_DIR, select the parent directory
+				if (lFile.getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {					
+					lStrProjectsDirectory = (new File(pStrProjectsDirectory)).getParentFile().getAbsolutePath();
+				}
+
+				// delete projects entries on bibisco db
+				ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+
+				// update property
+				PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
+
+				// import projects
+				lIntImportedProjects = importProjectsFromProjectsDirectory();
+
+				lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.CREATED;
+			}	
 			
-			lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.CREATED;
-		}
-		
-		else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR) {			
-			// if selected projects directory is INTERNAL_BIBISCO_PROJECTS_DB_DIR, select the parent directory
-			lStrProjectsDirectory = (new File(pStrProjectsDirectory)).getParentFile().getAbsolutePath();
+			else {
+				
+				// create INTERNAL_BIBISCO_PROJECTS_DB_DIR
+				new File(pStrProjectsDirectory + ContextManager.getPathSeparator() + INTERNAL_BIBISCO_PROJECTS_DB_DIR).mkdir();
+				
+				// delete projects entries on bibisco db
+				ProjectManager.deleteProjectsEntriesOnBibiscoDB();
+								
+				// update property
+				PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
 			
-			// delete projects entries on bibisco db
-			ProjectManager.deleteProjectsEntriesOnBibiscoDB();
-			
-			// update property
-			PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);			
-			
-			// import projects
-			lIntImportedProjects = importProjectsFromProjectsDirectory();
-			
-			lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.CREATED;
-			
-		} else if (lProjectDirectoryStatus == PROJECT_DIRECTORY_STATUS.NEW) {
-					
-			// create INTERNAL_BIBISCO_PROJECTS_DB_DIR
-			new File(pStrProjectsDirectory + ContextManager.getPathSeparator() + INTERNAL_BIBISCO_PROJECTS_DB_DIR).mkdir();
-			
-			// delete projects entries on bibisco db
-			ProjectManager.deleteProjectsEntriesOnBibiscoDB();
-							
-			// update property
-			PropertiesManager.getInstance().updateProperty("projectsDirectory", lStrProjectsDirectory);
-		
-			lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.CREATED;
+				lSetProjectsDirectoryResult = SET_PROJECTS_DIRECTORY_RESULT.CREATED;
+
+			}
 		}
 		
 		mLog.info("Set project directory: ", pStrProjectsDirectory, " - " + lIntImportedProjects, " imported projects.");
@@ -1437,51 +1451,6 @@ public class ProjectManager {
 		mLog.debug("End setProjectsDirectory(", pStrProjectsDirectory , ")");
 		
 		return lSetProjectsDirectoryResult;
-	}
-	
-	public static PROJECT_DIRECTORY_STATUS checkProjectDirectoryStatus(String pStrProjectsDirectory) {
-		
-		PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = null;
-		
-		// validate preconditions
-		Validate.notEmpty(pStrProjectsDirectory, "projects directory cannot be empty");		
-		File lFileSelectedDirectory = new File(pStrProjectsDirectory);
-			
-		// check if directory exists
-		if (!lFileSelectedDirectory.exists()) {
-			lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.INVALID;
-		}
-		
-		// check if the selected directory is INTERNAL_BIBISCO_PROJECTS_DB_DIR
-		else if (lFileSelectedDirectory.getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
-			lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR;
-		}
-		
-		// check if the selected directory contains INTERNAL_BIBISCO_PROJECTS_DB_DIR
-		else {
-
-			File[] lFilesChildren = lFileSelectedDirectory.listFiles();
-			if (lFilesChildren!=null) {				
-				for (int i = 0; i < lFilesChildren.length; i++) {
-					if (lFilesChildren[i].getName().equals(INTERNAL_BIBISCO_PROJECTS_DB_DIR)) {
-						lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.EXISTING;
-					}
-				}
-			}
-			
-			if (lProjectDirectoryStatus == null) {
-				// create INTERNAL_BIBISCO_PROJECTS_DB_DIR
-				boolean lBlnResult = new File(pStrProjectsDirectory + ContextManager.getPathSeparator() + DUMMY_DIR).mkdir();
-				if (lBlnResult) {
-					lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.NEW;
-					(new File(pStrProjectsDirectory + ContextManager.getPathSeparator() + DUMMY_DIR)).delete();
-				} else {
-					lProjectDirectoryStatus = PROJECT_DIRECTORY_STATUS.FORBIDDEN;
-				}
-			}
-		}
-				
-		return lProjectDirectoryStatus;
 	}
 	
 	public static int deleteProjectsEntriesOnBibiscoDB() {

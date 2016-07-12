@@ -88,8 +88,9 @@ import com.bibisco.manager.VersionManager;
 public class ProjectManagerTest {
 
 	@Before 
-	public void init() throws ConfigurationException, IOException {
+	public void init() throws ConfigurationException, IOException, InterruptedException {
 		
+		AllTests.cleanProjectsDirectory();
 		SqlSessionFactory lSqlSessionFactory = AllTests.getBibiscoSqlSessionFactory();
     	SqlSession lSqlSession = lSqlSessionFactory.openSession();
     	try {
@@ -162,38 +163,29 @@ public class ProjectManagerTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testCheckProjectDirectoryStatusWithEmptyDirectory() {
-		ProjectManager.checkProjectDirectoryStatus("");
+	public void testCheckIfDirectoryCointainsInternalBibiscoProjectsDbDirWithEmptyDirectory() {
+		ProjectManager.checkIfDirectoryCointainsInternalBibiscoProjectsDbDir("");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
-	public void testCheckProjectDirectoryStatusWithNullDirectory() {
-		ProjectManager.checkProjectDirectoryStatus(null);
+	public void testCheckIfDirectoryCointainsInternalBibiscoProjectsDbDirWithNullDirectory() {
+		ProjectManager.checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(null);
 	}
 	
 	@Test
-	public void testCheckProjectDirectoryStatusWithNewDirectory() {
-		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_NEW_PROJECTS_DIR);
-		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.NEW, lProjectDirectoryStatus);
+	public void testCheckIfDirectoryCointainsInternalBibiscoProjectsDbDirWithWithNewDirectory() {
+		Assert.assertFalse(ProjectManager.checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(AllTests.BIBISCO_NEW_PROJECTS_DIR));
 	}
 	
 	@Test
-	public void testCheckProjectDirectoryStatusWithExistingDirectory() {
-		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_PROJECTS_DIR);
-		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.EXISTING, lProjectDirectoryStatus);
+	public void testCheckIfDirectoryCointainsInternalBibiscoProjectsDbDirWithExistingDirectory() {
+		Assert.assertTrue(ProjectManager.checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(AllTests.BIBISCO_PROJECTS_DIR));
 	}
 	
 	@Test
-	public void testCheckProjectDirectoryStatusWithInternalBibiscoProjectsDbDir() {
-		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR);
-		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.INTERNAL_BIBISCO_PROJECTS_DB_DIR, lProjectDirectoryStatus);
-	}
-	
-	@Test
-	public void testCheckProjectDirectoryStatusWithForbidddenDirectory() {
-		ProjectManager.PROJECT_DIRECTORY_STATUS lProjectDirectoryStatus = ProjectManager.checkProjectDirectoryStatus(AllTests.BIBISCO_FORBIDDEN_PROJECTS_DIR);
-		Assert.assertEquals(ProjectManager.PROJECT_DIRECTORY_STATUS.FORBIDDEN, lProjectDirectoryStatus);
+	public void testCheckIfDirectoryCointainsInternalBibiscoProjectsDbDirWithInternalBibiscoProjectsDbDir() {
+		Assert.assertFalse(ProjectManager.checkIfDirectoryCointainsInternalBibiscoProjectsDbDir(AllTests.BIBISCO_INTERNAL_PROJECTS_DIR));
 	}
 	
 	@Test
