@@ -169,6 +169,9 @@
             } 
             bibiscoRichTextEditor.setText(initialText);
             
+            // set last update timestamp
+            bibiscoUpdateLastUpdateTimestamp();
+            
             // <p> settings             
             ev.editor.dataProcessor.writer.setRules( 'p',
                {
@@ -273,6 +276,7 @@
             		bibiscoRichTextEditorAutoSave(bibiscoRichTextEditorConfig.save);
                 }
             }, 60000);
+            bibiscoRichTextEditorUpdateAutosaveStatus(bibiscoRichTextEditor.config.autoSaveEnabled);
             
             // close
             bibiscoRichTextEditor.close = function() {
@@ -350,6 +354,18 @@
         bibiscoRichTextEditor.config.spellCheckEnabled = spellCheckEnabled;
         bibiscoRichTextEditor.config.contentsCss = getContentsCss(spellCheckEnabled);
         bibiscoRichTextEditor.config.autoSaveEnabled = autoSaveEnabled;
+        bibiscoRichTextEditorUpdateAutosaveStatus(autoSaveEnabled);
+    }
+    
+    function bibiscoRichTextEditorUpdateAutosaveStatus(autoSaveEnabled) {
+    	if (autoSaveEnabled) {
+        	$('#bibiscoTagRichTextEditorSpanAutosaveStatus').addClass('label-info');
+        	$('#bibiscoTagRichTextEditorSpanAutosaveStatus').attr('title','<fmt:message key="tag.bibiscoRichTextEditor.autosave.enabled"/>');
+        } else {
+        	$('#bibiscoTagRichTextEditorSpanAutosaveStatus').removeClass('label-info');
+        	$('#bibiscoTagRichTextEditorSpanAutosaveStatus').attr('title','<fmt:message key="tag.bibiscoRichTextEditor.autosave.disabled"/>');
+        }
+    	$('#bibiscoTagRichTextEditorSpanAutosaveStatus').tooltip('fixTitle');
     }
     
     function bibiscoRichTextEditorHumanSave(saveConfig) {
@@ -393,6 +409,8 @@
 	  		  if (humanSave) {
 	  			bibiscoCloseLoadingBannerSuccess();
 	  		  }
+	  		
+	  		  bibiscoUpdateLastUpdateTimestamp();
   			  bibiscoRichTextEditor.unSaved = false;
   		  },
   		  error:function(){
@@ -401,6 +419,11 @@
   			}
   		  }
   		});
+	}
+	
+	function bibiscoUpdateLastUpdateTimestamp() {
+		var datetime = $.format.date(new Date(), '<fmt:message key="pattern.timestampseconds"/>');
+		$('#bibiscoTagRichTextEditorSpanLastUpdate').html(datetime);
 	}
     
     function getContentsCss(spellCheckEnabled) {
@@ -535,10 +558,15 @@
         </button>
     </div>
 </div>
-<div id="bibiscoTagRichTextEditorTextareaContainer" class="bibiscoRichTextEditorWordCharacterCount" >
+<div id="bibiscoTagRichTextEditorTextareaContainer">
 <textarea id="bibiscoTagRichTextEditorTextarea"></textarea>
-<p class="bibiscoNotSelectableText bibiscoRichTextEditorWordCharacterCount">
+<div class="row-fluid bibiscoNotSelectableText">
+<div class="span6 bibiscoRichTextEditorLastUpdate">
+<span id="bibiscoTagRichTextEditorSpanAutosaveStatus" class="label"> <i class="icon-save"></i></span>&nbsp;<fmt:message key="tag.bibiscoRichTextEditor.span.lastsave"/>: <span id="bibiscoTagRichTextEditorSpanLastUpdate"></span>
+</div>
+<div class="span6 bibiscoRichTextEditorWordCharacterCount">
 <fmt:message key="jsp.common.span.words"/>: <span id="bibiscoTagRichTextEditorSpanWordCount"></span>, <fmt:message key="jsp.common.span.characters"/>: <span id="bibiscoTagRichTextEditorSpanCharacterCount"></span>
-</p>
+</div>
+</div>
 </div>
 

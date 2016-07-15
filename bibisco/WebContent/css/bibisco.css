@@ -232,9 +232,13 @@
 	font-size: 1.2em;
 }
 
-.bibiscoRichTextEditorWordCharacterCount p{
+.bibiscoRichTextEditorLastUpdate {
+	padding-left: 10px;
+}
+
+.bibiscoRichTextEditorWordCharacterCount {
+	padding-right: 15px;
 	text-align: right; 
-	margin-right: 12px;
 }
 
 .bibiscoRichTextEditor-bodyClass-courierbig {
