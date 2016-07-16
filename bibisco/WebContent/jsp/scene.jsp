@@ -76,7 +76,7 @@
             		url: 'BibiscoServlet?action=thumbnailAction&thumbnailAction=save&id='+id
 					+'&family='+type,
 					successCallback: function() {
-						bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected());
+						bibiscoUpdateTaskStatus(idCaller, bibiscoTaskStatusSelector.getSelected(), bibiscoRichTextEditor.getWordCount(), bibiscoRichTextEditor.getCharacterCount());
 					},
     		  		extraData: function() {
     		  			 var characters = new Array();

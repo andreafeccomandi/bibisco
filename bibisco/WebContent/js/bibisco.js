@@ -297,8 +297,8 @@ function bibiscoGetBibiscoTaskStatus(taskStatus, wordCount, characterCount) {
 }
 
 /* Update task status banner */
-function bibiscoUpdateTaskStatus(idCaller, selectedTaskStatus) {
-	 $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(selectedTaskStatus));
+function bibiscoUpdateTaskStatus(idCaller, selectedTaskStatus, wordCount, characterCount) {
+	 $('#'+idCaller+' div.bibiscoTagTaskStatusDiv').html(bibiscoGetBibiscoTaskStatus(selectedTaskStatus, wordCount, characterCount));
 	 $('#'+idCaller+' div.bibiscoTagTaskStatusDiv span').tooltip();
 }
 
