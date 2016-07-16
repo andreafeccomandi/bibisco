@@ -11,6 +11,9 @@
 <script type="text/javascript">
 $(function() {
     
+	var marginTop = (window.innerHeight - 50) / 2;
+	$('.bibiscoLoadingPage').css('margin-top', marginTop);
+	
 	setInterval(function() {
 		var progress = parseInt($('#bibiscoDivProgessBar').data('progress')) + 1;
 		$('#bibiscoDivProgessBar').attr('style', 'width: ' + progress + '%;');
