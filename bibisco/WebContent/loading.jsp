@@ -16,7 +16,7 @@ $(function() {
 		$('#bibiscoDivProgessBar').attr('style', 'width: ' + progress + '%;');
 		$('#bibiscoDivProgessBar').data('progress',progress);
 		
-	},100);
+	},250);
 	
 	// the ajax call is used to ask Jetty to compile jsp
 	// on success call to get start page
