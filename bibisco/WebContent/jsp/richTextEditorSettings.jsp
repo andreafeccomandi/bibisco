@@ -157,8 +157,8 @@
 			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.indentParagraph" /></label>
 			<div class="controls">
 				<div class="btn-group indentParagraph" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivIndentParagraph">
-					<button id="bibiscoRichTextEditorSettingsButtonIndentParagraphtrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.indentParagraph.enabled" /></button>
-					<button id="bibiscoRichTextEditorSettingsButtonIndentParagraphfalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.indentParagraph.disabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonIndentParagraphtrue" name="true" class="btn"><fmt:message key="jsp.common.button.enabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonIndentParagraphfalse" name="false" class="btn"><fmt:message key="jsp.common.button.disabled" /></button>
 				</div>
 			</div>
 		</div>
@@ -166,8 +166,8 @@
 			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.spellCheck" /></label>
 			<div class="controls">
 				<div class="btn-group spellCheck" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivSpellCheck">
-					<button id="bibiscoRichTextEditorSettingsButtonSpellChecktrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.spellCheck.enabled" /></button>
-					<button id="bibiscoRichTextEditorSettingsButtonSpellCheckfalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.spellCheck.disabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonSpellChecktrue" name="true" class="btn"><fmt:message key="jsp.common.button.enabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonSpellCheckfalse" name="false" class="btn"><fmt:message key="jsp.common.button.disabled" /></button>
 				</div>
 			</div>
 		</div>
@@ -175,8 +175,8 @@
 			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.autoSave" /></label>
 			<div class="controls">
 				<div class="btn-group autoSave" data-toggle="buttons-radio" id="bibiscoRichTextEditorSettingsDivAutoSave">
-					<button id="bibiscoRichTextEditorSettingsButtonAutoSavetrue" name="true" class="btn"><fmt:message key="jsp.richTextEditorSettings.autoSave.enabled" /></button>
-					<button id="bibiscoRichTextEditorSettingsButtonAutoSavefalse" name="false" class="btn"><fmt:message key="jsp.richTextEditorSettings.autoSave.disabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonAutoSavetrue" name="true" class="btn"><fmt:message key="jsp.common.button.enabled" /></button>
+					<button id="bibiscoRichTextEditorSettingsButtonAutoSavefalse" name="false" class="btn"><fmt:message key="jsp.common.button.disabled" /></button>
 				</div>
 			</div>
 		</div>
