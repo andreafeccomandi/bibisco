@@ -62,11 +62,11 @@
 							} else if (data == 'forbidden') {
 								bibiscoUnblockUI();
 								bibiscoCloseLoadingBannerError();
-								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.forbidden.message" />");		
+								bibiscoAlert("<fmt:message key="jsp.common.message.forbidden.directory" />");		
 							} else if (data == 'invalid') {
 								bibiscoUnblockUI();
 								bibiscoCloseLoadingBannerError();
-								bibiscoAlert("<fmt:message key="jsp.changeProjectsDirectory.invalid.message" />");	
+								bibiscoAlert("<fmt:message key="jsp.common.message.invalid.directory" />");	
 							} 
 						},
 						error : function() {
@@ -113,7 +113,7 @@
 			<label id="bibiscoChangeProjectsDirectorySelectedDirectoryLabel" class="control-label" for="bibiscoChangeProjectsDirectorySelectedDirectory"><fmt:message key="jsp.changeProjectsDirectory.label" /></label>
 			<div class="input-append">		
 				<input type="text" class="span6" name="bibiscoChangeProjectsDirectorySelectedDirectory" value="<%=PropertiesManager.getInstance().getProperty("projectsDirectory")%>" id="bibiscoChangeProjectsDirectorySelectedDirectory" readonly="readonly" />
-				<button id="bibiscoChangeProjectsDirectoryButtonSelect" class="btn" type="button"><fmt:message key="jsp.changeProjectsDirectory.button.select" /></button>
+				<button id="bibiscoChangeProjectsDirectoryButtonSelect" class="btn" type="button"><fmt:message key="jsp.common.button.select" /></button>
 			</div>
 		</div>
 	</form>

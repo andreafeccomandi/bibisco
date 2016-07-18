@@ -56,11 +56,11 @@
 						if (data.directoryStatus == 'FORBIDDEN') {
 							bibiscoUnblockUI();
 							bibiscoCloseLoadingBannerError();
-							bibiscoAlert("<fmt:message key="jsp.export.selectDirectory.forbidden.message" />");		
+							bibiscoAlert("<fmt:message key="jsp.common.message.forbidden.directory" />");		
 						} else if (data.directoryStatus == 'INVALID') {
 							bibiscoUnblockUI();
 							bibiscoCloseLoadingBannerError();
-							bibiscoAlert("<fmt:message key="jsp.export.selectDirectory.invalid.message" />");	
+							bibiscoAlert("<fmt:message key="jsp.common.message.invalid.directory" />");	
 						} else {
 							bibiscoCloseLoadingBannerSuccess();
 							bibiscoUnblockUI();
@@ -110,7 +110,7 @@
 			<label id="bibiscoExportProjectDirectorySelectedDirectoryLabel" class="control-label" for="bibiscoExportProjectDirectorySelectedDirectory"><fmt:message key="jsp.export.dialog.exportProjectDirectory.label" /></label>
 			<div class="input-append">		
 				<input type="text" class="span6" name="bibiscoExportProjectDirectorySelectedDirectory" value="" id="bibiscoExportProjectDirectorySelectedDirectory" readonly="readonly" />
-				<button id="bibiscoExportProjectDirectoryButtonSelect" class="btn" type="button"><fmt:message key="jsp.export.dialog.exportProjectDirectory.button.select" /></button>
+				<button id="bibiscoExportProjectDirectoryButtonSelect" class="btn" type="button"><fmt:message key="jsp.common.button.select" /></button>
 			</div>
 		</div>
 	</form>

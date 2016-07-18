@@ -85,11 +85,11 @@
 					} else if (data == 'forbidden') {
 						bibiscoUnblockUI();
 						bibiscoCloseLoadingBannerError();
-						bibiscoAlert("<fmt:message key="jsp.welcome.step2.forbidden.message"/>");		
+						bibiscoAlert("<fmt:message key="jsp.common.message.forbidden.directory"/>");		
 					} else if (data == 'invalid') {
 						bibiscoUnblockUI();
 						bibiscoCloseLoadingBannerError();
-						bibiscoAlert("<fmt:message key="jsp.welcome.step2.invalid.message"/>");		
+						bibiscoAlert("<fmt:message key="jsp.common.message.invalid.directory"/>");		
 					}
 				},
 				error : function() {		
@@ -150,7 +150,7 @@
 					<p class="bibiscoNotSelectableText"><fmt:message key="jsp.welcome.step2.p.1" /></p>
 					<div class="input-append">		
 						<input type="text" class="span8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" readonly="readonly"/>
-						<button id="bibiscoStartWizardSelectProjectsDirectoryButton" class="btn" type="button"><fmt:message key="jsp.welcome.step2.button.select" /></button>
+						<button id="bibiscoStartWizardSelectProjectsDirectoryButton" class="btn" type="button"><fmt:message key="jsp.common.button.select" /></button>
 					</div>	
 					<div class="bibiscoStartWizardNotes">
 						<p class="bibiscoNotSelectableText"><span class="label label-info"><fmt:message key="jsp.welcome.step2.label.2" /></span>&nbsp;&nbsp;<fmt:message key="jsp.welcome.step2.p.2" /></p>
