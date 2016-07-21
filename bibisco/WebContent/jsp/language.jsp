@@ -75,8 +75,7 @@
 					<option value="fr_FR"><fmt:message key="jsp.language.form.selectLanguage.option.fr" /></option>	
 					<option value="it_IT"><fmt:message key="jsp.language.form.selectLanguage.option.it" /></option>
 					<option value="pl_PL"><fmt:message key="jsp.language.form.selectLanguage.option.pl" /></option>
-					<!--<option value="pt_BR"><fmt:message key="jsp.language.form.selectLanguage.option.pt" /></option>
-					-->	
+					<option value="pt_BR"><fmt:message key="jsp.language.form.selectLanguage.option.pt" /></option>
 				</select>
 			</div>
 		</div>
