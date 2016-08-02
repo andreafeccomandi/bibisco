@@ -1210,6 +1210,9 @@ public class BibiscoServlet extends HttpServlet {
 		List<CharacterDTO> lListCharacterDTO = CharacterManager.loadAll();
 		pRequest.setAttribute("characters", lListCharacterDTO);
 		
+		List<ChapterDTO> lListChapterDTO = ChapterManager.loadAll();
+		pRequest.setAttribute("chapters", lListChapterDTO);
+		
 		Map<Integer,List<CharacterSceneDTO>> lMapCharacterSceneAnalysis = SceneTagsManager.getCharacterSceneAnalysis();
 		pRequest.setAttribute("characterSceneAnalysis", lMapCharacterSceneAnalysis);
 		

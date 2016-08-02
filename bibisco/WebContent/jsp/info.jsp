@@ -77,6 +77,8 @@ $(function() {
      <p><fmt:message key="jsp.info.p.credits.9"/></p>
      <p><fmt:message key="jsp.info.p.credits.10"/></p>
      <p><fmt:message key="jsp.info.p.credits.11"/></p>
+     <p><fmt:message key="jsp.info.p.credits.12"/></p>
+     <p><fmt:message key="jsp.info.p.credits.13"/></p>
      </div>
      <div class="span3">
      <h3><fmt:message key="jsp.info.h3.license"/></h3>

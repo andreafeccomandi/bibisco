@@ -41,6 +41,11 @@
             <em><fmt:message key="jsp.analysisCharacterScene.em.noItemAvailable" /></em>
         </div>
     </c:when>
+    <c:when test="${empty chapters}">
+        <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
+            <em><fmt:message key="jsp.analysisItemsChapters.em.noChapters" /></em>
+        </div>
+    </c:when>
     <c:when test="${empty characterSceneAnalysis}">
         <div class="bibiscoNotSelectableText bibiscoAnalysisNoInfoAvailable">
             <em><fmt:message key="jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable" /></em>
