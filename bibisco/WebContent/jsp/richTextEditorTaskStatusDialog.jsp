@@ -18,7 +18,7 @@
     	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: richTextEditorTaskStatus.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	$('#bibiscoRichTextEditorTaskStatusDialogEmDescription').html(richTextEditorTaskStatus.description);
     	    	
-    	var bibiscoRichTextEditorVerticalPadding = 250;
+    	var bibiscoRichTextEditorVerticalPadding = 255;
     	bibiscoRichTextEditor = bibiscoRichTextEditorInit({
     		showTip: true,
     		text: richTextEditorTaskStatus.text, 

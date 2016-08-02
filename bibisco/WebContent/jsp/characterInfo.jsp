@@ -149,7 +149,7 @@
     	var bibiscoTaskStatusSelector = bibiscoTaskStatusSelectorInit({value: characterInfoBean.taskStatus, changeCallback: function() { bibiscoRichTextEditor.unSaved = true; } });
     	
     	// rich text editor	
-    	var bibiscoRichTextEditorVerticalPadding = 300;
+    	var bibiscoRichTextEditorVerticalPadding = 310;
     	var bibiscoRichTextEditorHeight = (ajaxDialog.getHeight() - bibiscoRichTextEditorVerticalPadding);
     	bibiscoRichTextEditor = bibiscoRichTextEditorInit({
     		showTip: true,
