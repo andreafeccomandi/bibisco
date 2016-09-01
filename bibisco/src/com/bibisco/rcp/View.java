@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
@@ -136,18 +137,28 @@ public class View extends ViewPart {
 	
 	private Rectangle getMonitorDimensions() {
 				
-		Rectangle lRectangle = null;
+		Rectangle lRectangleResult = null;
 		
 		final Display lDisplay = PlatformUI.getWorkbench().getDisplay();
-		final Monitor lMonitor = lDisplay.getPrimaryMonitor();
-		if (lMonitor != null) {
-			lRectangle = lMonitor.getClientArea();
-			mLog.info("*** Monitor dimensions - width: " + lRectangle.width + ", height: " + lRectangle.height);
-		} else {
-			mLog.info("*** bibisco wasn't able to get monitor dimension!");
+		Monitor[] lMonitors = lDisplay.getMonitors();
+		mLog.info("*** Monitor Found : " + lMonitors.length);
+		
+		if (ArrayUtils.isEmpty(lMonitors)) {
+			mLog.info("*** bibisco wasn't able to get monitor informations!");
+		} 
+		
+		else {			
+			Rectangle lRectangle = null;
+			for (int i = 0; i < lMonitors.length; i++) {
+				lRectangle = lMonitors[i].getClientArea();
+				mLog.info("*** Monitor " + (i+1) + " dimensions - width: " + lRectangle.width + ", height: " + lRectangle.height);
+				if (lRectangleResult==null || lRectangle.width < lRectangleResult.width) {
+					lRectangleResult = lRectangle;
+				}
+			}
 		}
 		
-		return lRectangle;
+		return lRectangleResult;
 	}
 		
 	private String calculateDevPixelsPerPx() {
