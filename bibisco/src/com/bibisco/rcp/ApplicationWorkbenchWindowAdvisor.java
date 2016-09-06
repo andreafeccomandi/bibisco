@@ -54,7 +54,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowCreate() {
 		super.postWindowCreate();
 		if(getWindowConfigurer().getWindow().getShell() != null) {
-			getWindowConfigurer().getWindow().getShell().setMaximized(true);
+			//getWindowConfigurer().getWindow().getShell().setMaximized(true);
+			//getWindowConfigurer().getWindow().getShell().setMinimumSize(200, 100);
 		}
 	}
     
