@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
-<c:set var="nonAsciiCharactersInAbsolutePath" scope="page" value="<%=ContextManager.getInstance().hasNonAsciiCharactersInAbsolutePath()%>"/>
+
 <script type="text/javascript">
 
 	// init dialog callback
@@ -98,11 +98,6 @@
 
 	}
 	
-	<c:if test="${nonAsciiCharactersInAbsolutePath}">
-		$('#bibiscoExportProjectDirectoryButtonSelect').hide();
-		$('#bibiscoExportProjectDirectorySelectedDirectory').removeAttr('readonly');
-		$('#bibiscoExportProjectDirectorySelectedDirectory').parent().removeClass('input-append');
-	</c:if>
 </script>
 <div class="bibiscoExportProjectDirectory">
 	<form id="bibiscoExportProjectDirectoryForm">

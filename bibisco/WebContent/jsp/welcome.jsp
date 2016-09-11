@@ -6,7 +6,6 @@
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <%@ taglib prefix="fn" uri="/jstl/functions"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
-<c:set var="nonAsciiCharactersInAbsolutePath" scope="page" value="<%=ContextManager.getInstance().hasNonAsciiCharactersInAbsolutePath()%>"/>
 
 <script type="text/javascript">
 
@@ -105,12 +104,7 @@
 		var directory = bibiscoOpenDirectoryDialog();
 		 $('#bibiscoStartWizardSelectedDirectory').val(directory);
 	});
-	
-	<c:if test="${nonAsciiCharactersInAbsolutePath}">
-		$('#bibiscoStartWizardSelectProjectsDirectoryButton').hide();
-		$('#bibiscoStartWizardSelectedDirectory').removeAttr('readonly');
-	</c:if>
-	
+		
 });
 	
 

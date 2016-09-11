@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
 <%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
-<c:set var="nonAsciiCharactersInAbsolutePath" scope="page" value="<%=ContextManager.getInstance().hasNonAsciiCharactersInAbsolutePath()%>"/>
 <script type="text/javascript">
 
 	var projectDirectoryChanged = false;
@@ -98,14 +97,6 @@
 
 	}
 	
-	<c:if test="${nonAsciiCharactersInAbsolutePath}">
-		$('#bibiscoChangeProjectsDirectoryButtonSelect').hide();
-		$('#bibiscoChangeProjectsDirectorySelectedDirectory').removeAttr('readonly');
-		$('#bibiscoChangeProjectsDirectorySelectedDirectory').parent().removeClass('input-append');
-		$('#bibiscoChangeProjectsDirectorySelectedDirectory').change(function() {
-			projectDirectoryChanged = true;
-		});
-	</c:if>
 </script>
 <div class="bibiscoChangeProjectsDirectory">
 	<form id="bibiscoChangeProjectsDirectoryForm">
