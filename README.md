@@ -20,6 +20,20 @@ And, most of all, with bibisco you can **know everything about your characters**
 
 Note!  bibisco is a java application and ships its own JRE (Java Runtime Environment). You don't need to install or update JRE.
 
+## Upgrade
+
+If you upgrade bibisco from version 1.3.0 or next:
+
+1. Download new version
+2. In the new version of bibisco choose the directory that already contains your projects: they will be automatically imported
+
+If you upgrade bibisco from version 1.2.1 or previous:
+
+1. From the version you're using, export your project as archive: section export -> button export as archive
+2. Download new version
+3. In the new version of bibisco import your projects: after bibisco start up -> button import the first project or button import a new project
+
+
 ## Support
 
 You can support bibisco in a variuos way:
