@@ -36,3 +36,11 @@ You can support bibisco in a variuos way:
 ## License
 
 bibisco is licensed under the terms of [GNU GPL License](http://www.gnu.org/licenses/gpl-2.0.html).
+
+
+##Contribution
+
+To contribute to bibisco development you need to:
+* download [bibisco Individual Contributor Assignment Agreement](https://github.com/andreafeccomandi/bibisco/blob/master/bibisco-Individual-Contribution-Assignment-Agreement.pdf) or [bibisco Entity Contributor Assignment Agreement](https://github.com/andreafeccomandi/bibisco/blob/master/bibisco-Entity-Contribution-Assignment-Agreement.pdf)
+* sign the Agreement
+* email the signed agreement to info@bibisco.com
