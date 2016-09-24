@@ -38,10 +38,6 @@
                   value="icons/branding/logo16x16.png,icons/branding/logo32x32.png,icons/branding/logo48x48.png,icons/branding/logo64x64.png,icons/branding/logo128x128.png">
             </property>
             <property
-                  name="preferenceCustomization"
-                  value="plugin_customization.ini">
-            </property>
-            <property
                   name="appName"
                   value="bibisco">
             </property>
@@ -56,6 +52,10 @@
             <property
                   name="startupProgressRect"
                   value="5,275,445,15">
+            </property>
+            <property
+                  name="preferenceCustomization"
+                  value="plugin_customization.ini">
             </property>
          </product>
       </extension>

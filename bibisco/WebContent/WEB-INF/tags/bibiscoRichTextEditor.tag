@@ -117,11 +117,9 @@
 
             initializeButton('undo', 'bibiscoTagRichTextEditorButtonUndo');
             initializeButton('redo', 'bibiscoTagRichTextEditorButtonRepeat');
-            <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
-                initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
-                initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
-                initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
-            </c:if>
+            initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
+            initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
+            initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
             initializeButton('print', 'bibiscoTagRichTextEditorButtonPrint');
             initializeButton('bold', 'bibiscoTagRichTextEditorButtonBold');
             initializeButton('italic', 'bibiscoTagRichTextEditorButtonItalic');
@@ -488,20 +486,17 @@
             <i class="icon-print"></i>
         </button>
     </div>
-   
-    <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
-	    <div class="btn-group">
-	        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
-	            <i class="icon-copy"></i>
-	        </button>
-	        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
-	            <i class="icon-cut"></i>
-	        </button>
-	        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
-	            <i class="icon-paste"></i>
-	        </button>
-	    </div>
-    </c:if>
+    <div class="btn-group">
+        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
+            <i class="icon-copy"></i>
+        </button>
+        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
+            <i class="icon-cut"></i>
+        </button>
+        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
+            <i class="icon-paste"></i>
+        </button>
+    </div>
     <div class="btn-group" data-toggle="buttons-checkbox">
         <button class="btn" id="bibiscoTagRichTextEditorButtonBold" title="<fmt:message key="tag.bibiscoRichTextEditor.bold"/>">
             <i class="icon-bold"></i>
