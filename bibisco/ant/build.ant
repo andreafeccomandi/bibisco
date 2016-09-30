@@ -123,4 +123,8 @@
 	<target name="fix_linux_app_label">
 	    <copy file="${product.source.dir}/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" tofile="${build.dir}/plugins/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" overwrite="true"/>
 	</target>
+	
+	<target name="fix_mac_info_plist">
+		    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/bibisco.app/Contents/Info.plist" overwrite="true"/>
+		</target>
 </project>
