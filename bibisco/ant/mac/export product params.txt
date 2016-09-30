@@ -1,0 +1,7 @@
+Eclipse Product export wizard for mac
+-------------------------------------
+
+Root directory: Eclipse
+Destination/Directory: /Users/andreafeccomandi/git/bibisco/bibisco/build/bibisco.app/Contents
+Generate P2 repository: true
+Allow for binary cycles in target platform: true
