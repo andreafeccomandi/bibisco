@@ -16,6 +16,8 @@
 ../Eclipse/plugins/org.eclipse.equinox.launcher_1.3.100.v20150511-1540.jar
 --launcher.library
 ../Eclipse/plugins/org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.1.300.v20150602-1417
+-vm
+jre/lib/jli/libjli.dylib
       </programArgsMac>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
@@ -44,6 +46,7 @@
 
    <vm>
       <linux include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</macos>
       <windows include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</windows>
    </vm>
 

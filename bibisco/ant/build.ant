@@ -124,7 +124,11 @@
 	    <copy file="${product.source.dir}/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" tofile="${build.dir}/plugins/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" overwrite="true"/>
 	</target>
 	
-	<target name="fix_mac_info_plist">
-		    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/bibisco.app/Contents/Info.plist" overwrite="true"/>
-		</target>
+	<target name="complete_build_mac">
+	    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/bibisco.app/Contents/Info.plist" overwrite="true"/>
+		<copy todir="${basedir}/build/bibisco.app/Contents/MacOS/jre">
+            <fileset dir="${ant.dir}/mac/jre"/>
+        </copy>
+		<delete dir="${basedir}/build/bibisco.app/Contents/repository" />
+	</target>
 </project>
