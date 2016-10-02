@@ -53,16 +53,16 @@
 	<target name="build_mac">
 		<delete dir="${basedir}/build" />
         <antcall target="build">
-        	<param name="build.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse"/>
+        	<param name="build.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse"/>
         	<param name="bibiscoConfig.file" value="${ant.dir}/mac/bibiscoConfig_prod.xml"/>
         	<param name="product.file" value="${ant.dir}/mac/bibisco.product"/>
         	<param name="readme.file" value="${ant.dir}/mac/readme.txt"/>
-        	<param name="db.target.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse/db" />
-        	<param name="dictionaries.target.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse/dictionaries" />
-        	<param name="license.target.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse/license" />
-        	<param name="WebContent.target.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse/WebContent" />
+        	<param name="db.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/db" />
+        	<param name="dictionaries.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/dictionaries" />
+        	<param name="license.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/license" />
+        	<param name="WebContent.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/WebContent" />
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/mac"/>
-            <param name="xulrunner.target.dir" value="${basedir}/build/bibisco.app/Contents/Eclipse/xulrunner/mac" />   
+            <param name="xulrunner.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/xulrunner/mac" />   
         </antcall>
     </target>
 	
@@ -125,10 +125,10 @@
 	</target>
 	
 	<target name="complete_build_mac">
-	    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/bibisco.app/Contents/Info.plist" overwrite="true"/>
-		<copy todir="${basedir}/build/bibisco.app/Contents/MacOS/jre">
+	    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/Bibisco.app/Contents/Info.plist" overwrite="true"/>
+		<copy todir="${basedir}/build/Bibisco.app/Contents/MacOS/jre">
             <fileset dir="${ant.dir}/mac/jre"/>
         </copy>
-		<delete dir="${basedir}/build/bibisco.app/Contents/repository" />
+		<delete dir="${basedir}/build/Bibisco.app/Contents/repository" />
 	</target>
 </project>

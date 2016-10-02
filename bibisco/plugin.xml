@@ -35,7 +35,7 @@
                name="bibisco">
             <property
                   name="windowImages"
-                  value="icons/branding/logo16x16.png,icons/branding/logo32x32.png,icons/branding/logo48x48.png,icons/branding/logo64x64.png,icons/branding/logo128x128.png">
+                  value="icons/branding/logo16x16.png,icons/branding/logo32x32.png,icons/branding/logo48x48.png,icons/branding/logo64x64.png,icons/branding/logo128x128.png,icons/branding/logo256x256.png">
             </property>
             <property
                   name="appName"

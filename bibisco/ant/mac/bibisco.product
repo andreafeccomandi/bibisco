@@ -23,7 +23,7 @@ jre/lib/jli/libjli.dylib
       </vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/branding/logo16x16.png" i32="icons/branding/logo32x32.png" i48="icons/branding/logo48x48.png" i64="icons/branding/logo64x64.png" i128="icons/branding/logo128x128.png"/>
+   <windowImages i16="icons/branding/logo16x16.png" i32="icons/branding/logo32x32.png" i48="icons/branding/logo48x48.png" i64="icons/branding/logo64x64.png" i128="icons/branding/logo128x128.png" i256="icons/branding/logo256x256.png"/>
 
    <splash
       location="bibisco"
@@ -31,6 +31,7 @@ jre/lib/jli/libjli.dylib
       startupMessageRect="7,15,445,20"
       startupForegroundColor="FFFFFF" />
    <launcher name="bibisco">
+      <macosx icon="/bibisco/icons/Eclipse.icns"/>
       <solaris/>
       <win useIco="false">
          <bmp
