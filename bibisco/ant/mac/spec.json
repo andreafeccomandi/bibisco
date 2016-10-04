@@ -1,0 +1,10 @@
+{
+  "icon" : "Eclipse.icns",
+  "title": "bibisco",
+  "background": "dmg-bg.png",
+  "icon-size": 80,
+  "contents": [
+    { "x": 100, "y": 75, "type": "file", "path": "Bibisco.app" },
+    { "x": 450, "y": 75, "type": "link", "path": "/Applications" }
+  ]
+}
