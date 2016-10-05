@@ -159,7 +159,7 @@ public class View extends ViewPart {
 		String lStrDevPixelsPerPx = "1.0";
 		
 		Rectangle lRectangle = getMonitorDimensions();
-		if (lRectangle != null && lRectangle.width > 3500) {
+		if (lRectangle != null && lRectangle.width > 2500) {
 			return "2.0";
 		} 
 		
