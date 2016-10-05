@@ -1,5 +1,6 @@
 <project name="bibisco" basedir="../" default="build_mac">
 	
+	<property name="version" value="1.4.2" />
 	<property name="ant.dir" value="${basedir}/ant" />
 	<property name="db.source.dir" value="${basedir}/db" />
 	<property name="dictionaries.source.dir" value="${basedir}/dictionaries" />
@@ -138,7 +139,7 @@
 		<copy file="${ant.dir}/mac/spec.json"
 		          tofile="${basedir}/build/spec.json"/>
 	     <exec executable="appdmg" dir="${basedir}/build" failonerror="true" outputproperty="stdout">
-	     	<arg line="spec.json Bibisco.dmg"/>
+	     	<arg line="spec.json Bibisco-mac-v${version}.dmg"/>
 	    </exec>
 		<symlink action="delete" link="${basedir}/build/Applications"/>
 		<delete dir="${basedir}/build/Bibisco.app" />
