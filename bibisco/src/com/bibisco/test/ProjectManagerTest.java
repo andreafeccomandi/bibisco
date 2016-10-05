@@ -475,7 +475,7 @@ public class ProjectManagerTest {
 		}	
 		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.1", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test 2", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
@@ -492,7 +492,7 @@ public class ProjectManagerTest {
 		}
 		Assert.assertEquals(AllTests.TEST_PROJECT3_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.1", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test 3 à è ì ç ù £ $ ! /", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
@@ -542,7 +542,7 @@ public class ProjectManagerTest {
 	public void testLoadProject() throws JSONException {
 		ProjectDTO lProjectDTO = ProjectManager.load(AllTests.TEST_PROJECT_ID);
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProjectDTO.getIdProject());
-		Assert.assertEquals("1.4.1", lProjectDTO.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProjectDTO.getBibiscoVersion());
 		Assert.assertEquals("Test", lProjectDTO.getName());
 		Assert.assertEquals("en_US", lProjectDTO.getLanguage());
 		
@@ -1282,7 +1282,7 @@ public class ProjectManagerTest {
 			
 		Assert.assertEquals(AllTests.TEST_PROJECT4_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.1", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test 4", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
@@ -1450,7 +1450,7 @@ public class ProjectManagerTest {
 		
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.1", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test name updated", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
@@ -2173,7 +2173,7 @@ public class ProjectManagerTest {
 		
 		Assert.assertEquals(AllTests.TEST_PROJECT_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.1", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getStrandTaskStatus());
