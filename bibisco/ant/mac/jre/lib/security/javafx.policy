@@ -1,4 +1,0 @@
-// JavaFX runtime get all permissions by default
-grant codeBase "file:${javafx.runtime.home}/lib/jfxrt.jar" {
-    permission java.security.AllPermission;
-}; 

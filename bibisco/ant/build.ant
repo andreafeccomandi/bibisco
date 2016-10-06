@@ -21,7 +21,7 @@
 			<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
 			<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
 			<param name="xulrunner.source.dir" value="${basedir}/xulrunner/win"/>
-			<param name="xulrunner.target.dir" value="${build.dir}/xulrunner/win" />   
+			<param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/win" />   
 		</antcall>
 	</target>
 	<target name="build_linux32">
@@ -69,8 +69,8 @@
     </target>
 	
 	<target name="build">
-		<delete dir="${build.dir}" />
-        <mkdir dir="${build.dir}" /> 
+		<delete dir="${basedir}/build" />
+        <mkdir dir="${basedir}/build" /> 
 		<mkdir dir="${db.target.dir}" />
 		<mkdir dir="${build.dir}/export" />
 		<mkdir dir="${build.dir}/temp" />
@@ -125,6 +125,18 @@
 	    <copy file="${product.source.dir}/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" tofile="${build.dir}/plugins/org.eclipse.ui.workbench_3.105.1.v20130821-1411.jar" overwrite="true"/>
 	</target>
 	
+	
+	<target name="complete_build_win">
+		<delete dir="${basedir}/build/bibisco/jre" />
+		<unzip src="${ant.dir}/win/jre7-win.zip" dest="${basedir}/build/bibisco"></unzip> 
+		<delete dir="${basedir}/build/repository" />
+		<exec executable="C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool" dir="${basedir}/build/bibisco" failonerror="true">
+	     	<arg line="sign /a bibisco.exe"/>
+	    </exec>
+		<zip destfile="${basedir}/build/bibisco-win-v${version}.zip" basedir="${basedir}/build"></zip>
+		<delete dir="${basedir}/build/bibisco" />
+	</target>
+	
 	<target name="complete_build_mac">
 	    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/Bibisco.app/Contents/Info.plist" overwrite="true"/>
 		<copy todir="${basedir}/build/Bibisco.app/Contents/MacOS/jre">
@@ -138,7 +150,7 @@
 	          tofile="${basedir}/build/Eclipse.icns"/>
 		<copy file="${ant.dir}/mac/spec.json"
 		          tofile="${basedir}/build/spec.json"/>
-	     <exec executable="appdmg" dir="${basedir}/build" failonerror="true" outputproperty="stdout">
+	    <exec executable="appdmg" dir="${basedir}/build" failonerror="true" outputproperty="stdout">
 	     	<arg line="spec.json Bibisco-mac-v${version}.dmg"/>
 	    </exec>
 		<symlink action="delete" link="${basedir}/build/Applications"/>

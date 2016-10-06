@@ -3,7 +3,6 @@
 
 <product name="bibisco" uid="bibiscoproduct" id="bibisco.product" application="bibisco.application" version="1.4.2" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -36,9 +35,8 @@
       </win>
    </launcher>
 
-
    <vm>
-      <windows include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</windows>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</windows>
    </vm>
 
    <license>
