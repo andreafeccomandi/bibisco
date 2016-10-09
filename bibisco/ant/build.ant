@@ -35,7 +35,7 @@
         	<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
         	<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux32"/>
-            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux32" />     
+            <param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/linux32" />     
         </antcall>
     </target>
 	<target name="build_linux64">
@@ -134,6 +134,16 @@
 	     	<arg line="sign /a bibisco.exe"/>
 	    </exec>
 		<zip destfile="${basedir}/build/bibisco-win-v${version}.zip" basedir="${basedir}/build"></zip>
+		<delete dir="${basedir}/build/bibisco" />
+	</target>
+	
+	<target name="complete_build_linux32">
+		<delete dir="${basedir}/build/bibisco/jre" />
+		<unzip src="${ant.dir}/linux32/jre7-linux32.zip" dest="${basedir}/build/bibisco"></unzip>
+		<delete dir="${basedir}/build/repository" />
+		<exec executable="tar" dir="${basedir}/build">
+	     	<arg line="-czvf bibisco-linux32-v${version}.tar.gz bibisco"/>
+	    </exec>
 		<delete dir="${basedir}/build/bibisco" />
 	</target>
 	
