@@ -49,7 +49,7 @@
         	<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
         	<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux64"/>
-            <param name="xulrunner.target.dir" value="${build.dir}/xulrunner/linux64" />   
+            <param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/linux64" />   
         </antcall>
     </target>
 	<target name="build_mac">
@@ -143,6 +143,21 @@
 		<delete dir="${basedir}/build/repository" />
 		<exec executable="tar" dir="${basedir}/build">
 	     	<arg line="-czvf bibisco-linux32-v${version}.tar.gz bibisco"/>
+	    </exec>
+		<delete dir="${basedir}/build/bibisco" />
+	</target>
+	
+	<target name="complete_build_linux64">
+		<delete dir="${basedir}/build/bibisco/jre" />
+		<copy file="${ant.dir}/linux64/jre7-linux64.tar.gz" tofile="${basedir}/build/bibisco/jre.tar.gz" overwrite="true"/>
+		<exec executable="tar" dir="${basedir}/build/bibisco">
+	     	<arg line="-xvzf jre.tar.gz"/>
+	    </exec>
+		<delete file="${basedir}/build/bibisco/jre.tar.gz"></delete>
+		<move file="${basedir}/build/bibisco/jre1.7.0_80" tofile="${basedir}/build/bibisco/jre"/>
+		<delete dir="${basedir}/build/repository" />
+		<exec executable="tar" dir="${basedir}/build">
+	     	<arg line="-czvf bibisco-linux64-v${version}.tar.gz bibisco"/>
 	    </exec>
 		<delete dir="${basedir}/build/bibisco" />
 	</target>
