@@ -164,9 +164,7 @@
 	
 	<target name="complete_build_mac">
 	    <copy file="${ant.dir}/mac/Info.plist" tofile="${basedir}/build/Bibisco.app/Contents/Info.plist" overwrite="true"/>
-		<copy todir="${basedir}/build/Bibisco.app/Contents/MacOS/jre">
-            <fileset dir="${ant.dir}/mac/jre"/>
-        </copy>
+		<unzip src="${ant.dir}/mac/jre7-mac.zip" dest="${basedir}/build/Bibisco.app/Contents/MacOS"></unzip> 
 		<delete dir="${basedir}/build/Bibisco.app/Contents/repository" />
 		<symlink link="${basedir}/build" resource="/Applications"/>
 		<copy file="${ant.dir}/mac/dmg-bg.png"
