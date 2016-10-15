@@ -39,6 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,6 +196,20 @@ public class BibiscoServlet extends HttpServlet {
 		pRequest.getRequestDispatcher(INDEX).forward(pRequest, pResponse);
 
 		mLog.debug("End start(HttpServletRequest, HttpServletResponse)");
+	}
+	
+	public void copyToClipboard(HttpServletRequest pRequest,
+			HttpServletResponse pResponse) throws ServletException, IOException {
+		
+		mLog.debug("Start copyToClipboard(HttpServletRequest, HttpServletResponse)");
+		
+		String lStrText = pRequest.getParameter("text");
+		Display lDisplay  = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+		Clipboard lClipboard = new Clipboard(lDisplay); 
+		lClipboard.setContents(new Object[]{lStrText}, new Transfer[]{TextTransfer.getInstance()});
+		lClipboard.dispose();
+		
+		mLog.debug("End copyToClipboard(HttpServletRequest, HttpServletResponse)");
 	}
 	
 	public void completeWizardStep1(HttpServletRequest pRequest,

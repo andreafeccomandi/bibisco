@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.graphics.Rectangle;
@@ -66,8 +69,15 @@ public class View extends ViewPart {
 		// set dev pixels per px 
 		setDevPixelsPerPx(lStrDevPixelsPerPx);
 		
-    	// create MOZILLA browser
-		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
+		// if win or linux create MOZILLA browser
+		ContextManager lContextManager = ContextManager.getInstance();
+    	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux32") || lContextManager.getOS().equals("linux64")) {    
+    		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
+    	}
+    	// if mac use default browser (WEBKIT)
+    	else {
+    		mBrowser = new Browser(pCmpParent, SWT.NONE);
+    	}
     	
 		// enable javascript
 		mBrowser.setJavascriptEnabled(true);
@@ -205,5 +215,23 @@ class BibiscoOpenDirectoryDialog extends BrowserFunction {
 	public Object function(Object[] arguments) {
 		DirectoryDialog dialog = new DirectoryDialog(mShell, SWT.OPEN);
 		return dialog.open();
+	}
+}
+
+class BibiscoCopy extends BrowserFunction {
+
+	Shell mShell;
+
+	BibiscoCopy(Browser pBrowser, String pStrName, Shell pShell) {
+		super(pBrowser, pStrName);
+		mShell = pShell;
+	}
+
+	public Object function(Object[] arguments) {
+		
+		Clipboard lClipboard = new Clipboard(mShell.getDisplay()); 
+		lClipboard.setContents(new Object[]{arguments[0]}, new Transfer[]{TextTransfer.getInstance()});
+		System.out.println("*** BibiscoCopy ***");
+		return true;
 	}
 }

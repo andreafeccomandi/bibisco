@@ -21,7 +21,7 @@
             removePlugins : 'elementspath,resize,scayt,liststyle',
             height : (bibiscoRichTextEditorConfig.height-15) + 'px',
             width : bibiscoRichTextEditorConfig.width + 'px',
-            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols', 
+            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols,ajax', 
             keystrokes : [
                 [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
                 [ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
@@ -35,6 +35,8 @@
                 [ CKEDITOR.CTRL + 49 /*1*/, 'angledbracketleft' ],
                 [ CKEDITOR.CTRL + 50 /*2*/, 'angledbracketright' ],
                 [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
+                [ CKEDITOR.CTRL + 68 /*D*/, 'copyyzzz' ],
+                [ CKEDITOR.CTRL + 85 /*U*/, 'pasteez' ],
             ],
             toolbar : [],
             bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size} bibiscoRichTextEditor-bodyClass-indent-${richTextEditorSettings.indentParagraphEnabled}', 
@@ -117,9 +119,11 @@
 
             initializeButton('undo', 'bibiscoTagRichTextEditorButtonUndo');
             initializeButton('redo', 'bibiscoTagRichTextEditorButtonRepeat');
-            initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
-            initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
-            initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
+            <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
+	            initializeButton('copy', 'bibiscoTagRichTextEditorButtonCopy');
+	            initializeButton('cut', 'bibiscoTagRichTextEditorButtonCut');
+	            initializeButton('paste', 'bibiscoTagRichTextEditorButtonPaste');
+	        </c:if>
             initializeButton('print', 'bibiscoTagRichTextEditorButtonPrint');
             initializeButton('bold', 'bibiscoTagRichTextEditorButtonBold');
             initializeButton('italic', 'bibiscoTagRichTextEditorButtonItalic');
@@ -251,7 +255,7 @@
                 bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
             });
             
-            // if mac os remove copy/cut/paste from context menu
+            // if linux64 os remove copy/cut/paste from context menu
             <c:if test="${OS == 'mac'}">
 	            ev.editor.removeMenuItem('copy');
 	            ev.editor.removeMenuItem('cut');
@@ -486,17 +490,19 @@
             <i class="icon-print"></i>
         </button>
     </div>
-    <div class="btn-group">
-        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
-            <i class="icon-copy"></i>
-        </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
-            <i class="icon-cut"></i>
-        </button>
-        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
-            <i class="icon-paste"></i>
-        </button>
-    </div>
+    <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
+	    <div class="btn-group">
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonCopy" title="<fmt:message key="tag.bibiscoRichTextEditor.copy"/>">
+	            <i class="icon-copy"></i>
+	        </button>
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonCut" title="<fmt:message key="tag.bibiscoRichTextEditor.cut"/>">
+	            <i class="icon-cut"></i>
+	        </button>
+	        <button class="btn" id="bibiscoTagRichTextEditorButtonPaste" title="<fmt:message key="tag.bibiscoRichTextEditor.paste"/>">
+	            <i class="icon-paste"></i>
+	        </button>
+	    </div>
+    </c:if>
     <div class="btn-group" data-toggle="buttons-checkbox">
         <button class="btn" id="bibiscoTagRichTextEditorButtonBold" title="<fmt:message key="tag.bibiscoRichTextEditor.bold"/>">
             <i class="icon-bold"></i>
