@@ -203,11 +203,17 @@ public class BibiscoServlet extends HttpServlet {
 		
 		mLog.debug("Start copyToClipboard(HttpServletRequest, HttpServletResponse)");
 		
-		String lStrText = pRequest.getParameter("text");
-		Display lDisplay  = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
-		Clipboard lClipboard = new Clipboard(lDisplay); 
-		lClipboard.setContents(new Object[]{lStrText}, new Transfer[]{TextTransfer.getInstance()});
-		lClipboard.dispose();
+		final String lStrText = pRequest.getParameter("text");
+		if (StringUtils.isNotBlank(lStrText)) {			
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Display lDisplay  = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+					Clipboard lClipboard = new Clipboard(lDisplay); 
+					lClipboard.setContents(new Object[]{lStrText}, new Transfer[]{TextTransfer.getInstance()});
+					lClipboard.dispose();		    
+				}
+			});
+		}
 		
 		mLog.debug("End copyToClipboard(HttpServletRequest, HttpServletResponse)");
 	}

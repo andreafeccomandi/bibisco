@@ -101,24 +101,15 @@
  
  		var send = function( url, text)
   		{
-  			var async = true;
+ 			var http = new XMLHttpRequest();
+ 			var params = "text="+text;
+ 			http.open("POST", url, true);
+ 			http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ 			http.setRequestHeader("Content-length", params.length);
+ 			http.setRequestHeader("Connection", "close");
+ 			http.send(params);
   
-  			var xhr = createXMLHttpRequest();
-  
-  			if ( !xhr )
-  				return null;
-  
-  			xhr.open( 'POST', url, async );
-  			xhr.onreadystatechange = function()
-				{
-					if ( xhr.readyState == 4 )
-					{
-						xhr = null;
-					}
-				};
-  			xhr.send('text='+text);
-  
-  			return '';
+  			return false;
   		};
  		/* BIBISCO END */
   

@@ -35,7 +35,7 @@
                 [ CKEDITOR.CTRL + 49 /*1*/, 'angledbracketleft' ],
                 [ CKEDITOR.CTRL + 50 /*2*/, 'angledbracketright' ],
                 [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
-                [ CKEDITOR.CTRL + 68 /*D*/, 'copyyzzz' ],
+                [ CKEDITOR.CTRL + 67 /*C*/, 'bibiscoCopy' ],
                 [ CKEDITOR.CTRL + 85 /*U*/, 'pasteez' ],
             ],
             toolbar : [],
