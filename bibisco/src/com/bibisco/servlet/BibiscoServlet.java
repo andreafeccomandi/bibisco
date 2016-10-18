@@ -218,6 +218,49 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("End copyToClipboard(HttpServletRequest, HttpServletResponse)");
 	}
 	
+	public void pasteFromClipboard(HttpServletRequest pRequest, final HttpServletResponse pResponse)
+			throws ServletException, IOException, InterruptedException {
+
+		final boolean[] lBlnDone = new boolean[1];
+		final String[] lStrText = new String[1];
+		
+		mLog.debug("Start pasteFromClipboard(HttpServletRequest, HttpServletResponse)");
+		
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+
+				Display lDisplay = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+				Clipboard lClipboard = new Clipboard(lDisplay);
+				Object lObject = (String) lClipboard.getContents(TextTransfer.getInstance());
+				if (lObject != null) {
+					lStrText[0] = (String) lObject;
+				} else {
+					lStrText[0] = null;
+				}
+				lClipboard.dispose();
+				
+				lBlnDone[0] = true;
+			}
+		});
+		
+		// now wait for the event somehow.  The brute force method:
+		while (!lBlnDone[0]) {
+		  Thread.sleep(10);
+		}
+		
+		pResponse.setContentType("text/xml; charset=UTF-8");
+		Writer lWriter;
+		try {
+			lWriter = pResponse.getWriter();
+			lWriter.write(lStrText[0]);
+		} catch (IOException e) {
+			mLog.error(e);
+			throw new BibiscoException(e, BibiscoException.IO_EXCEPTION);
+		}
+		
+		mLog.debug("End pasteFromClipboard(HttpServletRequest, HttpServletResponse)");
+	}
+	
 	public void completeWizardStep1(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws ServletException, IOException {
 		

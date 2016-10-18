@@ -31,15 +31,22 @@
 		editor.addCommand( 'bibiscoCopy',
 		{
 			exec : function( editor ) {
-			    CKEDITOR.ajax.send( 'BibiscoServlet?action=copyToClipboard', editor.getSelection().getSelectedText() );
+				CKEDITOR.ajax.send( 'BibiscoServlet?action=copyToClipboard', editor.getSelection().getSelectedText() );
 			}
 		});
 		
 		// paste command
-		editor.addCommand( 'pasteez',
+		editor.addCommand( 'bibiscoPaste',
 		{
-			exec : function( editor ) {    
-				editor.insertHtml( 'onironauta' );
+			exec : function( editor ) {
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function() {
+				    if (xhr.readyState == XMLHttpRequest.DONE) {
+				        editor.insertHtml(xhr.responseText);
+				    }
+				}
+				xhr.open('GET', 'BibiscoServlet?action=pasteFromClipboard', true);
+				xhr.send(null);
 			}
 		});
 	}

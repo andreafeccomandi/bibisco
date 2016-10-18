@@ -111,6 +111,19 @@
   
   			return false;
   		};
+  		
+  		var get = function(url)
+  		{
+  			var http = new XMLHttpRequest();
+  			http.open("GET", url, true);
+  			http.onreadystatechange = function() {//Call a function when the state changes.
+  				if(http.readyState == 4 && http.status == 200) {
+  					alert(http.responseText);
+  					return http.responseText;
+  				}
+  			}
+  			return false;
+  		};
  		/* BIBISCO END */
   
  		return 	/** @lends CKEDITOR.ajax */ {
@@ -165,7 +178,12 @@
  			send : function (url, text) 
  			{
  				return send(url, text);
- 			}
+ 			},
+ 			
+ 			get : function (url) 
+ 			{
+ 				return get(url);
+ 			},
  		};
  	})();
  
