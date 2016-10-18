@@ -37,6 +37,7 @@
                 [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
                 [ CKEDITOR.CTRL + 67 /*C*/, 'bibiscoCopy' ],
                 [ CKEDITOR.CTRL + 86 /*V*/, 'bibiscoPaste' ],
+                [ CKEDITOR.CTRL + 88 /*X*/, 'bibiscoCut' ],
             ],
             toolbar : [],
             bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size} bibiscoRichTextEditor-bodyClass-indent-${richTextEditorSettings.indentParagraphEnabled}', 
