@@ -204,6 +204,7 @@ public class BibiscoServlet extends HttpServlet {
 		mLog.debug("Start copyToClipboard(HttpServletRequest, HttpServletResponse)");
 		
 		final String lStrText = pRequest.getParameter("text");
+		mLog.debug("Text to copy: ", lStrText);
 		if (StringUtils.isNotBlank(lStrText)) {			
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {

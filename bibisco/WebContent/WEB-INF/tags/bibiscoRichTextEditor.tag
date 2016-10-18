@@ -21,7 +21,7 @@
             removePlugins : 'elementspath,resize,scayt,liststyle',
             height : (bibiscoRichTextEditorConfig.height-15) + 'px',
             width : bibiscoRichTextEditorConfig.width + 'px',
-            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols,ajax', 
+            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols', 
             keystrokes : [
                 [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
                 [ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],

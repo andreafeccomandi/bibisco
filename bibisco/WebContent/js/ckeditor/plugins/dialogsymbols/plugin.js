@@ -31,7 +31,12 @@
 		editor.addCommand( 'bibiscoCopy',
 		{
 			exec : function( editor ) {
-				CKEDITOR.ajax.send( 'BibiscoServlet?action=copyToClipboard', editor.getSelection().getSelectedText() );
+				var xhr = new XMLHttpRequest();
+	 			var params = "text="+editor.getSelection().getSelectedText();
+	 			xhr.open("POST", 'BibiscoServlet?action=copyToClipboard', true);
+	 			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	 			xhr.setRequestHeader("Content-length", params.length);
+	 			xhr.send(params);
 			}
 		});
 		
