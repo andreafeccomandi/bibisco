@@ -21,7 +21,12 @@
             removePlugins : 'elementspath,resize,scayt,liststyle',
             height : (bibiscoRichTextEditorConfig.height-15) + 'px',
             width : bibiscoRichTextEditorConfig.width + 'px',
+            <c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
             extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols', 
+            </c:if>
+            <c:if test="${OS == 'mac'}">
+            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols,bibiscoClipboard',
+            </c:if>
             keystrokes : [
                 [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
                 [ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
