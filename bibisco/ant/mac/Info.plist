@@ -56,6 +56,7 @@
 		</array>
 <key>CFBundleDisplayName</key>
     <string>Bibisco</string>
+    <key>NSHighResolutionCapable</key>
+    <string>True</string>
   </dict>
-
 </plist>
