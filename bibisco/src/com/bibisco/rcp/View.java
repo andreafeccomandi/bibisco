@@ -63,19 +63,21 @@ public class View extends ViewPart {
 		// cancel Workbench Auto-Save Job: without workspace cause bibisco crash!
 		cancelWorkbenchAutoSaveJob();
 		
-		// calculate dev pixels per px
-		String lStrDevPixelsPerPx = calculateDevPixelsPerPx();
-		
-		// set dev pixels per px 
-		setDevPixelsPerPx(lStrDevPixelsPerPx);
-		
-		// if win or linux create MOZILLA browser
 		ContextManager lContextManager = ContextManager.getInstance();
     	if (lContextManager.getOS().equals("win") || lContextManager.getOS().equals("linux32") || lContextManager.getOS().equals("linux64")) {    
+    		
+    		// calculate dev pixels per px
+    		String lStrDevPixelsPerPx = calculateDevPixelsPerPx();
+    		
+    		// set dev pixels per px 
+    		setDevPixelsPerPx(lStrDevPixelsPerPx);
+    		    		
+    		// if win or linux create MOZILLA browser
     		mBrowser = new Browser(pCmpParent, SWT.MOZILLA);
     	}
-    	// if mac use default browser (WEBKIT)
+    	
     	else {
+    		// if mac use default browser (WEBKIT)
     		mBrowser = new Browser(pCmpParent, SWT.NONE);
     	}
     	
