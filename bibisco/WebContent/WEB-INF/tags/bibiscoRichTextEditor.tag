@@ -40,9 +40,11 @@
                 [ CKEDITOR.CTRL + 49 /*1*/, 'angledbracketleft' ],
                 [ CKEDITOR.CTRL + 50 /*2*/, 'angledbracketright' ],
                 [ CKEDITOR.CTRL + 51 /*3*/, 'longdash' ],
+            <c:if test="${OS == 'mac'}">
                 [ CKEDITOR.CTRL + 67 /*C*/, 'bibiscoCopy' ],
                 [ CKEDITOR.CTRL + 86 /*V*/, 'bibiscoPaste' ],
                 [ CKEDITOR.CTRL + 88 /*X*/, 'bibiscoCut' ],
+            </c:if>
             ],
             toolbar : [],
             bodyClass : 'richTextEditor bibiscoRichTextEditor-bodyClass-${richTextEditorSettings.font}${richTextEditorSettings.size} bibiscoRichTextEditor-bodyClass-indent-${richTextEditorSettings.indentParagraphEnabled}', 
@@ -261,7 +263,7 @@
                 bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
             });
             
-            // if linux64 os remove copy/cut/paste from context menu
+            // if mac os remove copy/cut/paste from context menu
             <c:if test="${OS == 'mac'}">
 	            ev.editor.removeMenuItem('copy');
 	            ev.editor.removeMenuItem('cut');
