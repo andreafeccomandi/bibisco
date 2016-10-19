@@ -20,6 +20,8 @@
 			<param name="dictionaries.target.dir" value="${basedir}/build/bibisco/dictionaries" />
 			<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
 			<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
+		</antcall>
+		<antcall target="add_xulrunner">
 			<param name="xulrunner.source.dir" value="${basedir}/xulrunner/win"/>
 			<param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/win" />   
 		</antcall>
@@ -34,9 +36,11 @@
         	<param name="dictionaries.target.dir" value="${basedir}/build/bibisco/dictionaries" />
         	<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
         	<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
+        </antcall>
+		<antcall target="add_xulrunner">
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux32"/>
             <param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/linux32" />     
-        </antcall>
+		</antcall>
     </target>
 	<target name="build_linux64">
         <antcall target="build">
@@ -48,12 +52,13 @@
         	<param name="dictionaries.target.dir" value="${basedir}/build/bibisco/dictionaries" />
         	<param name="license.target.dir" value="${basedir}/build/bibisco/license" />
         	<param name="WebContent.target.dir" value="${basedir}/build/bibisco/WebContent" />
+        </antcall>
+		<antcall target="add_xulrunner">
         	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/linux64"/>
             <param name="xulrunner.target.dir" value="${basedir}/build/bibisco/xulrunner/linux64" />   
         </antcall>
     </target>
 	<target name="build_mac">
-		<delete dir="${basedir}/build" />
         <antcall target="build">
         	<param name="build.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse"/>
         	<param name="bibiscoConfig.file" value="${ant.dir}/mac/bibiscoConfig_prod.xml"/>
@@ -63,8 +68,6 @@
         	<param name="dictionaries.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/dictionaries" />
         	<param name="license.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/license" />
         	<param name="WebContent.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/WebContent" />
-        	<param name="xulrunner.source.dir" value="${basedir}/xulrunner/mac"/>
-            <param name="xulrunner.target.dir" value="${basedir}/build/Bibisco.app/Contents/Eclipse/xulrunner/mac" />   
         </antcall>
     </target>
 	
@@ -83,12 +86,6 @@
 		<copy todir="${WebContent.target.dir}">
             <fileset dir="${WebContent.source.dir}"/>
         </copy>
-		<copy todir="${WebContent.target.dir}">
-            <fileset dir="${WebContent.source.dir}"/>
-        </copy>
-		<copy todir="${xulrunner.target.dir}">
-            <fileset dir="${xulrunner.source.dir}"/>
-        </copy>
 		<copy todir="${license.target.dir}">
 		    <fileset dir="${license.source.dir}"/>
 		</copy>
@@ -96,7 +93,14 @@
 		<copy file="${bibiscoConfig.file}" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true"/>
 		<copy file="${ant.dir}/common/log4j_prod.xml" tofile="${src.dir}/log4j.xml" overwrite="true"/>
 	</target>  
-
+	
+	<target name="add_xulrunner">
+		<copy todir="${xulrunner.target.dir}">
+            <fileset dir="${xulrunner.source.dir}"/>
+        </copy>
+	</target> 
+	
+	
 	<target name="restore_svil_environment_win">
 		<copy file="${ant.dir}/win/bibisco.product" tofile="${basedir}/bibisco.product" overwrite="true" />
 		<copy file="${ant.dir}/win/bibiscoConfig_svil.xml" tofile="${src.dir}/bibiscoConfig.xml" overwrite="true" />
