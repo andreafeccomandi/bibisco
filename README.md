@@ -14,9 +14,22 @@ And, most of all, with bibisco you can **know everything about your characters**
 
 ## Installation
 
-1. Download bibisco zip for your operating system at https://github.com/andreafeccomandi/bibisco/releases
-2. Unzip downloaded file.
-3. If your operating system is windows launch bibisco.exe; if your operating system is linux launch bibisco
+Download bibisco for your operating system at https://github.com/andreafeccomandi/bibisco/releases
+
+### Windows and Linux
+
+bibisco doesn't need to be installed. After download:
+
+1. unzip downloaded file
+2. if your operating system is windows launch bibisco.exe; if your operating system is linux launch bibisco
+3. write your novel
+
+### Mac OS X
+
+1. on System Preferences -> Security and Privacy, you must have "Allow apps downloaded from" set to "Anywhere." 
+2. open downloaded dmg file
+3. follow the istructions
+4. write your novel
 
 Note!  bibisco is a java application and ships its own JRE (Java Runtime Environment). You don't need to install or update JRE.
 
@@ -36,7 +49,7 @@ If you upgrade bibisco from version 1.2.1 or previous:
 
 ## Support
 
-You can support bibisco in a variuos way:
+You can support bibisco in various ways:
 
 * report [bugs or ideas](https://github.com/andreafeccomandi/bibisco/issues).
 * translate bibisco in missing languages, write to info@bibisco.com to get more info.
