@@ -4,7 +4,7 @@
   "background": "dmg-bg.png",
   "icon-size": 80,
   "contents": [
-    { "x": 100, "y": 75, "type": "file", "path": "Bibisco.app" },
-    { "x": 450, "y": 75, "type": "link", "path": "/Applications" }
+    { "x": 100, "y": 90, "type": "file", "path": "Bibisco.app" },
+    { "x": 590, "y": 90, "type": "link", "path": "/Applications" }
   ]
 }
