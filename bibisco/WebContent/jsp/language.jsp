@@ -67,6 +67,7 @@
 			<label id="bibiscoLanguageSelectBibiscoLanguageLabel" class="control-label" for="bibiscoLanguageSelectBibiscoLanguage"><fmt:message key="jsp.language.form.selectLanguage.label" /></label>
 			<div class="controls bibiscoLanguageSelectLanguage">
 				<select class="selectpicker" name="locale" id="bibiscoLanguageSelectLanguage">
+					<option value="cs_CZ"><fmt:message key="jsp.language.form.selectLanguage.option.cs" /></option>
 					<option value="de_DE"><fmt:message key="jsp.language.form.selectLanguage.option.de" /></option>
 					<option value="en_CA"><fmt:message key="jsp.language.form.selectLanguage.option.en_CA" /></option>
 					<option value="en_UK"><fmt:message key="jsp.language.form.selectLanguage.option.en_UK" /></option>

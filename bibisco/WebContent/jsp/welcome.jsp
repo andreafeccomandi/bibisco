@@ -122,6 +122,7 @@
 					<p class="bibiscoNotSelectableText"><fmt:message key="jsp.welcome.step1.p.1" /></p>
 					<div class="controls bibiscoLanguageSelectLanguage">
 						<select class="selectpicker" name="locale" id="bibiscoWelcomeSelectLanguage">
+							<option value="cs_CZ"><fmt:message key="jsp.language.form.selectLanguage.option.cs" /></option>
 							<option value="de_DE"><fmt:message key="jsp.language.form.selectLanguage.option.de" /></option>
 							<option value="en_CA"><fmt:message key="jsp.language.form.selectLanguage.option.en_CA" /></option>
 							<option value="en_UK"><fmt:message key="jsp.language.form.selectLanguage.option.en_UK" /></option>

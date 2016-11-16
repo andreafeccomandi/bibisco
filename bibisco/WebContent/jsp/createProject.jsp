@@ -116,6 +116,7 @@
 			<div class="controls">
 				<select class="selectpicker" name="bibiscoCreateProjectSelectLanguage" id="bibiscoCreateProjectSelectLanguage">
 					<option value="ca_ES"><fmt:message key="jsp.createProject.form.selectLanguage.option.ca_ES" /></option>
+					<option value="cs_CZ"><fmt:message key="jsp.createProject.form.selectLanguage.option.cs_CZ" /></option>
 					<option value="da_DK"><fmt:message key="jsp.createProject.form.selectLanguage.option.da_DK" /></option>
 					<option value="de_DE"><fmt:message key="jsp.createProject.form.selectLanguage.option.de_DE" /></option>
 					<option value="en_AU"><fmt:message key="jsp.createProject.form.selectLanguage.option.en_AU" /></option>
