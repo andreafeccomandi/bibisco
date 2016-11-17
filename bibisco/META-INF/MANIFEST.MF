@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: bibisco
 Bundle-SymbolicName: bibisco;singleton:=true
-Bundle-Version: 1.4.2
+Bundle-Version: 1.5.0
 Bundle-Activator: com.bibisco.rcp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime

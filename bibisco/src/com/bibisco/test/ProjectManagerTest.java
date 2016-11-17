@@ -475,7 +475,7 @@ public class ProjectManagerTest {
 		}	
 		Assert.assertEquals(AllTests.TEST_PROJECT2_ID, lProject.getIdProject());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getFabulaTaskStatus());
-		Assert.assertEquals("1.4.2", lProject.getBibiscoVersion());
+		Assert.assertEquals("1.5.0", lProject.getBibiscoVersion());
 		Assert.assertEquals("en_US", lProject.getLanguage());
 		Assert.assertEquals("Test 2", lProject.getName());
 		Assert.assertEquals(TaskStatus.TODO.getValue(), lProject.getPremiseTaskStatus());
