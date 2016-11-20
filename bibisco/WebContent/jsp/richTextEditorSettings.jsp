@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=utf-8" %>
 <%@ page import="com.bibisco.manager.LocaleManager"%>
 <%@ taglib prefix="fmt" uri="/jstl/fmt"%>
+<%@ taglib prefix="c" uri="/jstl/core"%>
 <fmt:setLocale value="<%=LocaleManager.getInstance().getLocale().toString()%>"/>
 
 <script type="text/javascript">
@@ -162,6 +163,7 @@
 				</div>
 			</div>
 		</div>
+		<c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
 		<div class="control-group">
 			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.spellCheck" /></label>
 			<div class="controls">
@@ -171,6 +173,7 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<div class="control-group">
 			<label class="control-label" for="inputPassword"><fmt:message key="jsp.richTextEditorSettings.autoSave" /></label>
 			<div class="controls">

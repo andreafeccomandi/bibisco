@@ -25,7 +25,7 @@
             extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols', 
             </c:if>
             <c:if test="${OS == 'mac'}">
-            extraPlugins : 'onchange,highlightText,bibiscospell,dialogsymbols,bibiscoClipboard',
+            extraPlugins : 'onchange,highlightText,dialogsymbols,bibiscoClipboard',
             </c:if>
             keystrokes : [
                 [ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
@@ -73,17 +73,19 @@
             
             $(element).bind('setData.ckeditor', function() {
                 bibiscoRichTextEditor.document.on('keyup', function(event) {
-                    var keyCode = event.data.$.keyCode;
-                    if (keyCode == '13' || keyCode == '32') {
-                        bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor);
-                    }
+            		<c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
+                    	var keyCode = event.data.$.keyCode;
+	                    if (keyCode == '13' || keyCode == '32') {
+	                        bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor);
+	                    }
+	                </c:if>           
                     bibiscoCharacterWordCount(bibiscoRichTextEditor.getText());
                 });
                 
                 bibiscoRichTextEditor.document.on('keydown', function(e) {
-                   
                 });
             });
+            
         });
         
         // initialize change status variables
