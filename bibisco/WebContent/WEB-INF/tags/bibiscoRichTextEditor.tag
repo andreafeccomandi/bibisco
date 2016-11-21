@@ -257,7 +257,9 @@
             
             // spell check after paste
             ev.editor.on('afterPaste', function(evt) {
+            	<c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
                 bibiscoRichTextEditorSpellCheck(evt.editor, false);
+                </c:if>
             });    
             
             // character word count after every command exec
@@ -390,9 +392,11 @@
     
 	function bibiscoRichTextEditorSave(humanSave, saveConfig) {
     	
+		<c:if test="${OS == 'win' || OS == 'linux32' || OS == 'linux64'}">
     	if (humanSave) {
 			bibiscoRichTextEditorSpellCheck(bibiscoRichTextEditor, true);
     	}
+    	</c:if>
     	
     	var data;
     	if (saveConfig.extraData) {

@@ -49,8 +49,12 @@ public class RichTextEditorSettingsManager {
 		// indent paragraph
 		lRichTextEditorSettings.setIndentParagraphEnabled(Boolean.valueOf(lPropertiesManager.getProperty("indentParagraphEnabled")));
 		
-		// spell check enabled
-		lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lPropertiesManager.getProperty("spellCheckEnabled")));
+		// spell check enabled: for mac is always false
+		if (ContextManager.getInstance().getOS().equals("mac")) {
+			lRichTextEditorSettings.setSpellCheckEnabled(false);
+		} else {			
+			lRichTextEditorSettings.setSpellCheckEnabled(Boolean.valueOf(lPropertiesManager.getProperty("spellCheckEnabled")));
+		}
 		
 		// auto save enable
 		lRichTextEditorSettings.setAutoSaveEnabled(Boolean.valueOf(lPropertiesManager.getProperty("autoSaveEnabled")));
