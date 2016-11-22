@@ -401,7 +401,7 @@ function bibiscoRichTextEditorSpellCheck(pRichTextEditor, pSync) {
 					for ( var i = 0; i < spellCheckResult.misspelledWords.length; i++) {
 						var misspelledWord = spellCheckResult.misspelledWords[i].misspelledWord;
 						
-						var misspelledWordRegEx = new RegExp("(^|[^a-zA-Z�������������������������������������������������������������������])("+misspelledWord+")([^a-zA-z�������������������������������������������������������������������]|$)");
+						var misspelledWordRegEx = new RegExp("(^|[^a-zA-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ])("+misspelledWord+")([^a-zA-zÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]|$)");
 						var misspelledWordOccurences = spellCheckResult.misspelledWords[i].occurences;
 						var misspelledWordOccurencesFound = 0;
 						var suggestions = spellCheckResult.misspelledWords[i].suggestions;
