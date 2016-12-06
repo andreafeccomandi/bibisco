@@ -2,8 +2,8 @@
   "name": "bibisco",
   "productName": "Bibisco",
   "version": "0.0.0",
-  "description": "My geometric app",
-  "license": "MIT",
+  "description": "writing novel applicatoin",
+  "license": "GPL v2",
   "repository": "andreafeccomandi@gmail.com/bibisco",
   "author": {
     "name": "Andrea Feccomandi",
@@ -16,9 +16,9 @@
     "build": "electron-packager . --out=dist --asar --overwrite --all"
   },
   "files": [
-    "index.js",
-    "index.html",
-    "index.css"
+    "app/index.js",
+    "app/index.html",
+    "app/index.css"
   ],
   "keywords": [
     "electron-app",
