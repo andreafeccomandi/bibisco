@@ -1,0 +1,1017 @@
+/* DISABLE SELECTION ON TEXT */
+
+.page-header, .thumbnail, .navbar, .btn, label, th, td, a, .carousel-control, .ui-dialog-title, div.bibiscoEmptyThumbnailListElements, .bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-o-user-select: none;   
+}
+
+.btn:focus {
+	outline: 0;
+}
+
+.dialog-no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+/* COMMON STYLES */
+  
+.bibiscoDefaultBrowserUrl {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.bibiscoHeaderButton {
+    margin-top: 2px;
+}
+
+.bibiscoNotEmptyThumbnailListElements {
+    width: 100%; 
+    overflow: auto;
+}
+
+.bibiscoScrollable {
+	position: relative;
+}
+
+.bibiscoDialogFooter table {
+	width: 100%;
+}
+
+.bibiscoDialogFooter td:last {
+    text-align: right;
+}
+
+.bibiscoDialogFooter td:first {
+    text-align: left;
+}
+
+.bibiscoDialogFooter a {
+    margin-left: 5px;
+}
+
+/* THUMBNAIL */
+
+.bibiscoThumbnailTagHover {
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+
+.bibiscoThumbnailTagMove {
+	background-color: #FCF8E3;
+	cursor: move;
+}
+
+.bibiscoEmptyThumnailListBox {
+	margin-top: 30px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 20px; 
+	padding-bottom: 35px; 
+	padding-left: 40px;
+}
+
+.bibiscoEmptyThumnailListBox p {
+	margin-top: 16px;
+}
+
+.bibiscoThumbnail {
+	height: 100px;
+}
+
+.bibiscoThumbnail table {
+     width: 100%;
+}
+
+.bibiscoThumbnailSmall {
+    height: 70px;
+}
+
+.bibiscoThumbnailSmall table {
+     width: 100%;
+}
+
+.bibiscoThumbnail table {
+     width: 100%;
+}
+
+.bibiscoThumbnailHeader td:first-child {
+	text-align: left;
+	vertical-align: top;
+}
+
+.bibiscoThumbnailHeader td:last-child {
+    text-align: right;
+    vertical-align: top;
+}
+
+.bibiscoThumbnailSpacingSmall td {	
+    height: 10px;
+}
+
+.bibiscoThumbnailSpacing td {
+    height: 20px;
+}
+
+.bibiscoThumbnailDescription td {
+    height: 40px; 
+    vertical-align: top;
+}
+
+.bibiscoThumbnailToolbar {
+	 height: 10px;
+	 text-align: right;
+}
+
+/* INDEX */
+.bibiscoIndexBody {
+	height: 100%; 
+	overflow: hidden;
+}
+
+/* LOADING */
+
+.bibiscoLoading { 
+	background: url(../img/bibisco-spinner.gif) center no-repeat !important;
+}
+
+
+/* IMAGE */
+
+.bibiscoLoadingImage { 
+	background: #555555 url(../img/bibisco-spinner-gray.gif) center no-repeat !important;
+	width: 810px; 
+	height: 500px; 
+	text-align:center; 
+	line-height:500px;  
+	vertical-align: middle;
+}
+
+.bibiscoAddImageIFrameUploadTarget {
+	width:0;
+	height:0;
+	border:0px solid #fff;
+}
+
+.bibiscoAddImageForm {
+	margin-top: 10px;
+}
+
+/* IMAGE CAROUSEL */
+
+.bibiscoCarouselImage {
+	overflow: hidden !important;
+}
+
+
+.bibiscoCarouselImageBackground { 
+	background-color: #555555 !important;
+	text-align: center;
+}
+
+.bibiscoCarouselImageBackground img {
+    display: inline;
+    max-height: 500px;
+    height: auto; 
+    max-width: 810px; 
+    width: auto;
+}
+
+.bibiscoCarouselImageCommands {
+    text-align: right;
+}
+
+.bibiscoCarouselImageCommands a {
+    margin-left: 5px;
+}
+
+/* THUMBNAIL TITLE FORM */
+.bibiscoThumbnailTitleForm {
+	margin-top: 10px;
+}
+
+/* RICH TEXT EDITOR TASK STATUS DIALOG */ 
+.bibiscoRichTextEditorTaskStatusDialog {
+	text-align: center; 
+	margin-top: 5px;
+}
+
+.bibiscoRichTextEditorTaskStatusDialog hr {
+    text-align: center; 
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.bibiscoRichTextEditorTaskStatusDialogDescriptionRow {
+	
+}
+
+.bibiscoRichTextEditorTaskStatusDialogDescription {
+    text-align: left; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+    font-size: 16px;
+}
+
+
+/* RICH TEXT EDITOR */
+
+.bibiscoTagRichTextEditorToolbar {
+	display: none; 
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	margin-left: 9px;
+}
+
+.bibiscoTagRichTextEditorToolbar button {
+	font-size: 1.2em;
+}
+
+.bibiscoRichTextEditorLastUpdate {
+	padding-left: 10px;
+}
+
+.bibiscoRichTextEditorWordCharacterCount {
+	padding-right: 15px;
+	text-align: right; 
+}
+
+.bibiscoRichTextEditor-bodyClass-courierbig {
+	font-family: courier new, courier, monospace; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-couriermedium {
+	font-family: courier new, courier, monospace; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-couriersmall {
+	font-family: courier new, courier, monospace; 
+	font-size: 16px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timesbig {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timesmedium {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-timessmall {
+	font-family: Times New Roman, Times, serif; 
+	font-size: 16px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialbig {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 20px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialmedium {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 18px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-arialsmall {
+	font-family: Helvetica, Arial, sans-serif; 
+	font-size: 16px; 
+}
+
+.bibiscoRichTextEditor-bodyClass-indent-true {
+	text-indent: 30px;
+}
+
+.bibiscoRichTextEditor-bodyClass-indent-false {
+	
+}
+
+.bibiscoRichTextEditorSettings {
+	margin-top: 10px;
+}
+
+.bibiscoRichTextEditorSettingsSample {
+	background-color: white; 
+	padding: 10px; 
+	margin-top: 30px; 
+	width: 530px; 
+	height: 120px;
+}
+
+.bibiscoRichTextEditorSettingsFont button[name="courier"]  {
+	font-family: Courier new;
+}
+
+.bibiscoRichTextEditorSettingsFont button[name="times"]  {
+    font-family: Times New Roman, Times, serif;
+}
+
+.bibiscoRichTextEditorSettingsFont button[name="arial"]  {
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.bibiscoRichTextEditorTipButton {
+	margin-right: 5px;
+}
+
+/* MENU */
+.bibiscoMenu {
+	z-index: 100;
+}
+
+/* LOADING PAGE */
+.bibiscoLoadingPage { 
+	margin-left: 150px; 
+	margin-right: 150px;
+}
+
+.bibiscoLoadingPage div.progress {
+	 height: 50px;  
+	 border-radius: 20px;
+}
+
+.bibiscoLoadingPage div.bar {
+     height: 50px;  
+}
+
+/* WELCOME */
+
+.bibiscoWelcomeMotivational {
+    margin-top: 60px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; 
+    height: 300px;
+}
+
+.bibiscoWelcomeMotivational form {
+	position: relative;
+}
+
+.bibiscoWelcomeMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoWelcomeMotivational p {
+    margin-top: 20px;
+}
+
+.bibiscoWizardButtons {
+	position: absolute;
+	top: 195px;
+}
+
+.bibiscoStartWizardNotes p {
+	margin-top: 10px; 
+	font-size: 14px;
+	line-height: 18px;
+}
+
+/* START */
+
+.bibiscoStartMotivational {
+    margin-top: 60px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; 
+    height: 200px;
+}
+
+.bibiscoStartMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoStartBtnToolbar {
+    margin-top: 20px;
+}
+
+.bibiscoStartMotivational a {
+    margin-right: 10px;
+}
+
+
+.bibiscoStartSettings {
+    top: 16px;
+}
+
+/* SUGGESTIONS */
+
+.bibiscoSuggestionsCarousel {
+	width: 100%; 
+	height: 350px; 
+	overflow: scroll;
+}
+
+.bibiscoSuggestions {
+	margin-top: 10px; 
+	margin-left: 10px; 
+	width: 450px;
+}
+
+div.bibiscoSuggestions p {
+	text-align: justify;
+}
+
+div.bibiscoSuggestions h4 {
+	margin-bottom: 10px;
+}
+
+.bibiscoTip {
+    margin-top: 10px; 
+    margin-left: 10px; 
+    width: 450px;
+}
+
+div.bibiscoTip p {
+    text-align: justify;
+}
+
+div.bibiscoTip h4 {
+    margin-bottom: 10px;
+}
+
+/* PROJECT */
+
+.bibiscoProjectMotivational {
+	margin-top: 60px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 30px; 
+	padding-bottom: 35px; 
+	padding-left: 40px; 
+	height: 200px;
+}
+
+.bibiscoProjectMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoProjectMotivational p {
+    margin-top: 40px;
+}
+
+.bibiscoProjectMotivational a {
+     margin-right: 10px;
+}
+
+
+
+.bibiscoCreateProject {
+	margin-top: 10px;
+}
+
+/* we know that select picker transforms select tag in a tag inside a div... */
+.bibiscoCreateProject form div.control-group div.controls div.selectpicker {
+    width: 230px;
+}
+
+.bibiscoImportProject {
+    margin-top: 10px;
+}
+
+.bibiscoImportProjectIFrameUploadTarget {
+    width:0;
+    height:0;
+    border:0px solid #fff;
+}
+
+.bibiscoSelectProject {
+	margin-top: 10px; 
+	width: 100%; 
+	height: 250px;
+}
+
+.bibiscoSelectProject table {
+	width: 465px; 
+	margin-left: 15px;
+}
+
+.bibiscoSelectProject span {
+	display: inline-block; 
+	width: 360px;
+}
+
+.bibiscoSelectProject a {
+    margin-left: 5px;
+}
+
+.bibiscoChangeProjectName {
+	margin-top: 10px;
+}
+
+/* ARCHITECTURE */
+
+.bibiscoStrandsNotEmptyThumbnailListElements {
+	height: 350px; 
+}
+
+.bibiscoStrandsSectionTitle {
+	margin-top: 50px;
+}
+
+/* CHARACTERS */
+.bibiscoMainCharactersNotEmptyThumbnailListElements {
+	height: 180px; 
+}
+
+.bibiscoMainCharactersEmptyThumbnailListElements {
+	height: 180px;
+}
+
+.bibiscoSecondaryCharactersSectionTitle {
+    margin-top: 20px;
+}
+
+.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
+    height: 270px; 
+}
+
+/* CHARACTER */
+
+.bibiscoCharacterSectionTitleFirstRow {
+	margin-top: 0px; 
+    margin-bottom: 9px; 
+    padding-bottom: 5px;
+}
+
+.bibiscoCharacterSectionTitle {
+    margin-top: 10px; 
+    margin-bottom: 9px; 
+    padding-bottom: 5px;
+}
+
+.bibiscoCharacterInfo {
+	text-align: center; 
+	margin-top: 5px;
+}
+
+.bibiscoCharacterInfo hr {
+    text-align: center; 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+}
+
+.bibiscoCharacterInfoInterview span {
+	height: 30px; 
+	text-align: left; 
+	font-size: 16px; 
+	line-height: 27px;
+}
+
+/* we know that select picker transforms select tag in a tag insiede a div... */
+.bibiscoCharacterInfoInterview div.selectpicker {
+	width: 750px; 
+	text-align: left;
+}
+
+.bibiscoCharacterInfoFreeText {
+	text-align: left; 
+	height: 28px; 
+	margin-left: 10px; 
+	margin-right: 10px; 
+	font-size: 16px;
+}
+
+
+.bibiscoCharacterInfoDivInterviewButtons {
+	text-align: center;
+	margin-top: 13px;
+}
+
+.bibiscoCharacterInfoDivInterviewButtons a {
+    width: 170px;
+    margin-right: 15px;
+}
+
+.bibiscoCharacterInfoTaskStatusSelector {
+	width: 281px;
+}
+
+.bibiscoCharacterInfoDialogButtons {
+    width: 281px;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector {
+	text-align: center;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector div {
+    width: 216px;
+}
+
+.bibiscoCharacterInfoInterviewFreeTextSelector a {
+    width: 85px;
+}
+
+/* LOCATIONS */
+.bibiscoLocationTitleForm {
+    margin-top: 10px;
+}
+
+.bibiscoLocationsNotEmptyThumbnailListElements {
+    height: 600px;
+}
+
+/* CHAPTERS */
+.bibiscoChaptersNotEmptyThumbnailListElements {
+	height: 600px;
+}
+
+/* CHAPTER */
+
+.bibiscoScenesNotEmptyThumbnailListElements {
+    height: 400px;
+}
+
+/* SCENE */
+
+.bibiscoSceneTags div.accordion-heading span {
+	font-size: 14px;
+}
+
+.bibiscoSceneTags div.accordion-inner button {
+	margin-top: 5px;
+}
+
+.bibiscoSceneTagsExplains {
+    font-size: 13px;
+    font-style: italic;
+}
+
+.bibiscoSceneTagsExplainsPointOfViewCharacter {
+	margin-top: 10px;
+}
+
+.bibiscoSceneSelectRevision {
+	 width:200px; 
+	 margin-left: 5px;
+}
+
+.bibiscoSceneSelectRevisionOriginalOption {
+	font-style: italic;
+}
+
+.bibiscoSceneCommands a {
+	margin-left: 5px;
+}
+
+.bibiscoSceneCommands table {
+     width: 100%;
+}
+
+.bibiscoSceneTipButton {
+	margin-right: 5px;
+}
+
+/* PROJECT FROM SCENE */
+.bibiscoProjectFromScene {
+	margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTab {
+	margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTab hr {
+    margin-top: 10px;
+}
+
+.bibiscoProjectFromSceneTab div.select2-container {
+    margin-left: 50px;
+    margin-bottom: 5px;
+}
+
+.bibiscoProjectFromSceneTabContent {
+    text-align: justify; 
+    width: 100%; 
+}
+
+.bibiscoProjectFromSceneImage {
+    width: 100%;  
+    height: auto; 
+    display: inline;
+}
+
+/* ANALYSIS */
+
+.bibiscoAnalysisNoInfoAvailable {
+	margin-top: 10px; 
+	margin-left: 10px; 
+	font-size: 16px;
+	line-height: 1.5em;
+}
+
+
+.bibiscoAnalysisItemsRow0 {
+    background-color: #0084D1 !important;
+}
+
+.bibiscoAnalysisItemsRow1 {
+	background-color: #004586 !important;
+}
+
+.bibiscoAnalysisItemsRow2 {
+   background-color: #FF420E !important;
+}
+
+.bibiscoAnalysisItemsRow3 {
+    background-color: #FFD320 !important;
+}
+
+.bibiscoAnalysisItemsRow4 {
+    background-color: #579D1C !important;
+}
+
+.bibiscoAnalysisItemsRow5 {
+    background-color: #7E0021 !important;
+}
+
+.bibiscoAnalysisItemsRow6 {
+    background-color: #83CAFF !important;
+}
+
+.bibiscoAnalysisItemsRow7 {
+    background-color: #314004 !important;
+}
+
+.bibiscoAnalysisItemsRow8 {
+    background-color: #AECF00 !important;
+}
+
+.bibiscoAnalysisItemsRow9 {
+    background-color: #4B1F6F !important;
+}
+
+.bibiscoAnalysisItemsRow10 {
+    background-color: #FF950E !important;
+}
+
+.bibiscoAnalysisItemsRow11 {
+    background-color: #C5000B !important;
+}
+
+.bibiscoAnalysisCharactersChapters {
+	margin-top: 10px; 
+	width: 100%; 
+	overflow: scroll;
+}
+
+.bibiscoAnalysisCharactersChapters table {
+    table-layout: fixed;
+}
+
+.bibiscoAnalysisCharactersChapters th {
+	text-align: center; 
+	width: 15px;
+}
+
+.bibiscoAnalysisCharactersChapters th:first-child {
+    width:120px;
+}
+
+.bibiscoAnalysisCharactersChapters td {
+    text-align: center; 
+    vertical-align: middle; 
+    width: 15px;
+}
+
+.bibiscoAnalysisCharactersChapters td:first-child {
+    width:120px; 
+    text-align: right
+}
+
+.bibiscoAnalysisCharacterScene {
+	width: 100%; 
+	overflow: scroll;
+}
+
+.bibiscoAnalysisCharacterScene h4 {
+	margin-top: 10px;
+}
+
+.bibiscoAnalysisCharacterScene table {
+   width: 850px; 
+   table-layout: fixed;
+}
+
+.bibiscoAnalysisCharacterSceneColSceneDate {
+	width: 120px;
+}
+
+.bibiscoAnalysisCharacterSceneColLocation {
+    width: 430px;
+}
+
+.bibiscoAnalysisCharacterSceneSceneDescription {
+    width: 200px;
+}
+
+.bibiscoAnalysisCharacterSceneChapterPosition {
+    width: 200px;
+}
+
+
+/* EXPORT */
+
+.bibiscoExportButtonArea {
+	margin-top: 30px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 20px; 
+	padding-bottom: 35px; 
+	padding-left: 40px;
+}
+
+.bibiscoExportButtonArea p {
+    margin-top: 16px;
+}
+
+.bibiscoExportButtonArea a {
+    margin-right: 10px;
+}
+
+/* SETTINGS */
+
+.bibiscoSettingsButtonArea {
+	margin-top: 30px; 
+	margin-left: 30px; 
+	margin-right: 150px; 
+	padding-top: 20px; 
+	padding-bottom: 35px; 
+	padding-left: 40px;
+}
+
+.bibiscoSettingsButtonArea p {
+	margin-top: 16px;
+}
+
+.bibiscoSettingsButtonArea a {
+    margin-right: 10px;
+}
+
+/* LANGUAGE */
+.bibiscoLanguage {
+	 margin-top: 10px;
+}
+
+.bibiscoLanguageSelectLanguage div.select2-container {
+	width:200px;
+}
+
+/* INFO */
+
+.bibiscoLicense {
+	width: 100%; 
+	height: 350px; 
+	overflow: scroll;
+}
+
+.bibiscoDonationsButton {
+	text-align: center;
+	margin-top: 15px;
+}
+
+.bibiscoDonationsButton img {
+    cursor: pointer;
+}
+
+.bibiscoDonationButtonPaypal {
+
+}
+
+.bibiscoSocialMediaButton {
+    margin-top: 5px;
+    text-align: center:
+}
+
+.bibiscoSocialMediaButton img {
+	cursor: pointer;
+}
+
+.bibiscoSocialMediaButtonFacebook {
+    margin-left: 2px;
+}
+
+.bibiscoSocialMediaButtonTwitter {
+    margin-left: 5px;
+}
+
+/* SUGGESTED READINGS */
+
+.bibiscoSuggestedReadings {
+	height: 550px;
+}
+
+div.bibiscoSuggestedReadings p {
+	text-align: justify;
+}
+
+.bibiscoSuggestedReadingsMotivational {
+    margin-top: 10px; 
+    margin-left: 30px; 
+    margin-right: 150px; 
+    padding-top: 30px; 
+    padding-bottom: 35px; 
+    padding-left: 40px; }
+
+
+.bibiscoSuggestedReadingsMotivational p:first-child {
+	margin-top: 25px;
+}
+
+/* SELECT PROJECTS' DIRECTORY */
+
+.bibiscoSelectProjectsDirectory {
+	margin-top: 10px;
+}
+
+.bibiscoSelectProjectsDirectoryInfo {
+	margin-top: 5px;
+	text-align: justify;
+}
+
+@media (min-height:800px)  {
+	
+	/* STRANDS */
+	.bibiscoStrandsNotEmptyThumbnailListElements {
+		height: 415px;  
+	}
+	
+	/* LOCATIONS */
+	.bibiscoLocationsNotEmptyThumbnailListElements {
+	   height: 700px;
+	}
+	
+	/* CHARACTERS */
+	.bibiscoMainCharactersNotEmptyThumbnailListElements {
+		height: 210px; 
+	}
+	
+	.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
+	    height: 285px; 
+	}
+	
+	/* CHAPTERS */
+	.bibiscoChaptersNotEmptyThumbnailListElements {
+		height: 700px;
+	}
+	
+	/* CHAPTER */
+	.bibiscoScenesNotEmptyThumbnailListElements {
+	    height: 420px;
+	}
+	
+	/* SUGGESTED READINGS */
+	.bibiscoSuggestedReadings {
+		height: 575px;
+	}
+}
+
+@media (min-height:900px) {
+	
+	/* STRANDS */
+	.bibiscoStrandsNotEmptyThumbnailListElements {
+		height: 460px;  
+	}
+	
+	/* LOCATIONS */
+	.bibiscoLocationsNotEmptyThumbnailListElements {
+	   height: 785px;
+	}
+	
+	/* CHARACTERS */
+	.bibiscoMainCharactersNotEmptyThumbnailListElements {
+		height: 235px; 
+	}
+	
+	.bibiscoSecondaryCharactersNotEmptyThumbnailListElements {
+	    height: 355px; 
+	}
+	
+	/* CHAPTERS */
+	.bibiscoChaptersNotEmptyThumbnailListElements {
+		height: 785px;
+	}
+	
+	/* CHAPTER */
+	.bibiscoScenesNotEmptyThumbnailListElements {
+	    height: 525px;
+	}
+
+	/* SUGGESTED READINGS */
+	.bibiscoSuggestedReadings {
+		height: 750px;
+	}
+}

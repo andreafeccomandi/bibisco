@@ -1,0 +1,94 @@
+jquery-dateFormat - it’s a jQuery Plugin that I made to formatting java.util.Date.toString output using JavaScript
+
+This plugin is also available on jQuery Plugin page
+
+http://plugins.jquery.com/project/jquery-dateFormat 
+
+Blog post to explain the plugin usage
+
+http://pablocantero.com/blog/2010/09/04/jquery-plugin-javascript-for-java-util-date-tostring-format/ 
+
+== Format patterns
+
+The patterns to formatting are based on java.text.SimpleDateFormat
+
+http://download.oracle.com/javase/1.4.2/docs/api/java/text/SimpleDateFormat.html
+
+=== Date and time patterns
+
+* yy = short year
+* yyyy = long year
+* M = month (1-12)
+* MM = month (01-12)
+* MMM = month abbreviation (Jan, Feb ... Dec)
+* MMMM = long month (January, February ... December)
+* d = day (1 - 31)
+* dd = day (01 - 31)
+* ddd = day of the week in words (Monday, Tuesday ... Sunday)
+* D - Ordinal day (1st, 2nd, 3rd, 21st, 22nd, 23rd, 31st, 4th...)
+* h = hour in am/pm (0-12)
+* hh = hour in am/pm (00-12)
+* HH = hour in day (00-23) 
+* mm = minute
+* ss = second
+* SSS = milliseconds
+* a = AM/PM marker 
+* p = a.m./p.m. marker
+
+== Expected input dates formats
+
+* 2009-12-18 10:54:50.546 (default java.util.Date.toString output)
+* Wed Jan 13 10:43:41 CET 2010 (???)
+* 2010-10-19T11:40:33.527+02:00 (default JAXB formatting of java.util.Date)
+* Sat Mar 05 2011 11:47:35 GMT-0300 (BRT) (default JavaScript new Date().toString() output)
+* Unix Timestamp (e.g. (new Date()).getTime())
+
+== Examples
+
+== Formatting using css classes
+
+ <span class="shortDateFormat">2009-12-18 10:54:50.546</span>
+ <span class="longDateFormat">2009-12-18 10:54:50.546</span>
+
+The default shortDateFormat and longDateFormat are defined in the variables
+
+ jQuery.format.date.defaultShortDateFormat = "dd/MM/yyyy";
+ jQuery.format.date.defaultLongDateFormat = "dd/MM/yyyy hh:mm:ss";
+
+=== output
+
+ #1 18/12/2009
+ #2 18/12/2009 10:54:50
+
+== Formatting using JavaScript
+
+ <script>
+   document.write($.format.date("2009-12-18 10:54:50.546", "Test: dd/MM/yyyy"));
+   document.write($.format.date("Wed Jan 13 10:43:41 CET 2010", "dd~MM~yyyy"));
+ </script>
+
+=== output
+
+ #1 Test: 18/12/2009
+ #2 18~12~2009
+
+== Test
+
+This plugin was developed using http://jsunittest.com
+
+Open Test.html in Firefox to run the entire test suite
+
+== Do you want to improve jquery-dateFormat
+
+You’re welcome to make your contributions and send them as a pull request
+
+== Licenses
+
+This plugin is licensed under:
+
+MIT License
+GPL
+
+=== Contributors
+
+Thanks to albertjan, christopherstott, cipa, dahdread, docchang, eemeyer, fuzzygroove, gwilson2151, jafin, jakemonO, jharting, kitto, larryzhao, leesolutions, nashg842, Px-Factor, stuttufu, thiloplanz, Zyber17.

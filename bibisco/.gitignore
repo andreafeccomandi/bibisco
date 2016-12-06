@@ -1,4 +1,2 @@
-/build
-/doc
-/bin/
-/.DS_Store
+node_modules
+/dist

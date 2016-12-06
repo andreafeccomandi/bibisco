@@ -1,0 +1,11 @@
+<config cacheEnabled="true">
+	<!-- os possible values: win, linux32, linux64, mac -->
+	<os value="mac"/>
+	<test enabled="Y" >
+	   <win basePath="C:\Users\afeccomandi\git\bibisco\bibisco\" />
+	   <linux32  basePath="/home/test/git/bibisco/bibisco/" />
+	   <linux64  basePath="/home/test/git/bibisco/bibisco/" />
+	   <mac  basePath="/Users/andreafeccomandi/git/bibisco/bibisco/" />
+	</test>
+	<web uri="http://localhost:8080/bibiscoWeb" />
+</config>
