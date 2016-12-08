@@ -17,8 +17,7 @@
   },
   "files": [
     "app/index.js",
-    "app/index.html",
-    "app/index.css"
+    "app/index.html"
   ],
   "keywords": [
     "electron-app",
