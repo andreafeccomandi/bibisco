@@ -4,13 +4,13 @@
 		<meta charset="utf-8">
 		<title>bibisco</title>
 		<script src="../bower_components/angular/angular.js"></script>
-		<script src="bibisco.js"></script>
+		<script src="../bower_components/angular-route/angular-route.js"></script>
+		<script src="app.module.js"></script>
+		<script src="app.config.js?ts=342"></script>
 		<script src="start/start.js"></script>
 		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
 	</head>
 	<body>
-		<div class="container">
-			<start></start>
-		</div>
+		<div ng-view></div>
 	</body>
 </html>

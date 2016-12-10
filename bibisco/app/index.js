@@ -21,7 +21,7 @@ function createMainWindow() {
 		height: 600
 	});
 
-	win.loadURL(`file://${__dirname}/index.html`);
+	win.loadURL(`file://${__dirname}/index.html`,{"extraHeaders" : "pragma: no-cache\n"});
 	win.on('closed', onClosed);
 
 	return win;
