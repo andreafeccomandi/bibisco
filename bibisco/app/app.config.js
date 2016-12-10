@@ -8,14 +8,14 @@ function config($locationProvider, $routeProvider) {
     template: '<chapter></chapter>'
   }).
   when('/main', {
-    template: '<p>main!!!<a href="/welcome">vai a benvenuto</a></p>'
+    template: '<main></main>'
   }).
   when('/start', {
-    template: '<start></start>'
+    template: '<p>Start</p>'
   }).
   when('/welcome', {
-    template: '<p>benvenuto!!!</p>'
+    template: '<p>Welcome</p>'
   }).
-  otherwise('/start');
+  otherwise('/main');
 }
 ]);
