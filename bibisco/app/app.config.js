@@ -1,5 +1,5 @@
-angular.module('bibiscoApp').
-config(['$locationProvider', '$routeProvider',
+angular.module('bibiscoApp')
+.config(['$locationProvider', '$routeProvider',
 function config($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
   console.log($routeProvider.path);
@@ -14,8 +14,16 @@ function config($locationProvider, $routeProvider) {
     template: '<p>Start</p>'
   }).
   when('/welcome', {
-    template: '<p>Welcome</p>'
+    template: '<h1>{{"jsp.welcome.h1" | translate}}</h1>'
   }).
   otherwise('/main');
 }
-]);
+])
+.config(function ($translateProvider) {
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'resources/locale-',// path to translations files
+        suffix: '.json'// suffix, currently- extension of the translations
+    });
+    $translateProvider.preferredLanguage('fr');// is applied on first load
+})
+;
