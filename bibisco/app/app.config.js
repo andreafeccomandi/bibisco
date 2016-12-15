@@ -14,7 +14,7 @@ function config($locationProvider, $routeProvider) {
     template: '<p>Start</p>'
   }).
   when('/welcome', {
-    template: '<h1>{{"jsp.welcome.h1" | translate}}</h1>'
+    template: '<div ng-translate-language-select></div><h1>{{"jsp.welcome.h1" | translate}}</h1>'
   }).
   otherwise('/main');
 }
@@ -25,5 +25,23 @@ function config($locationProvider, $routeProvider) {
         suffix: '.json'// suffix, currently- extension of the translations
     });
     $translateProvider.preferredLanguage('fr');// is applied on first load
+})
+.config(function (tmhDynamicLocaleProvider) {
+    tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
+})
+.constant('LOCALES', {
+    'locales': {
+        'cs': 'Český',
+        'de': 'Deutsch',
+        'en_CA': 'English (Canada)',
+        'en_UK': 'English (UK)',
+        'en_US': 'English (USA)',
+        'es': 'Español',
+        'fr': 'Français',
+        'it': 'Italiano',
+        'pl': 'Polski',
+        'pt': 'Português (Brasil)'
+    },
+    'preferredLocale': 'pt'
 })
 ;
