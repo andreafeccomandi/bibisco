@@ -1,0 +1,10 @@
+<div>
+    <label>
+        {{"jsp.language.form.selectLanguage.label" | translate}}:
+        <select
+            ng-model="$ctrl.currentLocaleDisplayName"
+            ng-options="key as value for (key, value) in $ctrl.locales"
+            ng-change="$ctrl.changeLanguage(currentLocaleDisplayName)">
+        </select>
+    </label>
+</div>

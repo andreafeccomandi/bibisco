@@ -54,6 +54,9 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
       },
       getLocalesDisplayNames: function () {
         return _LOCALES_DISPLAY_NAMES;
+      },
+      getLocales: function () {
+        return LOCALES.locales;
       }
     };
 });

@@ -14,7 +14,7 @@ function config($locationProvider, $routeProvider) {
     template: '<p>Start</p>'
   }).
   when('/welcome', {
-    template: '<div ng-translate-language-select></div><h1>{{"jsp.welcome.h1" | translate}}</h1>'
+    template: '<languageselect></languageselect><h1>{{"jsp.welcome.h1" | translate}}</h1>'
   }).
   otherwise('/main');
 }
