@@ -447,14 +447,14 @@
         var baseURL = '${baseURL}';
         var baseCssURL = baseURL + '/css/bibiscoRichTextEditorContents.css';
         var spellErrorCssURL = baseURL + "/css/bibiscoSpellError.css";
+        var contentsCss;
         
         if(spellCheckEnabled) {
             spellErrorCssURL = baseURL + '/css/bibiscoSpellError.css';
+            contentsCss = [baseCssURL, spellErrorCssURL];
         } else {
-            spellErrorCssURL = '#';
+        	contentsCss = [baseCssURL];
         }
-        
-        var contentsCss = [baseCssURL, spellErrorCssURL];
         
         return contentsCss;
     }
