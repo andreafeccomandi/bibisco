@@ -14,8 +14,7 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
     });
 
     // STORING CURRENT LOCALE
-    //var currentLocale = $translate.proposedLanguage();// because of async loading
-    var currentLocale = 'fr';// because of async loading
+    var currentLocale = $translate.preferredLanguage();
 
     // METHODS
     var checkLocaleIsValid = function (locale) {

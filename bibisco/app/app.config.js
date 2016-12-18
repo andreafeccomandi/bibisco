@@ -24,7 +24,8 @@ function config($locationProvider, $routeProvider) {
         prefix: 'resources/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
     });
-    $translateProvider.preferredLanguage('fr');// is applied on first load
+    $translateProvider.determinePreferredLanguage();// is applied on first load
+    $translateProvider.fallbackLanguage(['en']);
 })
 .config(function (tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
