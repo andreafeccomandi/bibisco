@@ -2,7 +2,6 @@ angular.module('bibiscoApp')
 .config(['$locationProvider', '$routeProvider',
 function config($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
-  console.log($routeProvider.path);
   $routeProvider.
   when('/chapters/:chapterId', {
     template: '<chapter></chapter>'
@@ -20,15 +19,18 @@ function config($locationProvider, $routeProvider) {
 }
 ])
 .config(function ($translateProvider) {
-    $translateProvider.useStaticFilesLoader({
+    $translateProvider
+    .useStaticFilesLoader({
         prefix: 'resources/locale-',// path to translations files
         suffix: '.json'// suffix, currently- extension of the translations
-    });
-    $translateProvider.determinePreferredLanguage();// is applied on first load
-    $translateProvider.fallbackLanguage(['en']);
+    })
+    .determinePreferredLanguage()// is applied on first load
+    .fallbackLanguage(['en']) // fallback language
+    .useSanitizeValueStrategy('escape') // sanitize strategy
+    ;
 })
 .config(function (tmhDynamicLocaleProvider) {
-    tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
+    tmhDynamicLocaleProvider.localeLocationPattern('../bower_components/angular-i18n/angular-locale_{{locale}}.js');
 })
 .constant('LOCALES', {
     'locales': {
