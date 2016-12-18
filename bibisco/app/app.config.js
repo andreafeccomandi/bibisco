@@ -26,7 +26,7 @@ function config($locationProvider, $routeProvider) {
     })
     .determinePreferredLanguage()// is applied on first load
     .fallbackLanguage(['en']) // fallback language
-    .useSanitizeValueStrategy('escape') // sanitize strategy
+    .useSanitizeValueStrategy(null) // sanitize strategy: null until 'sanitize' mode is fixed
     ;
 })
 .config(function (tmhDynamicLocaleProvider) {
