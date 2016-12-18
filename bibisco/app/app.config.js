@@ -41,7 +41,6 @@ function config($locationProvider, $routeProvider) {
         'it': 'Italiano',
         'pl': 'Polski',
         'pt': 'Português (Brasil)'
-    },
-    'preferredLocale': 'pt'
+    }
 })
 ;

@@ -8,13 +8,11 @@ component('languageselect', {
 
 function LanguageSelectController(LocaleService) {
   console.log('Start LanguageSelectController...');
-  this.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
-  this.localesDisplayNames = LocaleService.getLocalesDisplayNames();
+  this.currentLocale = LocaleService.getCurrentLocale();
+  console.log('currentLocale='+this.currentLocale);
   this.locales = LocaleService.getLocales();
-  this.visible = this.localesDisplayNames &&
-  this.localesDisplayNames.length > 1;
-  this.changeLanguage = function (locale) {
-      LocaleService.setLocaleByDisplayName(locale);
+  this.changeLanguage = function () {
+      LocaleService.setCurrentLocale(this.currentLocale);
   };
   console.log('End LanguageSelectController...');
 }

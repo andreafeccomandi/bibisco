@@ -14,7 +14,8 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
     });
 
     // STORING CURRENT LOCALE
-    var currentLocale = $translate.proposedLanguage();// because of async loading
+    //var currentLocale = $translate.proposedLanguage();// because of async loading
+    var currentLocale = 'fr';// because of async loading
 
     // METHODS
     var checkLocaleIsValid = function (locale) {
@@ -42,18 +43,11 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
     });
 
     return {
-      getLocaleDisplayName: function () {
-        return localesObj[currentLocale];
+      getCurrentLocale: function () {
+        return currentLocale;
       },
-      setLocaleByDisplayName: function (localeDisplayName) {
-        setLocale(
-          _LOCALES[
-            _LOCALES_DISPLAY_NAMES.indexOf(localeDisplayName)// get locale index
-            ]
-        );
-      },
-      getLocalesDisplayNames: function () {
-        return _LOCALES_DISPLAY_NAMES;
+      setCurrentLocale: function (locale) {
+        setLocale(locale);
       },
       getLocales: function () {
         return LOCALES.locales;
