@@ -14,7 +14,9 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
     });
 
     // STORING CURRENT LOCALE
-    var currentLocale = $translate.preferredLanguage();
+    console.log('$translate.resolveClientLocale()=' + $translate.resolveClientLocale());
+    var currentLocale = calculatePreferredLocale($translate.preferredLanguage());
+    tmhDynamicLocale.set(currentLocale.toLowerCase().replace(/_/g, '-'));
 
     // METHODS
     var checkLocaleIsValid = function (locale) {
@@ -26,19 +28,21 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
         console.error('Locale name "' + locale + '" is invalid');
         return;
       }
+
       currentLocale = locale;// updating current locale
+      console.log('currentLocale='+currentLocale);
 
       // asking angular-translate to load and apply proper translations
       $translate.use(locale);
+
+      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
+      tmhDynamicLocale.set(currentLocale.toLowerCase().replace(/_/g, '-'));
     };
 
     // EVENTS
     // on successful applying translations by angular-translate
     $rootScope.$on('$translateChangeSuccess', function (event, data) {
       document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
-
-       // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
-      tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));
     });
 
     return {
@@ -53,3 +57,35 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
       }
     };
 });
+
+function calculatePreferredLocale(preferredLanguage) {
+
+  let preferredLocale;
+
+  if (preferredLanguage.startsWith('cs')) {
+    preferredLocale = 'cs-cz';
+  } else if (preferredLanguage.startsWith('de')) {
+    preferredLocale = 'de-de';
+  } else if (preferredLanguage.startsWith('es')) {
+    preferredLocale = 'es-es';
+  } else if (preferredLanguage.startsWith('fr')) {
+    preferredLocale = 'fr-fr';
+  } else if (preferredLanguage.startsWith('it')) {
+    preferredLocale = 'it-it';
+  } else if (preferredLanguage.startsWith('pl')) {
+    preferredLocale = 'pl-pl';
+  } else if (preferredLanguage.startsWith('pt')) {
+    preferredLocale = 'pt-br';
+  } else if (currentLocale.toLowerCase().replace(/_/g, '-') == 'en-ca') {
+    preferredLocale = 'en-ca';
+  } else if (currentLocale.toLowerCase().replace(/_/g, '-') == 'en-gb') {
+    preferredLocale = 'en-gb';
+  } else {
+    preferredLocale = 'en-US';
+  }
+  
+  console.log('calculatePreferredLocale - input: ' +
+   preferredLanguage + ' - output: ' + preferredLocale);
+
+  return preferredLocale;
+}
