@@ -16,7 +16,7 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
     // STORING CURRENT LOCALE
     console.log('$translate.resolveClientLocale()=' + $translate.resolveClientLocale());
     var currentLocale = calculatePreferredLocale($translate.preferredLanguage());
-    tmhDynamicLocale.set(currentLocale.toLowerCase().replace(/_/g, '-'));
+    tmhDynamicLocale.set(currentLocale);
 
     // METHODS
     var checkLocaleIsValid = function (locale) {
@@ -33,10 +33,10 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
       console.log('currentLocale='+currentLocale);
 
       // asking angular-translate to load and apply proper translations
-      $translate.use(locale);
+      $translate.use(currentLocale);
 
       // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
-      tmhDynamicLocale.set(currentLocale.toLowerCase().replace(/_/g, '-'));
+      tmhDynamicLocale.set(currentLocale);
     };
 
     // EVENTS
@@ -62,28 +62,30 @@ function calculatePreferredLocale(preferredLanguage) {
 
   let preferredLocale;
 
+  preferredLanguage = preferredLanguage.toLowerCase().replace(/_/g, '-');
+
   if (preferredLanguage.startsWith('cs')) {
-    preferredLocale = 'cs-cz';
+    preferredLocale = 'cs';
   } else if (preferredLanguage.startsWith('de')) {
-    preferredLocale = 'de-de';
+    preferredLocale = 'de';
   } else if (preferredLanguage.startsWith('es')) {
-    preferredLocale = 'es-es';
+    preferredLocale = 'es';
   } else if (preferredLanguage.startsWith('fr')) {
-    preferredLocale = 'fr-fr';
+    preferredLocale = 'fr';
   } else if (preferredLanguage.startsWith('it')) {
-    preferredLocale = 'it-it';
+    preferredLocale = 'it';
   } else if (preferredLanguage.startsWith('pl')) {
-    preferredLocale = 'pl-pl';
+    preferredLocale = 'pl';
   } else if (preferredLanguage.startsWith('pt')) {
-    preferredLocale = 'pt-br';
-  } else if (currentLocale.toLowerCase().replace(/_/g, '-') == 'en-ca') {
+    preferredLocale = 'pt';
+  } else if (preferredLanguage == 'en-ca') {
     preferredLocale = 'en-ca';
-  } else if (currentLocale.toLowerCase().replace(/_/g, '-') == 'en-gb') {
+  } else if (preferredLanguage == 'en-gb') {
     preferredLocale = 'en-gb';
   } else {
-    preferredLocale = 'en-US';
+    preferredLocale = 'en-us';
   }
-  
+
   console.log('calculatePreferredLocale - input: ' +
    preferredLanguage + ' - output: ' + preferredLocale);
 

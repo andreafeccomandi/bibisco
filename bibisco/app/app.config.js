@@ -21,16 +21,16 @@ function config($locationProvider, $routeProvider) {
 .config(function ($translateProvider) {
 
     var langMap = {
-      'cs_CZ': 'cs',
-      'de_DE': 'de',
-      'en_CA': 'en',
-      'en_GB': 'en',
-      'en_US': 'en',
-      'es_ES': 'es',
-      'fr_FR': 'fr',
-      'it_IT': 'it',
-      'pl_PL': 'pl',
-      'pt_BR': 'pt'
+      'cs': 'cs',
+      'de': 'de',
+      'en-ca': 'en',
+      'en-gb': 'en',
+      'en-us': 'en',
+      'es': 'es',
+      'fr': 'fr',
+      'it': 'it',
+      'pl': 'pl',
+      'pt': 'pt'
     };
 
     $translateProvider
@@ -49,16 +49,16 @@ function config($locationProvider, $routeProvider) {
 })
 .constant('LOCALES', {
     'locales': {
-        'cs_CZ': 'Český',
-        'de_DE': 'Deutsch',
-        'en_CA': 'English (Canada)',
-        'en_GB': 'English (UK)',
-        'en_US': 'English (USA)',
-        'es_ES': 'Español',
-        'fr_FR': 'Français',
-        'it_IT': 'Italiano',
-        'pl_PL': 'Polski',
-        'pt_BR': 'Português (Brasil)'
+        'cs': 'Český',
+        'de': 'Deutsch',
+        'en-ca': 'English (Canada)',
+        'en-gb': 'English (UK)',
+        'en-us': 'English (USA)',
+        'es': 'Español',
+        'fr': 'Français',
+        'it': 'Italiano',
+        'pl': 'Polski',
+        'pt': 'Português (Brasil)'
     }
 })
 ;

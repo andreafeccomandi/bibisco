@@ -9,7 +9,6 @@ component('languageselect', {
 function LanguageSelectController(LocaleService) {
   console.log('Start LanguageSelectController...');
   this.currentLocale = LocaleService.getCurrentLocale();
-  console.log('currentLocale='+this.currentLocale);
   this.locales = LocaleService.getLocales();
   this.changeLanguage = function () {
       LocaleService.setCurrentLocale(this.currentLocale);
