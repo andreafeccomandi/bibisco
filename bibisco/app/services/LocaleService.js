@@ -12,47 +12,13 @@
  * See the GNU General Public License for more details.
  *
  */
- 
+
 angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOCALES, $rootScope, tmhDynamicLocale) {
     'use strict';
-    // PREPARING LOCALES INFO
-    var localesObj = LOCALES.locales;
 
-    // locales and locales display names
-    var _LOCALES = Object.keys(localesObj);
-    if (!_LOCALES || _LOCALES.length === 0) {
-      console.error('There are no _LOCALES provided');
-    }
-    var _LOCALES_DISPLAY_NAMES = [];
-    _LOCALES.forEach(function (locale) {
-      _LOCALES_DISPLAY_NAMES.push(localesObj[locale]);
-    });
-
-    // STORING CURRENT LOCALE
-    console.log('$translate.resolveClientLocale()=' + $translate.resolveClientLocale());
+    // storing current locale
     var currentLocale = calculatePreferredLocale($translate.preferredLanguage());
     tmhDynamicLocale.set(currentLocale);
-
-    // METHODS
-    var checkLocaleIsValid = function (locale) {
-      return _LOCALES.indexOf(locale) !== -1;
-    };
-
-    var setLocale = function (locale) {
-      if (!checkLocaleIsValid(locale)) {
-        console.error('Locale name "' + locale + '" is invalid');
-        return;
-      }
-
-      currentLocale = locale;// updating current locale
-      console.log('currentLocale='+currentLocale);
-
-      // asking angular-translate to load and apply proper translations
-      $translate.use(currentLocale);
-
-      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
-      tmhDynamicLocale.set(currentLocale);
-    };
 
     // EVENTS
     // on successful applying translations by angular-translate
@@ -65,7 +31,14 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, LOC
         return currentLocale;
       },
       setCurrentLocale: function (locale) {
-        setLocale(locale);
+        // updating current locale
+        currentLocale = locale;
+
+        // asking angular-translate to load and apply proper translations
+        $translate.use(currentLocale);
+
+        // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
+        tmhDynamicLocale.set(currentLocale);
       },
       getLocales: function () {
         return LOCALES.locales;
