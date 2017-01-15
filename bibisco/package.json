@@ -24,7 +24,8 @@
     "electron"
   ],
   "dependencies": {
-    "electron-debug": "^1.0.0"
+    "electron-debug": "^1.0.0",
+    "winston": "^2.3.0"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
