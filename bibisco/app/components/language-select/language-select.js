@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('languageselect', {
-  templateUrl: 'language-select/language-select.html',
+  templateUrl: 'components/language-select/language-select.html',
   controller: LanguageSelectController
 });
 
