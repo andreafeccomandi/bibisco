@@ -13,13 +13,10 @@
  *
  */
 
-var remote = require('electron').remote;
-var logger = remote.getGlobal('logger');
-
-// Define the 'bibisco' module
-var bibiscoApp = angular.module('bibiscoApp',
-  ['ngRoute',
-  'pascalprecht.translate',// angular-translate
-  'tmh.dynamicLocale'// angular-dynamic-locale
-])
-.value('logger', logger);
+angular.module('bibiscoApp').provider(
+    "$exceptionHandler", {
+        $get: function( ErrorLogService ) {
+            return( ErrorLogService );
+        }
+    }
+)

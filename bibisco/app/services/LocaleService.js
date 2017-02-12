@@ -85,7 +85,7 @@ function calculatePreferredLocale(preferredLanguage) {
     preferredLocale = 'en-us';
   }
 
-  console.log('calculatePreferredLocale - input: ' +
+  logger.debug('calculatePreferredLocale - input: ' +
    preferredLanguage + ' - output: ' + preferredLocale);
 
   return preferredLocale;

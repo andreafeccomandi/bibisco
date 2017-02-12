@@ -20,12 +20,13 @@ component('main', {
 
 
 function MainController($location) {
-  console.log('Start MainController...');
+  logger.debug('Start MainController...');
+  require('Stronzo!');
   var firstAccess = true;
   if (firstAccess == true) {
     $location.path('/welcome');
   } else {
     $location.path('/start');
   }
-  console.log('End MainController...');
+  logger.debug('End MainController...');
 }

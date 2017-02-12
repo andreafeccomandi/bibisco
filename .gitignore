@@ -278,3 +278,4 @@ bibisco/bin/com/bibisco/test/SqlSessionFactoryManagerTest.class
 bibisco/bin/com/bibisco/test/TipManagerTest.class
 bibisco/bin/com/bibisco/test/VersionManagerTest.class
 bibisco/bin/com/bibisco/test/WebMessageManagerTest.class
+bibisco/app/logs
