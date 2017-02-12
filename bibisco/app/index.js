@@ -14,20 +14,20 @@
  */
 'use strict';
 const electron = require('electron');
-
 const app = electron.app;
+const env = process.env.NODE_ENV || 'development';
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 // add winston logger
 const logger = require('winston');
-logger.level = 'debug';
+logger.level = (env === 'development' ? 'debug' : 'info');
 logger.add(logger.transports.File, {
 	filename: "./logs/bibisco.log",
 	json: false,
 	maxsize: 1000000,
-  maxFiles: 3,
+  maxFiles: 2,
 	handleExceptions: true,
   humanReadableUnhandledException: true,
   formatter: function(options) {
