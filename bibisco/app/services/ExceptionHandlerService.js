@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('ErrorLogService', function ($log, $window) {
+angular.module('bibiscoApp').service('ExceptionHandlerService', function ($log, $window) {
     'use strict';
 
     // I log the given error to log file.

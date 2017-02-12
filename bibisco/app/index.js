@@ -26,7 +26,7 @@ logger.level = 'debug';
 logger.add(logger.transports.File, {
 	filename: "./logs/bibisco.log",
 	json: false,
-	maxsize: 1000,
+	maxsize: 1000000,
   maxFiles: 3,
 	handleExceptions: true,
   humanReadableUnhandledException: true,
@@ -56,7 +56,7 @@ function createMainWindow() {
 
 	win.loadURL(`file://${__dirname}/index.html`,{"extraHeaders" : "pragma: no-cache\n"});
 	win.on('closed', onClosed);
-	
+
 	return win;
 }
 

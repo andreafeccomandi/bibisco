@@ -15,8 +15,8 @@
 
 angular.module('bibiscoApp').provider(
     "$exceptionHandler", {
-        $get: function( ErrorLogService ) {
-            return( ErrorLogService );
+        $get: function( ExceptionHandlerService ) {
+            return( ExceptionHandlerService );
         }
     }
 )
