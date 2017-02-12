@@ -19,8 +19,8 @@ component('main', {
 });
 
 
-function MainController($location) {
-  logger.debug('Start MainController...');
+function MainController($location, LoggerService) {
+  LoggerService.debug('Start MainController...');
   require('Stronzo!');
   var firstAccess = true;
   if (firstAccess == true) {
@@ -28,5 +28,5 @@ function MainController($location) {
   } else {
     $location.path('/start');
   }
-  logger.debug('End MainController...');
+  LoggerService.debug('End MainController...');
 }

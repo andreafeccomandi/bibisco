@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp') .service('LocaleService', function ($translate, $rootScope, tmhDynamicLocale) {
+angular.module('bibiscoApp') .service('LocaleService', function ($translate, $rootScope, tmhDynamicLocale, LoggerService) {
     'use strict';
 
     // storing current locale
@@ -57,7 +57,7 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, $ro
     };
 });
 
-function calculatePreferredLocale(preferredLanguage) {
+function calculatePreferredLocale(preferredLanguage, LoggerService) {
 
   let preferredLocale;
 
@@ -85,7 +85,7 @@ function calculatePreferredLocale(preferredLanguage) {
     preferredLocale = 'en-us';
   }
 
-  logger.debug('calculatePreferredLocale - input: ' +
+  LoggerService.debug('calculatePreferredLocale - input: ' +
    preferredLanguage + ' - output: ' + preferredLocale);
 
   return preferredLocale;

@@ -13,9 +13,11 @@
  *
  */
 
-// Define the 'bibisco' module
-var bibiscoApp = angular.module('bibiscoApp',
-  ['ngRoute',
-  'pascalprecht.translate',// angular-translate
-  'tmh.dynamicLocale'// angular-dynamic-locale
-]);
+angular.module('bibiscoApp') .service('LoggerService', function () {
+    'use strict';
+
+    var remote = require('electron').remote;
+    var logger = remote.getGlobal('logger');
+
+    return logger;
+});

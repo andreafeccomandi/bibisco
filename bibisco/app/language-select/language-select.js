@@ -20,12 +20,12 @@ component('languageselect', {
 });
 
 
-function LanguageSelectController(LocaleService) {
-  logger.debug('Start LanguageSelectController...');
+function LanguageSelectController(LocaleService, LoggerService) {
+  LoggerService.debug('Start LanguageSelectController...');
   this.currentLocale = LocaleService.getCurrentLocale();
   this.locales = LocaleService.getLocales();
   this.changeLanguage = function () {
       LocaleService.setCurrentLocale(this.currentLocale);
   };
-  logger.debug('End LanguageSelectController...');
+  LoggerService.debug('End LanguageSelectController...');
 }

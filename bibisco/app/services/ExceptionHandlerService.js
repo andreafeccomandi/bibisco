@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('ExceptionHandlerService', function ($log) {
+angular.module('bibiscoApp').service('ExceptionHandlerService', function ($log, LoggerService) {
     'use strict';
 
     // I log the given error to log file.
@@ -26,8 +26,8 @@ angular.module('bibiscoApp').service('ExceptionHandlerService', function ($log) 
         $log.error.apply( $log, arguments );
 
         // Now, we need to try and log the error using the file logger.
-        logger.error('***EXCEPTION CAUSE*** : ' + cause);
-        logger.error('***EXCEPTION STACKTRACE*** : ' + exception.stack);
+        LoggerService.error('***EXCEPTION CAUSE*** : ' + cause);
+        LoggerService.error('***EXCEPTION STACKTRACE*** : ' + exception.stack);
     }
     // Return the logging function.
     return( log );
