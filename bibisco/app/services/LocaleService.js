@@ -17,7 +17,7 @@ angular.module('bibiscoApp') .service('LocaleService', function ($translate, $ro
     'use strict';
 
     // storing current locale
-    var currentLocale = calculatePreferredLocale($translate.preferredLanguage());
+    var currentLocale = calculatePreferredLocale($translate.preferredLanguage(), LoggerService);
     tmhDynamicLocale.set(currentLocale);
 
     // EVENTS
