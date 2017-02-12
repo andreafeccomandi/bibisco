@@ -21,7 +21,6 @@ component('main', {
 
 function MainController($location, LoggerService) {
   LoggerService.debug('Start MainController...');
-  require('Stronzo!');
   var firstAccess = true;
   if (firstAccess == true) {
     $location.path('/welcome');
