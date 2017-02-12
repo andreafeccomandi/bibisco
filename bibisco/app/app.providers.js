@@ -13,6 +13,11 @@
  *
  */
 
+// By default, AngularJS will catch errors and log them to
+// the Console. I want to keep that behavior; however, I
+// want to intercept it so that I can also log the errors
+// to file for later analysis. So I have to override the $exceptionHandler
+// provider and replace it with a custom one: ExceptionHandlerService
 angular.module('bibiscoApp').provider(
     "$exceptionHandler", {
         $get: function( ExceptionHandlerService ) {
