@@ -16,8 +16,17 @@
 angular.module('bibiscoApp') .service('LocaleService', function ($translate, $rootScope, tmhDynamicLocale, LoggerService, BibiscoDbService) {
     'use strict';
 
+    // get preferredLanguage from bibiscodb
+    var bibiscoProperties = BibiscoDbService.getCollection('properties');
+    var currentLocale = bibiscoProperties.findOne({"name": "locale"});
+    LoggerService.debug('storedLocale = [' + currentLocale.value + ']');
+
+    if (!currentLocale.value) {
+      // is the first access, I calculate preferred locale
+      currentLocale = calculatePreferredLocale($translate.preferredLanguage(), LoggerService);
+    }
+
     // storing current locale
-    var currentLocale = calculatePreferredLocale($translate.preferredLanguage(), LoggerService);
     tmhDynamicLocale.set(currentLocale);
 
     // EVENTS
