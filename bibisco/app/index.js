@@ -39,6 +39,14 @@ logger.add(logger.transports.File, {
 });
 global.logger = logger;
 
+// add loki db
+const loki = require('lokijs');
+var bibiscodb = new loki('./db/bibisco.json');
+bibiscodb.loadDatabase({}, function () {
+	logger.debug('bibisco.json db loaded');
+});
+global.bibiscodb = bibiscodb;
+
 // prevent window being garbage collected
 let mainWindow;
 

@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp') .service('LocaleService', function ($translate, $rootScope, tmhDynamicLocale, LoggerService) {
+angular.module('bibiscoApp') .service('LocaleService', function ($translate, $rootScope, tmhDynamicLocale, LoggerService, BibiscoDbService) {
     'use strict';
 
     // storing current locale
