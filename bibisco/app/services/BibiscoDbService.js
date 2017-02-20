@@ -16,10 +16,21 @@
 angular.module('bibiscoApp') .service('BibiscoDbService', function (LoggerService) {
     'use strict';
 
-    LoggerService.debug('Start BibiscoDbService');
-
     var remote = require('electron').remote;
     var bibiscodb = remote.getGlobal('bibiscodb');
+    var properties = bibiscodb.getCollection('properties');
 
-    return bibiscodb;
+    return {
+        getProperty: function(name) {
+          return properties.findOne({"name": name}).value;
+        },
+        setProperty: function(name, value) {
+            var property = properties.findOne({"name": name});
+            property.value = value;
+            return properties.update(property);
+        },
+        saveDatabase: function(callback) {
+          return bibiscodb.saveDatabase(callback);
+        }
+    };
 });
