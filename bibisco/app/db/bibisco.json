@@ -176,7 +176,7 @@
         },
         {
           "name": "firstAccess",
-          "value": "true",
+          "value": true,
           "meta": {
             "revision": 0,
             "created": 1487541445288,
