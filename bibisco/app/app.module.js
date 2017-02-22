@@ -33,7 +33,7 @@ function config($locationProvider, $routeProvider) {
     template: '<p>Start</p>'
   }).
   when('/welcome', {
-    template: '<languageselect></languageselect><h1>{{"jsp.welcome.h1" | translate}}</h1><p>{{ 1000000 | currency }}</p>'
+    template: '<welcome></welcome>'
   }).
   otherwise('/main');
 }

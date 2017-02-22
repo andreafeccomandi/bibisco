@@ -1,0 +1,34 @@
+/* WELCOME */
+
+.bibiscoWelcomeMotivational {
+    margin-top: 60px;
+    margin-left: 30px;
+    margin-right: 150px;
+    padding-top: 30px;
+    padding-bottom: 35px;
+    padding-left: 40px;
+    height: 300px;
+}
+
+.bibiscoWelcomeMotivational form {
+	position: relative;
+}
+
+.bibiscoWelcomeMotivational h1 {
+	margin-top: 10px;
+}
+
+.bibiscoWelcomeMotivational p {
+    margin-top: 20px;
+}
+
+.bibiscoWizardButtons {
+	position: absolute;
+	top: 195px;
+}
+
+.bibiscoStartWizardNotes p {
+	margin-top: 10px;
+	font-size: 14px;
+	line-height: 18px;
+}
