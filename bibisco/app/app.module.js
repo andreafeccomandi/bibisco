@@ -14,39 +14,41 @@
  */
 
 // Define the 'bibisco' module
-var bibiscoApp = angular.module('bibiscoApp',
-  ['ngRoute',
-  'pascalprecht.translate',// angular-translate
-  'tmh.dynamicLocale'// angular-dynamic-locale
-])
-.config(['$locationProvider', '$routeProvider',
-function config($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
-  $routeProvider.
-  when('/chapters/:chapterId', {
-    template: '<chapter></chapter>'
-  }).
-  when('/main', {
-    template: '<main></main>'
-  }).
-  when('/start', {
-    template: '<p>Start</p>'
-  }).
-  when('/welcome', {
-    template: '<welcome></welcome>'
-  }).
-  otherwise('/main');
-}
-])
-.config(function ($translateProvider) {
+var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
+    'pascalprecht.translate', // angular-translate
+    'tmh.dynamicLocale', // angular-dynamic-locale
+    'ui.select',
+    'ngSanitize'
+  ])
+  .config(['$locationProvider', '$routeProvider',
+    function config($locationProvider, $routeProvider) {
+      $locationProvider.hashPrefix('!');
+      $routeProvider.
+      when('/chapters/:chapterId', {
+        template: '<chapter></chapter>'
+      }).
+      when('/main', {
+        template: '<main></main>'
+      }).
+      when('/start', {
+        template: '<p>Start</p>'
+      }).
+      when('/welcome', {
+        template: '<welcome></welcome>'
+      }).
+      otherwise('/main');
+    }
+  ])
+  .config(function($translateProvider) {
 
     $translateProvider
-    .useStaticFilesLoader({
-        prefix: 'resources/locale-',// path to translations files
-        suffix: '.json'// suffix, currently- extension of the translations
-    })
-    .registerAvailableLanguageKeys(['cs', 'de', 'en', 'es', 'fr', 'it', 'pl', 'pt'],
-      {
+      .useStaticFilesLoader({
+        prefix: 'resources/locale-', // path to translations files
+        suffix: '.json' // suffix, currently- extension of the translations
+      })
+      .registerAvailableLanguageKeys(['cs', 'de', 'en', 'es', 'fr', 'it',
+        'pl', 'pt'
+      ], {
         'cs': 'cs',
         'de': 'de',
         'en-ca': 'en',
@@ -58,14 +60,15 @@ function config($locationProvider, $routeProvider) {
         'pl': 'pl',
         'pt': 'pt'
       }) // register available languages
-    .determinePreferredLanguage()// is applied on first load
-    .fallbackLanguage(['en']) // fallback language
-    .useSanitizeValueStrategy(null) // sanitize strategy: null until 'sanitize' mode is fixed
+      .determinePreferredLanguage() // is applied on first load
+      .fallbackLanguage(['en']) // fallback language
+      .useSanitizeValueStrategy(null) // sanitize strategy: null until 'sanitize' mode is fixed
     ;
-})
-.config(function (tmhDynamicLocaleProvider) {
-    tmhDynamicLocaleProvider.localeLocationPattern('../bower_components/angular-i18n/angular-locale_{{locale}}.js');
-})
+  })
+  .config(function(tmhDynamicLocaleProvider) {
+    tmhDynamicLocaleProvider.localeLocationPattern(
+      '../bower_components/angular-i18n/angular-locale_{{locale}}.js');
+  })
 
 // By default, AngularJS will catch errors and log them to
 // the Console. I want to keep that behavior; however, I
@@ -73,10 +76,9 @@ function config($locationProvider, $routeProvider) {
 // to file for later analysis. So I have to override the $exceptionHandler
 // provider and replace it with a custom one: ExceptionHandlerService
 .provider(
-    "$exceptionHandler", {
-        $get: function( ExceptionHandlerService ) {
-            return( ExceptionHandlerService );
-        }
+  "$exceptionHandler", {
+    $get: function(ExceptionHandlerService) {
+      return (ExceptionHandlerService);
     }
-)
-;
+  }
+);

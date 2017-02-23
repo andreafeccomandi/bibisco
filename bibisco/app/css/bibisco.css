@@ -1,3 +1,20 @@
+/* GENERAL */
+
+.top5 { margin-top:5px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top30 { margin-top:30px; }
+.top50 { margin-top:50px; }
+.top100 { margin-top:100px; }
+
+.bottom5 { margin-bottom:5px; }
+.bottom10 { margin-bottom:10px; }
+.bottom15 { margin-bottom:15px; }
+.bottom30 { margin-bottom:30px; }
+.bottom50 { margin-bottom:50px; }
+.bottom100 { margin-bottom:100px; }
+
+
 /* WELCOME */
 
 .bibiscoWelcomeMotivational {
@@ -20,11 +37,6 @@
 
 .bibiscoWelcomeMotivational p {
     margin-top: 20px;
-}
-
-.bibiscoWizardButtons {
-	position: absolute;
-	top: 195px;
 }
 
 .bibiscoStartWizardNotes p {
