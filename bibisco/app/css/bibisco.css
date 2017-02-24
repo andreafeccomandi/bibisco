@@ -14,33 +14,23 @@
 .bottom50 { margin-bottom:50px; }
 .bottom100 { margin-bottom:100px; }
 
+/* DISABLE SELECTION ON TEXT */
+
+.bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-o-user-select: none;
+}
+
 
 /* WELCOME */
 
-.bibiscoWelcomeMotivational {
-    margin-top: 60px;
-    margin-left: 30px;
-    margin-right: 150px;
-    padding-top: 30px;
-    padding-bottom: 35px;
-    padding-left: 40px;
-    height: 300px;
-}
-
-.bibiscoWelcomeMotivational form {
-	position: relative;
-}
-
-.bibiscoWelcomeMotivational h1 {
+.bibiscoWelcomeWizardNotes p {
 	margin-top: 10px;
-}
-
-.bibiscoWelcomeMotivational p {
-    margin-top: 20px;
-}
-
-.bibiscoStartWizardNotes p {
-	margin-top: 10px;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 18px;
 }
