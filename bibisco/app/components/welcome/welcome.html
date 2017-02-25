@@ -5,8 +5,8 @@
 				<h1 class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
 				<div ng-show="$ctrl.step==1">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step1.p.1" | translate}}</p>
-					<div class="controls bibiscoLanguageSelectLanguage">
-						<languageselect></languageselect>
+					<div class="controls">
+						<languageselect onchangelanguage="$ctrl.selectLanguage(language)"></languageselect>
 					</div>
 				</div>
 				<div ng-show="$ctrl.step==2">

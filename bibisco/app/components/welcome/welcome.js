@@ -23,7 +23,11 @@ component('welcome', {
 function WelcomeController(LocaleService, LoggerService, BibiscoDbService) {
   LoggerService.debug('Start WelcomeController...');
   var self = this;
+  self.selectedLanguage = null;
   self.step = 1;
+  self.selectLanguage = function(language) {
+    self.selectedLanguage = language;
+  }
   self.next = function() {
     self.step = 2;
   }
@@ -31,7 +35,7 @@ function WelcomeController(LocaleService, LoggerService, BibiscoDbService) {
     self.step = 1;
   }
   self.finish = function() {
-    alert('finish!')
+    alert('selectedLanguage=' + self.selectedLanguage)
   }
   LoggerService.debug('End WelcomeController...');
 }
