@@ -24,12 +24,8 @@ function WelcomeController($scope, LocaleService, LoggerService,
   BibiscoDbService) {
   LoggerService.debug('Start WelcomeController...');
   var self = this;
-  self.selectedLanguage = null;
   self.selectedProjectsDirectory = null;
   self.step = 1;
-  self.selectLanguage = function(language) {
-    self.selectedLanguage = language;
-  }
   self.selectProjectsDirectory = function(directory) {
     self.selectedProjectsDirectory = directory;
     $scope.$apply();
@@ -41,7 +37,7 @@ function WelcomeController($scope, LocaleService, LoggerService,
     self.step = 1;
   }
   self.finish = function() {
-    alert('selectedLanguage=' + self.selectedLanguage +
+    alert('selectedLanguage=' + LocaleService.getCurrentLocale() +
       ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory)
   }
   LoggerService.debug('End WelcomeController...');
