@@ -20,13 +20,19 @@ component('welcome', {
 });
 
 
-function WelcomeController(LocaleService, LoggerService, BibiscoDbService) {
+function WelcomeController($scope, LocaleService, LoggerService,
+  BibiscoDbService) {
   LoggerService.debug('Start WelcomeController...');
   var self = this;
   self.selectedLanguage = null;
+  self.selectedProjectsDirectory = null;
   self.step = 1;
   self.selectLanguage = function(language) {
     self.selectedLanguage = language;
+  }
+  self.selectProjectsDirectory = function(directory) {
+    self.selectedProjectsDirectory = directory;
+    $scope.$apply();
   }
   self.next = function() {
     self.step = 2;
@@ -35,7 +41,8 @@ function WelcomeController(LocaleService, LoggerService, BibiscoDbService) {
     self.step = 1;
   }
   self.finish = function() {
-    alert('selectedLanguage=' + self.selectedLanguage)
+    alert('selectedLanguage=' + self.selectedLanguage +
+      ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory)
   }
   LoggerService.debug('End WelcomeController...');
 }

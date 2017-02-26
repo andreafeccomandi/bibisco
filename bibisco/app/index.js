@@ -27,25 +27,33 @@ logger.add(logger.transports.File, {
 	filename: "./logs/bibisco.log",
 	json: false,
 	maxsize: 1000000,
-  maxFiles: 2,
+	maxFiles: 2,
 	handleExceptions: true,
-  humanReadableUnhandledException: true,
-  formatter: function(options) {
+	humanReadableUnhandledException: true,
+	formatter: function(options) {
 		var dateFormat = require('dateformat');
-    // Return string will be passed to logger.
-    return dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:l")+ ' ' + options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
-      (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-  }
+		// Return string will be passed to logger.
+		return dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:l") + ' ' + options.level
+			.toUpperCase() + ' ' + (options.message ? options.message : '') +
+			(options.meta && Object.keys(options.meta).length ? '\n\t' + JSON.stringify(
+				options.meta) : '');
+	}
 });
 global.logger = logger;
 
 // add loki db
 const loki = require('lokijs');
 var bibiscodb = new loki('./db/bibisco.json');
-bibiscodb.loadDatabase({}, function () {
+bibiscodb.loadDatabase({}, function() {
 	logger.debug('bibisco.json db loaded');
 });
 global.bibiscodb = bibiscodb;
+
+// add dialog
+const {
+	dialog
+} = require('electron');
+global.dialog = dialog;
 
 // prevent window being garbage collected
 let mainWindow;
@@ -62,7 +70,9 @@ function createMainWindow() {
 		height: 600
 	});
 
-	win.loadURL(`file://${__dirname}/index.html`,{"extraHeaders" : "pragma: no-cache\n"});
+	win.loadURL(`file://${__dirname}/index.html`, {
+		"extraHeaders": "pragma: no-cache\n"
+	});
 	win.on('closed', onClosed);
 
 	return win;

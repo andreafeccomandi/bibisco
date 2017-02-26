@@ -5,15 +5,15 @@
 				<h1 class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
 				<div ng-show="$ctrl.step==1">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step1.p.1" | translate}}</p>
-					<div class="controls">
+					<div>
 						<languageselect onchangelanguage="$ctrl.selectLanguage(language)"></languageselect>
 					</div>
 				</div>
 				<div ng-show="$ctrl.step==2">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
 					<div class="input-append">
-						<input type="text" class="col-md-8" name="bibiscoStartWizardSelectedDirectory" value="" id="bibiscoStartWizardSelectedDirectory" readonly="readonly"/>
-						<button id="bibiscoStartWizardSelectProjectsDirectoryButton" class="btn btn-default" type="button">{{"jsp.common.button.select" | translate}}</button>
+					  <input class="col-md-9" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory"/>
+					  <projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect>
 					</div>
 					<div class="bibiscoWelcomeWizardNotes">
 						<p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
