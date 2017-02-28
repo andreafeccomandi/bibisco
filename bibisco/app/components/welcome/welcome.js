@@ -36,7 +36,8 @@ function WelcomeController($scope, LocaleService, LoggerService,
   self.back = function() {
     self.step = 1;
   }
-  self.finish = function() {
+  self.finish = function(isValid) {
+    alert("Form is valid? " + isValid);
     alert('selectedLanguage=' + LocaleService.getCurrentLocale() +
       ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory)
   }

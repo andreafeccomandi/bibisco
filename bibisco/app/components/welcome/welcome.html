@@ -1,5 +1,6 @@
 <div class="container">
-	<div class="row jumbotron top50">
+ <div class="row jumbotron top50">
+<form name="welcomeForm" ng-submit="$ctrl.finish(welcomeForm.$valid)" novalidate>
 	<div class="col-md-12">
 			<div class="row">
 				<h1 class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
@@ -11,10 +12,12 @@
 				</div>
 				<div ng-show="$ctrl.step==2">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
-					<div class="input-append">
-					  <input class="col-md-9" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory"/>
-					  <projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect>
-					</div>
+				<div class="row"><div class="col-md-12">
+					<div class="input-group" ng-class="{ 'has-error': welcomeForm.$submitted && welcomeForm.projectsDirectory.$invalid }">
+					  <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
+					  <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
+					</div></div>
+				</div>
 					<div class="bibiscoWelcomeWizardNotes">
 						<p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
 						<p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>
@@ -25,8 +28,9 @@
 		<div class="row">
 			<button ng-show="$ctrl.step==1" ng-click="$ctrl.next()" type="button" class="btn btn-lg btn-primary">{{"jsp.welcome.a.next" | translate}}</button>
 			<button ng-show="$ctrl.step==2" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"jsp.welcome.a.previous" | translate}}</button>
-			<button ng-show="$ctrl.step==2" ng-click="$ctrl.finish()" type="button" class="btn btn-lg btn-primary">{{"jsp.welcome.a.finish" | translate}}</button>
-		</div>
-		</div>
-    </div>
-</div>
+			<button ng-show="$ctrl.step==2" type="submit" class="btn btn-lg btn-primary">{{"jsp.welcome.a.finish" | translate}}</button>
+					</div>
+					</div>
+					</form>
+			    </div>
+			</div>
