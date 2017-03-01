@@ -20,7 +20,9 @@ component('validationmessages', {
   controller: ValidationMessagesController,
   bindings: {
     error: '<',
-    showif: '<'
+    showif: '<',
+    minlength: '@',
+    maxlength: '@'
   }
 });
 

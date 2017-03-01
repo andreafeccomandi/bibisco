@@ -12,10 +12,13 @@
 				<div ng-show="$ctrl.step==2">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
 					<div class="input-group" ng-class="{ 'has-error': welcomeForm.$submitted && welcomeForm.projectsDirectory.$invalid }">
-					  <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
+					  <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required maxlength="1000"/>
 					  <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
 					</div>
-          <validationmessages error="welcomeForm.projectsDirectory.$error" showif="welcomeForm.$submitted && welcomeForm.projectsDirectory.$invalid"></validationmessages>
+          <validationmessages
+            error="welcomeForm.projectsDirectory.$error"
+            showif="welcomeForm.$submitted && welcomeForm.projectsDirectory.$invalid"
+            maxlength="1000"></validationmessages>
 					<div class="bibiscoWelcomeWizardNotes">
 						<p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
 						<p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>

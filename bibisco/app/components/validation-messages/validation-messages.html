@@ -1,6 +1,6 @@
 <div class="help-block" ng-messages="$ctrl.error" ng-if="$ctrl.showif">
-  <p ng-message="required">This field is required</p>
-  <p ng-message="minlength">This field is too short</p>
-  <p ng-message="maxlength">This field is too long</p>
-  <p ng-message="email">This needs to be a valid email</p>
+  <p ng-message="required">{{"validation.required" | translate}}</p>
+  <p ng-message="minlength">{{"validation.minlength" | translate:{ minlength: $ctrl.minlength } }}</p>
+  <p ng-message="maxlength">{{"validation.maxlength" | translate:{ maxlength: $ctrl.maxlength } }}</p>
+  <p ng-message="email">{{"validation.email" | translate}}</p>
 </div>
