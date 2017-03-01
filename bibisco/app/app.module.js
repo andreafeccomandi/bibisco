@@ -18,7 +18,8 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     'pascalprecht.translate', // angular-translate
     'tmh.dynamicLocale', // angular-dynamic-locale
     'ui.select',
-    'ngSanitize'
+    'ngSanitize',
+    'ngMessages'
   ])
   .config(['$locationProvider', '$routeProvider',
     function config($locationProvider, $routeProvider) {

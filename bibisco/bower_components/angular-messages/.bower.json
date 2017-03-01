@@ -1,0 +1,18 @@
+{
+  "name": "angular-messages",
+  "main": "./angular-messages.js",
+  "dependencies": {
+    "angular": "v1.3.0-beta.9"
+  },
+  "homepage": "https://github.com/yabasha/angular-messages",
+  "_release": "a9fd2a82c3",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a9fd2a82c36015c7ed03dfd1577388b978570384"
+  },
+  "_source": "https://github.com/yabasha/angular-messages.git",
+  "_target": "*",
+  "_originalSource": "ng-messages",
+  "_direct": true
+}
