@@ -20,7 +20,7 @@ component('welcome', {
 });
 
 
-function WelcomeController($scope, LocaleService, LoggerService,
+function WelcomeController($scope, $location, LocaleService, LoggerService,
   BibiscoDbService) {
   LoggerService.debug('Start WelcomeController...');
   var self = this;
@@ -37,9 +37,20 @@ function WelcomeController($scope, LocaleService, LoggerService,
     self.step = 1;
   }
   self.finish = function(isValid) {
-    alert("Form is valid? " + isValid);
-    alert('selectedLanguage=' + LocaleService.getCurrentLocale() +
-      ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory)
+    if (isValid) {
+
+      BibiscoDbService.setProperty('locale', LocaleService.getCurrentLocale());
+      BibiscoDbService.setProperty('projectsDirectory', self.selectedProjectsDirectory);
+      BibiscoDbService.setProperty('firstAccess', false);
+      BibiscoDbService.saveDatabase();
+
+      LoggerService.debug('Saved preferences: selectedLanguage=' +
+        LocaleService.getCurrentLocale() +
+        ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory);
+
+      $location.path('/start');
+    }
+
   }
   LoggerService.debug('End WelcomeController...');
 }
