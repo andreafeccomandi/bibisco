@@ -19,14 +19,35 @@ component('validationmessages', {
   templateUrl: 'components/validation-messages/validation-messages.html',
   controller: ValidationMessagesController,
   bindings: {
-    error: '<',
-    showif: '<',
-    minlength: '@',
-    maxlength: '@'
+    field: '<'
   }
 });
 
 function ValidationMessagesController(LoggerService) {
+
   LoggerService.debug('Start ValidationMessagesController...');
+
+  // get errors
+  this.getError = function() {
+    return this.field.$error;
+  }
+
+  // show errors
+  this.showError = function() {
+    return this.field.$$parentForm.$submitted && this.field.$invalid;
+  }
+
+  // maxlength
+  this.getMaxLength = function() {
+    return angular.element(document.querySelector('#' + this.field.$name))
+      .attr('maxlength');
+  }
+
+  // minlength
+  this.getMinLength = function() {
+    return angular.element(document.querySelector('#' + this.field.$name))
+      .attr('minlength');
+  }
+
   LoggerService.debug('End ValidationMessagesController...');
 }
