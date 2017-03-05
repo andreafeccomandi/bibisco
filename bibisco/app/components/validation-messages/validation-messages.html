@@ -1,6 +1,6 @@
-<div class="help-block" ng-messages="$ctrl.getError()" ng-if="$ctrl.showError()">
-  <p ng-message="required">{{"validation.required" | translate}}</p>
-  <p ng-message="minlength">{{"validation.minlength" | translate:{ minlength: $ctrl.getMinLength() } }}</p>
-  <p ng-message="maxlength">{{"validation.maxlength" | translate:{ maxlength: $ctrl.getMaxLength() } }}</p>
-  <p ng-message="email">{{"validation.email" | translate}}</p>
+<div ng-messages="$ctrl.getError()" ng-if="$ctrl.showError()">
+  <p class="text-danger bibiscoNotSelectableText" ng-message="required">{{"validation.required" | translate}}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="minlength">{{"validation.minlength" | translate:{ minlength: $ctrl.getMinLength() } }}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="maxlength">{{"validation.maxlength" | translate:{ maxlength: $ctrl.getMaxLength() } }}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="email">{{"validation.email" | translate}}</p>
 </div>

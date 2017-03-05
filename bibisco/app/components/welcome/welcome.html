@@ -12,7 +12,7 @@
 				<div ng-show="$ctrl.step==2">
 					<p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
 					<div class="input-group" ng-class="{ 'has-error': welcomeForm.$submitted && welcomeForm.projectsDirectory.$invalid }">
-					  <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required maxlength="10"/>
+					  <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
 					  <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
 					</div>
           <validationmessages field="welcomeForm.projectsDirectory"></validationmessages>
