@@ -39,14 +39,16 @@ function ValidationMessagesController(LoggerService) {
 
   // maxlength
   this.getMaxLength = function() {
-    return angular.element(document.querySelector('#' + this.field.$name))
-      .attr('maxlength');
+    var element = angular.element(document.querySelector('input[name=' + this
+      .field.$name + ']'));
+    return element.attr('maxlength');
   }
 
   // minlength
   this.getMinLength = function() {
-    return angular.element(document.querySelector('#' + this.field.$name))
-      .attr('minlength');
+    var element = angular.element(document.querySelector('input[name=' + this
+      .field.$name + ']'));
+    return element.attr('minlength');
   }
 
   LoggerService.debug('End ValidationMessagesController...');
