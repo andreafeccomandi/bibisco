@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 page-header">
+      <h1>{{"jsp.projects.dialog.title.createProject" | translate}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <form name="createProjectForm" class="form-horizontal" ng-submit="$ctrl.save(createProjectForm.$valid)" novalidate>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="bibiscoCreateProjectNameLabel">{{"jsp.createProject.form.label.name" | translate}}</label>
+          <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectName.$invalid }">
+            <input class="form-control" type="text" name="projectName" ng-model="$ctrl.projectName" id="bibiscoCreateProjectNameLabel" required>
+          </div>
+          <div class="col-sm-8 col-sm-offset-3">
+            <validationmessages field="createProjectForm.projectName"></validationmessages>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="bibiscoCreateProjectSelectLanguage">{{"jsp.createProject.form.label.language" | translate}}</label>
+          <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectLanguage.$invalid }">
+            <input class="form-control" type="text" name="projectLanguage" ng-model="$ctrl.projectLanguage" id="bibiscoCreateProjectSelectLanguage" required>
+          </div>
+          <div class="col-sm-8 col-sm-offset-3">
+            <validationmessages field="createProjectForm.projectLanguage"></validationmessages>
+          </div>
+        </div>
+        <div class="row top30"></div>
+        <div class="col-sm-9 col-sm-offset-3">
+          <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
+          <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
