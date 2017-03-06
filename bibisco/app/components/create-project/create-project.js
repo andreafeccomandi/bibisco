@@ -19,12 +19,35 @@ component('createproject', {
   controller: CreateProjectController
 });
 
-function CreateProjectController($location, LoggerService,
+function CreateProjectController($location, LoggerService, LocaleService,
   BibiscoDbService) {
   LoggerService.debug('Start CreateProjectController...');
   var self = this;
   self.projectName = null;
-  self.projectLanguage = null;
+  self.projectLanguage = LocaleService.getCurrentLocale();
+  self.projectLocales = {
+    'ca-es': 'Català',
+    'cs': 'Český',
+    'da-dk': 'Dansk',
+    'de': 'Deutsch',
+    'en-au': 'English (Australia)',
+    'en-ca': 'English (Canada)',
+    'en-za': 'English (South Africa)',
+    'en-gb': 'English (UK)',
+    'en-us': 'English (USA)',
+    'es-ar': 'Español (Argentina)',
+    'es-es': 'Español (España)',
+    'es-mx': 'Español (México)',
+    'es-mx': 'Español (Venezuela)',
+    'fr': 'Français',
+    'it': 'Italiano',
+    'nl': 'Nederlands',
+    'no': 'Norsk',
+    'pl': 'Polski',
+    'pt-br': 'Português (Brasil)',
+    'pt-pt': 'Português (Portugal)',
+    'sv': 'Svenska'
+  }
 
   self.save = function() {
     alert('save!')

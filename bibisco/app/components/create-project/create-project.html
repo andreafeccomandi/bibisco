@@ -19,14 +19,22 @@
         <div class="form-group">
           <label class="col-sm-3 control-label" for="bibiscoCreateProjectSelectLanguage">{{"jsp.createProject.form.label.language" | translate}}</label>
           <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectLanguage.$invalid }">
-            <input class="form-control" type="text" name="projectLanguage" ng-model="$ctrl.projectLanguage" id="bibiscoCreateProjectSelectLanguage" required>
-          </div>
-          <div class="col-sm-8 col-sm-offset-3">
-            <validationmessages field="createProjectForm.projectLanguage"></validationmessages>
+            <!-- How does it work? Take a look here:
+            https://stackoverflow.com/questions/39032484/how-to-repeat-object-properties-in-angular-ui-select-choices/39035468#39035468 -->
+            <ui-select ng-model="$ctrl.projectLanguage">
+                <ui-select-match>
+                    <span ng-bind="$select.selected.value"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="language.key as (key, language) in $ctrl.projectLocales | filter: {'value':$select.search}">
+                  <span ng-bind-html="language.value"></span>
+                </ui-select-choices>
+            </ui-select>
           </div>
         </div>
-        <div class="row top30"></div>
         <div class="col-sm-9 col-sm-offset-3">
+        <p><span class="label label-danger">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.createProject.save.confirm" | translate}}</p>
+        </div>
+        <div class="top30 col-sm-9 col-sm-offset-3">
           <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
           <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
         </div>
