@@ -19,8 +19,8 @@ component('createproject', {
   controller: CreateProjectController
 });
 
-function CreateProjectController($location, LoggerService, LocaleService,
-  BibiscoDbService) {
+function CreateProjectController($location, BibiscoDbService, LocaleService,
+  ProjectDbService, LoggerService, UuidService) {
   LoggerService.debug('Start CreateProjectController...');
   var self = this;
   self.projectName = null;
@@ -50,7 +50,20 @@ function CreateProjectController($location, LoggerService, LocaleService,
   }
 
   self.save = function() {
-    alert('save!')
+    var projectId = UuidService.generateUuid();
+
+    var project = {
+      "id": projectId,
+      "name": self.projectName,
+      "language": self.projectLanguage,
+    }
+
+    // create project db
+    ProjectDbService.createProjectDb(projectId);
+
+    // add project to BibiscoDb
+    project = BibiscoDbService.addProject(project);
+    BibiscoDbService.saveDatabase();
   }
 
   self.back = function() {

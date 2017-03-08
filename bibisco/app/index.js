@@ -41,8 +41,26 @@ logger.add(logger.transports.File, {
 });
 global.logger = logger;
 
-// add loki db
+// add loki
 const loki = require('lokijs');
+
+// add function to create project db
+global.createProjectDb = function(dbName, dbPath) {
+		var projectdb = new loki(dbPath + '/' + dbName + '.json');
+		projectdb.saveDatabase();
+		global.projectdb = projectdb;
+		logger.debug('Database ' + dbPath + '/' + dbName + '.json created!');
+		return global.projectdb;
+	}
+	// add function to load project db
+global.loadProjectDb = function(dbName, dbPath) {
+	var projectdb = new loki(dbPath + '/' + dbName + '.json');
+	global.projectdb = projectdb;
+	logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
+	return global.projectdb;
+}
+
+// add bibisco db
 var bibiscodb = new loki('./db/bibisco.json');
 bibiscodb.loadDatabase({}, function() {
 	logger.debug('bibisco.json db loaded');
@@ -54,6 +72,10 @@ const {
 	dialog
 } = require('electron');
 global.dialog = dialog;
+
+// add uuid
+const uuid = require('uuid/v1');
+global.uuid = uuid;
 
 // prevent window being garbage collected
 let mainWindow;

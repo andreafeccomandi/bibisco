@@ -13,24 +13,44 @@
  *
  */
 
-angular.module('bibiscoApp') .service('BibiscoDbService', function (LoggerService) {
-    'use strict';
+angular.module('bibiscoApp').service('BibiscoDbService', function(LoggerService) {
+  'use strict';
 
-    var remote = require('electron').remote;
-    var bibiscodb = remote.getGlobal('bibiscodb');
-    var properties = bibiscodb.getCollection('properties');
+  var remote = require('electron').remote;
+  var bibiscodb = remote.getGlobal('bibiscodb');
+  var properties = bibiscodb.getCollection('properties');
+  var projects = bibiscodb.getCollection('projects');
 
-    return {
-        getProperty: function(name) {
-          return properties.findOne({"name": name}).value;
-        },
-        setProperty: function(name, value) {
-            var property = properties.findOne({"name": name});
-            property.value = value;
-            return properties.update(property);
-        },
-        saveDatabase: function(callback) {
-          return bibiscodb.saveDatabase(callback);
-        }
-    };
+  return {
+    getProperty: function(name) {
+      return properties.findOne({
+        "name": name
+      }).value;
+    },
+    setProperty: function(name, value) {
+      var property = properties.findOne({
+        "name": name
+      });
+      property.value = value;
+      return properties.update(property);
+    },
+    addProject: function(project) {
+      return projects.insert(project);
+    },
+    updateProject: function(project) {
+
+    },
+    getProject: function(idproject) {
+
+    },
+    deleteProject: function(idproject) {
+
+    },
+    getProjects: function() {
+
+    },
+    saveDatabase: function(callback) {
+      return bibiscodb.saveDatabase(callback);
+    }
+  };
 });
