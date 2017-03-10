@@ -44,28 +44,11 @@ global.logger = logger;
 // add loki
 const loki = require('lokijs');
 
-// add function to create project db
-global.createProjectDb = function(dbName, dbPath) {
-		var projectdb = new loki(dbPath + '/' + dbName + '.json');
-		projectdb.saveDatabase();
-		global.projectdb = projectdb;
-		logger.debug('Database ' + dbPath + '/' + dbName + '.json created!');
-		return global.projectdb;
-	}
-	// add function to load project db
-global.loadProjectDb = function(dbName, dbPath) {
-	var projectdb = new loki(dbPath + '/' + dbName + '.json');
-	global.projectdb = projectdb;
-	logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
-	return global.projectdb;
-}
+// add project db proxy
+global.projectdbproxy = initProjectDbProxy();
 
 // add bibisco db
-var bibiscodb = new loki('./db/bibisco.json');
-bibiscodb.loadDatabase({}, function() {
-	logger.debug('bibisco.json db loaded');
-});
-global.bibiscodb = bibiscodb;
+global.bibiscodb = initBibiscoDb();
 
 // add dialog
 const {
@@ -115,3 +98,31 @@ app.on('activate', () => {
 app.on('ready', () => {
 	mainWindow = createMainWindow();
 });
+
+
+function initProjectDbProxy() {
+	return {
+		// add function to create project db
+		createProjectDb: function(dbName, dbPath) {
+			global.projectdb = new loki(dbPath + '/' + dbName + '.json');
+			projectdb.saveDatabase();
+			logger.debug('Database ' + dbPath + '/' + dbName + '.json created!');
+			return global.projectdb;
+		},
+
+		// add function to load project sdb
+		loadProjectDb: function(dbName, dbPath) {
+			global.projectdb = new loki(dbPath + '/' + dbName + '.json');
+			logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
+			return global.projectdb;
+		}
+	}
+}
+
+function initBibiscoDb() {
+	var bibiscodb = new loki('./db/bibisco.json');
+	bibiscodb.loadDatabase({}, function() {
+		logger.debug('bibisco.json db loaded');
+	});
+	return bibiscodb;
+}

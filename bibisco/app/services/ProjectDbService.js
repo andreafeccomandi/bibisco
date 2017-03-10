@@ -18,13 +18,14 @@ angular.module('bibiscoApp').service('ProjectDbService', function(
   'use strict';
 
   var remote = require('electron').remote;
-  var createProjectDb = remote.getGlobal('createProjectDb');
+  var projectdbproxy = remote.getGlobal('projectdbproxy');
   var projectdb;
 
   return {
     createProjectDb: function(projectId) {
-      projectdb = createProjectDb(projectId, BibiscoDbService.getProperty(
-        'projectsDirectory'));
+      projectdb = projectdbproxy.createProjectDb(projectId,
+        BibiscoDbService.getProperty(
+          'projectsDirectory'));
 
       var chapters = projectdb.addCollection('chapters');
       chapters.insert({
