@@ -53,16 +53,18 @@ function CreateProjectController($location, BibiscoDbService, LocaleService,
     var projectId = UuidService.generateUuid();
 
     var project = {
-      "id": projectId,
-      "name": self.projectName,
-      "language": self.projectLanguage,
+      'id': projectId,
+      'name': self.projectName,
+      'language': self.projectLanguage,
+      'bibiscoVersion': BibiscoDbService.getProperty('version')
     }
 
     // create project db
-    ProjectDbService.createProjectDb(projectId);
+    ProjectDbService.createProjectDb(project);
+    ProjectDbService.saveDatabase();
 
-    // add project to BibiscoDb
-    project = BibiscoDbService.addProject(project);
+    // add project to bibisco db
+    BibiscoDbService.addProject(project.id, project.name);
     BibiscoDbService.saveDatabase();
   }
 

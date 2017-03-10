@@ -34,8 +34,11 @@ angular.module('bibiscoApp').service('BibiscoDbService', function(LoggerService)
       property.value = value;
       return properties.update(property);
     },
-    addProject: function(project) {
-      return projects.insert(project);
+    addProject: function(id, name) {
+      return projects.insert({
+        'id': id,
+        'name': name
+      });
     },
     updateProject: function(project) {
 

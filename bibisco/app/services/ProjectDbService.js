@@ -22,17 +22,27 @@ angular.module('bibiscoApp').service('ProjectDbService', function(
   var projectdb;
 
   return {
-    createProjectDb: function(projectId) {
-      projectdb = projectdbproxy.createProjectDb(projectId,
+    createProjectDb: function(projectToCreate) {
+
+      LoggerService.debug('Start ProjectDbService.createProjectDb...');
+
+      projectdb = projectdbproxy.createProjectDb(projectToCreate.id,
         BibiscoDbService.getProperty(
           'projectsDirectory'));
 
-      var chapters = projectdb.addCollection('chapters');
-      chapters.insert({
-        title: 'Capitolo 1',
-        reason: 'Inizio di tutto...'
-      });
-      projectdb.saveDatabase();
+      var project = projectdb.addCollection('project');
+      project.insert(projectToCreate);
+
+      projectdb.addCollection('premise');
+      projectdb.addCollection('fabula');
+      projectdb.addCollection('setting');
+      projectdb.addCollection('strands');
+      projectdb.addCollection('chapters');
+      projectdb.addCollection('scenes');
+      projectdb.addCollection('characters');
+      projectdb.addCollection('locations');
+
+      LoggerService.debug('End ProjectDbService.createProjectDb...');
     },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);
