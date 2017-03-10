@@ -20,6 +20,13 @@ const env = process.env.NODE_ENV || 'development';
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
+// adds os info
+global.os = process.platform;
+
+// adds file system
+const fs = require('fs');
+global.fs = fs;
+
 // add winston logger
 const logger = require('winston');
 logger.level = (env === 'development' ? 'debug' : 'info');
@@ -40,6 +47,8 @@ logger.add(logger.transports.File, {
 	}
 });
 global.logger = logger;
+
+logger.debug('**** This platform is ' + process.platform);
 
 // add loki
 const loki = require('lokijs');
