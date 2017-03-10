@@ -24,12 +24,12 @@ angular.module('bibiscoApp').service('BibiscoDbService', function(LoggerService)
   return {
     getProperty: function(name) {
       return properties.findOne({
-        "name": name
+        'name': name
       }).value;
     },
     setProperty: function(name, value) {
       var property = properties.findOne({
-        "name": name
+        'name': name
       });
       property.value = value;
       return properties.update(property);

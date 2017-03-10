@@ -66,6 +66,8 @@ function CreateProjectController($location, BibiscoDbService, LocaleService,
     // add project to bibisco db
     BibiscoDbService.addProject(project.id, project.name);
     BibiscoDbService.saveDatabase();
+
+    $location.path('/project');
   }
 
   self.back = function() {
