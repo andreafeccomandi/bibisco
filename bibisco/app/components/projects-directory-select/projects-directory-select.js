@@ -33,7 +33,7 @@ function ProjectsDirectorySelectController(LoggerService) {
   self.projectsdirectory = null;
   self.opendirectorydialog = function() {
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory', 'createDirectory']
       },
       function(filenames) {
         if (filenames) {

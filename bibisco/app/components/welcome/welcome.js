@@ -43,7 +43,15 @@ function WelcomeController($scope, $location, BibiscoDbService, ContextService,
 
       var projectsDirectory = self.selectedProjectsDirectory + ContextService
         .getFileSeparator() + '_internal_bibisco_projects_db_';
-      FileSystemService.createDirectory(projectsDirectory);
+      var directoryCreated;
+      FileSystemService.createDirectory(projectsDirectory, function(err) {
+        if (err) {
+          directoryCreated = false;
+        } else {
+          directoryCreated = true;
+        }
+      });
+      alert('directoryCreated=' + directoryCreated);
 
       BibiscoDbService.setProperty('projectsDirectory', projectsDirectory);
       BibiscoDbService.setProperty('firstAccess', false);
