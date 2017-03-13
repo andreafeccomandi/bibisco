@@ -23,11 +23,15 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   return {
     createDirectory: function(path) {
       var result = true;
-      try {
-        fs.mkdirSync(path);
-      } catch (err) {
-        LoggerService.error('Error creating directory: ' + path);
-        result = false;
+      // if the directory not exists I try to create it
+      if (!fs.existsSync(path)) {
+        try {
+          fs.mkdirSync(path);
+        } catch (err) {
+          LoggerService.error('Error creating directory: ' + path + ' - ' +
+            err);
+          result = false;
+        }
       }
 
       return result;
