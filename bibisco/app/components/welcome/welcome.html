@@ -16,6 +16,7 @@
             <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
           </div>
           <validationmessages field="welcomeForm.projectsDirectory"></validationmessages>
+          <p class="text-danger" ng-show="$ctrl.forbiddenDirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
           <div class="bibiscoWelcomeWizardNotes">
             <p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
             <p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>

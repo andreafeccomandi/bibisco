@@ -21,8 +21,16 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   var fs = remote.getGlobal('fs');
 
   return {
-    createDirectory: function(path, callback) {
-      fs.mkdir(path, callback);
+    createDirectory: function(path) {
+      var result = true;
+      try {
+        fs.mkdirSync(path);
+      } catch (err) {
+        LoggerService.error('Error creating directory: ' + path);
+        result = false;
+      }
+
+      return result;
     }
   }
 });

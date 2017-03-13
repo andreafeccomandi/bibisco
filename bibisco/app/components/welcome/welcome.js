@@ -26,8 +26,11 @@ function WelcomeController($scope, $location, BibiscoDbService, ContextService,
   var self = this;
   self.selectedProjectsDirectory = null;
   self.step = 1;
+  self.forbiddenDirectory = false;
+
   self.selectProjectsDirectory = function(directory) {
     self.selectedProjectsDirectory = directory;
+    self.forbiddenDirectory = false;
     $scope.$apply();
   }
   self.next = function() {
@@ -43,25 +46,22 @@ function WelcomeController($scope, $location, BibiscoDbService, ContextService,
 
       var projectsDirectory = self.selectedProjectsDirectory + ContextService
         .getFileSeparator() + '_internal_bibisco_projects_db_';
-      var directoryCreated;
-      FileSystemService.createDirectory(projectsDirectory, function(err) {
-        if (err) {
-          directoryCreated = false;
-        } else {
-          directoryCreated = true;
-        }
-      });
-      alert('directoryCreated=' + directoryCreated);
+      var directoryCreated = FileSystemService.createDirectory(
+        projectsDirectory);
 
-      BibiscoDbService.setProperty('projectsDirectory', projectsDirectory);
-      BibiscoDbService.setProperty('firstAccess', false);
-      BibiscoDbService.saveDatabase();
+      if (directoryCreated) {
+        BibiscoDbService.setProperty('projectsDirectory', projectsDirectory);
+        BibiscoDbService.setProperty('firstAccess', false);
+        BibiscoDbService.saveDatabase();
 
-      LoggerService.debug('Saved preferences: selectedLanguage=' +
-        LocaleService.getCurrentLocale() +
-        ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory);
+        LoggerService.debug('Saved preferences: selectedLanguage=' +
+          LocaleService.getCurrentLocale() +
+          ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory);
 
-      $location.path('/start');
+        $location.path('/start');
+      } else {
+        self.forbiddenDirectory = true;
+      }
     }
 
   }
