@@ -49,25 +49,28 @@ function CreateProjectController($location, BibiscoDbService, LocaleService,
     'sv': 'Svenska'
   }
 
-  self.save = function() {
-    var projectId = UuidService.generateUuid();
+  self.save = function(isValid) {
 
-    var project = {
-      'id': projectId,
-      'name': self.projectName,
-      'language': self.projectLanguage,
-      'bibiscoVersion': BibiscoDbService.getProperty('version')
+    if (isValid) {
+      var projectId = UuidService.generateUuid();
+
+      var project = {
+        'id': projectId,
+        'name': self.projectName,
+        'language': self.projectLanguage,
+        'bibiscoVersion': BibiscoDbService.getProperty('version')
+      }
+
+      // create project db
+      ProjectDbService.createProjectDb(project);
+      ProjectDbService.saveDatabase();
+
+      // add project to bibisco db
+      BibiscoDbService.addProject(project.id, project.name);
+      BibiscoDbService.saveDatabase();
+
+      $location.path('/project');
     }
-
-    // create project db
-    ProjectDbService.createProjectDb(project);
-    ProjectDbService.saveDatabase();
-
-    // add project to bibisco db
-    BibiscoDbService.addProject(project.id, project.name);
-    BibiscoDbService.saveDatabase();
-
-    $location.path('/project');
   }
 
   self.back = function() {
