@@ -25,5 +25,12 @@ component('project', {
 function ProjectController($location, BibiscoDbService, LoggerService,
   ProjectDbService) {
   LoggerService.debug('Start ProjectController...');
+  var self = this;
+
+  self.project = function() {
+    var projectdb = ProjectDbService.getProjectDb();
+    return projectdb.getCollection('project').get(1);
+  }
+
   LoggerService.debug('End ProjectController...');
 }
