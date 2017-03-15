@@ -44,8 +44,16 @@ angular.module('bibiscoApp').service('ProjectDbService', function(
 
       LoggerService.debug('End ProjectDbService.createProjectDb...');
     },
+    loadProjectDb: function(id) {
+      projectdb = projectdbproxy.loadProjectDb(id, BibiscoDbService.getProperty(
+        'projectsDirectory'));
+      LoggerService.debug('Loaded ' + projectdb);
+    },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);
+    },
+    getProjectDb: function() {
+      return projectdb;
     }
   };
 });
