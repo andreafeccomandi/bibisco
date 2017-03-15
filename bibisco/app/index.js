@@ -56,8 +56,8 @@ const loki = require('lokijs');
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
 
-// add bibisco db connecti
-global.bibiscodb = initBibiscoDb();
+// add bibisco db connection
+global.bibiscodbconnection = initBibiscoDbConnection();
 
 // add dialog
 const {
@@ -119,7 +119,7 @@ function initProjectDbConnection() {
 			return projectdb;
 		},
 
-		// add function to load project sdb
+		// add function to load project db
 		load: function(dbName, dbPath) {
 			var projectdb = new loki(dbPath + '/' + dbName + '.json');
 			projectdb.loadDatabase({}, function() {
@@ -130,10 +130,15 @@ function initProjectDbConnection() {
 	}
 }
 
-function initBibiscoDb() {
-	var bibiscodb = new loki('./db/bibisco.json');
-	bibiscodb.loadDatabase({}, function() {
-		logger.debug('bibisco.json db loaded');
-	});
-	return bibiscodb;
+function initBibiscoDbConnection() {
+	return {
+		// add function to load bibisco db
+		load: function() {
+			var bibiscodb = new loki('./db/bibisco.json');
+			bibiscodb.loadDatabase({}, function() {
+				logger.debug('bibisco.json db loaded');
+			});
+			return bibiscodb;
+		}
+	}
 }

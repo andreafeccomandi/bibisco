@@ -19,13 +19,14 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, BibiscoDbService, LocaleService,
+function OpenProjectController($location, BibiscoProjectDaoService,
+  LocaleService,
   ProjectDbService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
   var self = this;
 
   self.getProjects = function() {
-    return BibiscoDbService.getProjects().addDynamicView('test').applySimpleSort(
+    return BibiscoProjectDaoService.getProjects().addDynamicView('test').applySimpleSort(
       'name').data();
   }
 

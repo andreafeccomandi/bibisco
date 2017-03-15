@@ -13,19 +13,22 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoDbService', function(LoggerService) {
+angular.module('bibiscoApp').service('BibiscoProjectDaoService', function(
+  BibiscoDbService, LoggerService) {
   'use strict';
 
-  var remote = require('electron').remote;
-  var bibiscodbconnection = remote.getGlobal('bibiscodbconnection');
-  var bibiscodb = bibiscodbconnection.load();
+  var bibiscodb = BibiscoDbService.getBibiscoDb();
 
   return {
-    saveDatabase: function(callback) {
-      return bibiscodb.saveDatabase(callback);
+    addProject: function(id, name) {
+      var projects = bibiscodb.getCollection('projects');
+      return projects.insert({
+        'id': id,
+        'name': name
+      });
     },
-    getBibiscoDb: function() {
-      return bibiscodb;
+    getProjects: function() {
+      return bibiscodb.getCollection('projects');
     }
   };
 });

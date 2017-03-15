@@ -14,11 +14,11 @@
  */
 
 angular.module('bibiscoApp').service('LocaleService', function($translate,
-  $rootScope, tmhDynamicLocale, LoggerService, BibiscoDbService) {
+  $rootScope, tmhDynamicLocale, LoggerService, BibiscoPropertiesDaoService) {
   'use strict';
 
   // get preferredLanguage from bibiscodb
-  var currentLocale = BibiscoDbService.getProperty("locale");
+  var currentLocale = BibiscoPropertiesDaoService.getProperty("locale");
   LoggerService.debug('storedLocale = [' + currentLocale + ']');
 
   if (!currentLocale) {

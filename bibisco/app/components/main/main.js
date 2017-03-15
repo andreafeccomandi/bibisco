@@ -19,10 +19,10 @@ component('main', {
 });
 
 
-function MainController($location, LoggerService, BibiscoDbService) {
+function MainController($location, LoggerService, BibiscoPropertiesDaoService) {
   LoggerService.debug('Start MainController...');
-  var firstAccess = BibiscoDbService.getProperty("firstAccess");
-  LoggerService.debug('firstAccess='+firstAccess);
+  var firstAccess = BibiscoPropertiesDaoService.getProperty("firstAccess");
+  LoggerService.debug('firstAccess=' + firstAccess);
 
   if (firstAccess == true) {
     $location.path('/welcome');

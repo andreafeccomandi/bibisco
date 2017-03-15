@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ProjectDbService', function(
-  BibiscoDbService, LoggerService) {
+  BibiscoPropertiesDaoService, LoggerService) {
   'use strict';
 
   var remote = require('electron').remote;
@@ -27,7 +27,7 @@ angular.module('bibiscoApp').service('ProjectDbService', function(
       LoggerService.debug('Start ProjectDbService.createProjectDb...');
 
       projectdb = projectdbconnection.create(projectToCreate.id,
-        BibiscoDbService.getProperty(
+        BibiscoPropertiesDaoService.getProperty(
           'projectsDirectory'));
 
       var project = projectdb.addCollection('project');
@@ -45,11 +45,10 @@ angular.module('bibiscoApp').service('ProjectDbService', function(
       LoggerService.debug('End ProjectDbService.createProjectDb...');
     },
     loadProjectDb: function(id) {
-      LoggerService.debug('Start ProjectDbService.loadProjectDb...');
-      projectdb = projectdbconnection.load(id, BibiscoDbService.getProperty(
-        'projectsDirectory'));
+      projectdb = projectdbconnection.load(id,
+        BibiscoPropertiesDaoService.getProperty(
+          'projectsDirectory'));
       LoggerService.debug('Loaded ' + projectdb);
-      LoggerService.debug('End ProjectDbService.loadProjectDb...');
     },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);
