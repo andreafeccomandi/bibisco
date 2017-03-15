@@ -50,7 +50,7 @@ angular.module('bibiscoApp').service('BibiscoDbService', function(LoggerService)
 
     },
     getProjects: function() {
-
+      return projects;
     },
     saveDatabase: function(callback) {
       return bibiscodb.saveDatabase(callback);

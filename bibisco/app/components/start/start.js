@@ -29,7 +29,7 @@ function StartController($location, LocaleService, LoggerService,
   }
 
   self.openProject = function() {
-
+    $location.path('/openproject');
   }
 
   self.importProject = function() {

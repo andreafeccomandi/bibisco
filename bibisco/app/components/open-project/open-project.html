@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 page-header">
+      <h1>{{"jsp.projects.dialog.title.openProject" | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-10">
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="project in $ctrl.getProjects()">
+          <div class="row">
+            <div class="col-sm-9">
+              {{ project.name }}
+            </div>
+            <div class="col-sm-3">
+              <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>
+              <button ng-click="$ctrl.delete((project.id))" class="btn btn-sm btn-default">{{"jsp.selectProject.button.delete" | translate}}</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="row top15">
+    <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+  </div>
+</div>
