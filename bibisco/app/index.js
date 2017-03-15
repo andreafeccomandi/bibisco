@@ -53,8 +53,8 @@ logger.debug('**** This platform is ' + process.platform);
 // add loki
 const loki = require('lokijs');
 
-// add project db proxy
-global.projectdbproxy = initProjectDbProxy();
+// add project db projectdbconnection
+global.projectdbconnection = initProjectDbConnection();
 
 // add bibisco db
 global.bibiscodb = initBibiscoDb();
@@ -109,10 +109,10 @@ app.on('ready', () => {
 });
 
 
-function initProjectDbProxy() {
+function initProjectDbConnection() {
 	return {
 		// add function to create project db
-		createProjectDb: function(dbName, dbPath) {
+		create: function(dbName, dbPath) {
 			global.projectdb = new loki(dbPath + '/' + dbName + '.json');
 			projectdb.saveDatabase();
 			logger.debug('Database ' + dbPath + '/' + dbName + '.json created!');
@@ -120,7 +120,7 @@ function initProjectDbProxy() {
 		},
 
 		// add function to load project sdb
-		loadProjectDb: function(dbName, dbPath) {
+		load: function(dbName, dbPath) {
 			global.projectdb = new loki(dbPath + '/' + dbName + '.json');
 			global.projectdb.loadDatabase({}, function() {
 				logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
