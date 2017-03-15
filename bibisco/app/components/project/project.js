@@ -22,14 +22,13 @@ component('project', {
   }
 });
 
-function ProjectController($location, BibiscoDbService, LoggerService,
-  ProjectDbService) {
+function ProjectController($location, LoggerService,
+  ProjectDaoService) {
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
   self.project = function() {
-    var projectdb = ProjectDbService.getProjectDb();
-    return projectdb.getCollection('project').get(1);
+    return ProjectDaoService.getProject();
   }
 
   LoggerService.debug('End ProjectController...');
