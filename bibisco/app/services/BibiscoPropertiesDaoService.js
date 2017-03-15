@@ -17,17 +17,17 @@ angular.module('bibiscoApp').service('BibiscoPropertiesDaoService', function(
   BibiscoDbService, LoggerService) {
   'use strict';
 
-  var bibiscodb = BibiscoDbService.getBibiscoDb();
-
   return {
     getProperty: function(name) {
-      var properties = bibiscodb.getCollection('properties');
+      var properties = BibiscoDbService.getBibiscoDb().getCollection(
+        'properties');
       return properties.findOne({
         'name': name
       }).value;
     },
     setProperty: function(name, value) {
-      var properties = bibiscodb.getCollection('properties');
+      var properties = BibiscoDbService.getBibiscoDb().getCollection(
+        'properties');
       var property = properties.findOne({
         'name': name
       });

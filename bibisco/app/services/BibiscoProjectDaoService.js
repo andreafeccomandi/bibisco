@@ -17,18 +17,17 @@ angular.module('bibiscoApp').service('BibiscoProjectDaoService', function(
   BibiscoDbService, LoggerService) {
   'use strict';
 
-  var bibiscodb = BibiscoDbService.getBibiscoDb();
-
   return {
     addProject: function(id, name) {
-      var projects = bibiscodb.getCollection('projects');
+      var projects = BibiscoDbService.getBibiscoDb().getCollection(
+        'projects');
       return projects.insert({
         'id': id,
         'name': name
       });
     },
     getProjects: function() {
-      return bibiscodb.getCollection('projects');
+      return BibiscoDbService.getBibiscoDb().getCollection('projects');
     }
   };
 });
