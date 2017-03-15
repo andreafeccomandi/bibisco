@@ -122,7 +122,9 @@ function initProjectDbProxy() {
 		// add function to load project sdb
 		loadProjectDb: function(dbName, dbPath) {
 			global.projectdb = new loki(dbPath + '/' + dbName + '.json');
-			logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
+			global.projectdb.loadDatabase({}, function() {
+				logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
+			});
 			return global.projectdb;
 		}
 	}
