@@ -114,17 +114,35 @@ function initProjectDbConnection() {
 	return {
 		// add function to create project db
 		create: function(dbName, dbPath) {
-			var projectdb = new loki(dbPath + '/' + dbName + '.json');
-			projectdb.saveDatabase();
-			logger.debug('Database ' + dbPath + '/' + dbName + '.json created!');
+			var projectdbfilepath = dbPath + '/' + dbName + '.json';
+			var projectdb = new loki(projectdbfilepath, {
+				adapter: new LokiFsSyncAdapter()
+			});
+			projectdb.saveDatabase(function(error) {
+				if (error) {
+					logger.error('Database ' + projectdbfilepath + ' not created: ' +
+						error.stack);
+				} else {
+					logger.debug('Database ' + projectdbfilepath + ' created!');
+				}
+			});
+
 			return projectdb;
 		},
 
 		// add function to load project db
 		load: function(dbName, dbPath) {
-			var projectdb = new loki(dbPath + '/' + dbName + '.json');
-			projectdb.loadDatabase({}, function() {
-				logger.debug('Database ' + dbPath + '/' + dbName + '.json loaded!');
+			var projectdbfilepath = dbPath + '/' + dbName + '.json';
+			var projectdb = new loki(projectdbfilepath, {
+				adapter: new LokiFsSyncAdapter()
+			});
+			projectdb.loadDatabase({}, function(result) {
+				if (result instanceof Error) {
+					logger.error('Database ' + projectdbfilepath + ' not loaded: ' +
+						result.stack);
+				} else {
+					logger.debug('Database ' + projectdbfilepath + ' loaded!');
+				}
 			});
 			return projectdb;
 		}
@@ -135,9 +153,8 @@ function initBibiscoDbConnection() {
 	return {
 		// add function to load bibisco db
 		load: function() {
-			var lokifssyncadapter = new LokiFsSyncAdapter();
 			var bibiscodb = new loki('./db/bibisco.json', {
-				adapter: lokifssyncadapter
+				adapter: new LokiFsSyncAdapter()
 			});
 			bibiscodb.loadDatabase({}, function(result) {
 				if (result instanceof Error) {
