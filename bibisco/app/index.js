@@ -52,6 +52,7 @@ logger.debug('**** This platform is ' + process.platform);
 
 // add loki
 const loki = require('lokijs');
+const LokiFsSyncAdapter = require('lokijs/src/loki-fs-sync-adapter.js');
 
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
@@ -134,9 +135,17 @@ function initBibiscoDbConnection() {
 	return {
 		// add function to load bibisco db
 		load: function() {
-			var bibiscodb = new loki('./db/bibisco.json');
-			bibiscodb.loadDatabase({}, function() {
-				logger.debug('bibisco.json db loaded');
+			var lokifssyncadapter = new LokiFsSyncAdapter();
+			var bibiscodb = new loki('./db/bibisco.json', {
+				adapter: lokifssyncadapter
+			});
+			bibiscodb.loadDatabase({}, function(result) {
+				if (result instanceof Error) {
+					logger.error('bibisco.json db not loaded: ' + result.stack);
+				} else {
+					logger.info('bibisco.json db loaded');
+				}
+
 			});
 			return bibiscodb;
 		}
