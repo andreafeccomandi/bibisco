@@ -115,6 +115,7 @@ function initProjectDbConnection() {
 	return {
 		// add function to create project db
 		create: function(dbName, dbPath) {
+			fs.mkdirSync(dbPath);
 			var projectdbfilepath = dbPath + '/' + dbName + '.json';
 			var projectdb = new loki(projectdbfilepath, {
 				adapter: new LokiFsSyncAdapter()
