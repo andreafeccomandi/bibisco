@@ -52,7 +52,8 @@ logger.debug('**** This platform is ' + process.platform);
 
 // add loki
 const loki = require('lokijs');
-const LokiFsSyncAdapter = require('lokijs/src/loki-fs-sync-adapter.js');
+const LokiFsSyncAdapter = require(
+	'../app/adapters/lokijs/loki-fs-sync-adapter.js');
 
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
