@@ -13,11 +13,12 @@
  *
  */
 
-angular.module('bibiscoApp').service('ContextService', function(LoggerService) {
+angular.module('bibiscoApp').service('ContextService', function() {
   'use strict';
 
   var remote = require('electron').remote;
   var os = remote.getGlobal('os');
+  var lastError;
 
   return {
     getOs: function() {
@@ -29,6 +30,12 @@ angular.module('bibiscoApp').service('ContextService', function(LoggerService) {
       } else {
         return '/';
       }
+    },
+    getLastError() {
+      return lastError;
+    },
+    setLastError: function(error) {
+      lastError = error;
     }
   }
 });

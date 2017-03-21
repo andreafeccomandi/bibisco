@@ -137,12 +137,7 @@ function initProjectDbConnection() {
 				adapter: new LokiFsSyncAdapter()
 			});
 			projectdb.loadDatabase({}, function(result) {
-				if (result instanceof Error) {
-					logger.error('Database ' + projectdbfilepath + ' not loaded: ' +
-						result.stack);
-				} else {
-					logger.debug('Database ' + projectdbfilepath + ' loaded!');
-				}
+				logger.debug('Database ' + projectdbfilepath + ' loaded!');
 			});
 			return projectdb;
 		}

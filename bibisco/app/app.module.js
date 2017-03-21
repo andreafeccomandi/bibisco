@@ -31,6 +31,9 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/createproject', {
         template: '<createproject></createproject>'
       }).
+      when('/error', {
+        template: '<error></error>'
+      }).
       when('/main', {
         template: '<main></main>'
       }).
@@ -84,12 +87,39 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
 // By default, AngularJS will catch errors and log them to
 // the Console. I want to keep that behavior; however, I
 // want to intercept it so that I can also log the errors
-// to file for later analysis. So I have to override the $exceptionHandler
-// provider and replace it with a custom one: ExceptionHandlerService
-.provider(
-  "$exceptionHandler", {
-    $get: function(ExceptionHandlerService) {
-      return (ExceptionHandlerService);
-    }
-  }
-);
+// to file for later analysis and I want to redirect to error page.
+// So I have to override the $exceptionHandler
+// provider and replace it with a custom one
+.factory('$exceptionHandler', ['$injector', function($injector) {
+
+  var $location;
+  var $log;
+  var ContextService;
+  var LoggerService;
+
+  return function(exception, cause) {
+
+    // Pass off the error to the default error handler
+    // on the AngularJS logger. This will output the
+    // error to the console (and let the application
+    // keep running normally for the user).
+    $log = $log || $injector.get('$log');
+    $log.error.apply($log, arguments);
+
+    // Now, we need to try and log the error using the file logger.
+    LoggerService = LoggerService || $injector.get('LoggerService');
+    LoggerService.error('***EXCEPTION CAUSE*** : ' + cause);
+    LoggerService.error('***EXCEPTION STACKTRACE*** : ' + exception.stack);
+
+    // Put cause and exception in application context
+    ContextService = ContextService || $injector.get('ContextService');
+    ContextService.setLastError({
+      cause: cause,
+      stacktrace: exception.stack
+    });
+
+    // Redirect to error page
+    $location = $location || $injector.get('$location');
+    $location.path("/error");
+  };
+}]);

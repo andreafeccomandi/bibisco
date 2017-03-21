@@ -12,12 +12,18 @@
  * See the GNU General Public License for more details.
  *
  */
-
-angular.module('bibiscoApp').service('LoggerService', function() {
-  'use strict';
-
-  var remote = require('electron').remote;
-  var logger = remote.getGlobal('logger');
-
-  return logger;
+angular.
+module('bibiscoApp').
+component('error', {
+  templateUrl: 'components/error/error.html',
+  controller: ErrorController
 });
+
+function ErrorController(ContextService, LoggerService) {
+  LoggerService.debug('Start ErrorController...');
+  var self = this;
+  self.cause = ContextService.getLastError().cause;
+  self.stacktrace = ContextService.getLastError().stacktrace;
+
+  LoggerService.debug('End ErrorController...');
+}
