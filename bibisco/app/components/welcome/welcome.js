@@ -45,8 +45,15 @@ function WelcomeController($scope, $location, BibiscoDbService,
 
       BibiscoPropertiesDaoService.setProperty('locale', LocaleService.getCurrentLocale());
 
-      var projectsDirectory = self.selectedProjectsDirectory + ContextService
-        .getFileSeparator() + '_internal_bibisco_projects_db_';
+      var projectsDirectory;
+      if (self.selectedProjectsDirectory.endsWith(
+          "_internal_bibisco_projects_db_")) {
+        projectsDirectory = self.selectedProjectsDirectory;
+      } else {
+        projectsDirectory = self.selectedProjectsDirectory + ContextService
+          .getFileSeparator() + '_internal_bibisco_projects_db_';
+      }
+
       var directoryCreated = FileSystemService.createDirectory(
         projectsDirectory);
 
