@@ -119,12 +119,7 @@ function initProjectDbConnection() {
 				adapter: new LokiFsSyncAdapter()
 			});
 			projectdb.saveDatabase(function(error) {
-				if (error) {
-					logger.error('Database ' + projectdbfilepath + ' not created: ' +
-						error.stack);
-				} else {
-					logger.debug('Database ' + projectdbfilepath + ' created!');
-				}
+				logger.debug('Database ' + projectdbfilepath + ' created!');
 			});
 
 			return projectdb;
@@ -152,12 +147,7 @@ function initBibiscoDbConnection() {
 				adapter: new LokiFsSyncAdapter()
 			});
 			bibiscodb.loadDatabase({}, function(result) {
-				if (result instanceof Error) {
-					logger.error('bibisco.json db not loaded: ' + result.stack);
-				} else {
-					logger.info('bibisco.json db loaded');
-				}
-
+				logger.info('bibisco.json db loaded');
 			});
 			return bibiscodb;
 		}
