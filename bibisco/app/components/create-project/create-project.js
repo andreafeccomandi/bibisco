@@ -19,9 +19,8 @@ component('createproject', {
   controller: CreateProjectController
 });
 
-function CreateProjectController($location, BibiscoDbService,
-  BibiscoProjectDaoService, BibiscoPropertiesDaoService, LocaleService,
-  ProjectDbService, LoggerService, UuidService) {
+function CreateProjectController($location, LocaleService,
+  ProjectService, LoggerService) {
   LoggerService.debug('Start CreateProjectController...');
   var self = this;
   self.projectName = null;
@@ -53,23 +52,7 @@ function CreateProjectController($location, BibiscoDbService,
   self.save = function(isValid) {
 
     if (isValid) {
-      var projectId = UuidService.generateUuid();
-
-      var project = {
-        'id': projectId,
-        'name': self.projectName,
-        'language': self.projectLanguage,
-        'bibiscoVersion': BibiscoPropertiesDaoService.getProperty('version')
-      }
-
-      // create project db
-      ProjectDbService.createProjectDb(project);
-      ProjectDbService.saveDatabase();
-
-      // add project to bibisco db
-      BibiscoProjectDaoService.addProject(project.id, project.name);
-      BibiscoDbService.saveDatabase();
-
+      ProjectService.create(self.projectName, self.projectLanguage);
       $location.path('/project');
     }
   }

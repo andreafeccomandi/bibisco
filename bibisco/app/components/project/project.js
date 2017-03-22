@@ -22,13 +22,12 @@ component('project', {
   }
 });
 
-function ProjectController($location, LoggerService,
-  ProjectDaoService) {
+function ProjectController($location, LoggerService, ProjectService) {
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
   self.project = function() {
-    return ProjectDaoService.getProject();
+    return ProjectService.getProjectInfo();
   }
 
   LoggerService.debug('End ProjectController...');
