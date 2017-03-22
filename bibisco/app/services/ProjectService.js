@@ -25,7 +25,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
   return {
     create: function(name, language) {
 
-      LoggerService.debug('Start ProjectDbService.create...');
+      LoggerService.debug('Start ProjectService.create...');
 
       var projectId = UuidService.generateUuid();
       var projectPath = BibiscoPropertiesDaoService.getProperty(
@@ -62,16 +62,23 @@ angular.module('bibiscoApp').service('ProjectService', function(
       // save bibisco database
       BibiscoDbService.saveDatabase();
 
-      LoggerService.debug('End ProjectDbService.create...');
+      LoggerService.debug('End ProjectService.create...');
     },
-    loadProjectDb: function(id) {
+    getProjectsCount: function() {
+      return BibiscoDbService.getBibiscoDb().getCollection('projects').count();
+    },
+    getProjectInfo: function() {
+      return projectdb.getCollection('project').get(1);
+    },
+    getProjects: function() {
+      return BibiscoDbService.getBibiscoDb().getCollection('projects').addDynamicView(
+        'all_projects').applySimpleSort('name').data();
+    },
+    load: function(id) {
       var projectPath = BibiscoPropertiesDaoService.getProperty(
         'projectsDirectory') + ContextService.getFileSeparator() + id;
       projectdb = projectdbconnection.load(id, projectPath);
       LoggerService.debug('Loaded ' + projectdb);
-    },
-    getProjectInfo: function() {
-      return projectdb.getCollection('project').get(1);
     },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);

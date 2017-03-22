@@ -19,13 +19,13 @@ component('start', {
   controller: StartController
 });
 
-function StartController($location, BibiscoProjectDaoService, LocaleService,
-  LoggerService) {
+function StartController($location, LocaleService, LoggerService,
+  ProjectService) {
   LoggerService.debug('Start StartController...');
   var self = this;
 
   self.projectsPresent = function() {
-    return BibiscoProjectDaoService.getProjects().count() > 0;
+    return ProjectService.getProjectsCount() > 0;
   }
 
   self.createProject = function() {
