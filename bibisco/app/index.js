@@ -50,6 +50,10 @@ global.logger = logger;
 
 logger.debug('**** This platform is ' + process.platform);
 
+// add AdmZip
+var AdmZip = require('adm-zip');
+global.zip = initZip();
+
 // add loki
 const loki = require('lokijs');
 const LokiFsSyncAdapter = require(
@@ -109,6 +113,30 @@ app.on('activate', () => {
 app.on('ready', () => {
 	mainWindow = createMainWindow();
 });
+
+function initZip() {
+	return {
+		zipFolder: function(folderToZip, zippedFilePath) {
+
+			// creating archives
+			var zip = new AdmZip();
+
+			// read files of folder to zip
+			var files = fs.readdirSync(folderToZip);
+
+			for (let i = 0; i < files.length; i++) {
+				zip.addLocalFile(files[i]);
+			}
+
+			// write everything to disk
+			zip.writeZip(zippedFilePath);
+
+		},
+		unzip: function(path, dest) {
+
+		}
+	}
+}
 
 
 function initProjectDbConnection() {
