@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoPropertiesDaoService', function(
+angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
   BibiscoDbService, LoggerService) {
   'use strict';
 

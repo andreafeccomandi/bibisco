@@ -21,7 +21,7 @@ component('welcome', {
 
 
 function WelcomeController($scope, $location, BibiscoDbService,
-  BibiscoPropertiesDaoService, ContextService,
+  BibiscoPropertiesService, ContextService,
   FileSystemService, LocaleService, LoggerService) {
   LoggerService.debug('Start WelcomeController...');
   var self = this;
@@ -43,7 +43,7 @@ function WelcomeController($scope, $location, BibiscoDbService,
   self.finish = function(isValid) {
     if (isValid) {
 
-      BibiscoPropertiesDaoService.setProperty('locale', LocaleService.getCurrentLocale());
+      BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
 
       var projectsDirectory;
       if (self.selectedProjectsDirectory.endsWith(
@@ -58,9 +58,9 @@ function WelcomeController($scope, $location, BibiscoDbService,
         projectsDirectory);
 
       if (directoryCreated) {
-        BibiscoPropertiesDaoService.setProperty('projectsDirectory',
+        BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
-        BibiscoPropertiesDaoService.setProperty('firstAccess', false);
+        BibiscoPropertiesService.setProperty('firstAccess', false);
         BibiscoDbService.saveDatabase();
 
         LoggerService.debug('Saved preferences: selectedLanguage=' +

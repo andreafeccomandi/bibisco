@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ProjectService', function(
-  BibiscoDbService, BibiscoPropertiesDaoService, ContextService,
+  BibiscoDbService, BibiscoPropertiesService, ContextService,
   LoggerService, UuidService) {
   'use strict';
 
@@ -28,7 +28,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.debug('Start ProjectService.create...');
 
       var projectId = UuidService.generateUuid();
-      var projectPath = BibiscoPropertiesDaoService.getProperty(
+      var projectPath = BibiscoPropertiesService.getProperty(
           'projectsDirectory') + ContextService.getFileSeparator() +
         projectId;
       projectdb = projectdbconnection.create(projectId, projectPath);
@@ -38,7 +38,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id: projectId,
         name: name,
         language: language,
-        bibiscoVersion: BibiscoPropertiesDaoService.getProperty(
+        bibiscoVersion: BibiscoPropertiesService.getProperty(
           'version')
       });
       projectdb.addCollection('premise');
@@ -75,7 +75,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         'all_projects').applySimpleSort('name').data();
     },
     load: function(id) {
-      var projectPath = BibiscoPropertiesDaoService.getProperty(
+      var projectPath = BibiscoPropertiesService.getProperty(
         'projectsDirectory') + ContextService.getFileSeparator() + id;
       projectdb = projectdbconnection.load(id, projectPath);
       LoggerService.debug('Loaded ' + projectdb);
