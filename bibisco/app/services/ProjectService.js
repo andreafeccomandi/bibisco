@@ -15,12 +15,12 @@
 
 angular.module('bibiscoApp').service('ProjectService', function(
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  LoggerService, ProjectDbConnectionService, UuidService) {
+  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService
+) {
   'use strict';
 
   return {
     create: function(name, language) {
-
       LoggerService.debug('Start ProjectService.create...');
 
       let projectId = UuidService.generateUuid();
@@ -48,25 +48,38 @@ angular.module('bibiscoApp').service('ProjectService', function(
       ProjectDbConnectionService.saveDatabase();
 
       // add project to bibisco db
-      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').insert({
-        id: projectId,
-        name: name
-      });
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .insert({
+          id: projectId,
+          name: name
+        });
 
       // save bibisco database
       BibiscoDbConnectionService.saveDatabase();
 
       LoggerService.debug('End ProjectService.create...');
     },
+    delete: function(id) {
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .findAndRemove({
+          id: id
+        });
+      let projectPath = ProjectDbConnectionService.calculateProjectPath(
+        id);
+      FileSystemService.deleteDirectory(projectPath);
+    },
     getProjectsCount: function() {
-      return BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').count();
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
+        'projects').count();
     },
     getProjectInfo: function() {
-      return ProjectDbConnectionService.getProjectDb().getCollection('project').get(
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'project').get(
         1);
     },
     getProjects: function() {
-      return BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').addDynamicView(
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
+        'projects').addDynamicView(
         'all_projects').applySimpleSort('name').data();
     }
   };

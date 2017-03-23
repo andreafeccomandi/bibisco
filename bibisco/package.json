@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "electron-debug": "^1.0.0",
+    "fs-extra": "^2.1.2",
     "winston": "^2.3.0"
   },
   "devDependencies": {

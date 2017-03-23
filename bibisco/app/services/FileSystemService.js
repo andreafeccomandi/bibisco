@@ -33,8 +33,10 @@ angular.module('bibiscoApp').service('FileSystemService', function(
           result = false;
         }
       }
-
       return result;
+    },
+    deleteDirectory: function(path) {
+      fs.removeSync(path);
     }
   }
 });

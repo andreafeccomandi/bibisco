@@ -22,15 +22,17 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
   var projectdb;
 
   return {
-    create: function(id) {
-      var projectPath = BibiscoPropertiesService.getProperty(
+    calculateProjectPath: function(id) {
+      return BibiscoPropertiesService.getProperty(
         'projectsDirectory') + ContextService.getFileSeparator() + id;
+    },
+    create: function(id) {
+      var projectPath = this.calculateProjectPath(id);
       projectdb = projectdbconnection.create(id, projectPath);
       LoggerService.debug('Created ' + projectdb);
     },
     load: function(id) {
-      var projectPath = BibiscoPropertiesService.getProperty(
-        'projectsDirectory') + ContextService.getFileSeparator() + id;
+      var projectPath = this.calculateProjectPath(id);
       projectdb = projectdbconnection.load(id, projectPath);
       LoggerService.debug('Loaded ' + projectdb);
     },

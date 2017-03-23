@@ -24,7 +24,7 @@ require('electron-debug')();
 global.os = process.platform;
 
 // adds file system
-const fs = require('fs');
+const fs = require('fs-extra');
 global.fs = fs;
 
 // add winston logger

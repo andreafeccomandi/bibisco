@@ -19,7 +19,8 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, LocaleService, ProjectDbConnectionService,
+function OpenProjectController($location, LocaleService,
+  ProjectDbConnectionService,
   ProjectService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
   var self = this;
@@ -34,7 +35,7 @@ function OpenProjectController($location, LocaleService, ProjectDbConnectionServ
   }
 
   self.delete = function(id) {
-    alert('id=' + id);
+    ProjectService.delete(id);
   }
 
   self.back = function() {
