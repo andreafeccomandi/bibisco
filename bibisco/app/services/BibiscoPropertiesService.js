@@ -14,19 +14,19 @@
  */
 
 angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
-  BibiscoDbService, LoggerService) {
+  BibiscoDbConnectionService, LoggerService) {
   'use strict';
 
   return {
     getProperty: function(name) {
-      var properties = BibiscoDbService.getBibiscoDb().getCollection(
+      var properties = BibiscoDbConnectionService.getBibiscoDb().getCollection(
         'properties');
       return properties.findOne({
         'name': name
       }).value;
     },
     setProperty: function(name, value) {
-      var properties = BibiscoDbService.getBibiscoDb().getCollection(
+      var properties = BibiscoDbConnectionService.getBibiscoDb().getCollection(
         'properties');
       var property = properties.findOne({
         'name': name

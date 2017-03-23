@@ -19,8 +19,8 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, LocaleService, ProjectService,
-  LoggerService) {
+function OpenProjectController($location, LocaleService, ProjectDbConnectionService,
+  ProjectService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
   var self = this;
 
@@ -29,7 +29,7 @@ function OpenProjectController($location, LocaleService, ProjectService,
   }
 
   self.open = function(id) {
-    ProjectService.load(id);
+    ProjectDbConnectionService.load(id);
     $location.path('/project');
   }
 

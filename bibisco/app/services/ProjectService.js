@@ -14,24 +14,18 @@
  */
 
 angular.module('bibiscoApp').service('ProjectService', function(
-  BibiscoDbService, BibiscoPropertiesService, ContextService,
-  LoggerService, UuidService) {
+  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
+  LoggerService, ProjectDbConnectionService, UuidService) {
   'use strict';
-
-  var remote = require('electron').remote;
-  var projectdbconnection = remote.getGlobal('projectdbconnection');
-  var projectdb;
 
   return {
     create: function(name, language) {
 
       LoggerService.debug('Start ProjectService.create...');
 
-      var projectId = UuidService.generateUuid();
-      var projectPath = BibiscoPropertiesService.getProperty(
-          'projectsDirectory') + ContextService.getFileSeparator() +
-        projectId;
-      projectdb = projectdbconnection.create(projectId, projectPath);
+      let projectId = UuidService.generateUuid();
+      ProjectDbConnectionService.create(projectId);
+      let projectdb = ProjectDbConnectionService.getProjectDb();
 
       // add collections
       projectdb.addCollection('project').insert({
@@ -51,40 +45,29 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectdb.addCollection('locations');
 
       // save project database
-      projectdb.saveDatabase();
+      ProjectDbConnectionService.saveDatabase();
 
       // add project to bibisco db
-      BibiscoDbService.getBibiscoDb().getCollection('projects').insert({
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').insert({
         id: projectId,
         name: name
       });
 
       // save bibisco database
-      BibiscoDbService.saveDatabase();
+      BibiscoDbConnectionService.saveDatabase();
 
       LoggerService.debug('End ProjectService.create...');
     },
     getProjectsCount: function() {
-      return BibiscoDbService.getBibiscoDb().getCollection('projects').count();
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').count();
     },
     getProjectInfo: function() {
-      return projectdb.getCollection('project').get(1);
+      return ProjectDbConnectionService.getProjectDb().getCollection('project').get(
+        1);
     },
     getProjects: function() {
-      return BibiscoDbService.getBibiscoDb().getCollection('projects').addDynamicView(
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection('projects').addDynamicView(
         'all_projects').applySimpleSort('name').data();
-    },
-    load: function(id) {
-      var projectPath = BibiscoPropertiesService.getProperty(
-        'projectsDirectory') + ContextService.getFileSeparator() + id;
-      projectdb = projectdbconnection.load(id, projectPath);
-      LoggerService.debug('Loaded ' + projectdb);
-    },
-    saveDatabase: function(callback) {
-      return projectdb.saveDatabase(callback);
-    },
-    getProjectDb: function() {
-      return projectdb;
     }
   };
 });

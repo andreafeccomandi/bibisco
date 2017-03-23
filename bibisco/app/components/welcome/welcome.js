@@ -20,7 +20,7 @@ component('welcome', {
 });
 
 
-function WelcomeController($scope, $location, BibiscoDbService,
+function WelcomeController($scope, $location, BibiscoDbConnectionService,
   BibiscoPropertiesService, ContextService,
   FileSystemService, LocaleService, LoggerService) {
   LoggerService.debug('Start WelcomeController...');
@@ -61,7 +61,7 @@ function WelcomeController($scope, $location, BibiscoDbService,
         BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
         BibiscoPropertiesService.setProperty('firstAccess', false);
-        BibiscoDbService.saveDatabase();
+        BibiscoDbConnectionService.saveDatabase();
 
         LoggerService.debug('Saved preferences: selectedLanguage=' +
           LocaleService.getCurrentLocale() +
