@@ -1,0 +1,92 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular bootstrap confirm demo</title>
+    <meta name="description" content="Angular bootstrap confirm demo">
+    <meta name="viewport" content="width=device-width">
+    <style type="text/css">
+      [ng-cloak] {
+        display: none;
+      }
+    </style>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body ng-app="mwl.confirm" ng-cloak>
+
+    <a href="https://github.com/mattlewis92/angular-bootstrap-confirm" class="hidden-xs">
+      <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000"
+           src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+           alt="Fork me on GitHub"
+           data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+    </a>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Angular Bootstrap Confirm</a>
+        </div>
+        <ul class="nav navbar-nav hidden-xs">
+          <li><a href="#demo">Demo</a></li>
+          <li><a href="https://github.com/mattlewis92/angular-bootstrap-confirm#installation">Installation</a></li>
+          <li><a href="https://github.com/mattlewis92/angular-bootstrap-confirm#documentation">Documentation</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div
+      class="container-fluid"
+      id="demo"
+      ng-init="vm = {title: 'Are you sure?', message: 'Are you really <b>sure</b> you want to do this?', confirmText: 'Yes <i class=\'glyphicon glyphicon-ok\'></i>', cancelText: 'No <i class=\'glyphicon glyphicon-remove\'></i>'}">
+
+      <div>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-control" ng-model="vm.title">
+        </div>
+        <div class="form-group">
+          <label>Message (Yes you can even include html!)</label>
+          <input type="text" class="form-control" ng-model="vm.message">
+        </div>
+        <div class="form-group">
+          <label>Confirm text</label>
+          <input type="text" class="form-control" ng-model="vm.confirmText">
+        </div>
+        <div class="form-group">
+          <label>Confirm text</label>
+          <input type="text" class="form-control" ng-model="vm.cancelText">
+        </div>
+        <div class="text-center">
+          <span ng-repeat="placement in ['top', 'left', 'right', 'bottom'] track by $index">
+            <button
+              class="btn btn-default"
+              mwl-confirm
+              title="{{ vm.title }}"
+              message="{{ vm.message }}"
+              confirm-text="{{ vm.confirmText }}"
+              cancel-text="{{ vm.cancelText }}"
+              placement="{{ placement }}"
+              on-confirm="vm.confirmClicked = true"
+              on-cancel="vm.cancelClicked = true"
+              confirm-button-type="danger"
+              cancel-button-type="default"
+              animation="true"
+              ng-click="vm.confirmClicked = false; vm.cancelClicked = false">
+              Show on {{ placement }}
+            </button>
+          </span>
+        </div>
+
+        <br>
+
+        <div class="alert alert-info" ng-show="vm.confirmClicked">You clicked confirm!</div>
+        <div class="alert alert-info" ng-show="vm.cancelClicked">You cancelled!</div>
+
+      </div>
+
+    </div>
+
+    <script src="angular-bootstrap-confirm.js"></script>
+
+  </body>
+</html>

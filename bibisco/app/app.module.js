@@ -19,7 +19,8 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     'tmh.dynamicLocale', // angular-dynamic-locale
     'ui.select',
     'ngSanitize',
-    'ngMessages'
+    'ngMessages',
+    'mwl.confirm'
   ])
   .config(['$locationProvider', '$routeProvider',
     function config($locationProvider, $routeProvider) {
@@ -122,4 +123,13 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     $location = $location || $injector.get('$location');
     $location.path("/error");
   };
-}]);
+}])
+
+// Set confirm dialog default
+.run(function(confirmationPopoverDefaults) {
+  //console.log(confirmationPopoverDefaults);
+  confirmationPopoverDefaults.cancelButtonType = 'default';
+  confirmationPopoverDefaults.confirmButtonType = 'danger';
+  confirmationPopoverDefaults.templateUrl =
+    'adapters/angular-bootstrap-confirm/angular-bootstrap-confirm.html';
+});
