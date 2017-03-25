@@ -127,7 +127,6 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
 
 // Set confirm dialog default
 .run(function(confirmationPopoverDefaults) {
-  //console.log(confirmationPopoverDefaults);
   confirmationPopoverDefaults.cancelButtonType = 'default';
   confirmationPopoverDefaults.confirmButtonType = 'danger';
   confirmationPopoverDefaults.templateUrl =
