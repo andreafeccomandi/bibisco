@@ -15,7 +15,8 @@
 
 angular.module('bibiscoApp').service('ProjectService', function(
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService
+  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService,
+  ZipService
 ) {
   'use strict';
 
@@ -67,6 +68,16 @@ angular.module('bibiscoApp').service('ProjectService', function(
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         id);
       FileSystemService.deleteDirectory(projectPath);
+    },
+    export: function() {
+      LoggerService.debug('***** Start ProjectService.export...');
+      let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
+      let projectPath = ProjectDbConnectionService.calculateProjectPath(
+        projectId);
+      ZipService.zipFolder(projectPath,
+        '/Users/andreafeccomandi/Documents/export/' + projectId +
+        '.zip');
+      LoggerService.debug('***** End ProjectService.export...');
     },
     getProjectsCount: function() {
       return BibiscoDbConnectionService.getBibiscoDb().getCollection(

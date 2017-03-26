@@ -36,6 +36,10 @@ function StartController($location, LocaleService, LoggerService,
     $location.path('/openproject');
   }
 
+  self.exportProject = function() {
+    ProjectService.export();
+  }
+
   self.importProject = function() {
 
   }

@@ -51,7 +51,7 @@ global.logger = logger;
 logger.debug('**** This platform is ' + process.platform);
 
 // add AdmZip
-var AdmZip = require('adm-zip');
+const zipdir = require('zip-dir');
 global.zip = initZip();
 
 // add loki
@@ -117,19 +117,15 @@ app.on('ready', () => {
 function initZip() {
 	return {
 		zipFolder: function(folderToZip, zippedFilePath) {
+			logger.debug('Remote zipFolder start');
 
-			// creating archives
-			var zip = new AdmZip();
+			zipdir(folderToZip, {
+				saveTo: zippedFilePath
+			}, function(err, buffer) {
+				logger.debug(zippedFilePath + ' created');
+			});
 
-			// read files of folder to zip
-			var files = fs.readdirSync(folderToZip);
-
-			for (let i = 0; i < files.length; i++) {
-				zip.addLocalFile(files[i]);
-			}
-
-			// write everything to disk
-			zip.writeZip(zippedFilePath);
+			logger.debug('Remote zipFolder end');
 
 		},
 		unzip: function(path, dest) {
@@ -183,3 +179,18 @@ function initBibiscoDbConnection() {
 		}
 	}
 }
+
+function walkSync(dir, filelist) {
+	var path = path || require('path');
+	var fs = fs || require('fs'),
+		files = fs.readdirSync(dir);
+	filelist = filelist || [];
+	files.forEach(function(file) {
+		if (fs.statSync(path.join(dir, file)).isDirectory()) {
+			filelist = walkSync(path.join(dir, file), filelist);
+		} else {
+			filelist.push(file);
+		}
+	});
+	return filelist;
+};
