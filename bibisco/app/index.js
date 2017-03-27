@@ -51,10 +51,11 @@ global.logger = logger;
 logger.debug('**** This platform is ' + process.platform);
 
 // add zipper/unzipper
-const zipdir = require('zip-dir');
+const yazl = require("yazl");
 const yauzl = require("yauzl");
 const path = require("path");
 const mkdirp = require("mkdirp");
+const walkSync = require('walk-sync');
 global.zip = initZip();
 
 // add loki
@@ -120,14 +121,25 @@ app.on('ready', () => {
 function initZip() {
 	return {
 		zipFolder: function(folderToZip, zippedFilePath) {
-			logger.debug('Remote zipFolder start');
+			logger.debug('Remote zipFolder start: ' + folderToZip);
 
-			zipdir(folderToZip, {
-				saveTo: zippedFilePath
-			}, function(err, buffer) {
-				if (err) throw err;
-				logger.debug(zippedFilePath + ' created');
-			});
+			let zipfile = new yazl.ZipFile();
+			let fileList = walkSync(folderToZip, {
+				directories: false,
+				globs: ['**/!(*.DS_Store)']
+			})
+			for (let i = 0; i < fileList.length; i++) {
+				logger.debug('Processing ' + fileList[i]);
+				zipfile.addFile(folderToZip + '/' + fileList[i], fileList[i]);
+			}
+
+			// pipe() can be called any time after the constructor
+			zipfile.outputStream.pipe(fs.createWriteStream(zippedFilePath)).on("close",
+				function() {
+					console.log("done");
+				});
+			// call end() after all the files have been added
+			zipfile.end();
 
 			logger.debug('Remote zipFolder end');
 
@@ -221,7 +233,7 @@ function initBibiscoDbConnection() {
 	}
 }
 
-function walkSync(dir, filelist) {
+/*function walkSync(dir, filelist) {
 	var path = path || require('path');
 	var fs = fs || require('fs'),
 		files = fs.readdirSync(dir);
@@ -234,4 +246,4 @@ function walkSync(dir, filelist) {
 		}
 	});
 	return filelist;
-};
+};*/
