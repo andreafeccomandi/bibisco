@@ -69,13 +69,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id);
       FileSystemService.deleteDirectory(projectPath);
     },
-    import: function() {
+    import: function(callback) {
       LoggerService.debug('***** Start ProjectService.import...');
       let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
 
       ZipService.unzip('/Users/andreafeccomandi/Documents/export/' +
         projectId + '.zip', '/Users/andreafeccomandi/Documents/export/' +
-        projectId
+        projectId, callback
       );
       LoggerService.debug('***** End ProjectService.import...');
     },

@@ -145,7 +145,7 @@ function initZip() {
 			logger.debug('Remote zipFolder end');
 
 		},
-		unzip: function(zippedFilePath, destinationFolder) {
+		unzip: function(zippedFilePath, destinationFolder, callback) {
 			logger.debug('Remote unzip start: ' + zippedFilePath);
 			yauzl.open(zippedFilePath, {
 				lazyEntries: true
@@ -155,9 +155,13 @@ function initZip() {
 				// An err is provided if the End of Central Directory Record cannot be
 				// found, or if its metadata appears malformed. This kind of error
 				// usually indicates that this is not a zip file.
-				logger.error("*** ERROR: " + err);
+				if (err) throw err;
 
 				zipfile.readEntry();
+				zipfile.on("close", function() {
+					logger.debug('End extracting ' + zippedFilePath);
+					callback();
+				});
 				zipfile.on("entry", function(entry) {
 					logger.debug('Processing ' + entry.fileName);
 					if (/\/$/.test(entry.fileName)) {
@@ -233,18 +237,3 @@ function initBibiscoDbConnection() {
 		}
 	}
 }
-
-/*function walkSync(dir, filelist) {
-	var path = path || require('path');
-	var fs = fs || require('fs'),
-		files = fs.readdirSync(dir);
-	filelist = filelist || [];
-	files.forEach(function(file) {
-		if (fs.statSync(path.join(dir, file)).isDirectory()) {
-			filelist = walkSync(path.join(dir, file), filelist);
-		} else {
-			filelist.push(file);
-		}
-	});
-	return filelist;
-};*/

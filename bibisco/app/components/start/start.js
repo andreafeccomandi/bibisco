@@ -43,7 +43,9 @@ function StartController($location, LocaleService, LoggerService,
   }
 
   self.importProject = function() {
-    ProjectService.import();
+    ProjectService.import(function() {
+      alert('Importato!!!');
+    });
   }
 
   self.settings = function() {
