@@ -28,34 +28,11 @@ const fs = require('fs-extra');
 global.fs = fs;
 
 // add winston logger
-const logger = require('winston');
-logger.level = (env === 'development' ? 'debug' : 'info');
-logger.add(logger.transports.File, {
-	filename: "./logs/bibisco.log",
-	json: false,
-	maxsize: 1000000,
-	maxFiles: 2,
-	handleExceptions: true,
-	humanReadableUnhandledException: true,
-	formatter: function(options) {
-		var dateFormat = require('dateformat');
-		// Return string will be passed to logger.
-		return dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:l") + ' ' + options.level
-			.toUpperCase() + ' ' + (options.message ? options.message : '') +
-			(options.meta && Object.keys(options.meta).length ? '\n\t' + JSON.stringify(
-				options.meta) : '');
-	}
-});
-global.logger = logger;
+global.logger = initLogger();
 
 logger.debug('**** This platform is ' + process.platform);
 
 // add zipper/unzipper
-const yazl = require("yazl");
-const yauzl = require("yauzl");
-const path = require("path");
-const mkdirp = require("mkdirp");
-const walkSync = require('walk-sync');
 global.zip = initZip();
 
 // add loki
@@ -118,7 +95,37 @@ app.on('ready', () => {
 	mainWindow = createMainWindow();
 });
 
+function initLogger() {
+	const logger = require('winston');
+	logger.level = (env === 'development' ? 'debug' : 'info');
+	logger.add(logger.transports.File, {
+		filename: "./logs/bibisco.log",
+		json: false,
+		maxsize: 1000000,
+		maxFiles: 2,
+		handleExceptions: true,
+		humanReadableUnhandledException: true,
+		formatter: function(options) {
+			var dateFormat = require('dateformat');
+			// Return string will be passed to logger.
+			return dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss:l") + ' ' + options.level
+				.toUpperCase() + ' ' + (options.message ? options.message : '') +
+				(options.meta && Object.keys(options.meta).length ? '\n\t' + JSON.stringify(
+					options.meta) : '');
+		}
+	});
+
+	return logger;
+}
+
 function initZip() {
+
+	const yazl = require("yazl");
+	const yauzl = require("yauzl");
+	const path = require("path");
+	const mkdirp = require("mkdirp");
+	const walkSync = require('walk-sync');
+
 	return {
 		zipFolder: function(folderToZip, zippedFilePath, callback) {
 			logger.debug('Remote zipFolder start: ' + folderToZip);
