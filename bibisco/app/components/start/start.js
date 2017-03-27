@@ -37,7 +37,9 @@ function StartController($location, LocaleService, LoggerService,
   }
 
   self.exportProject = function() {
-    ProjectService.export();
+    ProjectService.export(function() {
+      alert('Esportato!!!');
+    });
   }
 
   self.importProject = function() {

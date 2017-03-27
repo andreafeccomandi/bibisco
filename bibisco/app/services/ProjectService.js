@@ -79,14 +79,14 @@ angular.module('bibiscoApp').service('ProjectService', function(
       );
       LoggerService.debug('***** End ProjectService.import...');
     },
-    export: function() {
+    export: function(callback) {
       LoggerService.debug('***** Start ProjectService.export...');
       let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         projectId);
       ZipService.zipFolder(projectPath,
         '/Users/andreafeccomandi/Documents/export/' + projectId +
-        '.zip');
+        '.zip', callback);
       LoggerService.debug('***** End ProjectService.export...');
     },
     getProjectsCount: function() {

@@ -120,7 +120,7 @@ app.on('ready', () => {
 
 function initZip() {
 	return {
-		zipFolder: function(folderToZip, zippedFilePath) {
+		zipFolder: function(folderToZip, zippedFilePath, callback) {
 			logger.debug('Remote zipFolder start: ' + folderToZip);
 
 			let zipfile = new yazl.ZipFile();
@@ -132,14 +132,15 @@ function initZip() {
 				logger.debug('Processing ' + fileList[i]);
 				zipfile.addFile(folderToZip + '/' + fileList[i], fileList[i]);
 			}
+			// call end() after all the files have been added
+			zipfile.end();
 
 			// pipe() can be called any time after the constructor
 			zipfile.outputStream.pipe(fs.createWriteStream(zippedFilePath)).on("close",
 				function() {
-					console.log("done");
+					logger.debug(zippedFilePath + " done!");
+					callback();
 				});
-			// call end() after all the files have been added
-			zipfile.end();
 
 			logger.debug('Remote zipFolder end');
 

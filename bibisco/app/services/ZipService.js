@@ -20,8 +20,8 @@ angular.module('bibiscoApp').service('ZipService', function() {
   var zip = remote.getGlobal('zip');
 
   return {
-    zipFolder: function(folderToZip, zippedFilePath) {
-      return zip.zipFolder(folderToZip, zippedFilePath);
+    zipFolder: function(folderToZip, zippedFilePath, callback) {
+      return zip.zipFolder(folderToZip, zippedFilePath, callback);
     },
     unzip: function(zippedFilePath, destinationFolder) {
       return zip.unzip(zippedFilePath, destinationFolder);
