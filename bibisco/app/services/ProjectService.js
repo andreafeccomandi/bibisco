@@ -69,6 +69,16 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id);
       FileSystemService.deleteDirectory(projectPath);
     },
+    import: function() {
+      LoggerService.debug('***** Start ProjectService.import...');
+      let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
+
+      ZipService.unzip('/Users/andreafeccomandi/Documents/export/' +
+        projectId + '.zip', '/Users/andreafeccomandi/Documents/export/' +
+        projectId
+      );
+      LoggerService.debug('***** End ProjectService.import...');
+    },
     export: function() {
       LoggerService.debug('***** Start ProjectService.export...');
       let projectId = '757daa90-101f-11e7-bba8-070c674f3395';

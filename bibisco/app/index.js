@@ -50,8 +50,11 @@ global.logger = logger;
 
 logger.debug('**** This platform is ' + process.platform);
 
-// add AdmZip
+// add zipper/unzipper
 const zipdir = require('zip-dir');
+const yauzl = require("yauzl");
+const path = require("path");
+const mkdirp = require("mkdirp");
 global.zip = initZip();
 
 // add loki
@@ -122,14 +125,52 @@ function initZip() {
 			zipdir(folderToZip, {
 				saveTo: zippedFilePath
 			}, function(err, buffer) {
+				if (err) throw err;
 				logger.debug(zippedFilePath + ' created');
 			});
 
 			logger.debug('Remote zipFolder end');
 
 		},
-		unzip: function(path, dest) {
+		unzip: function(zippedFilePath, destinationFolder) {
+			logger.debug('Remote unzip start: ' + zippedFilePath);
+			yauzl.open(zippedFilePath, {
+				lazyEntries: true
+			}, function(err, zipfile) {
+				// From documentation: https://github.com/thejoshwolfe/yauzl
+				// The callback is given the arguments (err, zipfile).
+				// An err is provided if the End of Central Directory Record cannot be
+				// found, or if its metadata appears malformed. This kind of error
+				// usually indicates that this is not a zip file.
+				logger.error("*** ERROR: " + err);
 
+				zipfile.readEntry();
+				zipfile.on("entry", function(entry) {
+					logger.debug('Processing ' + entry.fileName);
+					if (/\/$/.test(entry.fileName)) {
+						// directory file names end with '/'
+						mkdirp(destinationFolder + '/' + entry.fileName, function(err) {
+							if (err) throw err;
+							zipfile.readEntry();
+						});
+					} else {
+						// file entry
+						zipfile.openReadStream(entry, function(err, readStream) {
+							if (err) throw err;
+							// ensure parent directory exists
+							mkdirp(destinationFolder + '/' + path.dirname(entry.fileName),
+								function(err) {
+									if (err) throw err;
+									readStream.pipe(fs.createWriteStream(destinationFolder + '/' +
+										entry.fileName));
+									readStream.on("end", function() {
+										zipfile.readEntry();
+									});
+								});
+						});
+					}
+				});
+			});
 		}
 	}
 }

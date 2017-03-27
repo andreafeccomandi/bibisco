@@ -22,6 +22,9 @@ angular.module('bibiscoApp').service('ZipService', function() {
   return {
     zipFolder: function(folderToZip, zippedFilePath) {
       return zip.zipFolder(folderToZip, zippedFilePath);
+    },
+    unzip: function(zippedFilePath, destinationFolder) {
+      return zip.unzip(zippedFilePath, destinationFolder);
     }
   }
 });
