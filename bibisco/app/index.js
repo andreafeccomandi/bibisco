@@ -17,11 +17,18 @@ const electron = require('electron');
 const app = electron.app;
 const env = process.env.NODE_ENV || 'development';
 
-// adds debug features like hotkeys for triggering dev tools and reload
+// add debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
-// adds os info
+// add os info
 global.os = process.platform;
+
+// add absolute path
+global.appPath = __dirname;
+
+// add path module
+const path = require('path');
+global.path = path;
 
 // adds file system
 const fs = require('fs-extra');
@@ -122,7 +129,6 @@ function initZip() {
 
 	const yazl = require("yazl");
 	const yauzl = require("yauzl");
-	const path = require("path");
 	const mkdirp = require("mkdirp");
 	const walkSync = require('walk-sync');
 
@@ -173,7 +179,7 @@ function initZip() {
 					logger.debug('Processing ' + entry.fileName);
 					if (/\/$/.test(entry.fileName)) {
 						// directory file names end with '/'
-						mkdirp(destinationFolder + '/' + entry.fileName, function(err) {
+						mkdirp(path.join(destinationFolder, entry.fileName), function(err) {
 							if (err) throw err;
 							zipfile.readEntry();
 						});
@@ -182,11 +188,12 @@ function initZip() {
 						zipfile.openReadStream(entry, function(err, readStream) {
 							if (err) throw err;
 							// ensure parent directory exists
-							mkdirp(destinationFolder + '/' + path.dirname(entry.fileName),
+							mkdirp(path.join(destinationFolder, path.dirname(entry.fileName)),
 								function(err) {
 									if (err) throw err;
-									readStream.pipe(fs.createWriteStream(destinationFolder + '/' +
-										entry.fileName));
+									readStream.pipe(fs.createWriteStream(path.join(
+										destinationFolder,
+										entry.fileName)));
 									readStream.on("end", function() {
 										zipfile.readEntry();
 									});

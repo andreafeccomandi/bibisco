@@ -15,8 +15,7 @@
 
 angular.module('bibiscoApp').service('ProjectService', function(
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService,
-  ZipService
+  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
 
@@ -73,18 +72,36 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.debug('***** Start ProjectService.import...');
       let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
 
-      ZipService.unzip('/Users/andreafeccomandi/Documents/export/' +
+      FileSystemService.unzip('/Users/andreafeccomandi/Documents/export/' +
         projectId + '.zip', '/Users/andreafeccomandi/Documents/export/' +
         projectId, callback
       );
       LoggerService.debug('***** End ProjectService.import...');
+    },
+    importProjectArchiveFile: function(archiveFilePath, callback) {
+
+      // get temp directory
+      let tempDirectoryPath = ContextService.getTempDirectoryPath();
+
+      // delete temp directory content
+      FileSystemService.deleteDirectory(tempDirectoryPath);
+      FileSystemService.createDirectory(tempDirectoryPath)
+
+      // unzip archive file to temp directory
+      FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
+        function() {
+          alert('Unzippato!');
+        });
+
+      // check if file archive is valid and if project already exist in bibisco installation
+
     },
     export: function(callback) {
       LoggerService.debug('***** Start ProjectService.export...');
       let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         projectId);
-      ZipService.zipFolder(projectPath,
+      FileSystemService.zipFolder(projectPath,
         '/Users/andreafeccomandi/Documents/export/' + projectId +
         '.zip', callback);
       LoggerService.debug('***** End ProjectService.export...');

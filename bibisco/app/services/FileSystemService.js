@@ -19,8 +19,14 @@ angular.module('bibiscoApp').service('FileSystemService', function(
 
   var remote = require('electron').remote;
   var fs = remote.getGlobal('fs');
+  var path = remote.getGlobal('path');
+  var zip = remote.getGlobal('zip');
 
   return {
+    copyFileToDirectory: function(filePath, directoryPath) {
+      let filename = path.basename(filePath);
+      fs.copySync(filePath, path.join(directoryPath, filename));
+    },
     createDirectory: function(path) {
       var result = true;
       // if the directory not exists I try to create it
@@ -37,6 +43,12 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     deleteDirectory: function(path) {
       fs.removeSync(path);
+    },
+    unzip: function(zippedFilePath, destinationFolder, callback) {
+      return zip.unzip(zippedFilePath, destinationFolder, callback);
+    },
+    zipFolder: function(folderToZip, zippedFilePath, callback) {
+      return zip.zipFolder(folderToZip, zippedFilePath, callback);
     }
   }
 });

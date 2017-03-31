@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 page-header">
+      <h1>{{"jsp.projects.dialog.title.importProject" | translate}}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <form name="importProjectForm" class="form-horizontal" ng-submit="$ctrl.save(importProjectForm.$valid)" novalidate>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="bibiscoCreateProjectNameLabel">{{"jsp.importProject.label.file" | translate}}</label>
+          <div class="col-sm-8" ng-class="{ 'has-error': importProjectForm.$submitted && importProjectForm.fileToImport.$invalid }">
+            <div class="input-group" ng-class="{ 'has-error': importProjectForm.$submitted && importProjectForm.projectsDirectory.$invalid }">
+              <input id="bibiscoImportProjectArchiveLabel" name="fileToImport" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.fileToImport" required/>
+              <span class="input-group-btn"><fileselect onselectfile="$ctrl.selectFileToImport(file)"></fileselect></span>
+            </div>
+          </div>
+          <div class="col-sm-8 col-sm-offset-3">
+            <validationmessages field="importProjectForm.fileToImport"></validationmessages>
+          </div>
+        </div>
+        <div class="top30 col-sm-9 col-sm-offset-3">
+          <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
+          <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

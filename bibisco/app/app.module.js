@@ -35,6 +35,9 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/error', {
         template: '<error></error>'
       }).
+      when('/importproject', {
+        template: '<importproject></importproject>'
+      }).
       when('/main', {
         template: '<main></main>'
       }).

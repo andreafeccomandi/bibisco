@@ -17,7 +17,9 @@ angular.module('bibiscoApp').service('ContextService', function() {
   'use strict';
 
   var remote = require('electron').remote;
+  var appPath = remote.getGlobal('appPath');
   var os = remote.getGlobal('os');
+  var path = remote.getGlobal('path');
   var lastError;
 
   return {
@@ -33,6 +35,9 @@ angular.module('bibiscoApp').service('ContextService', function() {
     },
     getLastError() {
       return lastError;
+    },
+    getTempDirectoryPath() {
+      return path.join(appPath, 'temp');
     },
     setLastError: function(error) {
       lastError = error;
