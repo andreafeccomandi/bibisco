@@ -18,6 +18,7 @@ component('fileselect', {
   templateUrl: 'components/file-select/file-select.html',
   controller: FileSelectController,
   bindings: {
+    filefilter: '<',
     onselectfile: '&'
   }
 });
@@ -30,9 +31,17 @@ function FileSelectController(LoggerService) {
   var dialog = remote.getGlobal('dialog');
   var self = this;
 
-  self.projectsdirectory = null;
   self.openfiledialog = function() {
+    if (!self.filefilter) {
+      filters = [];
+    } else {
+      filters = [{
+        name: 'filters',
+        extensions: self.filefilter
+      }]
+    }
     dialog.showOpenDialog({
+        filters: filters,
         properties: ['openFile']
       },
       function(filenames) {

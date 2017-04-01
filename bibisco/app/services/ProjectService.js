@@ -103,7 +103,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         projectId);
       FileSystemService.zipFolder(projectPath,
         '/Users/andreafeccomandi/Documents/export/' + projectId +
-        '.zip', callback);
+        '.bibisco2', callback);
       LoggerService.debug('***** End ProjectService.export...');
     },
     getProjectsCount: function() {
