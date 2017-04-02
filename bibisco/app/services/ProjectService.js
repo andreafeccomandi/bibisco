@@ -64,6 +64,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         .findAndRemove({
           id: id
         });
+      BibiscoDbConnectionService.saveDatabase();
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         id);
       FileSystemService.deleteDirectory(projectPath);
@@ -90,7 +91,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
       // unzip archive file to temp directory
       FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
         function() {
-          alert('Unzippato!');
+          // search file with extensions h2.json in UUID format
+          let checkArchiveResult = checkArchive(
+            tempDirectoryPath, BibiscoDbConnectionService,
+            FileSystemService,
+            LoggerService, ProjectDbConnectionService);
+
+          // check if project exists
         });
 
       // check if file archive is valid and if project already exist in bibisco installation
@@ -98,7 +105,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
     },
     export: function(callback) {
       LoggerService.debug('***** Start ProjectService.export...');
-      let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
+      let projectId = '850dfce0-71d0-4f84-bc53-580b7058b15c';
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         projectId);
       FileSystemService.zipFolder(projectPath,
@@ -112,8 +119,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
     },
     getProjectInfo: function() {
       return ProjectDbConnectionService.getProjectDb().getCollection(
-        'project').get(
-        1);
+        'project').get(1);
     },
     getProjects: function() {
       return BibiscoDbConnectionService.getBibiscoDb().getCollection(
@@ -122,3 +128,70 @@ angular.module('bibiscoApp').service('ProjectService', function(
     }
   };
 });
+
+
+function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
+  FileSystemService, LoggerService, ProjectDbConnectionService) {
+
+  LoggerService.debug('Start checkArchive()');
+
+  let isValidArchive = false;
+  let isAlreadyPresent = false;
+  let projectId;
+  let projectName;
+
+  try {
+    let fileList = FileSystemService.getFilesInDirectory(tempDirectoryPath, {
+      directories: false,
+      globs: ['**/!(*.DS_Store)'],
+      ignore: ['images']
+    })
+
+    if (!fileList || fileList.length != 1) {
+      throw "Invalid archive";
+    }
+
+    let fileWithoutExtension = fileList[0].split('.')[0];
+    LoggerService.debug('fileWithoutExtension=' + fileWithoutExtension);
+
+    let isUUID = validator.isUUID(fileWithoutExtension, 4)
+    if (!isUUID) {
+      throw "Invalid archive: not UUID v4 file";
+    }
+
+    // open imported archive db to get id and name
+    let projectdb = ProjectDbConnectionService.open(fileWithoutExtension,
+      tempDirectoryPath);
+    let projectInfo = projectdb.getCollection('project').get(1);
+    LoggerService.debug(projectInfo);
+    projectId = projectInfo.id;
+    projectName = projectInfo.name;
+    projectdb.close();
+
+    // check if project already exists in the installation of bibisco
+    let projectNumber = BibiscoDbConnectionService.getBibiscoDb().getCollection(
+      'projects').addDynamicView(
+      'project_by_id').applyFind({
+      id: projectId
+    }).count();
+
+    if (projectNumber == 1) {
+      isAlreadyPresent = true;
+    }
+    isValidArchive = true;
+
+  } catch (err) {
+    LoggerService.error(err);
+  }
+
+  let result = {
+    isValidArchive: isValidArchive,
+    isAlreadyPresent: isAlreadyPresent,
+    projectId: projectId,
+    projectName: projectName
+  }
+
+  LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
+
+  return result;
+}

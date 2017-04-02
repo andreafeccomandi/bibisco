@@ -26,13 +26,6 @@ angular.module('bibiscoApp').service('ContextService', function() {
     getOs: function() {
       return os;
     },
-    getFileSeparator: function() {
-      if (os == 'win32') {
-        return '\\';
-      } else {
-        return '/';
-      }
-    },
     getLastError() {
       return lastError;
     },

@@ -34,6 +34,9 @@ global.path = path;
 const fs = require('fs-extra');
 global.fs = fs;
 
+const walkSync = require('walk-sync');
+global.walkSync = walkSync;
+
 // add winston logger
 global.logger = initLogger();
 
@@ -60,7 +63,7 @@ const {
 global.dialog = dialog;
 
 // add uuid
-const uuid = require('uuid/v1');
+const uuid = require('uuid/v4');
 global.uuid = uuid;
 
 // prevent window being garbage collected
@@ -130,7 +133,6 @@ function initZip() {
 	const yazl = require("yazl");
 	const yauzl = require("yauzl");
 	const mkdirp = require("mkdirp");
-	const walkSync = require('walk-sync');
 
 	return {
 		zipFolder: function(folderToZip, zippedFilePath, callback) {

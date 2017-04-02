@@ -20,9 +20,13 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   var remote = require('electron').remote;
   var fs = remote.getGlobal('fs');
   var path = remote.getGlobal('path');
+  var walkSync = remote.getGlobal('walkSync');
   var zip = remote.getGlobal('zip');
 
   return {
+    concatPath: function(a, b) {
+      return path.join(a, b);
+    },
     copyFileToDirectory: function(filePath, directoryPath) {
       let filename = path.basename(filePath);
       fs.copySync(filePath, path.join(directoryPath, filename));
@@ -43,6 +47,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     deleteDirectory: function(path) {
       fs.removeSync(path);
+    },
+    getFilesInDirectory: function(path, filter) {
+      return walkSync(path, filter);
     },
     unzip: function(zippedFilePath, destinationFolder, callback) {
       return zip.unzip(zippedFilePath, destinationFolder, callback);

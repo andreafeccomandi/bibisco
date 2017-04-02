@@ -47,11 +47,11 @@ function WelcomeController($scope, $location, BibiscoDbConnectionService,
 
       var projectsDirectory;
       if (self.selectedProjectsDirectory.endsWith(
-          "_internal_bibisco_projects_db_")) {
+          "_internal_bibisco2_projects_db_")) {
         projectsDirectory = self.selectedProjectsDirectory;
       } else {
-        projectsDirectory = self.selectedProjectsDirectory + ContextService
-          .getFileSeparator() + '_internal_bibisco_projects_db_';
+        projectsDirectory = FileSystemService.concatPath(self.selectedProjectsDirectory,
+          '_internal_bibisco2_projects_db_');
       }
 
       var directoryCreated = FileSystemService.createDirectory(

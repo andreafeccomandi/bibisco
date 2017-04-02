@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
-  BibiscoPropertiesService, ContextService, LoggerService) {
+  BibiscoPropertiesService, ContextService, FileSystemService,
+  LoggerService) {
   'use strict';
 
   var remote = require('electron').remote;
@@ -23,8 +24,11 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
 
   return {
     calculateProjectPath: function(id) {
-      return BibiscoPropertiesService.getProperty(
-        'projectsDirectory') + ContextService.getFileSeparator() + id;
+      return FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
+        'projectsDirectory'), id);
+    },
+    close: function(callback) {
+      return projectdb.close(callback);
     },
     create: function(id) {
       var projectPath = this.calculateProjectPath(id);
@@ -35,6 +39,9 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
       var projectPath = this.calculateProjectPath(id);
       projectdb = projectdbconnection.load(id, projectPath);
       LoggerService.debug('Loaded ' + projectdb);
+    },
+    open: function(dbName, dbPath) {
+      return projectdbconnection.load(dbName, dbPath);
     },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);
