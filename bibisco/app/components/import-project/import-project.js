@@ -19,8 +19,8 @@ component('importproject', {
   controller: ImportProjectController
 });
 
-function ImportProjectController($location, $scope,
-  ProjectService, LoggerService) {
+function ImportProjectController($location, $scope, ProjectService,
+  LoggerService) {
   LoggerService.debug('Start ImportProjectController...');
   var self = this;
   self.fileToImport = null;
@@ -38,9 +38,8 @@ function ImportProjectController($location, $scope,
 
       // is valid archive and the project isn't present in bibisco installation
       if (result.isValidArchive && !result.isAlreadyPresent) {
-        ProjectService.import(result.projectId, function() {
-          $location.path('/project');
-        });
+        ProjectService.import(result.projectId, result.projectName);
+        $location.path('/openproject');
       } else {
         alert(JSON.stringify(result));
         self.checkArchiveResult = result;

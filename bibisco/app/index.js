@@ -145,7 +145,9 @@ function initZip() {
 			})
 			for (let i = 0; i < fileList.length; i++) {
 				logger.debug('Processing ' + fileList[i]);
-				zipfile.addFile(folderToZip + '/' + fileList[i], fileList[i]);
+				zipfile.addFile(folderToZip + '/' + fileList[i],
+					path.basename(folderToZip) + '/' +
+					fileList[i]);
 			}
 			// call end() after all the files have been added
 			zipfile.end();

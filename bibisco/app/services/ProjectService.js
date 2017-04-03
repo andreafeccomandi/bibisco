@@ -20,6 +20,19 @@ angular.module('bibiscoApp').service('ProjectService', function(
   'use strict';
 
   return {
+
+    addProjectToBibiscoDb: function(projectId, name) {
+      // add project to bibisco db
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .insert({
+          id: projectId,
+          name: name
+        });
+
+      // save bibisco database
+      BibiscoDbConnectionService.saveDatabase();
+    },
+
     create: function(name, language) {
       LoggerService.debug('Start ProjectService.create...');
 
@@ -48,14 +61,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       ProjectDbConnectionService.saveDatabase();
 
       // add project to bibisco db
-      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
-        .insert({
-          id: projectId,
-          name: name
-        });
-
-      // save bibisco database
-      BibiscoDbConnectionService.saveDatabase();
+      this.addProjectToBibiscoDb(projectId, name);
 
       LoggerService.debug('End ProjectService.create...');
     },
@@ -69,12 +75,30 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id);
       FileSystemService.deleteDirectory(projectPath);
     },
-    import: function(projectId, callback) {
+    getProjectsCount: function() {
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
+        'projects').count();
+    },
+    getProjectInfo: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'project').get(1);
+    },
+    getProjects: function() {
+      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
+        'projects').addDynamicView(
+        'all_projects').applySimpleSort('name').data();
+    },
+    import: function(projectId, projectName) {
       LoggerService.debug('Start ProjectService.import');
 
-      moveImportedProjectToProjectsDirectory(projectId,
-        BibiscoPropertiesService, ContextService, FileSystemService,
-        ProjectDbConnectionService)
+      // move project to projects directory
+      this.moveImportedProjectToProjectsDirectory(projectId);
+
+      // add project to bibisco db
+      this.addProjectToBibiscoDb(projectId, projectName);
+
+      // load project
+      ProjectDbConnectionService.load(projectId);
 
       LoggerService.debug('End ProjectService.import');
     },
@@ -90,7 +114,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       // unzip archive file to temp directory
       FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
         function() {
-          // search file with extensions h2.json in UUID format
+
           let checkArchiveResult = checkArchive(
             tempDirectoryPath, BibiscoDbConnectionService,
             FileSystemService,
@@ -99,32 +123,28 @@ angular.module('bibiscoApp').service('ProjectService', function(
           callback(checkArchiveResult);
         });
     },
+    moveImportedProjectToProjectsDirectory: function(projectId) {
+
+      let projectsDirectoryPath = BibiscoPropertiesService.getProperty(
+        'projectsDirectory');
+      let tempProjectPath = FileSystemService.concatPath(ContextService.getTempDirectoryPath(),
+        projectId);
+
+      FileSystemService.copyFileToDirectory(tempProjectPath,
+        projectsDirectoryPath);
+    },
     export: function(callback) {
       LoggerService.debug('***** Start ProjectService.export...');
-      let projectId = '850dfce0-71d0-4f84-bc53-580b7058b15c';
+      let projectId = '55c41472-aa6d-41bc-930e-29c0014e9351';
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         projectId);
       FileSystemService.zipFolder(projectPath,
         '/Users/andreafeccomandi/Documents/export/' + projectId +
         '.bibisco2', callback);
       LoggerService.debug('***** End ProjectService.export...');
-    },
-    getProjectsCount: function() {
-      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
-        'projects').count();
-    },
-    getProjectInfo: function() {
-      return ProjectDbConnectionService.getProjectDb().getCollection(
-        'project').get(1);
-    },
-    getProjects: function() {
-      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
-        'projects').addDynamicView(
-        'all_projects').applySimpleSort('name').data();
     }
   };
 });
-
 
 function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   FileSystemService, LoggerService, ProjectDbConnectionService) {
@@ -137,30 +157,30 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   let projectName;
 
   try {
-    // get file list excluding images directory
+    // get json loki file
     let fileList = FileSystemService.getFilesInDirectory(tempDirectoryPath, {
       directories: false,
-      globs: ['**/!(*.DS_Store)'],
-      ignore: ['images']
+      globs: ['**/*.json']
     })
 
     if (!fileList || fileList.length != 1) {
       throw "Invalid archive";
     }
 
-    // get project file name
-    let fileWithoutExtension = fileList[0].split('.')[0];
-    LoggerService.debug('fileWithoutExtension=' + fileWithoutExtension);
+    // calculate project id from file name
+    // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
+    let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
+    LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
 
-    // check if project name is in UUID format
-    let isUUID = validator.isUUID(fileWithoutExtension, 4)
+    // check if calculate project id is in UUID format
+    let isUUID = validator.isUUID(calculatedProjectId, 4)
     if (!isUUID) {
       throw "Invalid archive: not UUID v4 file";
     }
 
     // open imported archive db to get id and name
-    let projectdb = ProjectDbConnectionService.open(fileWithoutExtension,
-      tempDirectoryPath);
+    let projectdb = ProjectDbConnectionService.open(calculatedProjectId,
+      FileSystemService.concatPath(tempDirectoryPath, calculatedProjectId));
     let projectInfo = projectdb.getCollection('project').get(1);
     LoggerService.debug(projectInfo);
     projectId = projectInfo.id;
@@ -193,20 +213,4 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
 
   return result;
-}
-
-function moveImportedProjectToProjectsDirectory(projectId,
-  BibiscoPropertiesService, ContextService, FileSystemService,
-  ProjectDbConnectionService) {
-
-  let projectsDirectoryPath = BibiscoPropertiesService.getProperty(
-    'projectsDirectory');
-  let tempProjectPath = FileSystemService.concatPath(projectsDirectoryPath,
-    'temp');
-  let projectPath = ProjectDbConnectionService.calculateProjectPath(
-    projectId);
-
-  FileSystemService.copyFileToDirectory(ContextService.getTempDirectoryPath(),
-    projectsDirectoryPath);
-  FileSystemService.rename(tempProjectPath, projectPath);
 }
