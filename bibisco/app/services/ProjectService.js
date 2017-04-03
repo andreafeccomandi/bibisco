@@ -88,7 +88,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         'projects').addDynamicView(
         'all_projects').applySimpleSort('name').data();
     },
-    import: function(projectId, projectName) {
+    import: function(projectId, projectName, callback) {
       LoggerService.debug('Start ProjectService.import');
 
       // move project to projects directory
@@ -99,6 +99,9 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       // load project
       ProjectDbConnectionService.load(projectId);
+
+      // callback
+      callback();
 
       LoggerService.debug('End ProjectService.import');
     },

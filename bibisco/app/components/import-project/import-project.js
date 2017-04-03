@@ -38,9 +38,11 @@ function ImportProjectController($location, $scope, ProjectService,
 
       // is valid archive and the project isn't present in bibisco installation
       if (result.isValidArchive && !result.isAlreadyPresent) {
-        ProjectService.import(result.projectId, result.projectName);
-        $location.path('/project');
-        $scope.$apply();
+        ProjectService.import(result.projectId, result.projectName,
+          function() {
+            $location.path('/project');
+            $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
+          });
       } else {
         alert(JSON.stringify(result));
         self.checkArchiveResult = result;
