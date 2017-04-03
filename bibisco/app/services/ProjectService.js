@@ -69,15 +69,14 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id);
       FileSystemService.deleteDirectory(projectPath);
     },
-    import: function(callback) {
-      LoggerService.debug('***** Start ProjectService.import...');
-      let projectId = '757daa90-101f-11e7-bba8-070c674f3395';
+    import: function(projectId, callback) {
+      LoggerService.debug('Start ProjectService.import');
 
-      FileSystemService.unzip('/Users/andreafeccomandi/Documents/export/' +
-        projectId + '.zip', '/Users/andreafeccomandi/Documents/export/' +
-        projectId, callback
-      );
-      LoggerService.debug('***** End ProjectService.import...');
+      moveImportedProjectToProjectsDirectory(projectId,
+        BibiscoPropertiesService, ContextService, FileSystemService,
+        ProjectDbConnectionService)
+
+      LoggerService.debug('End ProjectService.import');
     },
     importProjectArchiveFile: function(archiveFilePath, callback) {
 
@@ -97,11 +96,8 @@ angular.module('bibiscoApp').service('ProjectService', function(
             FileSystemService,
             LoggerService, ProjectDbConnectionService);
 
-          // check if project exists
+          callback(checkArchiveResult);
         });
-
-      // check if file archive is valid and if project already exist in bibisco installation
-
     },
     export: function(callback) {
       LoggerService.debug('***** Start ProjectService.export...');
@@ -141,6 +137,7 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   let projectName;
 
   try {
+    // get file list excluding images directory
     let fileList = FileSystemService.getFilesInDirectory(tempDirectoryPath, {
       directories: false,
       globs: ['**/!(*.DS_Store)'],
@@ -151,9 +148,11 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
       throw "Invalid archive";
     }
 
+    // get project file name
     let fileWithoutExtension = fileList[0].split('.')[0];
     LoggerService.debug('fileWithoutExtension=' + fileWithoutExtension);
 
+    // check if project name is in UUID format
     let isUUID = validator.isUUID(fileWithoutExtension, 4)
     if (!isUUID) {
       throw "Invalid archive: not UUID v4 file";
@@ -194,4 +193,20 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
 
   return result;
+}
+
+function moveImportedProjectToProjectsDirectory(projectId,
+  BibiscoPropertiesService, ContextService, FileSystemService,
+  ProjectDbConnectionService) {
+
+  let projectsDirectoryPath = BibiscoPropertiesService.getProperty(
+    'projectsDirectory');
+  let tempProjectPath = FileSystemService.concatPath(projectsDirectoryPath,
+    'temp');
+  let projectPath = ProjectDbConnectionService.calculateProjectPath(
+    projectId);
+
+  FileSystemService.copyFileToDirectory(ContextService.getTempDirectoryPath(),
+    projectsDirectoryPath);
+  FileSystemService.rename(tempProjectPath, projectPath);
 }

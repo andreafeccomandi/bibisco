@@ -25,33 +25,28 @@ function ImportProjectController($location, $scope,
   var self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
-
-  self.import = function(id) {
-    ProjectService.import(function() {
-      $location.path('/project');
-    });
-  }
+  self.checkArchiveResult;
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
     $scope.$apply();
   }
 
-  self.save = function(isValid) {
+  self.save = function() {
+    ProjectService.importProjectArchiveFile(self.fileToImport, function(
+      result) {
 
-    if (!isValid) {
-      return;
-    }
+      // is valid archive and the project isn't present in bibisco installation
+      if (result.isValidArchive && !result.isAlreadyPresent) {
+        ProjectService.import(result.projectId, function() {
+          $location.path('/project');
+        });
+      } else {
+        alert(JSON.stringify(result));
+        self.checkArchiveResult = result;
+      }
 
-    ProjectService.importProjectArchiveFile(self.fileToImport);
-
-    /*if (!ProjectService.isValidArchive()) {
-      self.invalidArchive = true;
-    }*/
-
-    if (isValid) {
-      //$location.path('/project');
-    }
+    });
   }
 
   self.back = function() {
