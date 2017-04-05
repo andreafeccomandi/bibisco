@@ -28,6 +28,7 @@ function ImportProjectController($location, $scope, ProjectService,
   self.alreadyPresent = false;
   self.openConfirm = false;
   self.projectName;
+  self.projectId;
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
@@ -35,7 +36,15 @@ function ImportProjectController($location, $scope, ProjectService,
     self.alreadyPresent = false;
     self.openConfirm = false;
     self.projectName = null;
+    self.projectId = null;
     $scope.$apply();
+  }
+
+  self.confirmImportExistingProject = function() {
+    ProjectService.importExistingProject(self.projectId, self.projectName,
+      function() {
+        $location.path('/project');
+      });
   }
 
   self.save = function(isValid) {
@@ -58,12 +67,14 @@ function ImportProjectController($location, $scope, ProjectService,
         self.alreadyPresent = true;
         self.openConfirm = true;
         self.projectName = result.projectName;
+        self.projectId = result.projectId;
         $scope.$apply();
       } else {
         self.invalidArchive = true;
         self.alreadyPresent = false;
         self.openConfirm = false;
         self.projectName = null;
+        self.projectId = null;
         $scope.$apply();
       }
 

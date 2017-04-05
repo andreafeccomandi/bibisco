@@ -28,7 +28,7 @@
           message="{{ 'jsp.closeImportProject.importAlreadyPresent.confirm' | translate:{ projectName: $ctrl.projectName } }}"
           confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
           cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
-          placement="top" on-confirm="alert('confirm!')"
+          placement="top" on-confirm="$ctrl.confirmImportExistingProject()"
           on-cancel="">
           {{"jsp.common.button.save" | translate}}
         </button>

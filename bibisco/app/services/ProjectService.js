@@ -89,6 +89,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         'all_projects').applySimpleSort('name').data();
     },
     import: function(projectId, projectName, callback) {
+
       LoggerService.debug('Start ProjectService.import');
 
       // move project to projects directory
@@ -105,6 +106,23 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       LoggerService.debug('End ProjectService.import');
     },
+
+    importExistingProject: function(projectId, projectName, callback) {
+
+      LoggerService.debug('Start ProjectService.importExistingProject');
+
+      // move project to projects directory
+      this.moveImportedProjectToProjectsDirectory(projectId);
+
+      // load project
+      ProjectDbConnectionService.load(projectId);
+
+      // callback
+      callback();
+
+      LoggerService.debug('End ProjectService.importExistingProject');
+    },
+
     importProjectArchiveFile: function(archiveFilePath, callback) {
 
       // get temp directory
@@ -133,6 +151,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       let tempProjectPath = FileSystemService.concatPath(ContextService.getTempDirectoryPath(),
         projectId);
 
+      FileSystemService.deleteDirectory(projectsDirectoryPath);
       FileSystemService.copyFileToDirectory(tempProjectPath,
         projectsDirectoryPath);
     },
