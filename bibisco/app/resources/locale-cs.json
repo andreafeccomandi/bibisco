@@ -161,7 +161,7 @@
   "jsp.export.dialog.exportProjectDirectory.label": "Vyberte adresář do kterého bude bibisco exportovat váš projek:",
   "jsp.importProject.label.file": "Archivní soubor",
   "jsp.importProject.form.input.file.validationMessage": "Archivní soubor není dosupný",
-  "jsp.closeImportProject.importAlreadyPresent.confirm": "Archivní soubor obsahuje projekt {0} který je již ve vaší složce bibisco. Importováním tohoto projektu přepíšete aktuální verzi. Chcete pokračovat?",
+  "jsp.closeImportProject.importAlreadyPresent.confirm": "Archivní soubor obsahuje projekt {{projectName}} který je již ve vaší složce bibisco. Importováním tohoto projektu přepíšete aktuální verzi. Chcete pokračovat?",
   "jsp.chapters.delete.confirm": "Doopravdy chcete smazat tuto kapitolu?",
   "jsp.chapters.h1": "Kapitoly",
   "jsp.chapters.dialog.title.createChapter": "Vytvořit kapitolu",

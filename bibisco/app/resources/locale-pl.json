@@ -161,7 +161,7 @@
   "jsp.export.dialog.exportProjectDirectory.label": "Wybierz katalog, kt\ufffdry bibisco użyje do eksportu twojego projektu:",
   "jsp.importProject.label.file": "Plik archiwum",
   "jsp.importProject.form.input.file.validationMessage": "Niepoprawny plik archiwum",
-  "jsp.closeImportProject.importAlreadyPresent.confirm": "Plik archiwum zawiera projekt {0}, który jest już w bibisco. Jeśli go zaimportujesz, to nadpiszesz aktualną wersję. Czy chesz kontynuować?",
+  "jsp.closeImportProject.importAlreadyPresent.confirm": "Plik archiwum zawiera projekt {{projectName}}, który jest już w bibisco. Jeśli go zaimportujesz, to nadpiszesz aktualną wersję. Czy chesz kontynuować?",
   "jsp.chapters.delete.confirm": "Czy na pewno chcesz usunąć ten rozdział?",
   "jsp.chapters.h1": "Rozdziały",
   "jsp.chapters.dialog.title.createChapter": "Utwórz rozdział",

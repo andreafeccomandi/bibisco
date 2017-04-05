@@ -161,7 +161,7 @@
   "jsp.export.dialog.exportProjectDirectory.label": "Seleccionar el directorio donde bibisco exportarà tus proyectos:",
   "jsp.importProject.label.file": "Archivo de Proyecto",
   "jsp.importProject.form.input.file.validationMessage": "El archivo de proyecto no es valido.",
-  "jsp.closeImportProject.importAlreadyPresent.confirm": "El archivo contiene el proyecto {0}, el cual ya existe actualmente. Si lo importas, se sobrescribirán los datos de la actual versión. ¿Quieres continuar?",
+  "jsp.closeImportProject.importAlreadyPresent.confirm": "El archivo contiene el proyecto {{projectName}}, el cual ya existe actualmente. Si lo importas, se sobrescribirán los datos de la actual versión. ¿Quieres continuar?",
   "jsp.chapters.delete.confirm": "¿Realmente quieres eliminar este capítulo?",
   "jsp.chapters.h1": "Capítulos",
   "jsp.chapters.dialog.title.createChapter": "Crear capítulo",

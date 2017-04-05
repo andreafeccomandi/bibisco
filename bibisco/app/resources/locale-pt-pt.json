@@ -190,7 +190,7 @@
   "jsp.export.selectDirectory.invalid.message": "A pasta seleccionada não existe. Por favor, escolha outra.",
   "jsp.importProject.label.file": "Ficheiro de arquivo",
   "jsp.importProject.form.input.file.validationMessage": "Ficheiro inválido",
-  "jsp.closeImportProject.importAlreadyPresent.confirm": "O arquivo contém o projecto {0}, que já está no Bibisco. Ao importar o projecto, vai sobrescrever a versão actual. Deseja continuar?",
+  "jsp.closeImportProject.importAlreadyPresent.confirm": "O arquivo contém o projecto {{projectName}}, que já está no Bibisco. Ao importar o projecto, vai sobrescrever a versão actual. Deseja continuar?",
   "jsp.chapters.delete.confirm": "Deseja realmente eliminar este capítulo?",
   "jsp.chapters.h1": "Capítulos",
   "jsp.chapters.dialog.title.createChapter": "Criar capítulo",

@@ -25,20 +25,21 @@ function ImportProjectController($location, $scope, ProjectService,
   var self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
-  self.checkArchiveResult;
-
-  self.isInvalidArchive = function() {
-    return self.invalidArchive;
-  }
+  self.alreadyPresent = false;
+  self.openConfirm = false;
+  self.projectName;
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
     self.invalidArchive = false;
+    self.alreadyPresent = false;
+    self.openConfirm = false;
+    self.projectName = null;
     $scope.$apply();
   }
 
   self.save = function(isValid) {
-    if (!isValid) {
+    if (!isValid || self.invalidArchive || self.alreadyPresent) {
       return;
     }
 
@@ -52,8 +53,17 @@ function ImportProjectController($location, $scope, ProjectService,
             $location.path('/project');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
+      } else if (result.isValidArchive && result.isAlreadyPresent) {
+        self.invalidArchive = false;
+        self.alreadyPresent = true;
+        self.openConfirm = true;
+        self.projectName = result.projectName;
+        $scope.$apply();
       } else {
         self.invalidArchive = true;
+        self.alreadyPresent = false;
+        self.openConfirm = false;
+        self.projectName = null;
         $scope.$apply();
       }
 

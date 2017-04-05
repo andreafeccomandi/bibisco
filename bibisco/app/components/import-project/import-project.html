@@ -9,7 +9,7 @@
       <form name="importProjectForm" class="form-horizontal" ng-submit="$ctrl.save(importProjectForm.$valid)" novalidate>
         <div class="form-group">
           <label class="col-sm-3 control-label" for="bibiscoCreateProjectNameLabel">{{"jsp.importProject.label.file" | translate}}</label>
-          <div class="col-sm-8" ng-class="{ 'has-error': (importProjectForm.$submitted && importProjectForm.fileToImport.$invalid) || $ctrl.isInvalidArchive() }">
+          <div class="col-sm-8" ng-class="{ 'has-error': (importProjectForm.$submitted && importProjectForm.fileToImport.$invalid) || $ctrl.invalidArchive }">
             <div class="input-group" ng-class="{ 'has-error': importProjectForm.$submitted && importProjectForm.projectsDirectory.$invalid }">
               <input id="bibiscoImportProjectArchiveLabel" name="fileToImport" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.fileToImport" required/>
               <span class="input-group-btn"><fileselect filefilter="['bibisco2']" onselectfile="$ctrl.selectFileToImport(file)"></fileselect></span>
@@ -17,11 +17,21 @@
           </div>
           <div class="col-sm-8 col-sm-offset-3">
             <validationmessages field="importProjectForm.fileToImport"></validationmessages>
-            <p ng-if="$ctrl.isInvalidArchive()" class="text-danger bibiscoNotSelectableText">{{"jsp.importProject.form.input.file.validationMessage" | translate}}</p>
+            <p ng-if="$ctrl.invalidArchive" class="text-danger bibiscoNotSelectableText">{{"jsp.importProject.form.input.file.validationMessage" | translate}}</p>
           </div>
         </div>
         <div class="top30 col-sm-9 col-sm-offset-3">
-          <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
+          <button type="submit" class="btn btn-primary"
+          mwl-confirm
+          is-disabled="{{!$ctrl.alreadyPresent}}"
+          is-open="$ctrl.openConfirm"
+          message="{{ 'jsp.closeImportProject.importAlreadyPresent.confirm' | translate:{ projectName: $ctrl.projectName } }}"
+          confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
+          cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
+          placement="top" on-confirm="alert('confirm!')"
+          on-cancel="">
+          {{"jsp.common.button.save" | translate}}
+        </button>
           <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
         </div>
       </form>
