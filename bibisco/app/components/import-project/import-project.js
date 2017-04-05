@@ -27,12 +27,21 @@ function ImportProjectController($location, $scope, ProjectService,
   self.invalidArchive = false;
   self.checkArchiveResult;
 
+  self.isInvalidArchive = function() {
+    return self.invalidArchive;
+  }
+
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
+    self.invalidArchive = false;
     $scope.$apply();
   }
 
-  self.save = function() {
+  self.save = function(isValid) {
+    if (!isValid) {
+      return;
+    }
+
     ProjectService.importProjectArchiveFile(self.fileToImport, function(
       result) {
 
@@ -44,8 +53,8 @@ function ImportProjectController($location, $scope, ProjectService,
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
       } else {
-        alert(JSON.stringify(result));
-        self.checkArchiveResult = result;
+        self.invalidArchive = true;
+        $scope.$apply();
       }
 
     });
