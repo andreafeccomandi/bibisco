@@ -19,12 +19,29 @@ component('main', {
 });
 
 
-function MainController($location, LoggerService, BibiscoPropertiesService) {
-  LoggerService.debug('Start MainController...');
-  var firstAccess = BibiscoPropertiesService.getProperty("firstAccess");
-  LoggerService.debug('firstAccess=' + firstAccess);
+function MainController($location, LoggerService, BibiscoPropertiesService,
+  ContextService, ProjectService) {
 
-  if (firstAccess == true) {
+  LoggerService.debug('Start MainController...');
+  let firstAccess = BibiscoPropertiesService.getProperty("firstAccess");
+
+  // Log installation information
+  LoggerService.info('*** Application path: ' + ContextService.getAppPath());
+  LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
+    "version"));
+  LoggerService.info('*** First access: ' + firstAccess);
+  LoggerService.info('*** Locale: ' + BibiscoPropertiesService.getProperty(
+    "locale"));
+  LoggerService.info('*** OS: ' + ContextService.getOs());
+  LoggerService.info('*** Projects directory: ' + BibiscoPropertiesService.getProperty(
+    'projectsDirectory'));
+
+  if (!firstAccess) {;
+    ProjectService.syncProjectDirectoryWithBibiscoDb();
+  }
+
+  // Routing based on first access or not
+  if (firstAccess) {
     $location.path('/welcome');
   } else {
     $location.path('/start');

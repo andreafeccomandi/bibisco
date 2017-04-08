@@ -24,7 +24,6 @@ function OpenProjectController($location, LocaleService,
   ProjectService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
   var self = this;
-  ProjectService.syncProjectDirectoryWithBibiscoDb();
 
   self.getProjects = function() {
     return ProjectService.getProjects();

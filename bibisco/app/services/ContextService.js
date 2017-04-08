@@ -23,11 +23,14 @@ angular.module('bibiscoApp').service('ContextService', function() {
   var lastError;
 
   return {
-    getOs: function() {
-      return os;
+    getAppPath: function() {
+      return appPath;
     },
     getLastError() {
       return lastError;
+    },
+    getOs: function() {
+      return os;
     },
     getTempDirectoryPath() {
       return path.join(appPath, 'temp');

@@ -40,8 +40,6 @@ global.walkSync = walkSync;
 // add winston logger
 global.logger = initLogger();
 
-logger.debug('**** This platform is ' + process.platform);
-
 // add mout
 const mout = require('mout');
 global.mout = mout;
