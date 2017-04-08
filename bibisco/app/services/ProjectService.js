@@ -72,6 +72,11 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id);
       FileSystemService.deleteDirectory(projectPath);
     },
+    deleteAllProjectsFromBibiscoDb: function() {
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .findAndRemove({});
+      BibiscoDbConnectionService.saveDatabase();
+    },
     deleteProjectFromBibiscoDb: function(id) {
       BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
         .findAndRemove({

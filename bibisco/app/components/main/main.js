@@ -48,6 +48,7 @@ function MainController($location, LoggerService, BibiscoPropertiesService,
         '*** Projects directory NOT EXISTS, so I clean bibisco db: restart from welcome page!'
       );
       BibiscoPropertiesService.setProperty('projectsDirectory', null);
+      ProjectService.deleteAllProjectsFromBibiscoDb();
     }
   }
 
