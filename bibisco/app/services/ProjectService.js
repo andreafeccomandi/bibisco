@@ -67,14 +67,17 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.debug('End ProjectService.create...');
     },
     delete: function(id) {
+      this.deleteProjectFromBibiscoDb(id);
+      let projectPath = ProjectDbConnectionService.calculateProjectPath(
+        id);
+      FileSystemService.deleteDirectory(projectPath);
+    },
+    deleteProjectFromBibiscoDb: function(id) {
       BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
         .findAndRemove({
           id: id
         });
       BibiscoDbConnectionService.saveDatabase();
-      let projectPath = ProjectDbConnectionService.calculateProjectPath(
-        id);
-      FileSystemService.deleteDirectory(projectPath);
     },
     getProjectsCount: function() {
       return BibiscoDbConnectionService.getBibiscoDb().getCollection(
@@ -174,6 +177,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       // populate projectsInProjectDirectories
       let projectsInProjectDirectories = [];
+      let projectsInProjectDirectoriesMap = new Map();
       let filesInProjectDirectories = FileSystemService.getFilesInDirectory(
         projectsDirectory);
       if (filesInProjectDirectories && filesInProjectDirectories.length >
@@ -182,9 +186,12 @@ angular.module('bibiscoApp').service('ProjectService', function(
           let projectDirectoryName = filesInProjectDirectories[i];
           LoggerService.info('Processing ' + projectDirectoryName);
           try {
-            checkProjectValidity(projectDirectoryName, projectsDirectory,
+            let projectInfo = checkProjectValidity(projectDirectoryName,
+              projectsDirectory,
               FileSystemService, ProjectDbConnectionService);
-            projectsInProjectDirectories.push(projectDirectoryName);
+            projectsInProjectDirectories.push(projectInfo.id);
+            projectsInProjectDirectoriesMap.set(projectInfo.id,
+              projectInfo.name);
             LoggerService.info(projectDirectoryName + ' is valid.');
           } catch (err) {
             LoggerService.info(projectDirectoryName + ' is not valid: ' +
@@ -214,6 +221,17 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.info('projectsToAdd=' + projectsToAdd);
       LoggerService.info('projectsToDelete=' +
         projectsToDelete);
+
+      //delete projects from bibisco db
+      for (let i = 0; i < projectsToDelete.length; i++) {
+        this.deleteProjectFromBibiscoDb(projectsToDelete[i]);
+      }
+
+      //add projects to bibisco db
+      for (let i = 0; i < projectsToAdd.length; i++) {
+        this.addProjectToBibiscoDb(projectsToAdd[i],
+          projectsInProjectDirectoriesMap.get(projectsToAdd[i]));
+      }
 
       LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
     }
@@ -303,4 +321,6 @@ function checkProjectValidity(projectDirectoryName, projectsDirectory,
   }
 
   projectdb.close();
+
+  return projectInfo;
 }
