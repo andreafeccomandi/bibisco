@@ -198,8 +198,7 @@ function initZip() {
 								function(err) {
 									if (err) throw err;
 									readStream.pipe(fs.createWriteStream(path.join(
-										destinationFolder,
-										entry.fileName)));
+										destinationFolder, entry.fileName)));
 									readStream.on("end", function() {
 										zipfile.readEntry();
 									});
