@@ -48,7 +48,10 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     deleteDirectory: function(path) {
       fs.removeSync(path);
     },
-    getFilesInDirectory: function(path, filter) {
+    getFilesInDirectory: function(path) {
+      return fs.readdirSync(path);
+    },
+    getFilesInDirectoryRecursively: function(path, filter) {
       return walkSync(path, filter);
     },
     rename: function(oldPath, newPath) {

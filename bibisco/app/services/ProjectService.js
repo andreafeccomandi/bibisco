@@ -15,7 +15,8 @@
 
 angular.module('bibiscoApp').service('ProjectService', function(
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  FileSystemService, LoggerService, ProjectDbConnectionService, UuidService
+  FileSystemService, LoggerService, MoutService, ProjectDbConnectionService,
+  UuidService
 ) {
   'use strict';
 
@@ -164,6 +165,57 @@ angular.module('bibiscoApp').service('ProjectService', function(
         '/Users/andreafeccomandi/Documents/export/' + projectId +
         '.bibisco2', callback);
       LoggerService.debug('***** End ProjectService.export...');
+    },
+    syncProjectDirectoryWithBibiscoDb: function(callback) {
+      LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
+
+      let projectsDirectory = BibiscoPropertiesService.getProperty(
+        'projectsDirectory');
+
+      // populate projectsInProjectDirectories
+      let projectsInProjectDirectories = [];
+      let filesInProjectDirectories = FileSystemService.getFilesInDirectory(
+        projectsDirectory);
+      if (filesInProjectDirectories && filesInProjectDirectories.length >
+        0) {
+        for (let i = 0; i < filesInProjectDirectories.length; i++) {
+          let projectDirectoryName = filesInProjectDirectories[i];
+          LoggerService.info('Processing ' + projectDirectoryName);
+          try {
+            checkProjectValidity(projectDirectoryName, projectsDirectory,
+              FileSystemService, ProjectDbConnectionService);
+            projectsInProjectDirectories.push(projectDirectoryName);
+            LoggerService.info(projectDirectoryName + ' is valid.');
+          } catch (err) {
+            LoggerService.info(projectDirectoryName + ' is not valid: ' +
+              err);
+          }
+        }
+      }
+
+      // populate projectsInBibiscoDbIds
+      let projectsInBibiscoDb = this.getProjects();
+      let projectsInBibiscoDbIds = [];
+      if (projectsInBibiscoDb && projectsInBibiscoDb.length > 0) {
+        for (let i = 0; i < projectsInBibiscoDb.length; i++) {
+          projectsInBibiscoDbIds.push(projectsInBibiscoDb[i].id);
+        }
+      }
+
+      LoggerService.info('projectsInBibiscoDb=' + projectsInBibiscoDbIds);
+      LoggerService.info('projectsInProjectDirectories=' +
+        projectsInProjectDirectories);
+
+      let projectsToAdd = MoutService.array.difference(
+        projectsInProjectDirectories,
+        projectsInBibiscoDbIds);
+      let projectsToDelete = MoutService.array.difference(
+        projectsInBibiscoDbIds, projectsInProjectDirectories);
+      LoggerService.info('projectsToAdd=' + projectsToAdd);
+      LoggerService.info('projectsToDelete=' +
+        projectsToDelete);
+
+      LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
     }
   };
 });
@@ -180,10 +232,11 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
 
   try {
     // get json loki file
-    let fileList = FileSystemService.getFilesInDirectory(tempDirectoryPath, {
-      directories: false,
-      globs: ['**/*.json']
-    })
+    let fileList = FileSystemService.getFilesInDirectoryRecursively(
+      tempDirectoryPath, {
+        directories: false,
+        globs: ['**/*.json']
+      })
 
     if (!fileList || fileList.length != 1) {
       throw "Invalid archive";
@@ -235,4 +288,28 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
   LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
 
   return result;
+}
+
+function checkProjectValidity(projectDirectoryName, projectsDirectory,
+  FileSystemService, ProjectDbConnectionService) {
+
+  // check if project directory name is in UUID format
+  if (!validator.isUUID(projectDirectoryName, 4)) {
+    throw "Invalid archive: not UUID v4 file";
+  }
+
+  // open imported archive db to get id and name
+  let projectdb = ProjectDbConnectionService.open(
+    projectDirectoryName,
+    FileSystemService.concatPath(projectsDirectory,
+      projectDirectoryName));
+  let projectInfo = projectdb.getCollection('project').get(1);
+
+  // check if projects directory name is equals to project id
+  if (projectDirectoryName != projectInfo.id) {
+    throw "Project directory is not equals to project id: project directory = " +
+    projectDirectoryName + " - id = " + projectInfo.id;
+  }
+
+  projectdb.close();
 }
