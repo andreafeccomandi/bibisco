@@ -247,30 +247,21 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
     let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
     LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
 
-    // check if calculate project id is in UUID format
-    let isUUID = validator.isUUID(calculatedProjectId, 4)
-    if (!isUUID) {
-      throw "Invalid archive: not UUID v4 file";
-    }
-
-    // open imported archive db to get id and name
-    let projectdb = ProjectDbConnectionService.open(calculatedProjectId,
-      FileSystemService.concatPath(tempDirectoryPath, calculatedProjectId));
-    let projectInfo = projectdb.getCollection('project').get(1);
-    LoggerService.debug(projectInfo);
-    projectId = projectInfo.id;
-    projectName = projectInfo.name;
-    projectdb.close();
+    // check project validity
+    checkProjectValidity(calculatedProjectId, tempDirectoryPath,
+      FileSystemService, ProjectDbConnectionService);
 
     // check if project already exists in the installation of bibisco
-    let projectNumber = BibiscoDbConnectionService.getBibiscoDb().getCollection(
+    let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
       'projects').addDynamicView(
       'project_by_id').applyFind({
-      id: projectId
-    }).count();
+      id: calculatedProjectId
+    });
 
-    if (projectNumber == 1) {
+    if (projects.count() == 1) {
       isAlreadyPresent = true;
+      projectId = projects.data()[0].id;
+      projectName = projects.data()[0].name;
     }
     isValidArchive = true;
 
