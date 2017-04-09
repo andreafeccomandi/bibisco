@@ -157,10 +157,12 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       let projectsDirectoryPath = BibiscoPropertiesService.getProperty(
         'projectsDirectory');
+      let finalProjectPath = FileSystemService.concatPath(
+        projectsDirectoryPath, projectId);
       let tempProjectPath = FileSystemService.concatPath(ContextService.getTempDirectoryPath(),
         projectId);
 
-      FileSystemService.deleteDirectory(projectsDirectoryPath);
+      FileSystemService.deleteDirectory(finalProjectPath);
       FileSystemService.copyFileToDirectory(tempProjectPath,
         projectsDirectoryPath);
     },
