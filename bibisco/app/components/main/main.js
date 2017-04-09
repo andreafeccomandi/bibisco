@@ -52,8 +52,8 @@ function MainController($location, LoggerService, BibiscoPropertiesService,
     }
   }
 
+  // sync bibisco db with projects directory
   if (projectsDirectoryExists) {
-    // sync bibisco db with projects directory
     ProjectService.syncProjectDirectoryWithBibiscoDb();
   }
 
