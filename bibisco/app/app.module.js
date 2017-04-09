@@ -85,7 +85,7 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
   })
   .config(function(tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern(
-      '../bower_components/angular-i18n/angular-locale_{{locale}}.js');
+      '../node_modules/angular-i18n/angular-locale_{{locale}}.js');
   })
 
 // By default, AngularJS will catch errors and log them to
