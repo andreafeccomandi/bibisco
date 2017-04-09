@@ -1,37 +1,37 @@
-<div class="container">
+<div class="container bibiscoOpenProject">
   <div class="row">
     <div class="col-sm-12 page-header">
       <h1>{{"jsp.projects.dialog.title.openProject" | translate}}</h1>
     </div>
   </div>
-
   <div class="row">
-    <div class="col-sm-10">
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="project in $ctrl.getProjects()">
-          <div class="row">
-            <div class="col-sm-9">
-              {{ project.name }}
-            </div>
-            <div class="col-sm-3">
-              <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>
-              <button class="btn btn-sm btn-default"
-                mwl-confirm message="{{ 'jsp.selectProject.delete.confirm' | translate}}"
-                confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
-                cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
-                placement="top" on-confirm="$ctrl.delete((project.id))"
+    <div class="col-sm-9 col-sm-offset-1">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{"jsp.projects.h1 " | translate}}</h3>
+        </div>
+        <table class="table table-hover">
+          <tbody>
+            <tr ng-repeat="project in $ctrl.getProjects()">
+              <td class="col-sm-8">{{ project.name }}</td>
+              <td class="col-sm-2 text-right">
+                <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>
+              </td>
+              <td class="col-sm-2 text-left">
+                <button class="btn btn-sm btn-default" mwl-confirm message="{{ 'jsp.selectProject.delete.confirm' | translate}}" confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}" cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}" placement="top" on-confirm="$ctrl.delete((project.id))"
                 on-cancel=" ">
-                {{"jsp.selectProject.button.delete " | translate}}
-              </button>
-            </div>
-          </div>
-        </li>
-      </ul>
+                  {{"jsp.selectProject.button.delete " | translate}}</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-
   <div class="row top15 ">
-    <button ng-click="$ctrl.back() " class="btn btn-default ">{{"jsp.common.button.back " | translate}}</button>
+    <div class="col-sm-offset-1">
+      <button ng-click="$ctrl.back() " class="btn btn-default ">{{"jsp.common.button.back " | translate}}</button>
+    </div>
   </div>
 </div>

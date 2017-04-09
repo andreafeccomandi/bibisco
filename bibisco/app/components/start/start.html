@@ -1,10 +1,10 @@
 <div class="container">
   <div class="jumbotron top50">
     <div class="row">
-      <h1 class="bibiscoNotSelectableText">{{"jsp.start.h1" | translate}}</h1>
+      <h1>{{"jsp.start.h1" | translate}}</h1>
     </div>
     <div class="row top30"></div>
-    <div class="row">
+    <div class="row bibiscoNotSelectableText">
       <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.openProject()" type="button" class="btn btn-primary">{{"jsp.start.button.openProject" | translate}}</button>
       <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-default">{{"jsp.start.button.createProject" | translate}}</button>
       <button ng-show="!$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-primary">{{"jsp.start.button.createFirstProject" | translate}}</button>

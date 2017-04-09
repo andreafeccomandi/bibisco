@@ -16,7 +16,8 @@
 
 /* DISABLE SELECTION ON TEXT */
 
-.bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip {
+.bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip, h1, h2, h3, h4, h5,
+h6, label, th, td {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -33,4 +34,10 @@
 	margin-top: 10px;
 	font-size: 16px;
 	line-height: 18px;
+}
+
+
+/* OPEN PROJECT */
+.bibiscoOpenProject td:first-child {
+	padding-left: 15px !important;
 }
