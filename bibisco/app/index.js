@@ -134,7 +134,6 @@ function initZip() {
 
 	const yazl = require("yazl");
 	const yauzl = require("yauzl");
-	const mkdirp = require("mkdirp");
 
 	return {
 		zipFolder: function(folderToZip, zippedFilePath, callback) {
@@ -185,7 +184,8 @@ function initZip() {
 					logger.debug('Processing ' + entry.fileName);
 					if (/\/$/.test(entry.fileName)) {
 						// directory file names end with '/'
-						mkdirp(path.join(destinationFolder, entry.fileName), function(err) {
+						fs.mkdirp(path.join(destinationFolder, entry.fileName), function(
+							err) {
 							if (err) throw err;
 							zipfile.readEntry();
 						});
@@ -194,7 +194,7 @@ function initZip() {
 						zipfile.openReadStream(entry, function(err, readStream) {
 							if (err) throw err;
 							// ensure parent directory exists
-							mkdirp(path.join(destinationFolder, path.dirname(entry.fileName)),
+							fs.mkdirp(path.join(destinationFolder, path.dirname(entry.fileName)),
 								function(err) {
 									if (err) throw err;
 									readStream.pipe(fs.createWriteStream(path.join(
