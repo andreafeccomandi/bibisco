@@ -271,19 +271,20 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
     LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
 
     // check project validity
-    checkProjectValidity(calculatedProjectId, tempDirectoryPath,
+    let projectInfo = checkProjectValidity(calculatedProjectId,
+      tempDirectoryPath,
       FileSystemService, ProjectDbConnectionService);
+    projectId = projectInfo.id;
+    projectName = projectInfo.name;
 
     // check if project already exists in the installation of bibisco
     let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
       'projects').addDynamicView(
       'project_by_id').applyFind({
-      id: calculatedProjectId
+      id: projectId
     });
-
     if (projects.count() == 1) {
       isAlreadyPresent = true;
-      projectId = projects.data()[0].id;
       projectName = projects.data()[0].name;
     }
     isValidArchive = true;
