@@ -46,8 +46,8 @@ function StartController($location, LocaleService, LoggerService,
     $location.path('/importproject');
   }
 
-  self.settings = function() {
-
+  self.settingslanguage = function() {
+    $location.path('/settingslanguage');
   }
 
   LoggerService.debug('End StartController...');

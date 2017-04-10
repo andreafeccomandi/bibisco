@@ -16,21 +16,36 @@ angular.
 module('bibiscoApp').
 component('languageselect', {
   templateUrl: 'components/language-select/language-select.html',
-  controller: LanguageSelectController
+  controller: LanguageSelectController,
+  bindings: {
+    applyonchange: '<',
+    onselectlanguage: '&'
+  }
 });
 
 function LanguageSelectController(LocaleService, LoggerService) {
   LoggerService.debug('Start LanguageSelectController...');
 
+  var self = this;
+
   // set locales
-  this.locales = LocaleService.getLocales();
+  self.locales = LocaleService.getLocales();
 
   // set initial value
-  this.currentLocale = LocaleService.getCurrentLocale();
+  self.currentLocale = LocaleService.getCurrentLocale();
 
   // change language function
-  this.changeLanguage = function() {
-    LocaleService.setCurrentLocale(this.currentLocale);
+  self.changeLanguage = function() {
+
+    if (self.applyonchange) {
+      LocaleService.setCurrentLocale(this.currentLocale);
+    }
+
+    if (self.onselectlanguage) {
+      self.onselectlanguage({
+        selectedLanguage: this.currentLocale
+      });
+    }
   };
   LoggerService.debug('End LanguageSelectController...');
 }

@@ -47,6 +47,9 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/project', {
         template: '<project></project>'
       }).
+      when('/settingslanguage', {
+        template: '<settingslanguage></settingslanguage>'
+      }).
       when('/start', {
         template: '<start></start>'
       }).
