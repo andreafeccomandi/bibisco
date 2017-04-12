@@ -91,20 +91,40 @@ function createMainWindow() {
 	return win;
 }
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function() {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
 });
 
-app.on('activate', () => {
+app.on('activate', function() {
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 	}
 });
 
-app.on('ready', () => {
+app.on('ready', function() {
 	mainWindow = createMainWindow();
+	const electronMenu = electron.Menu;
+	let menuTemplate;
+	if (process.platform === 'darwin') {
+		menuTemplate = [{
+			label: 'bibisco',
+			submenu: [{
+				role: 'hide'
+			}, {
+				role: 'hideothers'
+			}, {
+				role: 'unhide'
+			}, {
+				type: 'separator'
+			}, {
+				role: 'quit'
+			}]
+		}];
+	}
+	const applicationMenu = electronMenu.buildFromTemplate(menuTemplate);
+	electronMenu.setApplicationMenu(applicationMenu);
 });
 
 function initLogger() {
