@@ -14,15 +14,15 @@
  */
 angular.
 module('bibiscoApp').
-component('settingslanguage', {
-  templateUrl: 'components/settings-language/settings-language.html',
-  controller: SettingsLanguageController
+component('settings', {
+  templateUrl: 'components/settings/settings.html',
+  controller: SettingsController
 });
 
-function SettingsLanguageController($location, $scope,
+function SettingsController($location, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, MoutService, ProjectService) {
-  LoggerService.debug('Start SettingsLanguageController...');
+  LoggerService.debug('Start SettingsController...');
   var self = this;
   self.selectedLanguage = LocaleService.getCurrentLocale();
   let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
@@ -42,7 +42,7 @@ function SettingsLanguageController($location, $scope,
   self.selectProjectsDirectory = function(directory) {
     self.selectedProjectsDirectory = directory;
     self.forbiddenDirectory = false;
-    $scope.settingsLanguageForm.$setDirty();
+    $scope.settingsForm.$setDirty();
     $scope.$apply();
   }
 
@@ -87,5 +87,5 @@ function SettingsLanguageController($location, $scope,
     $location.path('/start');
   }
 
-  LoggerService.debug('End SettingsLanguageController...');
+  LoggerService.debug('End SettingsController...');
 }

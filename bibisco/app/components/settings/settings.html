@@ -6,8 +6,8 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <form name="settingsLanguageForm" class="form-horizontal"
-        ng-submit="$ctrl.save(settingsLanguageForm.$valid, settingsLanguageForm.$dirty)"
+      <form name="settingsForm" class="form-horizontal"
+        ng-submit="$ctrl.save(settingsForm.$valid, settingsForm.$dirty)"
         novalidate>
         <div class="form-group">
           <label class="col-sm-3 control-label">{{"jsp.language.form.selectLanguage.label" | translate}}</label>
@@ -18,11 +18,11 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">{{"jsp.changeProjectsDirectory.label" | translate}}</label>
           <div class="col-sm-8">
-            <div class="input-group" ng-class="{ 'has-error': settingsLanguageForm.$submitted && settingsLanguageForm.projectsDirectory.$invalid }">
+            <div class="input-group" ng-class="{ 'has-error': settingsForm.$submitted && settingsForm.projectsDirectory.$invalid }">
               <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
               <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
             </div>
-            <validationmessages field="settingsLanguageForm.projectsDirectory"></validationmessages>
+            <validationmessages field="settingsForm.projectsDirectory"></validationmessages>
             <p class="text-danger" ng-show="$ctrl.forbiddenDirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
           </div>
         </div>
@@ -34,8 +34,8 @@
             {{"jsp.common.button.save" | translate}}
           </button>
           <button class="btn btn-default" type="button"
-          ng-click="$ctrl.backWithoutConfirm(settingsLanguageForm.$dirty)"
-          mwl-confirm is-disabled="{{!settingsLanguageForm.$dirty}}"
+          ng-click="$ctrl.backWithoutConfirm(settingsForm.$dirty)"
+          mwl-confirm is-disabled="{{!settingsForm.$dirty}}"
           message="{{'js.common.message.confirmExitWithoutSave' | translate}}"
           confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
           cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
