@@ -21,18 +21,11 @@
           </div>
         </div>
         <div class="top30 col-sm-9 col-sm-offset-3">
-          <button type="submit" class="btn btn-primary"
-          mwl-confirm
-          is-disabled="{{!$ctrl.alreadyPresent}}"
-          is-open="$ctrl.openConfirm"
-          message="{{ 'jsp.closeImportProject.importAlreadyPresent.confirm' | translate:{ projectName: $ctrl.projectName } }}"
-          confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
-          cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
-          placement="top" on-confirm="$ctrl.confirmImportExistingProject()"
-          on-cancel="">
-          {{"jsp.common.button.save" | translate}}
-        </button>
-          <button ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+          <button type="submit" class="btn btn-primary" mwl-confirm is-disabled="{{!$ctrl.alreadyPresent}}" is-open="$ctrl.openConfirm" message="{{ 'jsp.closeImportProject.importAlreadyPresent.confirm' | translate:{ projectName: $ctrl.projectName } }}" confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
+          cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}" placement="top" on-confirm="$ctrl.confirmImportExistingProject()" on-cancel="">
+            {{"jsp.common.button.save" | translate}}
+          </button>
+          <button type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
         </div>
       </form>
     </div>
