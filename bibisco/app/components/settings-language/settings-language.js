@@ -19,26 +19,66 @@ component('settingslanguage', {
   controller: SettingsLanguageController
 });
 
-function SettingsLanguageController($location, BibiscoPropertiesService,
-  LocaleService, LoggerService, ProjectService) {
+function SettingsLanguageController($location, $scope,
+  BibiscoDbConnectionService, BibiscoPropertiesService,
+  LocaleService, LoggerService, MoutService, ProjectService) {
   LoggerService.debug('Start SettingsLanguageController...');
   var self = this;
-  self.selectedLanguage;
-  self.languageChanged = false;
+  self.selectedLanguage = LocaleService.getCurrentLocale();
+  let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
+    'projectsDirectory');
 
-  self.change = function(selectedLanguage) {
+  // show directory name without "/_internal_bibisco2_projects_db_"
+  // that is 32 characters
+  self.selectedProjectsDirectory = currentProjectsDirectory.substring(0,
+    currentProjectsDirectory.length - 32);
+
+  self.forbiddenDirectory = false;
+
+  self.selectLanguage = function(selectedLanguage) {
     self.selectedLanguage = selectedLanguage;
-    self.languageChanged = true;
   }
 
-  self.save = function() {
-    LocaleService.setCurrentLocale(self.selectedLanguage);
-    BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
-    $location.path('/start');
+  self.selectProjectsDirectory = function(directory) {
+    self.selectedProjectsDirectory = directory;
+    self.forbiddenDirectory = false;
+    $scope.settingsLanguageForm.$setDirty();
+    $scope.$apply();
   }
 
-  self.backWithoutConfirm = function() {
-    if (!self.languageChanged) {
+  self.save = function(isValid, isDirty) {
+    LoggerService.debug('save: isValid = ' + isValid + ' - isDirty = ' +
+      isDirty);
+
+    if (!isDirty) {
+      $location.path('/start');
+    } else if (isValid) {
+
+      var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
+      if (projectsDirectory) {
+        LocaleService.setCurrentLocale(self.selectedLanguage);
+        BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
+        BibiscoPropertiesService.setProperty('projectsDirectory',
+          projectsDirectory);
+        BibiscoDbConnectionService.saveDatabase();
+
+        // sync bibisco db with projects directory
+        ProjectService.syncProjectDirectoryWithBibiscoDb();
+
+        LoggerService.debug('Saved preferences: selectedLanguage=' +
+          LocaleService.getCurrentLocale() +
+          ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory
+        );
+
+        $location.path('/start');
+      } else {
+        self.forbiddenDirectory = true;
+      }
+    }
+  }
+
+  self.backWithoutConfirm = function(isDirty) {
+    if (!isDirty) {
       $location.path('/start');
     }
   }

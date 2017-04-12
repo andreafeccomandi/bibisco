@@ -106,7 +106,7 @@
   "jsp.start.button.changeLanguage": "changer de langue",
   "jsp.start.button.changeProjectsDirectory": "changer le dossier des projets",
   "jsp.start.dialog.title.changeProjectsDirectory": "Changer le dossier des projets",
-  "jsp.changeProjectsDirectory.label": "dossier des projets",
+  "jsp.changeProjectsDirectory.label": "Dossier des projets",
   "jsp.changeProjectsDirectory.p.label.1": "Note importante",
   "jsp.changeProjectsDirectory.p.1": "si le dossier contient déjà des projets, ils seront automatiquement importés.",
   "jsp.project.a.exitProject": "&nbsp;quitter",

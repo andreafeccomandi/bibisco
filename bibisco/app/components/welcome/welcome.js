@@ -43,21 +43,9 @@ function WelcomeController($scope, $location, BibiscoDbConnectionService,
   self.finish = function(isValid) {
     if (isValid) {
 
-      BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
-
-      var projectsDirectory;
-      if (self.selectedProjectsDirectory.endsWith(
-          "_internal_bibisco2_projects_db_")) {
-        projectsDirectory = self.selectedProjectsDirectory;
-      } else {
-        projectsDirectory = FileSystemService.concatPath(self.selectedProjectsDirectory,
-          '_internal_bibisco2_projects_db_');
-      }
-
-      var directoryCreated = FileSystemService.createDirectory(
-        projectsDirectory);
-
-      if (directoryCreated) {
+      var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
+      if (projectsDirectory) {
+        BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
         BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
         BibiscoPropertiesService.setProperty('firstAccess', false);

@@ -1,30 +1,45 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12 page-header">
-      <h1>{{"jsp.projects.dialog.title.changeLanguage" | translate}}</h1>
+      <h1>{{"jsp.settings.h1" | translate}}</h1>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <form name="settingsLanguageForm" class="form-horizontal" novalidate>
+      <form name="settingsLanguageForm" class="form-horizontal"
+        ng-submit="$ctrl.save(settingsLanguageForm.$valid, settingsLanguageForm.$dirty)"
+        novalidate>
         <div class="form-group">
           <label class="col-sm-3 control-label">{{"jsp.language.form.selectLanguage.label" | translate}}</label>
           <div class="col-sm-8">
-            <languageselect applyonchange="false" onselectlanguage="$ctrl.change(selectedLanguage)"></languageselect>
+            <languageselect applyonchange="false" onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"></languageselect>
           </div>
         </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">{{"jsp.changeProjectsDirectory.label" | translate}}</label>
+          <div class="col-sm-8">
+            <div class="input-group" ng-class="{ 'has-error': settingsLanguageForm.$submitted && settingsLanguageForm.projectsDirectory.$invalid }">
+              <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
+              <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
+            </div>
+            <validationmessages field="settingsLanguageForm.projectsDirectory"></validationmessages>
+            <p class="text-danger" ng-show="$ctrl.forbiddenDirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
+          </div>
+        </div>
+        <div class="col-sm-8 col-sm-offset-3">
+          <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
+        </div>
         <div class="top30 col-sm-9 col-sm-offset-3">
-          <button ng-click="$ctrl.save()" class="btn btn-primary">
+          <button class="btn btn-primary" type="submit">
             {{"jsp.common.button.save" | translate}}
           </button>
-          <button class="btn btn-default"
-            ng-click="$ctrl.backWithoutConfirm()"
-            mwl-confirm
-            is-disabled="{{!$ctrl.languageChanged}}"
-            message="{{'js.common.message.confirmExitWithoutSave' | translate}}"
-            confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
-            cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
-            placement="top" on-confirm="$ctrl.backWithConfirm()" on-cancel="">
+          <button class="btn btn-default" type="button"
+          ng-click="$ctrl.backWithoutConfirm(settingsLanguageForm.$dirty)"
+          mwl-confirm is-disabled="{{!settingsLanguageForm.$dirty}}"
+          message="{{'js.common.message.confirmExitWithoutSave' | translate}}"
+          confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
+          cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
+          placement="top" on-confirm="$ctrl.backWithConfirm()" on-cancel="">
             {{"jsp.common.button.back" | translate}}
           </button>
         </div>

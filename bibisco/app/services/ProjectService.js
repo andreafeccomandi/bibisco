@@ -66,6 +66,24 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       LoggerService.debug('End ProjectService.create...');
     },
+    createProjectsDirectory: function(selectedProjectsDirectory) {
+      let projectsDirectory;
+      let result = null;
+
+      if (selectedProjectsDirectory.endsWith(
+          "_internal_bibisco2_projects_db_")) {
+        projectsDirectory = selectedProjectsDirectory;
+      } else {
+        projectsDirectory = FileSystemService.concatPath(
+          selectedProjectsDirectory,
+          '_internal_bibisco2_projects_db_');
+      }
+
+      if (FileSystemService.createDirectory(projectsDirectory)) {
+        result = projectsDirectory;
+      }
+      return result;
+    },
     delete: function(id) {
       this.deleteProjectFromBibiscoDb(id);
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
