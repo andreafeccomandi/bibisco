@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('MoutService', function() {
+angular.module('bibiscoApp').service('UtilService', function() {
   'use strict';
 
   var remote = require('electron').remote;
