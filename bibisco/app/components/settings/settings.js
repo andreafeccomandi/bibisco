@@ -21,7 +21,7 @@ component('settings', {
 
 function SettingsController($location, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, MoutService, ProjectService) {
+  LocaleService, LoggerService, UtilService, ProjectService) {
   LoggerService.debug('Start SettingsController...');
   var self = this;
   self.selectedLanguage = LocaleService.getCurrentLocale();

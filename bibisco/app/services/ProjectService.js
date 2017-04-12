@@ -15,7 +15,7 @@
 
 angular.module('bibiscoApp').service('ProjectService', function(
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  FileSystemService, LoggerService, MoutService, ProjectDbConnectionService,
+  FileSystemService, LoggerService, UtilService, ProjectDbConnectionService,
   UuidService
 ) {
   'use strict';
@@ -238,10 +238,10 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.info('projectsInProjectDirectories=' +
         projectsInProjectDirectories);
 
-      let projectsToAdd = MoutService.array.difference(
+      let projectsToAdd = UtilService.array.difference(
         projectsInProjectDirectories,
         projectsInBibiscoDbIds);
-      let projectsToDelete = MoutService.array.difference(
+      let projectsToDelete = UtilService.array.difference(
         projectsInBibiscoDbIds, projectsInProjectDirectories);
       LoggerService.info('projectsToAdd=' + projectsToAdd);
       LoggerService.info('projectsToDelete=' +
