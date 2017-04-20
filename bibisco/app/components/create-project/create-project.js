@@ -19,10 +19,15 @@ component('createproject', {
   controller: CreateProjectController
 });
 
-function CreateProjectController($location, LocaleService,
+function CreateProjectController($location, $rootScope, LocaleService,
   ProjectService, LoggerService) {
   LoggerService.debug('Start CreateProjectController...');
+
+  // hide menu
+  $rootScope.$emit('HIDE_MENU');
+
   var self = this;
+
   self.projectName = null;
   self.projectLanguage = LocaleService.getCurrentLocale();
   self.projectLocales = {

@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header navbar-right">
+      <button type="button" class="navbar-toggle collapsed"
+        ng-click="$ctrl.toggleCollapse()" ng-show="$ctrl.isVisible">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="navbar-brand" src="images/bibisco-brand-menu.png" />
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" uib-collapse="$ctrl.isCollapsed" ng-show="$ctrl.isVisible">
+      <ul class="nav navbar-nav" ng-show="$ctrl.isVisible">
+        <li class="active"><a ng-href="javascript: $ctrl.selectItem('/project')">{{ 'jsp.menu.project' | translate}}</a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.architecture' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.characters' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.locations' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.chapters' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a ng-click="$ctrl.selectItem('/settings')">{{ 'jsp.menu.settings' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.export' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.info' | translate}} </a></li>
+      </ul>
+    </div> <!-- /.navbar-collapse -->
+  </nav>
+</div> <!-- /.container-fluid -->

@@ -20,10 +20,14 @@ component('welcome', {
 });
 
 
-function WelcomeController($scope, $location, BibiscoDbConnectionService,
-  BibiscoPropertiesService, ContextService, FileSystemService, LocaleService,
-  LoggerService, ProjectService) {
+function WelcomeController($location, $rootScope, $scope,
+  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
+  FileSystemService, LocaleService, LoggerService, ProjectService) {
   LoggerService.debug('Start WelcomeController...');
+
+  // hide menu
+  $rootScope.$emit('HIDE_MENU');
+
   var self = this;
   self.selectedProjectsDirectory = null;
   self.step = 1;

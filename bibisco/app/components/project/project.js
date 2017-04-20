@@ -22,12 +22,19 @@ component('project', {
   }
 });
 
-function ProjectController($location, LoggerService, ProjectService) {
+function ProjectController($location, $rootScope, LoggerService, ProjectService) {
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
+  // show menu
+  $rootScope.$emit('SHOW_MENU');
+
   self.project = function() {
     return ProjectService.getProjectInfo();
+  }
+
+  self.back = function() {
+    $location.path('/start');
   }
 
   LoggerService.debug('End ProjectController...');

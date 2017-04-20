@@ -19,10 +19,13 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, LocaleService,
-  ProjectDbConnectionService,
-  ProjectService, LoggerService) {
+function OpenProjectController($location, $rootScope, LocaleService,
+  ProjectDbConnectionService, ProjectService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
+
+  // hide menu
+  $rootScope.$emit('HIDE_MENU');
+
   var self = this;
 
   self.getProjects = function() {

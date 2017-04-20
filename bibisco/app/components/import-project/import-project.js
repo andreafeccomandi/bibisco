@@ -19,9 +19,13 @@ component('importproject', {
   controller: ImportProjectController
 });
 
-function ImportProjectController($location, $scope, ProjectService,
+function ImportProjectController($location, $rootScope, $scope, ProjectService,
   LoggerService) {
   LoggerService.debug('Start ImportProjectController...');
+
+  // hide menu
+  $rootScope.$emit('HIDE_MENU');
+
   var self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
@@ -29,6 +33,7 @@ function ImportProjectController($location, $scope, ProjectService,
   self.openConfirm = false;
   self.projectName;
   self.projectId;
+
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;

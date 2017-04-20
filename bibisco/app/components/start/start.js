@@ -19,9 +19,13 @@ component('start', {
   controller: StartController
 });
 
-function StartController($location, LocaleService, LoggerService,
+function StartController($location, $rootScope, LocaleService, LoggerService,
   ProjectService) {
   LoggerService.debug('Start StartController...');
+
+  // hide menu
+  $rootScope.$emit('HIDE_MENU');
+
   var self = this;
 
   self.projectsPresent = function() {

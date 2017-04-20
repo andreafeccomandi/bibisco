@@ -19,10 +19,13 @@ component('settings', {
   controller: SettingsController
 });
 
-function SettingsController($location, $scope,
+function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, UtilService, ProjectService) {
   LoggerService.debug('Start SettingsController...');
+
+  $rootScope.$emit('DISABLE_MENU');
+
   var self = this;
   self.selectedLanguage = LocaleService.getCurrentLocale();
   let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
