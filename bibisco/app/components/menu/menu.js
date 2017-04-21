@@ -23,32 +23,59 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   LoggerService.debug('Start MenuController...');
 
   var self = this;
-  self.isCollapsed = true;
-  self.isVisible = false;
-  self.isDisabled = false;
+
+  // menu status
+  self.collapsed = true;
+  self.visible = false;
+  self.disabled = false;
+
+  // menu items status
+  self.projectActive = true;
+  self.architectureActive = false;
+  self.charactersActive = false;
+  self.locationsActive = false;
+  self.chaptersActive = false;
+  self.exportActive = false;
+  self.analysisActive = false;
+  self.settingsActive = false;
+  self.infoActive = false;
 
   $rootScope.$on('SHOW_MENU', function() {
-    self.isVisible = true;
+    self.visible = true;
   });
 
   $rootScope.$on('HIDE_MENU', function() {
-    self.isVisible = false;
+    self.visible = false;
   });
 
   $rootScope.$on('DISABLE_MENU', function() {
-    self.isDisabled = true;
+    self.disabled = true;
   });
 
   $rootScope.$on('ENABLE_MENU', function() {
-    self.isDisabled = false;
+    self.disabled = false;
   });
 
   self.toggleCollapse = function() {
-    this.isCollapsed = !this.isCollapsed;
+    this.collapsed = !this.collapsed;
   }
 
-  self.selectItem = function(path) {
-    $location.path(path);
+  self.selectItem = function(item) {
+    self.disableAllItems();
+    eval("self." + item + "Active = true");
+    eval("$location.path('/" + item + "')");
+  }
+
+  self.disableAllItems = function() {
+    self.projectActive = false;
+    self.architectureActive = false;
+    self.charactersActive = false;
+    self.locationsActive = false;
+    self.chaptersActive = false;
+    self.exportActive = false;
+    self.analysisActive = false;
+    self.settingsActive = false;
+    self.infoActive = false;
   }
 
   LoggerService.debug('End MenuController...');

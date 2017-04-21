@@ -67,8 +67,8 @@ h6, label, th, td {
 /* MENU */
 .navbar {
 	border-radius: 0px;
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 .navbar-inverse {
   background-color: #2d2d2d;
@@ -84,7 +84,7 @@ h6, label, th, td {
 	padding: 15px 15px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;
 		}

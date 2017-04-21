@@ -3,8 +3,7 @@
 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header navbar-right">
-      <button type="button" class="navbar-toggle collapsed"
-        ng-click="$ctrl.toggleCollapse()" ng-show="$ctrl.isVisible">
+      <button type="button" class="navbar-toggle collapsed" ng-click="$ctrl.toggleCollapse()" ng-show="$ctrl.visible">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -13,17 +12,20 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" uib-collapse="$ctrl.isCollapsed" ng-show="$ctrl.isVisible">
-      <ul class="nav navbar-nav" ng-show="$ctrl.isVisible">
-        <li class="active"><a ng-href="javascript: $ctrl.selectItem('/project')">{{ 'jsp.menu.project' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.architecture' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.characters' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.locations' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.chapters' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a ng-click="$ctrl.selectItem('/settings')">{{ 'jsp.menu.settings' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.export' | translate}} </a></li>
-        <li ng-class="{'disabled': $ctrl.isDisabled}"><a >{{ 'jsp.menu.info' | translate}} </a></li>
+    <div class="collapse navbar-collapse" uib-collapse="$ctrl.collapsed" ng-show="$ctrl.visible">
+      <ul class="nav navbar-nav" ng-show="$ctrl.visible">
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.projectActive}"><a ng-click="$ctrl.selectItem('project')">{{ 'jsp.menu.project' | translate}}</a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.architectureActive}"><a ng-click="$ctrl.selectItem('architecture')">{{ 'jsp.menu.architecture' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.charactersActive}"><a ng-click="$ctrl.selectItem('characters')">{{ 'jsp.menu.characters' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.locationsActive}"><a ng-click="$ctrl.selectItem('locations')">{{ 'jsp.menu.locations' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.chaptersActive}"><a ng-click="$ctrl.selectItem('chapters')">{{ 'jsp.menu.chapters' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.analysisActive}"><a ng-click="$ctrl.selectItem('analysis')">{{ 'jsp.menu.analysis' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.exportActive}"><a ng-click="$ctrl.selectItem('export')">{{ 'jsp.menu.export' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.settingsActive}"><a ng-click="$ctrl.selectItem('settings')">{{ 'jsp.menu.settings' | translate}} </a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.infoActive}"><a ng-click="$ctrl.selectItem('info')">{{ 'jsp.menu.info' | translate}} </a></li>
       </ul>
-    </div> <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.navbar-collapse -->
   </nav>
-</div> <!-- /.container-fluid -->
+</div>
+<!-- /.container-fluid -->

@@ -24,8 +24,6 @@ function SettingsController($location, $rootScope, $scope,
   LocaleService, LoggerService, UtilService, ProjectService) {
   LoggerService.debug('Start SettingsController...');
 
-  $rootScope.$emit('DISABLE_MENU');
-
   var self = this;
   self.selectedLanguage = LocaleService.getCurrentLocale();
   let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
