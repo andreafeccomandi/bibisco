@@ -57,13 +57,14 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   });
 
   self.toggleCollapse = function() {
-    this.collapsed = !this.collapsed;
+    self.collapsed = !self.collapsed;
   }
 
   self.selectItem = function(item) {
     self.disableAllItems();
     eval("self." + item + "Active = true");
     eval("$location.path('/" + item + "')");
+    self.collapsed = true;
   }
 
   self.disableAllItems = function() {
