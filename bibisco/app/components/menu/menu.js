@@ -30,7 +30,7 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   self.disabled = false;
 
   // menu items status
-  self.projectActive = true;
+  self.projecthomeActive = true;
   self.architectureActive = false;
   self.charactersActive = false;
   self.locationsActive = false;
@@ -40,16 +40,33 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   self.settingsActive = false;
   self.infoActive = false;
 
-  $rootScope.$on('SHOW_MENU', function() {
-    self.visible = true;
-  });
-
-  $rootScope.$on('HIDE_MENU', function() {
+  // SHOW START EVENT
+  $rootScope.$on('SHOW_START', function() {
     self.visible = false;
   });
 
-  $rootScope.$on('DISABLE_MENU', function() {
-    self.disabled = true;
+  // SHOW CREATE PROJECT EVENT
+  $rootScope.$on('SHOW_CREATE_PROJECT', function() {
+    self.visible = false;
+  });
+
+  // SHOW IMPORT PROJECT EVENT
+  $rootScope.$on('SHOW_IMPORT_PROJECT', function() {
+    self.visible = false;
+  });
+
+  // SHOW OPEN PROJECT EVENT
+  $rootScope.$on('SHOW_OPEN_PROJECT', function() {
+    self.visible = false;
+  });
+
+  // SHOW WELCOME EVENT
+  $rootScope.$on('SHOW_WELCOME', function() {
+    self.visible = false;
+  });
+
+  $rootScope.$on('SHOW_MENU', function() {
+    self.visible = true;
   });
 
   $rootScope.$on('ENABLE_MENU', function() {
@@ -68,7 +85,7 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   }
 
   self.disableAllItems = function() {
-    self.projectActive = false;
+    self.projecthomeActive = false;
     self.architectureActive = false;
     self.charactersActive = false;
     self.locationsActive = false;

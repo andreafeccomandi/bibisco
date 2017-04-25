@@ -24,7 +24,7 @@ function CreateProjectController($location, $rootScope, LocaleService,
   LoggerService.debug('Start CreateProjectController...');
 
   // hide menu
-  $rootScope.$emit('HIDE_MENU');
+  $rootScope.$emit('SHOW_CREATE_PROJECT');
 
   var self = this;
 

@@ -24,7 +24,7 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService,
   LoggerService.debug('Start ImportProjectController...');
 
   // hide menu
-  $rootScope.$emit('HIDE_MENU');
+  $rootScope.$emit('SHOW_IMPORT_PROJECT');
 
   var self = this;
   self.fileToImport = null;

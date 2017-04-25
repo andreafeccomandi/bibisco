@@ -24,7 +24,7 @@ function StartController($location, $rootScope, LocaleService, LoggerService,
   LoggerService.debug('Start StartController...');
 
   // hide menu
-  $rootScope.$emit('HIDE_MENU');
+  $rootScope.$emit('SHOW_START');
 
   var self = this;
 

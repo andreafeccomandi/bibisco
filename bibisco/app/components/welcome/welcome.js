@@ -26,7 +26,7 @@ function WelcomeController($location, $rootScope, $scope,
   LoggerService.debug('Start WelcomeController...');
 
   // hide menu
-  $rootScope.$emit('HIDE_MENU');
+  $rootScope.$emit('SHOW_WELCOME');
 
   var self = this;
   self.selectedProjectsDirectory = null;

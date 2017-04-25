@@ -24,7 +24,7 @@ function OpenProjectController($location, $rootScope, LocaleService,
   LoggerService.debug('Start OpenProjectController...');
 
   // hide menu
-  $rootScope.$emit('HIDE_MENU');
+  $rootScope.$emit('SHOW_OPEN_PROJECT');
 
   var self = this;
 
