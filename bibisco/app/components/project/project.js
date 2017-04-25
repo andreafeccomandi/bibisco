@@ -22,12 +22,13 @@ component('project', {
   }
 });
 
-function ProjectController($location, $rootScope, LoggerService, ProjectService) {
+function ProjectController($location, $rootScope, $routeParams, LoggerService,
+  ProjectService) {
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
   // menu items status
-  self.projecthomeActive = true;
+  self.projecthomeActive = false;
   self.architectureActive = false;
   self.charactersActive = false;
   self.locationsActive = false;
@@ -37,9 +38,12 @@ function ProjectController($location, $rootScope, LoggerService, ProjectService)
   self.settingsActive = false;
   self.infoActive = false;
 
+  // select item from route
+  eval("self." + $routeParams.item + "Active = true");
+
   // show menu
   $rootScope.$emit('SHOW_PROJECT', {
-    item: 'projecthome'
+    item: $routeParams.item
   });
 
   // change menu item

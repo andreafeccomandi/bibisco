@@ -34,7 +34,7 @@ function OpenProjectController($location, $rootScope, LocaleService,
 
   self.open = function(id) {
     ProjectDbConnectionService.load(id);
-    $location.path('/project');
+    $location.path('/project/projecthome');
   }
 
   self.delete = function(id) {

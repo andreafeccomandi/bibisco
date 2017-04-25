@@ -45,7 +45,7 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/openproject', {
         template: '<openproject></openproject>'
       }).
-      when('/project', {
+      when('/project/:item', {
         template: '<project></project>'
       }).
       when('/settings', {
