@@ -26,8 +26,5 @@ function ArchitectureController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start ArchitectureController...');
   var self = this;
 
-  // show menu
-  $rootScope.$emit('SHOW_MENU');
-
   LoggerService.debug('End ArchitectureController...');
 }

@@ -26,15 +26,39 @@ function ProjectController($location, $rootScope, LoggerService, ProjectService)
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
+  // menu items status
+  self.projecthomeActive = true;
+  self.architectureActive = false;
+  self.charactersActive = false;
+  self.locationsActive = false;
+  self.chaptersActive = false;
+  self.exportActive = false;
+  self.analysisActive = false;
+  self.settingsActive = false;
+  self.infoActive = false;
+
   // show menu
-  $rootScope.$emit('SHOW_MENU');
+  $rootScope.$emit('SHOW_PROJECT', {
+    item: 'projecthome'
+  });
 
-  self.project = function() {
-    return ProjectService.getProjectInfo();
-  }
+  // change menu item
+  $rootScope.$on('MENU_ITEM_SELECTED', function(event, args) {
+    self.disableAllItems();
+    eval("self." + args.item + "Active = true");
+  });
 
-  self.back = function() {
-    $location.path('/start');
+  // disable all items
+  self.disableAllItems = function() {
+    self.projecthomeActive = false;
+    self.architectureActive = false;
+    self.charactersActive = false;
+    self.locationsActive = false;
+    self.chaptersActive = false;
+    self.exportActive = false;
+    self.analysisActive = false;
+    self.settingsActive = false;
+    self.infoActive = false;
   }
 
   LoggerService.debug('End ProjectController...');

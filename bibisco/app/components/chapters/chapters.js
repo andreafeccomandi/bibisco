@@ -26,8 +26,5 @@ function ChaptersController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start ChaptersController...');
   var self = this;
 
-  // show menu
-  $rootScope.$emit('SHOW_MENU');
-
   LoggerService.debug('End ChaptersController...');
 }

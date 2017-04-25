@@ -26,8 +26,5 @@ function ExportController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start ExportController...');
   var self = this;
 
-  // show menu
-  $rootScope.$emit('SHOW_MENU');
-
   LoggerService.debug('End ExportController...');
 }

@@ -14,17 +14,26 @@
  */
 angular.
 module('bibiscoApp').
-component('analysis', {
-  templateUrl: 'components/analysis/analysis.html',
-  controller: AnalysisController,
+component('projecthome', {
+  templateUrl: 'components/project-home/project-home.html',
+  controller: ProjectHomeController,
   bindings: {
 
   }
 });
 
-function AnalysisController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start AnalysisController...');
+function ProjectHomeController($location, $rootScope, LoggerService,
+  ProjectService) {
+  LoggerService.debug('Start ProjectHomeController...');
   var self = this;
 
-  LoggerService.debug('End AnalysisController...');
+  self.project = function() {
+    return ProjectService.getProjectInfo();
+  }
+
+  self.back = function() {
+    $location.path('/start');
+  }
+
+  LoggerService.debug('End ProjectHomeController...');
 }

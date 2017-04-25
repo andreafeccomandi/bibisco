@@ -14,7 +14,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" uib-collapse="$ctrl.collapsed" ng-show="$ctrl.visible">
       <ul class="nav navbar-nav" ng-show="$ctrl.visible">
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.projectActive}"><a ng-click="$ctrl.selectItem('project')">{{ 'jsp.menu.project' | translate}}</a></li>
+        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.projecthomeActive}"><a ng-click="$ctrl.selectItem('projecthome')">{{ 'jsp.menu.project' | translate}}</a></li>
         <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.architectureActive}"><a ng-click="$ctrl.selectItem('architecture')">{{ 'jsp.menu.architecture' | translate}} </a></li>
         <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.charactersActive}"><a ng-click="$ctrl.selectItem('characters')">{{ 'jsp.menu.characters' | translate}} </a></li>
         <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.locationsActive}"><a ng-click="$ctrl.selectItem('locations')">{{ 'jsp.menu.locations' | translate}} </a></li>

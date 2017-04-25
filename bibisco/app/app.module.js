@@ -27,20 +27,8 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     function config($locationProvider, $routeProvider) {
       $locationProvider.hashPrefix('!');
       $routeProvider.
-      when('/analysis', {
-        template: '<analysis></analysis>'
-      }).
-      when('/architecture', {
-        template: '<architecture></architecture>'
-      }).
-      when('/chapters', {
-        template: '<chapters></chapters>'
-      }).
       when('/chapters/:chapterId', {
         template: '<chapter></chapter>'
-      }).
-      when('/characters', {
-        template: '<characters></characters>'
       }).
       when('/createproject', {
         template: '<createproject></createproject>'
@@ -48,17 +36,8 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/error', {
         template: '<error></error>'
       }).
-      when('/export', {
-        template: '<export></export>'
-      }).
       when('/importproject', {
         template: '<importproject></importproject>'
-      }).
-      when('/info', {
-        template: '<info></info>'
-      }).
-      when('/locations', {
-        template: '<locations></locations>'
       }).
       when('/main', {
         template: '<main></main>'

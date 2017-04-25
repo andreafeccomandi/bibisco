@@ -26,8 +26,5 @@ function LocationsController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start LocationsController...');
   var self = this;
 
-  // show menu
-  $rootScope.$emit('SHOW_MENU');
-
   LoggerService.debug('End LocationsController...');
 }

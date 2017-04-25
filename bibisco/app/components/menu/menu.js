@@ -30,7 +30,7 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   self.disabled = false;
 
   // menu items status
-  self.projecthomeActive = true;
+  self.projecthomeActive = false;
   self.architectureActive = false;
   self.charactersActive = false;
   self.locationsActive = false;
@@ -65,7 +65,11 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
     self.visible = false;
   });
 
-  $rootScope.$on('SHOW_MENU', function() {
+  // SHOW PROJECT
+  $rootScope.$on('SHOW_PROJECT', function(event, args) {
+    self.disableAllItems();
+    eval("self." + args.item + "Active = true");
+    self.collapsed = true;
     self.visible = true;
   });
 
@@ -80,7 +84,9 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   self.selectItem = function(item) {
     self.disableAllItems();
     eval("self." + item + "Active = true");
-    eval("$location.path('/" + item + "')");
+    $rootScope.$emit('MENU_ITEM_SELECTED', {
+      item: item
+    });
     self.collapsed = true;
   }
 

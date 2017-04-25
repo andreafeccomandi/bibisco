@@ -26,8 +26,5 @@ function InfoController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start InfoController...');
   var self = this;
 
-  // show menu
-  $rootScope.$emit('SHOW_MENU');
-
   LoggerService.debug('End InfoController...');
 }
