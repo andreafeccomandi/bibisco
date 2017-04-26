@@ -84,6 +84,7 @@ h6, label, th, td {
 	padding: 15px 15px;
 }
 
+
 @media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;
@@ -103,6 +104,7 @@ h6, label, th, td {
     }
     .navbar-collapse.collapse {
         display: none!important;
+				max-height: 380px;
     }
     .navbar-nav {
         float: none!important;
@@ -125,4 +127,18 @@ h6, label, th, td {
     .collapsing {
         overflow: hidden!important;
     }
+}
+
+/* EMPTY LIST BOX */
+.bibiscoEmptyListBox {
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 150px;
+	padding-top: 20px;
+	padding-bottom: 35px;
+	padding-left: 40px;
+}
+
+.bibiscoEmptyListBox button {
+	margin-top: 16px;
 }

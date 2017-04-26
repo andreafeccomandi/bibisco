@@ -434,7 +434,7 @@
   "jsp.locations.bibiscoEmptyThumbnailListBox.text": "Es wurden bisher noch keine Schauplätze angelegt.",
   "jsp.locations.dialog.title.createLocation": "Schauplatz anlegen",
   "jsp.locations.a.createLocation": "&nbsp;Schauplatz anlegen",
-  "jsp.locations.a.createFirstLocation": "&nbsp;Den ersten Schauplatz anlegen",
+  "jsp.locations.a.createFirstLocation": "Den ersten Schauplatz anlegen",
   "jsp.location.button.updateTitle": "Den Namen des Schauplatzes ändern",
   "jsp.location.button.images": "Bilder des Schauplatzes anzeigen",
   "jsp.locationTitle.form.title": "Name des Schauplatzes (z.B. Haus am Strand, Dorfplatz)",

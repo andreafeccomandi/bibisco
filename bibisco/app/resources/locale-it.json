@@ -437,7 +437,7 @@
   "jsp.locations.bibiscoEmptyThumbnailListBox.text": "Nessun luogo ancora presente.",
   "jsp.locations.dialog.title.createLocation": "Crea luogo",
   "jsp.locations.a.createLocation": "&nbsp;crea luogo",
-  "jsp.locations.a.createFirstLocation": "&nbsp;crea il primo luogo",
+  "jsp.locations.a.createFirstLocation": "crea il primo luogo",
   "jsp.location.button.updateTitle": "modifica nome luogo",
   "jsp.location.button.images": "visualizza immagini luogo",
   "jsp.locationTitle.form.title": "Nome luogo (ad esempio casa sulla spiaggia, piazza del paese)",

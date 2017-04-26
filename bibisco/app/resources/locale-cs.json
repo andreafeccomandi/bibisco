@@ -437,7 +437,7 @@
   "jsp.locations.bibiscoEmptyThumbnailListBox.text": "Nejsou zde zatím žádné lokace.",
   "jsp.locations.dialog.title.createLocation": "Vytvořit lokaci",
   "jsp.locations.a.createLocation": "&nbsp;vytvořit lokaci",
-  "jsp.locations.a.createFirstLocation": "&nbsp;vytvořit první lokaci",
+  "jsp.locations.a.createFirstLocation": "vytvořit první lokaci",
   "jsp.location.button.updateTitle": "změnit název lokace",
   "jsp.location.button.images": "zobrazit snímky lokace",
   "jsp.locationTitle.form.title": "Název lokace (npř. dům na pláži, náves,... )",

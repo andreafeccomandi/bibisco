@@ -437,7 +437,7 @@
   "jsp.locations.bibiscoEmptyThumbnailListBox.text": "Brak miejsc w polu",
   "jsp.locations.dialog.title.createLocation": "Utwórz miejsce",
   "jsp.locations.a.createLocation": "&nbsp;utwórz miejsce",
-  "jsp.locations.a.createFirstLocation": "&nbsp;utwórz pierwsze miejsce",
+  "jsp.locations.a.createFirstLocation": "utwórz pierwsze miejsce",
   "jsp.location.button.updateTitle": "Zmień nazwę miejsca",
   "jsp.location.button.images": "pokaż obraz miejsca",
   "jsp.locationTitle.form.title": "Nazwa miejsca (np. dom na plaży, plac wiejski)",

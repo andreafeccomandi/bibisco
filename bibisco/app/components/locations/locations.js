@@ -22,9 +22,18 @@ component('locations', {
   }
 });
 
-function LocationsController($location, $rootScope, LoggerService) {
+function LocationsController($location, $rootScope, LocationService,
+  LoggerService) {
   LoggerService.debug('Start LocationsController...');
   var self = this;
+
+  self.locationsPresent = function() {
+    return LocationService.getLocationsCount > 0;
+  }
+
+  self.createLocation = function() {
+    alert('Crea un luogo!');
+  }
 
   LoggerService.debug('End LocationsController...');
 }

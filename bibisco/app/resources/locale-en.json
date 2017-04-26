@@ -450,7 +450,7 @@
   "jsp.locations.bibiscoEmptyThumbnailListBox.text": "There are no locations yet.",
   "jsp.locations.dialog.title.createLocation": "Create location",
   "jsp.locations.a.createLocation": "&nbsp;create location",
-  "jsp.locations.a.createFirstLocation": "&nbsp;create the first location",
+  "jsp.locations.a.createFirstLocation": "create the first location",
   "jsp.location.button.updateTitle": "change the name of the location",
   "jsp.location.button.images": "display images of the location",
   "jsp.locationTitle.form.title": "Name of the location (e.g. house on the beach, village square)",
