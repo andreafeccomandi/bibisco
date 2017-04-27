@@ -43,26 +43,37 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   // SHOW START EVENT
   $rootScope.$on('SHOW_START', function() {
     self.visible = false;
+    self.disabled = false;
   });
 
   // SHOW CREATE PROJECT EVENT
   $rootScope.$on('SHOW_CREATE_PROJECT', function() {
     self.visible = false;
+    self.disabled = false;
   });
 
   // SHOW IMPORT PROJECT EVENT
   $rootScope.$on('SHOW_IMPORT_PROJECT', function() {
     self.visible = false;
+    self.disabled = false;
+  });
+
+  // SHOW LOCATION title
+  $rootScope.$on('SHOW_LOCATION_TITLE', function() {
+    self.visible = true;
+    self.disabled = true;
   });
 
   // SHOW OPEN PROJECT EVENT
   $rootScope.$on('SHOW_OPEN_PROJECT', function() {
     self.visible = false;
+    self.disabled = false;
   });
 
   // SHOW WELCOME EVENT
   $rootScope.$on('SHOW_WELCOME', function() {
     self.visible = false;
+    self.disabled = false;
   });
 
   // SHOW PROJECT
@@ -71,11 +82,9 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
     eval("self." + args.item + "Active = true");
     self.collapsed = true;
     self.visible = true;
-  });
-
-  $rootScope.$on('ENABLE_MENU', function() {
     self.disabled = false;
   });
+
 
   self.toggleCollapse = function() {
     self.collapsed = !self.collapsed;

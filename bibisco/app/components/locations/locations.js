@@ -24,6 +24,7 @@ component('locations', {
 
 function LocationsController($location, $rootScope, LocationService,
   LoggerService) {
+
   LoggerService.debug('Start LocationsController...');
   var self = this;
 
@@ -32,7 +33,7 @@ function LocationsController($location, $rootScope, LocationService,
   }
 
   self.createLocation = function() {
-    alert('Crea un luogo!');
+    $location.path('/locationtitle/new/0');
   }
 
   LoggerService.debug('End LocationsController...');
