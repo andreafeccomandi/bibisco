@@ -10,7 +10,9 @@
         <div class="form-group">
           <label class="col-sm-3 control-label" for="bibiscoCreateProjectNameLabel">{{"jsp.createProject.form.label.name" | translate}}</label>
           <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectName.$invalid }">
-            <input class="form-control" type="text" name="projectName" ng-model="$ctrl.projectName" id="bibiscoCreateProjectNameLabel" required autofocus>
+            <input class="form-control" type="text" name="projectName"
+              ng-model="$ctrl.projectName" id="bibiscoCreateProjectNameLabel"
+              required focus-if>
           </div>
           <div class="col-sm-8 col-sm-offset-3">
             <validationmessages field="createProjectForm.projectName"></validationmessages>

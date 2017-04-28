@@ -1,0 +1,13 @@
+<div class="form-group">
+  <label class="col-sm-3 control-label" for="{{$ctrl.label}}">[{{$ctrl.autofocus != null}}]{{$ctrl.label | translate}}</label>
+  <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
+    <input class="form-control" type="text" name="{{$ctrl.name}}" ng-model="$ctrl.model" id="{{$ctrl.label}}"
+      ng-required="$ctrl.required == true"
+      ng-attr-minlength="{{$ctrl.minlength}}"
+      ng-attr-maxlength="{{$ctrl.maxlength}}"
+      focus-if="{{$ctrl.autofocus != null}}">
+  </div>
+  <div class="col-sm-8 col-sm-offset-3">
+    <validationmessages field="$ctrl.field"></validationmessages>
+  </div>
+</div>

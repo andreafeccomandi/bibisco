@@ -23,6 +23,10 @@ function LocationTitleController($location, $rootScope, $routeParams,
   LoggerService) {
   LoggerService.debug('Start LocationTitleController...');
 
+  var self = this;
+  self.nation = null;
+  self.state = null;
+
   // hide menu
   $rootScope.$emit('SHOW_LOCATION_TITLE');
 
@@ -30,11 +34,11 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
   }
 
-  var self = this;
+
 
   self.save = function(isValid) {
     if (isValid) {
-      alert('Location title save!');
+      alert('Nation=' + self.nation + ' State=' + self.state);
       $location.path('/project/locations');
     }
   }

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <ol class="breadcrumb">
-      <li>{{ 'jsp.menu.locations' | translate}}</li>
+      <li>{{ 'jsp.locations.h1' | translate}}</li>
       <li class="active">{{"jsp.locations.dialog.title.createLocation" | translate}}</li>
     </ol>
   </div>
@@ -13,16 +13,14 @@
   <div class="row">
     <div class="col-sm-12">
       <form name="locationTitleForm" ng-submit="$ctrl.save(locationTitleForm.$valid)" class="form-horizontal" novalidate>
-        <div class="form-group">
-          <label class="col-sm-3 control-label" for="bibiscoLocationTitleNationLabel">{{"jsp.locationsTitleForm.label.nation" | translate}}</label>
-          <div class="col-sm-8" ng-class="{ 'has-error': locationTitleForm.$submitted && locationTitleForm.nation.$invalid }">
-            <input class="form-control" type="text" name="nation" ng-model="$ctrl.nation" id="bibiscoLocationTitleNationLabel" required autofocus>
-          </div>
-          <div class="col-sm-8 col-sm-offset-3">
-            <validationmessages field="locationTitleForm.nation"></validationmessages>
-          </div>
-        </div>
-
+        <textinputfield field="locationTitleForm.nation"
+          model="$ctrl.nation" name="nation" required="true" autofocus
+          label="jsp.locationsTitleForm.label.nation">
+        </textinputfield>
+        <textinputfield field="locationTitleForm.state"
+          model="$ctrl.state" name="state" required="true"
+          label="jsp.locationsTitleForm.label.state">
+        </textinputfield>
         <button type="submit" ng-click="$ctrl.save()" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
         <button type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
     </div>

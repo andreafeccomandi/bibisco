@@ -20,8 +20,9 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     'ui.select',
     'ngSanitize',
     'ngMessages',
+    'focus-if',
     'mwl.confirm',
-    'ui.bootstrap'
+    'ui.bootstrap',
   ])
   .config(['$locationProvider', '$routeProvider',
     function config($locationProvider, $routeProvider) {
