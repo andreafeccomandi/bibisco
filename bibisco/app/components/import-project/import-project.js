@@ -48,7 +48,7 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService,
   self.confirmImportExistingProject = function() {
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
-        $location.path('/project');
+        $location.path('/project/projecthome');
       });
   }
 
