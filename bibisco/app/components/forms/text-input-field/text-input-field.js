@@ -25,7 +25,9 @@ component('textinputfield', {
     required: '@',
     minlength: '@',
     maxlength: '@',
-    autofocus: '@'
+    autofocus: '@',
+    labelcols: '@',
+    inputcols: '@'
   }
 });
 

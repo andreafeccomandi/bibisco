@@ -15,11 +15,13 @@
       <form name="locationTitleForm" ng-submit="$ctrl.save(locationTitleForm.$valid)" class="form-horizontal" novalidate>
         <textinputfield field="locationTitleForm.nation"
           model="$ctrl.nation" name="nation" autofocus
-          label="jsp.locationsTitleForm.label.nation">
+          label="jsp.locationsTitleForm.label.nation"
+          labelcols="3" inputcols="8">
         </textinputfield>
         <textinputfield field="locationTitleForm.state"
           model="$ctrl.state" name="state" required
-          label="jsp.locationsTitleForm.label.state">
+          label="jsp.locationsTitleForm.label.state"
+          labelcols="3" inputcols="8">
         </textinputfield>
         <button type="submit" ng-click="$ctrl.save()" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
         <button type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
