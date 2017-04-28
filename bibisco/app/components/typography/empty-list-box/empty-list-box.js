@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('emptylistbox', {
-  templateUrl: 'components/empty-list-box/empty-list-box.html',
+  templateUrl: 'components/typography/empty-list-box/empty-list-box.html',
   controller: EmptyListBoxController,
   bindings: {
     text: '@',

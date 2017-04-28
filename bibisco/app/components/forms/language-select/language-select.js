@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('languageselect', {
-  templateUrl: 'components/language-select/language-select.html',
+  templateUrl: 'components/forms/language-select/language-select.html',
   controller: LanguageSelectController,
   bindings: {
     applyonchange: '<',
