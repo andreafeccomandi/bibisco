@@ -57,7 +57,7 @@ function CreateProjectController($location, $rootScope, LocaleService,
   self.save = function(isValid) {
     if (isValid) {
       ProjectService.create(self.projectName, self.projectLanguage);
-      $location.path('/project');
+      $location.path('/project/projecthome');
     }
   }
 

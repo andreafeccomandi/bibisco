@@ -6,17 +6,13 @@
   <div class="row">
     <div class="col-sm-12">
       <form name="createProjectForm" class="form-horizontal" novalidate>
-        <div class="form-group">
-          <label class="col-sm-3 control-label" for="bibiscoCreateProjectNameLabel">{{"jsp.createProject.form.label.name" | translate}}</label>
-          <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectName.$invalid }">
-            <input class="form-control" type="text" name="projectName"
-              ng-model="$ctrl.projectName" id="bibiscoCreateProjectNameLabel"
-              required focus-if>
-          </div>
-          <div class="col-sm-8 col-sm-offset-3">
-            <validationmessages field="createProjectForm.projectName"></validationmessages>
-          </div>
-        </div>
+
+        <textinputfield field="createProjectForm.projectName"
+          model="$ctrl.projectName" name="projectName" autofocus required
+          label="jsp.createProject.form.label.name"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+
         <div class="form-group">
           <label class="col-sm-3 control-label" for="bibiscoCreateProjectSelectLanguage">{{"jsp.createProject.form.label.language" | translate}}</label>
           <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectLanguage.$invalid }">
