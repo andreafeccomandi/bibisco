@@ -45,6 +45,11 @@ h6, label, th, td {
 	-o-user-select: none;
 }
 
+/* BREADCRUMB */
+.breadcrumb {
+	margin-bottom: 10px;
+}
+
 /* PAGE HEADER */
 .page-header {
 	margin-top: 0px !important;
