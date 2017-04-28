@@ -22,7 +22,7 @@ component('textinputfield', {
     field: '<',
     label: '@',
     name: '@',
-    required: '<',
+    required: '@',
     minlength: '@',
     maxlength: '@',
     autofocus: '@'
