@@ -34,8 +34,6 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
   }
 
-
-
   self.save = function(isValid) {
     if (isValid) {
       alert('Nation=' + self.nation + ' State=' + self.state);

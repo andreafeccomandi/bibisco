@@ -5,7 +5,11 @@
       ng-required="{{$ctrl.required != null}}"
       ng-attr-minlength="{{$ctrl.minlength}}"
       ng-attr-maxlength="{{$ctrl.maxlength}}"
-      focus-if="{{$ctrl.autofocus != null}}">
+      focus-if="{{$ctrl.autofocus != null}}"
+      typeahead-min-length="$ctrl.typeheadsource != null ? 1 : 1000"
+      uib-typeahead="item for item in $ctrl.typeheadsource | filter:$viewValue | limitTo:8"
+      typeahead-popup-template-url="../node_modules/angular-ui-bootstrap/template/typeahead/typeahead-popup.html"
+      typeahead-template-url="../node_modules/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
   </div>
   <div class="col-sm-{{$ctrl.inputcols}} col-sm-offset-{{$ctrl.labelcols}}">
     <validationmessages field="$ctrl.field"></validationmessages>
