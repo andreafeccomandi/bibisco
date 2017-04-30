@@ -21,6 +21,7 @@ component('textinputfield', {
     model: '=',
     field: '<',
     label: '@',
+    placeholder: '@',
     name: '@',
     required: '@',
     minlength: '@',

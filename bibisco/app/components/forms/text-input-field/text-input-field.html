@@ -3,6 +3,7 @@
   <div class="col-sm-{{$ctrl.inputcols}}" ng-class="{ 'has-error': $ctrl.hasError() }">
     <input class="form-control" type="text" name="{{$ctrl.name}}" ng-model="$ctrl.model" id="{{$ctrl.label}}"
       ng-required="{{$ctrl.required != null}}"
+      ng-attr-placeholder="{{$ctrl.placeholder | translate}}"
       ng-attr-minlength="{{$ctrl.minlength}}"
       ng-attr-maxlength="{{$ctrl.maxlength}}"
       focus-if="{{$ctrl.autofocus != null}}"
