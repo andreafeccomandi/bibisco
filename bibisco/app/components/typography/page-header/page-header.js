@@ -18,8 +18,8 @@ component('pageheader', {
   templateUrl: 'components/typography/page-header/page-header.html',
   controller: PageHeaderController,
   bindings: {
-    title: '@',
-    subtitle: '@',
+    headertitle: '@',
+    headersubtitle: '@',
     cols: '@'
   }
 });
