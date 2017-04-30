@@ -78,13 +78,7 @@ function SettingsController($location, $rootScope, $scope,
     }
   }
 
-  self.backWithoutConfirm = function(isDirty) {
-    if (!isDirty) {
-      $location.path('/start');
-    }
-  }
-
-  self.backWithConfirm = function() {
+  self.back = function() {
     $location.path('/start');
   }
 
