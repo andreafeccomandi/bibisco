@@ -1,1 +1,18 @@
-<button class="btn btn-default" type="button" ng-click="$ctrl.opendirectorydialog()">{{"jsp.common.button.select" | translate}}</button>
+<div class="form-group">
+  <label class="col-sm-{{$ctrl.labelcols}} control-label" for="{{$ctrl.label}}">{{$ctrl.label | translate}}</label>
+
+  <div class="col-sm-8">
+    <div class="input-group" ng-class="{ 'has-error': $ctrl.hasError() }">
+      <input name="{{$ctrl.name}}" class="form-control" type="text"
+        readonly="readonly" ng-model="$ctrl.model" required/>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="$ctrl.opendirectorydialog()">{{"jsp.common.button.select" | translate}}</button>
+      </span>
+    </div>
+    <validationmessages field="$ctrl.field"></validationmessages>
+    <p class="text-danger" ng-show="$ctrl.forbiddendirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
+  </div>
+</div>
+<div class="col-sm-8 col-sm-offset-3">
+  <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
+</div>

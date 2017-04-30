@@ -14,20 +14,15 @@
             <languageselect applyonchange="false" onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"></languageselect>
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">{{"jsp.changeProjectsDirectory.label" | translate}}</label>
-          <div class="col-sm-8">
-            <div class="input-group" ng-class="{ 'has-error': settingsForm.$submitted && settingsForm.projectsDirectory.$invalid }">
-              <input name="projectsDirectory" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.selectedProjectsDirectory" required/>
-              <span class="input-group-btn"><projectsdirectoryselect onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"></projectsdirectoryselect></span>
-            </div>
-            <validationmessages field="settingsForm.projectsDirectory"></validationmessages>
-            <p class="text-danger" ng-show="$ctrl.forbiddenDirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
-          </div>
-        </div>
-        <div class="col-sm-8 col-sm-offset-3">
-          <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
-        </div>
+
+        <projectsdirectoryselect
+          field="settingsForm.projectsDirectory"
+          model="$ctrl.selectedProjectsDirectory" name="projectsDirectory"
+          label="jsp.changeProjectsDirectory.label"
+          labelcols="3" inputcols="8"
+          onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"
+          forbiddenDirectory="$ctrl.forbiddenDirectory">
+        </projectsdirectoryselect>
 
         <formbuttons form="settingsForm" backfunction="$ctrl.back()"
           offsetcols="3" sizecols="8">

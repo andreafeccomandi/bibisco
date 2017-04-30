@@ -18,7 +18,14 @@ component('projectsdirectoryselect', {
   templateUrl: 'components/forms/projects-directory-select/projects-directory-select.html',
   controller: ProjectsDirectorySelectController,
   bindings: {
-    onselectprojectsdirectory: '&'
+    model: '=',
+    field: '<',
+    label: '@',
+    name: '@',
+    labelcols: '@',
+    inputcols: '@',
+    onselectprojectsdirectory: '&',
+    forbiddendirectory: '<'
   }
 });
 
@@ -43,5 +50,11 @@ function ProjectsDirectorySelectController(LoggerService) {
         }
       });
   };;
+
+  // show errors
+  self.hasError = function() {
+    return self.field.$$parentForm.$submitted && self.field.$invalid;
+  }
+
   LoggerService.debug('End ProjectsDirectorySelectController...');
 }
