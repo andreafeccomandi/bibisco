@@ -36,8 +36,9 @@
           placeholder="jsp.locationsTitleForm.label.location.placeholder"
           labelcols="3" inputcols="8">
         </textinputfield>
-        <button type="submit" ng-click="$ctrl.save()" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
-        <button type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+        <formbuttons form="locationTitleForm" backfunction="$ctrl.back()"
+          offsetcols="3" sizecols="8">
+        </formbuttons>
     </div>
     </form>
   </div>

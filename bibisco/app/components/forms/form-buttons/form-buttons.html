@@ -1,0 +1,13 @@
+<div class="top30 col-sm-{{$ctrl.sizecols}} col-sm-offset-{{$ctrl.offsetcols}}">
+  <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
+  <button type="button" ng-click="$ctrl.backWithoutConfirm($ctrl.form.$dirty)"
+    class="btn btn-default"
+    mwl-confirm is-disabled="{{!$ctrl.form.$dirty}}" 
+    message="{{'js.common.message.confirmExitWithoutSave' | translate}}"
+    confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
+    cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
+    placement="top"
+    on-confirm="$ctrl.backWithConfirm()"
+    on-cancel=""> {{"jsp.common.button.back" | translate}}
+  </button>
+</div>
