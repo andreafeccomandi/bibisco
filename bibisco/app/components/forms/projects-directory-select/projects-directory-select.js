@@ -20,10 +20,7 @@ component('projectsdirectoryselect', {
   bindings: {
     model: '=',
     field: '<',
-    label: '@',
     name: '@',
-    labelcols: '@',
-    inputcols: '@',
     onselectprojectsdirectory: '&',
     forbiddendirectory: '<'
   }

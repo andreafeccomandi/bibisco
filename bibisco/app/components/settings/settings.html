@@ -15,14 +15,18 @@
           </div>
         </div>
 
-        <projectsdirectoryselect
+        <projectsdirectoryinputfield
           field="settingsForm.projectsDirectory"
           model="$ctrl.selectedProjectsDirectory" name="projectsDirectory"
           label="jsp.changeProjectsDirectory.label"
           labelcols="3" inputcols="8"
           onselectprojectsdirectory="$ctrl.selectProjectsDirectory(directory)"
           forbiddenDirectory="$ctrl.forbiddenDirectory">
-        </projectsdirectoryselect>
+        </projectsdirectoryinputfield>
+
+        <div class="col-sm-8 col-sm-offset-3">
+          <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
+        </div>
 
         <formbuttons form="settingsForm" backfunction="$ctrl.back()"
           offsetcols="3" sizecols="8">
