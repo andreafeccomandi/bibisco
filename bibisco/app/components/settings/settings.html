@@ -8,12 +8,12 @@
       <form name="settingsForm" class="form-horizontal"
         ng-submit="$ctrl.save(settingsForm.$valid, settingsForm.$dirty)"
         novalidate>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">{{"jsp.language.form.selectLanguage.label" | translate}}</label>
-          <div class="col-sm-8">
-            <languageselect applyonchange="false" onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"></languageselect>
-          </div>
-        </div>
+
+        <languageinputfield applyonchange="false"
+          onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"
+          label="jsp.language.form.selectLanguage.label"
+          labelcols="3" inputcols="8">
+        </languageinputfield>
 
         <projectsdirectoryinputfield
           field="settingsForm.projectsDirectory"
