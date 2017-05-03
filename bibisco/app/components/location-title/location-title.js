@@ -20,12 +20,14 @@ component('locationtitle', {
 });
 
 function LocationTitleController($location, $rootScope, $routeParams,
-  LoggerService) {
+  LocationService, LoggerService) {
   LoggerService.debug('Start LocationTitleController...');
 
   var self = this;
   self.nation = null;
   self.state = null;
+  self.city = null;
+  self.location = null;
 
   // hide menu
   $rootScope.$emit('SHOW_LOCATION_TITLE');
@@ -36,7 +38,12 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
   self.save = function(isValid) {
     if (isValid) {
-      alert('Nation=' + self.nation + ' State=' + self.state);
+      LocationService.insert({
+        nation: self.nation,
+        state: self.state,
+        city: self.city,
+        location: self.location
+      });
       $location.path('/project/locations');
     }
   }

@@ -18,6 +18,9 @@ angular.module('bibiscoApp').service('LocationService', function(
 ) {
   'use strict';
 
+  var locations = null;
+  var locationsCount = null;
+
   return {
     getLocation: function(id) {
       return ProjectDbConnectionService.getProjectDb().getCollection(
@@ -25,18 +28,29 @@ angular.module('bibiscoApp').service('LocationService', function(
         'all_locations').applySimpleSort('name').data();
     },
     getLocationsCount: function() {
-      return ProjectDbConnectionService.getProjectDb().getCollection(
-        'locations').count();
+      if (locationsCount == null) {
+        this.loadLocations();
+      }
+      return locationsCount;
     },
     getLocations: function() {
-      return ProjectDbConnectionService.getProjectDb().getCollection(
-        'locations').addDynamicView(
-        'all_locations').applySimpleSort('name').data();
+      if (locations == null) {
+        this.loadLocations();
+      }
+      return locations;
     },
     insert: function(location) {
       ProjectDbConnectionService.getProjectDb().getCollection(
         'locations').insert(location);
       ProjectDbConnectionService.saveDatabase();
+      loadLocations();
+    },
+    loadLocations: function() {
+      locations = ProjectDbConnectionService.getProjectDb().getCollection(
+        'locations').addDynamicView(
+        'all_locations').applySimpleSort('name').data();
+      locationsCount = ProjectDbConnectionService.getProjectDb().getCollection(
+        'locations').count();
     }
   };
 });
