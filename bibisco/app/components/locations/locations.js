@@ -29,7 +29,7 @@ function LocationsController($location, $rootScope, LocationService,
   var self = this;
 
   self.locationsPresent = function() {
-    return LocationService.getLocationsCount > 0;
+    return LocationService.getLocationsCount() > 0;
   }
 
   self.createLocation = function() {

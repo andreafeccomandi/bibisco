@@ -4,8 +4,8 @@
     </pageheader>
   </div>
   <div ng-show="!$ctrl.locationsPresent()">
-    <emptylistbox text="{{'jsp.locations.bibiscoEmptyThumbnailListBox.text' | translate}}"
-      buttonlabel="{{'jsp.locations.a.createFirstLocation' | translate}}"
-      createitem="$ctrl.createLocation()"></emptylistbox>
+    <emptylistbox text="{{'jsp.locations.bibiscoEmptyThumbnailListBox.text' | translate}}" buttonlabel="{{'jsp.locations.a.createFirstLocation' | translate}}" createitem="$ctrl.createLocation()"></emptylistbox>
   </div>
-</div>
+  <div ng-show="$ctrl.locationsPresent()">
+
+  </div>
