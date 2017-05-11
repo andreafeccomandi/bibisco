@@ -33,9 +33,10 @@ top of the <body>. Tip: By default, the navbar is 50px high.
 */
 body { padding-top: 35px; }
 
+
 /* DISABLE SELECTION ON TEXT */
 .bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip, h1, h2, h3, h4, h5,
-h6, label, th, td {
+h6, label, th, td, p {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -55,6 +56,47 @@ h6, label, th, td {
 	margin-top: 0px !important;
 }
 
+/* BIBISCO CARD */
+.bibiscoCard {
+	border-radius: 4px;
+	cursor: pointer;
+	height: 100px;
+	position: relative;
+	display: block;
+	padding: 10px 15px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+.bibiscoCard:hover {
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+}
+
+.bibiscoCardHeading {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+.bibiscoCardText {
+	margin-bottom: 0px;
+	line-height: 1.3;
+}
+
+/* BIBISCO BADGE */
+.bibiscoBadge {
+	font-weight: normal;
+	margin-left: 5px;
+	padding: .3em .6em .3em;
+	vertical-align: .3em;
+}
+
+/* BIBISCO TASK STATUS */
+.bibiscoTaskStatus {
+	display: inline-block;
+	border-radius: 9px;
+	width: 28px;
+}
 
 /* WELCOME */
 .bibiscoWelcomeWizardNotes p {
