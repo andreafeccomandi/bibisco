@@ -56,16 +56,23 @@ h6, label, th, td, p {
 	margin-top: 0px !important;
 }
 
+/* DRAG AND DROP */
+.drag {
+  opacity: 0.5;
+}
+
+
 /* BIBISCO CARD */
 .bibiscoCard {
-	border-radius: 4px;
-	cursor: pointer;
-	height: 100px;
-	position: relative;
-	display: block;
-	padding: 10px 15px;
 	background-color: #fff;
 	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+	display: block;
+	height: 100px;
+	margin-bottom: 20px;
+	padding: 10px 15px;
+	position: relative;
 }
 
 .bibiscoCard:hover {

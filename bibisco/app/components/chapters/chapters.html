@@ -3,4 +3,13 @@
     <pageheader headertitle="jsp.chapters.h1" cols="12">
     </pageheader>
   </div>
+  <div class="row">
+    <div ng-repeat="chapter in $ctrl.chapters" class="col-sm-3">
+      <card cardid="chapter.id" cardtitle="chapter.position"
+        drop="$ctrl.move(draggedObjectId, destinationObjectId)"
+        text="chapter.title" status="chapter.status"
+        characters="chapter.characters" words="chapter.words">
+      </card>
+    </div>
+  </div>
 </div>

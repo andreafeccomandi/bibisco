@@ -1,7 +1,8 @@
-<div class="bibiscoCard">
+<div class="bibiscoCard" draggable="true" droppable id="{{$ctrl.cardid}}"
+	drop="$ctrl.drop({draggedObjectId, destinationObjectId})">
 	<div class="row">
 		<div class="col-sm-12">
-			<span class="pull-left"><strong class="bibiscoCardHeading">{{$ctrl.title}}</strong></span>
+			<span class="pull-left"><strong class="bibiscoCardHeading">{{$ctrl.cardtitle}}</strong></span>
 			<span class="pull-right"><strong class="bibiscoCardHeading">
 				<wordscharacterscounter words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
 				<taskstatus status="$ctrl.status"></taskstatus></strong>

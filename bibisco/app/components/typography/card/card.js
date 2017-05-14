@@ -18,10 +18,12 @@ component('card', {
   templateUrl: 'components/typography/card/card.html',
   controller: CardController,
   bindings: {
+    cardid: '<',
+    cardtitle: '<',
     characters: '<',
+    drop: '&',
     status: '<',
-    title: '@',
-    text: '@',
+    text: '<',
     words: '<'
   }
 });
