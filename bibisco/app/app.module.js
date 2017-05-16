@@ -224,10 +224,6 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
 
           var draggedObjectId = e.dataTransfer.getData('id');
           var destinationObjectId = this.id;
-          alert('app.module.js: calling drop with draggedObjectId=' +
-            draggedObjectId +
-            ' - destinationObjectId=' + destinationObjectId);
-
 
           // call the passed drop function
           scope.drop({
