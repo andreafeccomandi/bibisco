@@ -43,6 +43,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let targetChapter = this.getChapter(targetId);
       let targetChapterPosition = targetChapter.position;
 
+      // shift down
       if (sourceChapterPosition < targetChapterPosition) {
         let chaptersToShift = collection.find({
           position: {
@@ -55,6 +56,20 @@ angular.module('bibiscoApp').service('ChapterService', function(
           chaptersToShift[i].position = chaptersToShift[i].position - 1;
         }
       }
+      // shift up
+      else {
+        let chaptersToShift = collection.find({
+          position: {
+            '$between': [targetChapterPosition, sourceChapterPosition -
+              1
+            ]
+          }
+        });
+        for (let i = 0; i < chaptersToShift.length; i++) {
+          chaptersToShift[i].position = chaptersToShift[i].position + 1;
+        }
+      }
+
       sourceChapter.position = targetChapterPosition;
       collection.update(sourceChapter);
       ProjectDbConnectionService.saveDatabase();
