@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ChapterService', function(
-  LoggerService, ProjectDbConnectionService
+  CollectionUtilService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
 
@@ -38,43 +38,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
       ProjectDbConnectionService.saveDatabase();
     },
     move: function(sourceId, targetId) {
-      let sourceChapter = this.getChapter(sourceId);
-      let sourceChapterPosition = sourceChapter.position;
-      let targetChapter = this.getChapter(targetId);
-      let targetChapterPosition = targetChapter.position;
-
-      // shift down
-      if (sourceChapterPosition < targetChapterPosition) {
-        let chaptersToShift = collection.find({
-          position: {
-            '$between': [sourceChapterPosition + 1,
-              targetChapterPosition
-            ]
-          }
-        });
-        for (let i = 0; i < chaptersToShift.length; i++) {
-          chaptersToShift[i].position = chaptersToShift[i].position - 1;
-        }
-      }
-      // shift up
-      else {
-        let chaptersToShift = collection.find({
-          position: {
-            '$between': [targetChapterPosition, sourceChapterPosition -
-              1
-            ]
-          }
-        });
-        for (let i = 0; i < chaptersToShift.length; i++) {
-          chaptersToShift[i].position = chaptersToShift[i].position + 1;
-        }
-      }
-
-      sourceChapter.position = targetChapterPosition;
-      collection.update(sourceChapter);
-      ProjectDbConnectionService.saveDatabase();
-
-      return this.getChapters();
+      return CollectionUtilService.move(collection, sourceId, targetId,
+        this.getChapters);
     }
   }
 });
