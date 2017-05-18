@@ -23,9 +23,7 @@ angular.module('bibiscoApp').service('LocationService', function(
 
   return {
     getLocation: function(id) {
-      return ProjectDbConnectionService.getProjectDb().getCollection(
-        'projects').addDynamicView(
-        'all_locations').applySimpleSort('name').data();
+      return null;
     },
     getLocationsCount: function() {
       if (locationsCount == null) {
