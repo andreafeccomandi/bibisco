@@ -21,6 +21,7 @@ component('card', {
     cardid: '<',
     cardtitle: '<',
     characters: '<',
+    dndenabled: '@',
     drop: '&',
     status: '<',
     text: '<',
