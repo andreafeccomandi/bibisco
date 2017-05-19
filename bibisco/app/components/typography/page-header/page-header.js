@@ -18,6 +18,8 @@ component('pageheader', {
   templateUrl: 'components/typography/page-header/page-header.html',
   controller: PageHeaderController,
   bindings: {
+    buttonlabel: '@',
+    buttonaction: '&',
     headertitle: '@',
     headersubtitle: '@',
     cols: '@'

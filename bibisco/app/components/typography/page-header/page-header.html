@@ -1,5 +1,9 @@
 <div class="col-sm-{{$ctrl.cols}} page-header">
-  <h1>{{$ctrl.headertitle | translate}}
-    <small ng-if="$ctrl.subtitle != null">{{$ctrl.headersubtitle | translate}}</small>
+  <h1><span class="pull-left">{{$ctrl.headertitle | translate}}
+    <small ng-if="$ctrl.subtitle">{{$ctrl.headersubtitle | translate}}</small></span>
+    <span ng-if="$ctrl.buttonlabel" class="pull-right">
+      <button type="button" class="btn btn-primary"
+        ng-click="$ctrl.buttonaction()">{{$ctrl.buttonlabel | translate}}</button>
+    </span>
   </h1>
 </div>
