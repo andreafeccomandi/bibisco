@@ -22,11 +22,13 @@ component('locations', {
   }
 });
 
-function LocationsController($location, $rootScope, LocationService,
+function LocationsController($location, $rootScope, $scope, LocationService,
   LoggerService) {
 
   LoggerService.debug('Start LocationsController...');
   var self = this;
+
+  self.locations = LocationService.getLocations();
 
   self.locationsPresent = function() {
     return LocationService.getLocationsCount() > 0;
@@ -34,6 +36,12 @@ function LocationsController($location, $rootScope, LocationService,
 
   self.createLocation = function() {
     $location.path('/locationtitle/new/0');
+  }
+
+  self.move = function(draggedObjectId, destinationObjectId) {
+    self.locations = LocationService.move(draggedObjectId,
+      destinationObjectId);
+    $scope.$apply();
   }
 
   LoggerService.debug('End LocationsController...');

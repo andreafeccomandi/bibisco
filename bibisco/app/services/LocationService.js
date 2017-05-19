@@ -14,41 +14,32 @@
  */
 
 angular.module('bibiscoApp').service('LocationService', function(
-  LoggerService, ProjectDbConnectionService
+  CollectionUtilService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
 
-  var locations = null;
-  var locationsCount = null;
+  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
+    'locations');
+  var dynamicView = collection.addDynamicView(
+    'all_locations').applySimpleSort('position');
 
   return {
     getLocation: function(id) {
-      return null;
+      return collection.get(id);
     },
     getLocationsCount: function() {
-      if (locationsCount == null) {
-        this.loadLocations();
-      }
-      return locationsCount;
+      return collection.count();
     },
     getLocations: function() {
-      if (locations == null) {
-        this.loadLocations();
-      }
-      return locations;
+      return dynamicView.data();
     },
     insert: function(location) {
-      ProjectDbConnectionService.getProjectDb().getCollection(
-        'locations').insert(location);
+      collection.insert(location);
       ProjectDbConnectionService.saveDatabase();
-      loadLocations();
     },
-    loadLocations: function() {
-      locations = ProjectDbConnectionService.getProjectDb().getCollection(
-        'locations').addDynamicView(
-        'all_locations').applySimpleSort('name').data();
-      locationsCount = ProjectDbConnectionService.getProjectDb().getCollection(
-        'locations').count();
+    move: function(sourceId, targetId) {
+      return CollectionUtilService.move(collection, sourceId, targetId,
+        this.getLocations);
     }
-  };
+  }
 });

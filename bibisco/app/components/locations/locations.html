@@ -7,5 +7,13 @@
     <emptylistbox text="{{'jsp.locations.bibiscoEmptyThumbnailListBox.text' | translate}}" buttonlabel="{{'jsp.locations.a.createFirstLocation' | translate}}" createitem="$ctrl.createLocation()"></emptylistbox>
   </div>
   <div ng-show="$ctrl.locationsPresent()">
-
+    <div class="row">
+      <div ng-repeat="location in $ctrl.locations" class="col-sm-3">
+        <card cardid="location.$loki" cardtitle="location.location"
+          dndenabled="true" drop="$ctrl.move(draggedObjectId, destinationObjectId)"
+          text="location.nation + ', ' + location.state + ', ' + location.city"
+          status="location.status">
+        </card>
+      </div>
+    </div>
   </div>
