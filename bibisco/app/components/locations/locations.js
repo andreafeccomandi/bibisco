@@ -46,9 +46,9 @@ function LocationsController($location, $rootScope, $scope, LocationService,
 
   self.locationDescription = function(nation, state, city) {
     let useComma = false;
-    let description;
+    let description = '';
     if (nation) {
-      description = nation;
+      description = description + nation;
       useComma = true;
     }
     if (state) {
