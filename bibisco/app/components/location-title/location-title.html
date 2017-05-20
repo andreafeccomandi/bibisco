@@ -14,24 +14,28 @@
       <form name="locationTitleForm" ng-submit="$ctrl.save(locationTitleForm.$valid)" class="form-horizontal" novalidate>
         <textinputfield field="locationTitleForm.nation"
           model="$ctrl.nation" name="nation" autofocus
+          maxlength="30"
           typeheadsource="['Italia', 'Spagna', 'Francia', 'Germania', 'Messico']"
           label="jsp.locationsTitleForm.label.nation"
           labelcols="3" inputcols="8">
         </textinputfield>
         <textinputfield field="locationTitleForm.state"
           model="$ctrl.state" name="state"
+          maxlength="30"
           typeheadsource="['Lombardia', 'Emilia Romagna', 'Veneto', 'Friuli']"
           label="jsp.locationsTitleForm.label.state"
           labelcols="3" inputcols="8">
         </textinputfield>
         <textinputfield field="locationTitleForm.city"
           model="$ctrl.city" name="city"
+          maxlength="30"
           typeheadsource="['Bologna', 'Modena', 'Ferrara', 'Udine']"
           label="jsp.locationsTitleForm.label.city"
           labelcols="3" inputcols="8">
         </textinputfield>
         <textinputfield field="locationTitleForm.location"
           model="$ctrl.location" name="location" required
+          maxlength="50"
           label="jsp.locationsTitleForm.label.location"
           placeholder="jsp.locationsTitleForm.label.location.placeholder"
           labelcols="3" inputcols="8">
