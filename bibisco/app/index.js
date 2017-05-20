@@ -121,6 +121,24 @@ app.on('ready', function() {
 			}, {
 				type: 'separator'
 			}, {
+				role: 'undo'
+			}, {
+				role: 'redo'
+			}, {
+				type: 'separator'
+			}, {
+				role: 'cut'
+			}, {
+				role: 'copy'
+			}, {
+				role: 'paste'
+			}, {
+				role: 'delete'
+			}, {
+				role: 'selectall'
+			}, {
+				type: 'separator'
+			}, {
 				role: 'quit'
 			}]
 		}];
