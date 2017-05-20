@@ -68,7 +68,7 @@ h6, label, th, td, p {
 	border-radius: 4px;
 	cursor: pointer;
 	display: block;
-	height: 100px;
+	height: 120px;
 	margin-bottom: 20px;
 	padding: 10px 15px;
 	position: relative;
@@ -82,6 +82,11 @@ h6, label, th, td, p {
 .bibiscoCardHeading {
 	margin-top: 0px;
 	margin-bottom: 5px;
+}
+
+.bibiscoCardHeadingTitle {
+	max-width: 195px;
+	height: 45px;
 }
 
 .bibiscoCardText {
@@ -115,6 +120,20 @@ h6, label, th, td, p {
 /* OPEN PROJECT */
 .bibiscoOpenProject td:first-child {
 	padding-left: 15px !important;
+}
+
+/* EMPTY LIST BOX */
+.bibiscoEmptyListBox {
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-right: 150px;
+	padding-top: 20px;
+	padding-bottom: 35px;
+	padding-left: 40px;
+}
+
+.bibiscoEmptyListBox button {
+	margin-top: 16px;
 }
 
 /* MENU */
@@ -182,16 +201,31 @@ h6, label, th, td, p {
     }
 }
 
-/* EMPTY LIST BOX */
-.bibiscoEmptyListBox {
-	margin-top: 30px;
-	margin-left: 30px;
-	margin-right: 150px;
-	padding-top: 20px;
-	padding-bottom: 35px;
-	padding-left: 40px;
+/* Medium devices (desktops, 992px and up) */
+@media (max-width: 992px) {
+	.bibiscoCard {
+		height: 130px;
+	}
+
+	.bibiscoCardHeadingTitle {
+		max-width: 155px;
+		height: 60px;
+	}
 }
 
-.bibiscoEmptyListBox button {
-	margin-top: 16px;
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+	.bibiscoCard {
+		height: 115px;
+	}
+
+	.bibiscoCardHeadingTitle {
+		max-width: 220px;
+		height: 45px;
+	}
+
+	.page-header {
+		padding-bottom: 50px;
+		margin-bottom: 20px;
+	}
 }

@@ -9,14 +9,14 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
 	drop="$ctrl.drop({draggedObjectId, destinationObjectId})">
   <div class="row">
     <div class="col-sm-12">
-      <span class="pull-left"><strong class="bibiscoCardHeading bibiscoNotSelectableText">{{$ctrl.cardtitle}}</strong></span>
+      <span class="pull-left bibiscoCardHeadingTitle"><strong class="bibiscoCardHeading bibiscoNotSelectableText">{{$ctrl.cardtitle}}</strong></span>
       <span class="pull-right"><strong class="bibiscoCardHeading bibiscoNotSelectableText">
 				<wordscharacterscounter ng-if="$ctrl.words" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
 				<taskstatus status="$ctrl.status"></taskstatus></strong>
 			</span>
     </div>
   </div>
-  <div class="row top10">
+  <div class="row">
     <div class="col-sm-12">
       <p class="bibiscoCardText">{{$ctrl.text}}</p>
     </div>
