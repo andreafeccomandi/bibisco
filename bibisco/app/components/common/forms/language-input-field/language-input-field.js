@@ -14,20 +14,22 @@
  */
 angular.
 module('bibiscoApp').
-component('taskstatus', {
-  templateUrl: 'components/typography/task-status/task-status.html',
-  controller: TaskStatusController,
+component('languageinputfield', {
+  templateUrl: 'components/common/forms/language-input-field/language-input-field.html',
+  controller: LanguageInputFieldController,
   bindings: {
-    status: '<'
+    applyonchange: '<',
+    inputcols: '@',
+    label: '@',
+    labelcols: '@',
+    onselectlanguage: '&'
   }
 });
 
-
-function TaskStatusController(LoggerService) {
-
-  LoggerService.debug('Start TaskStatusController...');
+function LanguageInputFieldController(LocaleService, LoggerService) {
+  LoggerService.debug('Start LanguageInputFieldController...');
 
   var self = this;
 
-  LoggerService.debug('End TaskStatusController...');
+  LoggerService.debug('End LanguageInputFieldController...');
 }

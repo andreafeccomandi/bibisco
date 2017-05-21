@@ -14,21 +14,26 @@
  */
 angular.
 module('bibiscoApp').
-component('wordscharacterscounter', {
-  templateUrl: 'components/typography/words-characters-counter/words-characters-counter.html',
-  controller: WordsCharactersCounter,
+component('card', {
+  templateUrl: 'components/common/uielements/card/card.html',
+  controller: CardController,
   bindings: {
+    cardid: '<',
+    cardtitle: '<',
     characters: '<',
+    dndenabled: '@',
+    drop: '&',
+    status: '<',
+    text: '<',
     words: '<'
   }
 });
 
 
-function WordsCharactersCounter(LoggerService) {
-
-  LoggerService.debug('Start WordsCharactersCounter...');
+function CardController(LoggerService) {
+  LoggerService.debug('Start CardController...');
 
   var self = this;
 
-  LoggerService.debug('End WordsCharactersCounter...');
+  LoggerService.debug('End CardController...');
 }

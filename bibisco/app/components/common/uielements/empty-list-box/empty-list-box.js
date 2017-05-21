@@ -14,26 +14,21 @@
  */
 angular.
 module('bibiscoApp').
-component('card', {
-  templateUrl: 'components/typography/card/card.html',
-  controller: CardController,
+component('emptylistbox', {
+  templateUrl: 'components/common/uielements/empty-list-box/empty-list-box.html',
+  controller: EmptyListBoxController,
   bindings: {
-    cardid: '<',
-    cardtitle: '<',
-    characters: '<',
-    dndenabled: '@',
-    drop: '&',
-    status: '<',
-    text: '<',
-    words: '<'
+    text: '@',
+    buttonlabel: '@',
+    createitem: '&'
   }
 });
 
 
-function CardController(LoggerService) {
-  LoggerService.debug('Start CardController...');
+function EmptyListBoxController(LoggerService) {
+  LoggerService.debug('Start EmptyListBoxController...');
 
   var self = this;
 
-  LoggerService.debug('End CardController...');
+  LoggerService.debug('End EmptyListBoxController...');
 }

@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('projectsdirectoryinputfield', {
-  templateUrl: 'components/forms/projects-directory-input-field/projects-directory-input-field.html',
+  templateUrl: 'components/common/forms/projects-directory-input-field/projects-directory-input-field.html',
   controller: ProjectsDirectoryInputFieldController,
   bindings: {
     model: '=',

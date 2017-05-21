@@ -16,7 +16,7 @@
 angular.
 module('bibiscoApp').
 component('validationmessages', {
-  templateUrl: 'components/forms/validation-messages/validation-messages.html',
+  templateUrl: 'components/common/forms/validation-messages/validation-messages.html',
   controller: ValidationMessagesController,
   bindings: {
     field: '<'

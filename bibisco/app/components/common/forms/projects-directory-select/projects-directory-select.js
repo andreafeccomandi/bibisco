@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('projectsdirectoryselect', {
-  templateUrl: 'components/forms/projects-directory-select/projects-directory-select.html',
+  templateUrl: 'components/common/forms/projects-directory-select/projects-directory-select.html',
   controller: ProjectsDirectorySelectController,
   bindings: {
     model: '=',

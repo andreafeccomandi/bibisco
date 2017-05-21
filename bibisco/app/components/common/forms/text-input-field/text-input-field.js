@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('textinputfield', {
-  templateUrl: 'components/forms/text-input-field/text-input-field.html',
+  templateUrl: 'components/common/forms/text-input-field/text-input-field.html',
   controller: TextInputFieldController,
   bindings: {
     model: '=',

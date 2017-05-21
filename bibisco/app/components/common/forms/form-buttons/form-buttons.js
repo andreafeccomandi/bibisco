@@ -15,7 +15,7 @@
 angular.
 module('bibiscoApp').
 component('formbuttons', {
-  templateUrl: 'components/forms/form-buttons/form-buttons.html',
+  templateUrl: 'components/common/forms/form-buttons/form-buttons.html',
   controller: FormButtonsController,
   bindings: {
     form: '<',

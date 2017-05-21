@@ -14,21 +14,29 @@
  */
 angular.
 module('bibiscoApp').
-component('emptylistbox', {
-  templateUrl: 'components/typography/empty-list-box/empty-list-box.html',
-  controller: EmptyListBoxController,
+component('pageheader', {
+  templateUrl: 'components/common/uielements/page-header/page-header.html',
+  controller: PageHeaderController,
   bindings: {
-    text: '@',
     buttonlabel: '@',
-    createitem: '&'
+    buttonaction: '&',
+    headertitle: '@',
+    headersubtitle: '@',
+    cols: '@'
   }
 });
 
 
-function EmptyListBoxController(LoggerService) {
-  LoggerService.debug('Start EmptyListBoxController...');
+function PageHeaderController(LoggerService) {
+
+  LoggerService.debug('Start PageHeaderController...');
 
   var self = this;
 
-  LoggerService.debug('End EmptyListBoxController...');
+  // show errors
+  self.hasError = function() {
+    return self.field.$$parentForm.$submitted && self.field.$invalid;
+  }
+
+  LoggerService.debug('End PageHeaderController...');
 }

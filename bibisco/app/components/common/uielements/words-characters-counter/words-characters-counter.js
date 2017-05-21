@@ -14,22 +14,21 @@
  */
 angular.
 module('bibiscoApp').
-component('languageinputfield', {
-  templateUrl: 'components/forms/language-input-field/language-input-field.html',
-  controller: LanguageInputFieldController,
+component('wordscharacterscounter', {
+  templateUrl: 'components/common/uielements/words-characters-counter/words-characters-counter.html',
+  controller: WordsCharactersCounter,
   bindings: {
-    applyonchange: '<',
-    inputcols: '@',
-    label: '@',
-    labelcols: '@',
-    onselectlanguage: '&'
+    characters: '<',
+    words: '<'
   }
 });
 
-function LanguageInputFieldController(LocaleService, LoggerService) {
-  LoggerService.debug('Start LanguageInputFieldController...');
+
+function WordsCharactersCounter(LoggerService) {
+
+  LoggerService.debug('Start WordsCharactersCounter...');
 
   var self = this;
 
-  LoggerService.debug('End LanguageInputFieldController...');
+  LoggerService.debug('End WordsCharactersCounter...');
 }
