@@ -1,4 +1,5 @@
 <div class="jumbotron bibiscoEmptyListBox">
-	<h3>{{$ctrl.text}}</h3>
-  <button ng-click="$ctrl.createitem()" type="button" class="btn btn-primary">{{$ctrl.buttonlabel}}</button>
+	<h3>{{$ctrl.text | translate}}</h3>
+  <button ng-click="$ctrl.createitem()" type="button"
+		class="btn btn-primary">{{$ctrl.buttonlabel  | translate}}</button>
 </div>

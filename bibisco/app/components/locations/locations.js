@@ -28,8 +28,6 @@ function LocationsController($location, $rootScope, $scope, LocationService,
   LoggerService.debug('Start LocationsController...');
   var self = this;
 
-  self.locations = LocationService.getLocations();
-
   self.locationsPresent = function() {
     return LocationService.getLocationsCount() > 0;
   }
@@ -38,9 +36,28 @@ function LocationsController($location, $rootScope, $scope, LocationService,
     $location.path('/locationtitle/new/0');
   }
 
+  self.getCardGridItems = function() {
+    let items;
+    if (LocationService.getLocationsCount() > 0) {
+      let locations = LocationService.getLocations();
+      items = [];
+      for (let i = 0; i < locations.length; i++) {
+        items.push({
+          id: locations[i].$loki,
+          position: locations[i].position,
+          status: locations[i].status,
+          text: this.locationDescription(locations[i].nation,
+            locations[i].state, locations[i].city),
+          title: locations[i].location
+        });
+      }
+    }
+    return items;
+  }
+
   self.move = function(draggedObjectId, destinationObjectId) {
-    self.locations = LocationService.move(draggedObjectId,
-      destinationObjectId);
+    LocationService.move(draggedObjectId, destinationObjectId);
+    self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
   }
 
@@ -67,6 +84,8 @@ function LocationsController($location, $rootScope, $scope, LocationService,
 
     return description;
   }
+
+  self.cardgriditems = this.getCardGridItems();
 
   LoggerService.debug('End LocationsController...');
 }

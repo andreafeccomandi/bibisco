@@ -20,9 +20,9 @@ component('pageheader', {
   bindings: {
     buttonlabel: '@',
     buttonaction: '&',
+    buttonshow: '<',
     headertitle: '@',
-    headersubtitle: '@',
-    cols: '@'
+    headersubtitle: '@'
   }
 });
 

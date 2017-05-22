@@ -1,20 +1,12 @@
 <div class="container">
-  <div class="row">
-    <pageheader headertitle="jsp.locations.h1" cols="12"
-        buttonlabel="jsp.locations.a.createLocation" buttonaction="$ctrl.createLocation()">
-    </pageheader>
-  </div>
-  <div ng-show="!$ctrl.locationsPresent()">
-    <emptylistbox text="{{'jsp.locations.bibiscoEmptyThumbnailListBox.text' | translate}}" buttonlabel="{{'jsp.locations.a.createFirstLocation' | translate}}" createitem="$ctrl.createLocation()"></emptylistbox>
-  </div>
-  <div ng-show="$ctrl.locationsPresent()">
-    <div class="row">
-      <div ng-repeat="location in $ctrl.locations" class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
-        <card cardid="location.$loki" cardtitle="location.location"
-          dndenabled="true" drop="$ctrl.move(draggedObjectId, destinationObjectId)"
-          text="$ctrl.locationDescription(location.nation, location.state, location.city)"
-          status="location.status">
-        </card>
-      </div>
-    </div>
-  </div>
+  <cardgrid
+    dndenabled="true"
+    drop="$ctrl.move(draggedObjectId, destinationObjectId)"
+    emptylistboxtext="jsp.locations.bibiscoEmptyThumbnailListBox.text"
+    emptylistboxbuttonlabel="jsp.locations.a.createFirstLocation"
+    emptylistboxbuttonaction="$ctrl.createLocation()"
+    items="$ctrl.cardgriditems"
+    pageheaderbuttonlabel="jsp.locations.a.createLocation"
+    pageheaderbuttonaction="$ctrl.createLocation()"
+    pageheadertitle="jsp.locations.h1"></cardgrid>
+</div>
