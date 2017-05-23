@@ -166,7 +166,7 @@
   "jsp.chapters.h1": "Kapitoly",
   "jsp.chapters.dialog.title.createChapter": "Vytvořit kapitolu",
   "jsp.chapters.a.createChapter": "vytvořit kaputolu",
-  "jsp.chapters.a.createFirstChapter": "&nbsp;vytvořit první kaputolu",
+  "jsp.chapters.a.createFirstChapter": "vytvořit první kaputolu",
   "jsp.chapters.bibiscoEmptyThumbnailListBox.text": "Žádné kapitoly v políčku.",
   "jsp.chapterTitle.form.title": "Nadpis",
   "jsp.chapter.a.backToChapterList": "&nbsp;vrtátit se na seznam kapitol",

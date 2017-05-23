@@ -163,7 +163,7 @@
   "jsp.chapters.h1": "Kapitel",
   "jsp.chapters.dialog.title.createChapter": "Kapitel anlegen",
   "jsp.chapters.a.createChapter": "Kapitel anlegen",
-  "jsp.chapters.a.createFirstChapter": "&nbsp;Erstes Kapitel anlegen",
+  "jsp.chapters.a.createFirstChapter": "Erstes Kapitel anlegen",
   "jsp.chapters.bibiscoEmptyThumbnailListBox.text": "Noch keine Kapitel vorhanden.",
   "jsp.chapterTitle.form.title": "Titel",
   "jsp.chapter.a.backToChapterList": "&nbsp;Zurück zur Kapitelliste",

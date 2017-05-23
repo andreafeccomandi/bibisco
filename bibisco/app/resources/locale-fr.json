@@ -166,7 +166,7 @@
   "jsp.chapters.h1": "Chapitres",
   "jsp.chapters.dialog.title.createChapter": "Créer un chapitre",
   "jsp.chapters.a.createChapter": "créer un chapitre",
-  "jsp.chapters.a.createFirstChapter": "&nbsp;créer le premier chapitre",
+  "jsp.chapters.a.createFirstChapter": "créer le premier chapitre",
   "jsp.chapters.bibiscoEmptyThumbnailListBox.text": "Il nʼy a aucun chapitre pour lʼinstant.",
   "jsp.chapterTitle.form.title": "Titre",
   "jsp.chapter.a.backToChapterList": "&nbsp;retour à la liste des chapitres",
