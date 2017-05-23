@@ -28,12 +28,37 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
 
   var self = this;
 
-  self.chapters = ChapterService.getChapters();
+  self.createChapter = function() {
+    $location.path('/chaptertitle/new/0');
+  }
+
+  self.getCardGridItems = function() {
+    let items;
+    if (ChapterService.getChaptersCount() > 0) {
+      let chapters = ChapterService.getChapters();
+      items = [];
+      for (let i = 0; i < chapters.length; i++) {
+        items.push({
+          characters: chapters[i].characters,
+          id: chapters[i].$loki,
+          position: chapters[i].position,
+          status: chapters[i].status,
+          text: chapters[i].title,
+          title: '#' + chapters[i].position,
+          words: chapters[i].words
+        });
+      }
+    }
+    return items;
+  }
 
   self.move = function(draggedObjectId, destinationObjectId) {
-    self.chapters = ChapterService.move(draggedObjectId, destinationObjectId);
+    ChapterService.move(draggedObjectId, destinationObjectId);
+    self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
   }
+
+  self.cardgriditems = this.getCardGridItems();
 
   LoggerService.debug('End ChaptersController...');
 }
