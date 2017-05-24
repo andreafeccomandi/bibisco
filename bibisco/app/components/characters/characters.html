@@ -1,6 +1,30 @@
 <div class="container">
-  <div class="row">
-    <pageheader headertitle="jsp.characters.h1.main" cols="12">
-    </pageheader>
-  </div>
+
+  <!-- MAIN CHARACTERS -->
+  <cardgrid
+    dndenabled="true"
+    drop="$ctrl.mainCharacterMove(draggedObjectId, destinationObjectId)"
+    family="maincharacters"
+    emptylistboxtext="jsp.characters.bibiscoEmptyThumbnailListBox.text.main"
+    emptylistboxbuttonlabel="jsp.characters.a.createFirstMainCharacter"
+    emptylistboxbuttonaction="$ctrl.createMainCharacter()"
+    items="$ctrl.maincharacterscardgriditems"
+    pageheaderbuttonlabel="jsp.characters.a.createMainCharacter"
+    pageheaderbuttonaction="$ctrl.createMainCharacter()"
+    pageheadertitle="jsp.characters.h1.main"
+    pageheadersubtitle="jsp.characters.h1.small.main"></cardgrid>
+
+    <!-- SECONDARY CHARACTERS -->
+    <cardgrid
+      dndenabled="true"
+      drop="$ctrl.secondaryCharacterMove(draggedObjectId, destinationObjectId)"
+      family="secondarycharacters"
+      emptylistboxtext="jsp.characters.bibiscoEmptyThumbnailListBox.text.secondary"
+      emptylistboxbuttonlabel="jsp.characters.a.createFirstSecondaryCharacter"
+      emptylistboxbuttonaction="$ctrl.createSecondaryCharacter()"
+      items="$ctrl.secondarycharacterscardgriditems"
+      pageheaderbuttonlabel="jsp.characters.a.createSecondaryCharacter"
+      pageheaderbuttonaction="$ctrl.createSecondaryCharacter()"
+      pageheadertitle="jsp.characters.h1.secondary"
+      pageheadersubtitle="jsp.characters.h1.small.secondary"></cardgrid>
 </div>

@@ -13,32 +13,32 @@
  *
  */
 
-angular.module('bibiscoApp').service('ChapterService', function(
+angular.module('bibiscoApp').service('SecondaryCharacterService', function(
   CollectionUtilService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'chapters');
+    'secondarycharacters');
   var dynamicView = collection.addDynamicView(
-    'all_chapters').applySimpleSort('position');
+    'all_secondarycharacters').applySimpleSort('position');
 
   return {
-    getChapter: function(id) {
+    getSecondaryCharacter: function(id) {
       return collection.get(id);
     },
-    getChaptersCount: function() {
+    getSecondaryCharactersCount: function() {
       return collection.count();
     },
-    getChapters: function() {
+    getSecondaryCharacters: function() {
       return dynamicView.data();
     },
-    insert: function(chapter) {
-      CollectionUtilService.insert(collection, chapter);
+    insert: function(secondarycharacter) {
+      CollectionUtilService.insert(collection, secondarycharacter);
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getChapters);
+        this.getSecondaryCharacters);
     }
   }
 });

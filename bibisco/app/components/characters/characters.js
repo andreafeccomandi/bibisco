@@ -22,9 +22,62 @@ component('characters', {
   }
 });
 
-function CharactersController($location, $rootScope, LoggerService) {
+function CharactersController($location, $scope, LoggerService,
+  MainCharacterService, SecondaryCharacterService) {
   LoggerService.debug('Start CharactersController...');
   var self = this;
+
+  self.createMainCharacter = function() {
+    $location.path('/chaptertitle/new/main/0');
+  }
+
+  self.createSecondaryCharacter = function() {
+    $location.path('/chaptertitle/new/secondary/0');
+  }
+
+  self.getMainCharacterCardGridItems = function() {
+    let items;
+    if (MainCharacterService.getMainCharactersCount() > 0) {
+      let characters = MainCharacterService.getMainCharacters();
+      items = self.getGridItemsFromCharacters(characters);
+    }
+    return items;
+  }
+
+  self.getSecondaryCharacterCardGridItems = function() {
+    let items;
+    if (SecondaryCharacterService.getSecondaryCharactersCount() > 0) {
+      let characters = SecondaryCharacterService.getSecondaryCharacters();
+      items = self.getGridItemsFromCharacters(characters);
+    }
+    return items;
+  }
+
+  self.getGridItemsFromCharacters = function(characters) {
+    for (let i = 0; i < characters.length; i++) {
+      items.push({
+        id: characters[i].$loki,
+        position: characters[i].position,
+        status: characters[i].status,
+        title: characters[i].name
+      });
+    }
+  }
+
+  self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
+    MainCharacterService.move(draggedObjectId, destinationObjectId);
+    self.maincharacterscardgriditems = this.getMainCharacterCardGridItems();
+    $scope.$apply();
+  }
+
+  self.secondaryCharacterMove = function(draggedObjectId, destinationObjectId) {
+    SecondaryCharacterService.move(draggedObjectId, destinationObjectId);
+    self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
+    $scope.$apply();
+  }
+
+  self.maincharacterscardgriditems = this.getMainCharacterCardGridItems();
+  self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
 
   LoggerService.debug('End CharactersController...');
 }

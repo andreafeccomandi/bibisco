@@ -20,6 +20,13 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
   return {
 
+    insert: function(collection, element) {
+      element.position = collection.count() + 1;
+      element.status = 'todo';
+      collection.insert(element);
+      ProjectDbConnectionService.saveDatabase();
+    },
+
     move: function(collection, sourceId, targetId, returnFn) {
 
       let source = collection.get(sourceId);
