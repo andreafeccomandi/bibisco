@@ -51,9 +51,26 @@ h6, label, th, td, p {
 	margin-bottom: 10px;
 }
 
+/* HEADER */
+h1 {
+	font-size: 30px;
+}
+
+h2 {
+	font-size: 25px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
 /* PAGE HEADER */
 .page-header {
 	margin-top: 0px !important;
+}
+
+.page-header small {
+	font-size: 60%;
 }
 
 /* DRAG AND DROP */
