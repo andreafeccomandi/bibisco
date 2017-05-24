@@ -34,10 +34,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       return dynamicView.data();
     },
     insert: function(location) {
-      location.position = collection.count() + 1;
-      location.status = 'todo';
-      collection.insert(location);
-      ProjectDbConnectionService.saveDatabase();
+      CollectionUtilService.insert(collection, location);
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
