@@ -27,12 +27,17 @@ function CharactersController($location, $scope, LoggerService,
   LoggerService.debug('Start CharactersController...');
   var self = this;
 
+  self.$onInit = function() {
+    self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
+    self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
+  };
+
   self.createMainCharacter = function() {
-    $location.path('/chaptertitle/new/main/0');
+    $location.path('/maincharactertitle/new/0');
   }
 
   self.createSecondaryCharacter = function() {
-    $location.path('/chaptertitle/new/secondary/0');
+    $location.path('/secondarycharactertitle/new/0');
   }
 
   self.getMainCharacterCardGridItems = function() {
@@ -54,6 +59,7 @@ function CharactersController($location, $scope, LoggerService,
   }
 
   self.getGridItemsFromCharacters = function(characters) {
+    let items = [];
     for (let i = 0; i < characters.length; i++) {
       items.push({
         id: characters[i].$loki,
@@ -62,6 +68,7 @@ function CharactersController($location, $scope, LoggerService,
         title: characters[i].name
       });
     }
+    return items;
   }
 
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
@@ -75,9 +82,6 @@ function CharactersController($location, $scope, LoggerService,
     self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
     $scope.$apply();
   }
-
-  self.maincharacterscardgriditems = this.getMainCharacterCardGridItems();
-  self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
 
   LoggerService.debug('End CharactersController...');
 }

@@ -58,6 +58,12 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
     self.disabled = false;
   });
 
+  // SHOW MAIN CHARACTER title
+  $rootScope.$on('SHOW_MAIN_CHARACTER_TITLE', function() {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW LOCATION title
   $rootScope.$on('SHOW_LOCATION_TITLE', function() {
     self.visible = true;
