@@ -1,6 +1,6 @@
-<ol class="breadcrumb">
+<ol class="breadcrumb bibiscoNotSelectableText">
   <li ng-repeat="item in $ctrl.items" ng-class="{ 'active': $last }">
     <a ng-if="item.href" ng-click="$ctrl.followlink(item.href)">{{ item.label | translate}}</a>
-    <span ng-if="!item.href" >{{ item.label | translate}}</span>
+    <span ng-if="!item.href">{{ item.label | translate}}</span>
   </li>
 </ol>

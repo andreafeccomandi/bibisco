@@ -58,14 +58,14 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
     self.disabled = false;
   });
 
-  // SHOW MAIN CHARACTER title
-  $rootScope.$on('SHOW_MAIN_CHARACTER_TITLE', function() {
+  // SHOW LOCATION title
+  $rootScope.$on('SHOW_LOCATION_TITLE', function() {
     self.visible = true;
     self.disabled = true;
   });
 
-  // SHOW LOCATION title
-  $rootScope.$on('SHOW_LOCATION_TITLE', function() {
+  // SHOW MAIN CHARACTER title
+  $rootScope.$on('SHOW_MAIN_CHARACTER_TITLE', function() {
     self.visible = true;
     self.disabled = true;
   });
@@ -74,6 +74,12 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
   $rootScope.$on('SHOW_OPEN_PROJECT', function() {
     self.visible = false;
     self.disabled = false;
+  });
+
+  // SHOW SECONDARY CHARACTER title
+  $rootScope.$on('SHOW_SECONDARY_CHARACTER_TITLE', function() {
+    self.visible = true;
+    self.disabled = true;
   });
 
   // SHOW WELCOME EVENT
