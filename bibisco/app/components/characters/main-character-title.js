@@ -19,7 +19,7 @@ component('maincharactertitle', {
   controller: MainCharacterTitleController
 });
 
-function MainCharacterTitleController($location, $rootScope, $routeParams,
+function MainCharacterTitleController($location, $routeParams,
   MainCharacterService, LoggerService) {
   LoggerService.debug('Start MainCharacterTitleController...');
 
