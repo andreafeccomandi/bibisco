@@ -1,7 +1,11 @@
 <div class="container">
   <elementtitleform
-    breadcrumbitems="['jsp.projectFromScene.nav.li.characters',
-      'jsp.characters.dialog.title.createMainCharacter']"
+    breadcrumbitems="[{
+      label: 'jsp.projectFromScene.nav.li.characters',
+      href: '/project/characters'
+    }, {
+      label: 'jsp.characters.dialog.title.createMainCharacter'
+    }]"
     eventname="SHOW_MAIN_CHARACTER_TITLE"
     exitpath="/project/characters"
     insertfunction="$ctrl.save(title)"

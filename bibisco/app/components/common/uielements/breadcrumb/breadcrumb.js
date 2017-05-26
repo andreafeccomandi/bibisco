@@ -22,12 +22,14 @@ component('breadcrumb', {
   }
 });
 
-function BreadcrumbController($location, $rootScope, $routeParams,
-  MainCharacterService, LoggerService) {
+function BreadcrumbController($location, LoggerService) {
   LoggerService.debug('Start BreadcrumbController...');
 
   var self = this;
 
+  self.followlink = function(path) {
+    $location.path(path);
+  }
 
   LoggerService.debug('End BreadcrumbController...');
 }
