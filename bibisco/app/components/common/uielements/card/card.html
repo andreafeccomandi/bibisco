@@ -4,7 +4,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
 -->
 
 <div class="bibiscoCard" id="{{$ctrl.cardid}}" ng-class="{bibiscoCardHover: hover}"
-	ng-mouseenter="hover = true" ng-mouseleave="hover = false"
+	ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="$ctrl.select({id: $ctrl.cardid})"
 	ng-attr-draggable="{{$ctrl.dndenabled}}" ng-attr-droppable="{{$ctrl.dndenabled}}"
 	drop="$ctrl.drop({draggedObjectId, destinationObjectId})">
   <div class="row">

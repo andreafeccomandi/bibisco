@@ -23,6 +23,7 @@ component('card', {
     characters: '<',
     dndenabled: '<',
     drop: '&',
+    select: '&',
     status: '<',
     text: '<',
     words: '<'
@@ -30,7 +31,7 @@ component('card', {
 });
 
 
-function CardController(LoggerService) {
+function CardController($location, LoggerService) {
   LoggerService.debug('Start CardController...');
 
   var self = this;

@@ -27,7 +27,8 @@ component('cardgrid', {
     pageheaderbuttonlabel: '@',
     pageheaderbuttonaction: '&',
     pageheadertitle: '@',
-    pageheadersubtitle: '@'
+    pageheadersubtitle: '@',
+    select: '&'
   }
 });
 
