@@ -23,6 +23,7 @@ component('card', {
     characters: '<',
     dndenabled: '<',
     drop: '&',
+    family: '<',
     select: '&',
     status: '<',
     text: '<',

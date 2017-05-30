@@ -23,6 +23,7 @@ component('cardgrid', {
     emptylistboxtext: '@',
     emptylistboxbuttonlabel: '@',
     emptylistboxbuttonaction: '&',
+    family: '@',
     items: '<',
     pageheaderbuttonlabel: '@',
     pageheaderbuttonaction: '&',

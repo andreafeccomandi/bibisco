@@ -27,6 +27,7 @@ angular.module('bibiscoApp').directive('draggable', function() {
       function(e) {
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('id', this.id);
+        e.dataTransfer.setData('family', this.getAttribute('family'));
         this.classList.add('drag');
         return false;
       },
@@ -89,15 +90,17 @@ angular.module('bibiscoApp').directive('draggable', function() {
         function(e) {
           // stops some browsers from redirecting.
           if (e.stopPropagation) e.stopPropagation();
-
           // remove over class
           this.classList.remove('over');
 
           // call the passed drop function
-          scope.drop({
-            draggedObjectId: e.dataTransfer.getData('id'),
-            destinationObjectId: this.id
-          });
+          if (this.getAttribute('family') == e.dataTransfer.getData(
+              'family')) {
+            scope.drop({
+              draggedObjectId: e.dataTransfer.getData('id'),
+              destinationObjectId: this.id
+            });
+          }
 
           return false;
         },
