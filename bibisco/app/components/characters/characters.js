@@ -71,6 +71,14 @@ function CharactersController($location, $scope, LoggerService,
     return items;
   }
 
+  self.mainCharacterSelect = function(id) {
+    $location.path('/maincharacterdetail/' + id);
+  }
+
+  self.secondaryCharacterSelect = function(id) {
+    $location.path('/secondarycharacterdetail/' + id);
+  }
+
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
     MainCharacterService.move(draggedObjectId, destinationObjectId);
     self.maincharacterscardgriditems = this.getMainCharacterCardGridItems();

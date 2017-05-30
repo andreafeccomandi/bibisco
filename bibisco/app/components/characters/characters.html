@@ -12,7 +12,8 @@
     pageheaderbuttonlabel="jsp.characters.a.createMainCharacter"
     pageheaderbuttonaction="$ctrl.createMainCharacter()"
     pageheadertitle="jsp.characters.h1.main"
-    pageheadersubtitle="jsp.characters.h1.small.main"></cardgrid>
+    pageheadersubtitle="jsp.characters.h1.small.main"
+    select="$ctrl.mainCharacterSelect(id)"></cardgrid>
 
     <!-- SECONDARY CHARACTERS -->
     <cardgrid
@@ -26,5 +27,6 @@
       pageheaderbuttonlabel="jsp.characters.a.createSecondaryCharacter"
       pageheaderbuttonaction="$ctrl.createSecondaryCharacter()"
       pageheadertitle="jsp.characters.h1.secondary"
-      pageheadersubtitle="jsp.characters.h1.small.secondary"></cardgrid>
+      pageheadersubtitle="jsp.characters.h1.small.secondary"
+      select="$ctrl.secondaryCharacterSelect(id)"></cardgrid>
 </div>
