@@ -21,31 +21,27 @@ component('elementtitleform', {
     breadcrumbitems: '<',
     eventname: '@',
     exitpath: '@',
-    insertfunction: '&',
     pageheadertitle: '@',
+    savefunction: '&',
     titlelabel: '@',
-    titlemaxlength: '@'
+    titlemaxlength: '@',
+    titlevalue: '@'
   }
 });
 
-function ElementTitleFormController($location, $rootScope, $routeParams,
-  MainCharacterService, LoggerService) {
+function ElementTitleFormController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start ElementTitleFormController...');
 
   var self = this;
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
-    if ($routeParams.operation == 'edit') {
-
-    } else {
-      self.title = null;
-    }
+    self.title = self.titlevalue;
   };
 
   self.save = function(isValid) {
     if (isValid) {
-      self.insertfunction({
+      self.savefunction({
         title: self.title
       });
       $location.path(self.exitpath);
