@@ -27,6 +27,11 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
+    update: function(collection, element) {
+      collection.update(element);
+      ProjectDbConnectionService.saveDatabase();
+    },
+
     move: function(collection, sourceId, targetId, returnFn) {
 
       let source = collection.get(sourceId);
