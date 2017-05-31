@@ -73,6 +73,10 @@ h3 {
 	font-size: 60%;
 }
 
+.page-header-title-button {
+	margin-left: 15px;
+}
+
 /* DRAG AND DROP */
 .drag {
   opacity: 0.5;

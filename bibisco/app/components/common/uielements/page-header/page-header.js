@@ -22,7 +22,10 @@ component('pageheader', {
     buttonaction: '&',
     buttonshow: '<',
     headertitle: '@',
-    headersubtitle: '@'
+    headersubtitle: '@',
+    titlebuttonlabel: '@',
+    titlebuttonaction: '&',
+    titlebuttonshow: '<'
   }
 });
 
