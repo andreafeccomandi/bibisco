@@ -24,16 +24,57 @@ function SecondaryCharacterTitleController($location, $routeParams,
   LoggerService.debug('Start SecondaryCharacterTitleController...');
 
   var self = this;
-  self.name = null;
 
-  if ($routeParams.operation == 'edit') {
+  self.$onInit = function() {
 
+    // common bradcrumb root
+    self.breadcrumbItems = [];
+    self.breadcrumbItems.push({
+      label: 'jsp.projectFromScene.nav.li.characters',
+      href: '/project/characters'
+    });
+
+    if ($routeParams.operation == 'edit') {
+      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
+        $routeParams.id);
+
+      // edit breadcrumb items
+      self.breadcrumbItems.push({
+        labelvalue: secondarycharacter.name
+      });
+      self.breadcrumbItems.push({
+        label: 'jsp.character.dialog.title.updateTitle'
+      });
+
+      self.exitpath = "/secondarycharacterdetail/" + $routeParams.id;
+      self.name = secondarycharacter.name;
+      self.pageheadertitle =
+        'jsp.character.dialog.title.updateTitle';
+    } else {
+
+      // create breadcrumb items
+      self.breadcrumbItems.push({
+        label: 'jsp.characters.dialog.title.createSecondaryCharacter'
+      });
+
+      self.exitpath = "/project/characters";
+      self.name = null;
+      self.pageheadertitle =
+        'jsp.characters.dialog.title.createSecondaryCharacter';
+    }
   }
 
   self.save = function(title) {
-    SecondaryCharacterService.insert({
-      name: title
-    });
+    if ($routeParams.operation == 'edit') {
+      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
+        $routeParams.id);
+      secondarycharacter.name = title;
+      SecondaryCharacterService.update(secondarycharacter);
+    } else {
+      SecondaryCharacterService.insert({
+        name: title
+      });
+    }
   }
 
   LoggerService.debug('End SecondaryCharacterTitleController...');

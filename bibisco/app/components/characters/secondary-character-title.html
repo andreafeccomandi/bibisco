@@ -1,15 +1,12 @@
 <div class="container">
   <elementtitleform
-    breadcrumbitems="[{
-      labelkey: 'jsp.projectFromScene.nav.li.characters'
-    }, {
-      labelkey: 'jsp.characters.dialog.title.createSecondaryCharacter'
-    }]"
+    breadcrumbitems="$ctrl.breadcrumbItems"
     eventname="SHOW_SECONDARY_CHARACTER_TITLE"
-    exitpath="/project/characters"
-    insertfunction="$ctrl.save(title)"
-    pageheadertitle="jsp.characters.dialog.title.createSecondaryCharacter"
+    exitpath="{{$ctrl.exitpath}}"
+    pageheadertitle="{{$ctrl.pageheadertitle}}"
+    savefunction="$ctrl.save(title)"
     titlelabel="jsp.characterTitle.form.title"
+    titlevalue="{{$ctrl.name}}"
     titlemaxlength="100">
   </elementtitleform>
 </div>

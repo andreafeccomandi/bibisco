@@ -82,6 +82,13 @@ function MenuController($location, $rootScope, LocaleService, LoggerService) {
     self.disabled = true;
   });
 
+  // SHOW SECONDARY CHARACTER detail
+  $rootScope.$on('SHOW_SECONDARY_CHARACTER_DETAIL', function() {
+    self.visible = true;
+    self.disabled = false;
+  });
+
+
   // SHOW WELCOME EVENT
   $rootScope.$on('SHOW_WELCOME', function() {
     self.visible = false;

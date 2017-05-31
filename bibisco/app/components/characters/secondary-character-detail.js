@@ -19,25 +19,33 @@ component('secondarycharacterdetail', {
   controller: SecondaryCharacterDetailController
 });
 
-function SecondaryCharacterDetailController($location, $routeParams, $filter,
+function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   SecondaryCharacterService, LoggerService) {
   LoggerService.debug('Start SecondaryCharacterDetailController...');
 
   var self = this;
 
   self.$onInit = function() {
+
+    $rootScope.$emit('SHOW_SECONDARY_CHARACTER_DETAIL');
+
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
 
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      labelkey: 'jsp.projectFromScene.nav.li.characters',
+      label: 'jsp.projectFromScene.nav.li.characters',
       href: '/project/characters'
     });
     self.breadcrumbItems.push({
-      label: self.secondarycharacter.name
+      labelvalue: self.secondarycharacter.name
     });
 
   };
+
+  self.changeTitle = function() {
+    $location.path('/secondarycharactertitle/edit/' + self.secondarycharacter
+      .$loki);
+  }
 
   self.getSecondaryCharacter = function(id) {
     return secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter(

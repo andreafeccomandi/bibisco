@@ -39,6 +39,9 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
         this.getSecondaryCharacters);
-    }
+    },
+    update: function(secondarycharacter) {
+      CollectionUtilService.update(collection, secondarycharacter);
+    },
   }
 });

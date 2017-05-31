@@ -3,7 +3,9 @@
     <breadcrumb items="$ctrl.breadcrumbItems"></breadcrumb>
   </div>
   <div class="row">
-    <pageheader headertitle="{{$ctrl.secondarycharacter.name}}" cols="12">
+    <pageheader headertitle="{{$ctrl.secondarycharacter.name}}" cols="12"
+      titlebuttonshow="true" titlebuttonlabel="jsp.common.button.edit"
+      titlebuttonaction="$ctrl.changeTitle()">
     </pageheader>
   </div>
 </div>
