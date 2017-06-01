@@ -40,6 +40,18 @@ body {
 	overflow: hidden;
 }
 
+/* DISABLE SELECTION ON TEXT */
+.bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip, h1, h2, h3, h4, h5,
+h6, label, th, td, p {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-o-user-select: none;
+}
+
 /* DETAIL ELEMENT HEADER, FOOTER, CONTENT */
 .detail-content {
 	overflow-y: auto;
@@ -62,19 +74,6 @@ body {
     height: 100px;
     bottom: 0;
     width: 100%;
-}
-
-
-/* DISABLE SELECTION ON TEXT */
-.bibiscoNotSelectableText, .bibiscoSuggestions, .bibiscoTip, h1, h2, h3, h4, h5,
-h6, label, th, td, p {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-o-user-select: none;
 }
 
 /* BREADCRUMB */
