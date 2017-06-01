@@ -55,8 +55,6 @@ body {
 	height: 120px;
 	top: 70;
 	width: 100%;
-	z-index: 1030;
-	background-color: white;
 }
 
 .detail-footer {
@@ -64,8 +62,6 @@ body {
     height: 100px;
     bottom: 0;
     width: 100%;
-		z-index: 1030;
-		background-color: white;
 }
 
 
