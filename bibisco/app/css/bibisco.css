@@ -26,12 +26,47 @@ to your application:
 	cursor: pointer;
 }
 
+html {
+  height: 100%;
+}
+
 /* BOOTSTRAP - NAVBAR FIXED TO THE TOP; take a look at this:
 http://getbootstrap.com/components/#navbar-fixed-top
 The fixed navbar will overlay your other content, unless you add padding to the
 top of the <body>. Tip: By default, the navbar is 50px high.
 */
-body { padding-top: 35px; }
+body {
+	padding-top: 35px;
+	overflow: hidden;
+}
+
+/* DETAIL ELEMENT HEADER, FOOTER, CONTENT */
+.detail-content {
+	overflow-y: auto;
+	height: calc(100% - 280px);
+	width: 100%;
+	position: absolute;
+	top: 185px;
+	left: 0px;
+}
+
+.detail-header {
+	position: fixed;
+	height: 120px;
+	top: 70;
+	width: 100%;
+	z-index: 1030;
+	background-color: white;
+}
+
+.detail-footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+		z-index: 1030;
+		background-color: white;
+}
 
 
 /* DISABLE SELECTION ON TEXT */
@@ -48,7 +83,7 @@ h6, label, th, td, p {
 
 /* BREADCRUMB */
 .breadcrumb {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 
 /* HEADER */

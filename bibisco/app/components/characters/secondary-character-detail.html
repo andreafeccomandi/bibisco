@@ -1,11 +1,52 @@
-<div class="container">
+
+<div class="detail-header">
+  <div class="container">
   <div class="row">
     <breadcrumb items="$ctrl.breadcrumbItems"></breadcrumb>
   </div>
   <div class="row">
-    <pageheader headertitle="{{$ctrl.secondarycharacter.name}}" cols="12"
+    <!--<pageheader buttonshow="true" buttonlabel="jsp.common.button.edit"
+      buttonaction="$ctrl.editCharacter()"
+      headertitle="{{$ctrl.secondarycharacter.name}}" cols="12"
       titlebuttonshow="true" titlebuttonlabel="jsp.common.button.edit"
       titlebuttonaction="$ctrl.changeTitle()">
-    </pageheader>
+    </pageheader>-->
+    <div class="col-sm-12 page-header">
+      <h1><span class="pull-left">{{$ctrl.secondarycharacter.name | translate}}</span>
+      </h1>
+    </div>
   </div>
+</div>
+</div>
+<div class="detail-content">
+  <div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <p style="font-family: courier new, courier, monospace; font-size: 18px; ">
+        123456789012345678901234567890123456789012345678901234567890
+        Emma Chapter 2 Mr. Weston was a native of Highbury, and born of a respectable family, which for the last two or three generations had been rising into gentility and property. He had received a good education, but on succeeding early in life to a small independence, had become indisposed for any of the more homely pursuits in which his brothers were engaged; and had satisfied an active cheerful mind and social temper by entering into the militia of his country, then embodied. Captain Weston was a general favourite; and when the chances of his military life had introduced him to Miss Churchill, of a great Yorkshire family, and Miss Churchill fell in love with him, nobody was surprized except her brother and his wife, who had never seen him, and who were full of pride and importance, which the connection would offend. Miss Churchill, however, being of age, and with the full command of her fortune -- though her fortune bore no proportion to the family-estate -- was not to be dissuaded from the marriage, and it took place to the infinite mortification of Mr. and Mrs. Churchill, who threw her off with due decorum. It was an unsuitable connection, and did not produce much happiness. Mrs. Weston ought to have found more in it, for she had a husband whose warm heart and sweet temper made him think every thing due to her in return for the great goodness of being in love with him; but though she had one sort of spirit, she had not the best. She had resolution enough to pursue her own will in spite of her brother, but not enough to refrain from unreasonable regrets at that brother's unreasonable anger, nor from missing the luxuries of her former home. They lived beyond their income, but still it was nothing in comparison of Enscombe; she did not cease to love her husband, but she wanted at once to be the wife of Captain Weston, and Miss Churchill of Enscombe. Captain Weston, who had been considered, especially by the Churchills, as making such an amazing match, was proved to have much the worst of the bargain; for when his wife died after a three years' marriage, he was rather a poorer man than at first, and with a child to maintain. From the expense of the child, however, he was soon relieved. The boy had, with the additional softening claim of a lingering illness of his mother's, been the means of a sort of reconciliation; and Mr. and Mrs. Churchill, having no children of their own, nor any other young creature of equal kindred to care for, offered to take the whole charge of the little Frank soon after her decease. Some scruples and some reluctance the widower-father may be supposed to have felt; but as they were overcome by other considerations, the child was given up to the care and the wealth of the Churchills, and he had only his own comfort to seek and his own situation to improve as he could. A complete change of life became desirable. He quitted the militia and engaged in trade, having brothers already established in a good way in London, which afforded him a favourable opening. It was a concern which brought just employment enough. He had still a small house in Highbury, where most of his leisure days were spent; and between useful occupation and the pleasures of society, the next eighteen or twenty years of his life passed cheerfully away. He had, by that time, realized an easy competence -- enough to secure the purchase of a little estate adjoining Highbury, which he had always longed for -- enough to marry a woman as portionless even as Miss Taylor, and to live according to the wishes of his own friendly and social disposition. It was now some time since Miss Taylor had begun to influence his schemes; but as it was not the tyrannic influence of youth on youth, it had not shaken his determination of never settling till he could purchase Randalls, and the sale of Randalls was long looked forward to: but he had gone steadily on, with these objects in view, till they were accomplished. He had made his fortune, bought his house, and obtained his wife; and was beginning a new period of existence with every probability of greater happiness than in any yet passed through. He had never been an unhappy man; his own temper had secured him from that, even in his first marriage; but his second must shew him how delightful a well-judging and truly amiable woman could be, and must give him the pleasantest proof of its being a great deal better to chuse than to be chosen, to excite gratitude than to feel it. He had only himself to please in his choice: his fortune was his own; for as to Frank, it was more than being tacitly brought up as his uncle's heir, it had become so avowed an adoption as to have him assume the name of Churchill on coming of age. It was most unlikely, therefore, that he should ever want his father's assistance. His father had no apprehension of it. The aunt was a capricious woman, and governed her husband entirely; but it was not in Mr. Weston's nature to imagine that any caprice could be strong enough to affect one so dear, and, as he believed, so deservedly dear. He saw his son every year in London, and was proud of him; and his fond report of him as a very fine young man had made Highbury feel a sort of pride in him too. He was looked on as sufficiently belonging to the place to make his merits and prospects a kind of common concern. 
+      </p>
+    </div>
+  </div>
+</div>
+</div>
+<div class="detail-footer">
+  <div class="container">
+  <hr />
+  <div>
+    <div class="btn-group" uib-dropdown is-open="status.isopen">
+      <button id="single-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle ng-disabled="disabled">
+        more... <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href="#">Change character's name</a></li>
+        <li role="menuitem"><a href="#">Delete</a></li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-primary"
+      ng-click="$ctrl.buttonaction()">{{"jsp.common.button.edit" | translate}}</button>
+    <button type="button" class="btn btn-default"
+      ng-click="$ctrl.buttonaction()">{{"jsp.common.button.back" | translate}}</button>
+  </div>
+</div>
 </div>
