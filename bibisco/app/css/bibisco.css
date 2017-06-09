@@ -69,13 +69,6 @@ h6, label, th, td, p {
 	width: 100%;
 }
 
-.detail-header-truncate-title {
-  width: calc(100% - 180px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .detail-footer {
     position: fixed;
     height: 100px;
@@ -121,6 +114,13 @@ h3 {
 
 .page-header-title-button {
 	margin-left: 15px;
+}
+
+.page-header-truncate-title {
+  width: calc(100% - 180px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* DRAG AND DROP */
