@@ -81,8 +81,8 @@ function createMainWindow() {
 	const win = new electron.BrowserWindow({
 		width: 1024,
 		height: 768,
-		minWidth: 720,
-		minHeight: 600
+		minWidth: 1024,
+		minHeight: 768
 	});
 
 	win.loadURL(`file://${__dirname}/index.html`, {
