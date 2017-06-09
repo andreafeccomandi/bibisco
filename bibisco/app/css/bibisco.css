@@ -58,15 +58,22 @@ h6, label, th, td, p {
 	height: calc(100% - 280px);
 	width: 100%;
 	position: absolute;
-	top: 185px;
+	top: 180px;
 	left: 0px;
 }
 
 .detail-header {
 	position: fixed;
-	height: 120px;
+	height: 150px;
 	top: 70;
 	width: 100%;
+}
+
+.detail-header-truncate-title {
+  width: calc(100% - 180px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-footer {
@@ -74,6 +81,15 @@ h6, label, th, td, p {
     height: 100px;
     bottom: 0;
     width: 100%;
+}
+
+.detail-footer div.row {
+    margin-bottom: -10px;
+}
+
+.detail-footer span.label {
+  font-weight: 500;
+	font-size: 80%;
 }
 
 /* BREADCRUMB */
@@ -138,11 +154,21 @@ h3 {
 .bibiscoCardHeadingTitle {
 	max-width: 195px;
 	height: 45px;
+	overflow : hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 
 .bibiscoCardText {
 	margin-bottom: 0px;
 	line-height: 1.3;
+	overflow : hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
 }
 
 /* BIBISCO BADGE */
