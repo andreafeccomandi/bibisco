@@ -36,10 +36,5 @@ function PageHeaderController(LoggerService) {
 
   var self = this;
 
-  // show errors
-  self.hasError = function() {
-    return self.field.$$parentForm.$submitted && self.field.$invalid;
-  }
-
   LoggerService.debug('End PageHeaderController...');
 }
