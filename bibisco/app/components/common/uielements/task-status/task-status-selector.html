@@ -1,0 +1,31 @@
+<div class="btn-toolbar bibiscoTaskStatusSelector">
+  <div class="btn-group">
+    <button type="button" class="btn btn-default"
+      ng-click="$ctrl.change({status: 'done'})"
+      ng-class="{ 'active': $ctrl.status == 'done' }">
+      <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
+        class="label bibiscoTaskStatus"
+        ng-class="{ 'label-success': $ctrl.status == 'done', 'label-default': $ctrl.status != 'done' }">
+          {{'tag.bibiscothumbnail.taskstatus.completed' | translate}}
+      </span>
+    </button>
+    <button type="button" class="btn btn-default"
+      ng-click="$ctrl.change({status: 'tocomplete'})"
+      ng-class="{ 'active': $ctrl.status == 'tocomplete' }">
+      <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
+        class="label bibiscoTaskStatus"
+        ng-class="{ 'label-warning': $ctrl.status == 'tocomplete', 'label-default': $ctrl.status != 'tocomplete' }">
+          {{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}
+      </span>
+    </button>
+    <button type="button" class="btn btn-default"
+      ng-click="$ctrl.change({status: 'todo'})"
+      ng-class="{ 'active': $ctrl.status == 'todo' }">
+      <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
+        class="label bibiscoTaskStatus"
+        ng-class="{ 'label-danger': $ctrl.status == 'todo', 'label-default': $ctrl.status != 'todo' }">
+          {{'tag.bibiscothumbnail.taskstatus.todo' | translate}}
+      </span>
+    </button>
+  </div>
+</div>

@@ -23,9 +23,9 @@ component('pageheader', {
     buttonshow: '<',
     headertitle: '@',
     headersubtitle: '@',
-    titlebuttonlabel: '@',
-    titlebuttonaction: '&',
-    titlebuttonshow: '<'
+    taskstatus: '<',
+    taskstatuschange: '&',
+    taskstatusshow: '<'
   }
 });
 
