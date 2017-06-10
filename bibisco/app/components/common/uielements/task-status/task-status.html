@@ -1,6 +1,15 @@
-<span ng-if="$ctrl.status == 'todo'" uib-tooltip="TODO!!"
-  class="label label-danger bibiscoBadge bibiscoTaskStatus">!!!</span>
-<span ng-if="$ctrl.status == 'tocomplete'" uib-tooltip="TO COMPLETE"
-  class="label label-warning bibiscoBadge bibiscoTaskStatus">...</span>
-<span ng-if="$ctrl.status == 'done'" uib-tooltip="OK"
-  class="label label-success bibiscoBadge bibiscoTaskStatus">OK</span>
+<span ng-if="$ctrl.status == 'todo'"
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
+  class="label label-danger bibiscoBadge bibiscoTaskStatus">
+    {{'tag.bibiscothumbnail.taskstatus.todo' | translate}}
+</span>
+<span ng-if="$ctrl.status == 'tocomplete'"
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
+  class="label label-warning bibiscoBadge bibiscoTaskStatus">
+    {{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}
+</span>
+<span ng-if="$ctrl.status == 'done'"
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
+  class="label label-success bibiscoBadge bibiscoTaskStatus">
+    {{'tag.bibiscothumbnail.taskstatus.completed' | translate}}
+</span>
