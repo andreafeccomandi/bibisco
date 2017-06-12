@@ -3,30 +3,30 @@
   <!-- MAIN CHARACTERS -->
   <cardgrid
     dndenabled="true"
-    drop="$ctrl.mainCharacterMove(draggedObjectId, destinationObjectId)"
+    dropfunction="$ctrl.mainCharacterMove(draggedObjectId, destinationObjectId)"
     family="maincharacters"
     emptylistboxtext="jsp.characters.bibiscoEmptyThumbnailListBox.text.main"
     emptylistboxbuttonlabel="jsp.characters.a.createFirstMainCharacter"
-    emptylistboxbuttonaction="$ctrl.createMainCharacter()"
+    emptylistboxbuttonfunction="$ctrl.createMainCharacter()"
     items="$ctrl.maincharacterscardgriditems"
     pageheaderbuttonlabel="jsp.characters.a.createMainCharacter"
-    pageheaderbuttonaction="$ctrl.createMainCharacter()"
+    pageheaderbuttonfunction="$ctrl.createMainCharacter()"
     pageheadertitle="jsp.characters.h1.main"
     pageheadersubtitle="jsp.characters.h1.small.main"
-    select="$ctrl.mainCharacterSelect(id)"></cardgrid>
+    selectfunction="$ctrl.mainCharacterSelect(id)"></cardgrid>
 
   <!-- SECONDARY CHARACTERS -->
   <cardgrid
     dndenabled="true"
-    drop="$ctrl.secondaryCharacterMove(draggedObjectId, destinationObjectId)"
+    dropfunction="$ctrl.secondaryCharacterMove(draggedObjectId, destinationObjectId)"
     family="secondarycharacters"
     emptylistboxtext="jsp.characters.bibiscoEmptyThumbnailListBox.text.secondary"
     emptylistboxbuttonlabel="jsp.characters.a.createFirstSecondaryCharacter"
-    emptylistboxbuttonaction="$ctrl.createSecondaryCharacter()"
+    emptylistboxbuttonfunction="$ctrl.createSecondaryCharacter()"
     items="$ctrl.secondarycharacterscardgriditems"
     pageheaderbuttonlabel="jsp.characters.a.createSecondaryCharacter"
-    pageheaderbuttonaction="$ctrl.createSecondaryCharacter()"
+    pageheaderbuttonfunction="$ctrl.createSecondaryCharacter()"
     pageheadertitle="jsp.characters.h1.secondary"
     pageheadersubtitle="jsp.characters.h1.small.secondary"
-    select="$ctrl.secondaryCharacterSelect(id)"></cardgrid>
+    selectfunction="$ctrl.secondaryCharacterSelect(id)"></cardgrid>
 </div>

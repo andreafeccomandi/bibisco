@@ -19,12 +19,12 @@ component('pageheader', {
   controller: PageHeaderController,
   bindings: {
     buttonlabel: '@',
-    buttonaction: '&',
+    buttonfunction: '&',
     buttonshow: '<',
     headertitle: '@',
     headersubtitle: '@',
     taskstatus: '<',
-    taskstatuschange: '&',
+    taskstatuschangefunction: '&',
     taskstatusshow: '<'
   }
 });

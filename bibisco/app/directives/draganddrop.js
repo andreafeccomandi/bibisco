@@ -49,7 +49,7 @@ angular.module('bibiscoApp').directive('draggable', function() {
 .directive('droppable', function() {
   return {
     scope: {
-      drop: '&'
+      dropfunction: '&'
     },
     link: function(scope, element) {
       // again we need the native object
@@ -96,7 +96,7 @@ angular.module('bibiscoApp').directive('draggable', function() {
           // call the passed drop function
           if (this.getAttribute('family') == e.dataTransfer.getData(
               'family')) {
-            scope.drop({
+            scope.dropfunction({
               draggedObjectId: e.dataTransfer.getData('id'),
               destinationObjectId: this.id
             });

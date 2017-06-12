@@ -20,7 +20,7 @@ component('emptylistbox', {
   bindings: {
     text: '@',
     buttonlabel: '@',
-    buttonaction: '&'
+    buttonfunction: '&'
   }
 });
 

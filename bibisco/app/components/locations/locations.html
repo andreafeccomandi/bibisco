@@ -1,12 +1,12 @@
 <div class="container">
   <cardgrid
     dndenabled="true"
-    drop="$ctrl.move(draggedObjectId, destinationObjectId)"
+    dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
     emptylistboxtext="jsp.locations.bibiscoEmptyThumbnailListBox.text"
     emptylistboxbuttonlabel="jsp.locations.a.createFirstLocation"
-    emptylistboxbuttonaction="$ctrl.createLocation()"
+    emptylistboxbuttonfunction="$ctrl.createLocation()"
     items="$ctrl.cardgriditems"
     pageheaderbuttonlabel="jsp.locations.a.createLocation"
-    pageheaderbuttonaction="$ctrl.createLocation()"
+    pageheaderbuttonfunction="$ctrl.createLocation()"
     pageheadertitle="jsp.locations.h1"></cardgrid>
 </div>

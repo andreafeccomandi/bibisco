@@ -1,7 +1,7 @@
 <div class="btn-toolbar bibiscoTaskStatusSelector">
   <div class="btn-group">
     <button type="button" class="btn btn-default"
-      ng-click="$ctrl.change({status: 'done'})"
+      ng-click="$ctrl.changefunction({status: 'done'})"
       ng-class="{ 'active': $ctrl.status == 'done' }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
         class="label bibiscoTaskStatus"
@@ -10,7 +10,7 @@
       </span>
     </button>
     <button type="button" class="btn btn-default"
-      ng-click="$ctrl.change({status: 'tocomplete'})"
+      ng-click="$ctrl.changefunction({status: 'tocomplete'})"
       ng-class="{ 'active': $ctrl.status == 'tocomplete' }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
         class="label bibiscoTaskStatus"
@@ -19,7 +19,7 @@
       </span>
     </button>
     <button type="button" class="btn btn-default"
-      ng-click="$ctrl.change({status: 'todo'})"
+      ng-click="$ctrl.changefunction({status: 'todo'})"
       ng-class="{ 'active': $ctrl.status == 'todo' }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
         class="label bibiscoTaskStatus"

@@ -18,7 +18,7 @@ component('taskstatusselector', {
   templateUrl: 'components/common/uielements/task-status/task-status-selector.html',
   controller: TaskStatusSelectorController,
   bindings: {
-    change: '&',
+    changefunction: '&',
     status: '<'
   }
 });

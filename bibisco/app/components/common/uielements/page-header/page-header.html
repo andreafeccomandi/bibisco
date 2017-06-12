@@ -3,11 +3,11 @@
     <small ng-if="$ctrl.headersubtitle">{{$ctrl.headersubtitle | translate}}</small></span>
     <span ng-if="$ctrl.buttonshow" class="pull-right">
       <button type="button" class="btn btn-primary"
-        ng-click="$ctrl.buttonaction()">{{$ctrl.buttonlabel | translate}}</button>
+        ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
     </span>
     <span ng-if="$ctrl.taskstatusshow" class="pull-right">
       <taskstatusselector status="$ctrl.taskstatus"
-        change="$ctrl.taskstatuschange({status})"></taskstatusselector>
+        changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
     </span>
   </h1>
 </div>

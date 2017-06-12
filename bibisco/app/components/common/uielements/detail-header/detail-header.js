@@ -21,7 +21,7 @@ component('detailheader', {
     breadcrumbitems: '<',
     headertitle: '@',
     taskstatus: '<',
-    taskstatuschange: '&'
+    taskstatuschangefunction: '&'
   }
 });
 

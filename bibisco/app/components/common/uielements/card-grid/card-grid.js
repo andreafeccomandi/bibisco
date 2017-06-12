@@ -19,17 +19,17 @@ component('cardgrid', {
   controller: CardGridController,
   bindings: {
     dndenabled: '@',
-    drop: '&',
+    dropfunction: '&',
     emptylistboxtext: '@',
     emptylistboxbuttonlabel: '@',
-    emptylistboxbuttonaction: '&',
+    emptylistboxbuttonfunction: '&',
     family: '@',
     items: '<',
     pageheaderbuttonlabel: '@',
-    pageheaderbuttonaction: '&',
+    pageheaderbuttonfunction: '&',
     pageheadertitle: '@',
     pageheadersubtitle: '@',
-    select: '&'
+    selectfunction: '&'
   }
 });
 

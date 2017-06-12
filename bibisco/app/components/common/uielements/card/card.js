@@ -22,9 +22,9 @@ component('card', {
     cardtitle: '<',
     characters: '<',
     dndenabled: '<',
-    drop: '&',
+    dropfunction: '&',
     family: '<',
-    select: '&',
+    selectfunction: '&',
     status: '<',
     text: '<',
     words: '<'
