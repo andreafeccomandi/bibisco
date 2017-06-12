@@ -62,6 +62,10 @@ h6, label, th, td, p {
 	left: 0px;
 }
 
+.detail-content-subtitle {
+	 color: #777;
+}
+
 .detail-header {
 	position: fixed;
 	height: 150px;
@@ -240,6 +244,52 @@ h3 {
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
 	background-color: #fff !important;
 	border-color: #ccc !important;
+}
+
+/* RICH TEXT EDITOR STYLES */
+.bibiscoRichTextEditor-bodyClass-courierbig {
+	font-family: courier new, courier, monospace;
+	font-size: 20px;
+}
+
+.bibiscoRichTextEditor-bodyClass-couriermedium {
+	font-family: courier new, courier, monospace;
+	font-size: 18px;
+}
+
+.bibiscoRichTextEditor-bodyClass-couriersmall {
+	font-family: courier new, courier, monospace;
+	font-size: 16px;
+}
+
+.bibiscoRichTextEditor-bodyClass-timesbig {
+	font-family: Times New Roman, Times, serif;
+	font-size: 20px;
+}
+
+.bibiscoRichTextEditor-bodyClass-timesmedium {
+	font-family: Times New Roman, Times, serif;
+	font-size: 18px;
+}
+
+.bibiscoRichTextEditor-bodyClass-timessmall {
+	font-family: Times New Roman, Times, serif;
+	font-size: 16px;
+}
+
+.bibiscoRichTextEditor-bodyClass-arialbig {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 20px;
+}
+
+.bibiscoRichTextEditor-bodyClass-arialmedium {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 18px;
+}
+
+.bibiscoRichTextEditor-bodyClass-arialsmall {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 16px;
 }
 
 @media (max-width: 1000px) {

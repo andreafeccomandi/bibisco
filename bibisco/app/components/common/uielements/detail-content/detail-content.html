@@ -1,0 +1,16 @@
+<div class="detail-content">
+  <div class="container">
+    <div class="row" ng-if="$ctrl.subtitle">
+      <div class="col-sm-12">
+        <detailcontentsubtitle subtitle="{{$ctrl.subtitle}}">
+        </detailcontentsubtitle>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <detailviewcontent content="{{$ctrl.content}}" contentstyle="{{$ctrl.contentstyle}}">
+        </detailviewcontent>
+      </div>
+    </div>
+  </div>
+</div>
