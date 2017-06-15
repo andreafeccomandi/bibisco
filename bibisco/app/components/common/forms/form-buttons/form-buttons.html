@@ -1,6 +1,7 @@
 <div class="top30 bibiscoNotSelectableText col-sm-{{$ctrl.sizecols}} col-sm-offset-{{$ctrl.offsetcols}}">
   <button type="submit" class="btn btn-primary">{{"jsp.common.button.save" | translate}}</button>
-  <backbuttonwithconfirm dirty="$ctrl.form.$dirty"
-    backfunction="$ctrl.backfunction()">
-  </backbuttonwithconfirm>
+  <buttonwithconfirm enableconfirm="$ctrl.form.$dirty"
+    buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.backfunction()"
+    buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+  </buttonwithconfirm>
 </div>
