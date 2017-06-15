@@ -273,7 +273,7 @@
   "jsp.characters.delete.ko": "Nemůžete smazat tuto osobu, protože se již objevuje v nějaké scéně.",
   "jsp.characterTitle.form.title": "Jméno postavy",
   "jsp.character.dialog.title.updateTitle": "Změnit jméno postavy",
-  "jsp.character.button.updateTitle": "Změnit jméno postavy",
+  "jsp.character.button.updateTitle": "změnit jméno postavy",
   "jsp.character.h3.whois": "Kdo je on/ona?",
   "jsp.character.h3.seems": "Jak vypadá?",
   "jsp.character.h3.think": "Co si on/ona myslí?",

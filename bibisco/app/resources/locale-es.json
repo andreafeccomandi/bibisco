@@ -273,7 +273,7 @@
   "jsp.characters.delete.ko": "No puedes eliminar este personaje debido a que aparece en varias escenas.",
   "jsp.characterTitle.form.title": "Nombre del personaje",
   "jsp.character.dialog.title.updateTitle": "Cambiar nombre del personaje",
-  "jsp.character.button.updateTitle": "Cambiar nombre del personaje",
+  "jsp.character.button.updateTitle": "cambiar nombre del personaje",
   "jsp.character.h3.whois": "1. ¿Quién es el/ella?",
   "jsp.character.h3.seems": "2. ¿Qué aspecto tiene?",
   "jsp.character.h3.think": "3. ¿Qué es lo que piensa?",

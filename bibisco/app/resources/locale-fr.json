@@ -273,7 +273,7 @@
   "jsp.characters.delete.ko": "Vous ne pouvez pas supprimer ce personnage car il est déjà associé à certaines scènes.",
   "jsp.characterTitle.form.title": "Nom du personnage",
   "jsp.character.dialog.title.updateTitle": "Changer le nom du personnage",
-  "jsp.character.button.updateTitle": "Changer le nom du personnage",
+  "jsp.character.button.updateTitle": "changer le nom du personnage",
   "jsp.character.h3.whois": "1. Qui est-il/elle ?",
   "jsp.character.h3.seems": "2. De quoi a-t-il/elle lʼair ?",
   "jsp.character.h3.think": "3. À quoi pense-t-il/elle ?",

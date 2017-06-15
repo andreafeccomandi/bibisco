@@ -273,7 +273,7 @@
   "jsp.characters.delete.ko": "Nie można usunąć tego bohatera, bo jest już w niektórych scenach.",
   "jsp.characterTitle.form.title": "Nazwa bohatera",
   "jsp.character.dialog.title.updateTitle": "Zmień nazwę bohatera",
-  "jsp.character.button.updateTitle": "Zmień nazwę bohatera",
+  "jsp.character.button.updateTitle": "zmień nazwę bohatera",
   "jsp.character.h3.whois": "1. Kim jest?",
   "jsp.character.h3.seems": "2. Jak wygląda?",
   "jsp.character.h3.think": "3. Co myśli?",

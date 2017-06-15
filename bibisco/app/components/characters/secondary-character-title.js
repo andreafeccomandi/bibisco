@@ -30,8 +30,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
     // common bradcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.characters',
-      href: '/project/characters'
+      label: 'jsp.projectFromScene.nav.li.characters'
     });
 
     if ($routeParams.operation == 'edit') {

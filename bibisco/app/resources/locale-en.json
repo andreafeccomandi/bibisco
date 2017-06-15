@@ -286,7 +286,7 @@
   "jsp.characters.delete.ko": "You cannot delete this character, because he/she already appears in some scenes.",
   "jsp.characterTitle.form.title": "Characterʼs name",
   "jsp.character.dialog.title.updateTitle": "Change the characterʼs name",
-  "jsp.character.button.updateTitle": "Change the characterʼs name",
+  "jsp.character.button.updateTitle": "change the characterʼs name",
   "jsp.character.h3.whois": "1. Who is he/she?",
   "jsp.character.h3.seems": "2. How does he/she look?",
   "jsp.character.h3.think": "3. What does he/she think?",

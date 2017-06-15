@@ -309,7 +309,7 @@
   "jsp.characters.delete.ko": "Não pode eliminar este personagem. Já o inclui nalgumas cenas.",
   "jsp.characterTitle.form.title": "Nome do personagem",
   "jsp.character.dialog.title.updateTitle": "Alterar o nome do personagem",
-  "jsp.character.button.updateTitle": "Alterar o nome do personagem",
+  "jsp.character.button.updateTitle": "alterar o nome do personagem",
   "jsp.character.h3.whois": "1. Quem é?",
   "jsp.character.h3.seems": "2. Qual o seu aspecto?",
   "jsp.character.h3.think": "3. O que é que pensa?",
