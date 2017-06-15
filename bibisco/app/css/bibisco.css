@@ -237,6 +237,22 @@ h3 {
 	padding: 15px 15px;
 }
 
+/* MODAL DIALOG */
+.modal-dialog {
+  width: 250px;
+  margin: 250px auto;
+}
+
+.modal-body {
+	padding-bottom: 0px;
+	text-align: center;
+}
+
+.modal-footer {
+	border-top: 0px;
+	text-align: center;
+}
+
 /* BUTTON FOCUS BORDER*/
 .btn:focus,.btn:active {
    outline: none !important;
