@@ -1,0 +1,44 @@
+<div class="detail-footer">
+  <div class="container">
+    <div class="row" ng-if="$ctrl.wordscharactersenabled">
+      <span class="pull-right">
+        <span class="label label-info">Words: {{$ctrl.words}}</span>
+        <span class="label label-info">Characters: {{$ctrl.characters}}</span>
+      </span>
+    </div>
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-left">
+      <button type="button" class="btn btn-default">show project explorer</button>
+      <button type="button" class="btn btn-default">show images</button>
+      <button type="button" class="btn btn-default">display tags</button>
+    </span>
+    <span class="pull-right">
+      <div class="btn-group dropup" uib-dropdown is-open="status.isopen">
+        <button id="single-button" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle ng-disabled="disabled">
+          more... <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown role="menu"
+          aria-labelledby="single-button">
+          <li role="menuitem" ng-if="$ctrl.changetitleenabled">
+            <a href="" ng-click="$ctrl.changetitlefunction()">
+              {{$ctrl.changetitlelabel | translate}}
+            </a>
+          </li>
+          <li role="menuitem" ng-if="$ctrl.deleteenabled">
+            <a href="" ng-click="$ctrl.delete()">
+              {{ 'jsp.common.button.delete' | translate }}
+            </a></li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-primary" ng-click="$ctrl.buttonfunction()">{{"jsp.common.button.edit" | translate}}</button>
+      <buttonwithconfirm enableconfirm="$ctrl.dirty"
+        buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.backfunction()"
+        buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+      </buttonwithconfirm>
+      </span>
+    </div>
+  </div>
+</div>
