@@ -43,6 +43,7 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
       return currentLocale;
     },
     setCurrentLocale: function(locale) {
+
       // updating current locale
       currentLocale = locale;
 
@@ -64,7 +65,8 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'it': 'Italiano',
         'pl': 'Polski',
         'pt-br': 'Português (Brasil)',
-        'pt-pt': 'Português (Portugal)'
+        'pt-pt': 'Português (Portugal)',
+        'ru': 'Русский'
       };
     }
   };
@@ -88,6 +90,8 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'it';
   } else if (preferredLanguage.startsWith('pl')) {
     preferredLocale = 'pl';
+  } else if (preferredLanguage.startsWith('ru')) {
+    preferredLocale = 'ru';
   } else if (preferredLanguage == 'pt-br') {
     preferredLocale = 'pt_BR';
   } else if (preferredLanguage == 'en-ca') {

@@ -51,6 +51,7 @@ function CreateProjectController($location, $rootScope, LocaleService,
     'pl': 'Polski',
     'pt-br': 'Português (Brasil)',
     'pt-pt': 'Português (Portugal)',
+    'ru': 'Русский',
     'sv': 'Svenska'
   }
 
