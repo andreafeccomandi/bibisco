@@ -33,6 +33,7 @@
   "jsp.common.button.print": "Drucken",
   "jsp.common.button.save": "Speichern",
   "jsp.common.button.delete": "Löschen",
+  "jsp.common.button.more": "Mehr",
   "jsp.common.button.movefirst": "Zum Anfang springen",
   "jsp.common.button.moveleft": "Zur vorigen Position springen",
   "jsp.common.button.moveright": "Zur nächsten Position springen",

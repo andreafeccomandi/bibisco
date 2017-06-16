@@ -12,9 +12,9 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     propertiesToJSON: {
-        main: {
-            src: ['/Users/andreafeccomandi/git/bibisco/bibisco/app/resources/*.properties']
-        }
+      main: {
+        src: ['/Users/andreafeccomandi/Desktop/*.properties']
+      }
     }
   });
 
