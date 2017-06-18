@@ -32,6 +32,14 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
+    remove: function(collection, id) {
+      let element = collection.get(id);
+      let elementPosition = element.position;
+      this.shiftDown(collection, elementPosition + 1, collection.count());
+      collection.remove(element);
+      ProjectDbConnectionService.saveDatabase();
+    },
+
     move: function(collection, sourceId, targetId, returnFn) {
 
       let source = collection.get(sourceId);
@@ -41,29 +49,11 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
       // shift down
       if (sourcePosition < targetPosition) {
-        let elementsToShift = collection.find({
-          position: {
-            '$between': [sourcePosition + 1,
-              targetPosition
-            ]
-          }
-        });
-        for (let i = 0; i < elementsToShift.length; i++) {
-          elementsToShift[i].position = elementsToShift[i].position - 1;
-        }
+        this.shiftDown(collection, sourcePosition + 1, targetPosition);
       }
       // shift up
       else {
-        let elementsToShift = collection.find({
-          position: {
-            '$between': [targetPosition, sourcePosition -
-              1
-            ]
-          }
-        });
-        for (let i = 0; i < elementsToShift.length; i++) {
-          elementsToShift[i].position = elementsToShift[i].position + 1;
-        }
+        this.shiftUp(collection, targetPosition, sourcePosition - 1);
       }
 
       source.position = targetPosition;
@@ -71,6 +61,28 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       ProjectDbConnectionService.saveDatabase();
 
       return returnFn();
+    },
+
+    shiftDown: function(collection, startPosition, endPosition) {
+      let elementsToShift = collection.find({
+        position: {
+          '$between': [startPosition, endPosition]
+        }
+      });
+      for (let i = 0; i < elementsToShift.length; i++) {
+        elementsToShift[i].position = elementsToShift[i].position - 1;
+      }
+    },
+
+    shiftUp: function(collection, startPosition, endPosition) {
+      let elementsToShift = collection.find({
+        position: {
+          '$between': [startPosition, endPosition]
+        }
+      });
+      for (let i = 0; i < elementsToShift.length; i++) {
+        elementsToShift[i].position = elementsToShift[i].position + 1;
+      }
     }
   }
 });
