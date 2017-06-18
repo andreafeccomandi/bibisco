@@ -29,6 +29,7 @@ component('detailfooter', {
     deleteforbiddenmessage: '@',
     deletefunction: '&',
     dirty: '<',
+    elementid: '<',
     extrabuttons: '<',
     mode: '<',
     savefunction: '&',
@@ -48,8 +49,14 @@ function DetailFooterController(LoggerService, PopupBoxesService) {
     if (self.deleteforbidden) {
       PopupBoxesService.alert(self.deleteforbiddenmessage);
     } else {
-      PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
+      PopupBoxesService.confirm(self.deleteelement, self.deleteconfirmmessage);
     }
+  }
+
+  self.deleteelement = function() {
+    self.deletefunction({
+      id: self.elementid
+    });
   }
 
   LoggerService.debug('End DetailFooterController...');
