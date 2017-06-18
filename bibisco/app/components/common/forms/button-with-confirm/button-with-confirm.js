@@ -44,6 +44,7 @@ function ButtonWithConfirmController($uibModal, LoggerService) {
   self.openComponentModal = function() {
     var modalInstance = $uibModal.open({
       animation: true,
+      backdrop: 'static',
       component: 'modalconfirm',
       resolve: {
         message: function() {
