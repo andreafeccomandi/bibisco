@@ -27,7 +27,7 @@ component('buttonwithconfirm', {
 });
 
 
-function ButtonWithConfirmController($uibModal, LoggerService) {
+function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start ButtonWithConfirmController...');
 
@@ -35,30 +35,11 @@ function ButtonWithConfirmController($uibModal, LoggerService) {
 
   self.click = function() {
     if (self.enableconfirm) {
-      self.openComponentModal();
+      PopupBoxesService.confirm(self.buttonfunction, self.confirmmessage);
     } else {
       self.buttonfunction();
     }
   }
-
-  self.openComponentModal = function() {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'modalconfirm',
-      resolve: {
-        message: function() {
-          return self.confirmmessage;
-        }
-      }
-    });
-
-    modalInstance.result.then(function(selectedItem) {
-      self.buttonfunction();
-    }, function() {
-      // cancel
-    });
-  };
 
   LoggerService.debug('End ButtonWithConfirmController...');
 }

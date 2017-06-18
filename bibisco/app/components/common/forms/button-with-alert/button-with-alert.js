@@ -27,7 +27,7 @@ component('buttonwithalert', {
 });
 
 
-function ButtonWithAlertController($uibModal, LoggerService) {
+function ButtonWithAlertController(LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start ButtonWithAlertController...');
 
@@ -35,30 +35,11 @@ function ButtonWithAlertController($uibModal, LoggerService) {
 
   self.click = function() {
     if (self.enablealert) {
-      self.openComponentModal();
+      PopupBoxesService.alert(self.alertmessage);
     } else {
       self.buttonfunction();
     }
   }
-
-  self.openComponentModal = function() {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'modalalert',
-      resolve: {
-        message: function() {
-          return self.alertmessage;
-        }
-      }
-    });
-
-    modalInstance.result.then(function(selectedItem) {
-      // ok: unreachable code: we're in alert!
-    }, function() {
-      // cancel
-    });
-  };
 
   LoggerService.debug('End ButtonWithAlertController...');
 }
