@@ -25,6 +25,8 @@ component('detailfooter', {
     characters: '<',
     deleteconfirmmessage: '@',
     deleteenabled: '<',
+    deleteforbidden: '<',
+    deleteforbiddenmessage: '@',
     deletefunction: '&',
     dirty: '<',
     extrabuttons: '<',
@@ -36,29 +38,19 @@ component('detailfooter', {
 });
 
 
-function DetailFooterController($uibModal, LoggerService) {
+function DetailFooterController(LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterController...');
 
   var self = this;
 
   self.delete = function() {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      component: 'modalconfirm',
-      resolve: {
-        message: function() {
-          return self.deleteconfirmmessage;
-        }
-      }
-    });
-
-    modalInstance.result.then(function(selectedItem) {
-      self.deletefunction();
-    }, function() {
-      // cancel
-    });
-  };
+    if (self.deleteforbidden) {
+      PopupBoxesService.alert(self.deleteforbiddenmessage);
+    } else {
+      PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
+    }
+  }
 
   LoggerService.debug('End DetailFooterController...');
 }
