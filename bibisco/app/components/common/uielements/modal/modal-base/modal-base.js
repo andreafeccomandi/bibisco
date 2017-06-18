@@ -14,18 +14,19 @@
  */
 angular.
 module('bibiscoApp').
-component('modalconfirm', {
-  templateUrl: 'components/common/uielements/modal-confirm/modal-confirm.html',
-  controller: ModalConfirmController,
+component('modalbase', {
+  templateUrl: 'components/common/uielements/modal/modal-base/modal-base.html',
+  controller: ModalBaseController,
   bindings: {
     close: '&',
     dismiss: '&',
+    mode: '@',
     resolve: '<'
   },
 });
 
-function ModalConfirmController(LoggerService) {
-  LoggerService.debug('Start ModalConfirmController...');
+function ModalBaseController(LoggerService) {
+  LoggerService.debug('Start ModalBaseController...');
 
   var self = this;
 
@@ -45,5 +46,5 @@ function ModalConfirmController(LoggerService) {
     });
   };
 
-  LoggerService.debug('End ModalConfirmController...');
+  LoggerService.debug('End ModalBaseController...');
 }

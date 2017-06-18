@@ -1,0 +1,13 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
+  <div class="modal-body" id="modal-body">
+      {{$ctrl.message | translate}}
+  </div>
+  <div class="modal-footer">
+    <button ng-class="{ 'btn-danger': $ctrl.mode == 'confirm',
+      'btn-primary': $ctrl.mode == 'alert'  }"
+      class="btn" type="button" ng-click="$ctrl.ok()">
+      {{"js.bibisco.confirm.ok" | translate}}</button>
+    <button ng-if="$ctrl.mode == 'confirm'" class="btn btn-default" type="button"
+      ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
+  </div>
+</modal-component>
