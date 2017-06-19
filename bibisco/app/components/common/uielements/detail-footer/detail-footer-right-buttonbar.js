@@ -14,15 +14,14 @@
  */
 angular.
 module('bibiscoApp').
-component('detailfooter', {
-  templateUrl: 'components/common/uielements/detail-footer/detail-footer.html',
-  controller: DetailFooterController,
+component('detailfooterrightbuttonbar', {
+  templateUrl: 'components/common/uielements/detail-footer/detail-footer-right-buttonbar.html',
+  controller: DetailFooterRightButtonbarController,
   bindings: {
     backfunction: '&',
     changetitleenabled: '<',
     changetitlefunction: '&',
     changetitlelabel: '@',
-    characters: '<',
     deleteconfirmmessage: '@',
     deleteenabled: '<',
     deleteforbidden: '<',
@@ -30,20 +29,31 @@ component('detailfooter', {
     deletefunction: '&',
     dirty: '<',
     elementid: '<',
-    extrabuttons: '<',
     mode: '<',
-    savefunction: '&',
-    words: '<',
-    wordscharactersenabled: '<'
+    savefunction: '&'
   }
 });
 
 
-function DetailFooterController(LoggerService, PopupBoxesService) {
+function DetailFooterRightButtonbarController(LoggerService, PopupBoxesService) {
 
-  LoggerService.debug('Start DetailFooterController...');
+  LoggerService.debug('Start DetailFooterRightButtonbarController...');
 
   var self = this;
 
-  LoggerService.debug('End DetailFooterController...');
+  self.delete = function() {
+    if (self.deleteforbidden) {
+      PopupBoxesService.alert(self.deleteforbiddenmessage);
+    } else {
+      PopupBoxesService.confirm(self.deleteelement, self.deleteconfirmmessage);
+    }
+  }
+
+  self.deleteelement = function() {
+    self.deletefunction({
+      id: self.elementid
+    });
+  }
+
+  LoggerService.debug('End DetailFooterRightButtonbarController...');
 }

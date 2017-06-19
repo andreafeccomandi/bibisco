@@ -1,0 +1,24 @@
+<div class="btn-group dropup" uib-dropdown is-open="status.isopen">
+  <button id="single-button" type="button" class="btn btn-default btn-sm"
+    uib-dropdown-toggle ng-disabled="disabled"
+    ng-if="$ctrl.changetitleenabled || $ctrl.deleteenabled">
+    {{'jsp.common.button.more' | translate}}... <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" uib-dropdown role="menu"
+    aria-labelledby="single-button">
+    <li role="menuitem" ng-if="$ctrl.changetitleenabled">
+      <a href="" ng-click="$ctrl.changetitlefunction()">
+        {{$ctrl.changetitlelabel | translate}}
+      </a>
+    </li>
+    <li role="menuitem" ng-if="$ctrl.deleteenabled">
+      <a href="" ng-click="$ctrl.delete()">
+        {{ 'jsp.common.button.delete' | translate }}
+      </a></li>
+  </ul>
+</div>
+<button type="button" class="btn btn-primary" ng-click="$ctrl.buttonfunction()">{{"jsp.common.button.edit" | translate}}</button>
+<buttonwithconfirm enableconfirm="$ctrl.dirty"
+  buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.backfunction()"
+  buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+</buttonwithconfirm>
