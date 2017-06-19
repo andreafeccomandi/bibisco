@@ -267,7 +267,7 @@
   "jsp.character.thumbnail.physionomy.description": "Eyes, hair, mouth, nose, ears, hands, build, height, weight, race.",
   "jsp.character.thumbnail.personaldata.title": "Personal data",
   "jsp.character.thumbnail.personaldata.description": "First name, surname, nickname, gender, age, birthplace, residence, education, financial situation.",
-  "jsp.character.thumbnail.images.title": "Images",
+  "jsp.character.thumbnail.images.title": "images",
   "jsp.character.thumbnail.images.description": "Character images collection.",
   "jsp.character.thumbnail.psychology.title": "Psychology",
   "jsp.character.thumbnail.psychology.description": "Each and every aspect of the characterʼs psychology.",
@@ -667,5 +667,6 @@
   "jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable": "Analysis is not available, because you have not specified characters in the sceneʼs tags section.",
   "jsp.analysisChaptersLength.em.noItemAvailable": "Analysis is not available, because you havenʼt created any chapters yet.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Chapters",
-  "jsp.analysisChaptersLength.js.yaxis.label": "Words"
+  "jsp.analysisChaptersLength.js.yaxis.label": "Words",
+  "detailfooterleftbuttonbar.projectexplorer.button": "project explorer"
 }

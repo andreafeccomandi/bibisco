@@ -254,7 +254,7 @@
   "jsp.character.thumbnail.physionomy.description": "Oči, vlasy, pusa, nos, uši, ruce, stavba těla, váha, výška, rasa",
   "jsp.character.thumbnail.personaldata.title": "Osobní informace",
   "jsp.character.thumbnail.personaldata.description": "Jméno, příjmení, přezdívka, pohlaví, věk, rodiště, bydliště, vzdělání, finanční situace.",
-  "jsp.character.thumbnail.images.title": "Představy",
+  "jsp.character.thumbnail.images.title": "představy",
   "jsp.character.thumbnail.images.description": "Sbírka představ postavy",
   "jsp.character.thumbnail.psychology.title": "Mentalita",
   "jsp.character.thumbnail.psychology.description": "Každý aspekt mentality osoby.",
@@ -635,5 +635,6 @@
   "jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable": "Analýza není k dispozici, protože jste nespecifikoval postavy v této části scény.",
   "jsp.analysisChaptersLength.em.noItemAvailable": "Analýza není k dispozici, protože jste ještě nevytvořil žádné kapitoly.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Kapitoly",
-  "jsp.analysisChaptersLength.js.yaxis.label": "Slova"
+  "jsp.analysisChaptersLength.js.yaxis.label": "Slova",
+  "detailfooterleftbuttonbar.projectexplorer.button": "prohlížeč projektu"
 }

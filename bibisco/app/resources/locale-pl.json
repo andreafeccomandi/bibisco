@@ -254,7 +254,7 @@
   "jsp.character.thumbnail.physionomy.description": "Oczy, włosy, usta, nos, uszy, ręce, sylwetka, wzrost, masa ciała, rasa.",
   "jsp.character.thumbnail.personaldata.title": "Dane osobowe",
   "jsp.character.thumbnail.personaldata.description": "Imię, nazwisko, przydomek, płeć, wiek, miejsce urodzenia, miejsce zamieszkania, wykształcenie, sytuacja finansowa.",
-  "jsp.character.thumbnail.images.title": "Obrazy",
+  "jsp.character.thumbnail.images.title": "obrazy",
   "jsp.character.thumbnail.images.description": "Kolekcja obrazów bohatera.",
   "jsp.character.thumbnail.psychology.title": "Psychologia",
   "jsp.character.thumbnail.psychology.description": "Każdy aspekt psychologii bohatera",
@@ -636,5 +636,6 @@
   "jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable": "Analiza nie jest dostępna, ponieważ nie określiłeś bohaterów w sekcji tagów sceny.",
   "jsp.analysisChaptersLength.em.noItemAvailable": "Analiza nie jest dostępna, ponieważ nie utworzyłeś jeszcze żadnego rozdziału.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Rozdziały",
-  "jsp.analysisChaptersLength.js.yaxis.label": "Słowa"
+  "jsp.analysisChaptersLength.js.yaxis.label": "Słowa",
+  "detailfooterleftbuttonbar.projectexplorer.button": "eksplorator projektu"
 }

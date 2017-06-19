@@ -254,7 +254,7 @@
   "jsp.character.thumbnail.physionomy.description": "Occhi, capelli, bocca, naso, orecchie, mani, corporatura, altezza, peso, razza.",
   "jsp.character.thumbnail.personaldata.title": "Dati personali",
   "jsp.character.thumbnail.personaldata.description": "Nome, cognome, soprannome, sesso, età, luogo di nascita, luogo in cui vive, titolo di studio, professione, situazione economica.",
-  "jsp.character.thumbnail.images.title": "Immagini",
+  "jsp.character.thumbnail.images.title": "immagini",
   "jsp.character.thumbnail.images.description": "Raccolta di immagini del personaggio.",
   "jsp.character.thumbnail.psychology.title": "Psicologia",
   "jsp.character.thumbnail.psychology.description": "Tutti, ma proprio tutti, gli aspetti della psicologia del personaggio.",
@@ -651,5 +651,6 @@
   "jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable": "Lʼanalisi non è disponibile, perchè nella sezione etichette delle scene non sono stati indicati i personaggi.",
   "jsp.analysisChaptersLength.em.noItemAvailable": "Lʼanalisi non è disponibile, perchè non hai ancora creato un capitolo.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Capitoli",
-  "jsp.analysisChaptersLength.js.yaxis.label": "Parole"
+  "jsp.analysisChaptersLength.js.yaxis.label": "Parole",
+  "detailfooterleftbuttonbar.projectexplorer.button": "esplora progetto"
 }

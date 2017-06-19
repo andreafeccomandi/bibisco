@@ -682,5 +682,6 @@
   "jsp.analysisItemsChaanalysisCharacterScenepters.em.noItemPresenceAvailable": "Анализ недоступен, потому что вы не указали персонажей в разделе тегов сцены.",
   "jsp.analysisChaptersLength.em.noItemAvailable": "Анализ недоступен, потому что вы не создали ни одной главы.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Глав",
-  "jsp.analysisChaptersLength.js.yaxis.label": "Слов"
+  "jsp.analysisChaptersLength.js.yaxis.label": "Слов",
+  "detailfooterleftbuttonbar.projectexplorer.button": "Окно проекта"
 }
