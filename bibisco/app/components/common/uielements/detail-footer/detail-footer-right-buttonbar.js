@@ -28,7 +28,7 @@ component('detailfooterrightbuttonbar', {
     deleteforbiddenmessage: '@',
     deletefunction: '&',
     dirty: '<',
-    mode: '<',
+    editmode: '=',
     savefunction: '&'
   }
 });
@@ -46,6 +46,10 @@ function DetailFooterRightButtonbarController(LoggerService, PopupBoxesService) 
     } else {
       PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
     }
+  }
+
+  self.enableeditmode = function() {
+    self.editmode = true;
   }
 
   LoggerService.debug('End DetailFooterRightButtonbarController...');
