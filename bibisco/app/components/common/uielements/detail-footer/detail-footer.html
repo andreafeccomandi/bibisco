@@ -11,10 +11,12 @@
     </div>
     <div class="row">
       <span class="pull-left">
-        <button type="button" class="btn btn-default">show project explorer</button>
-        <button type="button" class="btn btn-default">show images</button>
-        <button type="button" class="btn btn-default">show tags</button>
-
+        <detailfooterleftbuttonbar
+          elementid="$ctrl.secondarycharacter.$loki"
+          imagesenabled="$ctrl.imagesenabled"
+          showimagesfunction="$ctrl.showimagesfunction()"
+          showprojectexplorer="$ctrl.showprojectexplorer">
+        </detailfooterleftbuttonbar>
       </span>
       <span class="pull-right">
         <detailfooterrightbuttonbar

@@ -31,8 +31,11 @@ component('detailfooter', {
     dirty: '<',
     elementid: '<',
     extrabuttons: '<',
+    imagesenabled: '<',
     mode: '<',
     savefunction: '&',
+    showimagesfunction: '&',
+    showprojectexplorer: '=',
     words: '<',
     wordscharactersenabled: '<'
   }
