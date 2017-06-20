@@ -29,7 +29,6 @@ component('detailfooter', {
     deleteforbiddenmessage: '@',
     deletefunction: '&',
     dirty: '<',
-    elementid: '<',
     extrabuttons: '<',
     imagesenabled: '<',
     mode: '<',

@@ -28,7 +28,6 @@ component('detailfooterrightbuttonbar', {
     deleteforbiddenmessage: '@',
     deletefunction: '&',
     dirty: '<',
-    elementid: '<',
     mode: '<',
     savefunction: '&'
   }
@@ -45,14 +44,8 @@ function DetailFooterRightButtonbarController(LoggerService, PopupBoxesService) 
     if (self.deleteforbidden) {
       PopupBoxesService.alert(self.deleteforbiddenmessage);
     } else {
-      PopupBoxesService.confirm(self.deleteelement, self.deleteconfirmmessage);
+      PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
     }
-  }
-
-  self.deleteelement = function() {
-    self.deletefunction({
-      id: self.elementid
-    });
   }
 
   LoggerService.debug('End DetailFooterRightButtonbarController...');
