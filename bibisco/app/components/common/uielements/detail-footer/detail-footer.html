@@ -1,14 +1,7 @@
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <div class="row" ng-if="$ctrl.wordscharactersenabled">
-      <span class="pull-right">
-        <span class="label label-info">Words: {{$ctrl.words}}</span>
-      <span class="label label-info">Characters: {{$ctrl.characters}}</span>
-      </span>
-    </div>
-    <div class="row">
-      <hr />
-    </div>
+    <detailfootertop characters="$ctrl.characters" words="$ctrl.words" wordscharactersenabled="$ctrl.wordscharactersenabled">
+    </detailfootertop>
     <div class="row">
       <span class="pull-left">
         <detailfooterleftbuttonbar
