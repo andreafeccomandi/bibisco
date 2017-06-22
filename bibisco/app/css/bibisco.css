@@ -53,17 +53,22 @@ h6, label, th, td, p {
 }
 
 /* DETAIL ELEMENT HEADER, FOOTER, CONTENT */
-.detail-content {
+.detail-content-with-header-subtitle {
 	overflow-y: auto;
-	height: calc(100% - 280px);
+	height: calc(100% - 335px);
 	width: 100%;
 	position: absolute;
-	top: 180px;
+	top: 225px;
 	left: 0px;
 }
 
-.detail-content-subtitle {
-	 color: #777;
+.detail-content-no-header-subtitle {
+	overflow-y: auto;
+	height: calc(100% - 300px);
+	width: 100%;
+	position: absolute;
+	top: 190px;
+	left: 0px;
 }
 
 .detail-header {
@@ -94,6 +99,12 @@ h6, label, th, td, p {
 	margin-bottom: 5px;
 }
 
+/* BLOCKQUOTE */
+blockquote {
+	padding: 5px 15px;
+	margin: -10px 0 10px 15px;
+}
+
 /* HEADER */
 h1 {
 	font-size: 30px;
@@ -121,7 +132,19 @@ h3 {
 }
 
 .page-header-truncate-title {
-  width: calc(100% - 180px);
+  width: calc(100% - 200px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-header-subtitle {
+	 color: #777;
+	 font-size: 16px;
+}
+
+.page-subheader-truncate-title {
+  width: calc(100% - 50px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

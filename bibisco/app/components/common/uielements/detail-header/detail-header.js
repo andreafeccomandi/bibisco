@@ -20,6 +20,7 @@ component('detailheader', {
   bindings: {
     breadcrumbitems: '<',
     headertitle: '@',
+    headersubtitle: '@',
     taskstatus: '<',
     taskstatuschangefunction: '&'
   }

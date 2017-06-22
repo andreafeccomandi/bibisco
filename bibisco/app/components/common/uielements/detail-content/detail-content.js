@@ -20,8 +20,9 @@ component('detailcontent', {
   bindings: {
     content: '@',
     contentstyle: '@',
-    mode: '<',
-    subtitle: '@'
+    editmode: '<',
+    headersubtitle: '<',
+    showprojectexplorer: '<'
   }
 });
 

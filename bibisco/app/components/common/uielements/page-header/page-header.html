@@ -1,6 +1,7 @@
 <div class="col-sm-12 page-header">
-  <h1><span class="pull-left page-header-truncate-title">{{$ctrl.headertitle | translate}}
-    <small ng-if="$ctrl.headersubtitle">{{$ctrl.headersubtitle | translate}}</small></span>
+  <h1><span class="pull-left page-header-truncate-title">
+        {{$ctrl.headertitle | translate}}
+      </span>
     <span ng-if="$ctrl.buttonshow" class="pull-right">
       <button type="button" class="btn btn-primary"
         ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
@@ -10,4 +11,12 @@
         changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
     </span>
   </h1>
+</div>
+<div class="row" ng-if="$ctrl.headersubtitle">
+  <div class="col-sm-12">
+    <blockquote>
+      <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+      {{$ctrl.headersubtitle | translate}}</i>
+    </blockquote>
+  </div>
 </div>
