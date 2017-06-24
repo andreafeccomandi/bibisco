@@ -31,25 +31,52 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
 
-    self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.characters',
-      href: '/project/characters'
+    self.breadcrumbitems = [];
+    self.breadcrumbitems.push({
+      label: 'jsp.projectFromScene.nav.li.characters'
     });
-    self.breadcrumbItems.push({
+    self.breadcrumbitems.push({
       labelvalue: self.secondarycharacter.name
     });
 
+    self.editmode = false;
+    self.showprojectexplorer = true;
+
   };
+
+  self.back = function() {
+    $location.path('/project/characters');
+  }
+
+  self.changeStatus = function(status) {
+    self.secondarycharacter.status = status;
+    SecondaryCharacterService.update(self.secondarycharacter);
+  }
 
   self.changeTitle = function() {
     $location.path('/secondarycharactertitle/edit/' + self.secondarycharacter
       .$loki);
   }
 
+  self.delete = function() {
+    SecondaryCharacterService.remove(self.secondarycharacter
+      .$loki);
+    $location.path('/project/characters');
+  }
+
   self.getSecondaryCharacter = function(id) {
     return secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter(
       id);
+  }
+
+  self.savefunction = function() {
+    alert('Qui si salverà il testo per id=' + self.secondarycharacter
+      .$loki);
+  }
+
+  self.showimagesfunction = function() {
+    alert('Qui si visualizzeranno le immagini per id=' + self.secondarycharacter
+      .$loki);
   }
 
   LoggerService.debug('End SecondaryCharacterDetailController...');
