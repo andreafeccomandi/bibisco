@@ -2,9 +2,14 @@
   'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
   <div class="container">
     <div class="row">
-      <div class="col-sm-8 col-sm-offset-2">
-        <detailviewcontent content="{{$ctrl.content}}" contentstyle="{{$ctrl.contentstyle}}">
+      <div ng-class="{'col-sm-8': !$ctrl.showprojectexplorer,
+        'col-sm-offset-2': !$ctrl.showprojectexplorer,
+        'col-sm-7': $ctrl.showprojectexplorer,
+        'col-sm-offset-5': $ctrl.showprojectexplorer}">
+        <detailviewcontent ng-if="!$ctrl.editmode" content="{{$ctrl.content}}" contentstyle="{{$ctrl.contentstyle}}">
         </detailviewcontent>
+        <detaileditcontent ng-if="$ctrl.editmode" content="{{$ctrl.content}}" contentstyle="{{$ctrl.contentstyle}}">
+        </detaileditcontent>
       </div>
     </div>
   </div>
