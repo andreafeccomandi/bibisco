@@ -39,7 +39,6 @@
     "fs-extra": "^2.1.2",
     "lokijs": "^1.4.3",
     "ng-focus-if": "^1.0.7",
-    "ng-quill": "^3.2.2",
     "ui-select": "^0.19.6",
     "uuid": "^3.0.1",
     "validator": "^7.0.0",
