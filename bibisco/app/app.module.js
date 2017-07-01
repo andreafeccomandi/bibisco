@@ -15,14 +15,15 @@
 
 // Define the 'bibisco' module
 var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
-    'pascalprecht.translate', // angular-translate
-    'tmh.dynamicLocale', // angular-dynamic-locale
-    'ui.select',
-    'ngSanitize',
-    'ngMessages',
     'focus-if',
     'mwl.confirm',
-    'ui.bootstrap'
+    'ngSanitize',
+    'ngMessages',
+    'ngQuill',
+    'pascalprecht.translate', // angular-translate
+    'tmh.dynamicLocale', // angular-dynamic-locale
+    'ui.bootstrap',
+    'ui.select'
   ])
   .config(['$locationProvider', '$routeProvider',
     function config($locationProvider, $routeProvider) {
@@ -107,6 +108,47 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
   .config(function(tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern(
       '../node_modules/angular-i18n/angular-locale_{{locale}}.js');
+  })
+  .config(function(ngQuillConfigProvider) {
+
+    var icons = Quill.import('ui/icons');
+    icons['bold'] = '<i class="fa fa-bold" aria-hidden="true"></i>';
+    icons['italic'] = '<i class="fa fa-italic" aria-hidden="true"></i>';
+    icons['underline'] = '<i class="fa fa-underline" aria-hidden="true"></i>';
+    icons['strike'] =
+      '<i class="fa fa-strikethrough" aria-hidden="true"></i>';
+    icons['color'] =
+      '<i class="fa fa-tint" aria-hidden="true"></i>';
+    icons['background'] =
+      '<i class="fa fa-pencil" aria-hidden="true"></i>';
+    icons['list'] = {
+      'ordered': '<i class="fa fa-list-ol" aria-hidden="true"></i>',
+      'bullet': '<i class="fa fa-list-ul" aria-hidden="true"></i>',
+    };
+    icons['align'] = {
+      '': '<i class="fa fa-align-left" aria-hidden="true"></i>',
+      'center': '<i class="fa fa-align-center" aria-hidden="true"></i>',
+      'right': '<i class="fa fa-align-right" aria-hidden="true"></i>',
+      'justify': '<i class="fa fa-align-justify" aria-hidden="true"></i>'
+    };
+    icons['indent'] = {
+      '-1': '<i class="fa fa-dedent" aria-hidden="true"></i>',
+      '+1': '<i class="fa fa-indent" aria-hidden="true"></i>',
+    };
+
+    ngQuillConfigProvider.set({
+      modules: {
+        history: {
+          delay: 2000,
+          maxStack: 500,
+          userOnly: true
+        }
+      },
+      theme: 'snow',
+      placeholder: 'qui quo qua!',
+      bounds: document.body,
+      readyOnly: false
+    });
   })
 
 // By default, AngularJS will catch errors and log them to
