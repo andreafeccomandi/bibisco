@@ -109,6 +109,11 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     tmhDynamicLocaleProvider.localeLocationPattern(
       '../node_modules/angular-i18n/angular-locale_{{locale}}.js');
   })
+  .config(function($uibTooltipProvider) {
+    $uibTooltipProvider.options({
+      'appendToBody': true
+    })
+  })
   .config(function(ngQuillConfigProvider) {
 
     var icons = Quill.import('ui/icons');
