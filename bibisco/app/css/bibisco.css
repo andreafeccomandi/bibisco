@@ -94,6 +94,35 @@ h6, label, th, td, p {
 	font-size: 80%;
 }
 
+/* RICH TEXT EDITOR */
+.richtexteditor-toolbar {
+	margin-bottom: 10px;
+}
+
+.richtexteditor-contenteditable {
+	padding: 10px;
+}
+
+.richtexteditor-contenteditable:focus {
+	outline-style: none !important;
+}
+
+.richtexteditor-contenteditable-container {
+	border: 2px;
+	border-radius: 5px;
+	border-color: #2D6987;
+	border-style: solid;
+	height: calc(100% - 40px);
+	overflow-y: auto;
+	width: 100%;
+}
+
+@media (max-width: 1199px) {
+	.richtexteditor-contenteditable-container {
+		height: calc(100% - 70px);
+	}
+}
+
 /* BREADCRUMB */
 .breadcrumb {
 	margin-bottom: 5px;
@@ -330,6 +359,8 @@ h3 {
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 16px;
 }
+
+
 
 @media (max-width: 1000px) {
 		.navbar {
