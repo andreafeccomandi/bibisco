@@ -29,19 +29,121 @@ function RichTextEditorController($document, LoggerService) {
   LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
-  self.editor = null;
+  self.boldactive = false;
+  self.italicactive = false;
+  self.underlineactive = false;
+  self.strikethroughactive = false;
+  self.highlightactive = false;
+  self.aligncenteractive = false;
+  self.alignleftactive = false;
+  self.alignrightactive = false;
+  self.justifyactive = false;
+  self.orderedlistactive = false;
+  self.unorderedlistactive = false;
 
-  self.editorCreated = function(editor) {
-    console.log('Editor creato!');
-    self.editor = editor;
+  self.disablestylebuttons = function() {
+    self.boldactive = false;
+    self.italicactive = false;
+    self.underlineactive = false;
+    self.strikethroughactive = false;
+    self.highlightactive = false;
+    self.aligncenteractive = false;
+    self.alignleftactive = false;
+    self.alignrightactive = false;
+    self.justifyactive = false;
+    self.orderedlistactive = false;
+    self.unorderedlistactive = false;
+  }
+
+  self.checkselectionstate = function() {
+
+    if ($document[0].queryCommandState('bold')) {
+      self.boldactive = true;
+    } else {
+      self.boldactive = false;
+    }
+
+    if ($document[0].queryCommandState('italic')) {
+      self.italicactive = true;
+    } else {
+      self.italicactive = false;
+    }
+
+    if ($document[0].queryCommandState('underline')) {
+      self.underlineactive = true;
+    } else {
+      self.underlineactive = false;
+    }
+
+    if ($document[0].queryCommandState('strikeThrough')) {
+      self.strikethroughactive = true;
+    } else {
+      self.strikethroughactive = false;
+    }
+
+    if ($document[0].queryCommandValue("BackColor").toString() ==
+      'rgb(255, 255, 0)') {
+      self.highlightactive = true;
+    } else {
+      self.highlightactive = false;
+    }
+
+    if ($document[0].queryCommandState('justifyCenter')) {
+      self.aligncenteractive = true;
+    } else {
+      self.aligncenteractive = false;
+    }
+
+    if ($document[0].queryCommandState('justifyLeft')) {
+      self.alignleftactive = true;
+    } else {
+      self.alignleftactive = false;
+    }
+
+    if ($document[0].queryCommandState('justifyRight')) {
+      self.alignrightactive = true;
+    } else {
+      self.alignrightactive = false;
+    }
+
+    if ($document[0].queryCommandState('justifyFull')) {
+      self.justifyactive = true;
+    } else {
+      self.justifyactive = false;
+    }
+
+    if ($document[0].queryCommandState('insertOrderedList')) {
+      self.orderedlistactive = true;
+    } else {
+      self.orderedlistactive = false;
+    }
+
+    if ($document[0].queryCommandState('insertUnorderedList')) {
+      self.unorderedlistactive = true;
+    } else {
+      self.unorderedlistactive = false;
+    }
   }
 
   self.undo = function() {
-    self.editor.history.undo();
+    $document[0].execCommand('undo');
   }
 
   self.redo = function() {
-    self.editor.history.redo();
+    $document[0].execCommand('redo');
+  }
+
+  self.print = function() {
+    var printMe = document.getElementById("richtexteditor");
+    var printIframe = document.createElement('iframe');
+    printIframe.name = "name_for_iframe";
+    document.body.appendChild(printIframe);
+    var printIframeWindow = window.frames["name_for_iframe"];
+    var printDocument = printIframeWindow.document;
+    printDocument.write("<html><body></body></html>");
+    printDocument.body.innerHTML = printMe.innerHTML;
+    var result = printIframeWindow.print();
+    printIframe.parentNode.removeChild(printIframe);
   }
 
   self.copy = function() {
@@ -56,16 +158,81 @@ function RichTextEditorController($document, LoggerService) {
     $document[0].execCommand('paste');
   }
 
+  self.bold = function() {
+    $document[0].execCommand('bold');
+    self.checkselectionstate();
+  }
+
+  self.italic = function() {
+    $document[0].execCommand('italic');
+    self.checkselectionstate();
+  }
+
+  self.underline = function() {
+    $document[0].execCommand('underline');
+    self.checkselectionstate();
+  }
+
+  self.strikethrough = function() {
+    $document[0].execCommand('strikeThrough');
+    self.checkselectionstate();
+  }
+
+  self.highlight = function() {
+
+    if ($document[0].queryCommandValue("BackColor").toString() ==
+      'rgb(255, 255, 0)') {
+      $document[0].execCommand("hiliteColor", false, 'inherit');
+    } else {
+      $document[0].execCommand("hiliteColor", false, 'yellow');
+    }
+
+    self.checkselectionstate();
+  }
+
   self.leftguillemet = function() {
     $document[0].execCommand('insertText', false, '«');
+    self.checkselectionstate();
   }
 
   self.rightguillemet = function() {
     $document[0].execCommand('insertText', false, '»');
+    self.checkselectionstate();
   }
 
   self.emdash = function() {
     $document[0].execCommand('insertText', false, '—');
+    self.checkselectionstate();
+  }
+
+  self.orderedlist = function() {
+    $document[0].execCommand('insertOrderedList');
+    self.checkselectionstate();
+  }
+
+  self.unorderedlist = function() {
+    $document[0].execCommand('insertUnorderedList');
+    self.checkselectionstate();
+  }
+
+  self.aligncenter = function() {
+    $document[0].execCommand('justifyCenter');
+    self.checkselectionstate();
+  }
+
+  self.alignleft = function() {
+    $document[0].execCommand('justifyLeft');
+    self.checkselectionstate();
+  }
+
+  self.alignright = function() {
+    $document[0].execCommand('justifyRight');
+    self.checkselectionstate();
+  }
+
+  self.justify = function() {
+    $document[0].execCommand('justifyFull');
+    self.checkselectionstate();
   }
 
   LoggerService.debug('End RichTextEditorController...');

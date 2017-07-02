@@ -99,6 +99,11 @@ h6, label, th, td, p {
 	margin-bottom: 10px;
 }
 
+.richtexteditor-toolbar-active-button {
+	color: #2D6987;
+}
+
+
 .richtexteditor-contenteditable {
 	padding: 10px;
 }
@@ -312,6 +317,15 @@ h3 {
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
 	background-color: #fff !important;
 	border-color: #ccc !important;
+	color: #428bca;
+}
+.btn-default.hover,
+.btn-default:hover, 
+.btn-default.focus,
+.btn-default:focus,
+.btn-default:active:hover,
+.btn-default.active:hover {
+	color: #428bca;
 }
 
 /* RICH TEXT EDITOR STYLES */
