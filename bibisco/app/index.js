@@ -68,6 +68,10 @@ global.dialog = dialog;
 const uuid = require('uuid/v4');
 global.uuid = uuid;
 
+// add sanitize
+const sanitizeHtml = require('sanitize-html');
+global.sanitizeHtml = sanitizeHtml;
+
 // prevent window being garbage collected
 let mainWindow;
 

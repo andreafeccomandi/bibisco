@@ -115,7 +115,8 @@
   <div contenteditable class="richtexteditor-contenteditable" id="richtexteditor"
     ng-blur="$ctrl.disablestylebuttons()"
     ng-keyup="$ctrl.checkselectionstate()"
-    ng-mouseup="$ctrl.checkselectionstate()">
+    ng-mouseup="$ctrl.checkselectionstate()"
+    ng-paste="$ctrl.sanitizePaste($event)">
     <p>
       I love my life
     </p>

@@ -24,7 +24,8 @@ component('richtexteditor', {
 });
 
 
-function RichTextEditorController($document, LoggerService) {
+function RichTextEditorController($document, $timeout, LoggerService,
+  SanitizeHtmlService) {
 
   LoggerService.debug('Start RichTextEditorController...');
 
@@ -155,7 +156,9 @@ function RichTextEditorController($document, LoggerService) {
   }
 
   self.paste = function() {
-    $document[0].execCommand('paste');
+    $timeout(function() {
+      $document[0].execCommand('paste');
+    });
   }
 
   self.bold = function() {
@@ -179,7 +182,6 @@ function RichTextEditorController($document, LoggerService) {
   }
 
   self.highlight = function() {
-
     if ($document[0].queryCommandValue("BackColor").toString() ==
       'rgb(255, 255, 0)') {
       $document[0].execCommand("hiliteColor", false, 'inherit');
@@ -233,6 +235,25 @@ function RichTextEditorController($document, LoggerService) {
   self.justify = function() {
     $document[0].execCommand('justifyFull');
     self.checkselectionstate();
+  }
+
+  self.sanitizePaste = function($event) {
+    let text;
+    let sanitizedText;
+    if ($event.clipboardData) {
+      try {
+        text = $event.clipboardData.getData('text/html');
+        sanitizedText = SanitizeHtmlService.sanitize(text);
+      } catch (ex) {
+        text = undefined;
+      }
+    }
+    if (text) {
+      $event.preventDefault();
+      $timeout(function() {
+        $document[0].execCommand('insertHTML', false, sanitizedText);
+      });
+    }
   }
 
   LoggerService.debug('End RichTextEditorController...');
