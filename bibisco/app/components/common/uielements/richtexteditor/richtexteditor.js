@@ -186,7 +186,7 @@ function RichTextEditorController($document, $timeout, LoggerService,
       'rgb(255, 255, 0)') {
       $document[0].execCommand("hiliteColor", false, 'inherit');
     } else {
-      $document[0].execCommand("hiliteColor", false, 'yellow');
+      $document[0].execCommand("hiliteColor", false, 'rgb(255, 255, 0)');
     }
 
     self.checkselectionstate();
@@ -241,18 +241,46 @@ function RichTextEditorController($document, $timeout, LoggerService,
     let text;
     let sanitizedText;
     if ($event.clipboardData) {
-      try {
-        text = $event.clipboardData.getData('text/html');
-        sanitizedText = SanitizeHtmlService.sanitize(text);
-      } catch (ex) {
-        text = undefined;
-      }
-    }
-    if (text) {
+      text = $event.clipboardData.getData('text/html');
+      console.log('text=' + text);
+      sanitizedText = SanitizeHtmlService.sanitize(text);
+      console.log('sanitizedText=' + sanitizedText);
       $event.preventDefault();
       $timeout(function() {
         $document[0].execCommand('insertHTML', false, sanitizedText);
       });
+    }
+  }
+
+  self.mark = function() {
+    if (window.getSelection) {
+      var sel = window.getSelection();
+      var ranges = [];
+      var range;
+      for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+        ranges.push(sel.getRangeAt(i));
+      }
+      sel.removeAllRanges();
+
+      // Surround ranges in reverse document order to prevent surrounding subsequent ranges messing with already-surrounded ones
+      i = ranges.length;
+
+      while (i--) {
+        range = ranges[i];
+        let unmark = checkUnmark(range);
+
+        if (!unmark) {
+          surroundRangeContents(range);
+        }
+
+        sel.addRange(range);
+      }
+
+      // put caret outside <mark> tag
+      range = document.createRange();
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
     }
   }
 

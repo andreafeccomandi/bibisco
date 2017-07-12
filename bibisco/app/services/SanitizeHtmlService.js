@@ -17,21 +17,46 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
   'use strict';
 
   var remote = require('electron').remote;
-  var sanitizeHtml = remote.getGlobal('sanitizeHtml');
+  //var sanitizeHtml = remote.getGlobal('sanitizeHtml');
+  var sanitizeHtml = require('sanitize-html');
 
   return {
     sanitize: function(html) {
-      return sanitizeHtml(html, {
-        allowedTags: ['p', 'ul', 'ol', 'li', 'b', 'i', 'u', 'strike'],
-        allowedAttributes: [],
+      console.log('sanitize - html: ' + html);
+      let result = sanitizeHtml(html, {
+        allowedTags: ['p', 'ul', 'ol', 'li', 'b', 'i', 'u', 'strike',
+          'span'
+        ],
+        allowedAttributes: {
+          span: ['style']
+        },
         parser: {
           lowerCaseTags: true
         },
         transformTags: {
-          'strong': 'b',
           'em': 'i',
+          'strong': 'b',
+          'span': function(tagName, attribs) {
+            let result;
+            if (attribs.style && attribs.style.indexOf(
+                'background-color: rgb(255, 255, 0)') > -1) {
+              result = {
+                tagName: 'span',
+                attribs: {
+                  style: 'background-color: rgb(255, 255, 0)'
+                }
+              }
+            } else {
+              result = {
+                tagName: ''
+              }
+            }
+            return result;
+          }
         }
       });
+      console.log('sanitize - result: ' + result);
+      return result;
     }
   }
 });
