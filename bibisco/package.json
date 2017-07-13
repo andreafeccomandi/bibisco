@@ -27,6 +27,7 @@
     "angular": "^1.6.4",
     "angular-bootstrap-confirm": "^2.5.0",
     "angular-dynamic-locale": "^0.1.32",
+    "angular-hotkeys": "^1.7.0",
     "angular-i18n": "^1.6.4",
     "angular-messages": "^1.6.4",
     "angular-route": "^1.6.4",

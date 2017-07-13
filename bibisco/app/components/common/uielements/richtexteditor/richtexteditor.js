@@ -24,12 +24,19 @@ component('richtexteditor', {
 });
 
 
-function RichTextEditorController($document, $timeout, LoggerService,
-  SanitizeHtmlService) {
+function RichTextEditorController($document, $scope, $timeout, hotkeys,
+  ContextService, LoggerService, SanitizeHtmlService) {
 
   LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
+
+  if (ContextService.getOs() == 'darwin') {
+    self.os = '_mac';
+  } else {
+    self.os = '';
+  }
+
   self.boldactive = false;
   self.italicactive = false;
   self.underlineactive = false;
@@ -55,6 +62,58 @@ function RichTextEditorController($document, $timeout, LoggerService,
     self.orderedlistactive = false;
     self.unorderedlistactive = false;
   }
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+y', 'command+y'],
+      description: 'redo',
+      callback: function() {
+        self.redo();
+      }
+    })
+    .add({
+      combo: ['ctrl+u', 'command+u'],
+      description: 'underline',
+      callback: function() {
+        self.underline();
+      }
+    })
+    .add({
+      combo: ['ctrl+1', 'command+1'],
+      description: 'left guillemet',
+      callback: function() {
+        self.leftguillemet();
+      }
+    })
+    .add({
+      combo: ['ctrl+2', 'command+2'],
+      description: 'right guillemet',
+      callback: function() {
+        self.rightguillemet();
+      }
+    })
+    .add({
+      combo: ['ctrl+3', 'command+3'],
+      description: 'em dash',
+      callback: function() {
+        self.emdash();
+      }
+    })
+    .add({
+      combo: ['ctrl+5', 'command+5'],
+      description: 'strikethrough',
+      callback: function() {
+        self.strikethrough();
+      }
+    })
+    .add({
+      combo: ['ctrl+6', 'command+6'],
+      description: 'highlight',
+      callback: function() {
+        self.highlight();
+      }
+    });
+
 
   self.checkselectionstate = function() {
 
@@ -249,38 +308,6 @@ function RichTextEditorController($document, $timeout, LoggerService,
       $timeout(function() {
         $document[0].execCommand('insertHTML', false, sanitizedText);
       });
-    }
-  }
-
-  self.mark = function() {
-    if (window.getSelection) {
-      var sel = window.getSelection();
-      var ranges = [];
-      var range;
-      for (var i = 0, len = sel.rangeCount; i < len; ++i) {
-        ranges.push(sel.getRangeAt(i));
-      }
-      sel.removeAllRanges();
-
-      // Surround ranges in reverse document order to prevent surrounding subsequent ranges messing with already-surrounded ones
-      i = ranges.length;
-
-      while (i--) {
-        range = ranges[i];
-        let unmark = checkUnmark(range);
-
-        if (!unmark) {
-          surroundRangeContents(range);
-        }
-
-        sel.addRange(range);
-      }
-
-      // put caret outside <mark> tag
-      range = document.createRange();
-      range.collapse(false);
-      sel.removeAllRanges();
-      sel.addRange(range);
     }
   }
 
