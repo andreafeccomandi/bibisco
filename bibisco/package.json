@@ -36,6 +36,7 @@
     "angular-ui-bootstrap": "^2.5.0",
     "bootstrap": "^3.3.7",
     "electron-debug": "^1.0.0",
+    "electron-spellchecker": "^1.1.0",
     "font-awesome": "^4.7.0",
     "fs-extra": "^2.1.2",
     "lokijs": "^1.4.3",
