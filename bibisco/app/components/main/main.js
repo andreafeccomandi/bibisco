@@ -20,7 +20,8 @@ component('main', {
 
 
 function MainController($location, LoggerService, BibiscoPropertiesService,
-  ContextService, FileSystemService, ProjectService) {
+  ContextMenuSpellCheckService, ContextService, FileSystemService,
+  LocaleService, ProjectService) {
 
   LoggerService.debug('Start MainController...');
   let firstAccess = BibiscoPropertiesService.getProperty("firstAccess");
@@ -56,6 +57,9 @@ function MainController($location, LoggerService, BibiscoPropertiesService,
   if (projectsDirectoryExists) {
     ProjectService.syncProjectDirectoryWithBibiscoDb();
   }
+
+  // activate context menu and spell check
+  ContextMenuSpellCheckService.activate();
 
   // Routing based on first access or not
   if (firstAccess || !projectsDirectoryExists) {

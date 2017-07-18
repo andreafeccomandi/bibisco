@@ -21,7 +21,8 @@ component('welcome', {
 
 
 function WelcomeController($location, $rootScope, $scope,
-  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
+  BibiscoDbConnectionService, BibiscoPropertiesService,
+  ContextMenuSpellCheckService, ContextService,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
   LoggerService.debug('Start WelcomeController...');
 
@@ -54,6 +55,9 @@ function WelcomeController($location, $rootScope, $scope,
           projectsDirectory);
         BibiscoPropertiesService.setProperty('firstAccess', false);
         BibiscoDbConnectionService.saveDatabase();
+
+        // update context menu and spell check
+        ContextMenuSpellCheckService.updateLocale();
 
         // sync bibisco db with projects directory
         ProjectService.syncProjectDirectoryWithBibiscoDb();

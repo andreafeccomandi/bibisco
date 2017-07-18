@@ -30,46 +30,6 @@ function RichTextEditorController($document, $scope, $timeout, hotkeys,
   LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
-  self.spellCheckHandler;
-  self.ddd;
-
-  self.$onInit = function() {
-    const electronSpellchecker = require('electron-spellchecker');
-
-    // Retrieve required properties
-    const SpellCheckHandler = electronSpellchecker.SpellCheckHandler;
-    const ContextMenuListener = electronSpellchecker.ContextMenuListener;
-    const ContextMenuBuilder = electronSpellchecker.ContextMenuBuilder;
-
-    // Configure the spellcheckhandler
-    self.spellCheckHandler = new SpellCheckHandler();
-    self.spellCheckHandler.attachToInput();
-
-    // Start off as "US English, America"
-    self.spellCheckHandler.switchLanguage('it-IT');
-
-    // Create the builder with the configured spellhandler
-    let contextMenuBuilder = new ContextMenuBuilder(self.spellCheckHandler);
-    contextMenuBuilder.setAlternateStringFormatter({
-      addToDictionary: () => `Aggiungi al dizionario`,
-      lookUpDefinition: ({
-        word
-      }) => `Look Up "${word}"`,
-      searchGoogle: () => `Cerca con Google`,
-      cut: () => `Taglia`,
-      copy: () => `Copia`,
-      paste: () => `Incolla`,
-      inspectElement: () => `Inspect Element`,
-    });
-
-    // Add context menu listener on text imput filed
-    let contextMenuListener = new ContextMenuListener((info) => {
-      if (info.isEditable || (info.inputFieldType && info.inputFieldType !==
-          'none')) {
-        contextMenuBuilder.showPopupMenu(info);
-      }
-    });
-  };
 
   if (ContextService.getOs() == 'darwin') {
     self.os = '_mac';
