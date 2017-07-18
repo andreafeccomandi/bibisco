@@ -19,7 +19,7 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, $rootScope, LocaleService,
+function OpenProjectController($location, $rootScope,
   ProjectDbConnectionService, ProjectService, LoggerService) {
   LoggerService.debug('Start OpenProjectController...');
 

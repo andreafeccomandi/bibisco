@@ -19,7 +19,7 @@ component('menu', {
   controller: MenuController
 });
 
-function MenuController($location, $rootScope, LocaleService, LoggerService) {
+function MenuController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start MenuController...');
 
   var self = this;

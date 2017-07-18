@@ -19,7 +19,7 @@ component('start', {
   controller: StartController
 });
 
-function StartController($location, $rootScope, LocaleService, LoggerService,
+function StartController($location, $rootScope, LoggerService,
   ProjectService) {
   LoggerService.debug('Start StartController...');
 
