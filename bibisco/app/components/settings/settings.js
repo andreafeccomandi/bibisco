@@ -21,7 +21,6 @@ component('settings', {
 
 function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
-  ContextMenuSpellCheckService,
   LocaleService, LoggerService, UtilService, ProjectService) {
   LoggerService.debug('Start SettingsController...');
 
@@ -63,9 +62,6 @@ function SettingsController($location, $rootScope, $scope,
         BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
         BibiscoDbConnectionService.saveDatabase();
-
-        // update context menu and spell check
-        ContextMenuSpellCheckService.updateLocale();
 
         // sync bibisco db with projects directory
         ProjectService.syncProjectDirectoryWithBibiscoDb();
