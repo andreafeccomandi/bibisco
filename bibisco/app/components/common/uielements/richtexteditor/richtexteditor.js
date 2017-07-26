@@ -31,54 +31,6 @@ function RichTextEditorController($document, $scope, $timeout, hotkeys,
 
   var self = this;
   self.spellCheckHandler;
-  self.ddd;
-
-  self.$onInit = function() {
-
-    // config context menu and spell check
-    const electronSpellchecker = require('electron-spellchecker');
-
-    // Retrieve required properties
-    const SpellCheckHandler = electronSpellchecker.SpellCheckHandler;
-    const ContextMenuListener = electronSpellchecker.ContextMenuListener;
-    const ContextMenuBuilder = electronSpellchecker.ContextMenuBuilder;
-    const DictionarySync = electronSpellchecker.DictionarySync;
-
-    // Configure DictionarySync
-    var dictionarySync = new DictionarySync(
-      '/Users/andreafeccomandi/git/bibisco/bibisco/app/dictionaries');
-
-    // Configure the spellcheckhandler
-    var spellCheckHandler = new SpellCheckHandler(dictionarySync);
-
-    // Create the builder with the configured spellhandler
-    var contextMenuBuilder = new ContextMenuBuilder(spellCheckHandler);
-
-    spellCheckHandler.attachToInput();
-    spellCheckHandler.switchLanguage(LocaleService.getCurrentLocale());
-
-    contextMenuBuilder.setAlternateStringFormatter({
-      addToDictionary: () => `Aggiungi al dizionario`,
-      lookUpDefinition: ({
-        word
-      }) => `Look Up "${word}"`,
-      searchGoogle: () => `Cerca con Google`,
-      cut: () => `Taglia`,
-      copy: () => `Copia`,
-      paste: () => `Incolla`,
-      inspectElement: () => `Inspect Element`,
-    });
-
-    // Add context menu listener on text input filed
-    var contextMenuListener = new ContextMenuListener((info) => {
-      console.log('info.inputFieldType=' + info.inputFieldType +
-        ' info.isEditable=' + info.isEditable);
-      // activate context menu only on content editable
-      if (info.isEditable && info.inputFieldType == 'none') {
-        contextMenuBuilder.showPopupMenu(info);
-      }
-    });
-  };
 
   if (ContextService.getOs() == 'darwin') {
     self.os = '_mac';

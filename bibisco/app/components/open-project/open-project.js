@@ -19,8 +19,8 @@ component('openproject', {
   controller: OpenProjectController
 });
 
-function OpenProjectController($location, $rootScope,
-  ProjectDbConnectionService, ProjectService, LoggerService) {
+function OpenProjectController($location, $rootScope, ContextMenuService,
+  LoggerService, ProjectDbConnectionService, ProjectService) {
   LoggerService.debug('Start OpenProjectController...');
 
   // hide menu
@@ -35,6 +35,7 @@ function OpenProjectController($location, $rootScope,
   self.open = function(id) {
     ProjectDbConnectionService.load(id);
     $location.path('/project/projecthome');
+    ContextMenuService.create();
   }
 
   self.delete = function(id) {

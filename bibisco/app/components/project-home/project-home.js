@@ -22,8 +22,8 @@ component('projecthome', {
   }
 });
 
-function ProjectHomeController($location, $rootScope, LoggerService,
-  ProjectService) {
+function ProjectHomeController($location, $rootScope, ContextMenuService,
+  LoggerService, ProjectService) {
   LoggerService.debug('Start ProjectHomeController...');
   var self = this;
 
@@ -33,6 +33,7 @@ function ProjectHomeController($location, $rootScope, LoggerService,
 
   self.back = function() {
     $location.path('/start');
+    ContextMenuService.destroy();
   }
 
   LoggerService.debug('End ProjectHomeController...');
