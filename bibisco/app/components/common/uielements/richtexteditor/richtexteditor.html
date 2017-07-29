@@ -112,7 +112,8 @@
 </div>
 
 <div class="richtexteditor-contenteditable-container">
-  <div contenteditable class="richtexteditor-contenteditable mousetrap {{$ctrl.contentstyle}}"
+  <div contenteditable class="richtexteditor-contenteditable mousetrap
+    {{$ctrl.fontclass}} {{$ctrl.indentclass}}"
     id="richtexteditor"
     ng-blur="$ctrl.disablestylebuttons()"
     ng-keyup="$ctrl.checkselectionstate()"

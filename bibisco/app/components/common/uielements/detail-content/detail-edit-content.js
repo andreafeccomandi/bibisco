@@ -18,8 +18,7 @@ component('detaileditcontent', {
   templateUrl: 'components/common/uielements/detail-content/detail-edit-content.html',
   controller: DetailEditContentController,
   bindings: {
-    content: '@',
-    contentstyle: '@'
+    content: '@'
   }
 });
 

@@ -18,25 +18,29 @@ component('richtexteditor', {
   templateUrl: 'components/common/uielements/richtexteditor/richtexteditor.html',
   controller: RichTextEditorController,
   bindings: {
-    content: '@',
-    contentstyle: '@'
+    content: '@'
   }
 });
 
 
 function RichTextEditorController($document, $scope, $timeout, hotkeys,
-  ContextService, LocaleService, LoggerService, SanitizeHtmlService) {
+  ContextService, LocaleService, LoggerService, SanitizeHtmlService,
+  TextStylePreferencesService) {
 
   LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
-  self.spellCheckHandler;
 
   if (ContextService.getOs() == 'darwin') {
     self.os = '_mac';
   } else {
     self.os = '';
   }
+
+  self.fontclass = TextStylePreferencesService.getFontClass();
+  console.log('Richtexteditor fontclass=' + self.fontclass);
+  self.indentclass = TextStylePreferencesService.getIndentClass();
+  console.log('Richtexteditor indentclass=' + self.indentclass);
 
   self.boldactive = false;
   self.italicactive = false;
