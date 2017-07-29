@@ -18,17 +18,18 @@ component('detailviewcontent', {
   templateUrl: 'components/common/uielements/detail-content/detail-view-content.html',
   controller: DetailViewContentController,
   bindings: {
-    content: '@',
-    contentstyle: '@'
+    content: '@'
   }
 });
 
 
-function DetailViewContentController(LoggerService) {
+function DetailViewContentController(LoggerService, TextStylePreferencesService) {
 
   LoggerService.debug('Start DetailViewContentController...');
 
   var self = this;
+  self.fontclass = TextStylePreferencesService.getFontClass();
+  self.indentclass = TextStylePreferencesService.getIndentClass();
 
   LoggerService.debug('End DetailViewContentController...');
 }

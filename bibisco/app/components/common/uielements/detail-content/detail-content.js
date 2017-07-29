@@ -19,7 +19,6 @@ component('detailcontent', {
   controller: DetailContentController,
   bindings: {
     content: '@',
-    contentstyle: '@',
     editmode: '<',
     headersubtitle: '<',
     showprojectexplorer: '<'

@@ -25,7 +25,6 @@ component('elementdetail', {
     changetitlelabel: '@',
     characters: '<',
     content: '@',
-    contentstyle: '@',
     deleteconfirmmessage: '@',
     deleteenabled: '<',
     deleteforbidden: '<',
