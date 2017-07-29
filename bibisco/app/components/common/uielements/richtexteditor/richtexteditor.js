@@ -38,9 +38,7 @@ function RichTextEditorController($document, $scope, $timeout, hotkeys,
   }
 
   self.fontclass = TextStylePreferencesService.getFontClass();
-  console.log('Richtexteditor fontclass=' + self.fontclass);
   self.indentclass = TextStylePreferencesService.getIndentClass();
-  console.log('Richtexteditor indentclass=' + self.indentclass);
 
   self.boldactive = false;
   self.italicactive = false;
