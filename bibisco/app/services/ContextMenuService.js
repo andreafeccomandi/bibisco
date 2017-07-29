@@ -93,7 +93,6 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
       let _spellCheckHandler = spellCheckHandler;
 
       return {
-        spellCheckHandler: _spellCheckHandler,
         stringTable: stringTable,
 
         getWebContents: function() {
@@ -138,12 +137,12 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
           }
 
           // Ensure that we have a spell-checker for this language
-          if (!this.spellCheckHandler.currentSpellchecker) {
+          if (!_spellCheckHandler.currentSpellchecker) {
             return menu;
           }
 
           // Ensure that we have valid corrections for that word
-          let corrections = await this.spellCheckHandler.getCorrectionsForMisspelling(
+          let corrections = await _spellCheckHandler.getCorrectionsForMisspelling(
             menuInfo.misspelledWord);
           if (corrections && corrections.length > 0) {
             corrections.forEach((correction) => {
@@ -165,12 +164,9 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
             let learnWord = new remote.MenuItem({
               label: this.stringTable.addToDictionary(),
               click: async function() {
-                // NB: This is a gross fix to invalidate the spelling underline,
-                // refer to https://github.com/tinyspeck/slack-winssb/issues/354
-                //target.replaceMisspelling(menuInfo.selection);
+                target.replaceMisspelling(menuInfo.selectionText);
 
                 try {
-                  //spellChecker.add(menuInfo.misspelledWord);
                   _spellCheckHandler.currentSpellchecker.add(
                     menuInfo.misspelledWord);
                 } catch (e) {
@@ -232,7 +228,6 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
           this.stringTable = Object.assign(this.stringTable,
             stringTable);
         }
-
       }
     },
   };
