@@ -28,44 +28,6 @@ function DetailEditContentController($document, LoggerService) {
   LoggerService.debug('Start DetailEditContentController...');
 
   var self = this;
-  self.editor = null;
-
-  self.editorCreated = function(editor) {
-    console.log('Editor creato!');
-    self.editor = editor;
-  }
-
-  self.undo = function() {
-    self.editor.history.undo();
-  }
-
-  self.redo = function() {
-    self.editor.history.redo();
-  }
-
-  self.copy = function() {
-    $document[0].execCommand('copy');
-  }
-
-  self.cut = function() {
-    $document[0].execCommand('cut');
-  }
-
-  self.paste = function() {
-    $document[0].execCommand('paste');
-  }
-
-  self.leftguillemet = function() {
-    $document[0].execCommand('insertText', false, '«');
-  }
-
-  self.rightguillemet = function() {
-    $document[0].execCommand('insertText', false, '»');
-  }
-
-  self.emdash = function() {
-    $document[0].execCommand('insertText', false, '—');
-  }
 
   LoggerService.debug('End DetailEditContentController...');
 }
