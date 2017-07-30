@@ -28,6 +28,7 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
           'span'
         ],
         allowedAttributes: {
+          p: ['style'],
           span: ['style']
         },
         parser: {
@@ -36,6 +37,47 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
         transformTags: {
           'em': 'i',
           'strong': 'b',
+          'p': function(tagName, attribs) {
+            let result;
+            if (attribs.style && attribs.style.indexOf(
+                'text-align: justify') > -1) {
+              result = {
+                tagName: 'p',
+                attribs: {
+                  style: 'text-align: justify'
+                }
+              }
+            } else if (attribs.style && attribs.style.indexOf(
+                'text-align: center') > -1) {
+              result = {
+                tagName: 'p',
+                attribs: {
+                  style: 'text-align: center'
+                }
+              }
+            } else if (attribs.style && attribs.style.indexOf(
+                'text-align: left') > -1) {
+              result = {
+                tagName: 'p',
+                attribs: {
+                  style: 'text-align: left'
+                }
+              }
+            } else if (attribs.style && attribs.style.indexOf(
+                'text-align: right') > -1) {
+              result = {
+                tagName: 'p',
+                attribs: {
+                  style: 'text-align: right'
+                }
+              }
+            } else {
+              result = {
+                tagName: 'p'
+              }
+            }
+            return result;
+          },
           'span': function(tagName, attribs) {
             let result;
             if (attribs.style && attribs.style.indexOf(
