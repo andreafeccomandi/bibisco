@@ -23,8 +23,8 @@ component('richtexteditor', {
 });
 
 
-function RichTextEditorController($document, $scope, $timeout, hotkeys,
-  ContextService, LocaleService, LoggerService, SanitizeHtmlService,
+function RichTextEditorController($document, $scope, $timeout, $uibModal,
+  hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
   TextStylePreferencesService) {
 
   LoggerService.debug('Start RichTextEditorController...');
@@ -312,6 +312,23 @@ function RichTextEditorController($document, $scope, $timeout, hotkeys,
         $document[0].execCommand('insertHTML', false, sanitizedText);
       });
     }
+  }
+
+  self.opensettings = function() {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: 'static',
+      component: 'richtexteditorsettings',
+      size: 'md'
+    });
+
+    modalInstance.result.then(function(selectedItem) {
+      // save
+      console.log('Save settings');
+    }, function() {
+      // cancel
+      console.log('Simply close settings modal');
+    });
   }
 
   LoggerService.debug('End RichTextEditorController...');

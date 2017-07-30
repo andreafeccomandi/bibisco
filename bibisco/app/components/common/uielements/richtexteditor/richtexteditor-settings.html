@@ -1,0 +1,30 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
+  <div class="modal-body" id="modal-body" style="width: 600px;">
+    <div class="row">
+      <div class="col-sm-12">
+        <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">{{'jsp.richTextEditorSettings.font' | translate}}</label>
+            <div class="col-sm-9">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'courier'})" ng-class="{ 'active': $ctrl.font == 'courier' }">
+                  {{'jsp.richTextEditorSettings.font.courier' | translate}}
+                </button>
+                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'times'})" ng-class="{ 'active': $ctrl.font == 'times' }">
+                  {{'jsp.richTextEditorSettings.font.times' | translate}}
+                </button>
+                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'arial'})" ng-class="{ 'active': $ctrl.font == 'arial' }">
+                  {{'jsp.richTextEditorSettings.font.arial' | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer bibiscoNotSelectableText">
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
+  </div>
+</modal-component>

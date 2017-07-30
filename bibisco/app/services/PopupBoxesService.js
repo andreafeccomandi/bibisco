@@ -26,7 +26,8 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
           message: function() {
             return alertMessage;
           }
-        }
+        },
+        size: 'sm'
       });
 
       modalInstance.result.then(function(selectedItem) {
@@ -44,7 +45,8 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
           message: function() {
             return confirmMessage;
           }
-        }
+        },
+        size: 'sm'
       });
 
       modalInstance.result.then(function(selectedItem) {
