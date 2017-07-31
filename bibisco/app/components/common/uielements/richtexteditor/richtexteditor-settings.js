@@ -34,13 +34,16 @@ function RichtexteditorSettingsController(LoggerService) {
     self.font = 'times';
     self.fontgroup = [{
       label: 'jsp.richTextEditorSettings.font.courier',
-      value: 'courier'
+      value: 'courier',
+      buttonclass: 'bibiscoRichTextEditorSettings-courier'
     }, {
       label: 'jsp.richTextEditorSettings.font.times',
-      value: 'times'
+      value: 'times',
+      buttonclass: 'bibiscoRichTextEditorSettings-times'
     }, {
       label: 'jsp.richTextEditorSettings.font.arial',
-      value: 'arial'
+      value: 'arial',
+      buttonclass: 'bibiscoRichTextEditorSettings-arial'
     }];
     self.fontsize = 'medium';
     self.fontsizegroup = [{

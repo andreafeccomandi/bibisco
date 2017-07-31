@@ -3,7 +3,7 @@
   <div class="col-sm-{{$ctrl.inputcols}}">
     <div class="btn-group pull-left">
         <button ng-repeat="item in $ctrl.group"
-          type="button" class="btn btn-default"
+          type="button" class="btn btn-default {{item.buttonclass}}"
           ng-click="$ctrl.change(item.value)"
           ng-class="{ 'active' : $ctrl.model == item.value }">
           {{item.label | translate}}

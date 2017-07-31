@@ -375,8 +375,20 @@ h3 {
 	text-indent: 30px;
 }
 
-.bibiscoRichTextEditor-bodyClass-indent-false {
+.bibiscoRichTextEditorSettings-arial {
+	font-family: Helvetica, Arial, sans-serif;
+}
 
+.bibiscoRichTextEditorSettings-courier {
+	font-family: courier new, courier, monospace;
+}
+
+.bibiscoRichTextEditorSettings-times {
+	font-family: Times New Roman, Times, serif;
+}
+
+.bibiscoRichTextEditorSettings-arial {
+	font-family: Helvetica, Arial, sans-serif;
 }
 
 @media (max-width: 1000px) {
