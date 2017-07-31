@@ -54,7 +54,7 @@
   "tag.bibiscothumbnail.taskstatus.tocomplete.description": "da completare",
   "tag.bibiscothumbnail.taskstatus.completed": "OK",
   "tag.bibiscothumbnail.taskstatus.completed.description": "completato",
-  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "impostazioni",
+  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "Impostazioni",
   "tag.bibiscoRichTextEditor.undo": "annulla (CTRL+Z)",
   "tag.bibiscoRichTextEditor.redo": "ripristina (CTRL+Y)",
   "context_menu_add_dictionary": "Aggiungi al dizionario",

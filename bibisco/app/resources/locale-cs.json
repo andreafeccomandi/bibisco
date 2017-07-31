@@ -58,7 +58,7 @@
   "context_menu_copy": "Kopírovat",
   "context_menu_cut": "Vyjmout",
   "context_menu_paste": "Vložit",
-  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "nastavení",
+  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "Nastavení",
   "tag.bibiscoRichTextEditor.undo_mac": "vrátit (CMD+Z)",
   "tag.bibiscoRichTextEditor.undo": "vrátit (CTRL+Z)",
   "tag.bibiscoRichTextEditor.redo_mac": "o krok dopředu (CMD+Y)",

@@ -58,7 +58,7 @@
   "context_menu_copy": "Copier",
   "context_menu_cut": "Couper",
   "context_menu_paste": "Coller",
-  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "options",
+  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "Options",
   "tag.bibiscoRichTextEditor.undo": "annuler (CTRL+Z)",
   "tag.bibiscoRichTextEditor.redo": "répéter (CTRL+Y)",
   "tag.bibiscoRichTextEditor.copy": "copier (CTRL+C)",

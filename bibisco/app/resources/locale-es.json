@@ -58,7 +58,7 @@
   "context_menu_copy": "Copiar",
   "context_menu_cut": "Cortar",
   "context_menu_paste": "Pegar",
-  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "ajustes",
+  "tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title": "Ajustes",
   "tag.bibiscoRichTextEditor.undo_mac": "deshacer (CMD+Z)",
   "tag.bibiscoRichTextEditor.undo": "deshacer (CTRL+Z)",
   "tag.bibiscoRichTextEditor.redo_mac": "rehacer (CMD+Y)",
