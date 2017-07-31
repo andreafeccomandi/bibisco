@@ -28,14 +28,56 @@ function RichtexteditorSettingsController(LoggerService) {
 
   var self = this;
   self.font;
+  self.fontgroup;
 
   self.$onInit = function() {
-    self.font = 'courier';
+    self.font = 'times';
+    self.fontgroup = [{
+      label: 'jsp.richTextEditorSettings.font.courier',
+      value: 'courier'
+    }, {
+      label: 'jsp.richTextEditorSettings.font.times',
+      value: 'times'
+    }, {
+      label: 'jsp.richTextEditorSettings.font.arial',
+      value: 'arial'
+    }];
+    self.fontsize = 'medium';
+    self.fontsizegroup = [{
+      label: 'jsp.richTextEditorSettings.fontsize.big',
+      value: 'big'
+    }, {
+      label: 'jsp.richTextEditorSettings.fontsize.medium',
+      value: 'medium'
+    }, {
+      label: 'jsp.richTextEditorSettings.fontsize.small',
+      value: 'small'
+    }];
+    self.indent = 'true';
+    self.indentgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    self.spellcheck = 'true';
+    self.spellcheckgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    self.autosave = 'true';
+    self.autosavegroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
   };
-
-  self.changefont = function(font) {
-    self.font = font;
-  }
 
   self.ok = function() {
     self.close({

@@ -1,26 +1,31 @@
 <modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
-  <div class="modal-body" id="modal-body" style="width: 600px;">
+  <div class="modal-header ng-scope">
+      <h3 class="modal-title" id="modal-title">{{'tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title' | translate}}</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
     <div class="row">
       <div class="col-sm-12">
-        <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">{{'jsp.richTextEditorSettings.font' | translate}}</label>
-            <div class="col-sm-9">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'courier'})" ng-class="{ 'active': $ctrl.font == 'courier' }">
-                  {{'jsp.richTextEditorSettings.font.courier' | translate}}
-                </button>
-                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'times'})" ng-class="{ 'active': $ctrl.font == 'times' }">
-                  {{'jsp.richTextEditorSettings.font.times' | translate}}
-                </button>
-                <button type="button" class="btn btn-default" ng-click="$ctrl.changefont({font: 'arial'})" ng-class="{ 'active': $ctrl.font == 'arial' }">
-                  {{'jsp.richTextEditorSettings.font.arial' | translate}}
-                </button>
-              </div>
-            </div>
-          </div>
+        <form name="richTextEditorSettingsForm" ng-submit="$ctrl.save(elementTitleForm.$valid)"
+          class="form-horizontal" novalidate>
+          <buttongroupfield group="$ctrl.fontgroup" label="jsp.richTextEditorSettings.font"
+            model="$ctrl.font" labelcols="4" inputcols="7"></buttongroupfield>
+          <buttongroupfield group="$ctrl.fontsizegroup" label="jsp.richTextEditorSettings.fontSize"
+            model="$ctrl.fontsize" labelcols="4" inputcols="7"></buttongroupfield>
+          <buttongroupfield group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
+            model="$ctrl.indent" labelcols="4" inputcols="7"></buttongroupfield>
+          <buttongroupfield group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
+            model="$ctrl.spellcheck" labelcols="4" inputcols="7"></buttongroupfield>
+          <buttongroupfield group="$ctrl.autosavegroup" label="jsp.richTextEditorSettings.autoSave"
+            model="$ctrl.autosave" labelcols="4" inputcols="7"></buttongroupfield>
       </div>
       </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1 bibiscoNotSelectableText">
+      <div class="well">
+        {{'jsp.richTextEditorSettings.sampletext' | translate}}
+      </div>
     </div>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">

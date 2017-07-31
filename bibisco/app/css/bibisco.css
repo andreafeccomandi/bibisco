@@ -296,7 +296,7 @@ h3 {
 
 /* MODAL DIALOG */
 .modal-dialog {
-  margin: 250px auto;
+  margin: 150px auto;
 }
 
 .modal-body {
@@ -309,6 +309,12 @@ h3 {
 	text-align: center;
 }
 
+.modal-richtexteditorsettings {
+	width: 600px;
+	height: 300px;
+	margin-top: 100px;
+}
+
 /* BUTTON FOCUS BORDER*/
 .btn:focus,.btn:active {
    outline: none !important;
@@ -316,15 +322,7 @@ h3 {
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
 	background-color: #fff !important;
 	border-color: #ccc !important;
-	color: #428bca;
-}
-.btn-default.hover,
-.btn-default:hover,
-.btn-default.focus,
-.btn-default:focus,
-.btn-default:active:hover,
-.btn-default.active:hover {
-	color: #428bca;
+	color: #428bca !important;
 }
 
 /* RICH TEXT EDITOR STYLES */

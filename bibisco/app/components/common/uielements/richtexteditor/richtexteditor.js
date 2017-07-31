@@ -319,7 +319,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       animation: true,
       backdrop: 'static',
       component: 'richtexteditorsettings',
-      size: 'md'
+      size: 'richtexteditorsettings'
     });
 
     modalInstance.result.then(function(selectedItem) {
