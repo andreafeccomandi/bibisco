@@ -305,13 +305,12 @@ h3 {
 }
 
 .modal-footer {
-	border-top: 0px;
 	text-align: center;
 }
 
 .modal-richtexteditorsettings {
 	width: 600px;
-	height: 300px;
+	height: 400px;
 	margin-top: 100px;
 }
 
