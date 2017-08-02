@@ -23,7 +23,8 @@ component('richtexteditorsettings', {
   },
 });
 
-function RichtexteditorSettingsController(LoggerService) {
+function RichtexteditorSettingsController(BibiscoDbConnectionService,
+  BibiscoPropertiesService, LoggerService, RichTextEditorPreferencesService) {
   LoggerService.debug('Start RichtexteditorSettingsController...');
 
   var self = this;
@@ -31,7 +32,7 @@ function RichtexteditorSettingsController(LoggerService) {
   self.fontgroup;
 
   self.$onInit = function() {
-    self.font = 'times';
+    self.font = BibiscoPropertiesService.getProperty('font');
     self.fontgroup = [{
       label: 'jsp.richTextEditorSettings.font.courier',
       value: 'courier',
@@ -45,7 +46,7 @@ function RichtexteditorSettingsController(LoggerService) {
       value: 'arial',
       buttonclass: 'bibiscoRichTextEditorSettings-arial'
     }];
-    self.fontsize = 'medium';
+    self.fontsize = BibiscoPropertiesService.getProperty('font-size');
     self.fontsizegroup = [{
       label: 'jsp.richTextEditorSettings.fontsize.big',
       value: 'big'
@@ -56,7 +57,8 @@ function RichtexteditorSettingsController(LoggerService) {
       label: 'jsp.richTextEditorSettings.fontsize.small',
       value: 'small'
     }];
-    self.indent = 'true';
+    self.indent = BibiscoPropertiesService.getProperty(
+      'indentParagraphEnabled');
     self.indentgroup = [{
       label: 'jsp.common.button.enabled',
       value: 'true'
@@ -64,7 +66,8 @@ function RichtexteditorSettingsController(LoggerService) {
       label: 'jsp.common.button.disabled',
       value: 'false'
     }];
-    self.spellcheck = 'true';
+    self.spellcheck = BibiscoPropertiesService.getProperty(
+      'spellCheckEnabled');
     self.spellcheckgroup = [{
       label: 'jsp.common.button.enabled',
       value: 'true'
@@ -72,7 +75,8 @@ function RichtexteditorSettingsController(LoggerService) {
       label: 'jsp.common.button.disabled',
       value: 'false'
     }];
-    self.autosave = 'true';
+    self.autosave = BibiscoPropertiesService.getProperty(
+      'autoSaveEnabled');
     self.autosavegroup = [{
       label: 'jsp.common.button.enabled',
       value: 'true'
@@ -83,6 +87,17 @@ function RichtexteditorSettingsController(LoggerService) {
   };
 
   self.ok = function() {
+
+    RichTextEditorPreferencesService.save({
+      font: self.font,
+      fontsize: self.fontsize,
+      indentParagraphEnabled: self.indent,
+      spellCheckEnabled: self.spellcheck,
+      autoSaveEnabled: self.autosave
+    });
+
+    BibiscoDbConnectionService.saveDatabase();
+
     self.close({
       $value: 'ok'
     });

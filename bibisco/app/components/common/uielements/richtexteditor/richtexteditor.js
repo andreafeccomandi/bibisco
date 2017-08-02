@@ -25,7 +25,7 @@ component('richtexteditor', {
 
 function RichTextEditorController($document, $scope, $timeout, $uibModal,
   hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
-  TextStylePreferencesService) {
+  RichTextEditorPreferencesService) {
 
   LoggerService.debug('Start RichTextEditorController...');
 
@@ -37,8 +37,8 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     self.os = '';
   }
 
-  self.fontclass = TextStylePreferencesService.getFontClass();
-  self.indentclass = TextStylePreferencesService.getIndentClass();
+  self.fontclass = RichTextEditorPreferencesService.getFontClass();
+  self.indentclass = RichTextEditorPreferencesService.getIndentClass();
 
   self.boldactive = false;
   self.italicactive = false;
@@ -324,11 +324,9 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
 
     modalInstance.result.then(function(selectedItem) {
       // save
-      console.log('Save settings');
-    }, function() {
-      // cancel
-      console.log('Simply close settings modal');
-    });
+      self.fontclass = RichTextEditorPreferencesService.getFontClass();
+      self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+    }, function() {});
   }
 
   LoggerService.debug('End RichTextEditorController...');

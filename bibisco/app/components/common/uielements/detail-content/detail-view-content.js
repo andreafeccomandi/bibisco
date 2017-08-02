@@ -23,13 +23,13 @@ component('detailviewcontent', {
 });
 
 
-function DetailViewContentController(LoggerService, TextStylePreferencesService) {
+function DetailViewContentController(LoggerService, RichTextEditorPreferencesService) {
 
   LoggerService.debug('Start DetailViewContentController...');
 
   var self = this;
-  self.fontclass = TextStylePreferencesService.getFontClass();
-  self.indentclass = TextStylePreferencesService.getIndentClass();
+  self.fontclass = RichTextEditorPreferencesService.getFontClass();
+  self.indentclass = RichTextEditorPreferencesService.getIndentClass();
 
   LoggerService.debug('End DetailViewContentController...');
 }
