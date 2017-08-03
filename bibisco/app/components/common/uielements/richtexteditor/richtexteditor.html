@@ -113,14 +113,14 @@
 </div>
 
 <div class="richtexteditor-contenteditable-container">
-  <div contenteditable class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
+  <div contenteditable spellcheck="{{$ctrl.spellcheckenabled}}" class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"
     ng-blur="$ctrl.disablestylebuttons()"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)">
     <p>
-      I love my life tavolo cabeza testunospagnolo testunoitaliano
+      {{$ctrl.text}}
     </p>
   </div>
 </div>

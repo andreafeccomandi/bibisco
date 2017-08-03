@@ -37,8 +37,10 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     self.os = '';
   }
 
+  self.text = 'I love my life tavolo cabeza testunospagnolo testunoitaliano';
   self.fontclass = RichTextEditorPreferencesService.getFontClass();
   self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+  self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
 
   self.boldactive = false;
   self.italicactive = false;
@@ -326,6 +328,9 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       // save
       self.fontclass = RichTextEditorPreferencesService.getFontClass();
       self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+      self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
+      self.text = self.text + ' '; // force change text to enable/disabled spellcheck
+
     }, function() {});
   }
 
