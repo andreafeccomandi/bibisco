@@ -30,6 +30,10 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
+  self.$onInit = function() {
+    self.text = self.content;
+  }
+
 
   if (ContextService.getOs() == 'darwin') {
     self.os = '_mac';
@@ -37,7 +41,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     self.os = '';
   }
 
-  self.text = 'I love my life tavolo cabeza testunospagnolo testunoitaliano';
   self.fontclass = RichTextEditorPreferencesService.getFontClass();
   self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
