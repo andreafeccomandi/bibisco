@@ -32,6 +32,12 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   var self = this;
   self.$onInit = function() {
     self.text = self.content;
+    self.wordcount = 0;
+    self.charactercount = 0;
+    self.countWordsAndCharacters();
+
+    // set <p> as default paragraph separator
+    $document[0].execCommand('defaultParagraphSeparator', false, 'p');
   }
 
 
@@ -204,9 +210,9 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   self.print = function() {
     var printMe = document.getElementById("richtexteditor");
     var printIframe = document.createElement('iframe');
-    printIframe.name = "name_for_iframe";
+    printIframe.name = "print_iframe";
     document.body.appendChild(printIframe);
-    var printIframeWindow = window.frames["name_for_iframe"];
+    var printIframeWindow = window.frames["print_iframe"];
     var printDocument = printIframeWindow.document;
     printDocument.write("<html><body></body></html>");
     printDocument.body.innerHTML = printMe.innerHTML;
@@ -335,6 +341,21 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.text = self.text + ' '; // force change text to enable/disabled spellcheck
 
     }, function() {});
+  }
+
+  self.countWordsAndCharacters = function() {
+
+    let wordCount = require('html-word-count');
+
+    let div = document.createElement("div");
+    div.innerHTML = self.text;
+    let texttoprocess = div.textContent || div.innerText || "";
+
+    self.charactercount = texttoprocess.trim().length;
+    self.wordcount = wordCount(self.text);
+
+    console.log('words: ' + self.wordcount + ' characters: ' + self
+      .charactercount);
   }
 
   LoggerService.debug('End RichTextEditorController...');

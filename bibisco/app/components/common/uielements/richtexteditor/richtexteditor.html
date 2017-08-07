@@ -113,14 +113,15 @@
 </div>
 
 <div class="richtexteditor-contenteditable-container">
-  <div contenteditable spellcheck="{{$ctrl.spellcheckenabled}}" class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
+  <div contenteditable="true" ng-model="$ctrl.text" ng-change="$ctrl.countWordsAndCharacters()"
+    spellcheck="{{$ctrl.spellcheckenabled}}"
+    class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"
     ng-blur="$ctrl.disablestylebuttons()"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)">
-    <p>
-      {{$ctrl.text}}
-    </p>
+      <!-- This is necessary to start editing inside a <p> -->
+      <p><br/></p>
   </div>
 </div>
