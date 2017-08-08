@@ -18,10 +18,12 @@ component('detailcontent', {
   templateUrl: 'components/common/uielements/detail-content/detail-content.html',
   controller: DetailContentController,
   bindings: {
+    characters: '=',
     content: '@',
     editmode: '<',
     headersubtitle: '<',
-    showprojectexplorer: '<'
+    showprojectexplorer: '<',
+    words: '='
   }
 });
 

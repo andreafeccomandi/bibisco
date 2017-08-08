@@ -18,7 +18,9 @@ component('richtexteditor', {
   templateUrl: 'components/common/uielements/richtexteditor/richtexteditor.html',
   controller: RichTextEditorController,
   bindings: {
-    content: '@'
+    characters: '=',
+    content: '@',
+    words: '='
   }
 });
 
@@ -32,8 +34,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   var self = this;
   self.$onInit = function() {
     self.text = self.content;
-    self.wordcount = 0;
-    self.charactercount = 0;
     self.countWordsAndCharacters();
 
     // set <p> as default paragraph separator
@@ -351,11 +351,11 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     div.innerHTML = self.text;
     let texttoprocess = div.textContent || div.innerText || "";
 
-    self.charactercount = texttoprocess.trim().length;
-    self.wordcount = wordCount(self.text);
+    self.characters = texttoprocess.trim().length;
+    self.words = wordCount(self.text);
 
-    console.log('words: ' + self.wordcount + ' characters: ' + self
-      .charactercount);
+    console.log('words: ' + self.words + ' characters: ' + self
+      .characters);
   }
 
   LoggerService.debug('End RichTextEditorController...');
