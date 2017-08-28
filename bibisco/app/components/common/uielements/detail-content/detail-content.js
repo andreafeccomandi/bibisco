@@ -19,7 +19,7 @@ component('detailcontent', {
   controller: DetailContentController,
   bindings: {
     characters: '=',
-    content: '@',
+    content: '=',
     editmode: '<',
     headersubtitle: '<',
     showprojectexplorer: '<',

@@ -19,7 +19,7 @@ component('detaileditcontent', {
   controller: DetailEditContentController,
   bindings: {
     characters: '=',
-    content: '@',
+    content: '=',
     words: '='
   }
 });

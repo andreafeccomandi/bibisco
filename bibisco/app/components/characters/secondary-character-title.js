@@ -71,7 +71,10 @@ function SecondaryCharacterTitleController($location, $routeParams,
       SecondaryCharacterService.update(secondarycharacter);
     } else {
       SecondaryCharacterService.insert({
-        name: title
+        name: title,
+        description: '',
+        characters: 0,
+        words: 0
       });
     }
   }

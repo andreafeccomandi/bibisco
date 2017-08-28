@@ -19,7 +19,7 @@ component('richtexteditor', {
   controller: RichTextEditorController,
   bindings: {
     characters: '=',
-    content: '@',
+    content: '=',
     words: '='
   }
 });
@@ -33,7 +33,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
 
   var self = this;
   self.$onInit = function() {
-    self.text = self.content;
     self.countWordsAndCharacters();
 
     // set <p> as default paragraph separator
@@ -338,7 +337,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.fontclass = RichTextEditorPreferencesService.getFontClass();
       self.indentclass = RichTextEditorPreferencesService.getIndentClass();
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
-      self.text = self.text + ' '; // force change text to enable/disabled spellcheck
+      self.content = self.content + ' '; // force change text to enable/disabled spellcheck
 
     }, function() {});
   }
@@ -348,11 +347,11 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     let wordCount = require('html-word-count');
 
     let div = document.createElement("div");
-    div.innerHTML = self.text;
+    div.innerHTML = self.content;
     let texttoprocess = div.textContent || div.innerText || "";
 
     self.characters = texttoprocess.trim().length;
-    self.words = wordCount(self.text);
+    self.words = wordCount(self.content);
 
     console.log('words: ' + self.words + ' characters: ' + self
       .characters);

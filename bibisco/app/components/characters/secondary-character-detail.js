@@ -70,10 +70,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   }
 
   self.savefunction = function(text) {
-    alert('Qui si salverà il testo per id=' + self.secondarycharacter
-      .$loki + ' words: ' + self.secondarycharacter.words + ' characters: ' +
-      self.secondarycharacter.characters);
-
     SecondaryCharacterService.update(self.secondarycharacter);
   }
 

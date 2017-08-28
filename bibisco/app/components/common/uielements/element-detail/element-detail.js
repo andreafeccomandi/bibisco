@@ -24,7 +24,7 @@ component('elementdetail', {
     changetitlefunction: '&',
     changetitlelabel: '@',
     characters: '=',
-    content: '@',
+    content: '=',
     deleteconfirmmessage: '@',
     deleteenabled: '<',
     deleteforbidden: '<',
