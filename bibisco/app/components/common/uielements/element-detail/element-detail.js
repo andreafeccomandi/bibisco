@@ -23,7 +23,7 @@ component('elementdetail', {
     changetitleenabled: '<',
     changetitlefunction: '&',
     changetitlelabel: '@',
-    characters: '<',
+    characters: '=',
     content: '@',
     deleteconfirmmessage: '@',
     deleteenabled: '<',
@@ -38,7 +38,7 @@ component('elementdetail', {
     showimagesfunction: '&',
     taskstatus: '<',
     taskstatuschangefunction: '&',
-    words: '<',
+    words: '=',
     wordscharactersenabled: '<'
   }
 });
