@@ -27,7 +27,7 @@ component('detailfooterrightbuttonbar', {
     deleteforbidden: '<',
     deleteforbiddenmessage: '@',
     deletefunction: '&',
-    dirty: '<',
+    dirty: '=',
     editmode: '=',
     savefunction: '&'
   }
@@ -50,6 +50,11 @@ function DetailFooterRightButtonbarController(LoggerService, PopupBoxesService) 
 
   self.enableeditmode = function() {
     self.editmode = true;
+  }
+
+  self.save = function() {
+    self.savefunction();
+    self.dirty = false;
   }
 
   LoggerService.debug('End DetailFooterRightButtonbarController...');

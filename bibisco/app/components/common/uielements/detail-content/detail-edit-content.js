@@ -20,6 +20,7 @@ component('detaileditcontent', {
   bindings: {
     characters: '=',
     content: '=',
+    dirty: '=',
     words: '='
   }
 });

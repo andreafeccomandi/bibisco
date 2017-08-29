@@ -113,7 +113,7 @@
 </div>
 
 <div class="richtexteditor-contenteditable-container">
-  <div contenteditable="true" ng-model="$ctrl.content" ng-change="$ctrl.countWordsAndCharacters()"
+  <div contenteditable="true" ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
     spellcheck="{{$ctrl.spellcheckenabled}}"
     class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"

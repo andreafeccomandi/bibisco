@@ -20,6 +20,7 @@ component('richtexteditor', {
   bindings: {
     characters: '=',
     content: '=',
+    dirty: '=',
     words: '='
   }
 });
@@ -340,6 +341,11 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
 
     }, function() {});
+  }
+
+  self.contentChanged = function() {
+    self.dirty = true;
+    self.countWordsAndCharacters();
   }
 
   self.countWordsAndCharacters = function() {

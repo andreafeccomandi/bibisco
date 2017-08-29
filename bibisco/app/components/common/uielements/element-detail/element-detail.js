@@ -48,7 +48,7 @@ function ElementDetailController(LoggerService) {
 
   var self = this;
 
-  self.dirty = true;
+  self.dirty = false;
   self.showprojectexplorer = false;
 
   LoggerService.debug('End ElementDetailController...');

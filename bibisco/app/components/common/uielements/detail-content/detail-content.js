@@ -20,6 +20,7 @@ component('detailcontent', {
   bindings: {
     characters: '=',
     content: '=',
+    dirty: '=',
     editmode: '<',
     headersubtitle: '<',
     showprojectexplorer: '<',
