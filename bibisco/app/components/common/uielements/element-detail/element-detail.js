@@ -34,6 +34,7 @@ component('elementdetail', {
     headertitle: '@',
     headersubtitle: '@',
     imagesenabled: '<',
+    lastsave: '<',
     savefunction: '&',
     showimagesfunction: '&',
     taskstatus: '<',

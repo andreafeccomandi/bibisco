@@ -84,14 +84,14 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
         prefix: 'resources/locale-', // path to translations files
         suffix: '.json' // suffix, currently- extension of the translations
       })
-      .registerAvailableLanguageKeys(['cs', 'de', 'en', 'es', 'fr', 'it',
-        'pl', 'pt-br', 'pt-pt', 'ru'
+      .registerAvailableLanguageKeys(['cs', 'de', 'en', 'en-us',
+        'es', 'fr', 'it', 'pl', 'pt-br', 'pt-pt', 'ru'
       ], {
         'cs': 'cs',
         'de': 'de',
-        'en-ca': 'en',
+        'en-ca': 'en-us',
         'en-gb': 'en',
-        'en-us': 'en',
+        'en-us': 'en-us',
         'es': 'es',
         'fr': 'fr',
         'it': 'it',

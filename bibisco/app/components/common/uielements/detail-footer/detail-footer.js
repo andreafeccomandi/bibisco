@@ -32,6 +32,7 @@ component('detailfooter', {
     extrabuttons: '<',
     imagesenabled: '<',
     editmode: '=',
+    lastsave: '<',
     savefunction: '&',
     showimagesfunction: '&',
     showprojectexplorer: '=',

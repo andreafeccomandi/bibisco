@@ -19,6 +19,7 @@ component('detailfootertop', {
   controller: DetailFooterTopController,
   bindings: {
     characters: '<',
+    lastsave: '<',
     words: '<',
     wordscharactersenabled: '<'
   }

@@ -1,0 +1,3 @@
+{
+  "timestamp_format": "{{date|date:'MM/dd/yyyy HH:mm:ss'}}"
+}
