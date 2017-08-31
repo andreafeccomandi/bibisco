@@ -1,7 +1,11 @@
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <detailfootertop characters="$ctrl.characters" words="$ctrl.words"
-    wordscharactersenabled="$ctrl.wordscharactersenabled" lastsave="$ctrl.lastsave">
+    <detailfootertop
+      autosaveenabled="$ctrl.autosaveenabled"
+      characters="$ctrl.characters"
+      lastsave="$ctrl.lastsave"
+      words="$ctrl.words"
+      wordscharactersenabled="$ctrl.wordscharactersenabled">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
@@ -13,6 +17,7 @@
       </span>
       <span class="pull-right">
         <detailfooterrightbuttonbar
+          autosaveenabled="$ctrl.autosaveenabled"
           backfunction="$ctrl.backfunction()"
           changetitleenabled="$ctrl.changetitleenabled"
           changetitlefunction="$ctrl.changetitlefunction()"

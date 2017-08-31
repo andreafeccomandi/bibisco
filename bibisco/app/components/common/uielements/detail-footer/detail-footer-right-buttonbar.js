@@ -18,6 +18,7 @@ component('detailfooterrightbuttonbar', {
   templateUrl: 'components/common/uielements/detail-footer/detail-footer-right-buttonbar.html',
   controller: DetailFooterRightButtonbarController,
   bindings: {
+    autosaveenabled: '<',
     backfunction: '&',
     changetitleenabled: '<',
     changetitlefunction: '&',
@@ -44,10 +45,8 @@ function DetailFooterRightButtonbarController($interval, LoggerService,
   self.$onInit = function() {
     $interval(function() {
       self.save();
-    }, 10000);
+    }, 60000);
   }
-
-
 
   self.delete = function() {
     if (self.deleteforbidden) {
@@ -62,7 +61,7 @@ function DetailFooterRightButtonbarController($interval, LoggerService,
   }
 
   self.save = function() {
-    if (self.dirty) {
+    if (self.autosaveenabled && self.dirty) {
       self.savefunction();
       self.dirty = false;
     }

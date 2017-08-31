@@ -18,6 +18,7 @@ component('detailfooter', {
   templateUrl: 'components/common/uielements/detail-footer/detail-footer.html',
   controller: DetailFooterController,
   bindings: {
+    autosaveenabled: '<',
     backfunction: '&',
     changetitleenabled: '<',
     changetitlefunction: '&',

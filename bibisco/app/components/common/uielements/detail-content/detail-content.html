@@ -7,7 +7,9 @@
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
         <detailviewcontent ng-if="!$ctrl.editmode" content="{{$ctrl.content}}">
         </detailviewcontent>
-        <detaileditcontent ng-if="$ctrl.editmode" content="$ctrl.content" dirty="$ctrl.dirty"
+        <detaileditcontent ng-if="$ctrl.editmode"
+          autosaveenabled="$ctrl.autosaveenabled"
+          content="$ctrl.content" dirty="$ctrl.dirty"
           words="$ctrl.words" characters="$ctrl.characters">
         </detaileditcontent>
       </div>

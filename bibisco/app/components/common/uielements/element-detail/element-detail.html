@@ -6,6 +6,7 @@
 </detailheader>
 
 <detailcontent
+  autosaveenabled="$ctrl.autosaveenabled"
   characters="$ctrl.characters"
   content="$ctrl.content"
   dirty="$ctrl.dirty"
@@ -15,7 +16,9 @@
   words="$ctrl.words">
 </detailcontent>
 
-<detailfooter backfunction="$ctrl.backfunction()"
+<detailfooter
+  autosaveenabled="$ctrl.autosaveenabled"
+  backfunction="$ctrl.backfunction()"
   changetitleenabled="$ctrl.changetitleenabled"
   changetitlefunction="$ctrl.changetitlefunction()"
   changetitlelabel="{{$ctrl.changetitlelabel}}"

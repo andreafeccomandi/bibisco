@@ -18,6 +18,7 @@ component('richtexteditor', {
   templateUrl: 'components/common/uielements/richtexteditor/richtexteditor.html',
   controller: RichTextEditorController,
   bindings: {
+    autosaveenabled: '=',
     characters: '=',
     content: '=',
     dirty: '=',
@@ -339,6 +340,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.indentclass = RichTextEditorPreferencesService.getIndentClass();
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
+      self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
 
     }, function() {});
   }

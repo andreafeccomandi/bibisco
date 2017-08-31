@@ -18,6 +18,7 @@ component('detailfootertop', {
   templateUrl: 'components/common/uielements/detail-footer/detail-footer-top.html',
   controller: DetailFooterTopController,
   bindings: {
+    autosaveenabled: '<',
     characters: '<',
     lastsave: '<',
     words: '<',

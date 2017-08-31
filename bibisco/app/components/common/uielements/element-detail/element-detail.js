@@ -44,13 +44,15 @@ component('elementdetail', {
   }
 });
 
-function ElementDetailController(LoggerService) {
+function ElementDetailController(LoggerService,
+  RichTextEditorPreferencesService) {
   LoggerService.debug('Start ElementDetailController...');
 
   var self = this;
 
   self.dirty = false;
   self.showprojectexplorer = false;
+  self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
 
   LoggerService.debug('End ElementDetailController...');
 }
