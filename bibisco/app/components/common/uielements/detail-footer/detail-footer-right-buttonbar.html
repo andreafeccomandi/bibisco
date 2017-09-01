@@ -19,7 +19,7 @@
 </div>
 <button ng-if="!$ctrl.editmode" type="button" class="btn btn-primary"
   ng-click="$ctrl.enableeditmode()">{{"jsp.common.button.edit" | translate}}</button>
-<button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" 
+<button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
   ng-click="$ctrl.save()">{{"jsp.common.button.save" | translate}}</button>
 <buttonwithconfirm enableconfirm="$ctrl.dirty"
   buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.backfunction()"

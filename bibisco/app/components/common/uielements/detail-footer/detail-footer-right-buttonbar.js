@@ -44,7 +44,9 @@ function DetailFooterRightButtonbarController($interval, LoggerService,
 
   self.$onInit = function() {
     $interval(function() {
-      self.save();
+      if (self.autosaveenabled) {
+        self.save();
+      }
     }, 60000);
   }
 
@@ -61,7 +63,7 @@ function DetailFooterRightButtonbarController($interval, LoggerService,
   }
 
   self.save = function() {
-    if (self.autosaveenabled && self.dirty) {
+    if (self.dirty) {
       self.savefunction();
       self.dirty = false;
     }

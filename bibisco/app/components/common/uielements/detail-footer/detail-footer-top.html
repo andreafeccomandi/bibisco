@@ -1,8 +1,12 @@
 <div class="row" ng-if="$ctrl.wordscharactersenabled">
   <span class="pull-left">
-    <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}:
-      {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}
-    </span>
+    <span ng-if="$ctrl.autosaveenabled == true" class="label label-primary"
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.autosave.enabled' | translate}}"
+      tooltip-placement="right">AUTO</span>
+    <span ng-if="$ctrl.autosaveenabled == false" class="label label-default"
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.autosave.disabled' | translate}}"
+      tooltip-placement="right">AUTO</span>
+    <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
   </span>
   <span class="pull-right">
     <span class="label label-info">{{"jsp.common.span.words" | translate}}: {{$ctrl.words}}</span>
