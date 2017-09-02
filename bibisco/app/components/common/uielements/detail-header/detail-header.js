@@ -19,6 +19,7 @@ component('detailheader', {
   controller: DetailHeaderController,
   bindings: {
     breadcrumbitems: '<',
+    editmode: '<',
     headertitle: '@',
     headersubtitle: '@',
     taskstatus: '<',

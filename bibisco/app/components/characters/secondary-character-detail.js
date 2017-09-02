@@ -33,7 +33,8 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.characters'
+      label: 'jsp.projectFromScene.nav.li.characters',
+      href: '/project/characters'
     });
     self.breadcrumbitems.push({
       labelvalue: self.secondarycharacter.name

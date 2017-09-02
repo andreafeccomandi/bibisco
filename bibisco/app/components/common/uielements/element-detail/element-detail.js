@@ -31,6 +31,7 @@ component('elementdetail', {
     deleteforbiddenmessage: '@',
     deletefunction: '&',
     editmode: '<',
+    eventname: '@',
     headertitle: '@',
     headersubtitle: '@',
     imagesenabled: '<',
@@ -44,11 +45,15 @@ component('elementdetail', {
   }
 });
 
-function ElementDetailController(LoggerService,
+function ElementDetailController($rootScope, LoggerService,
   RichTextEditorPreferencesService) {
   LoggerService.debug('Start ElementDetailController...');
 
   var self = this;
+
+  self.$onInit = function() {
+    $rootScope.$emit(self.eventname);
+  };
 
   self.dirty = false;
   self.showprojectexplorer = false;
