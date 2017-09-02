@@ -18,6 +18,7 @@ component('detailfooterleftbuttonbar', {
   templateUrl: 'components/common/uielements/detail-footer/detail-footer-left-buttonbar.html',
   controller: DetailFooterLeftButtonbarController,
   bindings: {
+    editmode: '<',
     imagesenabled: '<',
     showimagesfunction: '&',
     showprojectexplorer: '='

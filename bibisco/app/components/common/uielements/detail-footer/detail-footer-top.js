@@ -20,6 +20,7 @@ component('detailfootertop', {
   bindings: {
     autosaveenabled: '<',
     characters: '<',
+    editmode: '<',
     lastsave: '<',
     words: '<',
     wordscharactersenabled: '<'
