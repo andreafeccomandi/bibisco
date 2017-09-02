@@ -85,7 +85,7 @@ function MenuController($location, $rootScope, LoggerService) {
   // SHOW SECONDARY CHARACTER detail
   $rootScope.$on('SHOW_SECONDARY_CHARACTER_DETAIL', function() {
     self.visible = true;
-    self.disabled = false;
+    self.disabled = true;
   });
 
 
