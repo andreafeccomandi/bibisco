@@ -1,10 +1,10 @@
 <ol class="breadcrumb bibiscoNotSelectableText">
   <li ng-repeat="item in $ctrl.items" ng-class="{ 'active': $last }">
-    <a ng-if="item.href" ng-click="$ctrl.followlink(item.href)">
+    <a ng-if="item.href && !$ctrl.linkdisabled" ng-click="$ctrl.followlink(item.href)">
       <span ng-if="item.label">{{item.label | translate}}</span>
       <span ng-if="item.labelvalue">{{item.labelvalue}}</span>
     </a>
-    <span ng-if="!item.href">
+    <span ng-if="!item.href || $ctrl.linkdisabled">
       <span ng-if="item.label">{{item.label | translate}}</span>
       <span ng-if="item.labelvalue">{{item.labelvalue}}</span>
     </span>

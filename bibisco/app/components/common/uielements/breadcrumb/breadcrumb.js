@@ -18,7 +18,8 @@ component('breadcrumb', {
   templateUrl: 'components/common/uielements/breadcrumb/breadcrumb.html',
   controller: BreadcrumbController,
   bindings: {
-    items: '<'
+    items: '<',
+    linkdisabled: '<'
   }
 });
 
