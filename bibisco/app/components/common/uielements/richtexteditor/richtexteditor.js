@@ -39,6 +39,10 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
 
     // set <p> as default paragraph separator
     $document[0].execCommand('defaultParagraphSeparator', false, 'p');
+    var div = document.getElementById('richtexteditor');
+    setTimeout(function() {
+      div.focus();
+    }, 0);
   }
 
 
