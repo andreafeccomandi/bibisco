@@ -655,5 +655,6 @@
   "jsp.analysisChaptersLength.em.noItemAvailable": "Analiza nie jest dostępna, ponieważ nie utworzyłeś jeszcze żadnego rozdziału.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Rozdziały",
   "jsp.analysisChaptersLength.js.yaxis.label": "Słowa",
-  "detailfooterleftbuttonbar.projectexplorer.button": "eksplorator projektu"
+  "detailfooterleftbuttonbar.projectexplorer.button": "eksplorator projektu",
+  "common.getstarted": "rozpocznij"
 }

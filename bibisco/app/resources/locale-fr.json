@@ -663,5 +663,6 @@
   "jsp.analysisChaptersLength.em.noItemAvailable": "Lʼanalyse nʼest pas disponible car vous nʼavez pas encore créé de chapitre.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Chapitres",
   "jsp.analysisChaptersLength.js.yaxis.label": "Mots",
-  "detailfooterleftbuttonbar.projectexplorer.button": "explorateur de projet"
+  "detailfooterleftbuttonbar.projectexplorer.button": "explorateur de projet",
+  "common.getstarted": "commencer"
 }

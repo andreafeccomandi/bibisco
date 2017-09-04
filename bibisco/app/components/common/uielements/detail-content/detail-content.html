@@ -1,11 +1,14 @@
 <div ng-class="{'detail-content-with-header-subtitle': $ctrl.headersubtitle,
   'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
-  <div class="container"  style="height: 100%;">
-    <div class="row"  style="height: 100%;">
+  <div class="container" style="height: 100%;">
+    <div class="row" style="height: 100%;">
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
-        <detailviewcontent ng-if="!$ctrl.editmode" content="{{$ctrl.content}}">
+        <detailviewcontent ng-if="!$ctrl.editmode"
+          content="{{$ctrl.content}}"
+          editmode="$ctrl.editmode"
+          words="$ctrl.words">
         </detailviewcontent>
         <detaileditcontent ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"

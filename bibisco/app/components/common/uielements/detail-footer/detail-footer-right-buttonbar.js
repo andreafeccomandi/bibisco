@@ -30,7 +30,8 @@ component('detailfooterrightbuttonbar', {
     deletefunction: '&',
     dirty: '=',
     editmode: '=',
-    savefunction: '&'
+    savefunction: '&',
+    words: '<'
   }
 });
 

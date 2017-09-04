@@ -30,7 +30,7 @@ component('elementdetail', {
     deleteforbidden: '<',
     deleteforbiddenmessage: '@',
     deletefunction: '&',
-    editmode: '<',
+    editmode: '=',
     eventname: '@',
     headertitle: '@',
     headersubtitle: '@',

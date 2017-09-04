@@ -654,5 +654,6 @@
   "jsp.analysisChaptersLength.em.noItemAvailable": "Analýza není k dispozici, protože jste ještě nevytvořil žádné kapitoly.",
   "jsp.analysisChaptersLength.js.xaxis.label": "Kapitoly",
   "jsp.analysisChaptersLength.js.yaxis.label": "Slova",
-  "detailfooterleftbuttonbar.projectexplorer.button": "prohlížeč projektu"
+  "detailfooterleftbuttonbar.projectexplorer.button": "prohlížeč projektu",
+  "common.getstarted": "začínáme"
 }

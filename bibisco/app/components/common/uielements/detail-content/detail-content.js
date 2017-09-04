@@ -22,7 +22,7 @@ component('detailcontent', {
     characters: '=',
     content: '=',
     dirty: '=',
-    editmode: '<',
+    editmode: '=',
     headersubtitle: '<',
     showprojectexplorer: '<',
     words: '='
