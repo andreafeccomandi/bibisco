@@ -22,6 +22,7 @@ component('richtexteditor', {
     characters: '=',
     content: '=',
     dirty: '=',
+    savefunction: '&',
     words: '='
   }
 });
@@ -131,8 +132,15 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       callback: function() {
         self.highlight();
       }
+    })
+    .add({
+      combo: ['ctrl+s', 'command+s'],
+      description: 'save',
+      callback: function() {
+        self.savefunction();
+        self.dirty = false;
+      }
     });
-
 
   self.checkselectionstate = function() {
 

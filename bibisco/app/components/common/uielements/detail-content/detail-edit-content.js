@@ -22,6 +22,7 @@ component('detaileditcontent', {
     characters: '=',
     content: '=',
     dirty: '=',
+    savefunction: '&',
     words: '='
   }
 });
