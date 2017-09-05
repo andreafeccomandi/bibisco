@@ -36,17 +36,19 @@ component('detailfooterrightbuttonbar', {
 });
 
 
-function DetailFooterRightButtonbarController($interval, LoggerService,
-  PopupBoxesService) {
+function DetailFooterRightButtonbarController($interval, $timeout,
+  LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterRightButtonbarController...');
 
   var self = this;
 
   self.$onInit = function() {
+    self.saving = false;
     $interval(function() {
-      if (self.autosaveenabled) {
-        self.save();
+      if (self.autosaveenabled && self.dirty) {
+        self.savefunction();
+        self.dirty = false;
       }
     }, 60000);
   }
@@ -65,8 +67,12 @@ function DetailFooterRightButtonbarController($interval, LoggerService,
 
   self.save = function() {
     if (self.dirty) {
-      self.savefunction();
-      self.dirty = false;
+      self.saving = true;
+      $timeout(function() {
+        self.savefunction();
+        self.dirty = false;
+        self.saving = false;
+      }, 250);
     }
   }
 
