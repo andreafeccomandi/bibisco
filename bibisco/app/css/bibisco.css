@@ -232,6 +232,25 @@ h3 {
 	-webkit-box-orient: vertical;
 }
 
+/* BIBISCO CARD GRID */
+.card-grid-with-header-subtitle-full-page {
+    overflow-y: auto;
+    height: calc(100% - 190px);
+    width: 100%;
+    position: absolute;
+    top: 185px;
+    left: 0px;
+}
+
+.card-grid-no-header-subtitle-full-page {
+    overflow-y: auto;
+    height: calc(100% - 150px);
+    width: 100%;
+    position: absolute;
+    top: 145px;
+    left: 0px;
+}
+
 /* BIBISCO BADGE */
 .bibiscoBadge {
 	font-weight: normal;
