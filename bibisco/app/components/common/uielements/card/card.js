@@ -21,6 +21,7 @@ component('card', {
     cardid: '<',
     cardtitle: '<',
     characters: '<',
+    dimension: '<',
     dndenabled: '<',
     dropfunction: '&',
     family: '<',

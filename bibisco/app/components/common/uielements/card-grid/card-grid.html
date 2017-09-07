@@ -1,11 +1,15 @@
-<div class="row">
-	<pageheader
-			headertitle="{{$ctrl.pageheadertitle}}"
-			headersubtitle="{{$ctrl.pageheadersubtitle}}"
-			buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
-			buttonfunction="$ctrl.pageheaderbuttonfunction()"
-			buttonshow="$ctrl.items">
-	</pageheader>
+<div class="card-grid-header {{$ctrl.headerclass}}">
+	<div class="container">
+	<div class="row">
+		<pageheader
+				headertitle="{{$ctrl.pageheadertitle}}"
+				headersubtitle="{{$ctrl.pageheadersubtitle}}"
+				buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
+				buttonfunction="$ctrl.pageheaderbuttonfunction()"
+				buttonshow="$ctrl.items">
+		</pageheader>
+	</div>
+</div>
 </div>
 <div ng-show="!$ctrl.items">
 	<emptylistbox text="{{$ctrl.emptylistboxtext}}"
@@ -13,12 +17,12 @@
 		buttonfunction="$ctrl.emptylistboxbuttonfunction()"></emptylistbox>
 </div>
 <div ng-show="$ctrl.items">
-<div ng-class="{'card-grid-with-header-subtitle-full-page': $ctrl.pageheadersubtitle,
-  'card-grid-no-header-subtitle-full-page': !$ctrl.pageheadersubtitle}">
+<div class="card-grid-items {{$ctrl.gridclass}}">
 	<div class="container">
 	<div class="row">
 		<div ng-repeat="item in $ctrl.items" class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
 			<card cardid="item.id" cardtitle="item.title"
+				dimension="$ctrl.carddimension"
 				dndenabled="$ctrl.dndenabled"
 				dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
 				family="$ctrl.family"

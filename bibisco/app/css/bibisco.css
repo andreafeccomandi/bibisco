@@ -190,29 +190,36 @@ h3 {
 }
 
 /* BIBISCO CARD */
-.bibiscoCard {
+.card {
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 4px;
 	cursor: pointer;
 	display: block;
-	height: 120px;
 	margin-bottom: 20px;
 	padding: 10px 15px;
 	position: relative;
 }
 
-.bibiscoCardHover {
+.card-normal {
+	height: 120px;
+}
+
+.card-small {
+	height: 80px;
+}
+
+.card-hover {
 	background-color: #f5f5f5;
 	border: 1px solid #ddd;
 }
 
-.bibiscoCardHeading {
+.card-heading {
 	margin-top: 0px;
 	margin-bottom: 5px;
 }
 
-.bibiscoCardHeadingTitle {
+.card-heading-title {
 	max-width: 195px;
 	height: 45px;
 	overflow : hidden;
@@ -222,7 +229,7 @@ h3 {
 	-webkit-box-orient: vertical;
 }
 
-.bibiscoCardText {
+.card-text {
 	margin-bottom: 0px;
 	line-height: 1.3;
 	overflow : hidden;
@@ -233,22 +240,59 @@ h3 {
 }
 
 /* BIBISCO CARD GRID */
-.card-grid-with-header-subtitle-full-page {
-    overflow-y: auto;
-    height: calc(100% - 190px);
+.card-grid-header {
+		width: 100%;
+		position: absolute;
+		left: 0px;
+}
+
+.card-grid-header-full {
+    top: 60px;
+}
+
+.card-grid-header-half-top {
+    top: 60px;
+}
+
+.card-grid-header-half-bottom {
+    top: 400px;
+}
+
+.card-grid-items {
+    overflow-y: scroll;
     width: 100%;
     position: absolute;
-    top: 185px;
     left: 0px;
 }
 
-.card-grid-no-header-subtitle-full-page {
-    overflow-y: auto;
+.card-grid-items-with-header-subtitle-full {
+    height: calc(100% - 190px);
+    top: 185px;
+}
+
+.card-grid-items-no-header-subtitle-full {
     height: calc(100% - 150px);
-    width: 100%;
-    position: absolute;
     top: 145px;
-    left: 0px;
+}
+
+.card-grid-items-with-header-subtitle-half-top {
+    height: 220px;
+    top: 185px;
+}
+
+.card-grid-items-no-header-subtitle-half-top {
+    height: 300px;
+    top: 145px;
+}
+
+.card-grid-items-with-header-subtitle-half-bottom {
+    height: calc(100% - 530px);
+    top: 525px;
+}
+
+.card-grid-items-no-header-subtitle-half-bottom {
+    height: calc(100% - 490px);
+    top: 485px;
 }
 
 /* BIBISCO BADGE */
@@ -455,11 +499,11 @@ h3 {
 
 /* Medium devices (desktops, 992px and up) */
 @media (max-width: 992px) {
-	.bibiscoCard {
+	.card {
 		height: 130px;
 	}
 
-	.bibiscoCardHeadingTitle {
+	.card-heading-title {
 		max-width: 155px;
 		height: 60px;
 	}
@@ -467,11 +511,11 @@ h3 {
 
 /* Small devices (tablets, 768px and up) */
 @media (max-width: 768px) {
-	.bibiscoCard {
+	.card {
 		height: 115px;
 	}
 
-	.bibiscoCardHeadingTitle {
+	.card-heading-title {
 		max-width: 220px;
 		height: 45px;
 	}

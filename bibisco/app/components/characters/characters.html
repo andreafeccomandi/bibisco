@@ -2,6 +2,7 @@
 
   <!-- MAIN CHARACTERS -->
   <cardgrid
+    carddimension="small"
     dndenabled="true"
     dropfunction="$ctrl.mainCharacterMove(draggedObjectId, destinationObjectId)"
     family="maincharacters"
@@ -13,10 +14,12 @@
     pageheaderbuttonfunction="$ctrl.createMainCharacter()"
     pageheadertitle="jsp.characters.h1.main"
     pageheadersubtitle="jsp.characters.h1.small.main"
-    selectfunction="$ctrl.mainCharacterSelect(id)"></cardgrid>
+    selectfunction="$ctrl.mainCharacterSelect(id)"
+    type="half-top"></cardgrid>
 
   <!-- SECONDARY CHARACTERS -->
   <cardgrid
+    carddimension="small"
     dndenabled="true"
     dropfunction="$ctrl.secondaryCharacterMove(draggedObjectId, destinationObjectId)"
     family="secondarycharacters"
@@ -28,5 +31,6 @@
     pageheaderbuttonfunction="$ctrl.createSecondaryCharacter()"
     pageheadertitle="jsp.characters.h1.secondary"
     pageheadersubtitle="jsp.characters.h1.small.secondary"
-    selectfunction="$ctrl.secondaryCharacterSelect(id)"></cardgrid>
+    selectfunction="$ctrl.secondaryCharacterSelect(id)"
+    type="half-bottom"></cardgrid>
 </div>

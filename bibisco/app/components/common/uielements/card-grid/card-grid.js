@@ -18,6 +18,7 @@ component('cardgrid', {
   templateUrl: 'components/common/uielements/card-grid/card-grid.html',
   controller: CardGridController,
   bindings: {
+    carddimension: '@',
     dndenabled: '@',
     dropfunction: '&',
     emptylistboxtext: '@',
@@ -29,7 +30,8 @@ component('cardgrid', {
     pageheaderbuttonfunction: '&',
     pageheadertitle: '@',
     pageheadersubtitle: '@',
-    selectfunction: '&'
+    selectfunction: '&',
+    type: '@'
   }
 });
 
@@ -38,6 +40,18 @@ function CardGridController(LoggerService) {
   LoggerService.debug('Start CardGridController...');
 
   var self = this;
+
+  self.$onInit = function() {
+
+    let headersubtitleclass;
+    if (self.pageheadersubtitle) {
+      headersubtitleclass = 'with-header-subtitle';
+    } else {
+      headersubtitleclass = 'no-header-subtitle';
+    }
+    self.gridclass = 'card-grid-items-' + headersubtitleclass + '-' + self.type;
+    self.headerclass = 'card-grid-header-' + self.type;
+  }
 
   LoggerService.debug('End CardGridController...');
 }
