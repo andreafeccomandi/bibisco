@@ -14,9 +14,9 @@
  */
 angular.
 module('bibiscoApp').
-component('emptylistbox', {
-  templateUrl: 'components/common/uielements/empty-list-box/empty-list-box.html',
-  controller: EmptyListBoxController,
+component('jumbotronbutton', {
+  templateUrl: 'components/common/uielements/jumbotron-button/jumbotron-button.html',
+  controller: JumbotronButtonController,
   bindings: {
     text: '@',
     buttonlabel: '@',
@@ -25,10 +25,10 @@ component('emptylistbox', {
 });
 
 
-function EmptyListBoxController(LoggerService) {
-  LoggerService.debug('Start EmptyListBoxController...');
+function JumbotronButtonController(LoggerService) {
+  LoggerService.debug('Start JumbotronButtonController...');
 
   var self = this;
 
-  LoggerService.debug('End EmptyListBoxController...');
+  LoggerService.debug('End JumbotronButtonController...');
 }
