@@ -50,6 +50,8 @@ function CardGridController(LoggerService) {
       headersubtitleclass = 'no-header-subtitle';
     }
     self.gridclass = 'card-grid-items-' + headersubtitleclass + '-' + self.type;
+    self.emptygridclass = 'card-grid-emptyitems-' + headersubtitleclass + '-' +
+      self.type;
     self.headerclass = 'card-grid-header-' + self.type;
   }
 

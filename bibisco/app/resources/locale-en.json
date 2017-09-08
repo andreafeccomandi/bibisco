@@ -199,7 +199,7 @@
   "jsp.chapters.dialog.title.createChapter": "Create chapter",
   "jsp.chapters.a.createChapter": "create chapter",
   "jsp.chapters.a.createFirstChapter": "create the first chapter",
-  "jsp.chapters.bibiscoEmptyThumbnailListBox.text": "No chapters in box.",
+  "jsp.chapters.bibiscoEmptyThumbnailListBox.text": "There are no chapters yet.",
   "jsp.chapterTitle.form.title": "Title",
   "jsp.chapter.a.backToChapterList": "&nbsp;back to the list of chapters",
   "jsp.chapter.a.createScene": "&nbsp;create a scene",

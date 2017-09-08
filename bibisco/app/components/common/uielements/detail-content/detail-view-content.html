@@ -1,9 +1,10 @@
-<div ng-if="$ctrl.words > 0" class="{{$ctrl.fontclass}} {{$ctrl.indentclass}}" ng-bind-html="$ctrl.content">
+<div ng-if="$ctrl.words > 0" class="{{$ctrl.fontclass}} {{$ctrl.indentclass}}"
+  ng-bind-html="$ctrl.content">
 </div>
-<div ng-if="$ctrl.words == 0" class="text-muted">
-  <div><h3><i>{{'jsp.projectFromScene.section.empty' | translate}}</i></h3></div>
-  <div>
-    <button type="button" class="btn btn-primary btn-lg top15"
-      ng-click="$ctrl.enableeditmode()">{{"common.getstarted" | translate}}</button>
-  </div>
+<div ng-if="$ctrl.words == 0">
+
+    <emptylistbox text="{{'jsp.projectFromScene.section.empty' | translate}}"
+      buttonlabel="{{'common.getstarted' | translate}}"
+      buttonfunction="$ctrl.enableeditmode()"></emptylistbox>
+  
 </div>

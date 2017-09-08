@@ -12,9 +12,13 @@
 </div>
 </div>
 <div ng-show="!$ctrl.items">
+	<div class="card-grid-emptyitems {{$ctrl.emptygridclass}}">
+	<div class="container">
 	<emptylistbox text="{{$ctrl.emptylistboxtext}}"
 		buttonlabel="{{$ctrl.emptylistboxbuttonlabel}}"
 		buttonfunction="$ctrl.emptylistboxbuttonfunction()"></emptylistbox>
+	</div>
+	</div>
 </div>
 <div ng-show="$ctrl.items">
 <div class="card-grid-items {{$ctrl.gridclass}}">

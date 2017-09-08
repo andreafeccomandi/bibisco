@@ -258,6 +258,34 @@ h3 {
     top: 400px;
 }
 
+.card-grid-emptyitems {
+	position: absolute;
+}
+
+.card-grid-emptyitems-with-header-subtitle-full {
+	top: 155px;
+}
+
+.card-grid-emptyitems-no-header-subtitle-full {
+	top: 155px;
+}
+
+.card-grid-emptyitems-with-header-subtitle-half-top {
+	top: 155px;
+}
+
+.card-grid-emptyitems-no-header-subtitle-half-top {
+	top: 155px;
+}
+
+.card-grid-emptyitems-with-header-subtitle-half-bottom {
+	top: 495px;
+}
+
+.card-grid-emptyitems-no-header-subtitle-half-bottom {
+	top: 445px;
+}
+
 .card-grid-items {
     overflow-y: scroll;
     width: 100%;
