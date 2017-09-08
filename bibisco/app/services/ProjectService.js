@@ -49,9 +49,28 @@ angular.module('bibiscoApp').service('ProjectService', function(
         bibiscoVersion: BibiscoPropertiesService.getProperty(
           'version')
       });
-      projectdb.addCollection('premise');
-      projectdb.addCollection('fabula');
-      projectdb.addCollection('setting');
+      projectdb.addCollection('architecture').insert([{
+        characters: 0,
+        lastsave: (new Date()).toJSON(),
+        status: 'todo',
+        type: 'premise',
+        text: '',
+        words: 0
+      }, {
+        characters: 0,
+        lastsave: (new Date()).toJSON(),
+        status: 'todo',
+        type: 'fabula',
+        text: '',
+        words: 0
+      }, {
+        characters: 0,
+        lastsave: (new Date()).toJSON(),
+        status: 'todo',
+        type: 'setting',
+        text: '',
+        words: 0
+      }]);
       projectdb.addCollection('strands');
       projectdb.addCollection('chapters');
       projectdb.addCollection('scenes');
