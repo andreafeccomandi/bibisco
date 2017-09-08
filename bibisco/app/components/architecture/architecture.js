@@ -22,9 +22,44 @@ component('architecture', {
   }
 });
 
-function ArchitectureController($location, $rootScope, LoggerService) {
+function ArchitectureController($location, $rootScope, ArchitectureService,
+  LoggerService) {
   LoggerService.debug('Start ArchitectureController...');
   var self = this;
+
+  self.$onInit = function() {
+    self.architecturecardgriditems = [];
+
+    /* Premise */
+    let premise = ArchitectureService.getPremise();
+    self.architecturecardgriditems.push({
+      id: 'premise',
+      position: 1,
+      status: premise.status,
+      text: 'jsp.architecture.thumbnail.premise.description',
+      title: 'jsp.architecture.thumbnail.premise.title'
+    });
+
+    /* Fabula */
+    let fabula = ArchitectureService.getFabula();
+    self.architecturecardgriditems.push({
+      id: 'fabula',
+      position: 2,
+      status: fabula.status,
+      text: 'jsp.architecture.thumbnail.fabula.description',
+      title: 'jsp.architecture.thumbnail.fabula.title'
+    });
+
+    /* Setting */
+    let setting = ArchitectureService.getSetting();
+    self.architecturecardgriditems.push({
+      id: 'setting',
+      position: 3,
+      status: setting.status,
+      text: 'jsp.architecture.thumbnail.setting.description',
+      title: 'jsp.architecture.thumbnail.setting.title'
+    });
+  }
 
   LoggerService.debug('End ArchitectureController...');
 }

@@ -1,6 +1,12 @@
 <div class="container">
-  <div class="row">
-    <pageheader headertitle="jsp.architecture.h1" cols="12">
-    </pageheader>
-  </div>
+
+  <!-- ARCHITECTURE -->
+  <cardgrid
+    carddimension="normal"
+    dndenabled="false"
+    family="architecture"
+    items="$ctrl.architecturecardgriditems"
+    pageheadertitle="jsp.architecture.h1"
+    selectfunction="$ctrl.architectureItemSelect(id)"
+    type="half-top"></cardgrid>
 </div>
