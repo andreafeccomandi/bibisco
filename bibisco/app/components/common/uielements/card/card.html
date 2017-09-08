@@ -9,7 +9,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
 	dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})" family="{{$ctrl.family}}">
   <div class="row">
     <div class="col-sm-12">
-      <span class="pull-left card-heading-title"><strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle}}</strong></span>
+      <span class="pull-left card-heading-title"><strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle  | translate}}</strong></span>
       <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
 				<wordscharacterscounter ng-if="$ctrl.words" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
 				<taskstatus status="$ctrl.status"></taskstatus></strong>
@@ -18,7 +18,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <p class="card-text">{{$ctrl.text}}</p>
+      <p class="card-text">{{$ctrl.text | translate}}</p>
     </div>
   </div>
 </div>
