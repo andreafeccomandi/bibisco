@@ -36,6 +36,9 @@ function DetailContentController(LoggerService) {
   LoggerService.debug('Start DetailContentController...');
 
   var self = this;
+  self.enableeditmode = function() {
+    self.editmode = true;
+  }
 
   LoggerService.debug('End DetailContentController...');
 }

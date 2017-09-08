@@ -18,9 +18,7 @@ component('detailviewcontent', {
   templateUrl: 'components/common/uielements/detail-content/detail-view-content.html',
   controller: DetailViewContentController,
   bindings: {
-    content: '@',
-    editmode: '=',
-    words: '<'
+    content: '@'
   }
 });
 
@@ -33,10 +31,6 @@ function DetailViewContentController(LoggerService,
   var self = this;
   self.fontclass = RichTextEditorPreferencesService.getFontClass();
   self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-
-  self.enableeditmode = function() {
-    self.editmode = true;
-  }
 
   LoggerService.debug('End DetailViewContentController...');
 }

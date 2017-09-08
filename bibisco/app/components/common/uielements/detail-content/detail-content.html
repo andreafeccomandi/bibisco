@@ -1,14 +1,13 @@
 <div ng-class="{'detail-content-with-header-subtitle': $ctrl.headersubtitle,
   'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
   <div class="container" style="height: 100%;">
-    <div class="row" style="height: 100%;">
+    <div ng-if="$ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
+        class="row" style="height: 100%;">
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
-        <detailviewcontent ng-if="!$ctrl.editmode"
-          content="{{$ctrl.content}}"
-          editmode="$ctrl.editmode"
-          words="$ctrl.words">
+        <detailviewcontent ng-if="!$ctrl.editmode && $ctrl.words > 0"
+          content="{{$ctrl.content}}">
         </detailviewcontent>
         <detaileditcontent ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"
@@ -17,6 +16,11 @@
           words="$ctrl.words" characters="$ctrl.characters">
         </detaileditcontent>
       </div>
+    </div>
+    <div ng-if="!$ctrl.editmode && $ctrl.words == 0">
+        <emptylistbox text="{{'jsp.projectFromScene.section.empty' | translate}}"
+          buttonlabel="{{'common.getstarted' | translate}}"
+          buttonfunction="$ctrl.enableeditmode()"></emptylistbox>
     </div>
   </div>
 </div>
