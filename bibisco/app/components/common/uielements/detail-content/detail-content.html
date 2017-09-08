@@ -6,15 +6,16 @@
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
-        <detailviewcontent ng-if="!$ctrl.editmode && $ctrl.words > 0"
+        <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
           content="{{$ctrl.content}}">
-        </detailviewcontent>
-        <detaileditcontent ng-if="$ctrl.editmode"
+        </richtextviewer>
+        <richtexteditor ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"
-          content="$ctrl.content" dirty="$ctrl.dirty"
+          characters="$ctrl.characters"
+          content="$ctrl.content"
+          dirty="$ctrl.dirty"
           savefunction="$ctrl.savefunction()"
-          words="$ctrl.words" characters="$ctrl.characters">
-        </detaileditcontent>
+          words="$ctrl.words"></richtexteditor>
       </div>
     </div>
     <div ng-if="!$ctrl.editmode && $ctrl.words == 0">

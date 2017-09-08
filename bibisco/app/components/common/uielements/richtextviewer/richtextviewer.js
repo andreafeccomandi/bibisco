@@ -14,23 +14,23 @@
  */
 angular.
 module('bibiscoApp').
-component('detailviewcontent', {
-  templateUrl: 'components/common/uielements/detail-content/detail-view-content.html',
-  controller: DetailViewContentController,
+component('richtextviewer', {
+  templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
+  controller: RichTextViewerController,
   bindings: {
     content: '@'
   }
 });
 
 
-function DetailViewContentController(LoggerService,
+function RichTextViewerController(LoggerService,
   RichTextEditorPreferencesService) {
 
-  LoggerService.debug('Start DetailViewContentController...');
+  LoggerService.debug('Start RichTextViewerController...');
 
   var self = this;
   self.fontclass = RichTextEditorPreferencesService.getFontClass();
   self.indentclass = RichTextEditorPreferencesService.getIndentClass();
 
-  LoggerService.debug('End DetailViewContentController...');
+  LoggerService.debug('End RichTextViewerController...');
 }
