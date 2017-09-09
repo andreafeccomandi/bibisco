@@ -21,7 +21,8 @@ component('detailfooterleftbuttonbar', {
     editmode: '<',
     imagesenabled: '<',
     showimagesfunction: '&',
-    showprojectexplorer: '='
+    showprojectexplorer: '=',
+    words: '<'
   }
 });
 
