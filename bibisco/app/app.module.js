@@ -71,6 +71,12 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/start', {
         template: '<start></start>'
       }).
+      when('/strand/:id', {
+        template: '<stranddetail></stranddetail>'
+      }).
+      when('/strandtitle/:operation/:id', {
+        template: '<strandtitle></strandtitle>'
+      }).
       when('/welcome', {
         template: '<welcome></welcome>'
       }).

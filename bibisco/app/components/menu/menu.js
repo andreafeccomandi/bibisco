@@ -88,6 +88,17 @@ function MenuController($location, $rootScope, LoggerService) {
     self.disabled = true;
   });
 
+  // SHOW STRAND title
+  $rootScope.$on('SHOW_STRAND_TITLE', function() {
+    self.visible = true;
+    self.disabled = true;
+  });
+
+  // SHOW STRAND detail
+  $rootScope.$on('SHOW_STRAND_DETAIL', function() {
+    self.visible = true;
+    self.disabled = true;
+  });
 
   // SHOW WELCOME EVENT
   $rootScope.$on('SHOW_WELCOME', function() {

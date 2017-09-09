@@ -28,11 +28,16 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
   var self = this;
 
   self.$onInit = function() {
-    self.architecturecardgriditems = [];
+    self.architecturecardgriditems = self.getArchitectureCardGridItems();
+    self.strandcardgriditems = self.getStrandCardGridItems();
+  }
+
+  self.getArchitectureCardGridItems = function() {
+    let items = [];
 
     /* Premise */
     let premise = ArchitectureService.getPremise();
-    self.architecturecardgriditems.push({
+    items.push({
       id: 'premise',
       position: 1,
       status: premise.status,
@@ -42,7 +47,7 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
 
     /* Fabula */
     let fabula = ArchitectureService.getFabula();
-    self.architecturecardgriditems.push({
+    items.push({
       id: 'fabula',
       position: 2,
       status: fabula.status,
@@ -52,7 +57,7 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
 
     /* Setting */
     let setting = ArchitectureService.getSetting();
-    self.architecturecardgriditems.push({
+    items.push({
       id: 'setting',
       position: 3,
       status: setting.status,
@@ -60,11 +65,7 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
       title: 'jsp.architecture.thumbnail.setting.title'
     });
 
-    self.strandcardgriditems = self.getStrandCardGridItems();
-  }
-
-  self.createStrand = function() {
-    $location.path('/strandtitle/new/0');
+    return items;
   }
 
   self.getStrandCardGridItems = function() {
@@ -83,11 +84,15 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
     return items;
   }
 
-  self.mainCharacterSelect = function(id) {
-    $location.path('/stranddetail/' + id);
+  self.createStrand = function() {
+    $location.path('/strandtitle/new/0');
   }
 
-  self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
+  self.strandSelect = function(id) {
+    $location.path('/strand/' + id);
+  }
+
+  self.strandMove = function(draggedObjectId, destinationObjectId) {
     StrandService.move(draggedObjectId, destinationObjectId);
     self.strandscardgriditems = this.getStrandCardGridItems();
     $scope.$apply();

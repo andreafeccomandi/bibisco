@@ -168,7 +168,7 @@
   "jsp.architecture.strandTitle.form.title": "Tytuł nici narracji",
   "jsp.architecture.strand.dialog.title.updateTitle": "Modyfikuj tytuł nici narracji",
   "jsp.architecture.strand.dialog.title.createStrand": "Utwórz nić narracji",
-  "jsp.strand.button.updateTitle": "Zmień tytuł nici narracji",
+  "jsp.strand.button.updateTitle": "zmień tytuł nici narracji",
   "jsp.export.h1": "Eksportuj projekt",
   "jsp.export.alert.archive.text": "Eksport tego projektu przebiegł prawidłowo. Utworzyłeś te pliki:",
   "jsp.export.a.pdf": "eksportuj do PDF",
