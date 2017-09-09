@@ -58,6 +58,12 @@ function MenuController($location, $rootScope, LoggerService) {
     self.disabled = false;
   });
 
+  // SHOW ARCHITECTURE detail
+  $rootScope.$on('SHOW_ARCHITECTURE_ITEM_DETAIL', function() {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW LOCATION title
   $rootScope.$on('SHOW_LOCATION_TITLE', function() {
     self.visible = true;

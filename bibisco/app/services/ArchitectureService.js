@@ -22,6 +22,11 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
     'architecture');
 
   return {
+    getArchitectureItem: function(id) {
+      return collection.findOne({
+        type: id
+      });
+    },
     getFabula: function(id) {
       return collection.findOne({
         type: 'fabula'

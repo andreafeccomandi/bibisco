@@ -29,6 +29,9 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     function config($locationProvider, $routeProvider) {
       $locationProvider.hashPrefix('!');
       $routeProvider.
+      when('/architectureitems/:id', {
+        template: '<architecturedetail></architecturedetail>'
+      }).
       when('/chapters/:chapterId', {
         template: '<chapter></chapter>'
       }).

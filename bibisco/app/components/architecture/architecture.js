@@ -22,8 +22,8 @@ component('architecture', {
   }
 });
 
-function ArchitectureController($location, $rootScope, ArchitectureService,
-  StrandService, LoggerService) {
+function ArchitectureController($location, $rootScope, $scope,
+  ArchitectureService, StrandService, LoggerService) {
   LoggerService.debug('Start ArchitectureController...');
   var self = this;
 
@@ -68,6 +68,10 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
     return items;
   }
 
+  self.architectureItemSelect = function(id) {
+    $location.path('/architectureitems/' + id);
+  }
+
   self.getStrandCardGridItems = function() {
     let items = [];
     if (StrandService.getStrandsCount() > 0) {
@@ -94,7 +98,7 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {
     StrandService.move(draggedObjectId, destinationObjectId);
-    self.strandscardgriditems = this.getStrandCardGridItems();
+    self.strandcardgriditems = this.getStrandCardGridItems();
     $scope.$apply();
   }
 
