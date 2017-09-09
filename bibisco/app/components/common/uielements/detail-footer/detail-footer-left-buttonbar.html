@@ -1,4 +1,4 @@
-<button type="button" ng-if="$ctrl.words > 0" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }"
+<button type="button" ng-if="$ctrl.editmode || $ctrl.words > 0" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }"
   uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}"
   class="btn" ng-click="$ctrl.toggleProjectExplorer()">
   {{'detailfooterleftbuttonbar.projectexplorer.button' | translate}}
