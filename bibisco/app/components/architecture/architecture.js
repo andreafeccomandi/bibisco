@@ -23,7 +23,7 @@ component('architecture', {
 });
 
 function ArchitectureController($location, $rootScope, ArchitectureService,
-  LoggerService) {
+  StrandService, LoggerService) {
   LoggerService.debug('Start ArchitectureController...');
   var self = this;
 
@@ -59,6 +59,38 @@ function ArchitectureController($location, $rootScope, ArchitectureService,
       text: 'jsp.architecture.thumbnail.setting.description',
       title: 'jsp.architecture.thumbnail.setting.title'
     });
+
+    self.strandcardgriditems = self.getStrandCardGridItems();
+  }
+
+  self.createStrand = function() {
+    $location.path('/strandtitle/new/0');
+  }
+
+  self.getStrandCardGridItems = function() {
+    let items = [];
+    if (StrandService.getStrandsCount() > 0) {
+      let strands = StrandService.getStrands();
+      for (let i = 0; i < strands.length; i++) {
+        items.push({
+          id: strands[i].$loki,
+          position: strands[i].position,
+          status: strands[i].status,
+          title: strands[i].name
+        });
+      }
+    }
+    return items;
+  }
+
+  self.mainCharacterSelect = function(id) {
+    $location.path('/stranddetail/' + id);
+  }
+
+  self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
+    StrandService.move(draggedObjectId, destinationObjectId);
+    self.strandscardgriditems = this.getStrandCardGridItems();
+    $scope.$apply();
   }
 
   LoggerService.debug('End ArchitectureController...');

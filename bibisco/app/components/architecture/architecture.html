@@ -8,5 +8,25 @@
     items="$ctrl.architecturecardgriditems"
     pageheadertitle="jsp.architecture.h1"
     selectfunction="$ctrl.architectureItemSelect(id)"
-    type="half-top"></cardgrid>
+    type="half-top">
+  </cardgrid>
+
+  <!-- STRANDS -->
+  <cardgrid
+    carddimension="small"
+    dndenabled="true"
+    dropfunction="$ctrl.strandMove(draggedObjectId, destinationObjectId)"
+    family="strands"
+    emptylisttext="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text"
+    emptylistbuttonlabel="jsp.strands.a.createFirstStrand"
+    emptylistbuttonfunction="$ctrl.createStrand()"
+    items="$ctrl.strandscardgriditems"
+    pageheaderbuttonlabel="jsp.architecture.a.createStrand"
+    pageheaderbuttonfunction="$ctrl.createStrand()"
+    pageheadertitle="jsp.architecture.strands.h2"
+    pageheadersubtitle="jsp.architecture.strands.h2.small"
+    selectfunction="$ctrl.strandSelect(id)"
+    type="half-bottom">
+  </cardgrid>
+
 </div>
