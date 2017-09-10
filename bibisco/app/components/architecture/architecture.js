@@ -73,9 +73,10 @@ function ArchitectureController($location, $rootScope, $scope,
   }
 
   self.getStrandCardGridItems = function() {
-    let items = [];
+    let items = null;
     if (StrandService.getStrandsCount() > 0) {
       let strands = StrandService.getStrands();
+      items = [];
       for (let i = 0; i < strands.length; i++) {
         items.push({
           id: strands[i].$loki,
