@@ -14,9 +14,9 @@
  */
 
 angular.module('bibiscoApp').service('ProjectService', function(
-  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
-  FileSystemService, LoggerService, UtilService, ProjectDbConnectionService,
-  UuidService
+  BibiscoDbConnectionService, BibiscoPropertiesService,
+  CollectionUtilService, ContextService, FileSystemService, LoggerService,
+  UtilService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
 
@@ -49,28 +49,20 @@ angular.module('bibiscoApp').service('ProjectService', function(
         bibiscoVersion: BibiscoPropertiesService.getProperty(
           'version')
       });
-      projectdb.addCollection('architecture').insert([{
-        characters: 0,
-        lastsave: (new Date()).toJSON(),
-        status: 'todo',
+
+      let architectureCollection = projectdb.addCollection('architecture');
+      CollectionUtilService.insert(architectureCollection, {
         type: 'premise',
-        text: '',
-        words: 0
-      }, {
-        characters: 0,
-        lastsave: (new Date()).toJSON(),
-        status: 'todo',
+        text: ''
+      });
+      CollectionUtilService.insert(architectureCollection, {
         type: 'fabula',
-        text: '',
-        words: 0
-      }, {
-        characters: 0,
-        lastsave: (new Date()).toJSON(),
-        status: 'todo',
+        text: ''
+      });
+      CollectionUtilService.insert(architectureCollection, {
         type: 'setting',
-        text: '',
-        words: 0
-      }]);
+        text: ''
+      });
       projectdb.addCollection('strands');
       projectdb.addCollection('chapters');
       projectdb.addCollection('scenes');

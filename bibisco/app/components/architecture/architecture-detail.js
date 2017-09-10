@@ -77,7 +77,6 @@ function ArchitectureDetailController($location, $routeParams,
   }
 
   self.savefunction = function(text) {
-    self.architectureitem.lastsave = (new Date()).toJSON();
     ArchitectureService.update(self.architectureitem);
   }
 

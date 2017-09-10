@@ -55,7 +55,6 @@ function StrandTitleController($location, $routeParams,
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.createStrand'
       });
-
       self.exitpath = "/project/architecture";
       self.name = null;
       self.pageheadertitle =
@@ -68,15 +67,11 @@ function StrandTitleController($location, $routeParams,
       let strand = StrandService.getStrand(
         $routeParams.id);
       strand.name = title;
-      strand.lastsave = (new Date()).toJSON();
       StrandService.update(strand);
     } else {
       StrandService.insert({
-        characters: 0,
         description: '',
-        name: title,
-        lastsave: (new Date()).toJSON(),
-        words: 0
+        name: title
       });
     }
   }

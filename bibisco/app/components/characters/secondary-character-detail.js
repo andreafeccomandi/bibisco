@@ -69,7 +69,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   }
 
   self.savefunction = function(text) {
-    self.secondarycharacter.lastsave = (new Date()).toJSON();
     SecondaryCharacterService.update(self.secondarycharacter);
   }
 

@@ -69,7 +69,6 @@ function StrandDetailController($location, $routeParams, StrandService,
   }
 
   self.savefunction = function(text) {
-    self.strand.lastsave = (new Date()).toJSON();
     StrandService.update(self.strand);
   }
 

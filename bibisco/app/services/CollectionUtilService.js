@@ -21,13 +21,17 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
   return {
 
     insert: function(collection, element) {
+      element.characters = 0;
+      element.lastsave = (new Date()).toJSON();
       element.position = collection.count() + 1;
       element.status = 'todo';
+      element.words = 0;
       collection.insert(element);
       ProjectDbConnectionService.saveDatabase();
     },
 
     update: function(collection, element) {
+      element.lastsave = (new Date()).toJSON();
       collection.update(element);
       ProjectDbConnectionService.saveDatabase();
     },

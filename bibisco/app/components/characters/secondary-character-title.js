@@ -68,15 +68,11 @@ function SecondaryCharacterTitleController($location, $routeParams,
       let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
         $routeParams.id);
       secondarycharacter.name = title;
-      secondarycharacter.lastsave = (new Date()).toJSON();
       SecondaryCharacterService.update(secondarycharacter);
     } else {
       SecondaryCharacterService.insert({
-        characters: 0,
         description: '',
-        name: title,
-        lastsave: (new Date()).toJSON(),
-        words: 0
+        name: title
       });
     }
   }
