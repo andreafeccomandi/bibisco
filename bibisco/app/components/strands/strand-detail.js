@@ -19,15 +19,13 @@ component('stranddetail', {
   controller: StrandDetailController
 });
 
-function StrandDetailController($location, $rootScope, $routeParams,
-  StrandService, LoggerService) {
+function StrandDetailController($location, $routeParams, StrandService,
+  LoggerService) {
   LoggerService.debug('Start StrandDetailController...');
 
   var self = this;
 
   self.$onInit = function() {
-
-    $rootScope.$emit('SHOW_STRAND_DETAIL');
 
     self.strand = self.getStrand($routeParams.id);
 

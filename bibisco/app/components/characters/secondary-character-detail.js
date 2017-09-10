@@ -27,8 +27,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
   self.$onInit = function() {
 
-    $rootScope.$emit('SHOW_SECONDARY_CHARACTER_DETAIL');
-
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
 
     self.breadcrumbitems = [];

@@ -19,15 +19,13 @@ component('architecturedetail', {
   controller: ArchitectureDetailController
 });
 
-function ArchitectureDetailController($location, $rootScope, $routeParams,
+function ArchitectureDetailController($location, $routeParams,
   ArchitectureService, LoggerService) {
   LoggerService.debug('Start ArchitectureDetailController...');
 
   var self = this;
 
   self.$onInit = function() {
-
-    $rootScope.$emit('SHOW_ARCHITECTURE_ITEM_DETAIL');
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
 
