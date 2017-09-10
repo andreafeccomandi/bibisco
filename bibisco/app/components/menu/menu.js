@@ -64,14 +64,8 @@ function MenuController($location, $rootScope, LoggerService) {
     self.disabled = true;
   });
 
-  // SHOW LOCATION title
-  $rootScope.$on('SHOW_LOCATION_TITLE', function() {
-    self.visible = true;
-    self.disabled = true;
-  });
-
-  // SHOW MAIN CHARACTER title
-  $rootScope.$on('SHOW_MAIN_CHARACTER_TITLE', function() {
+  // SHOW ELEMENT title
+  $rootScope.$on('SHOW_ELEMENT_TITLE', function() {
     self.visible = true;
     self.disabled = true;
   });
@@ -80,18 +74,6 @@ function MenuController($location, $rootScope, LoggerService) {
   $rootScope.$on('SHOW_OPEN_PROJECT', function() {
     self.visible = false;
     self.disabled = false;
-  });
-
-  // SHOW SECONDARY CHARACTER title
-  $rootScope.$on('SHOW_SECONDARY_CHARACTER_TITLE', function() {
-    self.visible = true;
-    self.disabled = true;
-  });
-
-  // SHOW STRAND title
-  $rootScope.$on('SHOW_STRAND_TITLE', function() {
-    self.visible = true;
-    self.disabled = true;
   });
 
   // SHOW WELCOME EVENT

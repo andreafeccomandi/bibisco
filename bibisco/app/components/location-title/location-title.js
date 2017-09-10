@@ -30,7 +30,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
   self.location = null;
 
   // hide menu
-  $rootScope.$emit('SHOW_LOCATION_TITLE');
+  $rootScope.$emit('SHOW_ELEMENT_TITLE');
 
   if ($routeParams.operation == 'edit') {
 
