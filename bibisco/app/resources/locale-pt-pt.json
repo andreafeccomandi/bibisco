@@ -484,7 +484,7 @@
   "jsp.locations.dialog.title.createLocation": "Criar local",
   "jsp.locations.a.createLocation": "Criar local",
   "jsp.locations.a.createFirstLocation": "Criar o primeiro local",
-  "jsp.location.button.updateTitle": "Alterar o nome do local",
+  "jsp.location.button.updateTitle": "alterar o nome do local",
   "jsp.location.button.images": "Mostrar imagens do local",
   "jsp.locationTitle.form.title": "Nome do local (e.g. Casa de praia, praça da aldeia)",
   "jsp.locationsTitleForm.label.nation": "Nação",
