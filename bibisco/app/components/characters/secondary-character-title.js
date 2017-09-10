@@ -27,7 +27,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
   self.$onInit = function() {
 
-    // common bradcrumb root
+    // common breadcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
       label: 'jsp.projectFromScene.nav.li.characters'
