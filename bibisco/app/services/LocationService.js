@@ -22,8 +22,46 @@ angular.module('bibiscoApp').service('LocationService', function(
     'locations');
   var dynamicView = collection.addDynamicView(
     'all_locations').applySimpleSort('position');
+  var nations = collection.addDynamicView('nations').applySimpleSort(
+    'nation');
+  var states = collection.addDynamicView('states').applySimpleSort(
+    'state');
+  var cities = collection.addDynamicView('cities').applySimpleSort(
+    'city');
 
   return {
+    calculateLocationName: function(location) {
+      let useComma = false;
+      let name = location.location;
+
+      if (location.nation) {
+        name = name + ' (' + location.nation;
+        useComma = true;
+      }
+      if (location.state) {
+        if (useComma) {
+          name = name + ", ";
+        } else {
+          name = name + ' ('
+        }
+        name = name + location.state;
+        useComma = true;
+      }
+      if (location.city) {
+        if (useComma) {
+          name = name + ", ";
+        } else {
+          name = name + ' ('
+        }
+        name = name + location.city;
+      }
+
+      if (useComma) {
+        name = name + ")";
+      }
+
+      return name;
+    },
     getLocation: function(id) {
       return collection.get(id);
     },
@@ -33,12 +71,60 @@ angular.module('bibiscoApp').service('LocationService', function(
     getLocations: function() {
       return dynamicView.data();
     },
+    getUsedCities: function() {
+      let usedcities = [];
+      if (this.getLocationsCount() > 0) {
+        let set = new Set();
+        let locations = cities.data();
+        for (let i = 0; i < locations.length; i++) {
+          set.add(locations[i].city);
+        }
+        for (let item of set.values()) {
+          usedcities.push(item);
+        }
+      }
+      return usedcities;
+    },
+    getUsedNations: function() {
+      let usednations = [];
+      if (this.getLocationsCount() > 0) {
+        let set = new Set();
+        let locations = nations.data();
+        for (let i = 0; i < locations.length; i++) {
+          set.add(locations[i].nation);
+        }
+        for (let item of set.values()) {
+          usednations.push(item);
+        }
+      }
+      return usednations;
+    },
+    getUsedStates: function() {
+      let usedstates = [];
+      if (this.getLocationsCount() > 0) {
+        let set = new Set();
+        let locations = states.data();
+        for (let i = 0; i < locations.length; i++) {
+          set.add(locations[i].state);
+        }
+        for (let item of set.values()) {
+          usedstates.push(item);
+        }
+      }
+      return usedstates;
+    },
     insert: function(location) {
       CollectionUtilService.insert(collection, location);
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
         this.getLocations);
-    }
+    },
+    remove: function(id) {
+      CollectionUtilService.remove(collection, id);
+    },
+    update: function(location) {
+      CollectionUtilService.update(collection, location);
+    },
   }
 });

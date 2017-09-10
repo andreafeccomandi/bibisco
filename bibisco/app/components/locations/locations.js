@@ -22,17 +22,21 @@ component('locations', {
   }
 });
 
-function LocationsController($location, $rootScope, $scope, LocationService,
+function LocationsController($location, $scope, LocationService,
   LoggerService) {
 
   LoggerService.debug('Start LocationsController...');
   var self = this;
 
+  self.$onInit = function() {
+    self.cardgriditems = this.getCardGridItems();
+  };
+
   self.locationsPresent = function() {
     return LocationService.getLocationsCount() > 0;
   }
 
-  self.createLocation = function() {
+  self.create = function() {
     $location.path('/locationtitle/new/0');
   }
 
@@ -61,6 +65,10 @@ function LocationsController($location, $rootScope, $scope, LocationService,
     $scope.$apply();
   }
 
+  self.select = function(id) {
+    $location.path('/locationdetail/' + id);
+  }
+
   self.locationDescription = function(nation, state, city) {
     let useComma = false;
     let description = '';
@@ -84,8 +92,6 @@ function LocationsController($location, $rootScope, $scope, LocationService,
 
     return description;
   }
-
-  self.cardgriditems = this.getCardGridItems();
 
   LoggerService.debug('End LocationsController...');
 }
