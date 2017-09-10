@@ -58,8 +58,8 @@ function MenuController($location, $rootScope, LoggerService) {
     self.disabled = false;
   });
 
-  // SHOW ARCHITECTURE detail
-  $rootScope.$on('SHOW_ARCHITECTURE_ITEM_DETAIL', function() {
+  // SHOW ELEMENT detail
+  $rootScope.$on('SHOW_ELEMENT_DETAIL', function() {
     self.visible = true;
     self.disabled = true;
   });
@@ -88,20 +88,8 @@ function MenuController($location, $rootScope, LoggerService) {
     self.disabled = true;
   });
 
-  // SHOW SECONDARY CHARACTER detail
-  $rootScope.$on('SHOW_SECONDARY_CHARACTER_DETAIL', function() {
-    self.visible = true;
-    self.disabled = true;
-  });
-
   // SHOW STRAND title
   $rootScope.$on('SHOW_STRAND_TITLE', function() {
-    self.visible = true;
-    self.disabled = true;
-  });
-
-  // SHOW STRAND detail
-  $rootScope.$on('SHOW_STRAND_DETAIL', function() {
     self.visible = true;
     self.disabled = true;
   });
