@@ -24,16 +24,57 @@ function MainCharacterTitleController($location, $routeParams,
   LoggerService.debug('Start MainCharacterTitleController...');
 
   var self = this;
-  self.name = null;
 
-  if ($routeParams.operation == 'edit') {
+  self.$onInit = function() {
 
+    // common breadcrumb root
+    self.breadcrumbItems = [];
+    self.breadcrumbItems.push({
+      label: 'jsp.projectFromScene.nav.li.characters'
+    });
+
+    if ($routeParams.operation == 'edit') {
+      let maincharacter = MainCharacterService.getMainCharacter(
+        $routeParams.id);
+
+      // edit breadcrumb items
+      self.breadcrumbItems.push({
+        labelvalue: maincharacter.name
+      });
+      self.breadcrumbItems.push({
+        label: 'jsp.character.dialog.title.updateTitle'
+      });
+
+      self.exitpath = "/maincharacterdetail/" + $routeParams.id;
+      self.name = maincharacter.name;
+      self.pageheadertitle =
+        'jsp.character.dialog.title.updateTitle';
+    } else {
+
+      // create breadcrumb items
+      self.breadcrumbItems.push({
+        label: 'jsp.characters.dialog.title.createMainCharacter'
+      });
+
+      self.exitpath = "/project/characters";
+      self.name = null;
+      self.pageheadertitle =
+        'jsp.characters.dialog.title.createMainCharacter';
+    }
   }
 
   self.save = function(title) {
-    MainCharacterService.insert({
-      name: title
-    });
+    if ($routeParams.operation == 'edit') {
+      let maincharacter = MainCharacterService.getMainCharacter(
+        $routeParams.id);
+      maincharacter.name = title;
+      MainCharacterService.update(maincharacter);
+    } else {
+      MainCharacterService.insert({
+        description: '',
+        name: title
+      });
+    }
   }
 
   LoggerService.debug('End MainCharacterTitleController...');
