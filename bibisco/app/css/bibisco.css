@@ -255,7 +255,7 @@ h3 {
 }
 
 .card-grid-header-half-bottom {
-    top: 400px;
+    top: 375px;
 }
 
 .card-grid-emptyitems {
@@ -279,11 +279,11 @@ h3 {
 }
 
 .card-grid-emptyitems-with-header-subtitle-half-bottom {
-	top: 495px;
+	top: 470px;
 }
 
 .card-grid-emptyitems-no-header-subtitle-half-bottom {
-	top: 445px;
+	top: 420px;
 }
 
 .card-grid-items {
@@ -315,12 +315,12 @@ h3 {
 
 .card-grid-items-with-header-subtitle-half-bottom {
     height: calc(100% - 530px);
-    top: 525px;
+    top: 500px;
 }
 
 .card-grid-items-no-header-subtitle-half-bottom {
     height: calc(100% - 490px);
-    top: 485px;
+    top: 460spx;
 }
 
 /* BIBISCO BADGE */
