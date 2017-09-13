@@ -27,6 +27,8 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.$onInit = function() {
 
+    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
+
     self.maincharacter = self.getMainCharacter($routeParams.id);
 
     self.breadcrumbitems = [];
