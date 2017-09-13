@@ -19,15 +19,15 @@ component('card', {
   controller: CardController,
   bindings: {
     cardid: '<',
-    cardtitle: '<',
+    cardtitle: '@',
     characters: '<',
-    dimension: '<',
+    dimension: '@',
     dndenabled: '<',
     dropfunction: '&',
-    family: '<',
+    family: '@',
     selectfunction: '&',
     status: '<',
-    text: '<',
+    text: '@',
     words: '<'
   }
 });
