@@ -230,12 +230,14 @@ h3 {
 }
 
 .card-text {
+	font-size: 13px;
+	margin-top: -10px;
 	margin-bottom: 0px;
 	line-height: 1.3;
 	overflow : hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 3;
+	-webkit-line-clamp: 4;
 	-webkit-box-orient: vertical;
 }
 
