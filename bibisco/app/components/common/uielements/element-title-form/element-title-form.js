@@ -24,6 +24,7 @@ component('elementtitleform', {
     pageheadertitle: '@',
     savefunction: '&',
     titlelabel: '@',
+    titlemandatory: '<',
     titlemaxlength: '@',
     titlevalue: '@'
   }
