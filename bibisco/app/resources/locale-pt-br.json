@@ -198,7 +198,7 @@
   "jsp.chapter.scene.h2": "Cenas",
   "jsp.chapter.bibiscoEmptyThumbnailListBox.text": "Ainda não existem cenas.",
   "jsp.chapter.delete.scene.confirm": "Você realmente quer deletar essa cena?",
-  "jsp.chapter.button.updateTitle": "Mudar título",
+  "jsp.chapter.button.updateTitle": "mudar título",
   "jsp.chapter.dialog.title.updateTitle": "Mudar título",
   "jsp.chapter.dialog.title.createScene": "Criar cena",
   "jsp.richTextEditorSettings.autoSave": "Salvamento automático",

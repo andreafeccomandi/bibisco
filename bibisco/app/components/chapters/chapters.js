@@ -28,7 +28,7 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
 
   var self = this;
 
-  self.createChapter = function() {
+  self.create = function() {
     $location.path('/chaptertitle/new/0');
   }
 
@@ -56,6 +56,10 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
     ChapterService.move(draggedObjectId, destinationObjectId);
     self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
+  }
+
+  self.select = function(id) {
+    $location.path('/chapters/' + id);
   }
 
   self.cardgriditems = this.getCardGridItems();

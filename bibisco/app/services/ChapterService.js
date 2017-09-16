@@ -39,6 +39,12 @@ angular.module('bibiscoApp').service('ChapterService', function(
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
         this.getChapters);
+    },
+    remove: function(id) {
+      CollectionUtilService.remove(collection, id);
+    },
+    update: function(strand) {
+      CollectionUtilService.update(collection, strand);
     }
   }
 });

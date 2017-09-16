@@ -211,7 +211,7 @@
   "jsp.chapter.scene.h2": "Scenes",
   "jsp.chapter.bibiscoEmptyThumbnailListBox.text": "There are no scenes yet.",
   "jsp.chapter.delete.scene.confirm": "Do you really want to delete this scene?",
-  "jsp.chapter.button.updateTitle": "Change title",
+  "jsp.chapter.button.updateTitle": "change title",
   "jsp.chapter.dialog.title.updateTitle": "Change title",
   "jsp.chapter.dialog.title.createScene": "Create scene",
   "jsp.richTextEditorSettings.autoSave": "Auto save",

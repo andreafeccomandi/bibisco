@@ -45,6 +45,6 @@ angular.module('bibiscoApp').service('StrandService', function(
     },
     update: function(strand) {
       CollectionUtilService.update(collection, strand);
-    },
+    }
   }
 });

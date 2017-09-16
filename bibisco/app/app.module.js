@@ -32,8 +32,11 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/architectureitems/:id', {
         template: '<architecturedetail></architecturedetail>'
       }).
-      when('/chapters/:chapterId', {
-        template: '<chapter></chapter>'
+      when('/chaptertitle/:operation/:id', {
+        template: '<chaptertitle></chaptertitle>'
+      }).
+      when('/chapters/:id', {
+        template: '<chapterdetail></chapterdetail>'
       }).
       when('/createproject', {
         template: '<createproject></createproject>'

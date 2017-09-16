@@ -1,0 +1,41 @@
+<detailheader
+  breadcrumbitems="$ctrl.breadcrumbitems" editmode="false"
+  headertitle="{{$ctrl.title}}"
+  taskstatus="$ctrl.chapter.status" taskstatuschangefunction="$ctrl.changeStatus(status)">
+</detailheader>
+
+<div class="detail-content-no-header-subtitle">
+  <div class="container" style="height: 100%;">
+    <div class="row">
+      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+        <card cardid="reason" cardtitle="jsp.chapter.thumbnail.reason.title"
+          dimension="normal"
+          dndenabled="false"
+          family="chapterreason"
+          selectfunction="$ctrl.selectfunction({id})"
+          text="jsp.chapter.thumbnail.reason.description"
+          status="$ctrl.chapter.reasonstatus"></card>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-3">
+        <card cardid="note" cardtitle="jsp.chapter.thumbnail.notes.title"
+          dimension="normal"
+          dndenabled="false"
+          family="chapternote"
+          selectfunction="$ctrl.selectfunction({id})"
+          text="jsp.chapter.thumbnail.notes.description"
+          status="'todo'"></card>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<detailfooter autosaveenabled="false" backfunction="$ctrl.back()"
+  changetitleenabled="true" changetitlefunction="$ctrl.changeTitle()"
+  changetitlelabel="jsp.chapter.button.updateTitle"
+  deleteconfirmmessage="jsp.chapters.delete.confirm" deleteenabled="true"
+  deleteforbidden="false" deletefunction="$ctrl.delete()" editmode="false"
+  imagesenabled="false" showprojectexplorer="false"
+  wordscharactersenabled="true">
+</detailfooter>

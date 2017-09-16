@@ -198,7 +198,7 @@
   "jsp.chapter.scene.h2": "Sceny",
   "jsp.chapter.bibiscoEmptyThumbnailListBox.text": "Brak scen w polu.",
   "jsp.chapter.delete.scene.confirm": "Czy na pewno chcesz usunąć tę scenę?",
-  "jsp.chapter.button.updateTitle": "Zmień tytuł",
+  "jsp.chapter.button.updateTitle": "zmień tytuł",
   "jsp.chapter.dialog.title.updateTitle": "Zmień tytuł",
   "jsp.chapter.dialog.title.createScene": "Utwórz scenę",
   "jsp.richTextEditorSettings.autoSave": "Automatyczny zapis",

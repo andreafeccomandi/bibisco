@@ -198,7 +198,7 @@
   "jsp.chapter.scene.h2": "Scény",
   "jsp.chapter.bibiscoEmptyThumbnailListBox.text": "Nejsou zde dosud žádné scény.",
   "jsp.chapter.delete.scene.confirm": "Doopravdy cgcete smazat tuto scénu?",
-  "jsp.chapter.button.updateTitle": "Změnit nadpis",
+  "jsp.chapter.button.updateTitle": "změnit nadpis",
   "jsp.chapter.dialog.title.updateTitle": "Změnit nadpis",
   "jsp.chapter.dialog.title.createScene": "Vytvořit scénu",
   "jsp.richTextEditorSettings.autoSave": "Automatické uložení",
