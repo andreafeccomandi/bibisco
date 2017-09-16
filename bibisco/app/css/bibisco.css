@@ -327,7 +327,7 @@ h3 {
 
 /* BIBISCO BADGE */
 .bibiscoBadge {
-	font-weight: normal;
+	font-weight: bold;
 	margin-left: 5px;
 	padding: .3em .6em .3em;
 	vertical-align: .3em;
