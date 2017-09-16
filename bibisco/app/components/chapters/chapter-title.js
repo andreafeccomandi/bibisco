@@ -46,7 +46,7 @@ function ChapterTitleController($location, $routeParams,
       });
 
       self.exitpath = "/chapters/" + $routeParams.id;
-      self.name = chapter.name;
+      self.title = chapter.title;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.updateTitle';
     } else {
