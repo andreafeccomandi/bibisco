@@ -38,6 +38,15 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/chapters/:id', {
         template: '<chapterdetail></chapterdetail>'
       }).
+      when('/chapters/:chapterid/scenes/:sceneid', {
+        template: '<scenedetail></scenedetail>'
+      }).
+      when('/chapters/:chapterid/newscene', {
+        template: '<scenetitle></scenetitle>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/title', {
+        template: '<scenetitle></scenetitle>'
+      }).
       when('/createproject', {
         template: '<createproject></createproject>'
       }).

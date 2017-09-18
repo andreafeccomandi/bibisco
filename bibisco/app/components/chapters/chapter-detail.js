@@ -20,7 +20,7 @@ component('chapterdetail', {
 });
 
 function ChapterDetailController($location, $rootScope, $routeParams,
-  ChapterService, LoggerService) {
+  ChapterService, LoggerService, SceneService) {
   LoggerService.debug('Start ChapterDetailController...');
 
   var self = this;
@@ -44,7 +44,28 @@ function ChapterDetailController($location, $rootScope, $routeParams,
     self.editmode = false;
     self.showprojectexplorer = true;
 
+    self.scenescardgriditems = self.getScenesCardGridItems($routeParams.id);
   };
+
+  self.getScenesCardGridItems = function(chapterid) {
+
+    let items = null;
+    if (SceneService.getScenesCount(chapterid) > 0) {
+      let scenes = SceneService.getScenes(chapterid);
+      items = [];
+      for (let i = 0; i < scenes.length; i++) {
+        items.push({
+          characters: scenes[i].characters,
+          id: scenes[i].$loki,
+          position: scenes[i].position,
+          status: scenes[i].status,
+          title: scenes[i].title,
+          words: scenes[i].words
+        });
+      }
+    }
+    return items;
+  }
 
   self.back = function() {
     $location.path('/project/chapters');
@@ -58,6 +79,10 @@ function ChapterDetailController($location, $rootScope, $routeParams,
   self.changeTitle = function() {
     $location.path('/chaptertitle/edit/' + self.chapter
       .$loki);
+  }
+
+  self.createScene = function() {
+    $location.path('/chapters/' + self.chapter.$loki + '/newscene');
   }
 
   self.delete = function() {
