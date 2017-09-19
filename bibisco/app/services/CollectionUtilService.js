@@ -20,10 +20,17 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
   return {
 
-    insert: function(collection, element) {
+    insert: function(collection, element, filter) {
+      let position;
+      if (filter) {
+        position = collection.find(filter).length + 1;
+      } else {
+        position = collection.count() + 1;
+      }
+
       element.characters = 0;
       element.lastsave = (new Date()).toJSON();
-      element.position = collection.count() + 1;
+      element.position = position;
       element.status = 'todo';
       element.words = 0;
       collection.insert(element);
@@ -36,15 +43,16 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
-    remove: function(collection, id) {
+    remove: function(collection, id, filter) {
       let element = collection.get(id);
       let elementPosition = element.position;
-      this.shiftDown(collection, elementPosition + 1, collection.count());
+      this.shiftDown(collection, elementPosition + 1, collection.count(),
+        filter);
       collection.remove(element);
       ProjectDbConnectionService.saveDatabase();
     },
 
-    move: function(collection, sourceId, targetId, returnFn) {
+    move: function(collection, sourceId, targetId, dynamicView, filter) {
 
       let source = collection.get(sourceId);
       let sourcePosition = source.position;
@@ -53,40 +61,48 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
       // shift down
       if (sourcePosition < targetPosition) {
-        this.shiftDown(collection, sourcePosition + 1, targetPosition);
+        this.shiftDown(collection, sourcePosition + 1, targetPosition,
+          filter);
       }
       // shift up
       else {
-        this.shiftUp(collection, targetPosition, sourcePosition - 1);
+        this.shiftUp(collection, targetPosition, sourcePosition - 1,
+          filter);
       }
 
       source.position = targetPosition;
       collection.update(source);
       ProjectDbConnectionService.saveDatabase();
 
-      return returnFn();
+      return dynamicView.data();
     },
 
-    shiftDown: function(collection, startPosition, endPosition) {
-      let elementsToShift = collection.find({
-        position: {
-          '$between': [startPosition, endPosition]
-        }
-      });
+    shiftDown: function(collection, startPosition, endPosition, filter) {
+      let elementsToShift = this.getElementsToShift(collection,
+        startPosition, endPosition, filter);
       for (let i = 0; i < elementsToShift.length; i++) {
         elementsToShift[i].position = elementsToShift[i].position - 1;
       }
     },
 
-    shiftUp: function(collection, startPosition, endPosition) {
-      let elementsToShift = collection.find({
-        position: {
-          '$between': [startPosition, endPosition]
-        }
-      });
+    shiftUp: function(collection, startPosition, endPosition, filter) {
+      let elementsToShift = this.getElementsToShift(collection,
+        startPosition, endPosition, filter);
       for (let i = 0; i < elementsToShift.length; i++) {
         elementsToShift[i].position = elementsToShift[i].position + 1;
       }
+    },
+
+    getElementsToShift: function(collection, startPosition,
+      endPosition, filter) {
+      let filterquery = {};
+      if (filter) {
+        filterquery = filter;
+      }
+      filterquery.position = {
+        '$between': [startPosition, endPosition]
+      }
+      return collection.find(filterquery);
     }
   }
 });
