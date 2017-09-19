@@ -22,6 +22,13 @@ angular.module('bibiscoApp').service('SceneService', function(
     'scenes');
 
   return {
+    getFilterByChapterId: function(chapterid) {
+      return {
+        chapterid: {
+          '$eq': chapterid
+        }
+      }
+    },
     getScene: function(id) {
       return collection.get(id);
     },
@@ -34,17 +41,22 @@ angular.module('bibiscoApp').service('SceneService', function(
       let chapterscenes = collection.addDynamicView('chapterscenes_' +
         chapterid);
       chapterscenes.applyFind({
-        'chapterid': chapterid
+        chapterid: {
+          '$eq': chapterid
+        }
       });
       chapterscenes.applySimpleSort('position');
       return chapterscenes.data();
     },
     insert: function(scene) {
-      CollectionUtilService.insert(collection, scene);
+      CollectionUtilService.insert(collection, scene, this.getFilterByChapterId(
+        scene.chapterid));
     },
     move: function(sourceId, targetId) {
+      let chapterid = this.getScene(sourceId).chapterid;
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getScenes);
+        this.getScenes, this.getFilterByChapterId(chapterid)
+      );
     },
     remove: function(id) {
       CollectionUtilService.remove(collection, id);
