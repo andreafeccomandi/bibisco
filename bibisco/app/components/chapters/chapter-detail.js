@@ -19,7 +19,7 @@ component('chapterdetail', {
   controller: ChapterDetailController
 });
 
-function ChapterDetailController($location, $rootScope, $routeParams,
+function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   ChapterService, LoggerService, SceneService) {
   LoggerService.debug('Start ChapterDetailController...');
 
@@ -83,6 +83,12 @@ function ChapterDetailController($location, $rootScope, $routeParams,
 
   self.createScene = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/newscene');
+  }
+
+  self.moveScene = function(draggedObjectId, destinationObjectId) {
+    SceneService.move(draggedObjectId, destinationObjectId);
+    self.cardgriditems = this.getScenesCardGridItems(self.chapter.$loki);
+    $scope.$apply();
   }
 
   self.delete = function() {
