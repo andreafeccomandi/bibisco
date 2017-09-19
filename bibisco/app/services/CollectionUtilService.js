@@ -20,6 +20,23 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
   return {
 
+    getDynamicViewSortedByPosition: function(collection,
+      dynamicViewName, filter) {
+      let dynamicView = collection.getDynamicView(dynamicViewName);
+      if (!dynamicView) {
+        LoggerService.info('Created ' + dynamicViewName + ' dynamicView');
+        dynamicView = collection.addDynamicView(dynamicViewName);
+        if (filter) {
+          dynamicView.applyFind(filter);
+        }
+        dynamicView.applySimpleSort('position');
+      } else {
+        LoggerService.info('Loaded ' + dynamicViewName + ' dynamicView');
+      }
+
+      return dynamicView;
+    },
+
     insert: function(collection, element, filter) {
       let position;
       if (filter) {

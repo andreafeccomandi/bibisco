@@ -38,14 +38,13 @@ angular.module('bibiscoApp').service('SceneService', function(
       });
     },
     getScenes: function(chapterid) {
-      let chapterscenes = collection.addDynamicView('chapterscenes_' +
-        chapterid);
-      chapterscenes.applyFind({
-        chapterid: {
-          '$eq': chapterid
-        }
-      });
-      chapterscenes.applySimpleSort('position');
+      let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
+        collection, 'chapterscenes_' + chapterid, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
+
       return chapterscenes.data();
     },
     insert: function(scene) {

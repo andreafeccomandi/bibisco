@@ -20,8 +20,8 @@ angular.module('bibiscoApp').service('LocationService', function(
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'locations');
-  var dynamicView = collection.addDynamicView(
-    'all_locations').applySimpleSort('position');
+  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
+    collection, 'all_locations');
   var nations = collection.addDynamicView('nations').applySimpleSort(
     'nation');
   var states = collection.addDynamicView('states').applySimpleSort(

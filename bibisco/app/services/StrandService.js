@@ -20,8 +20,8 @@ angular.module('bibiscoApp').service('StrandService', function(
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'strands');
-  var dynamicView = collection.addDynamicView(
-    'all_strands').applySimpleSort('position');
+  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
+    collection, 'all_strands');
 
   return {
     getStrand: function(id) {

@@ -20,8 +20,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'chapters');
-  var dynamicView = collection.addDynamicView(
-    'all_chapters').applySimpleSort('position');
+  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
+    collection, 'all_chapters');
 
   return {
     getChapter: function(id) {
