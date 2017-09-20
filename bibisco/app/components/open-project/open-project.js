@@ -36,6 +36,7 @@ function OpenProjectController($location, $rootScope, ContextMenuService,
     ProjectDbConnectionService.load(id);
     $location.path('/project/projecthome');
     ContextMenuService.create();
+    LoggerService.info('Open project ' + id);
   }
 
   self.delete = function(id) {
