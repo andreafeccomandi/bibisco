@@ -38,7 +38,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getChapters);
+        dynamicView);
     },
     remove: function(id) {
       CollectionUtilService.remove(collection, id);

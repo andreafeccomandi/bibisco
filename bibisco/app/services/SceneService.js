@@ -53,9 +53,18 @@ angular.module('bibiscoApp').service('SceneService', function(
     },
     move: function(sourceId, targetId) {
       let chapterid = this.getScene(sourceId).chapterid;
+      let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
+        collection, 'chapterscenes_' + chapterid, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getScenes, this.getFilterByChapterId(chapterid)
-      );
+        chapterscenes, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
     },
     remove: function(id) {
       CollectionUtilService.remove(collection, id);

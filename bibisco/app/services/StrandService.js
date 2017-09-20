@@ -38,7 +38,7 @@ angular.module('bibiscoApp').service('StrandService', function(
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getStrands);
+        dynamicView);
     },
     remove: function(id) {
       CollectionUtilService.remove(collection, id);

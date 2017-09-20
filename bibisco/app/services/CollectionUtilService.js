@@ -90,6 +90,10 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       source.position = targetPosition;
       collection.update(source);
       ProjectDbConnectionService.saveDatabase();
+      LoggerService.info('Moved element of collection ' + collection.name +
+        ' with id=' + sourceId + ' at position ' + sourcePosition +
+        ' to element with id=' + targetId + ' at position ' +
+        targetPosition);
 
       return dynamicView.data();
     },

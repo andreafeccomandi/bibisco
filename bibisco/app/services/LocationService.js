@@ -118,7 +118,7 @@ angular.module('bibiscoApp').service('LocationService', function(
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
-        this.getLocations);
+        dynamicView);
     },
     remove: function(id) {
       CollectionUtilService.remove(collection, id);
