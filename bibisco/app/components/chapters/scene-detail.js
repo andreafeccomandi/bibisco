@@ -14,7 +14,7 @@
  */
 angular.
 module('bibiscoApp').
-component('elementdetail', {
+component('scenedetail', {
   templateUrl: 'components/chapters/scene-detail.html',
   controller: SceneDetailController,
   bindings: {
