@@ -87,7 +87,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.moveScene = function(draggedObjectId, destinationObjectId) {
     SceneService.move(draggedObjectId, destinationObjectId);
-    self.cardgriditems = this.getScenesCardGridItems(self.chapter.$loki);
+    self.scenescardgriditems = this.getScenesCardGridItems('' + self.chapter.$loki);
     $scope.$apply();
   }
 
