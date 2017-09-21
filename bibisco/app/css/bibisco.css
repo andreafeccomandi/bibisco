@@ -260,6 +260,10 @@ h3 {
     top: 375px;
 }
 
+.card-grid-header-half-bottom-detail {
+    top: 375px;
+}
+
 .card-grid-emptyitems {
 	position: absolute;
 }
@@ -322,6 +326,11 @@ h3 {
 
 .card-grid-items-no-header-subtitle-half-bottom {
     height: calc(100% - 490px);
+    top: 460px;
+}
+
+.card-grid-items-no-header-subtitle-half-bottom-detail {
+    height: calc(100% - 560px);
     top: 460px;
 }
 
