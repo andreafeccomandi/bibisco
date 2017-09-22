@@ -1,39 +1,38 @@
 <detailheader breadcrumbitems="$ctrl.breadcrumbitems"
   editmode="$ctrl.editmode"
-  headertitle="{{$ctrl.headertitle}}"
-  taskstatus="$ctrl.taskstatus"
-  taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
+  headertitle="{{$ctrl.scene.title}}"
+  taskstatus="$ctrl.scene.status"
+  taskstatuschangefunction="$ctrl.changeStatus(status)">
 </detailheader>
 
 <detailcontent
   autosaveenabled="$ctrl.autosaveenabled"
-  characters="$ctrl.characters"
-  content="$ctrl.content"
+  characters="$ctrl.scene.characters"
+  content="$ctrl.scene.content"
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
-  savefunction="$ctrl.savefunction()"
+  savefunction="$ctrl.save()"
   showprojectexplorer="true"
-  words="$ctrl.words">
+  words="$ctrl.scene.words">
 </detailcontent>
 
 <detailfooter
   autosaveenabled="$ctrl.autosaveenabled"
-  backfunction="$ctrl.backfunction()"
+  backfunction="$ctrl.back()"
   changetitleenabled="true"
-  changetitlefunction="$ctrl.changetitlefunction()"
-  changetitlelabel="{{$ctrl.changetitlelabel}}"
-  deleteconfirmmessage="{{$ctrl.deleteconfirmmessage}}"
+  changetitlefunction="$ctrl.changetitle()"
+  changetitlelabel="jsp.scene.button.updateTitle"
+  deleteconfirmmessage="jsp.chapter.delete.scene.confirm"
   deleteenabled="true"
-  deleteforbidden="$ctrl.deleteforbidden"
-  deleteforbiddenmessage="{{$ctrl.deleteforbiddenmessage}}"
-  deletefunction="$ctrl.deletefunction()"
+  deleteforbidden="false"
+  deletefunction="$ctrl.delete()"
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
-  characters="$ctrl.characters"
+  characters="$ctrl.scene.characters"
   imagesenabled="false"
-  lastsave="$ctrl.lastsave"
-  savefunction="$ctrl.savefunction()"
+  lastsave="$ctrl.scene.lastsave"
+  savefunction="$ctrl.save()"
   showprojectexplorer="true"
-  words="$ctrl.words"
+  words="$ctrl.scene.words"
   wordscharactersenabled="true">
 </detailfooter>

@@ -18,41 +18,65 @@ component('scenedetail', {
   templateUrl: 'components/chapters/scene-detail.html',
   controller: SceneDetailController,
   bindings: {
-    backfunction: '&',
-    breadcrumbitems: '<',
-    changetitlefunction: '&',
-    changetitlelabel: '@',
-    characters: '=',
-    content: '=',
-    deleteconfirmmessage: '@',
-    deleteforbidden: '<',
-    deleteforbiddenmessage: '@',
-    deletefunction: '&',
-    editmode: '=',
-    eventname: '@',
-    headertitle: '@',
-    headersubtitle: '@',
-    lastsave: '<',
-    savefunction: '&',
-    taskstatus: '<',
-    taskstatuschangefunction: '&',
-    words: '='
+
   }
 });
 
-function SceneDetailController($rootScope, LoggerService,
-  RichTextEditorPreferencesService) {
+function SceneDetailController($rootScope, $routeParams, $location,
+  ChapterService, LoggerService, RichTextEditorPreferencesService, SceneService
+) {
   LoggerService.debug('Start SceneDetailController...');
 
   var self = this;
 
   self.$onInit = function() {
-    $rootScope.$emit(self.eventname);
+
+    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
+
+    self.chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.scene = SceneService.getScene($routeParams.sceneid);
+
+    self.breadcrumbitems = [];
+    self.breadcrumbitems.push({
+      label: 'jsp.projectFromScene.nav.li.chapters',
+      href: '/project/chapters'
+    });
+    self.breadcrumbitems.push({
+      labelvalue: '#' + self.chapter.position + ' ' + self.chapter.title,
+      href: '/chapters/' + self.chapter.$loki
+    });
+    self.breadcrumbitems.push({
+      labelvalue: self.scene.title
+    });
+
+    self.dirty = false;
+    self.editmode = false;
+    self.showprojectexplorer = false;
+    self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
   };
 
-  self.dirty = false;
-  self.showprojectexplorer = false;
-  self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+  self.back = function() {
+    $location.path('/chapters/' + self.chapter.$loki)
+  }
+
+  self.changeStatus = function(status) {
+    self.scene.status = status;
+    SceneService.update(self.maincharacter);
+  }
+
+  self.changetitle = function() {
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      .$loki + '/title');
+  }
+
+  self.delete = function() {
+    SceneService.remove(self.scene.$loki);
+    $location.path('/chapters/' + self.chapter.$loki)
+  }
+
+  self.save = function() {
+    alert('save ' + self.scene.$loki);
+  }
 
   LoggerService.debug('End SceneDetailController...');
 }
