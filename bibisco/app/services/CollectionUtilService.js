@@ -50,14 +50,21 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       element.position = position;
       element.status = 'todo';
       element.words = 0;
-      collection.insert(element);
+      element = collection.insert(element);
       ProjectDbConnectionService.saveDatabase();
+
+      LoggerService.info('Insert element with id=' + element.$loki +
+        ' in ' +
+        collection.name);
     },
 
     update: function(collection, element) {
       element.lastsave = (new Date()).toJSON();
       collection.update(element);
       ProjectDbConnectionService.saveDatabase();
+      LoggerService.info('Update element with id=' + element.$loki +
+        ' in ' +
+        collection.name);
     },
 
     remove: function(collection, id, filter) {
@@ -67,6 +74,8 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
         filter);
       collection.remove(element);
       ProjectDbConnectionService.saveDatabase();
+      LoggerService.info('Removed element with id=' + id + ' from ' +
+        collection.name);
     },
 
     move: function(collection, sourceId, targetId, dynamicView, filter) {

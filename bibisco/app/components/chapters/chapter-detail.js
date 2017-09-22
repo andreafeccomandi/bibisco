@@ -77,8 +77,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   }
 
   self.changeTitle = function() {
-    $location.path('/chaptertitle/edit/' + self.chapter
-      .$loki);
+    $location.path('/chaptertitle/edit/' + self.chapter.$loki);
   }
 
   self.createScene = function() {
@@ -91,9 +90,12 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $scope.$apply();
   }
 
+  self.selectScene = function(id) {
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id);
+  }
+
   self.delete = function() {
-    ChapterService.remove(self.chapter
-      .$loki);
+    ChapterService.remove(self.chapter.$loki);
     $location.path('/project/chapters');
   }
 
