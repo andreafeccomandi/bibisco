@@ -61,7 +61,7 @@ function SceneDetailController($rootScope, $routeParams, $location,
 
   self.changeStatus = function(status) {
     self.scene.status = status;
-    SceneService.update(self.maincharacter);
+    SceneService.update(self.scene);
   }
 
   self.changetitle = function() {
