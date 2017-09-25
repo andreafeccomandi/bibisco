@@ -24,6 +24,7 @@ component('detailcontent', {
     dirty: '=',
     editmode: '=',
     headersubtitle: '<',
+    savedcontent: '<',
     savefunction: '&',
     showprojectexplorer: '<',
     words: '='

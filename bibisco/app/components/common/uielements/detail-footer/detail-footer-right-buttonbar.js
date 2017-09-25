@@ -48,7 +48,6 @@ function DetailFooterRightButtonbarController($interval, $timeout,
     $interval(function() {
       if (self.autosaveenabled && self.dirty) {
         self.savefunction();
-        self.dirty = false;
       }
     }, 60000);
   }
@@ -70,7 +69,6 @@ function DetailFooterRightButtonbarController($interval, $timeout,
       self.saving = true;
       $timeout(function() {
         self.savefunction();
-        self.dirty = false;
         self.saving = false;
       }, 250);
     }

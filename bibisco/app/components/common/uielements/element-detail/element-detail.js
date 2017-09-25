@@ -56,11 +56,28 @@ function ElementDetailController($rootScope, LoggerService,
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
+    self.savedcontent = self.content;
   };
 
   self.dirty = false;
   self.showprojectexplorer = false;
   self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+
+  self.back = function() {
+    self.content = self.savedcontent;
+    if (self.editmode) {
+      self.editmode = false;
+      self.dirty = false;
+    } else {
+      self.backfunction();
+    }
+  }
+
+  self.save = function() {
+    self.savefunction();
+    self.dirty = false;
+    self.savedcontent = self.content;
+  }
 
   LoggerService.debug('End ElementDetailController...');
 }

@@ -138,7 +138,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       description: 'save',
       callback: function() {
         self.savefunction();
-        self.dirty = false;
       }
     });
 
@@ -372,9 +371,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
 
     self.characters = texttoprocess.trim().length;
     self.words = wordCount(self.content);
-
-    console.log('words: ' + self.words + ' characters: ' + self
-      .characters);
   }
 
   LoggerService.debug('End RichTextEditorController...');

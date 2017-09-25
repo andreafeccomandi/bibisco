@@ -7,7 +7,7 @@
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
         <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
-          content="{{$ctrl.content}}">
+          content="{{$ctrl.savedcontent}}">
         </richtextviewer>
         <richtexteditor ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"
