@@ -48,7 +48,7 @@ component('elementdetail', {
   }
 });
 
-function ElementDetailController($rootScope, LoggerService,
+function ElementDetailController($interval, $rootScope, LoggerService,
   RichTextEditorPreferencesService) {
   LoggerService.debug('Start ElementDetailController...');
 
@@ -57,7 +57,17 @@ function ElementDetailController($rootScope, LoggerService,
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
     self.savedcontent = self.content;
+
+    self.autosavefunctionpromise = $interval(function() {
+      if (self.autosaveenabled && self.editmode && self.dirty) {
+        self.save();
+      }
+    }, 60000);
   };
+
+  self.$onDestroy = function() {
+    $interval.cancel(self.autosavefunctionpromise);
+  }
 
   self.dirty = false;
   self.showprojectexplorer = false;

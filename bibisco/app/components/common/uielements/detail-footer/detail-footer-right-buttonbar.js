@@ -36,8 +36,8 @@ component('detailfooterrightbuttonbar', {
 });
 
 
-function DetailFooterRightButtonbarController($interval, $timeout,
-  LoggerService, PopupBoxesService) {
+function DetailFooterRightButtonbarController($timeout, LoggerService,
+  PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterRightButtonbarController...');
 
@@ -45,11 +45,6 @@ function DetailFooterRightButtonbarController($interval, $timeout,
 
   self.$onInit = function() {
     self.saving = false;
-    $interval(function() {
-      if (self.autosaveenabled && self.dirty) {
-        self.savefunction();
-      }
-    }, 60000);
   }
 
   self.delete = function() {
