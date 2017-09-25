@@ -23,8 +23,7 @@ component('scenedetail', {
 });
 
 function SceneDetailController($rootScope, $routeParams, $location,
-  ChapterService, LoggerService, RichTextEditorPreferencesService, SceneService
-) {
+  ChapterService, LoggerService, SceneService) {
   LoggerService.debug('Start SceneDetailController...');
 
   var self = this;
@@ -49,10 +48,7 @@ function SceneDetailController($rootScope, $routeParams, $location,
       labelvalue: self.scene.title
     });
 
-    self.dirty = false;
     self.editmode = false;
-    self.showprojectexplorer = false;
-    self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
   };
 
   self.back = function() {

@@ -1,38 +1,25 @@
-<detailheader breadcrumbitems="$ctrl.breadcrumbitems"
-  editmode="$ctrl.editmode"
-  headertitle="{{$ctrl.scene.title}}"
-  taskstatus="$ctrl.scene.status"
-  taskstatuschangefunction="$ctrl.changeStatus(status)">
-</detailheader>
-
-<detailcontent
-  autosaveenabled="$ctrl.autosaveenabled"
-  characters="$ctrl.scene.characters"
-  content="$ctrl.scene.content"
-  dirty="$ctrl.dirty"
-  editmode="$ctrl.editmode"
-  savefunction="$ctrl.save()"
-  showprojectexplorer="$ctrl.showprojectexplorer"
-  words="$ctrl.scene.words">
-</detailcontent>
-
-<detailfooter
-  autosaveenabled="$ctrl.autosaveenabled"
+<elementdetail
   backfunction="$ctrl.back()"
+  breadcrumbitems="$ctrl.breadcrumbitems"
   changetitleenabled="true"
   changetitlefunction="$ctrl.changetitle()"
   changetitlelabel="jsp.scene.button.updateTitle"
+  characters="$ctrl.scene.characters"
+  content="$ctrl.scene.content"
   deleteconfirmmessage="jsp.chapter.delete.scene.confirm"
   deleteenabled="true"
   deleteforbidden="false"
   deletefunction="$ctrl.delete()"
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
-  characters="$ctrl.scene.characters"
+  eventname="SHOW_ELEMENT_DETAIL"
+  headertitle="{{$ctrl.scene.title}}"
   imagesenabled="false"
   lastsave="$ctrl.scene.lastsave"
   savefunction="$ctrl.save()"
-  showprojectexplorer="$ctrl.showprojectexplorer"
+  tags="$ctrl.tags"
+  tagsshow="$ctrl.tagsshow"
+  taskstatus="$ctrl.scene.status"
+  taskstatuschangefunction="$ctrl.changeStatus(status)"
   words="$ctrl.scene.words"
   wordscharactersenabled="true">
-</detailfooter>
+</elementdetail>
