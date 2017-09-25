@@ -30,7 +30,9 @@ angular.module('bibiscoApp').service('SceneService', function(
       }
     },
     getScene: function(id) {
-      return collection.get(id);
+      let scene = collection.get(id);
+      scene.content = 'bibisco - your novel starts here';
+      return scene;
     },
     getScenesCount: function(chapterid) {
       return collection.count({
