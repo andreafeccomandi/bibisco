@@ -37,6 +37,8 @@ component('detailfooter', {
     savefunction: '&',
     showimagesfunction: '&',
     showprojectexplorer: '=',
+    tagsenabled: '<',
+    tagsfunction: '&',
     words: '<',
     wordscharactersenabled: '<'
   }

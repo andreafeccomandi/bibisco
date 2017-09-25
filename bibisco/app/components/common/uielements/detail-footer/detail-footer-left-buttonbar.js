@@ -22,6 +22,8 @@ component('detailfooterleftbuttonbar', {
     imagesenabled: '<',
     showimagesfunction: '&',
     showprojectexplorer: '=',
+    tagsenabled: '<',
+    tagsfunction: '&',
     words: '<'
   }
 });

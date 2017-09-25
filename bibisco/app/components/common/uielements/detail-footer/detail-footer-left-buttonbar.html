@@ -6,3 +6,6 @@
 <button ng-if="!$ctrl.editmode && $ctrl.imagesenabled" type="button" class="btn btn-default"
   uib-tooltip="{{'jsp.secondaryCharacter.button.images' | translate}}"
   ng-click="$ctrl.showimagesfunction()">{{'jsp.character.thumbnail.images.title' | translate}}</button>
+<button ng-if="!$ctrl.editmode && $ctrl.tagsenabled && $ctrl.words > 0" type="button" class="btn btn-default"
+  uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
+  ng-click="$ctrl.tagsfunction()">{{'jsp.scene.button.tags' | translate}}</button>

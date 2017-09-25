@@ -74,5 +74,9 @@ function SceneDetailController($rootScope, $routeParams, $location,
     alert('save ' + self.scene.$loki);
   }
 
+  self.tags = function() {
+    alert('tags of scene ' + self.scene.$loki);
+  }
+
   LoggerService.debug('End SceneDetailController...');
 }
