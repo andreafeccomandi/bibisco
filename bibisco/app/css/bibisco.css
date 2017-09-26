@@ -189,7 +189,7 @@ h3 {
   opacity: 0.5;
 }
 
-/* BIBISCO CARD */
+/* CARD */
 .card {
 	background-color: #fff;
 	border: 1px solid #ddd;
@@ -241,7 +241,7 @@ h3 {
 	-webkit-box-orient: vertical;
 }
 
-/* BIBISCO CARD GRID */
+/* CARD GRID */
 .card-grid-header {
 		width: 100%;
 		position: absolute;
@@ -334,7 +334,7 @@ h3 {
     top: 460px;
 }
 
-/* BIBISCO BADGE */
+/* BADGE */
 .bibiscoBadge {
 	font-weight: bold;
 	margin-left: 5px;
@@ -342,7 +342,7 @@ h3 {
 	vertical-align: .3em;
 }
 
-/* BIBISCO TASK STATUS */
+/* TASK STATUS */
 .bibiscoTaskStatus {
 	display: inline-block;
 	border-radius: 9px;
@@ -424,6 +424,11 @@ h3 {
 	background-color: #fff !important;
 	border-color: #ccc !important;
 	color: #428bca !important;
+}
+
+/* REVISION SELECT */
+.revision-select {
+	width: 200px;
 }
 
 /* RICH TEXT EDITOR STYLES */

@@ -22,6 +22,10 @@ component('detailfooterleftbuttonbar', {
     imagesenabled: '<',
     showimagesfunction: '&',
     showprojectexplorer: '=',
+    revisionactive: '<',
+    revisionenabled: '<',
+    revisionfunction: '&',
+    revisions: '<',
     tagsenabled: '<',
     tagsfunction: '&',
     words: '<'

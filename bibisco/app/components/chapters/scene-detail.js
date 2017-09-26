@@ -48,11 +48,23 @@ function SceneDetailController($rootScope, $routeParams, $location,
       labelvalue: self.scene.title
     });
 
+    self.revisionactive = '2';
+    self.revisions = {
+      '1': 'Revisione 1',
+      '2': 'Revisione 2',
+      'new': 'Crea nuova revisione',
+      'delete': 'Elimina revisione corrente'
+    };
+
     self.editmode = false;
   };
 
   self.back = function() {
     $location.path('/chapters/' + self.chapter.$loki)
+  }
+
+  self.changerevision = function(key) {
+    alert('Change revision: ' + key);
   }
 
   self.changeStatus = function(status) {
