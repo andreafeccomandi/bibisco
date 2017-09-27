@@ -32,15 +32,54 @@ component('detailfooterleftbuttonbar', {
   }
 });
 
-function DetailFooterLeftButtonbarController($location, LoggerService,
-  PopupBoxesService) {
+function DetailFooterLeftButtonbarController($location, $translate,
+  LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterLeftButtonbarController...');
 
   var self = this;
 
+  self.$onInit = async function() {
+    self.revisionactual = self.revisionactive;
+
+    self.translations = await $translate([
+      'revision_confirm_new_revision_from_actual',
+      'revision_confirm_delete_revision'
+    ]);
+  }
+
   self.toggleProjectExplorer = function() {
     self.showprojectexplorer = !self.showprojectexplorer;
+  }
+
+  self.selectrevision = function() {
+    if (self.revisionactive == 'new') {
+      PopupBoxesService.confirm(self.createrevisionfromactual,
+        self.translations.revision_confirm_new_revision_from_actual,
+        self.callrevisionfunction);
+    } else if (self.revisionactive == 'delete') {
+      PopupBoxesService.confirm(self.callrevisionfunction,
+        self.translations.revision_confirm_delete_revision,
+        self.restorerevisionactual);
+    } else {
+      self.callrevisionfunction();
+    }
+  }
+
+  self.callrevisionfunction = function() {
+    self.revisionfunction({
+      'key': self.revisionactive
+    });
+  }
+
+  self.createrevisionfromactual = function() {
+    self.revisionfunction({
+      'key': 'new-from-actual'
+    });
+  }
+
+  self.restorerevisionactual = function() {
+    self.revisionactive = self.revisionactual;
   }
 
   LoggerService.debug('End DetailFooterLeftButtonbarController...');
