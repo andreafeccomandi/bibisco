@@ -36,7 +36,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         // cancel
       });
     },
-    confirm: function(confirmFunction, confirmMessage) {
+    confirm: function(confirmFunction, confirmMessage, cancelFunction) {
       var modalInstance = $uibModal.open({
         animation: true,
         backdrop: 'static',
@@ -52,7 +52,9 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
       modalInstance.result.then(function(selectedItem) {
         confirmFunction();
       }, function() {
-        // cancel
+        if (cancelFunction) {
+          cancelFunction();
+        }
       });
     }
   }
