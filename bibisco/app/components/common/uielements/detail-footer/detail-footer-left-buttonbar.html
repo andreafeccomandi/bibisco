@@ -10,14 +10,16 @@
   uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
   ng-click="$ctrl.tagsfunction()">{{'jsp.scene.button.tags' | translate}}</button>
 <div ng-if="!$ctrl.editmode && $ctrl.revisionenabled && $ctrl.words > 0" class="btn-group revision-select">
-  <ui-select ng-model="$ctrl.revisionactive"
-    on-select="$ctrl.selectrevision()">
+  <ui-select ng-model="$ctrl.revisionactive" on-select="$ctrl.selectrevision()">
     <ui-select-match>
-        <span ng-bind="$select.selected.value"></span>
+        <span ng-if="revision.key != 'new' && revision.key != 'delete'">{{'revision_label' | translate}} {{$select.selected.value}}</span>
+        <span><i ng-if="revision.key == 'new'">{{'revision_label_create_new_revision' | translate}}</i></span>
+        <span><i ng-if="revision.key == 'delete'">{{'revision_label_delete_revision' | translate}}</i></span>
     </ui-select-match>
     <ui-select-choices repeat="revision.key as (key, revision) in $ctrl.revisions | filter: {'value':$select.search}">
-      <span ng-if="revision.key != 'new' && revision.key != 'delete'" ng-bind-html="revision.value"></span>
-      <span><i ng-if="revision.key == 'new' || revision.key == 'delete'" ng-bind-html="revision.value"></i></span>
+      <span ng-if="revision.key != 'new' && revision.key != 'delete'">{{'revision_label' | translate}} {{revision.value}}</span>
+      <span><i ng-if="revision.key == 'new'">{{'revision_label_create_new_revision' | translate}}</i></span>
+      <span><i ng-if="revision.key == 'delete'">{{'revision_label_delete_revision' | translate}}</i></span>
     </ui-select-choices>
   </ui-select>
 </div>

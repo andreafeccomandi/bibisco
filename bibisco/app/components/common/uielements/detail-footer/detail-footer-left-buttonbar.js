@@ -23,9 +23,9 @@ component('detailfooterleftbuttonbar', {
     showimagesfunction: '&',
     showprojectexplorer: '=',
     revisionactive: '<',
+    revisioncount: '<',
     revisionenabled: '<',
     revisionfunction: '&',
-    revisions: '<',
     tagsenabled: '<',
     tagsfunction: '&',
     words: '<'
@@ -39,13 +39,24 @@ function DetailFooterLeftButtonbarController($location, $translate,
 
   var self = this;
 
-  self.$onInit = async function() {
-    self.revisionactual = self.revisionactive;
+  self.$onInit = function() {
 
-    self.translations = await $translate([
+    // load translations
+    self.translations = $translate.instant([
       'revision_confirm_new_revision_from_actual',
       'revision_confirm_delete_revision'
-    ]);
+    ]);;
+
+    // populate revisions
+    self.revisions = {};
+    for (let i = 1; i <= self.revisioncount; i++) {
+      self.revisions["" + i] = i;
+    }
+    self.revisions["new"] = 'new';
+    if (self.revisioncount > 1) {
+      self.revisions["delete"] = 'delete';
+    }
+    self.revisionactual = self.revisionactive;
   }
 
   self.toggleProjectExplorer = function() {

@@ -49,12 +49,7 @@ function SceneDetailController($rootScope, $routeParams, $location,
     });
 
     self.revisionactive = '2';
-    self.revisions = {
-      '1': 'Revisione 1',
-      '2': 'Revisione 2',
-      'new': 'Crea nuova revisione',
-      'delete': 'Elimina revisione corrente'
-    };
+    self.revisioncount = 3;
 
     self.editmode = false;
   };
