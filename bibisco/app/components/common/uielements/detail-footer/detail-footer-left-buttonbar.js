@@ -36,6 +36,7 @@ function DetailFooterLeftButtonbarController($location, $translate,
   LoggerService, PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterLeftButtonbarController...');
+  console.log('Start DetailFooterLeftButtonbarController...');
 
   var self = this;
 
@@ -43,19 +44,25 @@ function DetailFooterLeftButtonbarController($location, $translate,
 
     // load translations
     self.translations = $translate.instant([
+      'revision_label',
+      'revision_label_create_new_revision',
+      'revision_label_delete_revision',
       'revision_confirm_new_revision_from_actual',
       'revision_confirm_delete_revision'
     ]);;
 
     // populate revisions
     self.revisions = {};
-    for (let i = 1; i <= self.revisioncount; i++) {
-      self.revisions["" + i] = i;
+
+    for (let i = self.revisioncount; i > 0; i--) {
+      self.revisions['' + i] = self.translations.revision_label + ' ' + i;
     }
-    self.revisions["new"] = 'new';
+    self.revisions['new'] = self.translations.revision_label_create_new_revision;
     if (self.revisioncount > 1) {
-      self.revisions["delete"] = 'delete';
+      self.revisions['delete'] = self.translations.revision_label_delete_revision;
     }
+
+
     self.revisionactual = self.revisionactive;
   }
 
