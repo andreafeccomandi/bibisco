@@ -52,18 +52,38 @@ function DetailFooterLeftButtonbarController($location, $translate,
     ]);;
 
     // populate revisions
-    self.revisions = {};
+    self.revisions = [];
+    self.revisionactual;
 
     for (let i = self.revisioncount; i > 0; i--) {
-      self.revisions['' + i] = self.translations.revision_label + ' ' + i;
+      let revision = {};
+      let revisionkey = '' + i;
+      let revisiondescription = self.translations.revision_label + ' ' + i;
+
+      revision.key = revisionkey;
+      revision.description = revisiondescription;
+      self.revisions.push(revision);
+
+      if (self.revisionactive == i) {
+        self.revisionactual = {
+          key: revisionkey,
+          description: revisiondescription
+        }
+      }
     }
-    self.revisions['new'] = self.translations.revision_label_create_new_revision;
+    self.revisions.push({
+      key: 'new',
+      description: self.translations.revision_label_create_new_revision
+    });
     if (self.revisioncount > 1) {
-      self.revisions['delete'] = self.translations.revision_label_delete_revision;
+      self.revisions.push({
+        key: 'delete',
+        description: self.translations.revision_label_delete_revision
+      });
     }
 
+    self.revisionselected = self.revisionactual;
 
-    self.revisionactual = self.revisionactive;
   }
 
   self.toggleProjectExplorer = function() {
@@ -71,11 +91,11 @@ function DetailFooterLeftButtonbarController($location, $translate,
   }
 
   self.selectrevision = function() {
-    if (self.revisionactive == 'new') {
+    if (self.revisionselected.key == 'new') {
       PopupBoxesService.confirm(self.createrevisionfromactual,
         self.translations.revision_confirm_new_revision_from_actual,
         self.callrevisionfunction);
-    } else if (self.revisionactive == 'delete') {
+    } else if (self.revisionselected.key == 'delete') {
       PopupBoxesService.confirm(self.callrevisionfunction,
         self.translations.revision_confirm_delete_revision,
         self.restorerevisionactual);
@@ -86,7 +106,7 @@ function DetailFooterLeftButtonbarController($location, $translate,
 
   self.callrevisionfunction = function() {
     self.revisionfunction({
-      'key': self.revisionactive
+      'key': self.revisionselected.key
     });
   }
 
@@ -97,7 +117,7 @@ function DetailFooterLeftButtonbarController($location, $translate,
   }
 
   self.restorerevisionactual = function() {
-    self.revisionactive = self.revisionactual;
+    self.revisionselected = self.revisionactual;
   }
 
   LoggerService.debug('End DetailFooterLeftButtonbarController...');
