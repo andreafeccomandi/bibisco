@@ -54,69 +54,125 @@ function DetailFooterLeftButtonbarController($location, $translate,
     // populate revisions
     self.revisions = [];
     self.revisionactual;
+    self.revisionselected;
 
     for (let i = self.revisioncount; i > 0; i--) {
-      let revision = {};
-      let revisionkey = '' + i;
-      let revisiondescription = self.translations.revision_label + ' ' + i;
-
-      revision.key = revisionkey;
-      revision.description = revisiondescription;
+      let revision = self.createRevisionItem(i);
       self.revisions.push(revision);
 
       if (self.revisionactive == i) {
-        self.revisionactual = {
-          key: revisionkey,
-          description: revisiondescription
-        }
+        self.revisionactual = revision;
+        self.revisionselected = revision;
       }
     }
+
+    // add new revision command
     self.revisions.push({
       key: 'new',
       description: self.translations.revision_label_create_new_revision
     });
+
+    // add delete revision command
     if (self.revisioncount > 1) {
-      self.revisions.push({
-        key: 'delete',
-        description: self.translations.revision_label_delete_revision
-      });
+      self.addDeleteRevisionCommand();
     }
-
-    self.revisionselected = self.revisionactual;
-
   }
 
   self.toggleProjectExplorer = function() {
     self.showprojectexplorer = !self.showprojectexplorer;
   }
 
-  self.selectrevision = function() {
+  self.selectRevision = function() {
     if (self.revisionselected.key == 'new') {
-      PopupBoxesService.confirm(self.createrevisionfromactual,
+      PopupBoxesService.confirm(self.createRevisionFromActual,
         self.translations.revision_confirm_new_revision_from_actual,
-        self.callrevisionfunction);
+        self.createRevisionFromScratch);
     } else if (self.revisionselected.key == 'delete') {
-      PopupBoxesService.confirm(self.callrevisionfunction,
+      PopupBoxesService.confirm(self.deleteRevision,
         self.translations.revision_confirm_delete_revision,
-        self.restorerevisionactual);
+        self.restoreRevisionActual);
     } else {
-      self.callrevisionfunction();
+      self.changeRevision();
     }
   }
 
-  self.callrevisionfunction = function() {
+  self.addDeleteRevisionCommand = function() {
+    self.revisions.push({
+      key: 'delete',
+      description: self.translations.revision_label_delete_revision
+    });
+  }
+
+  self.removeDeleteRevisionCommand = function() {
+    self.revisions.pop();
+  }
+
+  self.deleteRevision = function() {
+
+    self.revisionfunction({
+      'key': 'delete'
+    });
+
+    let revisionToDelete = parseInt(self.revisionselected.key);
+
+    for (let i = 0; i < self.revisioncount; i++) {
+      let revisionitem = parseInt(self.revisions[i].key);
+      if (revisionitem > revisionToDelete) {
+        self.revisions[i].key = self.revisions[i].key - 1;
+      }
+    }
+    self.revisions.splice(revisionToDelete - 1, 1);
+    self.revisioncount--;
+    self.revisionselected = self.revisions[0];
+    self.revisionactual = self.revisions[0];
+
+    if (self.revisioncount == 1) {
+      self.removeDeleteRevisionCommand();
+    }
+  }
+
+  self.addRevision = function() {
+    self.revisioncount++;
+
+    let newrevision = self.createRevisionItem(self.revisioncount);
+    self.revisions.unshift(newrevision);
+    self.revisionselected = newrevision;
+    self.revisionactual = newrevision;
+
+    if (self.revisioncount == 2) {
+      self.addDeleteRevisionCommand();
+    }
+  }
+
+  self.createRevisionItem = function(revisionNumber) {
+    return {
+      key: '' + revisionNumber,
+      description: self.translations.revision_label + ' ' + revisionNumber
+    }
+  }
+
+  self.changeRevision = function() {
     self.revisionfunction({
       'key': self.revisionselected.key
     });
+    self.revisionactual = self.revisionselected;
   }
 
-  self.createrevisionfromactual = function() {
+  self.createRevisionFromActual = function() {
     self.revisionfunction({
       'key': 'new-from-actual'
     });
+    self.addRevision();
   }
 
-  self.restorerevisionactual = function() {
+  self.createRevisionFromScratch = function() {
+    self.revisionfunction({
+      'key': 'new-from-scratch'
+    });
+    self.addRevision();
+  }
+
+  self.restoreRevisionActual = function() {
     self.revisionselected = self.revisionactual;
   }
 
