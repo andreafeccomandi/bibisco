@@ -98,7 +98,8 @@ function RevisionSelectController($location, $translate,
   self.deleteRevision = function() {
 
     self.revisionfunction({
-      'key': 'delete'
+      'action': 'delete',
+      'revision': self.revisionactual.key
     });
 
     let revisionToDelete = parseInt(self.revisionselected.key);
@@ -141,21 +142,23 @@ function RevisionSelectController($location, $translate,
 
   self.changeRevision = function() {
     self.revisionfunction({
-      'key': self.revisionselected.key
+      'action': 'change',
+      'revision': self.revisionselected.key
     });
     self.revisionactual = self.revisionselected;
   }
 
   self.createRevisionFromActual = function() {
     self.revisionfunction({
-      'key': 'new-from-actual'
+      'action': 'new-from-actual',
+      'revision': self.revisionactual.key
     });
     self.addRevision();
   }
 
   self.createRevisionFromScratch = function() {
     self.revisionfunction({
-      'key': 'new-from-scratch'
+      'action': 'new-from-scratch'
     });
     self.addRevision();
   }

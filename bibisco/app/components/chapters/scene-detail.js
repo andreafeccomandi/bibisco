@@ -58,8 +58,8 @@ function SceneDetailController($rootScope, $routeParams, $location,
     $location.path('/chapters/' + self.chapter.$loki)
   }
 
-  self.changerevision = function(key) {
-    alert('Change revision: ' + key);
+  self.changerevision = function(action, revision) {
+    alert('Revision function: action:' + action + ' - revision:' + revision);
   }
 
   self.changeStatus = function(status) {
