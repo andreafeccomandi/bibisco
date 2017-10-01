@@ -30,9 +30,7 @@ angular.module('bibiscoApp').service('SceneService', function(
       }
     },
     getScene: function(id) {
-      let scene = collection.get(id);
-      scene.content = 'bibisco - your novel starts here';
-      return scene;
+      return collection.get(id);
     },
     getScenesCount: function(chapterid) {
       return collection.count({
@@ -50,6 +48,10 @@ angular.module('bibiscoApp').service('SceneService', function(
       return chapterscenes.data();
     },
     insert: function(scene) {
+      scene.text = '';
+      scene.revision = 1;
+      scene.revisioncount = 1;
+      scene.revisions = [];
       CollectionUtilService.insert(collection, scene, this.getFilterByChapterId(
         scene.chapterid));
     },
