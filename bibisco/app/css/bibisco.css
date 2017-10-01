@@ -426,6 +426,11 @@ h3 {
 	color: #428bca !important;
 }
 
+.btn-default-focus {
+	 outline: none !important;
+	 box-shadow: none !important;
+}
+
 /* REVISION SELECT */
 .revision-select {
 	width: 200px;
