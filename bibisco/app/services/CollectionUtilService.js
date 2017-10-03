@@ -38,6 +38,16 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
     },
 
     insert: function(collection, element, filter) {
+      element = this.executeInsert(collection, element, filter);
+      ProjectDbConnectionService.saveDatabase();
+      return element;
+    },
+
+    insertWithoutCommit: function(collection, element, filter) {
+      return this.executeInsert(collection, element, filter);
+    },
+
+    executeInsert: function(collection, element, filter) {
       let position;
       if (filter) {
         position = collection.find(filter).length + 1;
@@ -51,20 +61,30 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       element.status = 'todo';
       element.words = 0;
       element = collection.insert(element);
-      ProjectDbConnectionService.saveDatabase();
 
       LoggerService.info('Insert element with id=' + element.$loki +
-        ' in ' +
-        collection.name);
+        ' in ' + collection.name);
+
+      return element;
     },
 
     update: function(collection, element) {
+      element = this.executeUpdate(collection, element);
+      ProjectDbConnectionService.saveDatabase();
+      return element;
+    },
+
+    updateWithoutCommit: function(collection, element, filter) {
+      return this.executeUpdate(collection, element, filter);
+    },
+
+    executeUpdate: function(collection, element) {
       element.lastsave = (new Date()).toJSON();
       collection.update(element);
-      ProjectDbConnectionService.saveDatabase();
       LoggerService.info('Update element with id=' + element.$loki +
         ' in ' +
         collection.name);
+      return element;
     },
 
     remove: function(collection, id, filter) {

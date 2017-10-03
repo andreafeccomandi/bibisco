@@ -22,7 +22,7 @@ component('scenedetail', {
   }
 });
 
-function SceneDetailController($rootScope, $routeParams, $location,
+function SceneDetailController($location, $rootScope, $routeParams,
   ChapterService, LoggerService, SceneService) {
   LoggerService.debug('Start SceneDetailController...');
 
@@ -48,9 +48,6 @@ function SceneDetailController($rootScope, $routeParams, $location,
       labelvalue: self.scene.title
     });
 
-    self.revisionactive = '2';
-    self.revisioncount = 3;
-
     self.editmode = false;
   };
 
@@ -59,7 +56,17 @@ function SceneDetailController($rootScope, $routeParams, $location,
   }
 
   self.changerevision = function(action, revision) {
-    alert('Revision function: action:' + action + ' - revision:' + revision);
+    if (action == 'new-from-actual') {
+      self.scene = SceneService.createRevisionFromActual($routeParams.sceneid);
+      self.editmode = true;
+    } else if (action == 'new-from-scratch') {
+      self.scene = SceneService.createRevisionFromScratch($routeParams.sceneid);
+      self.editmode = true;
+    } else if (action == 'change') {
+      self.scene = SceneService.changeRevision($routeParams.sceneid, revision);
+    } else if (action == 'delete') {
+      alert('Delete revsion!');
+    }
   }
 
   self.changeStatus = function(status) {
@@ -78,7 +85,7 @@ function SceneDetailController($rootScope, $routeParams, $location,
   }
 
   self.save = function() {
-    alert('save ' + self.scene.$loki);
+    SceneService.update(self.scene);
   }
 
   self.tags = function() {

@@ -67,7 +67,14 @@ function ElementDetailController($interval, $rootScope, LoggerService,
         self.save();
       }
     }, 60000);
-  };
+  }
+
+  self.$onChanges = function(changes) {
+
+    if (changes.revisionactive && self.editmode == false) {
+      self.savedcontent = self.content;
+    }
+  }
 
   self.$onDestroy = function() {
     $interval.cancel(self.autosavefunctionpromise);

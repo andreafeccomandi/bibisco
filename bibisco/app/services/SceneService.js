@@ -14,29 +14,94 @@
  */
 
 angular.module('bibiscoApp').service('SceneService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService
-) {
+  CollectionUtilService, LoggerService, ProjectDbConnectionService) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'scenes');
+  var scenerevisionscollection = ProjectDbConnectionService.getProjectDb().getCollection(
+    'scene_revisions');
 
   return {
-    getFilterByChapterId: function(chapterid) {
-      return {
-        chapterid: {
-          '$eq': chapterid
-        }
+    changeRevision: function(id, revision) {
+      let scene = collection.get(id);
+      let scenerevision = this.getSceneRevisionByPosition(id, revision);
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      CollectionUtilService.update(collection, scene);
+
+      return this.getScene(id);
+    },
+
+    createRevision: function(id, fromActual) {
+
+      let scene = collection.get(id);
+      let actualscenerevision = scenerevisionscollection.get(scene.revisionid);
+
+      // get revision text
+      let text;
+      if (fromActual) {
+        text = actualscenerevision.text;
+      } else {
+        text = '';
       }
+
+      // insert new revision
+      let scenerevision = this.insertRevision(scene.$loki, text);
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      scene.revisioncount = scene.revisioncount + 1;
+      CollectionUtilService.updateWithoutCommit(collection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+
+      if (fromActual) {
+        LoggerService.info('Created revision ' + scene.revision +
+          ' from revision ' + actualscenerevision.position +
+          ' for scene with id=' + scene.$loki
+        );
+      } else {
+        LoggerService.info('Created revision ' + scene.revision +
+          ' from scratch for scene with id=' + scene.$loki
+        );
+      }
+
+      return this.getScene(id);
     },
+    createRevisionFromActual: function(id) {
+      return this.createRevision(id, true);
+    },
+    createRevisionFromScratch: function(id) {
+      return this.createRevision(id, false);
+    },
+
     getScene: function(id) {
-      return collection.get(id);
+      let scene = collection.get(id);
+      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+      scene.text = scenerevision.text;
+      scene.revision = scenerevision.position;
+
+      return scene;
     },
+
+    getSceneRevisionByPosition: function(sceneid, revisionposition) {
+      return scenerevisionscollection.findOne({
+        sceneid: parseInt(sceneid),
+        position: parseInt(revisionposition)
+      });
+    },
+
     getScenesCount: function(chapterid) {
       return collection.count({
         'chapterid': chapterid
       });
     },
+
     getScenes: function(chapterid) {
       let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
         collection, 'chapterscenes_' + chapterid, {
@@ -47,14 +112,43 @@ angular.module('bibiscoApp').service('SceneService', function(
 
       return chapterscenes.data();
     },
+
     insert: function(scene) {
-      scene.text = '';
-      scene.revision = 1;
+
+      // insert scene
       scene.revisioncount = 1;
-      scene.revisions = [];
-      CollectionUtilService.insert(collection, scene, this.getFilterByChapterId(
-        scene.chapterid));
+      scene.revisionid = -1;
+      scene = CollectionUtilService.insertWithoutCommit(collection,
+        scene, {
+          chapterid: {
+            '$eq': scene.chapterid
+          }
+        });
+
+      // insert first revision
+      let scenerevision = this.insertRevision(scene.$loki, '');
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      CollectionUtilService.updateWithoutCommit(collection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
     },
+
+    insertRevision: function(sceneid, text) {
+      return CollectionUtilService.insertWithoutCommit(
+        scenerevisionscollection, {
+          sceneid: sceneid,
+          text: text
+        }, {
+          sceneid: {
+            '$eq': sceneid
+          }
+        });
+    },
+
     move: function(sourceId, targetId) {
       let chapterid = this.getScene(sourceId).chapterid;
       let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
@@ -70,11 +164,27 @@ angular.module('bibiscoApp').service('SceneService', function(
           }
         });
     },
+
     remove: function(id) {
       CollectionUtilService.remove(collection, id);
     },
+
     update: function(scene) {
-      CollectionUtilService.update(collection, scene);
+
+      // remove text property from scene
+      let text = scene.text;
+
+      // update scene
+      CollectionUtilService.updateWithoutCommit(collection, scene);
+
+      // update scene revision
+      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+      scenerevision.text = text;
+      CollectionUtilService.updateWithoutCommit(scenerevisionscollection,
+        scenerevision);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
     }
   }
 });
