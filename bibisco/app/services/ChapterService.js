@@ -116,18 +116,17 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let chapter = collection.get(id);
 
       // get chapter reason
-      let chapterReason = chapterinfoscollection.findOne({
-        chapterid: id,
-        type: 'reason'
-      });
+      let chapterReason = this.getChapterInfo(chapter.reason);
 
       // get scenes
-      let scenes = ChapterService.getScenes(id);
+      let scenes = this.getScenes(id);
 
       // total statuses: all scenes + reason card
       let totalStatuses = scenes.length + 1;
       let totalTodo = 0;
       let totalDone = 0;
+      let words = 0;
+      let characters = 0;
 
       if (chapterReason.status == 'todo') {
         totalTodo = 1;
@@ -136,6 +135,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
       }
 
       for (let i = 0; i < scenes.length; i++) {
+        words = words + scenes[i].words;
+        characters = characters + scenes[i].characters;
         if (scenes[i].status == 'todo') {
           totalTodo = totalTodo + 1;
         } else if (scenes[i].status == 'done') {
@@ -143,6 +144,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
         }
       }
 
+      chapter.words = words;
+      chapter.characters = characters;
       if (totalTodo == totalStatuses) {
         chapter.status = 'todo';
       } else if (totalDone == totalStatuses) {
@@ -349,8 +352,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
         scenerevisionscollection, scenerevision);
 
       // update chapter status
-      // ChapterService.updateChapterStatusWordsCharactersWithoutCommit(
-      //   scene.chapterid);
+      this.updateChapterStatusWordsCharactersWithoutCommit(
+        scene.chapterid);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
