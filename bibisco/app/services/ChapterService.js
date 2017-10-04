@@ -14,26 +14,122 @@
  */
 
 angular.module('bibiscoApp').service('ChapterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, LoggerService, ProjectDbConnectionService,
+  SceneService
 ) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'chapters');
+  var chapterinfoscollection = ProjectDbConnectionService.getProjectDb().getCollection(
+    'chapter_infos');
   var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
     collection, 'all_chapters');
 
   return {
-    calculateChapterStatus: function(reasonStatus, scenes) {
+
+    getChapter: function(id) {
+      return collection.get(id);
+    },
+    getChapterInfo: function(id) {
+      return chapterinfoscollection.get(id);
+    },
+    getChaptersCount: function() {
+      return collection.count();
+    },
+    getChapters: function() {
+      return dynamicView.data();
+    },
+    insert: function(chapter) {
+
+      // insert chapter
+      chapter.reason = -1;
+      chapter.notes = -1;
+      chapter = CollectionUtilService.insertWithoutCommit(collection,
+        chapter);
+
+      // insert reason chapter info
+      let reason = this.insertChapterInfoWithoutCommit(chapter.$loki,
+        'reason');
+
+      // insert notes info
+      let notes = this.insertChapterInfoWithoutCommit(chapter.$loki,
+        'notes');
+
+      // update notes with null status
+      notes.status = null;
+      CollectionUtilService.updateWithoutCommit(chapterinfoscollection,
+        notes);
+
+      // update chapter with info
+      chapter.reason = reason.$loki;
+      chapter.notes = notes.$loki;
+      CollectionUtilService.updateWithoutCommit(collection, chapter);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    insertChapterInfoWithoutCommit: function(chapterid, type) {
+      return CollectionUtilService.insertWithoutCommit(
+        chapterinfoscollection, {
+          chapterid: chapterid,
+          type: type,
+          text: ''
+        }, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
+    },
+
+    move: function(sourceId, targetId) {
+      return CollectionUtilService.move(collection, sourceId, targetId,
+        dynamicView);
+    },
+    remove: function(id) {
+      CollectionUtilService.remove(collection, id);
+    },
+
+    update: function(chapter) {
+      CollectionUtilService.update(collection, chapter);
+    },
+
+    updateChapterInfo: function(chapterinfo) {
+
+      // update chapter info
+      CollectionUtilService.updateWithoutCommit(chapterinfoscollection,
+        chapterinfo);
+
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(chapterinfo.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    updateChapterStatusWordsCharactersWithoutCommit: function(id) {
+
+      // get chapter
+      let chapter = collection.get(id);
+
+      // get chapter reason
+      let chapterReason = chapterinfoscollection.findOne({
+        chapterid: id,
+        type: 'reason'
+      });
+
+      // get scenes
+      let scenes = SceneService.getScenes(id);
 
       // total statuses: all scenes + reason card
       let totalStatuses = scenes.length + 1;
       let totalTodo = 0;
       let totalDone = 0;
 
-      if (reasonStatus == 'todo') {
+      if (chapterReason.status == 'todo') {
         totalTodo = 1;
-      } else if (reasonStatus == 'done') {
+      } else if (chapterReason.status == 'done') {
         totalDone = 1;
       }
 
@@ -46,35 +142,14 @@ angular.module('bibiscoApp').service('ChapterService', function(
       }
 
       if (totalTodo == totalStatuses) {
-        return 'todo';
+        chapter.status = 'todo';
       } else if (totalDone == totalStatuses) {
-        return 'done';
+        chapter.status = 'done';
       } else {
-        return 'tocomplete';
+        chapter.status = 'tocomplete';
       }
 
+      CollectionUtilService.updateWithoutCommit(collection, chapter);
     },
-    getChapter: function(id) {
-      return collection.get(id);
-    },
-    getChaptersCount: function() {
-      return collection.count();
-    },
-    getChapters: function() {
-      return dynamicView.data();
-    },
-    insert: function(chapter) {
-      CollectionUtilService.insert(collection, chapter);
-    },
-    move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
-    },
-    remove: function(id) {
-      CollectionUtilService.remove(collection, id);
-    },
-    update: function(chapter) {
-      CollectionUtilService.update(collection, chapter);
-    }
   }
 });

@@ -71,9 +71,6 @@ function ChapterTitleController($location, $routeParams,
       ChapterService.update(chapter);
     } else {
       ChapterService.insert({
-        reason: '',
-        reasonstatus: 'todo',
-        notes: '',
         title: title
       });
     }

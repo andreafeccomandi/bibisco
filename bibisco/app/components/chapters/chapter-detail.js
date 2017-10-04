@@ -29,7 +29,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.chapter = self.getChapter($routeParams.id);
+    self.chapter = ChapterService.getChapter($routeParams.id);
+
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
 
     self.breadcrumbitems = [];
@@ -38,12 +39,16 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
       href: '/project/chapters'
     });
     self.breadcrumbitems.push({
-      labelvalue: self.title
+      label: self.title
     });
 
     self.editmode = false;
     self.showprojectexplorer = true;
 
+    // get chapter reason
+    self.chapterreason = ChapterService.getChapterInfo(self.chapter.reason);
+
+    // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems($routeParams.id);
   };
 
@@ -91,6 +96,10 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $scope.$apply();
   }
 
+  self.selectChapterInfo = function(id) {
+    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + id);
+  }
+
   self.selectScene = function(id) {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id);
   }
@@ -98,10 +107,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   self.delete = function() {
     ChapterService.remove(self.chapter.$loki);
     $location.path('/project/chapters');
-  }
-
-  self.getChapter = function(id) {
-    return ChapterService.getChapter(id);
   }
 
   self.showimagesfunction = function() {

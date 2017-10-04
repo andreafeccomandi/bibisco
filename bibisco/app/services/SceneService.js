@@ -215,8 +215,11 @@ angular.module('bibiscoApp').service('SceneService', function(
       scenerevision.words = scene.words;
 
       CollectionUtilService.updateWithoutCommit(
-        scenerevisionscollection,
-        scenerevision);
+        scenerevisionscollection, scenerevision);
+
+      // update chapter status
+      // ChapterService.updateChapterStatusWordsCharactersWithoutCommit(
+      //   scene.chapterid);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
