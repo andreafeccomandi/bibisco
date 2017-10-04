@@ -48,6 +48,9 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     // get chapter reason
     self.chapterreason = ChapterService.getChapterInfo(self.chapter.reason);
 
+    // get chapter notes
+    self.chapternotes = ChapterService.getChapterInfo(self.chapter.notes);
+
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems($routeParams.id);
   };
