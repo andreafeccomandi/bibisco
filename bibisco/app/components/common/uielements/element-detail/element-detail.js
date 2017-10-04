@@ -71,7 +71,8 @@ function ElementDetailController($interval, $rootScope, LoggerService,
 
   self.$onChanges = function(changes) {
 
-    if (changes.revisionactive && self.editmode == false) {
+    if ((changes.revisionactive || changes.revisioncount) && self.editmode ==
+      false) {
       self.savedcontent = self.content;
     }
   }
