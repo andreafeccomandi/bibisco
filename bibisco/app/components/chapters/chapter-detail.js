@@ -59,7 +59,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
           id: scenes[i].$loki,
           position: scenes[i].position,
           status: scenes[i].status,
-          title: scenes[i].title,
+          text: scenes[i].title,
+          title: '#' + scenes[i].position,
           words: scenes[i].words
         });
       }

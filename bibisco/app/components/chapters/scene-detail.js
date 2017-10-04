@@ -34,6 +34,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = SceneService.getScene($routeParams.sceneid);
+    self.title = '#' + self.scene.position + ' ' + self.scene.title;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
