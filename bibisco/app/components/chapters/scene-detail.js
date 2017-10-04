@@ -65,7 +65,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
     } else if (action == 'change') {
       self.scene = SceneService.changeRevision($routeParams.sceneid, revision);
     } else if (action == 'delete') {
-      alert('Delete revsion!');
+      self.scene = SceneService.deleteActualRevision($routeParams.sceneid);
     }
   }
 

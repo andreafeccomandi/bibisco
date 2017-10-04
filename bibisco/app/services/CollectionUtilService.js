@@ -88,10 +88,26 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
     },
 
     remove: function(collection, id, filter) {
+      this.executeRemove(collection, id, filter);
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    removeWithoutCommit: function(collection, id, filter) {
+      this.executeRemove(collection, id, filter);
+    },
+
+    executeRemove: function(collection, id, filter) {
       let element = collection.get(id);
       let elementPosition = element.position;
-      this.shiftDown(collection, elementPosition + 1, collection.count(),
-        filter);
+      let endPosition;
+
+      if (filter) {
+        endPosition = collection.count(filter);
+      } else {
+        endPosition = elementPosition + 1;
+      }
+
+      this.shiftDown(collection, elementPosition + 1, endPosition, filter);
       collection.remove(element);
       ProjectDbConnectionService.saveDatabase();
       LoggerService.info('Removed element with id=' + id + ' from ' +

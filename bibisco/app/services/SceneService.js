@@ -80,6 +80,34 @@ angular.module('bibiscoApp').service('SceneService', function(
       return this.createRevision(id, false);
     },
 
+    deleteActualRevision: function(id) {
+
+      let scene = collection.get(id);
+
+      // remove actual revision
+      CollectionUtilService.removeWithoutCommit(scenerevisionscollection,
+        scene.revisionid, {
+          sceneid: {
+            '$eq': parseInt(id)
+          }
+        });
+
+      // get the new revision
+      let newrevision = this.getSceneRevisionByPosition(id, (scene.revisioncount -
+        1));
+
+      // update scene with revision info
+      scene.revisionid = newrevision.$loki;
+      scene.revision = newrevision.position;
+      scene.revisioncount = scene.revisioncount - 1;
+      CollectionUtilService.updateWithoutCommit(collection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+
+      return this.getScene(id);
+    },
+
     getScene: function(id) {
       let scene = collection.get(id);
       let scenerevision = scenerevisionscollection.get(scene.revisionid);
@@ -157,7 +185,8 @@ angular.module('bibiscoApp').service('SceneService', function(
             '$eq': chapterid
           }
         });
-      return CollectionUtilService.move(collection, sourceId, targetId,
+      return CollectionUtilService.move(collection, sourceId,
+        targetId,
         chapterscenes, {
           chapterid: {
             '$eq': chapterid
@@ -180,7 +209,8 @@ angular.module('bibiscoApp').service('SceneService', function(
       // update scene revision
       let scenerevision = scenerevisionscollection.get(scene.revisionid);
       scenerevision.text = text;
-      CollectionUtilService.updateWithoutCommit(scenerevisionscollection,
+      CollectionUtilService.updateWithoutCommit(
+        scenerevisionscollection,
         scenerevision);
 
       // save database
