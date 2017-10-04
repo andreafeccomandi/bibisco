@@ -14,9 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ChapterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService,
-  SceneService
-) {
+  CollectionUtilService, LoggerService, ProjectDbConnectionService) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
@@ -25,6 +23,10 @@ angular.module('bibiscoApp').service('ChapterService', function(
     'chapter_infos');
   var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
     collection, 'all_chapters');
+  var scenecollection = ProjectDbConnectionService.getProjectDb().getCollection(
+    'scenes');
+  var scenerevisionscollection = ProjectDbConnectionService.getProjectDb().getCollection(
+    'scene_revisions');
 
   return {
 
@@ -120,7 +122,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       });
 
       // get scenes
-      let scenes = SceneService.getScenes(id);
+      let scenes = ChapterService.getScenes(id);
 
       // total statuses: all scenes + reason card
       let totalStatuses = scenes.length + 1;
@@ -151,5 +153,211 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
       CollectionUtilService.updateWithoutCommit(collection, chapter);
     },
+
+    changeSceneRevision: function(id, revision) {
+      let scene = scenecollection.get(id);
+      let scenerevision = this.getSceneRevisionByPosition(id, revision);
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      CollectionUtilService.update(scenecollection, scene);
+
+      return this.getScene(id);
+    },
+
+    createSceneRevision: function(id, fromActual) {
+
+      let scene = scenecollection.get(id);
+      let actualscenerevision = scenerevisionscollection.get(scene.revisionid);
+
+      // get revision text
+      let text;
+      if (fromActual) {
+        text = actualscenerevision.text;
+      } else {
+        text = '';
+      }
+
+      // insert new revision
+      let scenerevision = this.insertSceneRevision(scene.$loki, text);
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      scene.revisioncount = scene.revisioncount + 1;
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+
+      if (fromActual) {
+        LoggerService.info('Created revision ' + scene.revision +
+          ' from revision ' + actualscenerevision.position +
+          ' for scene with id=' + scene.$loki
+        );
+      } else {
+        LoggerService.info('Created revision ' + scene.revision +
+          ' from scratch for scene with id=' + scene.$loki
+        );
+      }
+
+      return this.getScene(id);
+    },
+    createSceneRevisionFromActual: function(id) {
+      return this.createSceneRevision(id, true);
+    },
+    createSceneRevisionFromScratch: function(id) {
+      return this.createSceneRevision(id, false);
+    },
+
+    deleteActualSceneRevision: function(id) {
+
+      let scene = scenecollection.get(id);
+
+      // remove actual revision
+      CollectionUtilService.removeWithoutCommit(scenerevisionscollection,
+        scene.revisionid, {
+          sceneid: {
+            '$eq': parseInt(id)
+          }
+        });
+
+      // get the new revision
+      let newrevision = this.getSceneRevisionByPosition(id, (scene.revisioncount -
+        1));
+
+      // update scene with revision info
+      scene.revisionid = newrevision.$loki;
+      scene.revision = newrevision.position;
+      scene.revisioncount = scene.revisioncount - 1;
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+
+      return this.getScene(id);
+    },
+
+    getScene: function(id) {
+      let scene = scenecollection.get(id);
+      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+
+      scene.characters = scenerevision.characters;
+      scene.lastsave = scenerevision.lastsave;
+      scene.revision = scenerevision.position;
+      scene.text = scenerevision.text;
+      scene.words = scenerevision.words;
+
+      return scene;
+    },
+
+    getSceneRevisionByPosition: function(sceneid, revisionposition) {
+      return scenerevisionscollection.findOne({
+        sceneid: parseInt(sceneid),
+        position: parseInt(revisionposition)
+      });
+    },
+
+    getScenesCount: function(chapterid) {
+      return scenecollection.count({
+        'chapterid': chapterid
+      });
+    },
+
+    getScenes: function(chapterid) {
+      let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
+        scenecollection, 'chapterscenes_' + chapterid, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
+
+      return chapterscenes.data();
+    },
+
+    insertScene: function(scene) {
+
+      // insert scene
+      scene.revisioncount = 1;
+      scene.revisionid = -1;
+      scene = CollectionUtilService.insertWithoutCommit(scenecollection,
+        scene, {
+          chapterid: {
+            '$eq': scene.chapterid
+          }
+        });
+
+      // insert first revision
+      let scenerevision = this.insertSceneRevision(scene.$loki, '');
+
+      // update scene with revision info
+      scene.revisionid = scenerevision.$loki;
+      scene.revision = scenerevision.position;
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    insertSceneRevision: function(sceneid, text) {
+      return CollectionUtilService.insertWithoutCommit(
+        scenerevisionscollection, {
+          sceneid: sceneid,
+          text: text
+        }, {
+          sceneid: {
+            '$eq': sceneid
+          }
+        });
+    },
+
+    moveScene: function(sourceId, targetId) {
+      let chapterid = this.getScene(sourceId).chapterid;
+      let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
+        scenecollection, 'chapterscenes_' + chapterid, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
+      return CollectionUtilService.move(scenecollection, sourceId,
+        targetId,
+        chapterscenes, {
+          chapterid: {
+            '$eq': chapterid
+          }
+        });
+    },
+
+    removeScene: function(id) {
+      CollectionUtilService.remove(scenecollection, id);
+    },
+
+    updateScene: function(scene) {
+
+      // update scene
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // update scene revision
+      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+      scenerevision.characters = scene.characters;
+      scenerevision.lastsave = scene.lastsave;
+      scenerevision.text = scene.text;
+      scenerevision.words = scene.words;
+
+      CollectionUtilService.updateWithoutCommit(
+        scenerevisionscollection, scenerevision);
+
+      // update chapter status
+      // ChapterService.updateChapterStatusWordsCharactersWithoutCommit(
+      //   scene.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    updateSceneTitle: function(scene) {
+      CollectionUtilService.update(scenecollection, scene);
+    }
   }
 });

@@ -23,7 +23,7 @@ component('scenedetail', {
 });
 
 function SceneDetailController($location, $rootScope, $routeParams,
-  ChapterService, LoggerService, SceneService) {
+  ChapterService, LoggerService, ChapterService) {
   LoggerService.debug('Start SceneDetailController...');
 
   var self = this;
@@ -33,7 +33,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
-    self.scene = SceneService.getScene($routeParams.sceneid);
+    self.scene = ChapterService.getScene($routeParams.sceneid);
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
 
     self.breadcrumbitems = [];
@@ -58,21 +58,21 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
   self.changerevision = function(action, revision) {
     if (action == 'new-from-actual') {
-      self.scene = SceneService.createRevisionFromActual($routeParams.sceneid);
+      self.scene = ChapterService.createSceneRevisionFromActual($routeParams.sceneid);
       self.editmode = true;
     } else if (action == 'new-from-scratch') {
-      self.scene = SceneService.createRevisionFromScratch($routeParams.sceneid);
+      self.scene = ChapterService.createSceneRevisionFromScratch($routeParams.sceneid);
       self.editmode = true;
     } else if (action == 'change') {
-      self.scene = SceneService.changeRevision($routeParams.sceneid, revision);
+      self.scene = ChapterService.changeSceneRevision($routeParams.sceneid, revision);
     } else if (action == 'delete') {
-      self.scene = SceneService.deleteActualRevision($routeParams.sceneid);
+      self.scene = ChapterService.deleteActualSceneRevision($routeParams.sceneid);
     }
   }
 
   self.changeStatus = function(status) {
     self.scene.status = status;
-    SceneService.update(self.scene);
+    ChapterService.updateScene(self.scene);
   }
 
   self.changetitle = function() {
@@ -81,12 +81,12 @@ function SceneDetailController($location, $rootScope, $routeParams,
   }
 
   self.delete = function() {
-    SceneService.remove(self.scene.$loki);
+    ChapterService.removeScene(self.scene.$loki);
     $location.path('/chapters/' + self.chapter.$loki)
   }
 
   self.save = function() {
-    SceneService.update(self.scene);
+    ChapterService.updateScene(self.scene);
   }
 
   self.tags = function() {

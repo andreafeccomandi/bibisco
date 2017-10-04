@@ -20,7 +20,7 @@ component('chapterdetail', {
 });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService, LoggerService, SceneService) {
+  ChapterService, LoggerService, ChapterService) {
   LoggerService.debug('Start ChapterDetailController...');
 
   var self = this;
@@ -58,8 +58,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   self.getScenesCardGridItems = function(chapterid) {
 
     let items = null;
-    if (SceneService.getScenesCount(chapterid) > 0) {
-      let scenes = SceneService.getScenes(chapterid);
+    if (ChapterService.getScenesCount(chapterid) > 0) {
+      let scenes = ChapterService.getScenes(chapterid);
       items = [];
       for (let i = 0; i < scenes.length; i++) {
         items.push({
@@ -94,7 +94,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   }
 
   self.moveScene = function(draggedObjectId, destinationObjectId) {
-    SceneService.move(draggedObjectId, destinationObjectId);
+    ChapterService.moveScene(draggedObjectId, destinationObjectId);
     self.scenescardgriditems = this.getScenesCardGridItems('' + self.chapter.$loki);
     $scope.$apply();
   }

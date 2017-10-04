@@ -20,7 +20,7 @@ component('scenetitle', {
 });
 
 function SceneTitleController($location, $routeParams, ChapterService,
-  LoggerService, SceneService) {
+  LoggerService, ChapterService) {
   LoggerService.debug('Start SceneTitleController...');
 
   var self = this;
@@ -39,7 +39,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
     });
 
     if ($routeParams.sceneid != null) {
-      let scene = SceneService.getScene($routeParams.sceneid);
+      let scene = ChapterService.getScene($routeParams.sceneid);
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
@@ -70,11 +70,11 @@ function SceneTitleController($location, $routeParams, ChapterService,
 
   self.save = function(title) {
     if ($routeParams.sceneid != null) {
-      let scene = SceneService.getScene($routeParams.sceneid);
+      let scene = ChapterService.getScene($routeParams.sceneid);
       scene.title = title;
-      SceneService.updateTitle(scene);
+      ChapterService.updateSceneTitle(scene);
     } else {
-      SceneService.insert({
+      ChapterService.insertScene({
         title: title,
         chapterid: $routeParams.chapterid
       });
