@@ -24,6 +24,36 @@ angular.module('bibiscoApp').service('ChapterService', function(
     collection, 'all_chapters');
 
   return {
+    calculateChapterStatus: function(reasonStatus, scenes) {
+
+      // total statuses: all scenes + reason card
+      let totalStatuses = scenes.length + 1;
+      let totalTodo = 0;
+      let totalDone = 0;
+
+      if (reasonStatus == 'todo') {
+        totalTodo = 1;
+      } else if (reasonStatus == 'done') {
+        totalDone = 1;
+      }
+
+      for (let i = 0; i < scenes.length; i++) {
+        if (scenes[i].status == 'todo') {
+          totalTodo = totalTodo + 1;
+        } else if (scenes[i].status == 'done') {
+          totalDone = totalDone + 1;
+        }
+      }
+
+      if (totalTodo == totalStatuses) {
+        return 'todo';
+      } else if (totalDone == totalStatuses) {
+        return 'done';
+      } else {
+        return 'tocomplete';
+      }
+
+    },
     getChapter: function(id) {
       return collection.get(id);
     },
@@ -43,8 +73,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
     remove: function(id) {
       CollectionUtilService.remove(collection, id);
     },
-    update: function(strand) {
-      CollectionUtilService.update(collection, strand);
+    update: function(chapter) {
+      CollectionUtilService.update(collection, chapter);
     }
   }
 });
