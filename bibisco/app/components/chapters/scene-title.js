@@ -72,7 +72,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
     if ($routeParams.sceneid != null) {
       let scene = SceneService.getScene($routeParams.sceneid);
       scene.title = title;
-      SceneService.update(scene);
+      SceneService.updateTitle(scene);
     } else {
       SceneService.insert({
         title: title,

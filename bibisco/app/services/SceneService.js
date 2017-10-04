@@ -111,8 +111,12 @@ angular.module('bibiscoApp').service('SceneService', function(
     getScene: function(id) {
       let scene = collection.get(id);
       let scenerevision = scenerevisionscollection.get(scene.revisionid);
-      scene.text = scenerevision.text;
+
+      scene.characters = scenerevision.characters;
+      scene.lastsave = scenerevision.lastsave;
       scene.revision = scenerevision.position;
+      scene.text = scenerevision.text;
+      scene.words = scenerevision.words;
 
       return scene;
     },
@@ -200,21 +204,26 @@ angular.module('bibiscoApp').service('SceneService', function(
 
     update: function(scene) {
 
-      // remove text property from scene
-      let text = scene.text;
-
       // update scene
       CollectionUtilService.updateWithoutCommit(collection, scene);
 
       // update scene revision
       let scenerevision = scenerevisionscollection.get(scene.revisionid);
-      scenerevision.text = text;
+      scenerevision.characters = scene.characters;
+      scenerevision.lastsave = scene.lastsave;
+      scenerevision.text = scene.text;
+      scenerevision.words = scene.words;
+
       CollectionUtilService.updateWithoutCommit(
         scenerevisionscollection,
         scenerevision);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+    },
+
+    updateTitle: function(scene) {
+      CollectionUtilService.update(collection, scene);
     }
   }
 });
