@@ -19,6 +19,7 @@ component('taskstatusselector', {
   controller: TaskStatusSelectorController,
   bindings: {
     changefunction: '&',
+    readonly: '<',
     status: '<'
   }
 });
@@ -29,6 +30,13 @@ function TaskStatusSelectorController($scope, LoggerService) {
   LoggerService.debug('Start TaskStatusSelectorController...');
 
   var self = this;
+  self.disableselection = false;
+
+  self.$onInit = function() {
+    if (self.readonly != null && self.readonly == true) {
+      self.disableselection = true
+    }
+  }
 
   LoggerService.debug('End TaskStatusSelectorController...');
 }

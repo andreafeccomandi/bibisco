@@ -349,6 +349,10 @@ h3 {
 	width: 28px;
 }
 
+.task-status-btn-disabled {
+	opacity: 1 !important;
+}
+
 /* WELCOME */
 .bibiscoWelcomeWizardNotes p {
 	margin-top: 10px;

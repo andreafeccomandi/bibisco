@@ -7,7 +7,7 @@
         ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
     </span>
     <span ng-if="$ctrl.taskstatusshow" class="pull-right">
-      <taskstatusselector status="$ctrl.taskstatus"
+      <taskstatusselector status="$ctrl.taskstatus" readonly="$ctrl.taskstatusreadonly"
         changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
     </span>
   </h1>

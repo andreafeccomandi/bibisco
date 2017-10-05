@@ -1,26 +1,29 @@
 <div class="btn-toolbar">
-  <div class="btn-group">
-    <button type="button" class="btn btn-default"
+  <div class="btn-group task-status-selector">
+    <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'done'})"
-      ng-class="{ 'active': $ctrl.status == 'done' }">
+      ng-class="{ 'active': $ctrl.status == 'done',
+        'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
         class="label bibiscoTaskStatus"
         ng-class="{ 'label-success': $ctrl.status == 'done', 'label-default': $ctrl.status != 'done' }">
           {{'tag.bibiscothumbnail.taskstatus.completed' | translate}}
       </span>
     </button>
-    <button type="button" class="btn btn-default"
+    <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'tocomplete'})"
-      ng-class="{ 'active': $ctrl.status == 'tocomplete' }">
+      ng-class="{ 'active': $ctrl.status == 'done',
+        'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
         class="label bibiscoTaskStatus"
         ng-class="{ 'label-warning': $ctrl.status == 'tocomplete', 'label-default': $ctrl.status != 'tocomplete' }">
           {{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}
       </span>
     </button>
-    <button type="button" class="btn btn-default"
+    <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'todo'})"
-      ng-class="{ 'active': $ctrl.status == 'todo' }">
+      ng-class="{ 'active': $ctrl.status == 'done',
+        'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
         class="label bibiscoTaskStatus"
         ng-class="{ 'label-danger': $ctrl.status == 'todo', 'label-default': $ctrl.status != 'todo' }">

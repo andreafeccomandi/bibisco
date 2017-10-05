@@ -23,7 +23,8 @@ component('detailheader', {
     headertitle: '@',
     headersubtitle: '@',
     taskstatus: '<',
-    taskstatuschangefunction: '&'
+    taskstatuschangefunction: '&',
+    taskstatusreadonly: '<'
   }
 });
 

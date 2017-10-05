@@ -25,6 +25,7 @@ component('pageheader', {
     headersubtitle: '@',
     taskstatus: '<',
     taskstatuschangefunction: '&',
+    taskstatusreadonly: '<',
     taskstatusshow: '<'
   }
 });
