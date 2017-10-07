@@ -214,6 +214,7 @@
   "jsp.richTextEditorSettings.indentParagraph": "Wcięcie akapitu",
   "jsp.scene.pointOfView.title": "Punkt widzenia",
   "jsp.scene.pointOfView.subtitle": "Z którego punktu widzenia scena jest opowiadana?",
+  "jsp.scene.title.tags": "Tagi",
   "jsp.scene.button.tags": "tagi",
   "jsp.scene.button.tags.tooltip": "pokaż tagi",
   "jsp.scene.button.showTextScene": "pokaż tekst sceny",

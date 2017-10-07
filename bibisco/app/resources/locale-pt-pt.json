@@ -241,6 +241,7 @@
   "jsp.richTextEditorSettings.sampletext": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "jsp.scene.pointOfView.title": "Ponto de vista",
   "jsp.scene.pointOfView.subtitle": "De que ponto de vista é a cena narrada?",
+  "jsp.scene.title.tags": "Etiquetas",
   "jsp.scene.button.tags": "etiquetas",
   "jsp.scene.button.tags.tooltip": "Mostrar etiquetas",
   "jsp.scene.button.showTextScene": "Mostrar o texto da cena",

@@ -214,6 +214,7 @@
   "jsp.richTextEditorSettings.indentParagraph": "Sangría de párrafo",
   "jsp.scene.pointOfView.title": "Punto de vista",
   "jsp.scene.pointOfView.subtitle": "¿Desde qué punto de vista se narra la escena?",
+  "jsp.scene.title.tags": "Etiquetas",
   "jsp.scene.button.tags": "etiquetas",
   "jsp.scene.button.tags.tooltip": "mostrar etiquetas",
   "jsp.scene.button.showTextScene": "mostrar texto de la escena",

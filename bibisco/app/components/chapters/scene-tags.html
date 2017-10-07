@@ -1,0 +1,127 @@
+<detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="true" headertitle="jsp.scene.title.tags">
+</detailheader>
+
+<div class="detail-content-no-header-subtitle">
+  <div class="container">
+
+    <!-- POINT OF VIEW -->
+    <div class="row">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.pointOfView.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          {{'jsp.scene.button.pointOfView.1stOnMajor' | translate}}
+        </button>
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          {{'detailfooterleftbuttonbar.projectexplorer.button' | translate}}
+        </button>
+      </div>
+    </div>
+
+    <!-- CHARACTERS -->
+    <div class="row tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.characters.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Emma
+        </button>
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Tommaso
+        </button>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="row tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.location.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Mutenye (Bologna, Emilia Romagna, Italia)
+        </button>
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Piazza del popolo (Roma, Emilia Romagna, Italia)
+        </button>
+      </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="row tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.time.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Mutenye (Bologna, Emilia Romagna, Italia)
+        </button>
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          Piazza del popolo (Roma, Emilia Romagna, Italia)
+        </button>
+      </div>
+    </div>
+
+    <!-- NARRATIVE STRANDS -->
+    <div class="row tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.strands.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          La storia di Emma
+        </button>
+        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
+          La storia di Tommy
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-right">
+        <button type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
+          ng-click="$ctrl.save()">
+          <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+      <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+      <buttonwithconfirm enableconfirm="$ctrl.dirty" buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+      </buttonwithconfirm>
+      </span>
+    </div>
+  </div>
+</div>

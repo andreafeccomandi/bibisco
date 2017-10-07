@@ -243,6 +243,7 @@
   "jsp.richTextEditorSettings.sampletext": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "jsp.scene.pointOfView.title": "Точка зрения",
   "jsp.scene.pointOfView.subtitle": "С какой (чьей) точки зрения идет повествование?",
+  "jsp.scene.title.tags": "Теги",
   "jsp.scene.button.tags": "теги",
   "jsp.scene.button.tags.tooltip": "отобразить теги",
   "jsp.scene.button.showTextScene": "отобразить текст сцены",

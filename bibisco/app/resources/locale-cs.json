@@ -214,6 +214,7 @@
   "jsp.richTextEditorSettings.indentParagraph": "Odsazení odstavce",
   "jsp.scene.pointOfView.title": "00DAhel pohledu",
   "jsp.scene.pointOfView.subtitle": "Z jakého úhlu pohledu je scéna vyprávěna?",
+  "jsp.scene.title.tags": "Štítků",
   "jsp.scene.button.tags": "štítků",
   "jsp.scene.button.tags.tooltip": "zobrazení štítků",
   "jsp.scene.button.showTextScene": "zobrazení textu ve scéně",

@@ -214,6 +214,7 @@
   "jsp.richTextEditorSettings.indentParagraph": "Retrait de paragraphe",
   "jsp.scene.pointOfView.title": "Point de vue",
   "jsp.scene.pointOfView.subtitle": "De quel point de vue la scène est-elle narrée ?",
+  "jsp.scene.title.tags": "Étiquettes",
   "jsp.scene.button.tags": "étiquettes",
   "jsp.scene.button.tags.tooltip": "afficher les étiquettes",
   "jsp.scene.button.showTextScene": "afficher le texte de la scène",

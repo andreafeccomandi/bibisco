@@ -214,6 +214,7 @@
   "jsp.richTextEditorSettings.indentParagraph": "Recuo do parágrafo",
   "jsp.scene.pointOfView.title": "Ponto de vista",
   "jsp.scene.pointOfView.subtitle": "A partir de qual ponto de vista essa cena é narrada?",
+  "jsp.scene.title.tags": "Marcadores",
   "jsp.scene.button.tags": "marcadores",
   "jsp.scene.button.tags.tooltip": "mostrar marcadores",
   "jsp.scene.button.showTextScene": "mostrar texto da cena",

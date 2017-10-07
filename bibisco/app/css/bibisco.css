@@ -440,6 +440,11 @@ h3 {
 	width: 200px;
 }
 
+/* TAGS */
+.tags-section-title {
+	margin-top: 35px;
+}
+
 /* RICH TEXT EDITOR STYLES */
 .bibiscoRichTextEditor-bodyClass-courierbig {
 	font-family: courier new, courier, monospace;

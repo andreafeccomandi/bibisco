@@ -23,7 +23,7 @@ component('scenedetail', {
 });
 
 function SceneDetailController($location, $rootScope, $routeParams,
-  ChapterService, LoggerService, ChapterService) {
+  ChapterService, LoggerService) {
   LoggerService.debug('Start SceneDetailController...');
 
   var self = this;
@@ -61,10 +61,12 @@ function SceneDetailController($location, $rootScope, $routeParams,
       self.scene = ChapterService.createSceneRevisionFromActual($routeParams.sceneid);
       self.editmode = true;
     } else if (action == 'new-from-scratch') {
-      self.scene = ChapterService.createSceneRevisionFromScratch($routeParams.sceneid);
+      self.scene = ChapterService.createSceneRevisionFromScratch($routeParams
+        .sceneid);
       self.editmode = true;
     } else if (action == 'change') {
-      self.scene = ChapterService.changeSceneRevision($routeParams.sceneid, revision);
+      self.scene = ChapterService.changeSceneRevision($routeParams.sceneid,
+        revision);
     } else if (action == 'delete') {
       self.scene = ChapterService.deleteActualSceneRevision($routeParams.sceneid);
     }
@@ -90,7 +92,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
   }
 
   self.tags = function() {
-    alert('tags of scene ' + self.scene.$loki);
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      .$loki + '/tags');
   }
 
   LoggerService.debug('End SceneDetailController...');
