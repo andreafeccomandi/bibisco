@@ -6,7 +6,7 @@
       <button type="button" class="btn btn-primary"
         ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
     </span>
-    <span ng-if="$ctrl.taskstatusshow" class="pull-right">
+    <span ng-if="$ctrl.taskstatus" class="pull-right">
       <taskstatusselector status="$ctrl.taskstatus" readonly="$ctrl.taskstatusreadonly"
         changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
     </span>
