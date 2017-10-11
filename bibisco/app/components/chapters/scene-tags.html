@@ -16,17 +16,17 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          {{'jsp.scene.button.pointOfView.1stOnMajor' | translate}}
-        </button>
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          {{'detailfooterleftbuttonbar.projectexplorer.button' | translate}}
-        </button>
+        <button ng-repeat="pov in $ctrl.povs" type="button"
+          ng-class="{ 'btn-info': pov.selected }"
+          class="btn btn-sm scene-tags-button"
+          uib-tooltip="{{'jsp.scene.button.pointOfView.'+pov.id+'.popover' | translate}}"
+          ng-click="$ctrl.togglePov(pov.id)">
+          {{'jsp.scene.button.pointOfView.'+pov.id | translate}}
       </div>
     </div>
 
     <!-- CHARACTERS -->
-    <div class="row tags-section-title">
+    <div class="row scene-tags-section-title">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
@@ -36,17 +36,17 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Emma
-        </button>
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Tommaso
+        <button ng-repeat="character in $ctrl.characters" type="button"
+          ng-class="{ 'btn-info': character.selected }"
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleCharacter(character.id, character.main)">
+          {{character.name}}
         </button>
       </div>
     </div>
 
     <!-- LOCATION -->
-    <div class="row tags-section-title">
+    <div class="row scene-tags-section-title">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
@@ -56,17 +56,16 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Mutenye (Bologna, Emilia Romagna, Italia)
-        </button>
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Piazza del popolo (Roma, Emilia Romagna, Italia)
+        <button ng-repeat="location in $ctrl.locations" type="button"
+          ng-class="{ 'btn-info': location.selected }"
+          class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleLocation(location.id)">
+          {{location.name}}
         </button>
       </div>
     </div>
 
     <!-- TIME -->
-    <div class="row tags-section-title">
+    <div class="row scene-tags-section-title">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
@@ -76,17 +75,12 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Mutenye (Bologna, Emilia Romagna, Italia)
-        </button>
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          Piazza del popolo (Roma, Emilia Romagna, Italia)
-        </button>
+
       </div>
     </div>
 
-    <!-- NARRATIVE STRANDS -->
-    <div class="row tags-section-title">
+    <!-- STRANDS -->
+    <div class="row scene-tags-section-title">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
@@ -96,11 +90,10 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.pointOfView.1stOnMajor.popover' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          La storia di Emma
-        </button>
-        <button type="button" ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}" class="btn btn-sm" ng-click="$ctrl.toggleProjectExplorer()">
-          La storia di Tommy
+        <button ng-repeat="strand in $ctrl.strands" type="button"
+          ng-class="{ 'btn-info': strand.selected }"
+          class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleStrand(strand.id)">
+          {{strand.name}}
         </button>
       </div>
     </div>

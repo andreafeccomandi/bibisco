@@ -441,8 +441,12 @@ h3 {
 }
 
 /* TAGS */
-.tags-section-title {
+.scene-tags-section-title {
 	margin-top: 35px;
+}
+
+.scene-tags-button {
+	margin-right: 3px;
 }
 
 /* RICH TEXT EDITOR STYLES */
