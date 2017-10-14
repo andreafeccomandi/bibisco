@@ -16,13 +16,13 @@ angular.
 module('bibiscoApp').
 component('scenetags', {
   templateUrl: 'components/chapters/scene-tags.html',
-  controller: SceneTitleController
+  controller: SceneTagsController
 });
 
-function SceneTitleController($location, $routeParams, ChapterService,
+function SceneTagsController($location, $routeParams, ChapterService,
   LocationService, LoggerService, MainCharacterService,
-  SecondaryCharacterService, StrandService) {
-  LoggerService.debug('Start SceneTitleController...');
+  SecondaryCharacterService, StrandService, UtilService) {
+  LoggerService.debug('Start SceneTagsController...');
 
   var self = this;
 
@@ -37,7 +37,6 @@ function SceneTitleController($location, $routeParams, ChapterService,
     self.breadcrumbitems.push({
       labelvalue: '#' + chapter.position + ' ' + chapter.title
     });
-
     let scene = ChapterService.getScene($routeParams.sceneid);
     self.breadcrumbitems.push({
       labelvalue: scene.title
@@ -45,6 +44,9 @@ function SceneTitleController($location, $routeParams, ChapterService,
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
     });
+
+    // get scene tags
+    self.scenetags = ChapterService.getSceneTags(scene.$loki);
 
     // init point of views
     self.initPointOfViews();
@@ -62,7 +64,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
     self.pageheadertitle =
       'jsp.scene.dialog.title.updateTitle';
 
-    self.dirty = true;
+    self.dirty = false;
 
   }
 
@@ -73,58 +75,98 @@ function SceneTitleController($location, $routeParams, ChapterService,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: true,
+      selected: (self.scenetags.povid == '1stOnMajor'),
       characterRelated: true
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: true,
+      selected: (self.scenetags.povid == '1stOnMinor'),
       characterRelated: true
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: true,
+      selected: (self.scenetags.povid == '3rdLimited'),
       characterRelated: true
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: true,
+      selected: (self.scenetags.povid == '3rdOmniscient'),
       characterRelated: true
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: true,
+      selected: (self.scenetags.povid == '3rdObjective'),
       characterRelated: true
     });
     self.povs.push({
       id: '2nd',
-      selected: true,
+      selected: (self.scenetags.povid == '2nd'),
       characterRelated: true
     });
+
+    self.povcharacter = false;
+  }
+
+  self.togglePov = function(id) {
+    self.scenetags.povid = id;
+    self.initPointOfViews();
+    self.dirty = true;
+  }
+
+  self.toggleCharacter = function(id) {
+    self.toggleTagElement(self.scenetags.characters, id);
+    self.initCharacters();
+  }
+
+  self.toggleLocation = function(id) {
+    self.scenetags.locationid = id;
+    self.initLocations();
+    self.dirty = true;
+  }
+
+  self.toggleStrand = function(id) {
+    self.toggleTagElement(self.scenetags.strands, id);
+    self.initStrands();
+  }
+
+  self.toggleTagElement = function(arr, id) {
+
+    let idx = UtilService.array.indexOf(arr, id);
+    if (idx !== -1) {
+      arr.splice(idx, 1);
+    } else {
+      arr.push(id);
+    }
+    self.dirty = true;
   }
 
   self.initCharacters = function() {
 
+    self.characters = [];
+
     // main characters
     let mainCharacters = MainCharacterService.getMainCharacters();
-    self.characters = [];
     for (let i = 0; i < mainCharacters.length; i++) {
+      let itemid = 'm_' + mainCharacters[i].$loki;
+      let isselected = UtilService.array.contains(self.scenetags.characters,
+        itemid);
       self.characters.push({
-        id: mainCharacters[i].$loki,
+        id: itemid,
         name: mainCharacters[i].name,
-        main: true,
-        selected: true
+        selected: isselected
       });
     }
 
     // secondary characters
     let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
     for (let i = 0; i < secondaryCharacters.length; i++) {
+      let itemid = 's_' + secondaryCharacters[i].$loki;
+      let isselected = UtilService.array.contains(self.scenetags.characters,
+        itemid);
       self.characters.push({
-        id: secondaryCharacters[i].$loki,
+        id: itemid,
         name: secondaryCharacters[i].name,
-        main: false,
-        selected: true
+        selected: isselected
       });
     }
 
@@ -144,7 +186,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
       self.locations.push({
         id: locations[i].$loki,
         name: name,
-        selected: true
+        selected: (self.scenetags.locationid == locations[i].$loki)
       });
     }
 
@@ -160,10 +202,12 @@ function SceneTitleController($location, $routeParams, ChapterService,
     let strands = StrandService.getStrands();
     self.strands = [];
     for (let i = 0; i < strands.length; i++) {
+      let isselected = UtilService.array.contains(self.scenetags.strands,
+        strands[i].$loki);
       self.strands.push({
         id: strands[i].$loki,
         name: strands[i].name,
-        selected: true
+        selected: isselected
       });
     }
 
@@ -174,7 +218,8 @@ function SceneTitleController($location, $routeParams, ChapterService,
   }
 
   self.save = function() {
-    alert('Save tags!');
+    ChapterService.updateSceneTags(self.scenetags);
+    self.dirty = false;
   }
 
   self.back = function() {
@@ -182,5 +227,5 @@ function SceneTitleController($location, $routeParams, ChapterService,
       $routeParams.sceneid)
   }
 
-  LoggerService.debug('End SceneTitleController...');
+  LoggerService.debug('End SceneTagsController...');
 }

@@ -27,6 +27,11 @@ angular.module('bibiscoApp').service('ChapterService', function(
     'scenes');
   var scenerevisionscollection = ProjectDbConnectionService.getProjectDb().getCollection(
     'scene_revisions');
+  var scenerevisioncharacterscollection = ProjectDbConnectionService.getProjectDb()
+    .getCollection('scene_revision_characters');
+  var scenerevisionstrandscollection = ProjectDbConnectionService.getProjectDb()
+    .getCollection('scene_revision_strands');
+
 
   return {
 
@@ -248,8 +253,12 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
       scene.characters = scenerevision.characters;
       scene.lastsave = scenerevision.lastsave;
+      scene.locationid = scenerevision.locationid;
+      scene.povid = scenerevision.povid;
+      scene.povcharacter = scenerevision.povcharacter;
       scene.revision = scenerevision.position;
       scene.text = scenerevision.text;
+      scene.time = scenerevision.time;
       scene.words = scenerevision.words;
 
       return scene;
@@ -304,15 +313,35 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     insertSceneRevision: function(sceneid, text) {
-      return CollectionUtilService.insertWithoutCommit(
+
+      // insert scene revision
+      let scenerevision = CollectionUtilService.insertWithoutCommit(
         scenerevisionscollection, {
           sceneid: sceneid,
-          text: text
+          text: text,
+          locationid: null,
+          povid: '',
+          povcharacter: null,
+          time: null,
         }, {
           sceneid: {
             '$eq': sceneid
           }
         });
+
+      // insert characters tags
+      scenerevisioncharacterscollection.insert({
+        id: scenerevision.$loki,
+        characters: []
+      });
+
+      // insert strand tags
+      scenerevisionstrandscollection.insert({
+        id: scenerevision.$loki,
+        strands: []
+      });
+
+      return scenerevision;
     },
 
     moveScene: function(sourceId, targetId) {
@@ -337,6 +366,13 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     updateScene: function(scene) {
+      this.updateSceneWithoutCommit(scene);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    },
+
+    updateSceneWithoutCommit: function(scene) {
 
       // update scene
       CollectionUtilService.updateWithoutCommit(scenecollection, scene);
@@ -345,7 +381,11 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let scenerevision = scenerevisionscollection.get(scene.revisionid);
       scenerevision.characters = scene.characters;
       scenerevision.lastsave = scene.lastsave;
+      scenerevision.locationid = scene.locationid;
+      scenerevision.povid = scene.povid;
+      scenerevision.povcharacter = scene.povcharacter;
       scenerevision.text = scene.text;
+      scenerevision.time = scene.time;
       scenerevision.words = scene.words;
 
       CollectionUtilService.updateWithoutCommit(
@@ -354,13 +394,93 @@ angular.module('bibiscoApp').service('ChapterService', function(
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(
         scene.chapterid);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
     },
 
     updateSceneTitle: function(scene) {
       CollectionUtilService.update(scenecollection, scene);
+    },
+
+    removeActualSceneCharacters: function(scenerevisionid) {
+      scenerevisioncharacterscollection.findAndRemove({
+        id: {
+          '$eq': scenerevisionid
+        }
+      });
+    },
+
+    removeActualSceneStrands: function(scenerevisionid) {
+      scenerevisionstrandscollection.findAndRemove({
+        id: {
+          '$eq': scenerevisionid
+        }
+      });
+    },
+
+    getSceneCharacters: function(scenerevisionid) {
+      return scenerevisioncharacterscollection.findOne({
+        id: {
+          '$eq': scenerevisionid
+        }
+      });
+    },
+
+    getSceneStrands: function(scenerevisionid) {
+      return scenerevisionstrandscollection.findOne({
+        id: {
+          '$eq': scenerevisionid
+        }
+      });
+    },
+
+    getSceneTags: function(sceneid) {
+
+      let scene = scenecollection.get(sceneid);
+      let scenecharacters = this.getSceneCharacters(scene.revisionid);
+      let scenestrands = this.getSceneStrands(scene.revisionid);
+
+      return {
+        sceneid: sceneid,
+        characters: scenecharacters.characters,
+        locationid: scene.locationid,
+        povid: scene.povid,
+        povcharacter: scene.povcharacter,
+        strands: scenestrands.strands,
+        time: scene.time
+      }
+    },
+
+    updateSceneTags: function(scenetags) {
+
+      // get scene
+      let scene = scenecollection.get(scenetags.sceneid);
+
+      // update location, pov and time tags
+      scene.locationid = scenetags.locationid;
+      scene.povid = scenetags.povid;
+      scene.povcharacter = scenetags.povcharacter;
+      scene.time = scenetags.time;
+      this.updateSceneWithoutCommit(scene);
+
+      // remove previous scene characters tags
+      this.removeActualSceneCharacters(scene.revisionid);
+
+      // insert selected characters tags
+      scenerevisioncharacterscollection.insert({
+        id: scene.revisionid,
+        characters: scenetags.characters
+      });
+
+      // remove previous scene strand tag
+      this.removeActualSceneStrands(scene.revisionid);
+
+      // insert selected strands tags
+      scenerevisionstrandscollection.insert({
+        id: scene.revisionid,
+        strands: scenetags.strands
+      });
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
     }
   }
 });
