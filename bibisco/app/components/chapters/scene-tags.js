@@ -51,8 +51,8 @@ function SceneTagsController($location, $routeParams, ChapterService,
     // init point of views
     self.initPointOfViews();
 
-    // init characters
-    self.initCharacters();
+    // init scene characters
+    self.initSceneCharacters();
 
     // init locations
     self.initLocations();
@@ -75,36 +75,37 @@ function SceneTagsController($location, $routeParams, ChapterService,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: (self.scenetags.povid == '1stOnMajor'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '1stOnMajor')
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: (self.scenetags.povid == '1stOnMinor'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '1stOnMinor')
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: (self.scenetags.povid == '3rdLimited'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '3rdLimited')
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: (self.scenetags.povid == '3rdOmniscient'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '3rdOmniscient')
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: (self.scenetags.povid == '3rdObjective'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '3rdObjective')
     });
     self.povs.push({
       id: '2nd',
-      selected: (self.scenetags.povid == '2nd'),
-      characterRelated: true
+      selected: (self.scenetags.povid == '2nd')
     });
 
-    self.povcharacter = false;
+    if (self.scenetags.povid == '1stOnMajor' || self.scenetags.povid ==
+      '1stOnMinor' || self.scenetags.povid == '3rdLimited') {
+      self.showpovcharacter = true;
+      self.initPovCharacters();
+    } else {
+      self.showpovcharacter = false;
+      self.scenetags.povcharacterid = null;
+    }
   }
 
   self.togglePov = function(id) {
@@ -113,9 +114,15 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.dirty = true;
   }
 
-  self.toggleCharacter = function(id) {
+  self.togglePovCharacter = function(id) {
+    self.scenetags.povcharacterid = id;
+    self.initPovCharacters();
+    self.dirty = true;
+  }
+
+  self.toggleSceneCharacter = function(id) {
     self.toggleTagElement(self.scenetags.characters, id);
-    self.initCharacters();
+    self.initSceneCharacters();
   }
 
   self.toggleLocation = function(id) {
@@ -140,17 +147,28 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.dirty = true;
   }
 
-  self.initCharacters = function() {
+  self.initPovCharacters = function() {
+    self.povcharacters = self.initCharacters(function(id) {
+      return self.scenetags.povcharacterid == id;
+    });
+  }
 
-    self.characters = [];
+  self.initSceneCharacters = function() {
+    self.scenecharacters = self.initCharacters(function(id) {
+      return UtilService.array.contains(self.scenetags.characters, id);
+    });
+  }
+
+  self.initCharacters = function(selectfunction) {
+
+    let characters = [];
 
     // main characters
     let mainCharacters = MainCharacterService.getMainCharacters();
     for (let i = 0; i < mainCharacters.length; i++) {
       let itemid = 'm_' + mainCharacters[i].$loki;
-      let isselected = UtilService.array.contains(self.scenetags.characters,
-        itemid);
-      self.characters.push({
+      let isselected = selectfunction(itemid);
+      characters.push({
         id: itemid,
         name: mainCharacters[i].name,
         selected: isselected
@@ -161,9 +179,8 @@ function SceneTagsController($location, $routeParams, ChapterService,
     let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
     for (let i = 0; i < secondaryCharacters.length; i++) {
       let itemid = 's_' + secondaryCharacters[i].$loki;
-      let isselected = UtilService.array.contains(self.scenetags.characters,
-        itemid);
-      self.characters.push({
+      let isselected = selectfunction(itemid);
+      characters.push({
         id: itemid,
         name: secondaryCharacters[i].name,
         selected: isselected
@@ -171,9 +188,11 @@ function SceneTagsController($location, $routeParams, ChapterService,
     }
 
     // sort by name
-    self.characters.sort(function(a, b) {
+    characters.sort(function(a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
     });
+
+    return characters;
   }
 
   self.initLocations = function() {

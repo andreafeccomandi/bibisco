@@ -255,7 +255,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.lastsave = scenerevision.lastsave;
       scene.locationid = scenerevision.locationid;
       scene.povid = scenerevision.povid;
-      scene.povcharacter = scenerevision.povcharacter;
+      scene.povcharacterid = scenerevision.povcharacterid;
       scene.revision = scenerevision.position;
       scene.text = scenerevision.text;
       scene.time = scenerevision.time;
@@ -321,7 +321,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
           text: text,
           locationid: null,
           povid: '',
-          povcharacter: null,
+          povcharacterid: null,
           time: null,
         }, {
           sceneid: {
@@ -383,7 +383,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scenerevision.lastsave = scene.lastsave;
       scenerevision.locationid = scene.locationid;
       scenerevision.povid = scene.povid;
-      scenerevision.povcharacter = scene.povcharacter;
+      scenerevision.povcharacterid = scene.povcharacterid;
       scenerevision.text = scene.text;
       scenerevision.time = scene.time;
       scenerevision.words = scene.words;
@@ -443,7 +443,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
         characters: scenecharacters.characters,
         locationid: scene.locationid,
         povid: scene.povid,
-        povcharacter: scene.povcharacter,
+        povcharacterid: scene.povcharacterid,
         strands: scenestrands.strands,
         time: scene.time
       }
@@ -457,7 +457,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       // update location, pov and time tags
       scene.locationid = scenetags.locationid;
       scene.povid = scenetags.povid;
-      scene.povcharacter = scenetags.povcharacter;
+      scene.povcharacterid = scenetags.povcharacterid;
       scene.time = scenetags.time;
       this.updateSceneWithoutCommit(scene);
 

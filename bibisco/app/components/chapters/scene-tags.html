@@ -24,12 +24,22 @@
           {{'jsp.scene.button.pointOfView.'+pov.id | translate}}
       </div>
     </div>
-    <div class="row scene-tags-section-subtitle" ng-if="$ctrl.povcharacter">
+    <div class="row scene-tags-section-subtitle" ng-if="$ctrl.showpovcharacter">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
         {{'jsp.scene.label.pointOfView.character' | translate}}</i>
         </blockquote>
+      </div>
+    </div>
+    <div class="row" ng-if="$ctrl.showpovcharacter">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="character in $ctrl.povcharacters" type="button"
+          ng-class="{ 'btn-info': character.selected }"
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.togglePovCharacter(character.id)">
+          {{character.name}}
+        </button>
       </div>
     </div>
 
@@ -44,10 +54,10 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="character in $ctrl.characters" type="button"
+        <button ng-repeat="character in $ctrl.scenecharacters" type="button"
           ng-class="{ 'btn-info': character.selected }"
           class="btn btn-sm scene-tags-button"
-          ng-click="$ctrl.toggleCharacter(character.id)">
+          ng-click="$ctrl.toggleSceneCharacter(character.id)">
           {{character.name}}
         </button>
       </div>
