@@ -57,6 +57,9 @@ function SceneTagsController($location, $routeParams, ChapterService,
     // init locations
     self.initLocations();
 
+    // init time
+    self.scenetime = (new Date()).toJSON();
+
     // init narrative strands
     self.initStrands();
 

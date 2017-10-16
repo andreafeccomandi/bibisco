@@ -4,8 +4,7 @@
     ng-if="$ctrl.changetitleenabled || $ctrl.deleteenabled">
     {{'jsp.common.button.more' | translate}}... <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" uib-dropdown role="menu"
-    aria-labelledby="single-button">
+  <ul class="dropdown-menu" uib-dropdown role="menu" aria-labelledby="single-button">
     <li role="menuitem" ng-if="$ctrl.changetitleenabled">
       <a href="" ng-click="$ctrl.changetitlefunction()">
         {{$ctrl.changetitlelabel | translate}}

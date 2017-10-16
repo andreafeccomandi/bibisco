@@ -92,8 +92,18 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-offset-1 col-sm-10">
-
+      <div class="col-sm-offset-1 col-sm-4">
+        <div class="dropdown dropup" uib-dropdown>
+          <a class="dropdown-toggle" role="button" uib-dropdown-toggle>
+            <div class="input-group">
+              <input type="text"  name="date" class="form-control" data-ng-model="$ctrl.scenetime">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" uib-dropdown>
+            <datetimepicker data-ng-model="$ctrl.scenetime"></datetimepicker>
+          </ul>
+        </div>
       </div>
     </div>
 

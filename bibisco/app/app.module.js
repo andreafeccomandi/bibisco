@@ -23,6 +23,7 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     'pascalprecht.translate', // angular-translate
     'tmh.dynamicLocale', // angular-dynamic-locale
     'ui.bootstrap',
+    'ui.bootstrap.datetimepicker',
     'ui.select'
   ])
   .config(['$locationProvider', '$routeProvider',
