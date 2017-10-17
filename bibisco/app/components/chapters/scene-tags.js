@@ -19,8 +19,8 @@ component('scenetags', {
   controller: SceneTagsController
 });
 
-function SceneTagsController($location, $routeParams, ChapterService,
-  LocationService, LoggerService, MainCharacterService,
+function SceneTagsController($filter, $location, $routeParams, ChapterService,
+  LocaleService, LocationService, LoggerService, MainCharacterService,
   SecondaryCharacterService, StrandService, UtilService) {
   LoggerService.debug('Start SceneTagsController...');
 
@@ -58,7 +58,11 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.initLocations();
 
     // init time
-    self.scenetime = (new Date()).toJSON();
+    self.scenetime = new Date();
+    moment.locale(LocaleService.getCurrentLocale());
+    self.scenetimeformatted = $filter('date')(self.scenetime,
+      "dd-MM-yyyy HH:mm:ss");
+    self.scenetimeCalendarOpen = false;
 
     // init narrative strands
     self.initStrands();
@@ -247,6 +251,14 @@ function SceneTagsController($location, $routeParams, ChapterService,
   self.back = function() {
     $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
       $routeParams.sceneid)
+  }
+
+  self.onTimeSet = function(newDate, oldDate) {
+
+    self.scenetime = newDate;
+    self.scenetimeformatted = $filter('date')(self.scenetime,
+      "dd-MM-yyyy HH:mm:ss");
+    self.scenetimeCalendarOpen = false;
   }
 
   LoggerService.debug('End SceneTagsController...');

@@ -93,15 +93,17 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-4">
-        <div class="dropup" uib-dropdown>
+        <div class="dropup" uib-dropdown is-open="$ctrl.scenetimeCalendarOpen">
           <a role="button" uib-dropdown-toggle>
             <div class="input-group">
-              <input type="text"  name="date" class="form-control" data-ng-model="$ctrl.scenetime">
+              <input type="text"  name="date" class="form-control"
+              data-ng-model="$ctrl.scenetimeformatted">
               <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div>
           </a>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" uib-dropdown>
-            <datetimepicker data-ng-model="$ctrl.scenetime"></datetimepicker>
+            <datetimepicker data-ng-model="$ctrl.scenetime"
+              data-on-set-time="$ctrl.onTimeSet(newDate, oldDate)"></datetimepicker>
           </ul>
         </div>
       </div>
