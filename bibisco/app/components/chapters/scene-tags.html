@@ -96,8 +96,8 @@
         <div class="dropup" uib-dropdown is-open="$ctrl.scenetimeCalendarOpen">
           <a role="button" uib-dropdown-toggle>
             <div class="input-group">
-              <input type="text"  name="date" class="form-control"
-              data-ng-model="$ctrl.scenetimeformatted">
+              <input type="text"  name="date" class="form-control" readonly
+              value="{{'timestamp_format_scene_tags' | translate:{date:$ctrl.scenetime} }}">
               <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div>
           </a>

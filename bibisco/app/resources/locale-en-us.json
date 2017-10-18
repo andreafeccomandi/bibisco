@@ -1,3 +1,4 @@
 {
-  "timestamp_format": "{{date|date:'MM/dd/yyyy HH:mm:ss'}}"
+  "timestamp_format": "{{date|date:'MM/dd/yyyy h:mm:ss a'}}",
+  "timestamp_format_scene_tags": "{{date|date:'MM/dd/yyyy h:mm a'}}"
 }
