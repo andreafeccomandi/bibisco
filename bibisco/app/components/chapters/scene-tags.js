@@ -58,9 +58,11 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.initLocations();
 
     // init time
-    self.scenetime = new Date();
+    self.scenetime = null;
+    self.scenetimecustom = "3 giorno 4 mese lunare"
     moment.locale(LocaleService.getCurrentLocale());
     self.scenetimeCalendarOpen = false;
+    self.scenetimegregorian = true;
 
     // init narrative strands
     self.initStrands();
@@ -254,6 +256,19 @@ function SceneTagsController($location, $routeParams, ChapterService,
   self.onTimeSet = function(newDate, oldDate) {
     self.scenetime = newDate;
     self.scenetimeCalendarOpen = false;
+    self.dirty = true;
+  }
+
+
+  self.calendarToggled = function(open) {
+
+  }
+
+  self.setScenetimetypeGregorian = function(gregorian) {
+    self.scenetimegregorian = gregorian;
+  }
+
+  self.setDirty = function() {
     self.dirty = true;
   }
 
