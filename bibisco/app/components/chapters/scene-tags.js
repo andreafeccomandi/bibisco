@@ -58,7 +58,11 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.initLocations();
 
     // init time
+    self.lastscenetime = new Date('0001-04-23T21:53:54.586Z');
+    self.originalscenetime = null;
     self.scenetime = null;
+    self.scenetimeshowed = self.scenetime;
+    self.scenetimeselected = false;
     self.scenetimecustom = "3 giorno 4 mese lunare"
     moment.locale(LocaleService.getCurrentLocale());
     self.scenetimeCalendarOpen = false;
@@ -255,13 +259,18 @@ function SceneTagsController($location, $routeParams, ChapterService,
 
   self.onTimeSet = function(newDate, oldDate) {
     self.scenetime = newDate;
+    self.scenetimeshowed = self.scenetime;
     self.scenetimeCalendarOpen = false;
     self.dirty = true;
+    self.scenetimeselected = true;
   }
 
-
   self.calendarToggled = function(open) {
-
+    if (open && self.originalscenetime == null && !self.scenetimeselected) {
+      self.scenetime = self.lastscenetime;
+    } else if (!open && self.originalscenetime == null && !self.scenetimeselected) {
+      self.scenetime = null;
+    }
   }
 
   self.setScenetimetypeGregorian = function(gregorian) {

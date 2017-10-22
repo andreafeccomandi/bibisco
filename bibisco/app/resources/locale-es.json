@@ -666,5 +666,6 @@
   "jsp.analysisChaptersLength.js.xaxis.label": "Capítulos",
   "jsp.analysisChaptersLength.js.yaxis.label": "Palabras",
   "detailfooterleftbuttonbar.projectexplorer.button": "explorador del proyecto",
-  "common.getstarted": "empezar"
+  "common.getstarted": "empezar",
+  "year_bc_scene_tags": "a.C"
 }

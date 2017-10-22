@@ -1,6 +1,4 @@
 {
-  "timestamp_format": "{{date|date:'dd/MM/yyyy HH:mm:ss'}}",
-  "timestamp_format_scene_tags": "{{date|date:'dd/MM/yyyy HH:mm'}}",
   "Application.anotherBibiscoInstanceIsRunning.title": "bibisco",
   "Application.anotherBibiscoInstanceIsRunning.text": "bibisco is already running!",
   "ApplicationWorkbenchAdvisor.ErrorDialog.Title": "OH NO!",
@@ -691,5 +689,10 @@
   "jsp.analysisChaptersLength.js.xaxis.label": "Chapters",
   "jsp.analysisChaptersLength.js.yaxis.label": "Words",
   "detailfooterleftbuttonbar.projectexplorer.button": "project explorer",
-  "common.getstarted": "get started"
+  "common.getstarted": "get started",
+  "timestamp_format": "{{date|date:'dd/MM/yyyy HH:mm:ss'}}",
+  "timestamp_format_scene_tags": "{{date|date:'dd/MM/yyyy HH:mm'}}",
+  "date_format_scene_tags": "{{date|date:'dd/MM/'}}",
+  "year_bc_scene_tags": "B.C",
+  "time_format_scene_tags": "{{date|date:'HH:mm'}}"
 }

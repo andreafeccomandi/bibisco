@@ -704,5 +704,6 @@
   "jsp.analysisChaptersLength.js.xaxis.label": "Глав",
   "jsp.analysisChaptersLength.js.yaxis.label": "Слов",
   "detailfooterleftbuttonbar.projectexplorer.button": "Окно проекта",
-  "common.getstarted": "Начать"
+  "common.getstarted": "Начать",
+  "year_bc_scene_tags": "до н.э."
 }
