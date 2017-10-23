@@ -26,7 +26,6 @@
   "dependencies": {
     "angular": "^1.6.4",
     "angular-bootstrap-confirm": "^2.5.0",
-    "angular-bootstrap-datetimepicker": "^1.1.4",
     "angular-dynamic-locale": "^0.1.32",
     "angular-hotkeys": "^1.7.0",
     "angular-i18n": "^1.6.4",
@@ -42,6 +41,7 @@
     "fs-extra": "^2.1.2",
     "html-word-count": "^2.0.0",
     "lokijs": "^1.4.3",
+    "moment": "^2.19.1",
     "ng-focus-if": "^1.0.7",
     "sanitize-html": "^1.14.1",
     "ui-select": "^0.19.6",
