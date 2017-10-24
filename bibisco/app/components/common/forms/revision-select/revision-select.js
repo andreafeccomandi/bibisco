@@ -41,7 +41,7 @@ function RevisionSelectController($location, $translate,
       'revision_label_delete_revision',
       'revision_confirm_new_revision_from_actual',
       'revision_confirm_delete_revision'
-    ]);;
+    ]);
 
     // populate revisions
     self.revisions = [];

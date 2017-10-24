@@ -32,8 +32,8 @@ component('detailfooterleftbuttonbar', {
   }
 });
 
-function DetailFooterLeftButtonbarController($location, $translate,
-  LoggerService, PopupBoxesService) {
+function DetailFooterLeftButtonbarController($location, LoggerService,
+  PopupBoxesService) {
 
   LoggerService.debug('Start DetailFooterLeftButtonbarController...');
 
