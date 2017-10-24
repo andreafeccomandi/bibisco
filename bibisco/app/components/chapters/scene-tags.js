@@ -62,15 +62,9 @@ function SceneTagsController($location, $routeParams, $translate,
     // init locations
     self.initLocations();
 
-    // init time
+    // init date time
     self.lastscenetime = new Date('0001-04-23T21:53:54.586Z');
-    self.originalscenetime = null;
     self.scenetime = null;
-    self.scenetimeshowed = self.scenetime;
-    self.scenetimeselected = false;
-    self.scenetimecustom = "3 giorno 4 mese lunare"
-    moment.locale(LocaleService.getCurrentLocale());
-    self.scenetimeCalendarOpen = false;
     self.scenetimegregorian = true;
 
     // init narrative strands
@@ -260,45 +254,6 @@ function SceneTagsController($location, $routeParams, $translate,
   self.back = function() {
     $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
       $routeParams.sceneid)
-  }
-
-  self.onTimeSet = function(newDate, oldDate) {
-    self.scenetime = newDate;
-    self.scenetimeshowed = self.scenetime;
-    self.scenetimeCalendarOpen = false;
-    self.dirty = true;
-    self.scenetimeselected = true;
-  }
-
-  self.calculateSceneYear = function() {
-    let result = null;
-    if (self.scenetimeshowed) {
-      let year = self.scenetimeshowed.getUTCFullYear();
-      let bc = '';
-      if (year < 0) {
-        year = year * (-1);
-        bc = ' ' + self.translations.year_bc_scene_tags;
-      }
-      yearAsPaddedString = UtilService.number.pad(year, 4);
-      result = yearAsPaddedString + bc;
-    }
-    return result;
-  }
-
-  self.calendarToggled = function(open) {
-    if (open && self.originalscenetime == null && !self.scenetimeselected) {
-      self.scenetime = self.lastscenetime;
-    } else if (!open && self.originalscenetime == null && !self.scenetimeselected) {
-      self.scenetime = null;
-    }
-  }
-
-  self.setScenetimetypeGregorian = function(gregorian) {
-    self.scenetimegregorian = gregorian;
-  }
-
-  self.setDirty = function() {
-    self.dirty = true;
   }
 
   LoggerService.debug('End SceneTagsController...');

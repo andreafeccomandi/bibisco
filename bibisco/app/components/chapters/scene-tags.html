@@ -92,43 +92,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-offset-1 col-sm-4">
-        <div ng-if="$ctrl.scenetimegregorian" class="dropup" uib-dropdown
-          on-toggle="$ctrl.calendarToggled(open)"
-          is-open="$ctrl.scenetimeCalendarOpen">
-          <a role="button" uib-dropdown-toggle>
-            <div class="input-group">
-              <input type="text"  name="date" class="form-control" readonly
-              value="{{'date_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}{{$ctrl.calculateSceneYear()}} {{'time_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-            </div>
-          </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" uib-dropdown>
-            <datetimepicker data-ng-model="$ctrl.scenetime"
-              datetimepicker-config="{startView: 'year'}"
-              data-before-render="$ctrl.beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"
-              data-on-set-time="$ctrl.onTimeSet(newDate, oldDate)"></datetimepicker>
-          </ul>
-        </div>
-        <div ng-if="!$ctrl.scenetimegregorian">
-          <input type="text" name="date" class="form-control" maxlength="50"
-          ng-change="$ctrl.setDirty()" ng-model="$ctrl.scenetimecustom">
-        </div>
-      </div>
-      <div class="col-sm-7">
-        <div class="btn-group pull-left">
-            <button type="button" class="btn btn-sm btn-default"
-              ng-click="$ctrl.setScenetimetypeGregorian(true)"
-              ng-class="{ 'active' : $ctrl.scenetimegregorian}">
-              {{"Gregorian calendar" | translate}}
-            </button>
-            <button type="button" class="btn btn-sm btn-default"
-              ng-click="$ctrl.setScenetimetypeGregorian(false)"
-              ng-class="{ 'active' : !$ctrl.scenetimegregorian}">
-              {{"Alternative calendar" | translate}}
-            </button>
-        </div>
-      </div>
+      <scenetagsdatetime dirty="$ctrl.dirty" lastscenetime="$ctrl.lastscenetime"
+        scenetime="$ctrl.scenetime" scenetimegregorian="$ctrl.scenetimegregorian">
+      </scenetagsdatetime>
     </div>
 
     <!-- STRANDS -->
