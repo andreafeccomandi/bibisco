@@ -131,9 +131,9 @@
           // View starts one year before the decade starts and ends one year after the decade ends
           // i.e. passing in a date of 1/1/2013 will give a range of 2009 to 2020
           // Truncate the last digit from the current year and subtract 1 to get the start of the decade
-        var startDecade = (parseInt(selectedDate.year() / 10, 10) * 10)
-        var startDate = moment.utc(startOfDecade(milliseconds)).subtract(1,
-          'year').startOf('year')
+        var startDecade = (parseInt(selectedDate.year() / 50, 10) * 50);
+        var startDate = moment.utc(startOfDecade(milliseconds)).startOf(
+          'year')
 
         var yearFormat = 'YYYY'
         var activeFormat = formatValue(ngModelController.$modelValue,
@@ -145,24 +145,24 @@
           'nextView': configuration.minView === 'year' ? 'setTime' : 'month',
           'previousViewDate': new DateObject({
             utcDateValue: null,
-            display: startDecade + '-' + (startDecade + 9)
+            display: startDecade + '-' + (startDecade + 49)
           }),
           'leftDate': new DateObject({
-            utcDateValue: moment.utc(startDate).subtract(9, 'year').valueOf()
+            utcDateValue: moment.utc(startDate).subtract(49, 'year').valueOf()
           }),
           'rightDate': new DateObject({
-            utcDateValue: moment.utc(startDate).add(11, 'year').valueOf()
+            utcDateValue: moment.utc(startDate).add(51, 'year').valueOf()
           }),
           'dates': []
         }
 
-        for (var i = 0; i < 12; i += 1) {
+        for (var i = 0; i < 50; i += 1) {
           var yearMoment = moment.utc(startDate).add(i, 'years')
           var dateValue = {
             'active': yearMoment.format(yearFormat) === activeFormat,
             'current': yearMoment.format(yearFormat) === currentFormat,
             'display': yearMoment.format(yearFormat),
-            'future': yearMoment.year() > startDecade + 9,
+            'future': yearMoment.year() > startDecade + 49,
             'past': yearMoment.year() < startDecade,
             'utcDateValue': yearMoment.valueOf()
           }
@@ -415,8 +415,8 @@
       }
 
       function startOfDecade(milliseconds) {
-        var startYear = (parseInt(moment.utc(milliseconds).year() / 10, 10) *
-          10)
+        var startYear = (parseInt(moment.utc(milliseconds).year() / 50, 10) *
+          50)
         return moment.utc(milliseconds).year(startYear).startOf('year')
       }
 
