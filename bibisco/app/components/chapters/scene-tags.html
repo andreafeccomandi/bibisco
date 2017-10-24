@@ -99,7 +99,7 @@
           <a role="button" uib-dropdown-toggle>
             <div class="input-group">
               <input type="text"  name="date" class="form-control" readonly
-              value="{{'date_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}{{$ctrl.scenetimeshowed.getUTCFullYear() < 0 ? $ctrl.scenetimeshowed.getUTCFullYear() * (-1) : $ctrl.scenetimeshowed.getUTCFullYear()}} {{$ctrl.scenetimeshowed.getUTCFullYear() < 0 ? 'year_bc_scene_tags' : '' | translate}} {{'time_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}">
+              value="{{'date_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}{{$ctrl.calculateSceneYear()}} {{'time_format_scene_tags' | translate:{date:$ctrl.scenetimeshowed} }}">
               <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
             </div>
           </a>

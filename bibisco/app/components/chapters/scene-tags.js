@@ -19,14 +19,19 @@ component('scenetags', {
   controller: SceneTagsController
 });
 
-function SceneTagsController($location, $routeParams, ChapterService,
-  LocaleService, LocationService, LoggerService, MainCharacterService,
-  SecondaryCharacterService, StrandService, UtilService) {
+function SceneTagsController($location, $routeParams, $translate,
+  ChapterService, LocaleService, LocationService, LoggerService,
+  MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
   LoggerService.debug('Start SceneTagsController...');
 
   var self = this;
 
   self.$onInit = function() {
+
+    // load translations
+    self.translations = $translate.instant([
+      'year_bc_scene_tags'
+    ]);
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -263,6 +268,21 @@ function SceneTagsController($location, $routeParams, ChapterService,
     self.scenetimeCalendarOpen = false;
     self.dirty = true;
     self.scenetimeselected = true;
+  }
+
+  self.calculateSceneYear = function() {
+    let result = null;
+    if (self.scenetimeshowed) {
+      let year = self.scenetimeshowed.getUTCFullYear();
+      let bc = '';
+      if (year < 0) {
+        year = year * (-1);
+        bc = ' ' + self.translations.year_bc_scene_tags;
+      }
+      yearAsPaddedString = UtilService.number.pad(year, 4);
+      result = yearAsPaddedString + bc;
+    }
+    return result;
   }
 
   self.calendarToggled = function(open) {
