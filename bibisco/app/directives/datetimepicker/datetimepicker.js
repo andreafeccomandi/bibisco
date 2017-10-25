@@ -127,25 +127,31 @@
       }
 
       function yearModelFactory(milliseconds) {
-        var selectedDate = moment.utc(milliseconds).startOf('year')
-          // View starts one year before the decade starts and ends one year after the decade ends
-          // i.e. passing in a date of 1/1/2013 will give a range of 2009 to 2020
-          // Truncate the last digit from the current year and subtract 1 to get the start of the decade
-        var startDecade = (parseInt(selectedDate.year() / 50, 10) * 50);
-        var startDate = moment.utc(startOfDecade(milliseconds)).startOf(
-          'year')
 
-        var yearFormat = 'YYYY'
-        var activeFormat = formatValue(ngModelController.$modelValue,
+        let selectedDate = moment.utc(milliseconds).startOf('year');
+        let year = selectedDate.year();
+        let startHalfCentury;
+        if (year >= 0) {
+          startHalfCentury = (parseInt(year / 50, 10) * 50) + 1;
+        } else {
+          startHalfCentury = (parseInt(year / 50, 10) * 50) - 49;
+        }
+
+        let startDate = moment.utc(startOfHalfCentury(milliseconds)).startOf(
+          'year');
+
+        let yearFormat = 'YYYY'
+        let activeFormat = formatValue(ngModelController.$modelValue,
           yearFormat)
-        var currentFormat = moment().format(yearFormat)
+        let currentFormat = moment().format(yearFormat)
 
-        var result = {
+        let result = {
           'currentView': 'year',
           'nextView': configuration.minView === 'year' ? 'setTime' : 'month',
           'previousViewDate': new DateObject({
             utcDateValue: null,
-            display: startDecade + '-' + (startDecade + 49)
+            display: startHalfCentury.padLeft(4) + '  /  ' +
+              (startHalfCentury + 49).padLeft(4)
           }),
           'leftDate': new DateObject({
             utcDateValue: moment.utc(startDate).subtract(49, 'year').valueOf()
@@ -156,14 +162,14 @@
           'dates': []
         }
 
-        for (var i = 0; i < 50; i += 1) {
-          var yearMoment = moment.utc(startDate).add(i, 'years')
-          var dateValue = {
+        for (let i = 0; i < 50; i += 1) {
+          let yearMoment = moment.utc(startDate).add(i, 'years')
+          let dateValue = {
             'active': yearMoment.format(yearFormat) === activeFormat,
             'current': yearMoment.format(yearFormat) === currentFormat,
             'display': yearMoment.format(yearFormat),
-            'future': yearMoment.year() > startDecade + 49,
-            'past': yearMoment.year() < startDecade,
+            'future': yearMoment.year() > startHalfCentury + 49,
+            'past': yearMoment.year() < startHalfCentury,
             'utcDateValue': yearMoment.valueOf()
           }
 
@@ -175,7 +181,7 @@
 
       function monthModelFactory(milliseconds) {
         var startDate = moment.utc(milliseconds).startOf('year')
-        var previousViewDate = startOfDecade(milliseconds)
+        var previousViewDate = startOfHalfCentury(milliseconds)
 
         var monthFormat = 'YYYY-MMM'
         var activeFormat = formatValue(ngModelController.$modelValue,
@@ -234,7 +240,7 @@
           'nextView': configuration.minView === 'day' ? 'setTime' : 'hour',
           'previousViewDate': new DateObject({
             utcDateValue: previousViewDate.valueOf(),
-            display: startOfMonth.format('YYYY-MMM')
+            display: startOfMonth.format('YYYY MMM')
           }),
           'leftDate': new DateObject({
             utcDateValue: moment.utc(startOfMonth).subtract(1,
@@ -414,10 +420,25 @@
         }))
       }
 
-      function startOfDecade(milliseconds) {
-        var startYear = (parseInt(moment.utc(milliseconds).year() / 50, 10) *
-          50)
-        return moment.utc(milliseconds).year(startYear).startOf('year')
+      function startOfHalfCentury(milliseconds) {
+        let year = moment.utc(milliseconds).year();
+        let startYear;
+        if (year >= 0) {
+          startYear = (parseInt(year / 50, 10) * 50) + 1;
+        } else {
+          startYear = (parseInt(year / 50, 10) * 50) - 49;
+        }
+        let result = moment.utc(milliseconds).year(startYear).startOf(
+          'year');
+
+        return result;
+      }
+
+      Number.prototype.padLeft = function(n, str) {
+        return (this < 0 ? '-' : '') +
+          Array(n - String(Math.abs(this)).length + 1)
+          .join(str || '0') +
+          (Math.abs(this));
       }
 
       function formatValue(timeValue, formatString) {
