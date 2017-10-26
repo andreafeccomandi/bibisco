@@ -33,8 +33,6 @@ function SceneTagsDatetimeController($location, $translate,
 
   self.$onInit = function() {
 
-    alert('self.scenetime=' + self.scenetime);
-
     // load translations
     self.translations = $translate.instant([
       'year_bc_scene_tags'
@@ -89,10 +87,17 @@ function SceneTagsDatetimeController($location, $translate,
 
   self.setScenetimetypeGregorian = function(gregorian) {
     self.scenetimegregorian = gregorian;
+    if (gregorian) {
+      self.scenetime = self.scenetimeshowed;
+    } else {
+      self.scenetime = self.scenetimecustom;
+    }
+
   }
 
-  self.setDirty = function() {
+  self.changeScenetimeCustom = function() {
     self.dirty = true;
+    self.scenetime = self.scenetimecustom;
   }
 
   LoggerService.debug('End SceneTagsDatetimeController...');
