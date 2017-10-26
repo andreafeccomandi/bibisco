@@ -19,7 +19,8 @@
         <button ng-repeat="pov in $ctrl.povs" type="button"
           ng-class="{ 'btn-info': pov.selected }"
           class="btn btn-sm scene-tags-button"
-          uib-tooltip="{{'jsp.scene.button.pointOfView.'+pov.id+'.popover' | translate}}"
+          uib-popover="{{'jsp.scene.button.pointOfView.'+pov.id+'.popover' | translate}}"
+          popover-placement="bottom" popover-trigger="'mouseenter'" 
           ng-click="$ctrl.togglePov(pov.id)">
           {{'jsp.scene.button.pointOfView.'+pov.id | translate}}
       </div>

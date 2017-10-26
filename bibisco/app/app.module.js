@@ -143,7 +143,10 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
   .config(function($uibTooltipProvider) {
     $uibTooltipProvider.options({
       'appendToBody': true
-    })
+    });
+    $uibTooltipProvider.setTriggers({
+      'mouseenter': 'mouseleave'
+    });
   })
 
 // By default, AngularJS will catch errors and log them to
