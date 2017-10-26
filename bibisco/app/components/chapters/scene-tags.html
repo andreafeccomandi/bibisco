@@ -20,7 +20,7 @@
           ng-class="{ 'btn-info': pov.selected }"
           class="btn btn-sm scene-tags-button"
           uib-popover="{{'jsp.scene.button.pointOfView.'+pov.id+'.popover' | translate}}"
-          popover-placement="bottom" popover-trigger="'mouseenter'" 
+          popover-placement="bottom" popover-trigger="'mouseenter'"
           ng-click="$ctrl.togglePov(pov.id)">
           {{'jsp.scene.button.pointOfView.'+pov.id | translate}}
       </div>
@@ -93,8 +93,10 @@
       </div>
     </div>
     <div class="row">
-      <scenetagsdatetime dirty="$ctrl.dirty" lastscenetime="$ctrl.lastscenetime"
-        scenetime="$ctrl.scenetime" scenetimegregorian="$ctrl.scenetimegregorian">
+      <scenetagsdatetime dirty="$ctrl.dirty"
+        lastscenetime="$ctrl.lastscenetime"
+        scenetime="$ctrl.scenetags.time"
+        scenetimegregorian="$ctrl.scenetags.timegregorian">
       </scenetagsdatetime>
     </div>
 

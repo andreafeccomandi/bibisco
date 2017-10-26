@@ -259,6 +259,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.revision = scenerevision.position;
       scene.text = scenerevision.text;
       scene.time = scenerevision.time;
+      scene.timegregorian = scenerevision.timegregorian;
       scene.words = scenerevision.words;
 
       return scene;
@@ -323,6 +324,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
           povid: '',
           povcharacterid: null,
           time: null,
+          timegregorian: true
         }, {
           sceneid: {
             '$eq': sceneid
@@ -386,6 +388,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scenerevision.povcharacterid = scene.povcharacterid;
       scenerevision.text = scene.text;
       scenerevision.time = scene.time;
+      scenerevision.timegregorian = scene.timegregorian;
       scenerevision.words = scene.words;
 
       CollectionUtilService.updateWithoutCommit(
@@ -445,7 +448,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
         povid: scene.povid,
         povcharacterid: scene.povcharacterid,
         strands: scenestrands.strands,
-        time: scene.time
+        time: scene.time,
+        timegregorian: scene.timegregorian
       }
     },
 
@@ -459,6 +463,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.povid = scenetags.povid;
       scene.povcharacterid = scenetags.povcharacterid;
       scene.time = scenetags.time;
+      scene.timegregorian = scenetags.timegregorian;
       this.updateSceneWithoutCommit(scene);
 
       // remove previous scene characters tags

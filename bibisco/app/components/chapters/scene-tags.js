@@ -64,8 +64,6 @@ function SceneTagsController($location, $routeParams, $translate,
 
     // init date time
     self.lastscenetime = new Date('0001-04-23T21:53:54.586Z');
-    self.scenetime = null;
-    self.scenetimegregorian = true;
 
     // init narrative strands
     self.initStrands();
