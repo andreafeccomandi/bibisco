@@ -659,5 +659,7 @@
   "jsp.analysisChaptersLength.js.yaxis.label": "Słowa",
   "detailfooterleftbuttonbar.projectexplorer.button": "eksplorator projektu",
   "common.getstarted": "rozpocznij",
-  "year_bc_scene_tags": "p.n.e."
+  "year_bc_scene_tags": "p.n.e.",
+  "scenetagsdatetime.gregoriancalendar": "kalendarz gregoriański",
+  "scenetagsdatetime.alternativecalendar": "alternatywny kalendarz"
 }

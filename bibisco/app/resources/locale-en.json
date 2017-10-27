@@ -694,5 +694,7 @@
   "timestamp_format_scene_tags": "{{date|date:'dd/MM/yyyy HH:mm'}}",
   "date_format_scene_tags": "{{date|date:'dd/MM/'}}",
   "year_bc_scene_tags": "B.C",
-  "time_format_scene_tags": "{{date|date:'HH:mm'}}"
+  "time_format_scene_tags": "{{date|date:'HH:mm'}}",
+  "scenetagsdatetime.gregoriancalendar": "gregorian calendar",
+  "scenetagsdatetime.alternativecalendar": "alternative calendar"
 }

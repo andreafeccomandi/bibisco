@@ -705,5 +705,7 @@
   "jsp.analysisChaptersLength.js.yaxis.label": "Слов",
   "detailfooterleftbuttonbar.projectexplorer.button": "Окно проекта",
   "common.getstarted": "Начать",
-  "year_bc_scene_tags": "до н.э."
+  "year_bc_scene_tags": "до н.э.",
+  "scenetagsdatetime.gregoriancalendar": "Григорианский календарь",
+  "scenetagsdatetime.alternativecalendar": "альтернативный календарь"
 }

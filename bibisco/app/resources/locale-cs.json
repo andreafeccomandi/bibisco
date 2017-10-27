@@ -658,5 +658,7 @@
   "jsp.analysisChaptersLength.js.yaxis.label": "Slova",
   "detailfooterleftbuttonbar.projectexplorer.button": "prohlížeč projektu",
   "common.getstarted": "začínáme",
-  "year_bc_scene_tags": "př. n. l."
+  "year_bc_scene_tags": "př. n. l.",
+  "scenetagsdatetime.gregoriancalendar": "gregoriánský kalendář",
+  "scenetagsdatetime.alternativecalendar": "alternativní kalendář"
 }
