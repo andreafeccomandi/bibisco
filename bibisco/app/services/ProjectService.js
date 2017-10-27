@@ -47,7 +47,8 @@ angular.module('bibiscoApp').service('ProjectService', function(
         name: name,
         language: language,
         bibiscoVersion: BibiscoPropertiesService.getProperty(
-          'version')
+          'version'),
+        lastScenetimeTag: ''
       });
 
       let architectureCollection = projectdb.addCollection('architecture');
@@ -277,6 +278,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
       }
 
       LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
+    },
+
+    updateLastScenetimeTag: function(time) {
+      let projectInfo = this.getProjectInfo();
+      projectInfo.lastScenetimeTag = time;
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
     }
   };
 });

@@ -39,14 +39,17 @@ function SceneTagsDatetimeController($location, $translate,
     ]);
 
     // init date time
-    self.originalscenetime = self.scenetime;
-    if (self.scenetimegregorian == true) {
-      let sceneTimeAsDate = new Date(self.scenetime);
-      self.scenetimeshowed = sceneTimeAsDate;
-      self.scenetimecustom = null;
-    } else {
-      self.scenetimeshowed = null;
-      self.scenetimecustom = self.scenetime;
+    self.originalscenetime = null;
+    self.scenetimeshowed = null;
+    self.scenetimecustom = null;
+    if (self.scenetime != null) {
+      if (self.scenetimegregorian == true) {
+        self.originalscenetime = self.scenetime;
+        self.scenetime = new Date(self.scenetime);
+        self.scenetimeshowed = self.scenetime;
+      } else {
+        self.scenetimecustom = self.scenetime;
+      }
     }
 
     self.scenetimeselected = false;
@@ -92,7 +95,6 @@ function SceneTagsDatetimeController($location, $translate,
     } else {
       self.scenetime = self.scenetimecustom;
     }
-
   }
 
   self.changeScenetimeCustom = function() {

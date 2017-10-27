@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('ChapterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService) {
+  CollectionUtilService, LoggerService, ProjectDbConnectionService,
+  ProjectService) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
@@ -484,8 +485,17 @@ angular.module('bibiscoApp').service('ChapterService', function(
         strands: scenetags.strands
       });
 
+      // update last scentime tag
+      if (scenetags.timegregorian == true) {
+        ProjectService.updateLastScenetimeTag(scenetags.time);
+      }
+
       // save database
       ProjectDbConnectionService.saveDatabase();
+    },
+
+    getLastScenetime: function() {
+      return ProjectService.getProjectInfo().lastScenetimeTag;
     }
   }
 });
