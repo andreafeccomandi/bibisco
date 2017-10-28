@@ -178,18 +178,17 @@ angular.module('bibiscoApp').service('ChapterService', function(
     createSceneRevision: function(id, fromActual) {
 
       let scene = scenecollection.get(id);
-      let actualscenerevision = scenerevisionscollection.get(scene.revisionid);
-
-      // get revision text
-      let text;
-      if (fromActual) {
-        text = actualscenerevision.text;
-      } else {
-        text = '';
-      }
 
       // insert new revision
-      let scenerevision = this.insertSceneRevision(scene.$loki, text);
+      let scenerevision;
+      let actualscenerevision;
+      if (fromActual) {
+        actualscenerevision = scenerevisionscollection.get(scene.revisionid);
+        scenerevision = this.insertSceneRevision(scene.$loki,
+          actualscenerevision);
+      } else {
+        scenerevision = this.insertSceneRevision(scene.$loki);
+      }
 
       // update scene with revision info
       scene.revisionid = scenerevision.$loki;
@@ -303,7 +302,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
         });
 
       // insert first revision
-      let scenerevision = this.insertSceneRevision(scene.$loki, '');
+      let scenerevision = this.insertSceneRevision(scene.$loki);
 
       // update scene with revision info
       scene.revisionid = scenerevision.$loki;
@@ -314,19 +313,42 @@ angular.module('bibiscoApp').service('ChapterService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
-    insertSceneRevision: function(sceneid, text) {
+    insertSceneRevision: function(sceneid, actualscenerevision) {
 
-      // insert scene revision
-      let scenerevision = CollectionUtilService.insertWithoutCommit(
-        scenerevisionscollection, {
+      let scenerevision;
+      let scenecharacters;
+      let scenestrands;
+
+      if (actualscenerevision != null) {
+        scenerevision = {
           sceneid: sceneid,
-          text: text,
+          text: actualscenerevision.text,
+          locationid: actualscenerevision.locationid,
+          povid: actualscenerevision.povid,
+          povcharacterid: actualscenerevision.povcharacterid,
+          time: actualscenerevision.time,
+          timegregorian: actualscenerevision.timegregorian
+        };
+        scenecharacters = this.getSceneCharacters(actualscenerevision.$loki)
+          .characters;
+        scenestrands = this.getSceneStrands(actualscenerevision.$loki).strands;
+      } else {
+        scenerevision = {
+          sceneid: sceneid,
+          text: '',
           locationid: null,
-          povid: '',
+          povid: null,
           povcharacterid: null,
           time: null,
           timegregorian: true
-        }, {
+        };
+        scenecharacters = [];
+        scenestrands = [];
+      }
+
+      // insert scene revision
+      scenerevision = CollectionUtilService.insertWithoutCommit(
+        scenerevisionscollection, scenerevision, {
           sceneid: {
             '$eq': sceneid
           }
@@ -335,13 +357,13 @@ angular.module('bibiscoApp').service('ChapterService', function(
       // insert characters tags
       scenerevisioncharacterscollection.insert({
         id: scenerevision.$loki,
-        characters: []
+        characters: scenecharacters
       });
 
       // insert strand tags
       scenerevisionstrandscollection.insert({
         id: scenerevision.$loki,
-        strands: []
+        strands: scenestrands
       });
 
       return scenerevision;
