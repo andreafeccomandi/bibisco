@@ -292,6 +292,10 @@ h3 {
 	top: 420px;
 }
 
+.card-grid-emptyitems-no-header-subtitle-half-bottom-detail {
+	top: 430px;
+}
+
 .card-grid-items {
     overflow-y: scroll;
     width: 100%;
