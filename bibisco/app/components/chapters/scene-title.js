@@ -76,7 +76,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
     } else {
       ChapterService.insertScene({
         title: title,
-        chapterid: $routeParams.chapterid
+        chapterid: parseInt($routeParams.chapterid)
       });
     }
   }

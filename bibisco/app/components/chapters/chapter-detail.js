@@ -52,7 +52,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.chapternotes = ChapterService.getChapterInfo(self.chapter.notes);
 
     // get scenes
-    self.scenescardgriditems = self.getScenesCardGridItems($routeParams.id);
+    self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -95,7 +95,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.moveScene = function(draggedObjectId, destinationObjectId) {
     ChapterService.moveScene(draggedObjectId, destinationObjectId);
-    self.scenescardgriditems = this.getScenesCardGridItems('' + self.chapter.$loki);
+    self.scenescardgriditems = this.getScenesCardGridItems(self.chapter.$loki);
     $scope.$apply();
   }
 

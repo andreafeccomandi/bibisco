@@ -109,7 +109,6 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
       this.shiftDown(collection, elementPosition + 1, endPosition, filter);
       collection.remove(element);
-      ProjectDbConnectionService.saveDatabase();
       LoggerService.info('Removed element with id=' + id + ' from ' +
         collection.name);
     },
