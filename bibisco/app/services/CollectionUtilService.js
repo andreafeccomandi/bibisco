@@ -62,7 +62,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       element.words = 0;
       element = collection.insert(element);
 
-      LoggerService.info('Insert element with id=' + element.$loki +
+      LoggerService.info('Insert element with $loki=' + element.$loki +
         ' in ' + collection.name);
 
       return element;
@@ -81,9 +81,8 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
     executeUpdate: function(collection, element) {
       element.lastsave = (new Date()).toJSON();
       collection.update(element);
-      LoggerService.info('Update element with id=' + element.$loki +
-        ' in ' +
-        collection.name);
+      LoggerService.info('Update element with $loki=' + element.$loki +
+        ' in ' + collection.name);
       return element;
     },
 
@@ -109,7 +108,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
       this.shiftDown(collection, elementPosition + 1, endPosition, filter);
       collection.remove(element);
-      LoggerService.info('Removed element with id=' + id + ' from ' +
+      LoggerService.info('Removed element with $loki=' + id + ' from ' +
         collection.name);
     },
 
@@ -135,8 +134,8 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       collection.update(source);
       ProjectDbConnectionService.saveDatabase();
       LoggerService.info('Moved element of collection ' + collection.name +
-        ' with id=' + sourceId + ' at position ' + sourcePosition +
-        ' to element with id=' + targetId + ' at position ' +
+        ' with $loki=' + sourceId + ' at position ' + sourcePosition +
+        ' to element with $loki=' + targetId + ' at position ' +
         targetPosition);
 
       return dynamicView.data();
