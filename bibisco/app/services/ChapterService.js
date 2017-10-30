@@ -98,17 +98,23 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     remove: function(id) {
 
-      // remove chapter
-      CollectionUtilService.removeWithoutCommit(collection, id);
-
       // remove all scenes
-      //let scenes = this.getScenes(id);
       let scenes = scenecollection.find({
         'chapterid': id
       });
       for (let i = 0; i < scenes.length; i++) {
         this.removeSceneWithoutCommit(scenes[i].$loki);
       }
+
+      // remove all chapter infos
+      chapterinfoscollection.findAndRemove({
+        'chapterid': id
+      });
+      LoggerService.info('Removed elements with chapterid=' + id +
+        ' from ' + chapterinfoscollection.name);
+
+      // remove chapter
+      CollectionUtilService.removeWithoutCommit(collection, id);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
@@ -336,6 +342,9 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.revision = scenerevision.position;
       CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
+
       // save database
       ProjectDbConnectionService.saveDatabase();
     },
@@ -415,6 +424,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     removeSceneWithoutCommit: function(id) {
 
+      let scene = this.getScene(id);
+
       // remove scene
       CollectionUtilService.removeWithoutCommit(scenecollection, id);
 
@@ -427,6 +438,9 @@ angular.module('bibiscoApp').service('ChapterService', function(
       for (let i = 0; i < scenerevisions.length; i++) {
         this.removeSceneRevisionWithoutCommit(id, scenerevisions[i].$loki);
       }
+
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
     },
 
     removeScene: function(id) {
