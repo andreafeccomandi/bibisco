@@ -94,6 +94,10 @@ h6, label, th, td, p {
 	font-size: 80%;
 }
 
+.detail-footer-top {
+	height: 20px;
+}
+
 /* RICH TEXT EDITOR */
 .richtexteditor-toolbar {
 	margin-bottom: 10px;
