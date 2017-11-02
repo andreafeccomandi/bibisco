@@ -45,7 +45,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/secondarycharacterdetail/" + $routeParams.id;
+      self.exitpath = "/secondarycharacters/" + $routeParams.id;
       self.name = secondarycharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
