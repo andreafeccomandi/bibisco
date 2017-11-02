@@ -75,5 +75,10 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
       .$loki);
   }
 
+  self.showInfoWithQuestion = function(id) {
+    $location.path('/maincharacters/' + self.maincharacter.$loki +
+      '/infowithquestion/' + id);
+  }
+
   LoggerService.debug('End MainCharacterDetailController...');
 }
