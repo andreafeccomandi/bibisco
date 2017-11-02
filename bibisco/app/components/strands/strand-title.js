@@ -33,7 +33,7 @@ function StrandTitleController($location, $routeParams,
       label: 'jsp.projectFromScene.nav.li.architecture'
     });
 
-    if ($routeParams.operation == 'edit') {
+    if ($routeParams.id != null) {
       let strand = StrandService.getStrand(
         $routeParams.id);
 
@@ -45,7 +45,7 @@ function StrandTitleController($location, $routeParams,
         label: 'jsp.architecture.strand.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/strand/" + $routeParams.id;
+      self.exitpath = "/strands/" + $routeParams.id;
       self.name = strand.name;
       self.pageheadertitle =
         'jsp.architecture.strand.dialog.title.updateTitle';
@@ -63,7 +63,7 @@ function StrandTitleController($location, $routeParams,
   }
 
   self.save = function(title) {
-    if ($routeParams.operation == 'edit') {
+    if ($routeParams.id != null) {
       let strand = StrandService.getStrand(
         $routeParams.id);
       strand.name = title;

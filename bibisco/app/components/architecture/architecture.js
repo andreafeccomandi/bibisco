@@ -90,11 +90,11 @@ function ArchitectureController($location, $rootScope, $scope,
   }
 
   self.createStrand = function() {
-    $location.path('/strandtitle/new/0');
+    $location.path('/strands/new');
   }
 
   self.strandSelect = function(id) {
-    $location.path('/strand/' + id);
+    $location.path('/strands/' + id);
   }
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {

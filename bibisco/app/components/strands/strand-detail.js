@@ -53,8 +53,7 @@ function StrandDetailController($location, $routeParams, StrandService,
   }
 
   self.changeTitle = function() {
-    $location.path('/strandtitle/edit/' + self.strand
-      .$loki);
+    $location.path('/strands/' + self.strand.$loki + '/title');
   }
 
   self.delete = function() {
