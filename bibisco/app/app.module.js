@@ -66,10 +66,13 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/importproject', {
         template: '<importproject></importproject>'
       }).
-      when('/locationdetail/:id', {
+      when('/locations/new', {
+        template: '<locationtitle></locationtitle>'
+      }).
+      when('/locations/:id', {
         template: '<locationdetail></locationdetail>'
       }).
-      when('/locationtitle/:operation/:id', {
+      when('/locations/:id/title', {
         template: '<locationtitle></locationtitle>'
       }).
       when('/main', {

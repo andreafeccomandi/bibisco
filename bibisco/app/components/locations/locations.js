@@ -37,7 +37,7 @@ function LocationsController($location, $scope, LocationService,
   }
 
   self.create = function() {
-    $location.path('/locationtitle/new/0');
+    $location.path('/locations/new');
   }
 
   self.getCardGridItems = function() {
@@ -66,7 +66,7 @@ function LocationsController($location, $scope, LocationService,
   }
 
   self.select = function(id) {
-    $location.path('/locationdetail/' + id);
+    $location.path('/locations/' + id);
   }
 
   self.locationDescription = function(nation, state, city) {

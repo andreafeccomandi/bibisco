@@ -36,7 +36,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
       label: 'jsp.projectFromScene.nav.li.locations'
     });
 
-    if ($routeParams.operation == 'edit') {
+    if ($routeParams.id != null) {
       let location = LocationService.getLocation(
         $routeParams.id);
       let locationName = LocationService.calculateLocationName(location);
@@ -56,7 +56,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
       self.pageheadertitle =
         'jsp.locations.dialog.title.changeThumbnailTitle';
-      self.exitpath = "/locationdetail/" + $routeParams.id;
+      self.exitpath = "/locations/" + $routeParams.id;
 
     } else {
       // create breadcrumb items
@@ -81,7 +81,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
   self.save = function(isValid) {
     if (isValid) {
 
-      if ($routeParams.operation == 'edit') {
+      if ($routeParams.id != null) {
         let location = LocationService.getLocation(
           $routeParams.id);
         location.nation = self.nation;

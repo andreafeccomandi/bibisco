@@ -54,8 +54,7 @@ function LocationDetailController($location, $routeParams, LocationService,
   }
 
   self.changeTitle = function() {
-    $location.path('/locationtitle/edit/' + self.location
-      .$loki);
+    $location.path('/locations/' + self.location.$loki + '/title');
   }
 
   self.delete = function() {
