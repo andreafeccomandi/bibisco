@@ -86,7 +86,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   }
 
   self.changeTitle = function() {
-    $location.path('/chaptertitle/edit/' + self.chapter.$loki);
+    $location.path('/chapters/' + self.chapter.$loki + '/title');
   }
 
   self.createScene = function() {

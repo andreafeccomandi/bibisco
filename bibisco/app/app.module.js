@@ -33,11 +33,14 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/architectureitems/:id', {
         template: '<architecturedetail></architecturedetail>'
       }).
-      when('/chaptertitle/:operation/:id', {
+      when('/chapters/new', {
         template: '<chaptertitle></chaptertitle>'
       }).
       when('/chapters/:id', {
         template: '<chapterdetail></chapterdetail>'
+      }).
+      when('/chapters/:id/title', {
+        template: '<chaptertitle></chaptertitle>'
       }).
       when('/chapters/:chapterid/chapterinfos/:chapterinfoid', {
         template: '<chapterinfodetail></chapterinfodetail>'

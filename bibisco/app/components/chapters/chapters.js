@@ -29,7 +29,7 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
   var self = this;
 
   self.create = function() {
-    $location.path('/chaptertitle/new/0');
+    $location.path('/chapters/new');
   }
 
   self.getCardGridItems = function() {
