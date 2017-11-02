@@ -35,7 +35,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
 
     let chapter = ChapterService.getChapter($routeParams.chapterid);
     self.breadcrumbItems.push({
-      labelvalue: '#' + chapter.position + ' ' + chapter.title
+      label: '#' + chapter.position + ' ' + chapter.title
     });
 
     if ($routeParams.sceneid != null) {
@@ -43,7 +43,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        labelvalue: scene.title
+        label: scene.title
       });
       self.breadcrumbItems.push({
         label: 'jsp.scene.dialog.title.updateTitle'

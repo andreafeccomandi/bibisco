@@ -36,7 +36,7 @@ function LocationDetailController($location, $routeParams, LocationService,
       href: '/project/locations'
     });
     self.breadcrumbitems.push({
-      labelvalue: self.name
+      label: self.name
     });
 
     self.editmode = false;

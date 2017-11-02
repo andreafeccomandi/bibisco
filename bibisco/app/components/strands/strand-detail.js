@@ -35,7 +35,7 @@ function StrandDetailController($location, $routeParams, StrandService,
       href: '/project/architecture'
     });
     self.breadcrumbitems.push({
-      labelvalue: self.strand.name
+      label: self.strand.name
     });
 
     self.editmode = false;

@@ -40,7 +40,7 @@ function ChapterInfoDetailController($location, $routeParams,
       href: '/project/chapters'
     });
     self.breadcrumbitems.push({
-      labelvalue: '#' + self.chapter.position + ' ' + self.chapter.title,
+      label: '#' + self.chapter.position + ' ' + self.chapter.title,
       href: '/chapters/' + self.chapter.$loki
     });
     self.breadcrumbitems.push({

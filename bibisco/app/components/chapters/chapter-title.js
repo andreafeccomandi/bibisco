@@ -39,7 +39,7 @@ function ChapterTitleController($location, $routeParams,
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        labelvalue: '#' + chapter.position + ' ' + chapter.title
+        label: '#' + chapter.position + ' ' + chapter.title
       });
       self.breadcrumbItems.push({
         label: 'jsp.chapter.dialog.title.updateTitle'

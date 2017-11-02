@@ -39,7 +39,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        labelvalue: secondarycharacter.name
+        label: secondarycharacter.name
       });
       self.breadcrumbItems.push({
         label: 'jsp.character.dialog.title.updateTitle'

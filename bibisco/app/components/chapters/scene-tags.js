@@ -40,11 +40,11 @@ function SceneTagsController($location, $routeParams, $translate,
 
     let chapter = ChapterService.getChapter($routeParams.chapterid);
     self.breadcrumbitems.push({
-      labelvalue: '#' + chapter.position + ' ' + chapter.title
+      label: '#' + chapter.position + ' ' + chapter.title
     });
     let scene = ChapterService.getScene($routeParams.sceneid);
     self.breadcrumbitems.push({
-      labelvalue: scene.title
+      label: scene.title
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'

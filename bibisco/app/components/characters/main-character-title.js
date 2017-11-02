@@ -39,7 +39,7 @@ function MainCharacterTitleController($location, $routeParams,
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        labelvalue: maincharacter.name
+        label: maincharacter.name
       });
       self.breadcrumbItems.push({
         label: 'jsp.character.dialog.title.updateTitle'

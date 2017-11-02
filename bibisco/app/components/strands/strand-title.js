@@ -39,7 +39,7 @@ function StrandTitleController($location, $routeParams,
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        labelvalue: strand.name
+        label: strand.name
       });
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.updateTitle'

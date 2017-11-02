@@ -37,7 +37,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       href: '/project/characters'
     });
     self.breadcrumbitems.push({
-      labelvalue: self.maincharacter.name
+      label: self.maincharacter.name
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.id + '.title'

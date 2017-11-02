@@ -43,7 +43,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
       // edit breadcrumb items
       self.breadcrumbitems.push({
-        labelvalue: locationName
+        label: locationName
       });
       self.breadcrumbitems.push({
         label: 'jsp.locations.dialog.title.changeThumbnailTitle'

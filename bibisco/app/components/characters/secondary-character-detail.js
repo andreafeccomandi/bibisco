@@ -35,7 +35,7 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
       href: '/project/characters'
     });
     self.breadcrumbitems.push({
-      labelvalue: self.secondarycharacter.name
+      label: self.secondarycharacter.name
     });
 
     self.editmode = false;
