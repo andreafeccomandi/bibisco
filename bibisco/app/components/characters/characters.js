@@ -37,7 +37,7 @@ function CharactersController($location, $scope, LoggerService,
   }
 
   self.createSecondaryCharacter = function() {
-    $location.path('/secondarycharactertitle/new/0');
+    $location.path('/secondarycharacters/new');
   }
 
   self.getMainCharacterCardGridItems = function() {

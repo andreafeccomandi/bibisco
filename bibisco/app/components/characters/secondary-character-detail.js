@@ -53,8 +53,8 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   }
 
   self.changeTitle = function() {
-    $location.path('/secondarycharactertitle/edit/' + self.secondarycharacter
-      .$loki);
+    $location.path('/secondarycharacters/' + self.secondarycharacter
+      .$loki + '/title');
   }
 
   self.delete = function() {

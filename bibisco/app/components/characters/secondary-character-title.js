@@ -33,7 +33,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
       label: 'jsp.projectFromScene.nav.li.characters'
     });
 
-    if ($routeParams.operation == 'edit') {
+    if ($routeParams.id != null) {
       let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
         $routeParams.id);
 
@@ -64,7 +64,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
   }
 
   self.save = function(title) {
-    if ($routeParams.operation == 'edit') {
+    if ($routeParams.id != null) {
       let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
         $routeParams.id);
       secondarycharacter.name = title;
