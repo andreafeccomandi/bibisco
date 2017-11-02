@@ -72,7 +72,7 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
       when('/main', {
         template: '<main></main>'
       }).
-      when('/maincharacterdetail/:id', {
+      when('/maincharacters/:id', {
         template: '<maincharacterdetail></maincharacterdetail>'
       }).
       when('/maincharactertitle/:operation/:id', {

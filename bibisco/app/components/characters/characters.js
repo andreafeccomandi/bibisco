@@ -72,7 +72,7 @@ function CharactersController($location, $scope, LoggerService,
   }
 
   self.mainCharacterSelect = function(id) {
-    $location.path('/maincharacterdetail/' + id);
+    $location.path('/maincharacters/' + id);
   }
 
   self.secondaryCharacterSelect = function(id) {

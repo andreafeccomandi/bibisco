@@ -45,7 +45,7 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/maincharacterdetail/" + $routeParams.id;
+      self.exitpath = "/maincharacters/" + $routeParams.id;
       self.name = maincharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
