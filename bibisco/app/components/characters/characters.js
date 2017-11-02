@@ -33,7 +33,7 @@ function CharactersController($location, $scope, LoggerService,
   };
 
   self.createMainCharacter = function() {
-    $location.path('/maincharactertitle/new/0');
+    $location.path('/maincharacters/new');
   }
 
   self.createSecondaryCharacter = function() {

@@ -55,8 +55,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
   }
 
   self.changeTitle = function() {
-    $location.path('/maincharactertitle/edit/' + self.maincharacter
-      .$loki);
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/title');
   }
 
   self.delete = function() {
