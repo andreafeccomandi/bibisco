@@ -90,7 +90,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   }
 
   self.createScene = function() {
-    $location.path('/chapters/' + self.chapter.$loki + '/newscene');
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/new');
   }
 
   self.moveScene = function(draggedObjectId, destinationObjectId) {
