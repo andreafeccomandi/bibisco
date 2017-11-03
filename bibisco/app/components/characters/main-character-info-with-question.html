@@ -1,1 +1,26 @@
-Info with question {{$ctrl.infotype}} for {{$ctrl.maincharacter.name}}
+<detailheader breadcrumbitems="$ctrl.breadcrumbitems"
+  editmode="$ctrl.editmode"
+  headertitle="{{$ctrl.headertitle}}"
+  headersubtitle="{{$ctrl.headersubtitle}}"
+  taskstatus="$ctrl.taskstatus"
+  taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
+</detailheader>
+
+
+
+<detailfooter
+  autosaveenabled="$ctrl.autosaveenabled"
+  backfunction="$ctrl.back()"
+  changetitleenabled="false"
+  deleteenabled="false"
+  dirty="$ctrl.dirty"
+  editmode="$ctrl.editmode"
+  imagesenabled="false"
+  lastsave="$ctrl.lastsave"
+  revisionenabled="false"
+  savefunction="$ctrl.save()"
+  showprojectexplorer="true"
+  tagsenabled="false"
+  words="1"
+  wordscharactersenabled="false">
+</detailfooter>

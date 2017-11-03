@@ -37,19 +37,24 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       href: '/project/characters'
     });
     self.breadcrumbitems.push({
-      label: self.maincharacter.name
+      label: self.maincharacter.name,
+      href: '/maincharacters/' + $routeParams.id
     });
     self.breadcrumbitems.push({
-      label: 'jsp.character.thumbnail.' + $routeParams.id + '.title'
+      label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
     });
 
+    self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info +
+      '.title';
+    self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info +
+      '.description';
+
     self.editmode = false;
-    self.showprojectexplorer = true;
-    self.infotype = $routeParams.info;
+    self.dirty = false;
   };
 
   self.back = function() {
-    $location.path('/project/characters');
+    $location.path('/maincharacters/' + $routeParams.id);
   }
 
   self.changeStatus = function(status) {
