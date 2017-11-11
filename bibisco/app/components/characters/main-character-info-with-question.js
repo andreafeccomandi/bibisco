@@ -30,6 +30,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
+    self.type = $routeParams.info;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -51,6 +52,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.editmode = false;
     self.dirty = false;
+    self.content = 'Bella storia, bo!'
   };
 
   self.back = function() {

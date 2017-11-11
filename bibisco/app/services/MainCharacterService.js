@@ -97,6 +97,35 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
+    getMainCharacterInfoWithQuestions: function(maincharacterid, type) {
+      let maincharacter = this.getMainCharacter(maincharacterid);
+      let questions;
+      let maincharacteridInfoWithQuestionsId;
+      switch (type) {
+        case 'personaldata':
+          maincharacteridInfoWithQuestionsId = maincharacter.personaldata;
+          break;
+        case 'physionomy':
+          maincharacteridInfoWithQuestionsId = maincharacter.physionomy;
+          break;
+        case 'behaviors':
+          maincharacteridInfoWithQuestionsId = maincharacter.behaviors;
+          break;
+        case 'sociology':
+          maincharacteridInfoWithQuestionsId = maincharacter.sociology;
+          break;
+        case 'psychology':
+          maincharacteridInfoWithQuestionsId = maincharacter.psychology;
+          break;
+        case 'ideas':
+          maincharacteridInfoWithQuestionsId = maincharacter.ideas;
+          break;
+      }
+
+      return maincharacters_infos_with_question_collection.get(
+        maincharacteridInfoWithQuestionsId);
+    },
+
     insertMainCharacterInfoWithQuestionsWithoutCommit: function(
       maincharacterid, type) {
 
