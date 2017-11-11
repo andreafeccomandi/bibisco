@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
-  BibiscoDbConnectionService, LoggerService) {
+  BibiscoDbConnectionService) {
   'use strict';
 
   return {

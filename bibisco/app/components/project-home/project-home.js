@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('projecthome', {
-  templateUrl: 'components/project-home/project-home.html',
-  controller: ProjectHomeController,
-  bindings: {
+  module('bibiscoApp').
+  component('projecthome', {
+    templateUrl: 'components/project-home/project-home.html',
+    controller: ProjectHomeController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function ProjectHomeController($location, $rootScope, ContextMenuService,
   LoggerService, ProjectService) {
@@ -29,12 +29,12 @@ function ProjectHomeController($location, $rootScope, ContextMenuService,
 
   self.project = function() {
     return ProjectService.getProjectInfo();
-  }
+  };
 
   self.back = function() {
     $location.path('/start');
     ContextMenuService.destroy();
-  }
+  };
 
   LoggerService.debug('End ProjectHomeController...');
 }

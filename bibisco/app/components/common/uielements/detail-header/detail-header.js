@@ -13,27 +13,20 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailheader', {
-  templateUrl: 'components/common/uielements/detail-header/detail-header.html',
-  controller: DetailHeaderController,
-  bindings: {
-    breadcrumbitems: '<',
-    editmode: '<',
-    headertitle: '@',
-    headersubtitle: '@',
-    taskstatus: '<',
-    taskstatuschangefunction: '&',
-    taskstatusreadonly: '<'
-  }
-});
+  module('bibiscoApp').
+  component('detailheader', {
+    templateUrl: 'components/common/uielements/detail-header/detail-header.html',
+    controller: DetailHeaderController,
+    bindings: {
+      breadcrumbitems: '<',
+      editmode: '<',
+      headertitle: '@',
+      headersubtitle: '@',
+      taskstatus: '<',
+      taskstatuschangefunction: '&',
+      taskstatusreadonly: '<'
+    }
+  });
 
 
-function DetailHeaderController(LoggerService) {
-
-  LoggerService.debug('Start DetailHeaderController...');
-
-  var self = this;
-
-  LoggerService.debug('End DetailHeaderController...');
-}
+function DetailHeaderController() {}

@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('export', {
-  templateUrl: 'components/export/export.html',
-  controller: ExportController,
-  bindings: {
+  module('bibiscoApp').
+  component('export', {
+    templateUrl: 'components/export/export.html',
+    controller: ExportController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function ExportController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start ExportController...');
-  var self = this;
+  //var self = this;
 
   LoggerService.debug('End ExportController...');
 }

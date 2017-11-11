@@ -13,17 +13,17 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('formbuttons', {
-  templateUrl: 'components/common/forms/form-buttons/form-buttons.html',
-  controller: FormButtonsController,
-  bindings: {
-    form: '<',
-    backfunction: '&',
-    offsetcols: '@',
-    sizecols: '@'
-  }
-});
+  module('bibiscoApp').
+  component('formbuttons', {
+    templateUrl: 'components/common/forms/form-buttons/form-buttons.html',
+    controller: FormButtonsController,
+    bindings: {
+      form: '<',
+      backfunction: '&',
+      offsetcols: '@',
+      sizecols: '@'
+    }
+  });
 
 
 function FormButtonsController(LoggerService) {
@@ -36,11 +36,11 @@ function FormButtonsController(LoggerService) {
     if (!isDirty) {
       self.backfunction();
     }
-  }
+  };
 
   self.backWithConfirm = function() {
     self.backfunction();
-  }
+  };
 
   LoggerService.debug('End FormButtonsController...');
 }

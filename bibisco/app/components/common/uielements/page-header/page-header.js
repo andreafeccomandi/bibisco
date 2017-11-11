@@ -13,29 +13,22 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('pageheader', {
-  templateUrl: 'components/common/uielements/page-header/page-header.html',
-  controller: PageHeaderController,
-  bindings: {
-    buttonlabel: '@',
-    buttonfunction: '&',
-    buttonshow: '<',
-    headertitle: '@',
-    headersubtitle: '@',
-    taskstatus: '<',
-    taskstatuschangefunction: '&',
-    taskstatusreadonly: '<',
-    taskstatusshow: '<'
-  }
-});
+  module('bibiscoApp').
+  component('pageheader', {
+    templateUrl: 'components/common/uielements/page-header/page-header.html',
+    controller: PageHeaderController,
+    bindings: {
+      buttonlabel: '@',
+      buttonfunction: '&',
+      buttonshow: '<',
+      headertitle: '@',
+      headersubtitle: '@',
+      taskstatus: '<',
+      taskstatuschangefunction: '&',
+      taskstatusreadonly: '<',
+      taskstatusshow: '<'
+    }
+  });
 
 
-function PageHeaderController(LoggerService) {
-
-  LoggerService.debug('Start PageHeaderController...');
-
-  var self = this;
-
-  LoggerService.debug('End PageHeaderController...');
-}
+function PageHeaderController() {}

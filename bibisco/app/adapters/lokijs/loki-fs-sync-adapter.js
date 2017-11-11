@@ -2,7 +2,7 @@
  * Created by user on 2016/10/13.
  */
 
-"use strict";
+'use strict';
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -26,28 +26,28 @@
 
     Object.assign(LokiFsSyncAdapter.prototype, Loki.persistenceAdapters
       .fs.prototype, {
-        loadDatabase: function(dbname, callback) {
-          var err = null;
-          var stats;
-          stats = this.fs.statSync(dbname);
-          if (!err && stats && stats.isFile()) {
-            // readFileSync() is the synchronous alternative to async readFile() which loki normally uses
-            var data = this.fs.readFileSync(dbname, {
-              encoding: 'utf8'
-            });
-            callback(data);
-          } else if (!stats.isFile()) {
-            throw new Error(dbname + ' is not a file!');
-          } else {
-            throw new Error('Error loading db');
-          }
-        },
+      loadDatabase: function(dbname, callback) {
+        var err = null;
+        var stats;
+        stats = this.fs.statSync(dbname);
+        if (!err && stats && stats.isFile()) {
+          // readFileSync() is the synchronous alternative to async readFile() which loki normally uses
+          var data = this.fs.readFileSync(dbname, {
+            encoding: 'utf8'
+          });
+          callback(data);
+        } else if (!stats.isFile()) {
+          throw new Error(dbname + ' is not a file!');
+        } else {
+          throw new Error('Error loading db');
+        }
+      },
 
-        saveDatabase: function(dbname, dbstring, callback) {
-          this.fs.writeFileSync(dbname, dbstring);
-          callback(null);
-        },
-      }
+      saveDatabase: function(dbname, dbstring, callback) {
+        this.fs.writeFileSync(dbname, dbstring);
+        callback(null);
+      },
+    }
     );
 
     return LokiFsSyncAdapter;

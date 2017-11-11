@@ -13,31 +13,30 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('cardgrid', {
-  templateUrl: 'components/common/uielements/card-grid/card-grid.html',
-  controller: CardGridController,
-  bindings: {
-    carddimension: '@',
-    dndenabled: '@',
-    dropfunction: '&',
-    emptylisttext: '@',
-    emptylistbuttonlabel: '@',
-    emptylistbuttonfunction: '&',
-    family: '@',
-    items: '<',
-    pageheaderbuttonlabel: '@',
-    pageheaderbuttonfunction: '&',
-    pageheadertitle: '@',
-    pageheadersubtitle: '@',
-    selectfunction: '&',
-    type: '@'
-  }
-});
+  module('bibiscoApp').
+  component('cardgrid', {
+    templateUrl: 'components/common/uielements/card-grid/card-grid.html',
+    controller: CardGridController,
+    bindings: {
+      carddimension: '@',
+      dndenabled: '@',
+      dropfunction: '&',
+      emptylisttext: '@',
+      emptylistbuttonlabel: '@',
+      emptylistbuttonfunction: '&',
+      family: '@',
+      items: '<',
+      pageheaderbuttonlabel: '@',
+      pageheaderbuttonfunction: '&',
+      pageheadertitle: '@',
+      pageheadersubtitle: '@',
+      selectfunction: '&',
+      type: '@'
+    }
+  });
 
 
-function CardGridController(LoggerService) {
-  LoggerService.debug('Start CardGridController...');
+function CardGridController() {
 
   var self = this;
 
@@ -53,7 +52,5 @@ function CardGridController(LoggerService) {
     self.emptygridclass = 'card-grid-emptyitems-' + headersubtitleclass + '-' +
       self.type;
     self.headerclass = 'card-grid-header-' + self.type;
-  }
-
-  LoggerService.debug('End CardGridController...');
+  };
 }

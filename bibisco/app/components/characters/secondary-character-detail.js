@@ -13,15 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('secondarycharacterdetail', {
-  templateUrl: 'components/characters/secondary-character-detail.html',
-  controller: SecondaryCharacterDetailController
-});
+  module('bibiscoApp').
+  component('secondarycharacterdetail', {
+    templateUrl: 'components/characters/secondary-character-detail.html',
+    controller: SecondaryCharacterDetailController
+  });
 
 function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
-  SecondaryCharacterService, LoggerService) {
-  LoggerService.debug('Start SecondaryCharacterDetailController...');
+  SecondaryCharacterService) {
 
   var self = this;
 
@@ -45,37 +44,34 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
   self.back = function() {
     $location.path('/project/characters');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.secondarycharacter.status = status;
     SecondaryCharacterService.update(self.secondarycharacter);
-  }
+  };
 
   self.changeTitle = function() {
     $location.path('/secondarycharacters/' + self.secondarycharacter
       .$loki + '/title');
-  }
+  };
 
   self.delete = function() {
     SecondaryCharacterService.remove(self.secondarycharacter
       .$loki);
     $location.path('/project/characters');
-  }
+  };
 
   self.getSecondaryCharacter = function(id) {
-    return secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter(
-      id);
-  }
+    return SecondaryCharacterService.getSecondaryCharacter(id);
+  };
 
-  self.savefunction = function(text) {
+  self.savefunction = function() {
     SecondaryCharacterService.update(self.secondarycharacter);
-  }
+  };
 
   self.showimagesfunction = function() {
     alert('Qui si visualizzeranno le immagini per id=' + self.secondarycharacter
       .$loki);
-  }
-
-  LoggerService.debug('End SecondaryCharacterDetailController...');
+  };
 }

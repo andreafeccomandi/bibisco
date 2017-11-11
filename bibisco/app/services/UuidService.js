@@ -23,5 +23,5 @@ angular.module('bibiscoApp').service('UuidService', function() {
     generateUuid: function() {
       return uuid();
     }
-  }
+  };
 });

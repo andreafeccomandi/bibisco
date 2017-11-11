@@ -13,17 +13,16 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('project', {
-  templateUrl: 'components/project/project.html',
-  controller: ProjectController,
-  bindings: {
+  module('bibiscoApp').
+  component('project', {
+    templateUrl: 'components/project/project.html',
+    controller: ProjectController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
-function ProjectController($location, $rootScope, $routeParams, LoggerService,
-  ProjectService) {
+function ProjectController($location, $rootScope, $routeParams, LoggerService) {
   LoggerService.debug('Start ProjectController...');
   var self = this;
 
@@ -39,7 +38,7 @@ function ProjectController($location, $rootScope, $routeParams, LoggerService,
   self.infoActive = false;
 
   // select item from route
-  eval("self." + $routeParams.item + "Active = true");
+  eval('self.' + $routeParams.item + 'Active = true');
 
   // show menu
   $rootScope.$emit('SHOW_PROJECT', {
@@ -49,7 +48,7 @@ function ProjectController($location, $rootScope, $routeParams, LoggerService,
   // change menu item
   $rootScope.$on('MENU_ITEM_SELECTED', function(event, args) {
     self.disableAllItems();
-    eval("self." + args.item + "Active = true");
+    eval('self.' + args.item + 'Active = true');
   });
 
   // disable all items
@@ -63,7 +62,7 @@ function ProjectController($location, $rootScope, $routeParams, LoggerService,
     self.analysisActive = false;
     self.settingsActive = false;
     self.infoActive = false;
-  }
+  };
 
   LoggerService.debug('End ProjectController...');
 }

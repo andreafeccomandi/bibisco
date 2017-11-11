@@ -13,34 +13,30 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailcontent', {
-  templateUrl: 'components/common/uielements/detail-content/detail-content.html',
-  controller: DetailContentController,
-  bindings: {
-    autosaveenabled: '=',
-    characters: '=',
-    content: '=',
-    dirty: '=',
-    editmode: '=',
-    headersubtitle: '<',
-    savedcontent: '<',
-    savefunction: '&',
-    showprojectexplorer: '<',
-    words: '='
-  }
-});
+  module('bibiscoApp').
+  component('detailcontent', {
+    templateUrl: 'components/common/uielements/detail-content/detail-content.html',
+    controller: DetailContentController,
+    bindings: {
+      autosaveenabled: '=',
+      characters: '=',
+      content: '=',
+      dirty: '=',
+      editmode: '=',
+      headersubtitle: '<',
+      savedcontent: '<',
+      savefunction: '&',
+      showprojectexplorer: '<',
+      words: '='
+    }
+  });
 
 
-function DetailContentController(LoggerService) {
-
-  LoggerService.debug('Start DetailContentController...');
+function DetailContentController() {
 
   var self = this;
 
   self.enableeditmode = function() {
     self.editmode = true;
-  }
-
-  LoggerService.debug('End DetailContentController...');
+  };
 }

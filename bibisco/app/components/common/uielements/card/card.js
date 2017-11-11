@@ -13,30 +13,24 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('card', {
-  templateUrl: 'components/common/uielements/card/card.html',
-  controller: CardController,
-  bindings: {
-    cardid: '<',
-    cardtitle: '@',
-    characters: '<',
-    dimension: '@',
-    dndenabled: '<',
-    dropfunction: '&',
-    family: '@',
-    selectfunction: '&',
-    status: '<',
-    text: '@',
-    words: '<'
-  }
-});
+  module('bibiscoApp').
+  component('card', {
+    templateUrl: 'components/common/uielements/card/card.html',
+    controller: CardController,
+    bindings: {
+      cardid: '<',
+      cardtitle: '@',
+      characters: '<',
+      dimension: '@',
+      dndenabled: '<',
+      dropfunction: '&',
+      family: '@',
+      selectfunction: '&',
+      status: '<',
+      text: '@',
+      words: '<'
+    }
+  });
 
 
-function CardController($location, LoggerService) {
-  LoggerService.debug('Start CardController...');
-
-  var self = this;
-
-  LoggerService.debug('End CardController...');
-}
+function CardController() {}

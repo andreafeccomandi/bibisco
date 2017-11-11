@@ -13,47 +13,40 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailfooter', {
-  templateUrl: 'components/common/uielements/detail-footer/detail-footer.html',
-  controller: DetailFooterController,
-  bindings: {
-    autosaveenabled: '<',
-    backfunction: '&',
-    changetitleenabled: '<',
-    changetitlefunction: '&',
-    changetitlelabel: '@',
-    characters: '<',
-    deleteconfirmmessage: '@',
-    deleteenabled: '<',
-    deleteforbidden: '<',
-    deleteforbiddenmessage: '@',
-    deletefunction: '&',
-    dirty: '=',
-    extrabuttons: '<',
-    imagesenabled: '<',
-    editmode: '=',
-    lastsave: '<',
-    revisionactive: '<',
-    revisioncount: '<',
-    revisionenabled: '<',
-    revisionfunction: '&',
-    savefunction: '&',
-    showimagesfunction: '&',
-    showprojectexplorer: '=',
-    tagsenabled: '<',
-    tagsfunction: '&',
-    words: '<',
-    wordscharactersenabled: '<'
-  }
-});
+  module('bibiscoApp').
+  component('detailfooter', {
+    templateUrl: 'components/common/uielements/detail-footer/detail-footer.html',
+    controller: DetailFooterController,
+    bindings: {
+      autosaveenabled: '<',
+      backfunction: '&',
+      changetitleenabled: '<',
+      changetitlefunction: '&',
+      changetitlelabel: '@',
+      characters: '<',
+      deleteconfirmmessage: '@',
+      deleteenabled: '<',
+      deleteforbidden: '<',
+      deleteforbiddenmessage: '@',
+      deletefunction: '&',
+      dirty: '=',
+      extrabuttons: '<',
+      imagesenabled: '<',
+      editmode: '=',
+      lastsave: '<',
+      revisionactive: '<',
+      revisioncount: '<',
+      revisionenabled: '<',
+      revisionfunction: '&',
+      savefunction: '&',
+      showimagesfunction: '&',
+      showprojectexplorer: '=',
+      tagsenabled: '<',
+      tagsfunction: '&',
+      words: '<',
+      wordscharactersenabled: '<'
+    }
+  });
 
 
-function DetailFooterController(LoggerService, PopupBoxesService) {
-
-  LoggerService.debug('Start DetailFooterController...');
-
-  var self = this;
-
-  LoggerService.debug('End DetailFooterController...');
-}
+function DetailFooterController() {}

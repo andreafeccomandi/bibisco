@@ -27,12 +27,12 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
         type: id
       });
     },
-    getFabula: function(id) {
+    getFabula: function() {
       return collection.findOne({
         type: 'fabula'
       });
     },
-    getPremise: function(id) {
+    getPremise: function() {
       return collection.findOne({
         type: 'premise'
       });
@@ -45,5 +45,5 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
     update: function(architectureItem) {
       CollectionUtilService.update(collection, architectureItem);
     }
-  }
+  };
 });

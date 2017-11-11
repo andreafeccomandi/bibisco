@@ -13,20 +13,19 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('modalbase', {
-  templateUrl: 'components/common/uielements/modal/modal-base/modal-base.html',
-  controller: ModalBaseController,
-  bindings: {
-    close: '&',
-    dismiss: '&',
-    mode: '@',
-    resolve: '<'
-  },
-});
+  module('bibiscoApp').
+  component('modalbase', {
+    templateUrl: 'components/common/uielements/modal/modal-base/modal-base.html',
+    controller: ModalBaseController,
+    bindings: {
+      close: '&',
+      dismiss: '&',
+      mode: '@',
+      resolve: '<'
+    },
+  });
 
-function ModalBaseController(LoggerService) {
-  LoggerService.debug('Start ModalBaseController...');
+function ModalBaseController() {
 
   var self = this;
 
@@ -45,6 +44,4 @@ function ModalBaseController(LoggerService) {
       $value: 'cancel'
     });
   };
-
-  LoggerService.debug('End ModalBaseController...');
 }

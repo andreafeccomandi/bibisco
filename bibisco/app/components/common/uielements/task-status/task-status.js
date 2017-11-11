@@ -13,21 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('taskstatus', {
-  templateUrl: 'components/common/uielements/task-status/task-status.html',
-  controller: TaskStatusController,
-  bindings: {
-    status: '<'
-  }
-});
+  module('bibiscoApp').
+  component('taskstatus', {
+    templateUrl: 'components/common/uielements/task-status/task-status.html',
+    controller: TaskStatusController,
+    bindings: {
+      status: '<'
+    }
+  });
 
 
-function TaskStatusController(LoggerService) {
-
-  LoggerService.debug('Start TaskStatusController...');
-
-  var self = this;
-
-  LoggerService.debug('End TaskStatusController...');
-}
+function TaskStatusController() {}

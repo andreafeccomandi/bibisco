@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('locations', {
-  templateUrl: 'components/locations/locations.html',
-  controller: LocationsController,
-  bindings: {
+  module('bibiscoApp').
+  component('locations', {
+    templateUrl: 'components/locations/locations.html',
+    controller: LocationsController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function LocationsController($location, $scope, LocationService,
   LoggerService) {
@@ -34,11 +34,11 @@ function LocationsController($location, $scope, LocationService,
 
   self.locationsPresent = function() {
     return LocationService.getLocationsCount() > 0;
-  }
+  };
 
   self.create = function() {
     $location.path('/locations/new');
-  }
+  };
 
   self.getCardGridItems = function() {
     let items;
@@ -57,17 +57,17 @@ function LocationsController($location, $scope, LocationService,
       }
     }
     return items;
-  }
+  };
 
   self.move = function(draggedObjectId, destinationObjectId) {
     LocationService.move(draggedObjectId, destinationObjectId);
     self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
-  }
+  };
 
   self.select = function(id) {
     $location.path('/locations/' + id);
-  }
+  };
 
   self.locationDescription = function(nation, state, city) {
     let useComma = false;
@@ -78,20 +78,20 @@ function LocationsController($location, $scope, LocationService,
     }
     if (state) {
       if (useComma) {
-        description = description + ", ";
+        description = description + ', ';
       }
       description = description + state;
       useComma = true;
     }
     if (city) {
       if (useComma) {
-        description = description + ", ";
+        description = description + ', ';
       }
       description = description + city;
     }
 
     return description;
-  }
+  };
 
   LoggerService.debug('End LocationsController...');
 }

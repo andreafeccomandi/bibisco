@@ -13,20 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('modalalert', {
-  templateUrl: 'components/common/uielements/modal/modal-alert/modal-alert.html',
-  controller: ModalAlertController,
-  bindings: {
-    dismiss: '&',
-    resolve: '<'
-  },
-});
+  module('bibiscoApp').
+  component('modalalert', {
+    templateUrl: 'components/common/uielements/modal/modal-alert/modal-alert.html',
+    controller: ModalAlertController,
+    bindings: {
+      dismiss: '&',
+      resolve: '<'
+    },
+  });
 
-function ModalAlertController(LoggerService) {
-  LoggerService.debug('Start ModalAlertController...');
-
-  var self = this;
-
-  LoggerService.debug('End ModalAlertController...');
-}
+function ModalAlertController() {}

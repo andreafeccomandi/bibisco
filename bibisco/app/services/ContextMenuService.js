@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ContextMenuService', function(
-  $translate, ContextService, ProjectService) {
+  $translate, ContextService, LoggerService, ProjectService) {
   'use strict';
 
   // config context menu and spell check
@@ -83,7 +83,7 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
         paste: function() {
           return translations.context_menu_paste;
         }
-      }
+      };
     },
 
     createMenu: async function() {
@@ -170,7 +170,7 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
                   _spellCheckHandler.currentSpellchecker.add(
                     menuInfo.misspelledWord);
                 } catch (e) {
-                  console.log(e.message);
+                  LoggerService.error(e.message);
                 }
               }
             });
@@ -228,7 +228,7 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
           this.stringTable = Object.assign(this.stringTable,
             stringTable);
         }
-      }
+      };
     },
   };
 });

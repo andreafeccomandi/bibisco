@@ -13,18 +13,13 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('analysis', {
-  templateUrl: 'components/analysis/analysis.html',
-  controller: AnalysisController,
-  bindings: {
+  module('bibiscoApp').
+  component('analysis', {
+    templateUrl: 'components/analysis/analysis.html',
+    controller: AnalysisController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
-function AnalysisController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start AnalysisController...');
-  var self = this;
-
-  LoggerService.debug('End AnalysisController...');
-}
+function AnalysisController() {}

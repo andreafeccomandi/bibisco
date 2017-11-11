@@ -13,26 +13,24 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('richtexteditor', {
-  templateUrl: 'components/common/uielements/richtexteditor/richtexteditor.html',
-  controller: RichTextEditorController,
-  bindings: {
-    autosaveenabled: '=',
-    characters: '=',
-    content: '=',
-    dirty: '=',
-    savefunction: '&',
-    words: '='
-  }
-});
+  module('bibiscoApp').
+  component('richtexteditor', {
+    templateUrl: 'components/common/uielements/richtexteditor/richtexteditor.html',
+    controller: RichTextEditorController,
+    bindings: {
+      autosaveenabled: '=',
+      characters: '=',
+      content: '=',
+      dirty: '=',
+      savefunction: '&',
+      words: '='
+    }
+  });
 
 
 function RichTextEditorController($document, $scope, $timeout, $uibModal,
   hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
   RichTextEditorPreferencesService) {
-
-  LoggerService.debug('Start RichTextEditorController...');
 
   var self = this;
   self.$onInit = function() {
@@ -44,7 +42,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     setTimeout(function() {
       div.focus();
     }, 0);
-  }
+  };
 
 
   if (ContextService.getOs() == 'darwin') {
@@ -81,7 +79,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     self.justifyactive = false;
     self.orderedlistactive = false;
     self.unorderedlistactive = false;
-  }
+  };
 
   hotkeys.bindTo($scope)
     .add({
@@ -167,7 +165,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.strikethroughactive = false;
     }
 
-    if ($document[0].queryCommandValue("BackColor").toString() ==
+    if ($document[0].queryCommandValue('BackColor').toString() ==
       'rgb(255, 255, 0)') {
       self.highlightactive = true;
     } else {
@@ -209,133 +207,131 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
     } else {
       self.unorderedlistactive = false;
     }
-  }
+  };
 
   self.undo = function() {
     $document[0].execCommand('undo');
-  }
+  };
 
   self.redo = function() {
     $document[0].execCommand('redo');
-  }
+  };
 
   self.print = function() {
-    var printMe = document.getElementById("richtexteditor");
+    var printMe = document.getElementById('richtexteditor');
     var printIframe = document.createElement('iframe');
-    printIframe.name = "print_iframe";
+    printIframe.name = 'print_iframe';
     document.body.appendChild(printIframe);
-    var printIframeWindow = window.frames["print_iframe"];
+    var printIframeWindow = window.frames['print_iframe'];
     var printDocument = printIframeWindow.document;
-    printDocument.write("<html><body></body></html>");
+    printDocument.write('<html><body></body></html>');
     printDocument.body.innerHTML = printMe.innerHTML;
-    var result = printIframeWindow.print();
+    printIframeWindow.print();
     printIframe.parentNode.removeChild(printIframe);
-  }
+  };
 
   self.copy = function() {
     $document[0].execCommand('copy');
-  }
+  };
 
   self.cut = function() {
     $document[0].execCommand('cut');
-  }
+  };
 
   self.paste = function() {
     $timeout(function() {
       $document[0].execCommand('paste');
     });
-  }
+  };
 
   self.bold = function() {
     $document[0].execCommand('bold');
     self.checkselectionstate();
-  }
+  };
 
   self.italic = function() {
     $document[0].execCommand('italic');
     self.checkselectionstate();
-  }
+  };
 
   self.underline = function() {
     $document[0].execCommand('underline');
     self.checkselectionstate();
-  }
+  };
 
   self.strikethrough = function() {
     $document[0].execCommand('strikeThrough');
     self.checkselectionstate();
-  }
+  };
 
   self.highlight = function() {
-    if ($document[0].queryCommandValue("BackColor").toString() ==
+    if ($document[0].queryCommandValue('BackColor').toString() ==
       'rgb(255, 255, 0)') {
-      $document[0].execCommand("hiliteColor", false, 'inherit');
+      $document[0].execCommand('hiliteColor', false, 'inherit');
     } else {
-      $document[0].execCommand("hiliteColor", false, 'rgb(255, 255, 0)');
+      $document[0].execCommand('hiliteColor', false, 'rgb(255, 255, 0)');
     }
 
     self.checkselectionstate();
-  }
+  };
 
   self.leftguillemet = function() {
     $document[0].execCommand('insertText', false, '«');
     self.checkselectionstate();
-  }
+  };
 
   self.rightguillemet = function() {
     $document[0].execCommand('insertText', false, '»');
     self.checkselectionstate();
-  }
+  };
 
   self.emdash = function() {
     $document[0].execCommand('insertText', false, '—');
     self.checkselectionstate();
-  }
+  };
 
   self.orderedlist = function() {
     $document[0].execCommand('insertOrderedList');
     self.checkselectionstate();
-  }
+  };
 
   self.unorderedlist = function() {
     $document[0].execCommand('insertUnorderedList');
     self.checkselectionstate();
-  }
+  };
 
   self.aligncenter = function() {
     $document[0].execCommand('justifyCenter');
     self.checkselectionstate();
-  }
+  };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
     self.checkselectionstate();
-  }
+  };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
     self.checkselectionstate();
-  }
+  };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
     self.checkselectionstate();
-  }
+  };
 
   self.sanitizePaste = function($event) {
     let text;
     let sanitizedText;
     if ($event.clipboardData) {
       text = $event.clipboardData.getData('text/html');
-      console.log('text=' + text);
       sanitizedText = SanitizeHtmlService.sanitize(text);
-      console.log('sanitizedText=' + sanitizedText);
       $event.preventDefault();
       $timeout(function() {
         $document[0].execCommand('insertHTML', false, sanitizedText);
       });
     }
-  }
+  };
 
   self.opensettings = function() {
     var modalInstance = $uibModal.open({
@@ -345,7 +341,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       size: 'richtexteditorsettings'
     });
 
-    modalInstance.result.then(function(selectedItem) {
+    modalInstance.result.then(function() {
       // save
       self.fontclass = RichTextEditorPreferencesService.getFontClass();
       self.indentclass = RichTextEditorPreferencesService.getIndentClass();
@@ -354,24 +350,22 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
 
     }, function() {});
-  }
+  };
 
   self.contentChanged = function() {
     self.dirty = true;
     self.countWordsAndCharacters();
-  }
+  };
 
   self.countWordsAndCharacters = function() {
 
     let wordCount = require('html-word-count');
 
-    let div = document.createElement("div");
+    let div = document.createElement('div');
     div.innerHTML = self.content;
-    let texttoprocess = div.textContent || div.innerText || "";
+    let texttoprocess = div.textContent || div.innerText || '';
 
     self.characters = texttoprocess.trim().length;
     self.words = wordCount(self.content);
-  }
-
-  LoggerService.debug('End RichTextEditorController...');
+  };
 }

@@ -13,23 +13,17 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('languageinputfield', {
-  templateUrl: 'components/common/forms/language-input-field/language-input-field.html',
-  controller: LanguageInputFieldController,
-  bindings: {
-    applyonchange: '<',
-    inputcols: '@',
-    label: '@',
-    labelcols: '@',
-    onselectlanguage: '&'
-  }
-});
+  module('bibiscoApp').
+  component('languageinputfield', {
+    templateUrl: 'components/common/forms/language-input-field/language-input-field.html',
+    controller: LanguageInputFieldController,
+    bindings: {
+      applyonchange: '<',
+      inputcols: '@',
+      label: '@',
+      labelcols: '@',
+      onselectlanguage: '&'
+    }
+  });
 
-function LanguageInputFieldController(LocaleService, LoggerService) {
-  LoggerService.debug('Start LanguageInputFieldController...');
-
-  var self = this;
-
-  LoggerService.debug('End LanguageInputFieldController...');
-}
+function LanguageInputFieldController() {}

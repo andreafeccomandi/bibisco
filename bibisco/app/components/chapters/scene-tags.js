@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('scenetags', {
-  templateUrl: 'components/chapters/scene-tags.html',
-  controller: SceneTagsController
-});
+  module('bibiscoApp').
+  component('scenetags', {
+    templateUrl: 'components/chapters/scene-tags.html',
+    controller: SceneTagsController
+  });
 
 function SceneTagsController($location, $routeParams, $translate,
   ChapterService, LocaleService, LocationService, LoggerService,
@@ -76,7 +76,7 @@ function SceneTagsController($location, $routeParams, $translate,
 
     self.dirty = false;
 
-  }
+  };
 
   self.initPointOfViews = function() {
 
@@ -116,35 +116,35 @@ function SceneTagsController($location, $routeParams, $translate,
       self.showpovcharacter = false;
       self.scenetags.povcharacterid = null;
     }
-  }
+  };
 
   self.togglePov = function(id) {
     self.scenetags.povid = id;
     self.initPointOfViews();
     self.dirty = true;
-  }
+  };
 
   self.togglePovCharacter = function(id) {
     self.scenetags.povcharacterid = id;
     self.initPovCharacters();
     self.dirty = true;
-  }
+  };
 
   self.toggleSceneCharacter = function(id) {
     self.toggleTagElement(self.scenetags.characters, id);
     self.initSceneCharacters();
-  }
+  };
 
   self.toggleLocation = function(id) {
     self.scenetags.locationid = id;
     self.initLocations();
     self.dirty = true;
-  }
+  };
 
   self.toggleStrand = function(id) {
     self.toggleTagElement(self.scenetags.strands, id);
     self.initStrands();
-  }
+  };
 
   self.toggleTagElement = function(arr, id) {
 
@@ -155,19 +155,19 @@ function SceneTagsController($location, $routeParams, $translate,
       arr.push(id);
     }
     self.dirty = true;
-  }
+  };
 
   self.initPovCharacters = function() {
     self.povcharacters = self.initCharacters(function(id) {
       return self.scenetags.povcharacterid == id;
     });
-  }
+  };
 
   self.initSceneCharacters = function() {
     self.scenecharacters = self.initCharacters(function(id) {
       return UtilService.array.contains(self.scenetags.characters, id);
     });
-  }
+  };
 
   self.initCharacters = function(selectfunction) {
 
@@ -203,7 +203,7 @@ function SceneTagsController($location, $routeParams, $translate,
     });
 
     return characters;
-  }
+  };
 
   self.initLocations = function() {
 
@@ -223,7 +223,7 @@ function SceneTagsController($location, $routeParams, $translate,
     self.locations.sort(function(a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
     });
-  }
+  };
 
   self.initStrands = function() {
 
@@ -244,17 +244,17 @@ function SceneTagsController($location, $routeParams, $translate,
     self.strands.sort(function(a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
     });
-  }
+  };
 
   self.save = function() {
     ChapterService.updateSceneTags(self.scenetags);
     self.dirty = false;
-  }
+  };
 
   self.back = function() {
     $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
-      $routeParams.sceneid)
-  }
+      $routeParams.sceneid);
+  };
 
   LoggerService.debug('End SceneTagsController...');
 }

@@ -13,20 +13,20 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('maincharacterquestions', {
-  templateUrl: 'components/characters/main-character-questions.html',
-  controller: MaincharacterQuestionsController,
-  bindings: {
-    autosaveenabled: '=',
-    content: '=',
-    dirty: '=',
-    editmode: '=',
-    freetext: '=',
-    maincharacterid: '<',
-    type: '<'
-  }
-});
+  module('bibiscoApp').
+  component('maincharacterquestions', {
+    templateUrl: 'components/characters/main-character-questions.html',
+    controller: MaincharacterQuestionsController,
+    bindings: {
+      autosaveenabled: '=',
+      content: '=',
+      dirty: '=',
+      editmode: '=',
+      freetext: '=',
+      maincharacterid: '<',
+      type: '<'
+    }
+  });
 
 
 function MaincharacterQuestionsController(LoggerService, MainCharacterService) {
@@ -42,11 +42,11 @@ function MaincharacterQuestionsController(LoggerService, MainCharacterService) {
     for (let i = 0; i < self.infowithQuestions.questions.length; i++) {
       console.log(self.infowithQuestions.questions[i]);
     }
-  }
+  };
 
   self.enableeditmode = function() {
     self.editmode = true;
-  }
+  };
 
   LoggerService.debug('End MaincharacterQuestionsController...');
 }

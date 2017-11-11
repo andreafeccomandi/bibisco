@@ -13,21 +13,15 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('modalconfirm', {
-  templateUrl: 'components/common/uielements/modal/modal-confirm/modal-confirm.html',
-  controller: ModalConfirmController,
-  bindings: {
-    close: '&',
-    dismiss: '&',
-    resolve: '<'
-  },
-});
+  module('bibiscoApp').
+  component('modalconfirm', {
+    templateUrl: 'components/common/uielements/modal/modal-confirm/modal-confirm.html',
+    controller: ModalConfirmController,
+    bindings: {
+      close: '&',
+      dismiss: '&',
+      resolve: '<'
+    },
+  });
 
-function ModalConfirmController(LoggerService) {
-  LoggerService.debug('Start ModalConfirmController...');
-
-  var self = this;
-
-  LoggerService.debug('End ModalConfirmController...');
-}
+function ModalConfirmController() {}

@@ -165,8 +165,8 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       }
       filterquery.position = {
         '$between': [startPosition, endPosition]
-      }
+      };
       return collection.find(filterquery);
     }
-  }
+  };
 });

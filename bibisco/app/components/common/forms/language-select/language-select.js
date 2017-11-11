@@ -13,15 +13,15 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('languageselect', {
-  templateUrl: 'components/common/forms/language-select/language-select.html',
-  controller: LanguageSelectController,
-  bindings: {
-    applyonchange: '<',
-    onselectlanguage: '&'
-  }
-});
+  module('bibiscoApp').
+  component('languageselect', {
+    templateUrl: 'components/common/forms/language-select/language-select.html',
+    controller: LanguageSelectController,
+    bindings: {
+      applyonchange: '<',
+      onselectlanguage: '&'
+    }
+  });
 
 function LanguageSelectController(LocaleService, LoggerService) {
   LoggerService.debug('Start LanguageSelectController...');

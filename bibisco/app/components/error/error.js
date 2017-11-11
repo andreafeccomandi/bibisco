@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('error', {
-  templateUrl: 'components/error/error.html',
-  controller: ErrorController
-});
+  module('bibiscoApp').
+  component('error', {
+    templateUrl: 'components/error/error.html',
+    controller: ErrorController
+  });
 
 function ErrorController(ContextService, LoggerService) {
   LoggerService.debug('Start ErrorController...');

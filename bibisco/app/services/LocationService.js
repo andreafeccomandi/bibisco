@@ -40,24 +40,24 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
       if (location.state) {
         if (useComma) {
-          name = name + ", ";
+          name = name + ', ';
         } else {
-          name = name + ' ('
+          name = name + ' (';
         }
         name = name + location.state;
         useComma = true;
       }
       if (location.city) {
         if (useComma) {
-          name = name + ", ";
+          name = name + ', ';
         } else {
-          name = name + ' ('
+          name = name + ' (';
         }
         name = name + location.city;
       }
 
       if (useComma) {
-        name = name + ")";
+        name = name + ')';
       }
 
       return name;
@@ -126,5 +126,5 @@ angular.module('bibiscoApp').service('LocationService', function(
     update: function(location) {
       CollectionUtilService.update(collection, location);
     },
-  }
+  };
 });

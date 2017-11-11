@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('settings', {
-  templateUrl: 'components/settings/settings.html',
-  controller: SettingsController
-});
+  module('bibiscoApp').
+  component('settings', {
+    templateUrl: 'components/settings/settings.html',
+    controller: SettingsController
+  });
 
 function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
@@ -38,14 +38,14 @@ function SettingsController($location, $rootScope, $scope,
 
   self.selectLanguage = function(selectedLanguage) {
     self.selectedLanguage = selectedLanguage;
-  }
+  };
 
   self.selectProjectsDirectory = function(directory) {
     self.selectedProjectsDirectory = directory;
     self.forbiddenDirectory = false;
     $scope.settingsForm.$setDirty();
     $scope.$apply();
-  }
+  };
 
   self.save = function(isValid, isDirty) {
     LoggerService.debug('save: isValid = ' + isValid + ' - isDirty = ' +
@@ -76,11 +76,11 @@ function SettingsController($location, $rootScope, $scope,
         self.forbiddenDirectory = true;
       }
     }
-  }
+  };
 
   self.back = function() {
     $location.path('/start');
-  }
+  };
 
   LoggerService.debug('End SettingsController...');
 }

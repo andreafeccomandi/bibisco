@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('stranddetail', {
-  templateUrl: 'components/strands/strand-detail.html',
-  controller: StrandDetailController
-});
+  module('bibiscoApp').
+  component('stranddetail', {
+    templateUrl: 'components/strands/strand-detail.html',
+    controller: StrandDetailController
+  });
 
 function StrandDetailController($location, $routeParams, StrandService,
   LoggerService) {
@@ -45,31 +45,30 @@ function StrandDetailController($location, $routeParams, StrandService,
 
   self.back = function() {
     $location.path('/project/architecture');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.strand.status = status;
     StrandService.update(self.strand);
-  }
+  };
 
   self.changeTitle = function() {
     $location.path('/strands/' + self.strand.$loki + '/title');
-  }
+  };
 
   self.delete = function() {
     StrandService.remove(self.strand
       .$loki);
     $location.path('/project/architecture');
-  }
+  };
 
   self.getStrand = function(id) {
-    return secondaryCharacter = StrandService.getStrand(
-      id);
-  }
+    return StrandService.getStrand(id);
+  };
 
-  self.savefunction = function(text) {
+  self.savefunction = function() {
     StrandService.update(self.strand);
-  }
+  };
 
   LoggerService.debug('End StrandDetailController...');
 }

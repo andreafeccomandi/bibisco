@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('secondarycharactertitle', {
-  templateUrl: 'components/characters/secondary-character-title.html',
-  controller: SecondaryCharacterTitleController
-});
+  module('bibiscoApp').
+  component('secondarycharactertitle', {
+    templateUrl: 'components/characters/secondary-character-title.html',
+    controller: SecondaryCharacterTitleController
+  });
 
 function SecondaryCharacterTitleController($location, $routeParams,
   SecondaryCharacterService, LoggerService) {
@@ -45,7 +45,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/secondarycharacters/" + $routeParams.id;
+      self.exitpath = '/secondarycharacters/' + $routeParams.id;
       self.name = secondarycharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
@@ -56,12 +56,12 @@ function SecondaryCharacterTitleController($location, $routeParams,
         label: 'jsp.characters.dialog.title.createSecondaryCharacter'
       });
 
-      self.exitpath = "/project/characters";
+      self.exitpath = '/project/characters';
       self.name = null;
       self.pageheadertitle =
         'jsp.characters.dialog.title.createSecondaryCharacter';
     }
-  }
+  };
 
   self.save = function(title) {
     if ($routeParams.id != null) {
@@ -75,7 +75,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
         name: title
       });
     }
-  }
+  };
 
   LoggerService.debug('End SecondaryCharacterTitleController...');
 }

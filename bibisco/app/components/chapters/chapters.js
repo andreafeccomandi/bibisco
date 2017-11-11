@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('chapters', {
-  templateUrl: 'components/chapters/chapters.html',
-  controller: ChaptersController,
-  bindings: {
+  module('bibiscoApp').
+  component('chapters', {
+    templateUrl: 'components/chapters/chapters.html',
+    controller: ChaptersController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function ChaptersController($location, $rootScope, $scope, ChapterService,
   LoggerService) {
@@ -30,7 +30,7 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
 
   self.create = function() {
     $location.path('/chapters/new');
-  }
+  };
 
   self.getCardGridItems = function() {
     let items;
@@ -50,17 +50,17 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
       }
     }
     return items;
-  }
+  };
 
   self.move = function(draggedObjectId, destinationObjectId) {
     ChapterService.move(draggedObjectId, destinationObjectId);
     self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
-  }
+  };
 
   self.select = function(id) {
     $location.path('/chapters/' + id);
-  }
+  };
 
   self.cardgriditems = this.getCardGridItems();
 

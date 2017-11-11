@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('locationdetail', {
-  templateUrl: 'components/locations/location-detail.html',
-  controller: LocationDetailController
-});
+  module('bibiscoApp').
+  component('locationdetail', {
+    templateUrl: 'components/locations/location-detail.html',
+    controller: LocationDetailController
+  });
 
 function LocationDetailController($location, $routeParams, LocationService,
   LoggerService) {
@@ -46,35 +46,35 @@ function LocationDetailController($location, $routeParams, LocationService,
 
   self.back = function() {
     $location.path('/project/locations');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.location.status = status;
     LocationService.update(self.location);
-  }
+  };
 
   self.changeTitle = function() {
     $location.path('/locations/' + self.location.$loki + '/title');
-  }
+  };
 
   self.delete = function() {
     LocationService.remove(self.location
       .$loki);
     $location.path('/project/locations');
-  }
+  };
 
   self.getLocation = function(id) {
     return LocationService.getLocation(id);
-  }
+  };
 
-  self.savefunction = function(text) {
+  self.savefunction = function() {
     LocationService.update(self.location);
-  }
+  };
 
   self.showimagesfunction = function() {
     alert('Qui si visualizzeranno le immagini per id=' + self.location
       .$loki);
-  }
+  };
 
   LoggerService.debug('End LocationDetailController...');
 }

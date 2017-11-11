@@ -13,25 +13,25 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('textinputfield', {
-  templateUrl: 'components/common/forms/text-input-field/text-input-field.html',
-  controller: TextInputFieldController,
-  bindings: {
-    model: '=',
-    field: '<',
-    label: '@',
-    placeholder: '@',
-    name: '@',
-    required: '@',
-    minlength: '@',
-    maxlength: '@',
-    autofocus: '@',
-    typeheadsource: '<',
-    labelcols: '@',
-    inputcols: '@'
-  }
-});
+  module('bibiscoApp').
+  component('textinputfield', {
+    templateUrl: 'components/common/forms/text-input-field/text-input-field.html',
+    controller: TextInputFieldController,
+    bindings: {
+      model: '=',
+      field: '<',
+      label: '@',
+      placeholder: '@',
+      name: '@',
+      required: '@',
+      minlength: '@',
+      maxlength: '@',
+      autofocus: '@',
+      typeheadsource: '<',
+      labelcols: '@',
+      inputcols: '@'
+    }
+  });
 
 
 function TextInputFieldController(LoggerService) {
@@ -43,7 +43,7 @@ function TextInputFieldController(LoggerService) {
   // show errors
   self.hasError = function() {
     return self.field.$$parentForm.$submitted && self.field.$invalid;
-  }
+  };
 
   LoggerService.debug('End TextInputFieldController...');
 }

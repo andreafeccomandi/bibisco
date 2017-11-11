@@ -13,26 +13,24 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('elementtitleform', {
-  templateUrl: 'components/common/uielements/element-title-form/element-title-form.html',
-  controller: ElementTitleFormController,
-  bindings: {
-    breadcrumbitems: '<',
-    eventname: '@',
-    exitpath: '@',
-    pageheadertitle: '@',
-    savefunction: '&',
-    titlelabel: '@',
-    titlemandatory: '<',
-    titlemaxlength: '@',
-    titlevalue: '@'
-  }
-});
+  module('bibiscoApp').
+  component('elementtitleform', {
+    templateUrl: 'components/common/uielements/element-title-form/element-title-form.html',
+    controller: ElementTitleFormController,
+    bindings: {
+      breadcrumbitems: '<',
+      eventname: '@',
+      exitpath: '@',
+      pageheadertitle: '@',
+      savefunction: '&',
+      titlelabel: '@',
+      titlemandatory: '<',
+      titlemaxlength: '@',
+      titlevalue: '@'
+    }
+  });
 
-function ElementTitleFormController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start ElementTitleFormController...');
-
+function ElementTitleFormController($location, $rootScope) {
   var self = this;
 
   self.$onInit = function() {
@@ -47,11 +45,9 @@ function ElementTitleFormController($location, $rootScope, LoggerService) {
       });
       $location.path(self.exitpath);
     }
-  }
+  };
 
   self.back = function() {
     $location.path(self.exitpath);
-  }
-
-  LoggerService.debug('End ElementTitleFormController...');
+  };
 }

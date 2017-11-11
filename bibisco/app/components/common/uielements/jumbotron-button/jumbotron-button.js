@@ -13,22 +13,16 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('jumbotronbutton', {
-  templateUrl: 'components/common/uielements/jumbotron-button/jumbotron-button.html',
-  controller: JumbotronButtonController,
-  bindings: {
-    text: '@',
-    buttonlabel: '@',
-    buttonfunction: '&'
-  }
-});
+  module('bibiscoApp').
+  component('jumbotronbutton', {
+    templateUrl: 'components/common/uielements/jumbotron-button/jumbotron-button.html',
+    controller: JumbotronButtonController,
+    bindings: {
+      text: '@',
+      buttonlabel: '@',
+      buttonfunction: '&'
+    }
+  });
 
 
-function JumbotronButtonController(LoggerService) {
-  LoggerService.debug('Start JumbotronButtonController...');
-
-  var self = this;
-
-  LoggerService.debug('End JumbotronButtonController...');
-}
+function JumbotronButtonController() {}

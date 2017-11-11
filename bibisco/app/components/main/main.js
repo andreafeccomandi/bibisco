@@ -13,17 +13,17 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('main', {
-  controller: MainController
-});
+  module('bibiscoApp').
+  component('main', {
+    controller: MainController
+  });
 
 
 function MainController($location, LoggerService, BibiscoPropertiesService,
   ContextService, FileSystemService, LocaleService, ProjectService) {
 
   LoggerService.debug('Start MainController...');
-  let firstAccess = BibiscoPropertiesService.getProperty("firstAccess");
+  let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
   let projectsDirectory = BibiscoPropertiesService.getProperty(
     'projectsDirectory');
   let projectsDirectoryExists = false;
@@ -31,10 +31,10 @@ function MainController($location, LoggerService, BibiscoPropertiesService,
   // Log installation information
   LoggerService.info('*** Application path: ' + ContextService.getAppPath());
   LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
-    "version"));
+    'version'));
   LoggerService.info('*** First access: ' + firstAccess);
   LoggerService.info('*** Locale: ' + BibiscoPropertiesService.getProperty(
-    "locale"));
+    'locale'));
   LoggerService.info('*** OS: ' + ContextService.getOs());
   LoggerService.info('*** Projects directory: ' + projectsDirectory);
 

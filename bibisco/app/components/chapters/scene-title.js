@@ -13,15 +13,13 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('scenetitle', {
-  templateUrl: 'components/chapters/scene-title.html',
-  controller: SceneTitleController
-});
+  module('bibiscoApp').
+  component('scenetitle', {
+    templateUrl: 'components/chapters/scene-title.html',
+    controller: SceneTitleController
+  });
 
-function SceneTitleController($location, $routeParams, ChapterService,
-  LoggerService, ChapterService) {
-  LoggerService.debug('Start SceneTitleController...');
+function SceneTitleController($location, $routeParams, ChapterService) {
 
   var self = this;
 
@@ -66,7 +64,7 @@ function SceneTitleController($location, $routeParams, ChapterService,
       self.pageheadertitle =
         'jsp.chapter.dialog.title.createScene';
     }
-  }
+  };
 
   self.save = function(title) {
     if ($routeParams.sceneid != null) {
@@ -79,7 +77,5 @@ function SceneTitleController($location, $routeParams, ChapterService,
         chapterid: parseInt($routeParams.chapterid)
       });
     }
-  }
-
-  LoggerService.debug('End SceneTitleController...');
+  };
 }

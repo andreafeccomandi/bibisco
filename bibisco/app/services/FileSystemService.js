@@ -58,7 +58,7 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       return walkSync(path, filter);
     },
     rename: function(oldPath, newPath) {
-      fs.renameSync(oldPath, newPath)
+      fs.renameSync(oldPath, newPath);
     },
     unzip: function(zippedFilePath, destinationFolder, callback) {
       return zip.unzip(zippedFilePath, destinationFolder, callback);
@@ -66,5 +66,5 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     zipFolder: function(folderToZip, zippedFilePath, callback) {
       return zip.zipFolder(folderToZip, zippedFilePath, callback);
     }
-  }
+  };
 });

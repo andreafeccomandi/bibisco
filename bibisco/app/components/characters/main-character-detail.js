@@ -13,15 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('maincharacterdetail', {
-  templateUrl: 'components/characters/main-character-detail.html',
-  controller: MainCharacterDetailController
-});
+  module('bibiscoApp').
+  component('maincharacterdetail', {
+    templateUrl: 'components/characters/main-character-detail.html',
+    controller: MainCharacterDetailController
+  });
 
 function MainCharacterDetailController($location, $rootScope, $routeParams,
-  MainCharacterService, LoggerService) {
-  LoggerService.debug('Start MainCharacterDetailController...');
+  MainCharacterService) {
 
   var self = this;
 
@@ -47,37 +46,34 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.back = function() {
     $location.path('/project/characters');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.maincharacter.status = status;
     MainCharacterService.update(self.maincharacter);
-  }
+  };
 
   self.changeTitle = function() {
     $location.path('/maincharacters/' + self.maincharacter.$loki + '/title');
-  }
+  };
 
   self.delete = function() {
     MainCharacterService.remove(self.maincharacter
       .$loki);
     $location.path('/project/characters');
-  }
+  };
 
   self.getMainCharacter = function(id) {
-    return mainCharacter = MainCharacterService.getMainCharacter(
-      id);
-  }
+    return MainCharacterService.getMainCharacter(id);
+  };
 
   self.showimagesfunction = function() {
     alert('Qui si visualizzeranno le immagini per id=' + self.maincharacter
       .$loki);
-  }
+  };
 
   self.showInfoWithQuestion = function(id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
       '/infowithquestion/' + id);
-  }
-
-  LoggerService.debug('End MainCharacterDetailController...');
+  };
 }

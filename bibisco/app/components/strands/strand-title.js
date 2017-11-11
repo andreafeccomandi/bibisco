@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('strandtitle', {
-  templateUrl: 'components/strands/strand-title.html',
-  controller: StrandTitleController
-});
+  module('bibiscoApp').
+  component('strandtitle', {
+    templateUrl: 'components/strands/strand-title.html',
+    controller: StrandTitleController
+  });
 
 function StrandTitleController($location, $routeParams,
   StrandService, LoggerService) {
@@ -45,7 +45,7 @@ function StrandTitleController($location, $routeParams,
         label: 'jsp.architecture.strand.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/strands/" + $routeParams.id;
+      self.exitpath = '/strands/' + $routeParams.id;
       self.name = strand.name;
       self.pageheadertitle =
         'jsp.architecture.strand.dialog.title.updateTitle';
@@ -55,12 +55,12 @@ function StrandTitleController($location, $routeParams,
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.createStrand'
       });
-      self.exitpath = "/project/architecture";
+      self.exitpath = '/project/architecture';
       self.name = null;
       self.pageheadertitle =
         'jsp.architecture.strand.dialog.title.createStrand';
     }
-  }
+  };
 
   self.save = function(title) {
     if ($routeParams.id != null) {
@@ -74,7 +74,7 @@ function StrandTitleController($location, $routeParams,
         name: title
       });
     }
-  }
+  };
 
   LoggerService.debug('End StrandTitleController...');
 }

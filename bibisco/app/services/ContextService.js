@@ -38,5 +38,5 @@ angular.module('bibiscoApp').service('ContextService', function() {
     setLastError: function(error) {
       lastError = error;
     }
-  }
+  };
 });

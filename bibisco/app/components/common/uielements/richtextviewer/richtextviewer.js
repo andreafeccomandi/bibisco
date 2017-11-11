@@ -13,24 +13,20 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('richtextviewer', {
-  templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
-  controller: RichTextViewerController,
-  bindings: {
-    content: '@'
-  }
-});
+  module('bibiscoApp').
+  component('richtextviewer', {
+    templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
+    controller: RichTextViewerController,
+    bindings: {
+      content: '@'
+    }
+  });
 
 
 function RichTextViewerController(LoggerService,
   RichTextEditorPreferencesService) {
 
-  LoggerService.debug('Start RichTextViewerController...');
-
   var self = this;
   self.fontclass = RichTextEditorPreferencesService.getFontClass();
   self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-
-  LoggerService.debug('End RichTextViewerController...');
 }

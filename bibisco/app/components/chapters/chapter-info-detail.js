@@ -13,15 +13,13 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('chapterinfodetail', {
-  templateUrl: 'components/chapters/chapter-info-detail.html',
-  controller: ChapterInfoDetailController
-});
+  module('bibiscoApp').
+  component('chapterinfodetail', {
+    templateUrl: 'components/chapters/chapter-info-detail.html',
+    controller: ChapterInfoDetailController
+  });
 
-function ChapterInfoDetailController($location, $routeParams,
-  ChapterService, LoggerService) {
-  LoggerService.debug('Start ChapterInfoDetailController...');
+function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   var self = this;
 
@@ -52,17 +50,15 @@ function ChapterInfoDetailController($location, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid)
-  }
+    $location.path('/chapters/' + $routeParams.chapterid);
+  };
 
   self.changeStatus = function(status) {
     self.chapterinfo.status = status;
     ChapterService.updateChapterInfo(self.chapterinfo);
-  }
+  };
 
-  self.savefunction = function(text) {
+  self.savefunction = function() {
     ChapterService.updateChapterInfo(self.chapterinfo);
-  }
-
-  LoggerService.debug('End ChapterInfoDetailController...');
+  };
 }

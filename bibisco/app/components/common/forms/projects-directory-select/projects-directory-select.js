@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('projectsdirectoryselect', {
-  templateUrl: 'components/common/forms/projects-directory-select/projects-directory-select.html',
-  controller: ProjectsDirectorySelectController,
-  bindings: {
-    model: '=',
-    field: '<',
-    name: '@',
-    onselectprojectsdirectory: '&',
-    forbiddendirectory: '<'
-  }
-});
+  module('bibiscoApp').
+  component('projectsdirectoryselect', {
+    templateUrl: 'components/common/forms/projects-directory-select/projects-directory-select.html',
+    controller: ProjectsDirectorySelectController,
+    bindings: {
+      model: '=',
+      field: '<',
+      name: '@',
+      onselectprojectsdirectory: '&',
+      forbiddendirectory: '<'
+    }
+  });
 
 
 function ProjectsDirectorySelectController(LoggerService) {
@@ -37,21 +37,21 @@ function ProjectsDirectorySelectController(LoggerService) {
   self.projectsdirectory = null;
   self.opendirectorydialog = function() {
     dialog.showOpenDialog({
-        properties: ['openDirectory', 'createDirectory']
-      },
-      function(filenames) {
-        if (filenames) {
-          self.onselectprojectsdirectory({
-            directory: filenames[0]
-          });
-        }
-      });
-  };;
+      properties: ['openDirectory', 'createDirectory']
+    },
+    function(filenames) {
+      if (filenames) {
+        self.onselectprojectsdirectory({
+          directory: filenames[0]
+        });
+      }
+    });
+  };
 
   // show errors
   self.hasError = function() {
     return self.field.$$parentForm.$submitted && self.field.$invalid;
-  }
+  };
 
   LoggerService.debug('End ProjectsDirectorySelectController...');
 }

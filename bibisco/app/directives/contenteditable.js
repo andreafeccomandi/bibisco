@@ -22,7 +22,6 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
       // view -> model (when div gets blur update the view value of the model)
       element.bind('keyup', function() {
         if (!element.html() || element.html() == '') {
-          console.log('*** HTML IS EMPTY!!!');
           document.execCommand('insertHTML', false,
             '<p><br/></p>'); // This is necessary to start editing inside a <p>
         }
@@ -62,11 +61,9 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
 
 // Move caret to a specific point in a DOM element
 function setCaretPosition(el, pos) {
-  console.log('setCaretPosition');
 
   // Loop through all child nodes
   for (var node of el.childNodes) {
-    console.log('node: ' + node.nodeName);
     if (node.parentNode && (node.parentNode.nodeName == 'P' || node.parentNode.nodeName ==
         'p') && node.nodeType == 3) { // we have a text node
       if (node.length >= pos) {

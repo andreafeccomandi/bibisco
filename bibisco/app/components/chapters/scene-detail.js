@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('scenedetail', {
-  templateUrl: 'components/chapters/scene-detail.html',
-  controller: SceneDetailController,
-  bindings: {
+  module('bibiscoApp').
+  component('scenedetail', {
+    templateUrl: 'components/chapters/scene-detail.html',
+    controller: SceneDetailController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function SceneDetailController($location, $rootScope, $routeParams,
   ChapterService, LoggerService) {
@@ -53,8 +53,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/chapters/' + self.chapter.$loki)
-  }
+    $location.path('/chapters/' + self.chapter.$loki);
+  };
 
   self.changerevision = function(action, revision) {
     if (action == 'new-from-actual') {
@@ -70,31 +70,31 @@ function SceneDetailController($location, $rootScope, $routeParams,
     } else if (action == 'delete') {
       self.scene = ChapterService.deleteActualSceneRevision($routeParams.sceneid);
     }
-  }
+  };
 
   self.changeStatus = function(status) {
     self.scene.status = status;
     ChapterService.updateScene(self.scene);
-  }
+  };
 
   self.changetitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/title');
-  }
+  };
 
   self.delete = function() {
     ChapterService.removeScene(self.scene.$loki);
-    $location.path('/chapters/' + self.chapter.$loki)
-  }
+    $location.path('/chapters/' + self.chapter.$loki);
+  };
 
   self.save = function() {
     ChapterService.updateScene(self.scene);
-  }
+  };
 
   self.tags = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/tags');
-  }
+  };
 
   LoggerService.debug('End SceneDetailController...');
 }

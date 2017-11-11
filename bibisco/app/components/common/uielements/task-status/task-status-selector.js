@@ -13,30 +13,26 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('taskstatusselector', {
-  templateUrl: 'components/common/uielements/task-status/task-status-selector.html',
-  controller: TaskStatusSelectorController,
-  bindings: {
-    changefunction: '&',
-    readonly: '<',
-    status: '<'
-  }
-});
+  module('bibiscoApp').
+  component('taskstatusselector', {
+    templateUrl: 'components/common/uielements/task-status/task-status-selector.html',
+    controller: TaskStatusSelectorController,
+    bindings: {
+      changefunction: '&',
+      readonly: '<',
+      status: '<'
+    }
+  });
 
 
-function TaskStatusSelectorController($scope, LoggerService) {
-
-  LoggerService.debug('Start TaskStatusSelectorController...');
+function TaskStatusSelectorController() {
 
   var self = this;
   self.disableselection = false;
 
   self.$onInit = function() {
     if (self.readonly != null && self.readonly == true) {
-      self.disableselection = true
+      self.disableselection = true;
     }
-  }
-
-  LoggerService.debug('End TaskStatusSelectorController...');
+  };
 }

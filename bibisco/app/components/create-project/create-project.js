@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('createproject', {
-  templateUrl: 'components/create-project/create-project.html',
-  controller: CreateProjectController
-});
+  module('bibiscoApp').
+  component('createproject', {
+    templateUrl: 'components/create-project/create-project.html',
+    controller: CreateProjectController
+  });
 
 function CreateProjectController($location, $rootScope, LocaleService,
   ProjectService, LoggerService) {
@@ -43,7 +43,7 @@ function CreateProjectController($location, $rootScope, LocaleService,
     'es-ar': 'Español (Argentina)',
     'es-es': 'Español (España)',
     'es-mx': 'Español (México)',
-    'es-mx': 'Español (Venezuela)',
+    'es-ve': 'Español (Venezuela)',
     'fr': 'Français',
     'it': 'Italiano',
     'nl': 'Nederlands',
@@ -53,18 +53,18 @@ function CreateProjectController($location, $rootScope, LocaleService,
     'pt-pt': 'Português (Portugal)',
     'ru': 'Русский',
     'sv': 'Svenska'
-  }
+  };
 
   self.save = function(isValid) {
     if (isValid) {
       ProjectService.create(self.projectName, self.projectLanguage);
       $location.path('/project/projecthome');
     }
-  }
+  };
 
   self.back = function() {
     $location.path('/start');
-  }
+  };
 
   LoggerService.debug('End CreateProjectController...');
 }

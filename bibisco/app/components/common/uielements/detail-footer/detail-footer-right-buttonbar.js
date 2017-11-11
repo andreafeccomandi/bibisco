@@ -13,39 +13,36 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailfooterrightbuttonbar', {
-  templateUrl: 'components/common/uielements/detail-footer/detail-footer-right-buttonbar.html',
-  controller: DetailFooterRightButtonbarController,
-  bindings: {
-    autosaveenabled: '<',
-    backfunction: '&',
-    changetitleenabled: '<',
-    changetitlefunction: '&',
-    changetitlelabel: '@',
-    deleteconfirmmessage: '@',
-    deleteenabled: '<',
-    deleteforbidden: '<',
-    deleteforbiddenmessage: '@',
-    deletefunction: '&',
-    dirty: '=',
-    editmode: '=',
-    savefunction: '&',
-    words: '<'
-  }
-});
+  module('bibiscoApp').
+  component('detailfooterrightbuttonbar', {
+    templateUrl: 'components/common/uielements/detail-footer/detail-footer-right-buttonbar.html',
+    controller: DetailFooterRightButtonbarController,
+    bindings: {
+      autosaveenabled: '<',
+      backfunction: '&',
+      changetitleenabled: '<',
+      changetitlefunction: '&',
+      changetitlelabel: '@',
+      deleteconfirmmessage: '@',
+      deleteenabled: '<',
+      deleteforbidden: '<',
+      deleteforbiddenmessage: '@',
+      deletefunction: '&',
+      dirty: '=',
+      editmode: '=',
+      savefunction: '&',
+      words: '<'
+    }
+  });
 
 
-function DetailFooterRightButtonbarController($timeout, LoggerService,
-  PopupBoxesService) {
-
-  LoggerService.debug('Start DetailFooterRightButtonbarController...');
+function DetailFooterRightButtonbarController($timeout, PopupBoxesService) {
 
   var self = this;
 
   self.$onInit = function() {
     self.saving = false;
-  }
+  };
 
   self.delete = function() {
     if (self.deleteforbidden) {
@@ -53,11 +50,11 @@ function DetailFooterRightButtonbarController($timeout, LoggerService,
     } else {
       PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
     }
-  }
+  };
 
   self.enableeditmode = function() {
     self.editmode = true;
-  }
+  };
 
   self.save = function() {
     if (self.dirty) {
@@ -67,7 +64,5 @@ function DetailFooterRightButtonbarController($timeout, LoggerService,
         self.saving = false;
       }, 250);
     }
-  }
-
-  LoggerService.debug('End DetailFooterRightButtonbarController...');
+  };
 }

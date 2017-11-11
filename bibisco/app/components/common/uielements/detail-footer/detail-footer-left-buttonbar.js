@@ -13,37 +13,32 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailfooterleftbuttonbar', {
-  templateUrl: 'components/common/uielements/detail-footer/detail-footer-left-buttonbar.html',
-  controller: DetailFooterLeftButtonbarController,
-  bindings: {
-    editmode: '<',
-    imagesenabled: '<',
-    showimagesfunction: '&',
-    showprojectexplorer: '=',
-    revisionactive: '<',
-    revisioncount: '<',
-    revisionenabled: '<',
-    revisionfunction: '&',
-    tagsenabled: '<',
-    tagsfunction: '&',
-    words: '<'
-  }
-});
+  module('bibiscoApp').
+  component('detailfooterleftbuttonbar', {
+    templateUrl: 'components/common/uielements/detail-footer/detail-footer-left-buttonbar.html',
+    controller: DetailFooterLeftButtonbarController,
+    bindings: {
+      editmode: '<',
+      imagesenabled: '<',
+      showimagesfunction: '&',
+      showprojectexplorer: '=',
+      revisionactive: '<',
+      revisioncount: '<',
+      revisionenabled: '<',
+      revisionfunction: '&',
+      tagsenabled: '<',
+      tagsfunction: '&',
+      words: '<'
+    }
+  });
 
-function DetailFooterLeftButtonbarController($location, LoggerService,
-  PopupBoxesService) {
-
-  LoggerService.debug('Start DetailFooterLeftButtonbarController...');
+function DetailFooterLeftButtonbarController() {
 
   var self = this;
 
-  self.$onInit = function() {}
+  self.$onInit = function() {};
 
   self.toggleProjectExplorer = function() {
     self.showprojectexplorer = !self.showprojectexplorer;
-  }
-
-  LoggerService.debug('End DetailFooterLeftButtonbarController...');
+  };
 }

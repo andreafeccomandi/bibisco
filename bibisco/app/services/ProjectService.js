@@ -90,7 +90,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       let result = null;
 
       if (selectedProjectsDirectory.endsWith(
-          "_internal_bibisco2_projects_db_")) {
+        '_internal_bibisco2_projects_db_')) {
         projectsDirectory = selectedProjectsDirectory;
       } else {
         projectsDirectory = FileSystemService.concatPath(
@@ -176,7 +176,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
       // delete temp directory content
       FileSystemService.deleteDirectory(tempDirectoryPath);
-      FileSystemService.createDirectory(tempDirectoryPath)
+      FileSystemService.createDirectory(tempDirectoryPath);
 
       // unzip archive file to temp directory
       FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
@@ -213,7 +213,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         '.bibisco2', callback);
       LoggerService.debug('***** End ProjectService.export...');
     },
-    syncProjectDirectoryWithBibiscoDb: function(callback) {
+    syncProjectDirectoryWithBibiscoDb: function() {
       LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
 
       let projectsDirectory = BibiscoPropertiesService.getProperty(
@@ -305,10 +305,10 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
       tempDirectoryPath, {
         directories: false,
         globs: ['**/*.json']
-      })
+      });
 
     if (!fileList || fileList.length != 1) {
-      throw "Invalid archive";
+      throw 'Invalid archive';
     }
 
     // calculate project id from file name
@@ -344,7 +344,7 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
     isAlreadyPresent: isAlreadyPresent,
     projectId: projectId,
     projectName: projectName
-  }
+  };
 
   LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
 
@@ -356,7 +356,7 @@ function checkProjectValidity(projectDirectoryName, projectsDirectory,
 
   // check if project directory name is in UUID format
   if (!validator.isUUID(projectDirectoryName, 4)) {
-    throw "Invalid archive: not UUID v4 file";
+    throw 'Invalid archive: not UUID v4 file';
   }
 
   // open imported archive db to get id and name
@@ -368,8 +368,8 @@ function checkProjectValidity(projectDirectoryName, projectsDirectory,
 
   // check if projects directory name is equals to project id
   if (projectDirectoryName != projectInfo.id) {
-    throw "Project directory is not equals to project id: project directory = " +
-    projectDirectoryName + " - id = " + projectInfo.id;
+    throw 'Project directory is not equals to project id: project directory = ' +
+    projectDirectoryName + ' - id = ' + projectInfo.id;
   }
 
   projectdb.close();

@@ -13,15 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('chapterdetail', {
-  templateUrl: 'components/chapters/chapter-detail.html',
-  controller: ChapterDetailController
-});
+  module('bibiscoApp').
+  component('chapterdetail', {
+    templateUrl: 'components/chapters/chapter-detail.html',
+    controller: ChapterDetailController
+  });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService, LoggerService, ChapterService) {
-  LoggerService.debug('Start ChapterDetailController...');
+  ChapterService) {
 
   var self = this;
 
@@ -74,48 +73,46 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
       }
     }
     return items;
-  }
+  };
 
   self.back = function() {
     $location.path('/project/chapters');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.chapter.status = status;
     ChapterService.update(self.chapter);
-  }
+  };
 
   self.changeTitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/title');
-  }
+  };
 
   self.createScene = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/new');
-  }
+  };
 
   self.moveScene = function(draggedObjectId, destinationObjectId) {
     ChapterService.moveScene(draggedObjectId, destinationObjectId);
     self.scenescardgriditems = this.getScenesCardGridItems(self.chapter.$loki);
     $scope.$apply();
-  }
+  };
 
   self.selectChapterInfo = function(id) {
     $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + id);
-  }
+  };
 
   self.selectScene = function(id) {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id);
-  }
+  };
 
   self.delete = function() {
     ChapterService.remove(self.chapter.$loki);
     $location.path('/project/chapters');
-  }
+  };
 
   self.showimagesfunction = function() {
     alert('Qui si visualizzeranno le immagini per id=' + self.chapter
       .$loki);
-  }
-
-  LoggerService.debug('End ChapterDetailController...');
+  };
 }

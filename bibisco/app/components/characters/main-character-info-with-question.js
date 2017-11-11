@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('maincharacterinfowithquestion', {
-  templateUrl: 'components/characters/main-character-info-with-question.html',
-  controller: MainCharacterInfoWithQuestion
-});
+  module('bibiscoApp').
+  component('maincharacterinfowithquestion', {
+    templateUrl: 'components/characters/main-character-info-with-question.html',
+    controller: MainCharacterInfoWithQuestion
+  });
 
 function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
   MainCharacterService, LoggerService) {
@@ -52,17 +52,17 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.editmode = false;
     self.dirty = false;
-    self.content = 'Bella storia, bo!'
+    self.content = 'Bella storia, bo!';
   };
 
   self.back = function() {
     $location.path('/maincharacters/' + $routeParams.id);
-  }
+  };
 
   self.changeStatus = function(status) {
     //self.maincharacter.status = status;
     //MainCharacterService.update(self.maincharacter);
-  }
+  };
 
   LoggerService.debug('End MainCharacterInfoWithQuestion...');
 }

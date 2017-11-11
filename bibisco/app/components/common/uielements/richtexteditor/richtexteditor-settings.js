@@ -13,19 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('richtexteditorsettings', {
-  templateUrl: 'components/common/uielements/richtexteditor/richtexteditor-settings.html',
-  controller: RichtexteditorSettingsController,
-  bindings: {
-    close: '&',
-    dismiss: '&'
-  },
-});
+  module('bibiscoApp').
+  component('richtexteditorsettings', {
+    templateUrl: 'components/common/uielements/richtexteditor/richtexteditor-settings.html',
+    controller: RichtexteditorSettingsController,
+    bindings: {
+      close: '&',
+      dismiss: '&'
+    },
+  });
 
 function RichtexteditorSettingsController(BibiscoDbConnectionService,
   BibiscoPropertiesService, LoggerService, RichTextEditorPreferencesService) {
-  LoggerService.debug('Start RichtexteditorSettingsController...');
 
   var self = this;
   self.font;
@@ -108,6 +107,4 @@ function RichtexteditorSettingsController(BibiscoDbConnectionService,
       $value: 'cancel'
     });
   };
-
-  LoggerService.debug('End RichtexteditorSettingsController...');
 }

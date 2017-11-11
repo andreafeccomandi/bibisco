@@ -13,15 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('architecturedetail', {
-  templateUrl: 'components/architecture/architecture-detail.html',
-  controller: ArchitectureDetailController
-});
+  module('bibiscoApp').
+  component('architecturedetail', {
+    templateUrl: 'components/architecture/architecture-detail.html',
+    controller: ArchitectureDetailController
+  });
 
 function ArchitectureDetailController($location, $routeParams,
-  ArchitectureService, LoggerService) {
-  LoggerService.debug('Start ArchitectureDetailController...');
+  ArchitectureService) {
 
   var self = this;
 
@@ -45,12 +44,12 @@ function ArchitectureDetailController($location, $routeParams,
 
   self.back = function() {
     $location.path('/project/architecture');
-  }
+  };
 
   self.changeStatus = function(status) {
     self.architectureitem.status = status;
     ArchitectureService.update(self.architectureitem);
-  }
+  };
 
   self.getArchitectureItem = function(id) {
 
@@ -74,11 +73,9 @@ function ArchitectureDetailController($location, $routeParams,
     architectureitem.subtitle = subtitle;
 
     return architectureitem;
-  }
+  };
 
-  self.savefunction = function(text) {
+  self.savefunction = function() {
     ArchitectureService.update(self.architectureitem);
-  }
-
-  LoggerService.debug('End ArchitectureDetailController...');
+  };
 }

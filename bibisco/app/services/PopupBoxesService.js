@@ -30,7 +30,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         size: 'sm'
       });
 
-      modalInstance.result.then(function(selectedItem) {
+      modalInstance.result.then(function() {
         // ok: unreachable code: we're in alert!
       }, function() {
         // cancel
@@ -49,7 +49,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         size: 'sm'
       });
 
-      modalInstance.result.then(function(selectedItem) {
+      modalInstance.result.then(function() {
         confirmFunction();
       }, function() {
         if (cancelFunction) {
@@ -57,5 +57,5 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         }
       });
     }
-  }
+  };
 });

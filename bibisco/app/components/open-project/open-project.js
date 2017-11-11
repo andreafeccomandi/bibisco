@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('openproject', {
-  templateUrl: 'components/open-project/open-project.html',
-  controller: OpenProjectController
-});
+  module('bibiscoApp').
+  component('openproject', {
+    templateUrl: 'components/open-project/open-project.html',
+    controller: OpenProjectController
+  });
 
 function OpenProjectController($location, $rootScope, ContextMenuService,
   LoggerService, ProjectDbConnectionService, ProjectService) {
@@ -30,22 +30,22 @@ function OpenProjectController($location, $rootScope, ContextMenuService,
 
   self.getProjects = function() {
     return ProjectService.getProjects();
-  }
+  };
 
   self.open = function(id) {
     ProjectDbConnectionService.load(id);
     $location.path('/project/projecthome');
     ContextMenuService.create();
     LoggerService.info('Open project ' + id);
-  }
+  };
 
   self.delete = function(id) {
     ProjectService.delete(id);
-  }
+  };
 
   self.back = function() {
     $location.path('/start');
-  }
+  };
 
   LoggerService.debug('End OpenProjectController...');
 }

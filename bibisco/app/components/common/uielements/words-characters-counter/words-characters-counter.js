@@ -13,22 +13,15 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('wordscharacterscounter', {
-  templateUrl: 'components/common/uielements/words-characters-counter/words-characters-counter.html',
-  controller: WordsCharactersCounter,
-  bindings: {
-    characters: '<',
-    words: '<'
-  }
-});
+  module('bibiscoApp').
+  component('wordscharacterscounter', {
+    templateUrl: 'components/common/uielements/words-characters-counter/words-characters-counter.html',
+    controller: WordsCharactersCounter,
+    bindings: {
+      characters: '<',
+      words: '<'
+    }
+  });
 
 
-function WordsCharactersCounter(LoggerService) {
-
-  LoggerService.debug('Start WordsCharactersCounter...');
-
-  var self = this;
-
-  LoggerService.debug('End WordsCharactersCounter...');
-}
+function WordsCharactersCounter() {}

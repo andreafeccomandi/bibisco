@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('maincharactertitle', {
-  templateUrl: 'components/characters/main-character-title.html',
-  controller: MainCharacterTitleController
-});
+  module('bibiscoApp').
+  component('maincharactertitle', {
+    templateUrl: 'components/characters/main-character-title.html',
+    controller: MainCharacterTitleController
+  });
 
 function MainCharacterTitleController($location, $routeParams,
   MainCharacterService, LoggerService) {
@@ -45,7 +45,7 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/maincharacters/" + $routeParams.id;
+      self.exitpath = '/maincharacters/' + $routeParams.id;
       self.name = maincharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
@@ -56,12 +56,12 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.characters.dialog.title.createMainCharacter'
       });
 
-      self.exitpath = "/project/characters";
+      self.exitpath = '/project/characters';
       self.name = null;
       self.pageheadertitle =
         'jsp.characters.dialog.title.createMainCharacter';
     }
-  }
+  };
 
   self.save = function(title) {
     if ($routeParams.id != null) {
@@ -75,7 +75,7 @@ function MainCharacterTitleController($location, $routeParams,
         name: title
       });
     }
-  }
+  };
 
   LoggerService.debug('End MainCharacterTitleController...');
 }

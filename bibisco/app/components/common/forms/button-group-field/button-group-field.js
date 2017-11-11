@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('buttongroupfield', {
-  templateUrl: 'components/common/forms/button-group-field/button-group-field.html',
-  controller: ButtonGroupField,
-  bindings: {
-    group: '<',
-    inputcols: '@',
-    label: '@',
-    labelcols: '@',
-    model: '='
-  }
-});
+  module('bibiscoApp').
+  component('buttongroupfield', {
+    templateUrl: 'components/common/forms/button-group-field/button-group-field.html',
+    controller: ButtonGroupField,
+    bindings: {
+      group: '<',
+      inputcols: '@',
+      label: '@',
+      labelcols: '@',
+      model: '='
+    }
+  });
 
 
 function ButtonGroupField(LoggerService) {
@@ -35,7 +35,7 @@ function ButtonGroupField(LoggerService) {
 
   self.change = function(value) {
     self.model = value;
-  }
+  };
 
   LoggerService.debug('End ButtonGroupField...');
 }

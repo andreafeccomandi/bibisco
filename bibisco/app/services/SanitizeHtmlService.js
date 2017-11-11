@@ -16,13 +16,11 @@
 angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
   'use strict';
 
-  var remote = require('electron').remote;
-  //var sanitizeHtml = remote.getGlobal('sanitizeHtml');
   var sanitizeHtml = require('sanitize-html');
 
   return {
     sanitize: function(html) {
-      console.log('sanitize - html: ' + html);
+
       let result = sanitizeHtml(html, {
         allowedTags: ['p', 'ul', 'ol', 'li', 'b', 'i', 'u', 'strike',
           'span'
@@ -40,65 +38,65 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
           'p': function(tagName, attribs) {
             let result;
             if (attribs.style && attribs.style.indexOf(
-                'text-align: justify') > -1) {
+              'text-align: justify') > -1) {
               result = {
                 tagName: 'p',
                 attribs: {
                   style: 'text-align: justify'
                 }
-              }
+              };
             } else if (attribs.style && attribs.style.indexOf(
-                'text-align: center') > -1) {
+              'text-align: center') > -1) {
               result = {
                 tagName: 'p',
                 attribs: {
                   style: 'text-align: center'
                 }
-              }
+              };
             } else if (attribs.style && attribs.style.indexOf(
-                'text-align: left') > -1) {
+              'text-align: left') > -1) {
               result = {
                 tagName: 'p',
                 attribs: {
                   style: 'text-align: left'
                 }
-              }
+              };
             } else if (attribs.style && attribs.style.indexOf(
-                'text-align: right') > -1) {
+              'text-align: right') > -1) {
               result = {
                 tagName: 'p',
                 attribs: {
                   style: 'text-align: right'
                 }
-              }
+              };
             } else {
               result = {
                 tagName: 'p'
-              }
+              };
             }
             return result;
           },
           'span': function(tagName, attribs) {
             let result;
             if (attribs.style && attribs.style.indexOf(
-                'background-color: rgb(255, 255, 0)') > -1) {
+              'background-color: rgb(255, 255, 0)') > -1) {
               result = {
                 tagName: 'span',
                 attribs: {
                   style: 'background-color: rgb(255, 255, 0)'
                 }
-              }
+              };
             } else {
               result = {
                 tagName: ''
-              }
+              };
             }
             return result;
           }
         }
       });
-      console.log('sanitize - result: ' + result);
+
       return result;
     }
-  }
+  };
 });

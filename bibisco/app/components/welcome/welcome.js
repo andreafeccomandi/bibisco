@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('welcome', {
-  templateUrl: 'components/welcome/welcome.html',
-  controller: WelcomeController
-});
+  module('bibiscoApp').
+  component('welcome', {
+    templateUrl: 'components/welcome/welcome.html',
+    controller: WelcomeController
+  });
 
 
 function WelcomeController($location, $rootScope, $scope,
@@ -37,13 +37,13 @@ function WelcomeController($location, $rootScope, $scope,
     self.selectedProjectsDirectory = directory;
     self.forbiddenDirectory = false;
     $scope.$apply();
-  }
+  };
   self.next = function() {
     self.step = 2;
-  }
+  };
   self.back = function() {
     self.step = 1;
-  }
+  };
   self.finish = function(isValid) {
     if (isValid) {
 
@@ -68,10 +68,6 @@ function WelcomeController($location, $rootScope, $scope,
       }
     }
 
-  }
+  };
   LoggerService.debug('End WelcomeController...');
-}
-
-function createInternalBibiscoProjectsDB() {
-
 }

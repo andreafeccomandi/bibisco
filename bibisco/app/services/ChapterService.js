@@ -537,7 +537,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
         strands: scenestrands.strands,
         time: scene.time,
         timegregorian: scene.timegregorian
-      }
+      };
     },
 
     updateSceneTags: function(scenetags) {
@@ -583,5 +583,5 @@ angular.module('bibiscoApp').service('ChapterService', function(
     getLastScenetime: function() {
       return ProjectService.getProjectInfo().lastScenetimeTag;
     }
-  }
+  };
 });

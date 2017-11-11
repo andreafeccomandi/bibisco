@@ -13,21 +13,20 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('scenetagsdatetime', {
-  templateUrl: 'components/chapters/scene-tags-datetime.html',
-  controller: SceneTagsDatetimeController,
-  bindings: {
-    dirty: '=',
-    lastscenetime: '<',
-    scenetime: '=',
-    scenetimegregorian: '='
-  }
-});
+  module('bibiscoApp').
+  component('scenetagsdatetime', {
+    templateUrl: 'components/chapters/scene-tags-datetime.html',
+    controller: SceneTagsDatetimeController,
+    bindings: {
+      dirty: '=',
+      lastscenetime: '<',
+      scenetime: '=',
+      scenetimegregorian: '='
+    }
+  });
 
 function SceneTagsDatetimeController($location, $translate,
-  LocaleService, LoggerService, UtilService) {
-  LoggerService.debug('Start SceneTagsDatetimeController...');
+  LocaleService, UtilService) {
 
   var self = this;
 
@@ -55,15 +54,15 @@ function SceneTagsDatetimeController($location, $translate,
     self.scenetimeselected = false;
     moment.locale(LocaleService.getCurrentLocale());
     self.scenetimeCalendarOpen = false;
-  }
+  };
 
-  self.onTimeSet = function(newDate, oldDate) {
+  self.onTimeSet = function(newDate) {
     self.scenetime = newDate;
     self.scenetimeshowed = self.scenetime;
     self.scenetimeCalendarOpen = false;
     self.dirty = true;
     self.scenetimeselected = true;
-  }
+  };
 
   self.calculateSceneYear = function() {
     let result = null;
@@ -74,11 +73,11 @@ function SceneTagsDatetimeController($location, $translate,
         year = year * (-1);
         bc = ' ' + self.translations.year_bc_scene_tags;
       }
-      yearAsPaddedString = UtilService.number.pad(year, 4);
+      let yearAsPaddedString = UtilService.number.pad(year, 4);
       result = yearAsPaddedString + bc;
     }
     return result;
-  }
+  };
 
   self.calendarToggled = function(open) {
     if (open && self.originalscenetime == null && !self.scenetimeselected) {
@@ -86,7 +85,7 @@ function SceneTagsDatetimeController($location, $translate,
     } else if (!open && self.originalscenetime == null && !self.scenetimeselected) {
       self.scenetime = null;
     }
-  }
+  };
 
   self.setScenetimetypeGregorian = function(gregorian) {
     self.scenetimegregorian = gregorian;
@@ -95,12 +94,10 @@ function SceneTagsDatetimeController($location, $translate,
     } else {
       self.scenetime = self.scenetimecustom;
     }
-  }
+  };
 
   self.changeScenetimeCustom = function() {
     self.dirty = true;
     self.scenetime = self.scenetimecustom;
-  }
-
-  LoggerService.debug('End SceneTagsDatetimeController...');
+  };
 }

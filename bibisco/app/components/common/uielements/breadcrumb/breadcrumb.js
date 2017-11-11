@@ -13,24 +13,20 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('breadcrumb', {
-  templateUrl: 'components/common/uielements/breadcrumb/breadcrumb.html',
-  controller: BreadcrumbController,
-  bindings: {
-    items: '<',
-    linkdisabled: '<'
-  }
-});
+  module('bibiscoApp').
+  component('breadcrumb', {
+    templateUrl: 'components/common/uielements/breadcrumb/breadcrumb.html',
+    controller: BreadcrumbController,
+    bindings: {
+      items: '<',
+      linkdisabled: '<'
+    }
+  });
 
-function BreadcrumbController($location, LoggerService) {
-  LoggerService.debug('Start BreadcrumbController...');
-
+function BreadcrumbController($location) {
   var self = this;
 
   self.followlink = function(path) {
     $location.path(path);
-  }
-
-  LoggerService.debug('End BreadcrumbController...');
+  };
 }

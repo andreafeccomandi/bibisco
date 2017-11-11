@@ -13,15 +13,15 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('fileselect', {
-  templateUrl: 'components/file-select/file-select.html',
-  controller: FileSelectController,
-  bindings: {
-    filefilter: '<',
-    onselectfile: '&'
-  }
-});
+  module('bibiscoApp').
+  component('fileselect', {
+    templateUrl: 'components/file-select/file-select.html',
+    controller: FileSelectController,
+    bindings: {
+      filefilter: '<',
+      onselectfile: '&'
+    }
+  });
 
 
 function FileSelectController(LoggerService) {
@@ -32,25 +32,26 @@ function FileSelectController(LoggerService) {
   var self = this;
 
   self.openfiledialog = function() {
+    let filters;
     if (!self.filefilter) {
       filters = [];
     } else {
       filters = [{
         name: 'filters',
         extensions: self.filefilter
-      }]
+      }];
     }
     dialog.showOpenDialog({
-        filters: filters,
-        properties: ['openFile']
-      },
-      function(filenames) {
-        if (filenames) {
-          self.onselectfile({
-            file: filenames[0]
-          });
-        }
-      });
-  };;
+      filters: filters,
+      properties: ['openFile']
+    },
+    function(filenames) {
+      if (filenames) {
+        self.onselectfile({
+          file: filenames[0]
+        });
+      }
+    });
+  };
   LoggerService.debug('End FileSelectController...');
 }

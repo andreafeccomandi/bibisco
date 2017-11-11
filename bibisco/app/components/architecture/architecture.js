@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('architecture', {
-  templateUrl: 'components/architecture/architecture.html',
-  controller: ArchitectureController,
-  bindings: {
+  module('bibiscoApp').
+  component('architecture', {
+    templateUrl: 'components/architecture/architecture.html',
+    controller: ArchitectureController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function ArchitectureController($location, $rootScope, $scope,
   ArchitectureService, StrandService, LoggerService) {
@@ -30,7 +30,7 @@ function ArchitectureController($location, $rootScope, $scope,
   self.$onInit = function() {
     self.architecturecardgriditems = self.getArchitectureCardGridItems();
     self.strandcardgriditems = self.getStrandCardGridItems();
-  }
+  };
 
   self.getArchitectureCardGridItems = function() {
     let items = [];
@@ -66,11 +66,11 @@ function ArchitectureController($location, $rootScope, $scope,
     });
 
     return items;
-  }
+  };
 
   self.architectureItemSelect = function(id) {
     $location.path('/architectureitems/' + id);
-  }
+  };
 
   self.getStrandCardGridItems = function() {
     let items = null;
@@ -87,21 +87,21 @@ function ArchitectureController($location, $rootScope, $scope,
       }
     }
     return items;
-  }
+  };
 
   self.createStrand = function() {
     $location.path('/strands/new');
-  }
+  };
 
   self.strandSelect = function(id) {
     $location.path('/strands/' + id);
-  }
+  };
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {
     StrandService.move(draggedObjectId, destinationObjectId);
     self.strandcardgriditems = this.getStrandCardGridItems();
     $scope.$apply();
-  }
+  };
 
   LoggerService.debug('End ArchitectureController...');
 }

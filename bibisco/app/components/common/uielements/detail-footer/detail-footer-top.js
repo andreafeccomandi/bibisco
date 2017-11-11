@@ -13,26 +13,19 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('detailfootertop', {
-  templateUrl: 'components/common/uielements/detail-footer/detail-footer-top.html',
-  controller: DetailFooterTopController,
-  bindings: {
-    autosaveenabled: '<',
-    characters: '<',
-    editmode: '<',
-    lastsave: '<',
-    words: '<',
-    wordscharactersenabled: '<'
-  }
-});
+  module('bibiscoApp').
+  component('detailfootertop', {
+    templateUrl: 'components/common/uielements/detail-footer/detail-footer-top.html',
+    controller: DetailFooterTopController,
+    bindings: {
+      autosaveenabled: '<',
+      characters: '<',
+      editmode: '<',
+      lastsave: '<',
+      words: '<',
+      wordscharactersenabled: '<'
+    }
+  });
 
 
-function DetailFooterTopController(LoggerService) {
-
-  LoggerService.debug('Start DetailFooterTopController...');
-
-  var self = this;
-
-  LoggerService.debug('End DetailFooterTopController...');
-}
+function DetailFooterTopController() {}

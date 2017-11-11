@@ -13,49 +13,47 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('elementdetail', {
-  templateUrl: 'components/common/uielements/element-detail/element-detail.html',
-  controller: ElementDetailController,
-  bindings: {
-    backfunction: '&',
-    breadcrumbitems: '<',
-    changetitleenabled: '<',
-    changetitlefunction: '&',
-    changetitlelabel: '@',
-    characters: '=',
-    content: '=',
-    deleteconfirmmessage: '@',
-    deleteenabled: '<',
-    deleteforbidden: '<',
-    deleteforbiddenmessage: '@',
-    deletefunction: '&',
-    editmode: '=',
-    eventname: '@',
-    headertitle: '@',
-    headersubtitle: '@',
-    imagesenabled: '<',
-    lastsave: '<',
-    savefunction: '&',
-    showimagesfunction: '&',
-    revisionactive: '<',
-    revisioncount: '<',
-    revisionenabled: '<',
-    revisionfunction: '&',
-    tagsenabled: '<',
-    tagsfunction: '&',
-    tagslabel: '@',
-    taskstatus: '<',
-    taskstatuschangefunction: '&',
-    words: '=',
-    wordscharactersenabled: '<'
-  }
-});
+  module('bibiscoApp').
+  component('elementdetail', {
+    templateUrl: 'components/common/uielements/element-detail/element-detail.html',
+    controller: ElementDetailController,
+    bindings: {
+      backfunction: '&',
+      breadcrumbitems: '<',
+      changetitleenabled: '<',
+      changetitlefunction: '&',
+      changetitlelabel: '@',
+      characters: '=',
+      content: '=',
+      deleteconfirmmessage: '@',
+      deleteenabled: '<',
+      deleteforbidden: '<',
+      deleteforbiddenmessage: '@',
+      deletefunction: '&',
+      editmode: '=',
+      eventname: '@',
+      headertitle: '@',
+      headersubtitle: '@',
+      imagesenabled: '<',
+      lastsave: '<',
+      savefunction: '&',
+      showimagesfunction: '&',
+      revisionactive: '<',
+      revisioncount: '<',
+      revisionenabled: '<',
+      revisionfunction: '&',
+      tagsenabled: '<',
+      tagsfunction: '&',
+      tagslabel: '@',
+      taskstatus: '<',
+      taskstatuschangefunction: '&',
+      words: '=',
+      wordscharactersenabled: '<'
+    }
+  });
 
-function ElementDetailController($interval, $rootScope, LoggerService,
+function ElementDetailController($interval, $rootScope,
   RichTextEditorPreferencesService) {
-  LoggerService.debug('Start ElementDetailController...');
-
   var self = this;
 
   self.$onInit = function() {
@@ -67,7 +65,7 @@ function ElementDetailController($interval, $rootScope, LoggerService,
         self.save();
       }
     }, 60000);
-  }
+  };
 
   self.$onChanges = function(changes) {
 
@@ -75,11 +73,11 @@ function ElementDetailController($interval, $rootScope, LoggerService,
       false) {
       self.savedcontent = self.content;
     }
-  }
+  };
 
   self.$onDestroy = function() {
     $interval.cancel(self.autosavefunctionpromise);
-  }
+  };
 
   self.dirty = false;
   self.showprojectexplorer = false;
@@ -93,13 +91,11 @@ function ElementDetailController($interval, $rootScope, LoggerService,
     } else {
       self.backfunction();
     }
-  }
+  };
 
   self.save = function() {
     self.savefunction();
     self.dirty = false;
     self.savedcontent = self.content;
-  }
-
-  LoggerService.debug('End ElementDetailController...');
+  };
 }

@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('locationtitle', {
-  templateUrl: 'components/locations/location-title.html',
-  controller: LocationTitleController
-});
+  module('bibiscoApp').
+  component('locationtitle', {
+    templateUrl: 'components/locations/location-title.html',
+    controller: LocationTitleController
+  });
 
 function LocationTitleController($location, $rootScope, $routeParams,
   LocationService, LoggerService) {
@@ -56,7 +56,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
 
       self.pageheadertitle =
         'jsp.locations.dialog.title.changeThumbnailTitle';
-      self.exitpath = "/locations/" + $routeParams.id;
+      self.exitpath = '/locations/' + $routeParams.id;
 
     } else {
       // create breadcrumb items
@@ -76,7 +76,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
     self.usednations = LocationService.getUsedNations();
     self.usedstates = LocationService.getUsedStates();
     self.usedcities = LocationService.getUsedCities();
-  }
+  };
 
   self.save = function(isValid) {
     if (isValid) {
@@ -101,11 +101,11 @@ function LocationTitleController($location, $rootScope, $routeParams,
       }
       $location.path(self.exitpath);
     }
-  }
+  };
 
   self.back = function() {
     $location.path(self.exitpath);
-  }
+  };
 
   LoggerService.debug('End LocationTitleController...');
 }

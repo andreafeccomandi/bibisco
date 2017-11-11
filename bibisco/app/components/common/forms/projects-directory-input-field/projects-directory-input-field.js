@@ -13,27 +13,21 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('projectsdirectoryinputfield', {
-  templateUrl: 'components/common/forms/projects-directory-input-field/projects-directory-input-field.html',
-  controller: ProjectsDirectoryInputFieldController,
-  bindings: {
-    model: '=',
-    field: '<',
-    label: '@',
-    name: '@',
-    labelcols: '@',
-    inputcols: '@',
-    onselectprojectsdirectory: '&',
-    forbiddendirectory: '<'
-  }
-});
+  module('bibiscoApp').
+  component('projectsdirectoryinputfield', {
+    templateUrl: 'components/common/forms/projects-directory-input-field/projects-directory-input-field.html',
+    controller: ProjectsDirectoryInputFieldController,
+    bindings: {
+      model: '=',
+      field: '<',
+      label: '@',
+      name: '@',
+      labelcols: '@',
+      inputcols: '@',
+      onselectprojectsdirectory: '&',
+      forbiddendirectory: '<'
+    }
+  });
 
 
-function ProjectsDirectoryInputFieldController(LoggerService) {
-  LoggerService.debug('Start ProjectsDirectoryInputFieldController...');
-
-  var self = this;
-
-  LoggerService.debug('End ProjectsDirectoryInputFieldController...');
-}
+function ProjectsDirectoryInputFieldController() {}

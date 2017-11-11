@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('info', {
-  templateUrl: 'components/info/info.html',
-  controller: InfoController,
-  bindings: {
+  module('bibiscoApp').
+  component('info', {
+    templateUrl: 'components/info/info.html',
+    controller: InfoController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function InfoController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start InfoController...');
-  var self = this;
+  //var self = this;
 
   LoggerService.debug('End InfoController...');
 }

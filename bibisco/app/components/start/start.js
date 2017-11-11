@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('start', {
-  templateUrl: 'components/start/start.html',
-  controller: StartController
-});
+  module('bibiscoApp').
+  component('start', {
+    templateUrl: 'components/start/start.html',
+    controller: StartController
+  });
 
 function StartController($location, $rootScope, LoggerService,
   ProjectService) {
@@ -30,29 +30,29 @@ function StartController($location, $rootScope, LoggerService,
 
   self.projectsPresent = function() {
     return ProjectService.getProjectsCount() > 0;
-  }
+  };
 
   self.createProject = function() {
     $location.path('/createproject');
-  }
+  };
 
   self.openProject = function() {
     $location.path('/openproject');
-  }
+  };
 
   self.exportProject = function() {
     ProjectService.export(function() {
       alert('Esportato!!!');
     });
-  }
+  };
 
   self.importProject = function() {
     $location.path('/importproject');
-  }
+  };
 
   self.settings = function() {
     $location.path('/settings');
-  }
+  };
 
   LoggerService.debug('End StartController...');
 }

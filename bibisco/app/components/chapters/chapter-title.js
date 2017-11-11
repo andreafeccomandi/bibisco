@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('chaptertitle', {
-  templateUrl: 'components/chapters/chapter-title.html',
-  controller: ChapterTitleController
-});
+  module('bibiscoApp').
+  component('chaptertitle', {
+    templateUrl: 'components/chapters/chapter-title.html',
+    controller: ChapterTitleController
+  });
 
 function ChapterTitleController($location, $routeParams,
   ChapterService, LoggerService) {
@@ -45,7 +45,7 @@ function ChapterTitleController($location, $routeParams,
         label: 'jsp.chapter.dialog.title.updateTitle'
       });
 
-      self.exitpath = "/chapters/" + $routeParams.id;
+      self.exitpath = '/chapters/' + $routeParams.id;
       self.title = chapter.title;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.updateTitle';
@@ -56,12 +56,12 @@ function ChapterTitleController($location, $routeParams,
         label: 'jsp.chapters.dialog.title.createChapter'
       });
 
-      self.exitpath = "/project/chapters";
+      self.exitpath = '/project/chapters';
       self.name = null;
       self.pageheadertitle =
         'jsp.chapters.dialog.title.createChapter';
     }
-  }
+  };
 
   self.save = function(title) {
     if ($routeParams.id != null) {
@@ -74,7 +74,7 @@ function ChapterTitleController($location, $routeParams,
         title: title
       });
     }
-  }
+  };
 
   LoggerService.debug('End ChapterTitleController...');
 }

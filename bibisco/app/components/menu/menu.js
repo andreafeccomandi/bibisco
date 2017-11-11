@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('menu', {
-  templateUrl: 'components/menu/menu.html',
-  controller: MenuController
-});
+  module('bibiscoApp').
+  component('menu', {
+    templateUrl: 'components/menu/menu.html',
+    controller: MenuController
+  });
 
 function MenuController($location, $rootScope, LoggerService) {
   LoggerService.debug('Start MenuController...');
@@ -85,7 +85,7 @@ function MenuController($location, $rootScope, LoggerService) {
   // SHOW PROJECT
   $rootScope.$on('SHOW_PROJECT', function(event, args) {
     self.disableAllItems();
-    eval("self." + args.item + "Active = true");
+    eval('self.' + args.item + 'Active = true');
     self.collapsed = true;
     self.visible = true;
     self.disabled = false;
@@ -94,16 +94,16 @@ function MenuController($location, $rootScope, LoggerService) {
 
   self.toggleCollapse = function() {
     self.collapsed = !self.collapsed;
-  }
+  };
 
   self.selectItem = function(item) {
     self.disableAllItems();
-    eval("self." + item + "Active = true");
+    eval('self.' + item + 'Active = true');
     $rootScope.$emit('MENU_ITEM_SELECTED', {
       item: item
     });
     self.collapsed = true;
-  }
+  };
 
   self.disableAllItems = function() {
     self.projecthomeActive = false;
@@ -115,7 +115,7 @@ function MenuController($location, $rootScope, LoggerService) {
     self.analysisActive = false;
     self.settingsActive = false;
     self.infoActive = false;
-  }
+  };
 
   LoggerService.debug('End MenuController...');
 }

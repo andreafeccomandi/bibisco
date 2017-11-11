@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('buttonwithconfirm', {
-  templateUrl: 'components/common/forms/button-with-confirm/button-with-confirm.html',
-  controller: ButtonWithConfirmController,
-  bindings: {
-    buttonfunction: '&',
-    buttonlabel: '@',
-    buttonstyle: '@',
-    confirmmessage: '@',
-    enableconfirm: '<'
-  }
-});
+  module('bibiscoApp').
+  component('buttonwithconfirm', {
+    templateUrl: 'components/common/forms/button-with-confirm/button-with-confirm.html',
+    controller: ButtonWithConfirmController,
+    bindings: {
+      buttonfunction: '&',
+      buttonlabel: '@',
+      buttonstyle: '@',
+      confirmmessage: '@',
+      enableconfirm: '<'
+    }
+  });
 
 
 function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
@@ -39,7 +39,7 @@ function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
     } else {
       self.buttonfunction();
     }
-  }
+  };
 
   LoggerService.debug('End ButtonWithConfirmController...');
 }

@@ -13,11 +13,11 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('importproject', {
-  templateUrl: 'components/import-project/import-project.html',
-  controller: ImportProjectController
-});
+  module('bibiscoApp').
+  component('importproject', {
+    templateUrl: 'components/import-project/import-project.html',
+    controller: ImportProjectController
+  });
 
 function ImportProjectController($location, $rootScope, $scope, ProjectService,
   LoggerService) {
@@ -43,14 +43,14 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService,
     self.projectName = null;
     self.projectId = null;
     $scope.$apply();
-  }
+  };
 
   self.confirmImportExistingProject = function() {
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
         $location.path('/project/projecthome');
       });
-  }
+  };
 
   self.save = function(isValid) {
     if (!isValid || self.invalidArchive || self.alreadyPresent) {
@@ -84,11 +84,11 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService,
       }
 
     });
-  }
+  };
 
   self.back = function() {
     $location.path('/start');
-  }
+  };
 
   LoggerService.debug('End ImportProjectController...');
 }

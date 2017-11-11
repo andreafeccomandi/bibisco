@@ -13,17 +13,17 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('revisionselect', {
-  templateUrl: 'components/common/forms/revision-select/revision-select.html',
-  controller: RevisionSelectController,
-  bindings: {
-    revisionactive: '<',
-    revisioncount: '<',
-    revisionenabled: '<',
-    revisionfunction: '&'
-  }
-});
+  module('bibiscoApp').
+  component('revisionselect', {
+    templateUrl: 'components/common/forms/revision-select/revision-select.html',
+    controller: RevisionSelectController,
+    bindings: {
+      revisionactive: '<',
+      revisioncount: '<',
+      revisionenabled: '<',
+      revisionfunction: '&'
+    }
+  });
 
 function RevisionSelectController($location, $translate,
   LoggerService, PopupBoxesService) {
@@ -68,7 +68,7 @@ function RevisionSelectController($location, $translate,
     if (self.revisioncount > 1) {
       self.addDeleteRevisionCommand();
     }
-  }
+  };
 
   self.selectRevision = function() {
     if (self.revisionselected.key == 'new') {
@@ -83,18 +83,18 @@ function RevisionSelectController($location, $translate,
     } else {
       self.changeRevision();
     }
-  }
+  };
 
   self.addDeleteRevisionCommand = function() {
     self.revisions.push({
       key: 'delete',
       description: self.translations.revision_label_delete_revision
     });
-  }
+  };
 
   self.removeDeleteRevisionCommand = function() {
     self.revisions.pop();
-  }
+  };
 
   self.deleteRevision = function() {
 
@@ -120,7 +120,7 @@ function RevisionSelectController($location, $translate,
     if (self.revisioncount == 1) {
       self.removeDeleteRevisionCommand();
     }
-  }
+  };
 
   self.addRevision = function() {
     self.revisioncount++;
@@ -133,14 +133,14 @@ function RevisionSelectController($location, $translate,
     if (self.revisioncount == 2) {
       self.addDeleteRevisionCommand();
     }
-  }
+  };
 
   self.createRevisionItem = function(revisionNumber) {
     return {
       key: '' + revisionNumber,
       description: self.translations.revision_label + ' ' + revisionNumber
-    }
-  }
+    };
+  };
 
   self.changeRevision = function() {
     self.revisionfunction({
@@ -148,7 +148,7 @@ function RevisionSelectController($location, $translate,
       'revision': self.revisionselected.key
     });
     self.revisionactual = self.revisionselected;
-  }
+  };
 
   self.createRevisionFromActual = function() {
     self.revisionfunction({
@@ -156,18 +156,18 @@ function RevisionSelectController($location, $translate,
       'revision': self.revisionactual.key
     });
     self.addRevision();
-  }
+  };
 
   self.createRevisionFromScratch = function() {
     self.revisionfunction({
       'action': 'new-from-scratch'
     });
     self.addRevision();
-  }
+  };
 
   self.restoreRevisionActual = function() {
     self.revisionselected = self.revisionactual;
-  }
+  };
 
   LoggerService.debug('End RevisionSelectController...');
 }

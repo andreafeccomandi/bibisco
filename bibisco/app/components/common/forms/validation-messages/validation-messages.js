@@ -14,42 +14,38 @@
  */
 
 angular.
-module('bibiscoApp').
-component('validationmessages', {
-  templateUrl: 'components/common/forms/validation-messages/validation-messages.html',
-  controller: ValidationMessagesController,
-  bindings: {
-    field: '<'
-  }
-});
+  module('bibiscoApp').
+  component('validationmessages', {
+    templateUrl: 'components/common/forms/validation-messages/validation-messages.html',
+    controller: ValidationMessagesController,
+    bindings: {
+      field: '<'
+    }
+  });
 
-function ValidationMessagesController(LoggerService) {
-
-  LoggerService.debug('Start ValidationMessagesController...');
+function ValidationMessagesController() {
 
   // get errors
   this.getError = function() {
     return this.field.$error;
-  }
+  };
 
   // show errors
   this.showError = function() {
     return this.field.$$parentForm.$submitted && this.field.$invalid;
-  }
+  };
 
   // maxlength
   this.getMaxLength = function() {
     var element = angular.element(document.querySelector('input[name=' + this
       .field.$name + ']'));
     return element.attr('maxlength');
-  }
+  };
 
   // minlength
   this.getMinLength = function() {
     var element = angular.element(document.querySelector('input[name=' + this
       .field.$name + ']'));
     return element.attr('minlength');
-  }
-
-  LoggerService.debug('End ValidationMessagesController...');
+  };
 }

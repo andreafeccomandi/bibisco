@@ -13,14 +13,14 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('characters', {
-  templateUrl: 'components/characters/characters.html',
-  controller: CharactersController,
-  bindings: {
+  module('bibiscoApp').
+  component('characters', {
+    templateUrl: 'components/characters/characters.html',
+    controller: CharactersController,
+    bindings: {
 
-  }
-});
+    }
+  });
 
 function CharactersController($location, $scope, LoggerService,
   MainCharacterService, SecondaryCharacterService) {
@@ -34,11 +34,11 @@ function CharactersController($location, $scope, LoggerService,
 
   self.createMainCharacter = function() {
     $location.path('/maincharacters/new');
-  }
+  };
 
   self.createSecondaryCharacter = function() {
     $location.path('/secondarycharacters/new');
-  }
+  };
 
   self.getMainCharacterCardGridItems = function() {
     let items;
@@ -47,7 +47,7 @@ function CharactersController($location, $scope, LoggerService,
       items = self.getGridItemsFromCharacters(characters);
     }
     return items;
-  }
+  };
 
   self.getSecondaryCharacterCardGridItems = function() {
     let items;
@@ -56,7 +56,7 @@ function CharactersController($location, $scope, LoggerService,
       items = self.getGridItemsFromCharacters(characters);
     }
     return items;
-  }
+  };
 
   self.getGridItemsFromCharacters = function(characters) {
     let items = [];
@@ -69,27 +69,27 @@ function CharactersController($location, $scope, LoggerService,
       });
     }
     return items;
-  }
+  };
 
   self.mainCharacterSelect = function(id) {
     $location.path('/maincharacters/' + id);
-  }
+  };
 
   self.secondaryCharacterSelect = function(id) {
     $location.path('/secondarycharacters/' + id);
-  }
+  };
 
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {
     MainCharacterService.move(draggedObjectId, destinationObjectId);
     self.maincharacterscardgriditems = this.getMainCharacterCardGridItems();
     $scope.$apply();
-  }
+  };
 
   self.secondaryCharacterMove = function(draggedObjectId, destinationObjectId) {
     SecondaryCharacterService.move(draggedObjectId, destinationObjectId);
     self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
     $scope.$apply();
-  }
+  };
 
   LoggerService.debug('End CharactersController...');
 }

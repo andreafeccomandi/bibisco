@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoDbConnectionService', function(LoggerService) {
+angular.module('bibiscoApp').service('BibiscoDbConnectionService', function() {
   'use strict';
 
   var remote = require('electron').remote;

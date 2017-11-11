@@ -13,18 +13,18 @@
  *
  */
 angular.
-module('bibiscoApp').
-component('buttonwithalert', {
-  templateUrl: 'components/common/forms/button-with-alert/button-with-alert.html',
-  controller: ButtonWithAlertController,
-  bindings: {
-    alertmessage: '@',
-    buttonfunction: '&',
-    buttonlabel: '@',
-    buttonstyle: '@',
-    enablealert: '<'
-  }
-});
+  module('bibiscoApp').
+  component('buttonwithalert', {
+    templateUrl: 'components/common/forms/button-with-alert/button-with-alert.html',
+    controller: ButtonWithAlertController,
+    bindings: {
+      alertmessage: '@',
+      buttonfunction: '&',
+      buttonlabel: '@',
+      buttonstyle: '@',
+      enablealert: '<'
+    }
+  });
 
 
 function ButtonWithAlertController(LoggerService, PopupBoxesService) {
@@ -39,7 +39,7 @@ function ButtonWithAlertController(LoggerService, PopupBoxesService) {
     } else {
       self.buttonfunction();
     }
-  }
+  };
 
   LoggerService.debug('End ButtonWithAlertController...');
 }
