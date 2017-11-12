@@ -20,9 +20,7 @@ angular.
   });
 
 function MainCharacterTitleController($location, $routeParams,
-  MainCharacterService, LoggerService) {
-  LoggerService.debug('Start MainCharacterTitleController...');
-
+  MainCharacterService) {
   var self = this;
 
   self.$onInit = function() {
@@ -76,6 +74,4 @@ function MainCharacterTitleController($location, $routeParams,
       });
     }
   };
-
-  LoggerService.debug('End MainCharacterTitleController...');
 }

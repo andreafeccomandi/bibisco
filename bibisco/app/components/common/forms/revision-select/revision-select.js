@@ -28,8 +28,6 @@ angular.
 function RevisionSelectController($location, $translate,
   LoggerService, PopupBoxesService) {
 
-  LoggerService.debug('Start RevisionSelectController...');
-
   var self = this;
 
   self.$onInit = function() {
@@ -168,6 +166,4 @@ function RevisionSelectController($location, $translate,
   self.restoreRevisionActual = function() {
     self.revisionselected = self.revisionactual;
   };
-
-  LoggerService.debug('End RevisionSelectController...');
 }

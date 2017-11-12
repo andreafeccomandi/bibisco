@@ -29,9 +29,7 @@ angular.
   });
 
 
-function MaincharacterQuestionsController(LoggerService, MainCharacterService) {
-
-  LoggerService.debug('Start MaincharacterQuestionsController...');
+function MaincharacterQuestionsController(MainCharacterService) {
 
   var self = this;
 
@@ -47,6 +45,4 @@ function MaincharacterQuestionsController(LoggerService, MainCharacterService) {
   self.enableeditmode = function() {
     self.editmode = true;
   };
-
-  LoggerService.debug('End MaincharacterQuestionsController...');
 }

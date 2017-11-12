@@ -23,8 +23,7 @@ angular.
     }
   });
 
-function LanguageSelectController(LocaleService, LoggerService) {
-  LoggerService.debug('Start LanguageSelectController...');
+function LanguageSelectController(LocaleService) {
 
   var self = this;
 
@@ -47,5 +46,5 @@ function LanguageSelectController(LocaleService, LoggerService) {
       });
     }
   };
-  LoggerService.debug('End LanguageSelectController...');
+
 }

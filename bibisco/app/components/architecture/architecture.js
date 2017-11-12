@@ -23,8 +23,8 @@ angular.
   });
 
 function ArchitectureController($location, $rootScope, $scope,
-  ArchitectureService, StrandService, LoggerService) {
-  LoggerService.debug('Start ArchitectureController...');
+  ArchitectureService, StrandService) {
+
   var self = this;
 
   self.$onInit = function() {
@@ -102,6 +102,4 @@ function ArchitectureController($location, $rootScope, $scope,
     self.strandcardgriditems = this.getStrandCardGridItems();
     $scope.$apply();
   };
-
-  LoggerService.debug('End ArchitectureController...');
 }

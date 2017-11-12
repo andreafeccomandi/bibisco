@@ -22,10 +22,7 @@ angular.
     }
   });
 
-function ChaptersController($location, $rootScope, $scope, ChapterService,
-  LoggerService) {
-  LoggerService.debug('Start ChaptersController...');
-
+function ChaptersController($location, $rootScope, $scope, ChapterService) {
   var self = this;
 
   self.create = function() {
@@ -64,5 +61,4 @@ function ChaptersController($location, $rootScope, $scope, ChapterService,
 
   self.cardgriditems = this.getCardGridItems();
 
-  LoggerService.debug('End ChaptersController...');
 }

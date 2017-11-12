@@ -21,7 +21,7 @@ angular.
 
 function OpenProjectController($location, $rootScope, ContextMenuService,
   LoggerService, ProjectDbConnectionService, ProjectService) {
-  LoggerService.debug('Start OpenProjectController...');
+  
 
   // hide menu
   $rootScope.$emit('SHOW_OPEN_PROJECT');
@@ -47,5 +47,5 @@ function OpenProjectController($location, $rootScope, ContextMenuService,
     $location.path('/start');
   };
 
-  LoggerService.debug('End OpenProjectController...');
+  
 }

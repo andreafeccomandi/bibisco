@@ -34,9 +34,7 @@ angular.
   });
 
 
-function TextInputFieldController(LoggerService) {
-
-  LoggerService.debug('Start TextInputFieldController...');
+function TextInputFieldController() {
 
   var self = this;
 
@@ -44,6 +42,4 @@ function TextInputFieldController(LoggerService) {
   self.hasError = function() {
     return self.field.$$parentForm.$submitted && self.field.$invalid;
   };
-
-  LoggerService.debug('End TextInputFieldController...');
 }

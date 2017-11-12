@@ -27,8 +27,7 @@ angular.
   });
 
 
-function ProjectsDirectorySelectController(LoggerService) {
-  LoggerService.debug('Start ProjectsDirectorySelectController...');
+function ProjectsDirectorySelectController() {
 
   var remote = require('electron').remote;
   var dialog = remote.getGlobal('dialog');
@@ -52,6 +51,4 @@ function ProjectsDirectorySelectController(LoggerService) {
   self.hasError = function() {
     return self.field.$$parentForm.$submitted && self.field.$invalid;
   };
-
-  LoggerService.debug('End ProjectsDirectorySelectController...');
 }

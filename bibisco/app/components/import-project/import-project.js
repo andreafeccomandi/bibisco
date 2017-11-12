@@ -19,9 +19,7 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, ProjectService,
-  LoggerService) {
-  LoggerService.debug('Start ImportProjectController...');
+function ImportProjectController($location, $rootScope, $scope, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -89,6 +87,4 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService,
   self.back = function() {
     $location.path('/start');
   };
-
-  LoggerService.debug('End ImportProjectController...');
 }

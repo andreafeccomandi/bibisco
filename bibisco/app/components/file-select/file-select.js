@@ -24,8 +24,7 @@ angular.
   });
 
 
-function FileSelectController(LoggerService) {
-  LoggerService.debug('Start FileSelectController...');
+function FileSelectController() {
 
   var remote = require('electron').remote;
   var dialog = remote.getGlobal('dialog');
@@ -53,5 +52,4 @@ function FileSelectController(LoggerService) {
       }
     });
   };
-  LoggerService.debug('End FileSelectController...');
 }

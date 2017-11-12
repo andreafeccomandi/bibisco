@@ -20,8 +20,7 @@ angular.
   });
 
 function CreateProjectController($location, $rootScope, LocaleService,
-  ProjectService, LoggerService) {
-  LoggerService.debug('Start CreateProjectController...');
+  ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_CREATE_PROJECT');
@@ -65,6 +64,4 @@ function CreateProjectController($location, $rootScope, LocaleService,
   self.back = function() {
     $location.path('/start');
   };
-
-  LoggerService.debug('End CreateProjectController...');
 }

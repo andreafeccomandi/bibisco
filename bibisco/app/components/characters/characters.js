@@ -22,9 +22,9 @@ angular.
     }
   });
 
-function CharactersController($location, $scope, LoggerService,
-  MainCharacterService, SecondaryCharacterService) {
-  LoggerService.debug('Start CharactersController...');
+function CharactersController($location, $scope, MainCharacterService,
+  SecondaryCharacterService) {
+
   var self = this;
 
   self.$onInit = function() {
@@ -90,6 +90,4 @@ function CharactersController($location, $scope, LoggerService,
     self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
     $scope.$apply();
   };
-
-  LoggerService.debug('End CharactersController...');
 }

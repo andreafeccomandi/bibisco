@@ -23,7 +23,7 @@ angular.
 function WelcomeController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
-  LoggerService.debug('Start WelcomeController...');
+  
 
   // hide menu
   $rootScope.$emit('SHOW_WELCOME');
@@ -69,5 +69,5 @@ function WelcomeController($location, $rootScope, $scope,
     }
 
   };
-  LoggerService.debug('End WelcomeController...');
+  
 }

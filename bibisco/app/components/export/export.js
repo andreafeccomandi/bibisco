@@ -22,9 +22,4 @@ angular.
     }
   });
 
-function ExportController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start ExportController...');
-  //var self = this;
-
-  LoggerService.debug('End ExportController...');
-}
+function ExportController() {}

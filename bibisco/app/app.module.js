@@ -14,7 +14,7 @@
  */
 
 // Define the 'bibisco' module
-var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
+angular.module('bibiscoApp', ['ngRoute',
   'cfp.hotkeys',
   'focus-if',
   'mwl.confirm',
@@ -167,12 +167,12 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     });
   })
 
-  // By default, AngularJS will catch errors and log them to
-  // the Console. I want to keep that behavior; however, I
-  // want to intercept it so that I can also log the errors
-  // to file for later analysis and I want to redirect to error page.
-  // So I have to override the $exceptionHandler
-  // provider and replace it with a custom one
+// By default, AngularJS will catch errors and log them to
+// the Console. I want to keep that behavior; however, I
+// want to intercept it so that I can also log the errors
+// to file for later analysis and I want to redirect to error page.
+// So I have to override the $exceptionHandler
+// provider and replace it with a custom one
   .factory('$exceptionHandler', ['$injector', function($injector) {
 
     var $location;
@@ -207,7 +207,7 @@ var bibiscoApp = angular.module('bibiscoApp', ['ngRoute',
     };
   }])
 
-  // Set confirm dialog default
+// Set confirm dialog default
   .run(function(confirmationPopoverDefaults) {
     confirmationPopoverDefaults.cancelButtonType = 'default';
     confirmationPopoverDefaults.confirmButtonType = 'danger';

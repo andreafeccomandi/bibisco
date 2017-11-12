@@ -21,7 +21,7 @@ angular.
 
 function StartController($location, $rootScope, LoggerService,
   ProjectService) {
-  LoggerService.debug('Start StartController...');
+  
 
   // hide menu
   $rootScope.$emit('SHOW_START');
@@ -54,5 +54,5 @@ function StartController($location, $rootScope, LoggerService,
     $location.path('/settings');
   };
 
-  LoggerService.debug('End StartController...');
+  
 }

@@ -19,8 +19,7 @@ angular.
     controller: MenuController
   });
 
-function MenuController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start MenuController...');
+function MenuController($location, $rootScope) {
 
   var self = this;
 
@@ -116,6 +115,4 @@ function MenuController($location, $rootScope, LoggerService) {
     self.settingsActive = false;
     self.infoActive = false;
   };
-
-  LoggerService.debug('End MenuController...');
 }

@@ -20,9 +20,8 @@ angular.
   });
 
 function SceneTagsController($location, $routeParams, $translate,
-  ChapterService, LocaleService, LocationService, LoggerService,
+  ChapterService, LocaleService, LocationService,
   MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
-  LoggerService.debug('Start SceneTagsController...');
 
   var self = this;
 
@@ -255,6 +254,4 @@ function SceneTagsController($location, $routeParams, $translate,
     $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
       $routeParams.sceneid);
   };
-
-  LoggerService.debug('End SceneTagsController...');
 }

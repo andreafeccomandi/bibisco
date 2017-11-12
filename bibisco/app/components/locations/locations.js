@@ -22,10 +22,8 @@ angular.
     }
   });
 
-function LocationsController($location, $scope, LocationService,
-  LoggerService) {
+function LocationsController($location, $scope, LocationService) {
 
-  LoggerService.debug('Start LocationsController...');
   var self = this;
 
   self.$onInit = function() {
@@ -92,6 +90,4 @@ function LocationsController($location, $scope, LocationService,
 
     return description;
   };
-
-  LoggerService.debug('End LocationsController...');
 }

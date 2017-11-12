@@ -22,9 +22,6 @@ angular.
     }
   });
 
-function InfoController($location, $rootScope, LoggerService) {
-  LoggerService.debug('Start InfoController...');
-  //var self = this;
+function InfoController() {
 
-  LoggerService.debug('End InfoController...');
 }

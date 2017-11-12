@@ -19,11 +19,9 @@ angular.
     controller: ErrorController
   });
 
-function ErrorController(ContextService, LoggerService) {
-  LoggerService.debug('Start ErrorController...');
+function ErrorController(ContextService) {
+
   var self = this;
   self.cause = ContextService.getLastError().cause;
   self.stacktrace = ContextService.getLastError().stacktrace;
-
-  LoggerService.debug('End ErrorController...');
 }

@@ -19,9 +19,7 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, LocationService,
-  LoggerService) {
-  LoggerService.debug('Start LocationDetailController...');
+function LocationDetailController($location, $routeParams, LocationService) {
 
   var self = this;
 
@@ -75,6 +73,4 @@ function LocationDetailController($location, $routeParams, LocationService,
     alert('Qui si visualizzeranno le immagini per id=' + self.location
       .$loki);
   };
-
-  LoggerService.debug('End LocationDetailController...');
 }

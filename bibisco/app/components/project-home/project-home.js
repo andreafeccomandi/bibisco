@@ -24,7 +24,7 @@ angular.
 
 function ProjectHomeController($location, $rootScope, ContextMenuService,
   LoggerService, ProjectService) {
-  LoggerService.debug('Start ProjectHomeController...');
+  
   var self = this;
 
   self.project = function() {
@@ -36,5 +36,5 @@ function ProjectHomeController($location, $rootScope, ContextMenuService,
     ContextMenuService.destroy();
   };
 
-  LoggerService.debug('End ProjectHomeController...');
+  
 }

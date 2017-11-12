@@ -19,10 +19,7 @@ angular.
     controller: ChapterTitleController
   });
 
-function ChapterTitleController($location, $routeParams,
-  ChapterService, LoggerService) {
-  LoggerService.debug('Start ChapterTitleController...');
-
+function ChapterTitleController($location, $routeParams, ChapterService) {
   var self = this;
 
   self.$onInit = function() {
@@ -76,5 +73,4 @@ function ChapterTitleController($location, $routeParams,
     }
   };
 
-  LoggerService.debug('End ChapterTitleController...');
 }

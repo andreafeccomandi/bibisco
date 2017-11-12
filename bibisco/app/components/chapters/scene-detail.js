@@ -23,9 +23,7 @@ angular.
   });
 
 function SceneDetailController($location, $rootScope, $routeParams,
-  ChapterService, LoggerService) {
-  LoggerService.debug('Start SceneDetailController...');
-
+  ChapterService) {
   var self = this;
 
   self.$onInit = function() {
@@ -95,6 +93,4 @@ function SceneDetailController($location, $rootScope, $routeParams,
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/tags');
   };
-
-  LoggerService.debug('End SceneDetailController...');
 }

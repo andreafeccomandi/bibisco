@@ -20,8 +20,7 @@ angular.
   });
 
 function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
-  MainCharacterService, LoggerService) {
-  LoggerService.debug('Start MainCharacterInfoWithQuestion...');
+  MainCharacterService) {
 
   var self = this;
 
@@ -63,6 +62,4 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     //self.maincharacter.status = status;
     //MainCharacterService.update(self.maincharacter);
   };
-
-  LoggerService.debug('End MainCharacterInfoWithQuestion...');
 }

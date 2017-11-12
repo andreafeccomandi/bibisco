@@ -29,7 +29,7 @@ angular.
 
 function ButtonWithAlertController(LoggerService, PopupBoxesService) {
 
-  LoggerService.debug('Start ButtonWithAlertController...');
+  
 
   var self = this;
 
@@ -41,5 +41,5 @@ function ButtonWithAlertController(LoggerService, PopupBoxesService) {
     }
   };
 
-  LoggerService.debug('End ButtonWithAlertController...');
+  
 }

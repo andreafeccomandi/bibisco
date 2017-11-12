@@ -20,8 +20,7 @@ angular.
   });
 
 function SecondaryCharacterTitleController($location, $routeParams,
-  SecondaryCharacterService, LoggerService) {
-  LoggerService.debug('Start SecondaryCharacterTitleController...');
+  SecondaryCharacterService) {
 
   var self = this;
 
@@ -76,6 +75,4 @@ function SecondaryCharacterTitleController($location, $routeParams,
       });
     }
   };
-
-  LoggerService.debug('End SecondaryCharacterTitleController...');
 }

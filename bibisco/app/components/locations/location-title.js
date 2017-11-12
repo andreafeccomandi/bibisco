@@ -20,8 +20,7 @@ angular.
   });
 
 function LocationTitleController($location, $rootScope, $routeParams,
-  LocationService, LoggerService) {
-  LoggerService.debug('Start LocationTitleController...');
+  LocationService) {
 
   var self = this;
 
@@ -106,6 +105,4 @@ function LocationTitleController($location, $rootScope, $routeParams,
   self.back = function() {
     $location.path(self.exitpath);
   };
-
-  LoggerService.debug('End LocationTitleController...');
 }

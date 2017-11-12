@@ -22,7 +22,7 @@ angular.
 function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, UtilService, ProjectService) {
-  LoggerService.debug('Start SettingsController...');
+  
 
   var self = this;
   self.selectedLanguage = LocaleService.getCurrentLocale();
@@ -82,5 +82,5 @@ function SettingsController($location, $rootScope, $scope,
     $location.path('/start');
   };
 
-  LoggerService.debug('End SettingsController...');
+  
 }

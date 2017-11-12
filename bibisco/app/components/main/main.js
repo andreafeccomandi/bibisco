@@ -22,7 +22,7 @@ angular.
 function MainController($location, LoggerService, BibiscoPropertiesService,
   ContextService, FileSystemService, LocaleService, ProjectService) {
 
-  LoggerService.debug('Start MainController...');
+  
   let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
   let projectsDirectory = BibiscoPropertiesService.getProperty(
     'projectsDirectory');
@@ -63,5 +63,5 @@ function MainController($location, LoggerService, BibiscoPropertiesService,
   } else {
     $location.path('/start');
   }
-  LoggerService.debug('End MainController...');
+  
 }

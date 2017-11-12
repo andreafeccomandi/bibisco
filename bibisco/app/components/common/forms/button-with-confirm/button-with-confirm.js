@@ -29,7 +29,7 @@ angular.
 
 function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
 
-  LoggerService.debug('Start ButtonWithConfirmController...');
+  
 
   var self = this;
 
@@ -41,5 +41,5 @@ function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
     }
   };
 
-  LoggerService.debug('End ButtonWithConfirmController...');
+  
 }

@@ -26,9 +26,7 @@ angular.
   });
 
 
-function FormButtonsController(LoggerService) {
-
-  LoggerService.debug('Start FormButtonsController...');
+function FormButtonsController() {
 
   var self = this;
 
@@ -41,6 +39,4 @@ function FormButtonsController(LoggerService) {
   self.backWithConfirm = function() {
     self.backfunction();
   };
-
-  LoggerService.debug('End FormButtonsController...');
 }

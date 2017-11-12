@@ -22,8 +22,8 @@ angular.
     }
   });
 
-function ProjectController($location, $rootScope, $routeParams, LoggerService) {
-  LoggerService.debug('Start ProjectController...');
+function ProjectController($location, $rootScope, $routeParams) {
+
   var self = this;
 
   // menu items status
@@ -63,6 +63,4 @@ function ProjectController($location, $rootScope, $routeParams, LoggerService) {
     self.settingsActive = false;
     self.infoActive = false;
   };
-
-  LoggerService.debug('End ProjectController...');
 }

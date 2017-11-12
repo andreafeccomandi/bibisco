@@ -19,9 +19,7 @@ angular.
     controller: StrandTitleController
   });
 
-function StrandTitleController($location, $routeParams,
-  StrandService, LoggerService) {
-  LoggerService.debug('Start StrandTitleController...');
+function StrandTitleController($location, $routeParams, StrandService) {
 
   var self = this;
 
@@ -75,6 +73,4 @@ function StrandTitleController($location, $routeParams,
       });
     }
   };
-
-  LoggerService.debug('End StrandTitleController...');
 }

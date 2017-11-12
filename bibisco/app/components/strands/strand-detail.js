@@ -19,9 +19,7 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, StrandService,
-  LoggerService) {
-  LoggerService.debug('Start StrandDetailController...');
+function StrandDetailController($location, $routeParams, StrandService) {
 
   var self = this;
 
@@ -69,6 +67,4 @@ function StrandDetailController($location, $routeParams, StrandService,
   self.savefunction = function() {
     StrandService.update(self.strand);
   };
-
-  LoggerService.debug('End StrandDetailController...');
 }

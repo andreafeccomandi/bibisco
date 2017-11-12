@@ -27,15 +27,11 @@ angular.
   });
 
 
-function ButtonGroupField(LoggerService) {
-
-  LoggerService.debug('Start ButtonGroupField...');
+function ButtonGroupField() {
 
   var self = this;
 
   self.change = function(value) {
     self.model = value;
   };
-
-  LoggerService.debug('End ButtonGroupField...');
 }
