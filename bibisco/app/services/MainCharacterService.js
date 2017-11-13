@@ -22,9 +22,6 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     'maincharacters');
   var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
     collection, 'all_maincharacters');
-  var maincharacters_infos_no_question_collection =
-    ProjectDbConnectionService.getProjectDb().getCollection(
-      'maincharacters_infos_no_question');
 
   return {
     getMainCharacter: function(id) {
@@ -38,60 +35,41 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     },
     insert: function(maincharacter) {
 
-      // insert personal data
-      let personaldata = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'personaldata');
+      // personal data
+      maincharacter.personaldata = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'personaldata');
 
-      // insert physionomy
-      let physionomy = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'physionomy');
+      // physionomy
+      maincharacter.physionomy = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'physionomy');
 
-      // insert behaviors
-      let behaviors = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'behaviors');
+      // behaviors
+      maincharacter.behaviors = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'behaviors');
 
-      // insert sociology
-      let sociology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'sociology');
+      // sociology
+      maincharacter.sociology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'sociology');
 
-      // insert psychology
-      let psychology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'psychology');
+      // psychology
+      maincharacter.psychology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'psychology');
 
-      // insert ideas
-      let ideas = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        maincharacter.$loki, 'ideas');
+      // ideas
+      maincharacter.ideas = this.createMainCharacterInfoWithQuestionsWithoutCommit(
+        'ideas');
 
-      // insert life before story beginning
-      let lifebeforestorybeginning = this.insertMainCharacterInfoNoQuestionsWithoutCommit(
-        maincharacter.$loki, 'lifebeforestorybeginning');
+      // life before story beginning
+      maincharacter.lifebeforestorybeginning = '';
 
-      // insert conflict
-      let conflict = this.insertMainCharacterInfoNoQuestionsWithoutCommit(
-        maincharacter.$loki, 'conflict');
+      // conflict
+      maincharacter.conflict = '';
 
-      // insert evolutionduringthestory
-      let evolutionduringthestory = this.insertMainCharacterInfoNoQuestionsWithoutCommit(
-        maincharacter.$loki, 'evolutionduringthestory');
+      // evolutionduringthestory
+      maincharacter.evolutionduringthestory = '';
 
-      // insert main character
-      maincharacter = CollectionUtilService.insertWithoutCommit(
-        collection, maincharacter);
-
-      // update main character
-      maincharacter.personaldata = personaldata.$loki;
-      maincharacter.physionomy = physionomy.$loki;
-      maincharacter.behaviors = behaviors.$loki;
-      maincharacter.sociology = sociology.$loki;
-      maincharacter.psychology = psychology.$loki;
-      maincharacter.ideas = ideas.$loki;
-      maincharacter.lifebeforestorybeginning = lifebeforestorybeginning.$loki;
-      maincharacter.conflict = conflict.$loki;
-      maincharacter.evolutionduringthestory = evolutionduringthestory.$loki;
-      CollectionUtilService.updateWithoutCommit(collection, maincharacter);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
+      // insert character
+      maincharacter = CollectionUtilService.insert(collection, maincharacter);
     },
 
     createMainCharacterInfoWithQuestionsWithoutCommit: function(type) {
@@ -99,26 +77,26 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       let questionNumber;
       switch (type) {
       case 'personaldata':
-        questionNumber = 11;
+        questionNumber = 12;
         break;
       case 'physionomy':
-        questionNumber = 23;
+        questionNumber = 24;
         break;
       case 'behaviors':
-        questionNumber = 11;
+        questionNumber = 12;
         break;
       case 'sociology':
-        questionNumber = 9;
+        questionNumber = 10;
         break;
       case 'psychology':
-        questionNumber = 61;
+        questionNumber = 62;
         break;
       case 'ideas':
-        questionNumber = 17;
+        questionNumber = 18;
         break;
       }
 
-      let questions = {};
+      let questions = [questionNumber];
       for (let i = 0; i < questionNumber; i++) {
         questions[i.toString()] = '';
       }
@@ -128,22 +106,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
         freetext: ''
       };
     },
-
-    insertMainCharacterInfoNoQuestionsWithoutCommit: function(
-      maincharacterid, type) {
-      return CollectionUtilService.insertWithoutCommit(
-        maincharacters_infos_no_question_collection, {
-          id: maincharacterid,
-          type: type,
-          text: ''
-        }, {
-          id: {
-            '$eq': maincharacterid
-          }
-        });
-    },
-
-
+    
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(collection, sourceId, targetId,
         dynamicView);

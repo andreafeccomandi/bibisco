@@ -529,6 +529,12 @@ h3 {
 	font-family: Helvetica, Arial, sans-serif;
 }
 
+.character-info-question {
+	font-style: italic;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
 @media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;

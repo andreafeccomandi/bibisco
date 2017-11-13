@@ -1,4 +1,4 @@
-<div class="detail-content-with-header-subtitle">
+<div class="detail-content-no-header-subtitle">
   <div class="container" style="height: 100%;">
     <div class="row" style="height: 100%;">
       <div class="col-sm-8" ng-class="{
@@ -9,10 +9,13 @@
 
           </div>
           <div ng-if="!$ctrl.freetext">
-
+            <div ng-repeat="question in $ctrl.questions track by $index"
+             class="{{$ctrl.fontclass}}">
+                <div class="character-info-question">({{$index+1}}/{{$ctrl.questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index | translate}}</div>
+                <div class="{{$ctrl.indentclass}}">{{question}}</div>
+            </div>
           </div>
         </div>
-
 
         <richtexteditor ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"

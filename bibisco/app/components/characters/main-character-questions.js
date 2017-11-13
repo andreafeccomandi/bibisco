@@ -29,17 +29,15 @@ angular.
   });
 
 
-function MaincharacterQuestionsController(MainCharacterService) {
+function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPreferencesService) {
 
   var self = this;
 
   self.$onInit = function() {
-    self.savedcontent = self.content;
-    self.infowithQuestions = MainCharacterService.getMainCharacterInfoWithQuestions(
-      self.maincharacterid, self.type);
-    for (let i = 0; i < self.infowithQuestions.questions.length; i++) {
-      console.log(self.infowithQuestions.questions[i]);
-    }
+    let maincharacter = MainCharacterService.getMainCharacter(self.maincharacterid);
+    self.questions = maincharacter[self.type].questions;
+    self.fontclass = RichTextEditorPreferencesService.getFontClass();
+    self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };
 
   self.enableeditmode = function() {

@@ -46,12 +46,9 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info +
       '.title';
-    self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info +
-      '.description';
-
+    
     self.editmode = false;
     self.dirty = false;
-    self.content = 'Bella storia, bo!';
   };
 
   self.back = function() {

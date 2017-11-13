@@ -72,8 +72,6 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectdb.addCollection('scene_revision_strands');
       projectdb.addCollection('scene_revisions');
       projectdb.addCollection('maincharacters');
-      projectdb.addCollection('maincharacters_infos_no_question');
-      projectdb.addCollection('maincharacters_infos_with_question');
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');
 
@@ -104,10 +102,12 @@ angular.module('bibiscoApp').service('ProjectService', function(
       return result;
     },
     delete: function(id) {
+      //let project = this.getProjectInfo(id);
       this.deleteProjectFromBibiscoDb(id);
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         id);
       FileSystemService.deleteDirectory(projectPath);
+      LoggerService.info('Deleted project with id='+id);
     },
     deleteAllProjectsFromBibiscoDb: function() {
       BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
