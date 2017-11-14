@@ -5,13 +5,15 @@
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
         <div ng-if="!$ctrl.editmode">
-          <div ng-if="$ctrl.freetext">
-
+          <div ng-if="$ctrl.maincharacter[$ctrl.type].freetext_enabled">
+            <div class="{{$ctrl.fontclass}}">
+              <div class="{{$ctrl.indentclass}}">{{$ctrl.maincharacter[$ctrl.type].freetext}}</div>
+            </div>
           </div>
-          <div ng-if="!$ctrl.freetext">
-            <div ng-repeat="question in $ctrl.questions track by $index"
+          <div ng-if="!$ctrl.maincharacter[$ctrl.type].freetext_enabled">
+            <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index"
              class="{{$ctrl.fontclass}}">
-                <div class="character-info-question">({{$index+1}}/{{$ctrl.questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index | translate}}</div>
+                <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index | translate}}</div>
                 <div class="{{$ctrl.indentclass}}">{{question}}</div>
             </div>
           </div>

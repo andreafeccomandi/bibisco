@@ -102,8 +102,9 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       }
 
       return {
-        questions: questions,
-        freetext: ''
+        freetext: '',
+        freetext_enabled: false,
+        questions: questions
       };
     },
     

@@ -34,8 +34,7 @@ function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPr
   var self = this;
 
   self.$onInit = function() {
-    let maincharacter = MainCharacterService.getMainCharacter(self.maincharacterid);
-    self.questions = maincharacter[self.type].questions;
+    self.maincharacter = MainCharacterService.getMainCharacter(self.maincharacterid);
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };
