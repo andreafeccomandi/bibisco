@@ -36,43 +36,37 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     insert: function(maincharacter) {
 
       // personal data
-      maincharacter.personaldata = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'personaldata');
+      maincharacter.personaldata = this.createInfoWithQuestions('personaldata');
 
       // physionomy
-      maincharacter.physionomy = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'physionomy');
+      maincharacter.physionomy = this.createInfoWithQuestions('physionomy');
 
       // behaviors
-      maincharacter.behaviors = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'behaviors');
+      maincharacter.behaviors = this.createInfoWithQuestions('behaviors');
 
       // sociology
-      maincharacter.sociology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'sociology');
+      maincharacter.sociology = this.createInfoWithQuestions('sociology');
 
       // psychology
-      maincharacter.psychology = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'psychology');
+      maincharacter.psychology = this.createInfoWithQuestions('psychology');
 
       // ideas
-      maincharacter.ideas = this.createMainCharacterInfoWithQuestionsWithoutCommit(
-        'ideas');
+      maincharacter.ideas = this.createInfoWithQuestions('ideas');
 
       // life before story beginning
-      maincharacter.lifebeforestorybeginning = '';
+      maincharacter.lifebeforestorybeginning = this.createInfoWithoutQuestions();
 
       // conflict
-      maincharacter.conflict = '';
+      maincharacter.conflict = this.createInfoWithoutQuestions();
 
       // evolutionduringthestory
-      maincharacter.evolutionduringthestory = '';
+      maincharacter.evolutionduringthestory = this.createInfoWithoutQuestions();
 
       // insert character
       maincharacter = CollectionUtilService.insert(collection, maincharacter);
     },
 
-    createMainCharacterInfoWithQuestionsWithoutCommit: function(type) {
+    createInfoWithQuestions: function(type) {
 
       let questionNumber;
       switch (type) {
@@ -106,6 +100,13 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
         freetext_enabled: false,
         questions: questions,
         status: 'todo'
+      };
+    },
+
+    createInfoWithoutQuestions: function () {
+      return {
+        status: 'todo',
+        text: ''
       };
     },
     
