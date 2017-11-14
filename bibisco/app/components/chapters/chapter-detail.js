@@ -79,11 +79,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $location.path('/project/chapters');
   };
 
-  self.changeStatus = function(status) {
-    self.chapter.status = status;
-    ChapterService.update(self.chapter);
-  };
-
   self.changeTitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/title');
   };
