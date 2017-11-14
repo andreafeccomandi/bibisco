@@ -48,7 +48,7 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
 
       // Add context menu listener only on content editable
       contextMenuListener = new ContextMenuListener(function(info) {
-        if (info.isEditable && info.inputFieldType == 'none') {
+        if (info.isEditable && info.inputFieldType === 'none') {
           contextMenuBuilder.showPopupMenu(info);
         }
       });

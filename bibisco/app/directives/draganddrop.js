@@ -94,7 +94,7 @@ angular.module('bibiscoApp').directive('draggable', function() {
             this.classList.remove('over');
 
             // call the passed drop function
-            if (this.getAttribute('family') == e.dataTransfer.getData(
+            if (this.getAttribute('family') === e.dataTransfer.getData(
               'family')) {
               scope.dropfunction({
                 draggedObjectId: e.dataTransfer.getData('id'),

@@ -31,7 +31,7 @@ function MainCharacterTitleController($location, $routeParams,
       label: 'jsp.projectFromScene.nav.li.characters'
     });
 
-    if ($routeParams.id != null) {
+    if ($routeParams.id !== null) {
       let maincharacter = MainCharacterService.getMainCharacter(
         $routeParams.id);
 
@@ -62,7 +62,7 @@ function MainCharacterTitleController($location, $routeParams,
   };
 
   self.save = function(title) {
-    if ($routeParams.id != null) {
+    if ($routeParams.id !== null) {
       let maincharacter = MainCharacterService.getMainCharacter(
         $routeParams.id);
       maincharacter.name = title;

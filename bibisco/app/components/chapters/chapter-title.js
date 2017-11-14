@@ -30,7 +30,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
       label: 'jsp.projectFromScene.nav.li.chapters'
     });
 
-    if ($routeParams.id != null) {
+    if ($routeParams.id !== null) {
       let chapter = ChapterService.getChapter(
         $routeParams.id);
 
@@ -61,7 +61,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
   };
 
   self.save = function(title) {
-    if ($routeParams.id != null) {
+    if ($routeParams.id !== null) {
       let chapter = ChapterService.getChapter(
         $routeParams.id);
       chapter.title = title;

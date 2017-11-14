@@ -36,7 +36,7 @@ function SceneTitleController($location, $routeParams, ChapterService) {
       label: '#' + chapter.position + ' ' + chapter.title
     });
 
-    if ($routeParams.sceneid != null) {
+    if ($routeParams.sceneid !== null) {
       let scene = ChapterService.getScene($routeParams.sceneid);
 
       // edit breadcrumb items
@@ -67,7 +67,7 @@ function SceneTitleController($location, $routeParams, ChapterService) {
   };
 
   self.save = function(title) {
-    if ($routeParams.sceneid != null) {
+    if ($routeParams.sceneid !== null) {
       let scene = ChapterService.getScene($routeParams.sceneid);
       scene.title = title;
       ChapterService.updateSceneTitle(scene);

@@ -62,7 +62,7 @@ function SceneTagsController($location, $routeParams, $translate,
     self.initLocations();
 
     // init date time
-    if (ChapterService.getLastScenetime() != null) {
+    if (ChapterService.getLastScenetime() !== null) {
       self.lastscenetime = new Date(ChapterService.getLastScenetime());
     }
 
@@ -84,31 +84,31 @@ function SceneTagsController($location, $routeParams, $translate,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: (self.scenetags.povid == '1stOnMajor')
+      selected: (self.scenetags.povid === '1stOnMajor')
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: (self.scenetags.povid == '1stOnMinor')
+      selected: (self.scenetags.povid === '1stOnMinor')
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: (self.scenetags.povid == '3rdLimited')
+      selected: (self.scenetags.povid === '3rdLimited')
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: (self.scenetags.povid == '3rdOmniscient')
+      selected: (self.scenetags.povid === '3rdOmniscient')
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: (self.scenetags.povid == '3rdObjective')
+      selected: (self.scenetags.povid === '3rdObjective')
     });
     self.povs.push({
       id: '2nd',
-      selected: (self.scenetags.povid == '2nd')
+      selected: (self.scenetags.povid === '2nd')
     });
 
-    if (self.scenetags.povid == '1stOnMajor' || self.scenetags.povid ==
-      '1stOnMinor' || self.scenetags.povid == '3rdLimited') {
+    if (self.scenetags.povid === '1stOnMajor' || self.scenetags.povid ===
+      '1stOnMinor' || self.scenetags.povid === '3rdLimited') {
       self.showpovcharacter = true;
       self.initPovCharacters();
     } else {
@@ -158,7 +158,7 @@ function SceneTagsController($location, $routeParams, $translate,
 
   self.initPovCharacters = function() {
     self.povcharacters = self.initCharacters(function(id) {
-      return self.scenetags.povcharacterid == id;
+      return self.scenetags.povcharacterid === id;
     });
   };
 
@@ -214,7 +214,7 @@ function SceneTagsController($location, $routeParams, $translate,
       self.locations.push({
         id: locations[i].$loki,
         name: name,
-        selected: (self.scenetags.locationid == locations[i].$loki)
+        selected: (self.scenetags.locationid === locations[i].$loki)
       });
     }
 

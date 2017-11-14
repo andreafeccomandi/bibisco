@@ -41,8 +41,8 @@ function SceneTagsDatetimeController($location, $translate,
     self.originalscenetime = null;
     self.scenetimeshowed = null;
     self.scenetimecustom = null;
-    if (self.scenetime != null) {
-      if (self.scenetimegregorian == true) {
+    if (self.scenetime !== null) {
+      if (self.scenetimegregorian === true) {
         self.originalscenetime = self.scenetime;
         self.scenetime = new Date(self.scenetime);
         self.scenetimeshowed = self.scenetime;
@@ -80,9 +80,9 @@ function SceneTagsDatetimeController($location, $translate,
   };
 
   self.calendarToggled = function(open) {
-    if (open && self.originalscenetime == null && !self.scenetimeselected) {
+    if (open && self.originalscenetime === null && !self.scenetimeselected) {
       self.scenetime = self.lastscenetime;
-    } else if (!open && self.originalscenetime == null && !self.scenetimeselected) {
+    } else if (!open && self.originalscenetime === null && !self.scenetimeselected) {
       self.scenetime = null;
     }
   };

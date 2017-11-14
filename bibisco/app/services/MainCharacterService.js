@@ -27,26 +27,26 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     calculateStatus: function (maincharacter) {
       let result;
 
-      if (maincharacter.personaldata.status == 'todo' &&
-        maincharacter.physionomy.status == 'todo' &&
-        maincharacter.behaviors.status == 'todo' &&
-        maincharacter.sociology.status == 'todo' &&
-        maincharacter.psychology.status == 'todo' &&
-        maincharacter.ideas.status == 'todo' &&
-        maincharacter.lifebeforestorybeginning.status == 'todo' &&
-        maincharacter.conflict.status == 'todo' &&
-        maincharacter.evolutionduringthestory.status == 'todo'
+      if (maincharacter.personaldata.status === 'todo' &&
+        maincharacter.physionomy.status === 'todo' &&
+        maincharacter.behaviors.status === 'todo' &&
+        maincharacter.sociology.status === 'todo' &&
+        maincharacter.psychology.status === 'todo' &&
+        maincharacter.ideas.status === 'todo' &&
+        maincharacter.lifebeforestorybeginning.status === 'todo' &&
+        maincharacter.conflict.status === 'todo' &&
+        maincharacter.evolutionduringthestory.status === 'todo'
       ) {
         result = 'todo';
-      } else if (maincharacter.personaldata.status == 'done' &&
-        maincharacter.physionomy.status == 'done' &&
-        maincharacter.behaviors.status == 'done' &&
-        maincharacter.sociology.status == 'done' &&
-        maincharacter.psychology.status == 'done' &&
-        maincharacter.ideas.status == 'done' &&
-        maincharacter.lifebeforestorybeginning.status == 'done' &&
-        maincharacter.conflict.status == 'done' &&
-        maincharacter.evolutionduringthestory.status == 'done'
+      } else if (maincharacter.personaldata.status === 'done' &&
+        maincharacter.physionomy.status === 'done' &&
+        maincharacter.behaviors.status === 'done' &&
+        maincharacter.sociology.status === 'done' &&
+        maincharacter.psychology.status === 'done' &&
+        maincharacter.ideas.status === 'done' &&
+        maincharacter.lifebeforestorybeginning.status === 'done' &&
+        maincharacter.conflict.status === 'done' &&
+        maincharacter.evolutionduringthestory.status === 'done'
       ) {
         result = 'done';
       } else {

@@ -69,8 +69,7 @@ function ElementDetailController($interval, $rootScope,
 
   self.$onChanges = function(changes) {
 
-    if ((changes.revisionactive || changes.revisioncount) && self.editmode ==
-      false) {
+    if ((changes.revisionactive || changes.revisioncount) && self.editmode === false) {
       self.savedcontent = self.content;
     }
   };

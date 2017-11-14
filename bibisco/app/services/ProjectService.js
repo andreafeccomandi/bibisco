@@ -307,7 +307,7 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
         globs: ['**/*.json']
       });
 
-    if (!fileList || fileList.length != 1) {
+    if (!fileList || fileList.length !== 1) {
       throw 'Invalid archive';
     }
 
@@ -329,7 +329,7 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
       'project_by_id').applyFind({
       id: projectId
     });
-    if (projects.count() == 1) {
+    if (projects.count() === 1) {
       isAlreadyPresent = true;
       projectName = projects.data()[0].name;
     }
@@ -367,7 +367,7 @@ function checkProjectValidity(projectDirectoryName, projectsDirectory,
   let projectInfo = projectdb.getCollection('project').get(1);
 
   // check if projects directory name is equals to project id
-  if (projectDirectoryName != projectInfo.id) {
+  if (projectDirectoryName !== projectInfo.id) {
     throw 'Project directory is not equals to project id: project directory = ' +
     projectDirectoryName + ' - id = ' + projectInfo.id;
   }

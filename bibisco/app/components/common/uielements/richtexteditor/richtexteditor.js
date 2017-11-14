@@ -45,7 +45,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   };
 
 
-  if (ContextService.getOs() == 'darwin') {
+  if (ContextService.getOs() === 'darwin') {
     self.os = '_mac';
   } else {
     self.os = '';
@@ -165,7 +165,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       self.strikethroughactive = false;
     }
 
-    if ($document[0].queryCommandValue('BackColor').toString() ==
+    if ($document[0].queryCommandValue('BackColor').toString() ===
       'rgb(255, 255, 0)') {
       self.highlightactive = true;
     } else {
@@ -265,7 +265,7 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
   };
 
   self.highlight = function() {
-    if ($document[0].queryCommandValue('BackColor').toString() ==
+    if ($document[0].queryCommandValue('BackColor').toString() ===
       'rgb(255, 255, 0)') {
       $document[0].execCommand('hiliteColor', false, 'inherit');
     } else {

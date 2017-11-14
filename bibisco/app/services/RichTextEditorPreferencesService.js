@@ -42,13 +42,13 @@ angular.module('bibiscoApp').service('RichTextEditorPreferencesService',
           indentParagraphEnabled;
       },
       isAutoSaveEnabled: function() {
-        return autoSaveEnabled == 'true';
+        return autoSaveEnabled === 'true';
       },
       isIndentParagraphEnabled: function() {
-        return indentParagraphEnabled == 'true';
+        return indentParagraphEnabled === 'true';
       },
       isSpellCheckEnabled: function() {
-        return spellCheckEnabled == 'true';
+        return spellCheckEnabled === 'true';
       },
       save: function(properties) {
         font = properties.font;

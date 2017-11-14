@@ -50,7 +50,7 @@ function RevisionSelectController($location, $translate,
       let revision = self.createRevisionItem(i);
       self.revisions.push(revision);
 
-      if (self.revisionactive == i) {
+      if (self.revisionactive === i) {
         self.revisionactual = revision;
         self.revisionselected = revision;
       }
@@ -69,12 +69,12 @@ function RevisionSelectController($location, $translate,
   };
 
   self.selectRevision = function() {
-    if (self.revisionselected.key == 'new') {
+    if (self.revisionselected.key === 'new') {
       self.restoreRevisionActual();
       PopupBoxesService.confirm(self.createRevisionFromActual,
         self.translations.revision_confirm_new_revision_from_actual,
         self.createRevisionFromScratch);
-    } else if (self.revisionselected.key == 'delete') {
+    } else if (self.revisionselected.key === 'delete') {
       self.restoreRevisionActual();
       PopupBoxesService.confirm(self.deleteRevision,
         self.translations.revision_confirm_delete_revision);
@@ -115,7 +115,7 @@ function RevisionSelectController($location, $translate,
     self.revisionselected = self.revisions[0];
     self.revisionactual = self.revisions[0];
 
-    if (self.revisioncount == 1) {
+    if (self.revisioncount === 1) {
       self.removeDeleteRevisionCommand();
     }
   };
@@ -128,7 +128,7 @@ function RevisionSelectController($location, $translate,
     self.revisionselected = newrevision;
     self.revisionactual = newrevision;
 
-    if (self.revisioncount == 2) {
+    if (self.revisioncount === 2) {
       self.addDeleteRevisionCommand();
     }
   };

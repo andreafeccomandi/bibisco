@@ -31,7 +31,7 @@ function TaskStatusSelectorController() {
   self.disableselection = false;
 
   self.$onInit = function() {
-    if (self.readonly != null && self.readonly == true) {
+    if (self.readonly !== null && self.readonly === true) {
       self.disableselection = true;
     }
   };

@@ -35,7 +35,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
       label: 'jsp.projectFromScene.nav.li.locations'
     });
 
-    if ($routeParams.id != null) {
+    if ($routeParams.id !== null) {
       let location = LocationService.getLocation(
         $routeParams.id);
       let locationName = LocationService.calculateLocationName(location);
@@ -80,7 +80,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
   self.save = function(isValid) {
     if (isValid) {
 
-      if ($routeParams.id != null) {
+      if ($routeParams.id !== null) {
         let location = LocationService.getLocation(
           $routeParams.id);
         location.nation = self.nation;

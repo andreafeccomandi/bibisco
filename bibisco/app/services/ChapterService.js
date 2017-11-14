@@ -155,27 +155,27 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let words = 0;
       let characters = 0;
 
-      if (chapterReason.status == 'todo') {
+      if (chapterReason.status === 'todo') {
         totalTodo = 1;
-      } else if (chapterReason.status == 'done') {
+      } else if (chapterReason.status === 'done') {
         totalDone = 1;
       }
 
       for (let i = 0; i < scenes.length; i++) {
         words = words + scenes[i].words;
         characters = characters + scenes[i].characters;
-        if (scenes[i].status == 'todo') {
+        if (scenes[i].status === 'todo') {
           totalTodo = totalTodo + 1;
-        } else if (scenes[i].status == 'done') {
+        } else if (scenes[i].status === 'done') {
           totalDone = totalDone + 1;
         }
       }
 
       chapter.words = words;
       chapter.characters = characters;
-      if (totalTodo == totalStatuses) {
+      if (totalTodo === totalStatuses) {
         chapter.status = 'todo';
-      } else if (totalDone == totalStatuses) {
+      } else if (totalDone === totalStatuses) {
         chapter.status = 'done';
       } else {
         chapter.status = 'tocomplete';
@@ -355,7 +355,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let scenecharacters;
       let scenestrands;
 
-      if (actualscenerevision != null) {
+      if (actualscenerevision !== null) {
         scenerevision = {
           sceneid: sceneid,
           text: actualscenerevision.text,
@@ -572,7 +572,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       });
 
       // update last scentime tag
-      if (scenetags.timegregorian == true) {
+      if (scenetags.timegregorian === true) {
         ProjectService.updateLastScenetimeTag(scenetags.time);
       }
 

@@ -21,7 +21,7 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
     link: function(scope, element, attrs, ctrl) {
       // view -> model (when div gets blur update the view value of the model)
       element.bind('keyup', function() {
-        if (!element.html() || element.html() == '') {
+        if (!element.html() || element.html() === '') {
           document.execCommand('insertHTML', false,
             '<p><br/></p>'); // This is necessary to start editing inside a <p>
         }

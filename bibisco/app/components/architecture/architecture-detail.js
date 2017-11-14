@@ -58,13 +58,13 @@ function ArchitectureDetailController($location, $routeParams,
     let title;
     let subtitle;
 
-    if (id == 'premise') {
+    if (id === 'premise') {
       title = 'jsp.architecture.thumbnail.premise.title';
       subtitle = 'jsp.architecture.thumbnail.premise.description';
-    } else if (id == 'fabula') {
+    } else if (id === 'fabula') {
       title = 'jsp.architecture.thumbnail.fabula.title';
       subtitle = 'jsp.architecture.thumbnail.fabula.description';
-    } else if (id == 'setting') {
+    } else if (id === 'setting') {
       title = 'jsp.architecture.thumbnail.setting.title';
       subtitle = 'jsp.architecture.thumbnail.setting.description';
     }

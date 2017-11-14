@@ -92,11 +92,11 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'pl';
   } else if (preferredLanguage.startsWith('ru')) {
     preferredLocale = 'ru';
-  } else if (preferredLanguage == 'pt-br') {
+  } else if (preferredLanguage === 'pt-br') {
     preferredLocale = 'pt_BR';
-  } else if (preferredLanguage == 'en-ca') {
+  } else if (preferredLanguage === 'en-ca') {
     preferredLocale = 'en-ca';
-  } else if (preferredLanguage == 'en-gb') {
+  } else if (preferredLanguage === 'en-gb') {
     preferredLocale = 'en-gb';
   } else {
     preferredLocale = 'en-us';
