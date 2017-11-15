@@ -4,6 +4,8 @@
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
+        
+        <!-- VIEW MODE -->
         <div ng-if="!$ctrl.editmode">
           <div ng-if="$ctrl.maincharacter[$ctrl.type].freetext_enabled">
             <div class="{{$ctrl.fontclass}}">
@@ -18,14 +20,18 @@
             </div>
           </div>
         </div>
-
-        <richtexteditor ng-if="$ctrl.editmode"
-          autosaveenabled="$ctrl.autosaveenabled"
-          characters="$ctrl.characters"
-          content="$ctrl.content"
-          dirty="$ctrl.dirty"
-          savefunction="$ctrl.savefunction()"
-          words="$ctrl.words"></richtexteditor>
+        
+        <!-- EDIT  MODE -->
+        <div ng-if="$ctrl.editmode">
+          <maincharacterquestionselect 
+            questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
+            type="$ctrl.type">
+          </maincharacterquestionselect>
+          <!--<richtexteditor ng-if="$ctrl.editmode" autosaveenabled="$ctrl.autosaveenabled" 
+            characters="$ctrl.characters" content="$ctrl.content"
+            dirty="$ctrl.dirty" savefunction="$ctrl.savefunction()" 
+            words="$ctrl.words"></richtexteditor>-->
+        </div>
       </div>
     </div>
   </div>
