@@ -24,6 +24,7 @@
         <!-- EDIT  MODE -->
         <div ng-if="$ctrl.editmode">
           <maincharacterquestionselect 
+            questionselected="$ctrl.questionselected"
             questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
             type="$ctrl.type">
           </maincharacterquestionselect>

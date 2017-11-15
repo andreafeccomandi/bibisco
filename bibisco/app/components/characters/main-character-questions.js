@@ -35,6 +35,7 @@ function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPr
 
   self.$onInit = function() {
     self.maincharacter = MainCharacterService.getMainCharacter(self.maincharacterid);
+    self.questionselected = 0;
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };

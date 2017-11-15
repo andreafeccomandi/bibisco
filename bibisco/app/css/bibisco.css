@@ -535,6 +535,10 @@ h3 {
 	margin-top: 10px;
 }
 
+.character-info-question-select-item {
+	font-style: italic;
+}
+
 @media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;

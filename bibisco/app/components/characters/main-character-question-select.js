@@ -19,6 +19,7 @@ angular.
     controller: MainCharacterQuestionSelectController,
     bindings: {
       questioncount: '<',
+      questionselected: '=',
       type: '<'
     }
   });
@@ -28,23 +29,27 @@ function MainCharacterQuestionSelectController($translate) {
   var self = this;
 
   self.$onInit = function() {
-    self.questionselected = '0';
+    self.selectedItem;
     self.selectItems = [];
     for (let i = 0; i < self.questioncount; i++) {
-      self.selectItems.push(self.createMainCharacterQuestionItem(i));
+      let questionItem = self.createQuestionItem(i);
+      self.selectItems.push(questionItem);
+      if (i === self.questionselected) {
+        self.selectedItem = questionItem;
+      }
     }
   };
 
   self.selectQuestion = function() {
-    self.changeMainCharacterQuestion();
+    self.questionselected = self.selectedItem.key;
   };
 
-  self.createMainCharacterQuestionItem = function (item) {
-    let description = $translate.instant('jsp.characterInfo.question') + ' (' + (item+1) 
-      + '/' + self.questioncount
+  self.createQuestionItem = function (item) {
+    let description = $translate.instant('jsp.characterInfo.question') 
+      + ' (' + (item+1)  + '/' + self.questioncount
       + '): ' + $translate.instant('characterInfo.question.' + self.type + '.' + item);
     return {
-      key: '' + item,
+      key: item,
       description: description
     };
   };
