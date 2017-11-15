@@ -25,8 +25,7 @@ angular.
     }
   });
 
-function RevisionSelectController($location, $translate,
-  LoggerService, PopupBoxesService) {
+function RevisionSelectController($location, $translate, PopupBoxesService) {
 
   var self = this;
 
