@@ -20,6 +20,7 @@ angular.
     bindings: {
       questioncount: '<',
       questionselected: '=',
+      questionselectedchanged: '<',
       type: '<'
     }
   });
@@ -37,6 +38,12 @@ function MainCharacterQuestionSelectController($translate) {
       if (i === self.questionselected) {
         self.selectedItem = questionItem;
       }
+    }
+  };
+
+  self.$onChanges = function () {
+    if (self.selectItems && self.questionselected) {
+      self.selectedItem = self.selectItems[self.questionselected];
     }
   };
 

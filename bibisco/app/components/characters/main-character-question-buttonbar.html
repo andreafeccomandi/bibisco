@@ -1,0 +1,6 @@
+<button ng-disabled="$ctrl.questionselected == 0" 
+  type="button" class="btn btn-default btn-lg" ng-click="$ctrl.previousQuestion()">
+  {{"jsp.characterInfo.a.previousQuestion" | translate}}</button>
+<button ng-disabled="$ctrl.questionselected == ($ctrl.questioncount - 1)" 
+  type="button" class="btn btn-default btn-lg" ng-click="$ctrl.nextQuestion()">
+   {{"jsp.characterInfo.a.nextQuestion" | translate}}</button>

@@ -25,6 +25,7 @@
         <div ng-if="$ctrl.editmode">
           <maincharacterquestionselect 
             questionselected="$ctrl.questionselected"
+            questionselectedchanged="$ctrl.questionselected"
             questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
             type="$ctrl.type">
           </maincharacterquestionselect>
@@ -32,6 +33,10 @@
             characters="$ctrl.characters" content="$ctrl.content"
             dirty="$ctrl.dirty" savefunction="$ctrl.savefunction()" 
             words="$ctrl.words"></richtexteditor>-->
+          <maincharacterquestionbuttonbar 
+            questionselected="$ctrl.questionselected" 
+            questioncount="$ctrl.maincharacter[$ctrl.type].questions.length">
+          </maincharacterquestionbuttonbar>
         </div>
       </div>
     </div>
