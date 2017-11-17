@@ -23,15 +23,44 @@ angular.
     }
   });
 
-function MainCharacterQuestionButtonbarController() {
+function MainCharacterQuestionButtonbarController($scope, ContextService, hotkeys) {
 
   var self = this;
 
+  self.$onInit = function() {
+
+    if (ContextService.getOs() === 'darwin') {
+      self.os = '_mac';
+    } else {
+      self.os = '';
+    }
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+n', 'command+left'],
+        description: 'previousQuestion',
+        callback: function () {
+          self.previousQuestion();
+        }
+      })
+      .add({
+        combo: ['ctrl+m', 'command+right'],
+        description: 'nextQuestion',
+        callback: function () {
+          self.nextQuestion();
+        }
+      });
+  };
+
   self.previousQuestion = function() {
-    self.questionselected = self.questionselected - 1;
+    if (self.questionselected > 0) {
+      self.questionselected = self.questionselected - 1;
+    }
   };
 
   self.nextQuestion = function () {
-    self.questionselected = self.questionselected + 1;
+    if (self.questionselected < self.questioncount - 1) {
+      self.questionselected = self.questionselected + 1;
+    }
   };
 }

@@ -660,5 +660,9 @@
   "common.getstarted": "začínáme",
   "year_bc_scene_tags": "př. n. l.",
   "scenetagsdatetime.gregoriancalendar": "gregoriánský kalendář",
-  "scenetagsdatetime.alternativecalendar": "alternativní kalendář"
+  "scenetagsdatetime.alternativecalendar": "alternativní kalendář",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+šipka vlevo",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+šipka vlevo",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+šipka vpravo",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+šipka vpravo"
 }

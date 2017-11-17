@@ -696,5 +696,9 @@
   "year_bc_scene_tags": "B.C",
   "time_format_scene_tags": "{{date|date:'HH:mm'}}",
   "scenetagsdatetime.gregoriancalendar": "gregorian calendar",
-  "scenetagsdatetime.alternativecalendar": "alternative calendar"
+  "scenetagsdatetime.alternativecalendar": "alternative calendar",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+left arrow",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+left arrow",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+right arrow",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+right arrow"
 }

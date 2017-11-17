@@ -669,5 +669,9 @@
   "common.getstarted": "commencer",
   "year_bc_scene_tags": "avant J.-C.",
   "scenetagsdatetime.gregoriancalendar": "calendrier grégorien",
-  "scenetagsdatetime.alternativecalendar": "calendrier alternatif"
+  "scenetagsdatetime.alternativecalendar": "calendrier alternatif",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+flèche gauche",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+flèche gauche",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+flèche droite",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+flèche droite"
 }

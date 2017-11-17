@@ -42,7 +42,7 @@ function MainCharacterQuestionSelectController($translate) {
   };
 
   self.$onChanges = function () {
-    if (self.selectItems && self.questionselected) {
+    if (self.selectItems && self.questionselected !== null) {
       self.selectedItem = self.selectItems[self.questionselected];
     }
   };

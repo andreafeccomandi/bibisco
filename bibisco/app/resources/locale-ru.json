@@ -707,5 +707,9 @@
   "common.getstarted": "Начать",
   "year_bc_scene_tags": "до н.э.",
   "scenetagsdatetime.gregoriancalendar": "Григорианский календарь",
-  "scenetagsdatetime.alternativecalendar": "альтернативный календарь"
+  "scenetagsdatetime.alternativecalendar": "альтернативный календарь",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+стрелка влево",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+стрелка влево",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+стрелка вправо",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+стрелка вправо"
 }

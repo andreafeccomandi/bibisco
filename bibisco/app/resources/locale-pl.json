@@ -661,5 +661,9 @@
   "common.getstarted": "rozpocznij",
   "year_bc_scene_tags": "p.n.e.",
   "scenetagsdatetime.gregoriancalendar": "kalendarz gregoriański",
-  "scenetagsdatetime.alternativecalendar": "alternatywny kalendarz"
+  "scenetagsdatetime.alternativecalendar": "alternatywny kalendarz",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+strzałka w lewo",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+strzałka w lewo",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+strzałka w prawo",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+strzałka w prawo"
 }

@@ -670,5 +670,9 @@
   "common.getstarted": "começar",
   "year_bc_scene_tags": "a.C",
   "scenetagsdatetime.gregoriancalendar": "calendário gregoriano",
-  "scenetagsdatetime.alternativecalendar": "calendário alternativo"
+  "scenetagsdatetime.alternativecalendar": "calendário alternativo",
+  "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+seta para a esquerda",
+  "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+seta para a esquerda",
+  "maincharacterquestionbuttonbar.next.tooltip": "CTRL+seta para a direita",
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+seta para a direita"
 }
