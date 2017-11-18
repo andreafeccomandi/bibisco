@@ -571,7 +571,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
         strands: scenetags.strands
       });
 
-      // update last scentime tag
+      // update last scenetime tag
       if (scenetags.timegregorian === true) {
         ProjectService.updateLastScenetimeTag(scenetags.time);
       }

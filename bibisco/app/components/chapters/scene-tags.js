@@ -62,7 +62,7 @@ function SceneTagsController($location, $routeParams, $translate,
     self.initLocations();
 
     // init date time
-    if (ChapterService.getLastScenetime() !== null) {
+    if (ChapterService.getLastScenetime() !== '') {
       self.lastscenetime = new Date(ChapterService.getLastScenetime());
     }
 
