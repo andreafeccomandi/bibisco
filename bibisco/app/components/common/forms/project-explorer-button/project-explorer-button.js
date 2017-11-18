@@ -14,22 +14,21 @@
  */
 angular.
   module('bibiscoApp').
-  component('detailfooterleftbuttonbar', {
-    templateUrl: 'components/common/uielements/detail-footer/detail-footer-left-buttonbar.html',
-    controller: DetailFooterLeftButtonbarController,
+  component('projectexplorerbutton', {
+    templateUrl: 'components/common/forms/project-explorer-button/project-explorer-button.html',
+    controller: ProjectExplorerButtonController,
     bindings: {
-      editmode: '<',
-      imagesenabled: '<',
-      showimagesfunction: '&',
       showprojectexplorer: '=',
-      revisionactive: '<',
-      revisioncount: '<',
-      revisionenabled: '<',
-      revisionfunction: '&',
-      tagsenabled: '<',
-      tagsfunction: '&',
-      words: '<'
+      visible: '<'
     }
   });
 
-function DetailFooterLeftButtonbarController() {}
+function ProjectExplorerButtonController() {
+
+  var self = this;
+
+  self.toggleProjectExplorer = function () {
+    self.showprojectexplorer = !self.showprojectexplorer;
+  };
+
+}
