@@ -31,7 +31,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
       label: 'jsp.projectFromScene.nav.li.architecture'
     });
 
-    if ($routeParams.id !== null) {
+    if ($routeParams.id !== undefined) {
       let strand = StrandService.getStrand(
         $routeParams.id);
 
@@ -61,7 +61,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
   };
 
   self.save = function(title) {
-    if ($routeParams.id !== null) {
+    if ($routeParams.id !== undefined) {
       let strand = StrandService.getStrand(
         $routeParams.id);
       strand.name = title;
