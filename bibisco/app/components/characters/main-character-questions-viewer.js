@@ -14,16 +14,11 @@
  */
 angular.
   module('bibiscoApp').
-  component('maincharacterquestions', {
-    templateUrl: 'components/characters/main-character-questions.html',
+  component('maincharacterquestionsviewer', {
+    templateUrl: 'components/characters/main-character-questions-viewer.html',
     controller: MaincharacterQuestionsController,
     bindings: {
-      autosaveenabled: '=',
-      content: '=',
-      dirty: '=',
-      editmode: '=',
-      freetext: '=',
-      maincharacterid: '<',
+      maincharacter: '<',
       type: '<'
     }
   });
@@ -34,14 +29,7 @@ function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPr
   var self = this;
 
   self.$onInit = function() {
-    self.maincharacter = MainCharacterService.getMainCharacter(self.maincharacterid);
-    self.questionselected = 0;
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-    self.showprojectexplorer = false;
-  };
-
-  self.enableeditmode = function() {
-    self.editmode = true;
   };
 }

@@ -1,0 +1,12 @@
+<div ng-if="$ctrl.maincharacter[$ctrl.type].freetext_enabled">
+  <div class="{{$ctrl.fontclass}}">
+    <div class="{{$ctrl.indentclass}}">{{$ctrl.maincharacter[$ctrl.type].freetext}}</div>
+  </div>
+</div>
+<div ng-if="!$ctrl.maincharacter[$ctrl.type].freetext_enabled">
+  <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
+    <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index
+      | translate}}</div>
+    <div class="{{$ctrl.indentclass}}">{{question}}</div>
+  </div>
+</div>

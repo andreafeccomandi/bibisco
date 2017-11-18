@@ -1,43 +1,40 @@
 <div class="detail-content-no-header-subtitle">
   <div class="container" style="height: 100%;">
-    <div class="row" style="height: 100%;">
+    <!-- VIEW MODE -->
+    <div class="row" style="height: 100%;" ng-if="!$ctrl.editmode">
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
+        <maincharacterquestionsviewer maincharacter="$ctrl.maincharacter" type="$ctrl.type">
+        </maincharacterquestionsviewer>
+      </div>
+    </div>
+
+    <!-- EDIT  MODE -->
+    <div class="row" style="height: 100%;" ng-if="$ctrl.editmode">
+      <div class="col-sm-8" ng-class="{
+                'col-sm-offset-2': !$ctrl.showprojectexplorer,
+                'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
         
-        <!-- VIEW MODE -->
-        <div ng-if="!$ctrl.editmode">
-          <div ng-if="$ctrl.maincharacter[$ctrl.type].freetext_enabled">
-            <div class="{{$ctrl.fontclass}}">
-              <div class="{{$ctrl.indentclass}}">{{$ctrl.maincharacter[$ctrl.type].freetext}}</div>
-            </div>
-          </div>
-          <div ng-if="!$ctrl.maincharacter[$ctrl.type].freetext_enabled">
-            <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index"
-             class="{{$ctrl.fontclass}}">
-                <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index | translate}}</div>
-                <div class="{{$ctrl.indentclass}}">{{question}}</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- EDIT  MODE -->
-        <div ng-if="$ctrl.editmode">
-          <maincharacterquestionselect 
-            questionselected="$ctrl.questionselected"
-            questionselectedchanged="$ctrl.questionselected"
+          <maincharacterquestionselect questionselected="$ctrl.questionselected" 
+            questionselectedchanged="$ctrl.questionselected" 
             questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
             type="$ctrl.type">
           </maincharacterquestionselect>
-          <!--<richtexteditor ng-if="$ctrl.editmode" autosaveenabled="$ctrl.autosaveenabled" 
-            characters="$ctrl.characters" content="$ctrl.content"
-            dirty="$ctrl.dirty" savefunction="$ctrl.savefunction()" 
-            words="$ctrl.words"></richtexteditor>-->
+          <hr/>
+        
+          <div class="character-questions-richtexteditor-container">
+          <richtexteditor autosaveenabled="$ctrl.autosaveenabled" characters="$ctrl.characters" content="$ctrl.content" dirty="$ctrl.dirty"
+            savefunction="$ctrl.savefunction()" words="$ctrl.words"></richtexteditor>
+          </div>
+            
+        
+          <hr/>
           <maincharacterquestionbuttonbar 
-            questionselected="$ctrl.questionselected" 
-            questioncount="$ctrl.maincharacter[$ctrl.type].questions.length">
-          </maincharacterquestionbuttonbar>
-        </div>
+              questionselected="$ctrl.questionselected" 
+              questioncount="$ctrl.maincharacter[$ctrl.type].questions.length">
+            </maincharacterquestionbuttonbar>
+        
       </div>
     </div>
   </div>

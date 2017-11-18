@@ -539,6 +539,10 @@ h3 {
 	font-style: italic;
 }
 
+.character-questions-richtexteditor-container {
+	height: calc(100% - 165px);
+}
+
 @media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;
