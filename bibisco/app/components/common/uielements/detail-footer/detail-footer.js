@@ -40,6 +40,7 @@ angular.
       revisionfunction: '&',
       savefunction: '&',
       showimagesfunction: '&',
+      showimageslabel: '@',
       showprojectexplorer: '=',
       tagsenabled: '<',
       tagsfunction: '&',

@@ -14,23 +14,21 @@
  */
 angular.
   module('bibiscoApp').
-  component('detailfooterleftbuttonbar', {
-    templateUrl: 'components/common/uielements/detail-footer/detail-footer-left-buttonbar.html',
-    controller: DetailFooterLeftButtonbarController,
+  component('imagesbutton', {
+    templateUrl: 'components/common/forms/images-button/images-button.html',
+    controller: ImagesButtonController,
     bindings: {
-      editmode: '<',
-      imagesenabled: '<',
       showimagesfunction: '&',
       showimageslabel: '@',
-      showprojectexplorer: '=',
-      revisionactive: '<',
-      revisioncount: '<',
-      revisionenabled: '<',
-      revisionfunction: '&',
-      tagsenabled: '<',
-      tagsfunction: '&',
-      words: '<'
+      visible: '<'
     }
   });
 
-function DetailFooterLeftButtonbarController() {}
+function ImagesButtonController($translate) {
+
+  var self = this;
+
+  self.$onInit = function () {
+    self.tooltip = $translate.instant(self.showimageslabel);
+  };
+}

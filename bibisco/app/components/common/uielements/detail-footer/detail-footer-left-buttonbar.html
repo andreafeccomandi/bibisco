@@ -1,9 +1,8 @@
 <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer"
-  visible="$ctrl.editmode || $ctrl.words > 0"
-></projectexplorerbutton>
-<button ng-if="!$ctrl.editmode && $ctrl.imagesenabled" type="button" class="btn btn-default"
-  uib-tooltip="{{'jsp.secondaryCharacter.button.images' | translate}}"
-  ng-click="$ctrl.showimagesfunction()">{{'jsp.character.thumbnail.images.title' | translate}}</button>
+  visible="$ctrl.editmode || $ctrl.words > 0"></projectexplorerbutton>
+<imagesbutton showimagesfunction="$ctrl.showimagesfunction"
+  showimageslabel="{{$ctrl.showimageslabel}}"
+  visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
 <button ng-if="!$ctrl.editmode && $ctrl.tagsenabled" type="button" class="btn btn-default"
   uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
   ng-click="$ctrl.tagsfunction()">{{'jsp.scene.button.tags' | translate}}</button>

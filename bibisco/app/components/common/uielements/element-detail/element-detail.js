@@ -38,6 +38,7 @@ angular.
       lastsave: '<',
       savefunction: '&',
       showimagesfunction: '&',
+      showimageslabel: '@',
       revisionactive: '<',
       revisioncount: '<',
       revisionenabled: '<',
