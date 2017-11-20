@@ -10,20 +10,13 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <detailfooterleftbuttonbar
-          editmode="$ctrl.editmode"
-          imagesenabled="$ctrl.imagesenabled"
-          revisionactive="$ctrl.revisionactive"
-          revisioncount="$ctrl.revisioncount"
-          revisionenabled="$ctrl.revisionenabled"
-          revisionfunction="$ctrl.revisionfunction({action,revision})"
-          showimagesfunction="$ctrl.showimagesfunction()"
-          showimageslabel="{{$ctrl.showimageslabel}}"
-          showprojectexplorer="$ctrl.showprojectexplorer"
-          tagsenabled="$ctrl.tagsenabled"
-          tagsfunction="$ctrl.tagsfunction()"
-          words="$ctrl.words">
-        </detailfooterleftbuttonbar>
+        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="$ctrl.editmode || $ctrl.words > 0"></projectexplorerbutton>
+        <imagesbutton showimagesfunction="$ctrl.showimagesfunction" showimageslabel="{{$ctrl.showimageslabel}}" visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
+        <button ng-if="!$ctrl.editmode && $ctrl.tagsenabled" type="button" class="btn btn-default" uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
+          ng-click="$ctrl.tagsfunction()">{{'jsp.scene.button.tags' | translate}}</button>
+        <revisionselect ng-if="!$ctrl.editmode && $ctrl.revisionenabled" class="btn-group" revisionactive="$ctrl.revisionactive"
+          revisioncount="$ctrl.revisioncount" revisionenabled="$ctrl.revisionenabled" revisionfunction="$ctrl.revisionfunction({action,revision})">
+        </revisionselect>
       </span>
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" 
