@@ -20,6 +20,7 @@ angular.
     bindings: {
       autosaveenabled: '<',
       backfunction: '&',
+      backtoviewfunction: '&',
       changetitleenabled: '<',
       changetitlefunction: '&',
       changetitlelabel: '@',
@@ -40,29 +41,13 @@ function DetailFooterRightButtonbarController($timeout, PopupBoxesService) {
 
   var self = this;
 
-  self.$onInit = function() {
-    self.saving = false;
-  };
+  self.$onInit = function() {};
 
   self.delete = function() {
     if (self.deleteforbidden) {
       PopupBoxesService.alert(self.deleteforbiddenmessage);
     } else {
       PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
-    }
-  };
-
-  self.enableeditmode = function() {
-    self.editmode = true;
-  };
-
-  self.save = function() {
-    if (self.dirty) {
-      self.saving = true;
-      $timeout(function() {
-        self.savefunction();
-        self.saving = false;
-      }, 250);
     }
   };
 }

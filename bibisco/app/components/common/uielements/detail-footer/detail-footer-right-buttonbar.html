@@ -16,14 +16,12 @@
       </a></li>
   </ul>
 </div>
-<button ng-if="!$ctrl.editmode && $ctrl.words > 0" type="button" class="btn btn-primary"
-  ng-click="$ctrl.enableeditmode()">{{"jsp.common.button.edit" | translate}}</button>
-<button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
-  ng-click="$ctrl.save()">
-  <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
-  <span>{{"jsp.common.button.save" | translate}}</span>
-</button>
-<buttonwithconfirm enableconfirm="$ctrl.dirty"
-  buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.backfunction()"
-  buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
-</buttonwithconfirm>
+
+<editsavebackbuttonbar
+  backfunction="$ctrl.backfunction()" 
+  backtoviewfunction="$ctrl.backtoview()"
+  dirty="$ctrl.dirty" 
+  editbuttonvisible="$ctrl.words > 0" 
+  editmode="$ctrl.editmode"
+  savefunction="$ctrl.savefunction()">
+</editsavebackbuttonbar>

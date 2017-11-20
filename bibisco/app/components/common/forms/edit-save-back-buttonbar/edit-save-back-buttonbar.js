@@ -1,0 +1,75 @@
+/*
+ * Copyright (C) 2014-2017 Andrea Feccomandi
+ *
+ * Licensed under the terms of GNU GPL License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY.
+ * See the GNU General Public License for more details.
+ *
+ */
+angular.
+  module('bibiscoApp').
+  component('editsavebackbuttonbar', {
+    templateUrl: 'components/common/forms/edit-save-back-buttonbar/edit-save-back-buttonbar.html',
+    controller: EditSaveBackButtonbarControllerController,
+    bindings: {
+      backfunction: '&',
+      backtoviewfunction: '&',
+      dirty: '=',
+      editbuttonvisible: '<',
+      editmode: '=',
+      savefunction: '&'
+    }
+  });
+
+function EditSaveBackButtonbarControllerController($interval, $timeout, 
+  RichTextEditorPreferencesService) {
+
+  var self = this;
+
+  self.$onInit = function () {
+    self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+    self.saving = false;
+    self.autosavefunctionpromise = $interval(function () {
+      if (self.autosaveenabled && self.editmode && self.dirty) {
+        self.save();
+      }
+    }, 60000);
+  };
+
+  self.$onDestroy = function () {
+    $interval.cancel(self.autosavefunctionpromise);
+  };
+
+  self.enableeditmode = function () {
+    self.editmode = true;
+  };
+
+  self.back = function () {
+    if (self.editmode) {
+      //  back to view mode
+      self.editmode = false;
+      self.dirty = false;
+      self.backtoviewfunction();
+    } else {
+      // back to previous page
+      self.backfunction();
+    }
+  };
+
+  self.save = function () {
+    if (self.dirty) {
+      self.saving = true;
+      $timeout(function () {
+        self.savefunction();
+        self.saving = false;
+        self.dirty = false;
+      }, 250);
+    }
+  };
+}

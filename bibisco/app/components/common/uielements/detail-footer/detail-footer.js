@@ -20,6 +20,7 @@ angular.
     bindings: {
       autosaveenabled: '<',
       backfunction: '&',
+      backtoviewfunction: '&',
       changetitleenabled: '<',
       changetitlefunction: '&',
       changetitlelabel: '@',

@@ -53,49 +53,33 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope,
-  RichTextEditorPreferencesService) {
+function ElementDetailController($interval, $rootScope) {
   var self = this;
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
+    self.dirty = false;
+    self.showprojectexplorer = false;
     self.savedcontent = self.content;
-
-    self.autosavefunctionpromise = $interval(function() {
-      if (self.autosaveenabled && self.editmode && self.dirty) {
-        self.save();
-      }
-    }, 60000);
   };
 
   self.$onChanges = function(changes) {
-
     if ((changes.revisionactive || changes.revisioncount) && self.editmode === false) {
       self.savedcontent = self.content;
     }
   };
 
-  self.$onDestroy = function() {
-    $interval.cancel(self.autosavefunctionpromise);
+  self.backtoview = function() {
+    self.content = self.savedcontent;
   };
-
-  self.dirty = false;
-  self.showprojectexplorer = false;
-  self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
 
   self.back = function() {
     self.content = self.savedcontent;
-    if (self.editmode) {
-      self.editmode = false;
-      self.dirty = false;
-    } else {
-      self.backfunction();
-    }
+    self.backfunction();
   };
 
   self.save = function() {
     self.savefunction();
-    self.dirty = false;
     self.savedcontent = self.content;
   };
 }
