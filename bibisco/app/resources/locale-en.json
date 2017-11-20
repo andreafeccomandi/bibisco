@@ -48,7 +48,7 @@
   "jsp.common.button.print": "print",
   "jsp.common.button.save": "save",
   "jsp.common.button.delete": "delete",
-  "jsp.common.button.more": "more",
+  "jsp.common.button.more": "more...",
   "jsp.common.button.movefirst": "move to first position",
   "jsp.common.button.moveleft": "move to previous position",
   "jsp.common.button.moveright": "move to following position",

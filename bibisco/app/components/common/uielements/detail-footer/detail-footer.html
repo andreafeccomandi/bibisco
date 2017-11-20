@@ -26,23 +26,16 @@
         </detailfooterleftbuttonbar>
       </span>
       <span class="pull-right">
-        <detailfooterrightbuttonbar
-          autosaveenabled="$ctrl.autosaveenabled"
-          backfunction="$ctrl.backfunction()"
-          backtoviewfunction="$ctrl.backtoview()"
-          changetitleenabled="$ctrl.changetitleenabled"
-          changetitlefunction="$ctrl.changetitlefunction()"
-          changetitlelabel="{{$ctrl.changetitlelabel}}"
-          deleteconfirmmessage="{{$ctrl.deleteconfirmmessage}}"
-          deleteenabled="$ctrl.deleteenabled"
-          deleteforbidden="$ctrl.deleteforbidden"
-          deleteforbiddenmessage="{{$ctrl.deleteforbiddenmessage}}"
-          deletefunction="$ctrl.deletefunction({id})"
-          dirty="$ctrl.dirty"
-          editmode="$ctrl.editmode"
-          savefunction="$ctrl.savefunction()"
-          words="$ctrl.words">
-        </detailfooterrightbuttonbar>
+        <dropdownmenu buttonlabel="jsp.common.button.more" 
+          items="$ctrl.actionitems" 
+          visible="!$ctrl.editmode && ($ctrl.changetitleenabled || $ctrl.deleteenabled)">
+        </dropdownmenu>
+        <editsavebackbuttonbar backfunction="$ctrl.backfunction()" 
+          backtoviewfunction="$ctrl.backtoview()" 
+          dirty="$ctrl.dirty" editbuttonvisible="$ctrl.words > 0"
+          editmode="$ctrl.editmode" 
+          savefunction="$ctrl.savefunction()">
+        </editsavebackbuttonbar>
       </span>
     </div>
   </div>

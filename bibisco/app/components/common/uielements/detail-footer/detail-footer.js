@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/detail-footer/detail-footer.html',
     controller: DetailFooterController,
     bindings: {
+      actionitems: '<',
       autosaveenabled: '<',
       backfunction: '&',
       backtoviewfunction: '&',

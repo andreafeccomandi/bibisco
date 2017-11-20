@@ -36,7 +36,7 @@
   "jsp.common.button.print": "stampa",
   "jsp.common.button.save": "salva",
   "jsp.common.button.delete": "elimina",
-  "jsp.common.button.more": "altro",
+  "jsp.common.button.more": "altro...",
   "jsp.common.button.movefirst": "sposta in prima posizione",
   "jsp.common.button.moveleft": "sposta alla posizione precedente",
   "jsp.common.button.moveright": "sposta alla posizione successiva",

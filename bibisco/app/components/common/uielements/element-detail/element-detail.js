@@ -53,14 +53,29 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope) {
+function ElementDetailController($interval, $rootScope,PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
+    
     self.dirty = false;
     self.showprojectexplorer = false;
     self.savedcontent = self.content;
+
+    self.actionitems = [];
+    if (self.changetitleenabled) {
+      self.actionitems.push({
+        label: self.changetitlelabel,
+        itemfunction: self.changetitlefunction
+      });
+    }
+    if (self.deleteenabled) {
+      self.actionitems.push({
+        label: 'jsp.common.button.delete',
+        itemfunction: self.delete
+      });
+    }
   };
 
   self.$onChanges = function(changes) {
@@ -81,5 +96,13 @@ function ElementDetailController($interval, $rootScope) {
   self.save = function() {
     self.savefunction();
     self.savedcontent = self.content;
+  };
+
+  self.delete = function () {
+    if (self.deleteforbidden) {
+      PopupBoxesService.alert(self.deleteforbiddenmessage);
+    } else {
+      PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
+    }
   };
 }
