@@ -16,7 +16,7 @@ angular.
   module('bibiscoApp').
   component('editsavebackbuttonbar', {
     templateUrl: 'components/common/forms/edit-save-back-buttonbar/edit-save-back-buttonbar.html',
-    controller: EditSaveBackButtonbarControllerController,
+    controller: EditSaveBackButtonbarController,
     bindings: {
       backfunction: '&',
       backtoviewfunction: '&',
@@ -27,8 +27,8 @@ angular.
     }
   });
 
-function EditSaveBackButtonbarControllerController($interval, $timeout, 
-  RichTextEditorPreferencesService) {
+function EditSaveBackButtonbarController($interval, $scope, $timeout, 
+  hotkeys, RichTextEditorPreferencesService) {
 
   var self = this;
 
@@ -66,10 +66,23 @@ function EditSaveBackButtonbarControllerController($interval, $timeout,
     if (self.dirty) {
       self.saving = true;
       $timeout(function () {
-        self.savefunction();
-        self.saving = false;
-        self.dirty = false;
+        self.executeSave();
       }, 250);
     }
+  };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+s', 'command+s'],
+      description: 'save',
+      callback: function () {
+        self.executeSave();
+      }
+    });
+
+  self.executeSave = function() {
+    self.savefunction();
+    self.saving = false;
+    self.dirty = false;
   };
 }

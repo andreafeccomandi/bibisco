@@ -22,7 +22,6 @@ angular.
       characters: '=',
       content: '=',
       dirty: '=',
-      savefunction: '&',
       words: '='
     }
   });
@@ -129,13 +128,6 @@ function RichTextEditorController($document, $scope, $timeout, $uibModal,
       description: 'highlight',
       callback: function() {
         self.highlight();
-      }
-    })
-    .add({
-      combo: ['ctrl+s', 'command+s'],
-      description: 'save',
-      callback: function() {
-        self.savefunction();
       }
     });
 

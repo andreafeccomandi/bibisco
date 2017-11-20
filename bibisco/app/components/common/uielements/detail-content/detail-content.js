@@ -25,7 +25,6 @@ angular.
       editmode: '=',
       headersubtitle: '<',
       savedcontent: '<',
-      savefunction: '&',
       showprojectexplorer: '<',
       words: '='
     }
