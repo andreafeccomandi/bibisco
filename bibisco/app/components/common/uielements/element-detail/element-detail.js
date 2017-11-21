@@ -52,11 +52,13 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
     
+    // common element detail flags
     self.dirty = false;
     self.showprojectexplorer = false;
     self.savedcontent = self.content;
     self.autosaveenabled;
 
+    // breadcrumbs
     self.actionitems = [];
     if (self.changetitleenabled) {
       self.actionitems.push({
@@ -75,12 +77,6 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
           }
         }
       });
-    }
-  };
-
-  self.$onChanges = function(changes) {
-    if ((changes.revisionactive || changes.revisioncount) && self.editmode === false) {
-      self.savedcontent = self.content;
     }
   };
 
