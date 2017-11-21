@@ -53,11 +53,11 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     $rootScope.$emit(self.eventname);
     
     // common element detail flags
-    self.dirty = false;
-    self.showprojectexplorer = false;
-    self.savedcontent = self.content;
     self.autosaveenabled;
-
+    self.dirty = false;
+    self.savedcontent;
+    self.showprojectexplorer = false;
+    
     // breadcrumbs
     self.actionitems = [];
     if (self.changetitleenabled) {
@@ -78,19 +78,5 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
         }
       });
     }
-  };
-
-  self.backtoview = function() {
-    self.content = self.savedcontent;
-  };
-
-  self.back = function() {
-    self.content = self.savedcontent;
-    self.backfunction();
-  };
-
-  self.save = function() {
-    self.savefunction();
-    self.savedcontent = self.content;
   };
 }

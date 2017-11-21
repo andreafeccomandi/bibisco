@@ -24,7 +24,7 @@ angular.
       dirty: '=',
       editmode: '=',
       headersubtitle: '<',
-      savedcontent: '<',
+      savedcontent: '=',
       showprojectexplorer: '<',
       words: '='
     }
@@ -34,6 +34,9 @@ angular.
 function DetailContentController() {
 
   var self = this;
+  self.$onInit = function () {
+    self.savedcontent = self.content;
+  };
 
   self.enableeditmode = function() {
     self.editmode = true;

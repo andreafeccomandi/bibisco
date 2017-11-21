@@ -20,10 +20,11 @@ angular.
     bindings: {
       autosaveenabled: '=',
       backfunction: '&',
-      backtoviewfunction: '&',
+      content: '=',
       dirty: '=',
       editbuttonvisible: '<',
       editmode: '=',
+      savedcontent: '=',
       savefunction: '&'
     }
   });
@@ -52,11 +53,11 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
   };
 
   self.back = function () {
+    self.content = self.savedcontent;
     if (self.editmode) {
       //  back to view mode
       self.editmode = false;
       self.dirty = false;
-      self.backtoviewfunction();
     } else {
       // back to previous page
       self.backfunction();
@@ -85,5 +86,6 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
     self.savefunction();
     self.saving = false;
     self.dirty = false;
+    self.savedcontent = self.content;
   };
 }
