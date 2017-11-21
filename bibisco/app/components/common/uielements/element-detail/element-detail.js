@@ -39,13 +39,6 @@ angular.
       savefunction: '&',
       showimagesfunction: '&',
       showimageslabel: '@',
-      revisionactive: '<',
-      revisioncount: '<',
-      revisionenabled: '<',
-      revisionfunction: '&',
-      tagsenabled: '<',
-      tagsfunction: '&',
-      tagslabel: '@',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       words: '=',
@@ -73,7 +66,13 @@ function ElementDetailController($interval, $rootScope,PopupBoxesService) {
     if (self.deleteenabled) {
       self.actionitems.push({
         label: 'jsp.common.button.delete',
-        itemfunction: self.delete
+        itemfunction: function () {
+          if (self.deleteforbidden) {
+            PopupBoxesService.alert(self.deleteforbiddenmessage);
+          } else {
+            PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
+          }
+        }
       });
     }
   };
@@ -96,13 +95,5 @@ function ElementDetailController($interval, $rootScope,PopupBoxesService) {
   self.save = function() {
     self.savefunction();
     self.savedcontent = self.content;
-  };
-
-  self.delete = function () {
-    if (self.deleteforbidden) {
-      PopupBoxesService.alert(self.deleteforbiddenmessage);
-    } else {
-      PopupBoxesService.confirm(self.deletefunction, self.deleteconfirmmessage);
-    }
   };
 }
