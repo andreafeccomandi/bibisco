@@ -18,7 +18,9 @@
           items="$ctrl.actionitems" 
           visible="!$ctrl.editmode && ($ctrl.changetitleenabled || $ctrl.deleteenabled)">
         </dropdownmenu>
-        <editsavebackbuttonbar backfunction="$ctrl.backfunction()" 
+        <editsavebackbuttonbar 
+          autosaveenabled="$ctrl.autosaveenabled"
+          backfunction="$ctrl.backfunction()" 
           backtoviewfunction="$ctrl.backtoview()" 
           dirty="$ctrl.dirty" editbuttonvisible="$ctrl.words > 0"
           editmode="$ctrl.editmode" 

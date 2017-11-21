@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/forms/edit-save-back-buttonbar/edit-save-back-buttonbar.html',
     controller: EditSaveBackButtonbarController,
     bindings: {
+      autosaveenabled: '=',
       backfunction: '&',
       backtoviewfunction: '&',
       dirty: '=',

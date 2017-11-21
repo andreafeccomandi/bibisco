@@ -46,7 +46,7 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope,PopupBoxesService) {
+function ElementDetailController($interval, $rootScope, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -55,6 +55,7 @@ function ElementDetailController($interval, $rootScope,PopupBoxesService) {
     self.dirty = false;
     self.showprojectexplorer = false;
     self.savedcontent = self.content;
+    self.autosaveenabled;
 
     self.actionitems = [];
     if (self.changetitleenabled) {
