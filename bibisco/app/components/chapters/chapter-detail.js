@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService) {
+  ChapterService, PopupBoxesService) {
 
   var self = this;
 
@@ -32,6 +32,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
 
+    // breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.nav.li.chapters',
@@ -40,6 +41,20 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.breadcrumbitems.push({
       label: self.title
     });
+
+    // action items
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'jsp.chapter.button.updateTitle',
+      itemfunction: self.changeTitle
+    });
+    self.actionitems.push({
+      label: 'jsp.common.button.delete',
+      itemfunction: function () {
+        PopupBoxesService.confirm(self.delete, 'jsp.chapters.delete.confirm');
+      }
+    });
+    
 
     self.editmode = false;
     self.showprojectexplorer = true;

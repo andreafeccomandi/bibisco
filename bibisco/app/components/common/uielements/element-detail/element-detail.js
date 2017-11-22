@@ -58,7 +58,7 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     self.savedcontent;
     self.showprojectexplorer = false;
     
-    // breadcrumbs
+    // action items
     self.actionitems = [];
     if (self.changetitleenabled) {
       self.actionitems.push({
