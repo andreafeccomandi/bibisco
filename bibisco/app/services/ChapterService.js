@@ -355,7 +355,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let scenecharacters;
       let scenestrands;
 
-      if (actualscenerevision !== null) {
+      if (actualscenerevision !== undefined) {
         scenerevision = {
           sceneid: sceneid,
           text: actualscenerevision.text,
