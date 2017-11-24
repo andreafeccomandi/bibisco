@@ -36,9 +36,7 @@ function LocationDetailController($location, $routeParams, LocationService) {
     self.breadcrumbitems.push({
       label: self.name
     });
-    
-    self.showprojectexplorer = true;
-
+  
   };
 
   self.back = function() {

@@ -36,9 +36,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
-
-    self.showprojectexplorer = true;
-
   };
 
   self.back = function() {

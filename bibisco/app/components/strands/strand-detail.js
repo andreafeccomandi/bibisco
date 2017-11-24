@@ -35,9 +35,6 @@ function StrandDetailController($location, $routeParams, StrandService) {
     self.breadcrumbitems.push({
       label: self.strand.name
     });
-
-    self.showprojectexplorer = true;
-
   };
 
   self.back = function() {
