@@ -36,7 +36,6 @@ function StrandDetailController($location, $routeParams, StrandService) {
       label: self.strand.name
     });
 
-    self.editmode = false;
     self.showprojectexplorer = true;
 
   };

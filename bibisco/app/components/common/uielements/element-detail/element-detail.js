@@ -30,7 +30,6 @@ angular.
       deleteforbidden: '<',
       deleteforbiddenmessage: '@',
       deletefunction: '&',
-      editmode: '=',
       eventname: '@',
       headertitle: '@',
       headersubtitle: '@',
@@ -55,6 +54,7 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     // common element detail flags
     self.autosaveenabled;
     self.dirty = false;
+    self.editmode = false;
     self.savedcontent;
     self.showprojectexplorer = false;
     

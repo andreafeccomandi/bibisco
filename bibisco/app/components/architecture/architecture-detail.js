@@ -36,10 +36,6 @@ function ArchitectureDetailController($location, $routeParams,
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
-
-    self.editmode = false;
-    self.showprojectexplorer = true;
-
   };
 
   self.back = function() {

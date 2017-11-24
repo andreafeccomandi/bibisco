@@ -37,7 +37,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
       label: self.secondarycharacter.name
     });
 
-    self.editmode = false;
     self.showprojectexplorer = true;
 
   };
