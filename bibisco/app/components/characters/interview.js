@@ -14,9 +14,9 @@
  */
 angular.
   module('bibiscoApp').
-  component('maincharacterquestions', {
-    templateUrl: 'components/characters/main-character-questions.html',
-    controller: MaincharacterQuestionsController,
+  component('interview', {
+    templateUrl: 'components/characters/interview.html',
+    controller: InterviewController,
     bindings: {
       autosaveenabled: '=',
       content: '=',
@@ -29,7 +29,7 @@ angular.
   });
 
 
-function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPreferencesService) {
+function InterviewController(MainCharacterService, RichTextEditorPreferencesService) {
 
   var self = this;
 

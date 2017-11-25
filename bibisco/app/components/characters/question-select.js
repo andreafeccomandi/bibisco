@@ -14,9 +14,9 @@
  */
 angular.
   module('bibiscoApp').
-  component('maincharacterquestionselect', {
-    templateUrl: 'components/characters/main-character-question-select.html',
-    controller: MainCharacterQuestionSelectController,
+  component('questionselect', {
+    templateUrl: 'components/characters/question-select.html',
+    controller: QuestionSelectController,
     bindings: {
       questioncount: '<',
       questionselected: '=',
@@ -25,7 +25,7 @@ angular.
     }
   });
 
-function MainCharacterQuestionSelectController($translate) {
+function QuestionSelectController($translate) {
 
   var self = this;
 

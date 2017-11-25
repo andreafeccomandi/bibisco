@@ -14,16 +14,16 @@
  */
 angular.
   module('bibiscoApp').
-  component('maincharacterquestionbuttonbar', {
-    templateUrl: 'components/characters/main-character-question-buttonbar.html',
-    controller: MainCharacterQuestionButtonbarController,
+  component('questionbuttonbar', {
+    templateUrl: 'components/characters/question-buttonbar.html',
+    controller: QuestionButtonbarController,
     bindings: {
       questioncount: '<',
       questionselected: '='
     }
   });
 
-function MainCharacterQuestionButtonbarController($scope, ContextService, hotkeys) {
+function QuestionButtonbarController($scope, ContextService, hotkeys) {
 
   var self = this;
 
