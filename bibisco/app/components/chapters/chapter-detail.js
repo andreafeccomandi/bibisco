@@ -29,7 +29,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.chapter = ChapterService.getChapter($routeParams.id);
-
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
 
     // breadcrumbs
@@ -54,10 +53,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
         PopupBoxesService.confirm(self.delete, 'jsp.chapters.delete.confirm');
       }
     });
-    
-
-    self.editmode = false;
-    self.showprojectexplorer = true;
 
     // get chapter reason
     self.chapterreason = ChapterService.getChapterInfo(self.chapter.reason);

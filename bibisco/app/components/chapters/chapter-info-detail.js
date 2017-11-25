@@ -45,7 +45,6 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
       label: self.title
     });
 
-    self.editmode = false;
     self.showprojectexplorer = true;
   };
 

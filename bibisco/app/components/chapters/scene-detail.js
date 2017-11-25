@@ -39,6 +39,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
     self.autosaveenabled;
     self.content = self.scene.text;
     self.dirty = false;
+    self.editmode = false;
     self.savedcontent;
     self.showprojectexplorer = false;
 
