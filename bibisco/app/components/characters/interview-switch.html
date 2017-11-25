@@ -1,0 +1,14 @@
+<div class="btn-group">
+    <button type="button" class="btn btn-default" 
+        ng-click="$ctrl.interview()" 
+        uib-tooltip="{{'jsp.characterInfo.a.interview.popover' | translate}}"
+        ng-class="{ 'active' : $ctrl.interviewactive === true }">
+        {{'jsp.characterInfo.a.interview' | translate}}
+    </button>
+    <button type="button" class="btn btn-default" 
+        ng-click="$ctrl.freetext()" 
+        uib-tooltip="{{'jsp.characterInfo.a.freeText.popover' | translate}}"
+        ng-class="{ 'active' : $ctrl.interviewactive === false }">
+        {{'jsp.characterInfo.a.freeText' | translate}}
+    </button>
+</div>

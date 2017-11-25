@@ -5,7 +5,7 @@
   taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
 </detailheader>
 
-<maincharacterquestions
+<maincharacterquestions ng-if="$ctrl.interviewactive === true"
   content="$ctrl.content"
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
@@ -14,17 +14,21 @@
   type="$ctrl.type">
 </maincharacterquestions>
 
-<detailfooter
-  autosaveenabled="$ctrl.autosaveenabled"
-  backfunction="$ctrl.back()"
-  changetitleenabled="false"
-  deleteenabled="false"
-  dirty="$ctrl.dirty"
-  editmode="$ctrl.editmode"
-  imagesenabled="false"
-  lastsave="$ctrl.lastsave"
-  savefunction="$ctrl.save()"
-  showprojectexplorer="true"
-  words="1"
-  wordscharactersenabled="false">
-</detailfooter>
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <detailfootertop autosaveenabled="$ctrl.autosaveenabled" editmode="$ctrl.editmode" lastsave="$ctrl.lastsave" wordscharactersenabled="false">
+    </detailfootertop>
+    <div class="row">
+      <span class="pull-left">
+        <interviewswitch interviewactive="$ctrl.interviewactive"></interviewswitch>
+      </span>
+      <span class="pull-right">
+        <dropdownmenu buttonlabel="jsp.common.button.more" items="$ctrl.actionitems" visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
+        </dropdownmenu>
+        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" backfunction="$ctrl.backfunction()" content="$ctrl.content"
+          dirty="$ctrl.dirty" editbuttonvisible="true" editmode="$ctrl.editmode" savedcontent="$ctrl.savedcontent" savefunction="$ctrl.savefunction()">
+        </editsavebackbuttonbar>
+      </span>
+    </div>
+  </div>
+</div>
