@@ -14,21 +14,23 @@
  */
 angular.
   module('bibiscoApp').
-  component('maincharacterquestionsviewer', {
-    templateUrl: 'components/characters/main-character-questions-viewer.html',
-    controller: MaincharacterQuestionsController,
+  component('intervieweditor', {
+    templateUrl: 'components/characters/interview-editor.html',
+    controller: InterviewEditorController,
     bindings: {
-      maincharacter: '<',
+      dirty: '=',
+      maincharacter: '=',
       type: '<'
     }
   });
 
 
-function MaincharacterQuestionsController(MainCharacterService, RichTextEditorPreferencesService) {
+function InterviewEditorController(MainCharacterService, RichTextEditorPreferencesService) {
 
   var self = this;
 
   self.$onInit = function() {
+    self.questionselected = 0;
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };

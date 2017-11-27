@@ -14,24 +14,22 @@
  */
 angular.
   module('bibiscoApp').
-  component('interview', {
-    templateUrl: 'components/characters/interview.html',
-    controller: InterviewController,
+  component('interviewviewer', {
+    templateUrl: 'components/characters/interview-viewer.html',
+    controller: InterviewViewerController,
     bindings: {
-      autosaveenabled: '=',
-      dirty: '=',
-      editmode: '=',
-      freetext: '=',
-      maincharacter: '=',
+      maincharacter: '<',
       type: '<'
     }
   });
 
-function InterviewController() {
+
+function InterviewViewerController(MainCharacterService, RichTextEditorPreferencesService) {
 
   var self = this;
 
   self.$onInit = function() {
-    self.showprojectexplorer = false;
+    self.fontclass = RichTextEditorPreferencesService.getFontClass();
+    self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };
 }

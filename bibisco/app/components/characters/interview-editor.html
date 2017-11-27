@@ -1,0 +1,21 @@
+<questionselect questionselected="$ctrl.questionselected" 
+  questionselectedchanged="$ctrl.questionselected" 
+  questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
+  type="$ctrl.type">
+</questionselect>
+<hr/>
+
+<questioneditor autosaveenabled="$ctrl.autosaveenabled" 
+  characters="$ctrl.characters" 
+  dirty="$ctrl.dirty" 
+  maincharacter="$ctrl.maincharacter"
+  questionselected="$ctrl.questionselected" 
+  type="$ctrl.type" 
+  words="$ctrl.words">
+</questioneditor>
+<hr/>
+
+<questionbuttonbar 
+  questionselected="$ctrl.questionselected" 
+  questioncount="$ctrl.maincharacter[$ctrl.type].questions.length">
+</questionbuttonbar>

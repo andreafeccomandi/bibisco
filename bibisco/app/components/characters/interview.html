@@ -1,38 +1,16 @@
 <div class="detail-content-no-header-subtitle">
   <div class="container" style="height: 100%;">
-    <!-- VIEW MODE -->
-    <div class="row" style="height: 100%;" ng-if="!$ctrl.editmode">
+    <div class="row" style="height: 100%;">
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
-        <maincharacterquestionsviewer maincharacter="$ctrl.maincharacter" type="$ctrl.type">
-        </maincharacterquestionsviewer>
-      </div>
-    </div>
-
-    <!-- EDIT  MODE -->
-    <div class="row" style="height: 100%;" ng-if="$ctrl.editmode">
-      <div class="col-sm-8" ng-class="{
-                'col-sm-offset-2': !$ctrl.showprojectexplorer,
-                'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
-        
-          <questionselect questionselected="$ctrl.questionselected" 
-            questionselectedchanged="$ctrl.questionselected" 
-            questioncount="$ctrl.maincharacter[$ctrl.type].questions.length"
-            type="$ctrl.type">
-          </questionselect>
-          <hr/>
-        
-          <div class="character-questions-richtexteditor-container">
-          <richtexteditor autosaveenabled="$ctrl.autosaveenabled" characters="$ctrl.characters" content="$ctrl.content" dirty="$ctrl.dirty"
-            savefunction="$ctrl.savefunction()" words="$ctrl.words"></richtexteditor>
-          </div>
-            
-          <hr/>
-          <questionbuttonbar 
-              questionselected="$ctrl.questionselected" 
-              questioncount="$ctrl.maincharacter[$ctrl.type].questions.length">
-          </questionbuttonbar>
+        <interviewviewer ng-if="!$ctrl.editmode"
+          maincharacter="$ctrl.maincharacter" 
+          type="$ctrl.type"></interviewviewer>
+        <intervieweditor ng-if="$ctrl.editmode" 
+          dirty="$ctrl.dirty"
+          maincharacter="$ctrl.maincharacter" 
+          type="$ctrl.type"></intervieweditor>
       </div>
     </div>
   </div>
