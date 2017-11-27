@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/characters/interview-editor.html',
     controller: InterviewEditorController,
     bindings: {
+      autosaveenabled: '=',
       content: '=',
       dirty: '=',
       maincharacter: '=',

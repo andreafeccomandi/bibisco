@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/characters/question-editor.html',
     controller: QuestionEditorController,
     bindings: {
+      autosaveenabled: '=',
       characters: '=',
       content: '=',
       dirty: '=',
