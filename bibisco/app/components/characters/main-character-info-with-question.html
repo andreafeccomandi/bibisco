@@ -11,6 +11,7 @@
   editmode="$ctrl.editmode"
   freetext="$ctrl.freetext"
   maincharacter="$ctrl.maincharacter"
+  questionselected="$ctrl.questionselected"
   type="$ctrl.type">
 </interview>
 
@@ -25,8 +26,14 @@
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" items="$ctrl.actionitems" visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
-        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" backfunction="$ctrl.backfunction()" content="$ctrl.content"
-          dirty="$ctrl.dirty" editbuttonvisible="true" editmode="$ctrl.editmode" savedcontent="$ctrl.savedcontent" savefunction="$ctrl.savefunction()">
+        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" 
+          backfunction="$ctrl.back()" 
+          content="$ctrl.content"
+          dirty="$ctrl.dirty" 
+          editbuttonvisible="true" 
+          editmode="$ctrl.editmode" 
+          savedcontent="$ctrl.savedcontent" 
+          savefunction="$ctrl.save()">
         </editsavebackbuttonbar>
       </span>
     </div>

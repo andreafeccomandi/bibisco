@@ -19,10 +19,12 @@ angular.
     controller: InterviewController,
     bindings: {
       autosaveenabled: '=',
+      content: '=',
       dirty: '=',
       editmode: '=',
       freetext: '=',
       maincharacter: '=',
+      questionselected: '=',
       type: '<'
     }
   });

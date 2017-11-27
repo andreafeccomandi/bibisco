@@ -18,8 +18,10 @@ angular.
     templateUrl: 'components/characters/interview-editor.html',
     controller: InterviewEditorController,
     bindings: {
+      content: '=',
       dirty: '=',
       maincharacter: '=',
+      questionselected: '=',
       type: '<'
     }
   });

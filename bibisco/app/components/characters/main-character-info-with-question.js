@@ -49,10 +49,19 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     
     self.editmode = false;
     self.dirty = false;
+    self.content;
+    self.questionselected;
   };
 
   self.back = function() {
     $location.path('/maincharacters/' + $routeParams.id);
+  };
+
+  self.save = function () {
+    let questions = self.maincharacter[self.type].questions;
+    questions[self.questionselected] = self.content;
+    self.maincharacter[self.type].questions = questions;
+    MainCharacterService.update(self.maincharacter);
   };
 
   self.changeStatus = function(status) {
