@@ -71,8 +71,8 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     MainCharacterService.update(self.maincharacter);
   };
 
-  self.changeStatus = function(status) {
-    //self.maincharacter.status = status;
-    //MainCharacterService.update(self.maincharacter);
+  self.changestatus = function(status) {
+    self.maincharacter[self.type].status = status;
+    MainCharacterService.update(self.maincharacter);
   };
 }

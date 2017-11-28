@@ -1,8 +1,8 @@
 <detailheader breadcrumbitems="$ctrl.breadcrumbitems"
   editmode="$ctrl.editmode"
   headertitle="{{$ctrl.headertitle}}"
-  taskstatus="$ctrl.taskstatus"
-  taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
+  taskstatus="$ctrl.maincharacter[$ctrl.type].status"
+  taskstatuschangefunction="$ctrl.changestatus(status)">
 </detailheader>
 
 <interview ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === false"
