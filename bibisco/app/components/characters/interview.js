@@ -22,7 +22,6 @@ angular.
       content: '=',
       dirty: '=',
       editmode: '=',
-      freetext: '=',
       maincharacter: '=',
       questionselected: '=',
       type: '<'

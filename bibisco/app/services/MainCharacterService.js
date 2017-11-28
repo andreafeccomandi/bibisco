@@ -128,7 +128,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
 
       return {
         freetext: '',
-        freetext_enabled: false,
+        freetextenabled: false,
         questions: questions,
         status: 'todo'
       };

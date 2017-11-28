@@ -14,28 +14,29 @@
  */
 angular.
   module('bibiscoApp').
-  component('interviewswitch', {
-    templateUrl: 'components/characters/interview-switch.html',
-    controller: InterviewSwitchController,
+  component('freetext', {
+    templateUrl: 'components/characters/freetext.html',
+    controller: FreetextEditorController,
     bindings: {
-      freetextenabled: '='
+      autosaveenabled: '=',
+      characters: '=',
+      content: '=',
+      dirty: '=',
+      editmode: '=',
+      headersubtitle: '<',
+      maincharacter: '=',
+      savedcontent: '=',
+      showprojectexplorer: '<',
+      type: '<',
+      words: '='
     }
   });
 
-
-function InterviewSwitchController() {
+function FreetextEditorController() {
 
   var self = this;
 
   self.$onInit = function () {
-  
-  };
-
-  self.interview = function() {
-    self.freetextenabled = false;
-  };
-
-  self.freetext = function() {
-    self.freetextenabled = true;
+    self.content = self.maincharacter[self.type].freetext;
   };
 }

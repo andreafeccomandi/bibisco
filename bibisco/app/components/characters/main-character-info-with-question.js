@@ -52,6 +52,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.dirty = false;
     self.editmode = false;
     self.questionselected;
+    self.savedcontent;
   };
 
   self.back = function() {
@@ -59,9 +60,14 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
   };
 
   self.save = function () {
-    let questions = self.maincharacter[self.type].questions;
-    questions[self.questionselected] = self.content;
-    self.maincharacter[self.type].questions = questions;
+
+    if (self.maincharacter[self.type].freetextenabled === true) {
+      self.maincharacter[self.type].freetext = self.content;
+    } else {
+      let questions = self.maincharacter[self.type].questions;
+      questions[self.questionselected] = self.content;
+      self.maincharacter[self.type].questions = questions;
+    }
     MainCharacterService.update(self.maincharacter);
   };
 

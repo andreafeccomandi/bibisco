@@ -5,16 +5,27 @@
   taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
 </detailheader>
 
-<interview ng-if="$ctrl.interviewactive === true"
+<interview ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === false"
   autosaveenabled="$ctrl.autosaveenabled"
   content="$ctrl.content"
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
-  freetext="$ctrl.freetext"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
   type="$ctrl.type">
 </interview>
+
+<freetext ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === true"
+  autosaveenabled="$ctrl.autosaveenabled"
+  content="$ctrl.content" 
+  dirty="$ctrl.dirty"
+  editmode="$ctrl.editmode" 
+  headersubtitle="$ctrl.headersubtitle" 
+  maincharacter="$ctrl.maincharacter"
+  savedcontent="$ctrl.savedcontent"
+  showprojectexplorer="$ctrl.showprojectexplorer"
+  type="$ctrl.type">
+</freetext>
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
@@ -25,7 +36,7 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <interviewswitch interviewactive="$ctrl.interviewactive"></interviewswitch>
+        <interviewswitch freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled"></interviewswitch>
       </span>
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" items="$ctrl.actionitems" visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
