@@ -36,7 +36,9 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <interviewswitch freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled"></interviewswitch>
+        <interviewswitch ng-if="$ctrl.editmode"
+          freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
+        </interviewswitch>
       </span>
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" items="$ctrl.actionitems" visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
