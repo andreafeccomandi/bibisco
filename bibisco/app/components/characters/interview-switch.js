@@ -18,24 +18,42 @@ angular.
     templateUrl: 'components/characters/interview-switch.html',
     controller: InterviewSwitchController,
     bindings: {
+      dirty: '=',
       freetextenabled: '='
     }
   });
 
 
-function InterviewSwitchController() {
+function InterviewSwitchController(PopupBoxesService) {
 
   var self = this;
 
-  self.$onInit = function () {
-  
-  };
+  self.$onInit = function () {};
 
   self.interview = function() {
-    self.freetextenabled = false;
+    if (self.freetextenabled === true) {
+      self.switch(false);
+    }
   };
 
   self.freetext = function() {
-    self.freetextenabled = true;
+    if (self.freetextenabled === false) {
+      self.switch(true);
+    }
+  };
+
+  self.switch = function(freetextenabled) {
+    if (self.dirty) {
+      PopupBoxesService.confirm(function() {
+        self.executeSwitch(freetextenabled);
+      }, 'js.common.message.confirmExitWithoutSave');
+    } else {
+      self.executeSwitch(freetextenabled);
+    }
+  };
+
+  self.executeSwitch = function(freetextenabled) {
+    self.freetextenabled = freetextenabled;
+    self.dirty = false;
   };
 }
