@@ -43,7 +43,7 @@ function InterviewSwitchController(PopupBoxesService) {
   };
 
   self.switch = function(freetextenabled) {
-    if (self.dirty) {
+    if (self.dirty === true) {
       PopupBoxesService.confirm(function() {
         self.executeSwitch(freetextenabled);
       }, 'js.common.message.confirmExitWithoutSave');

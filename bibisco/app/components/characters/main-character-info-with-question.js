@@ -44,9 +44,9 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
     });
 
-    self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info +
-      '.title';
-    
+    self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info + '.title';
+    self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
+
     self.autosaveenabled;
     self.content;
     self.dirty = false;

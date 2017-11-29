@@ -532,7 +532,6 @@ h3 {
 .character-info-question {
 	font-style: italic;
 	font-weight: bold;
-	margin-top: 10px;
 }
 
 .character-info-question-select-item {
@@ -541,6 +540,10 @@ h3 {
 
 .character-questions-richtexteditor-container {
 	height: calc(100% - 165px);
+}
+
+.character-info-answer {
+	margin-bottom: 10px;
 }
 
 @media (max-width: 1000px) {
