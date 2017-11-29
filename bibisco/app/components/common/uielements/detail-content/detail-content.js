@@ -22,6 +22,7 @@ angular.
       characters: '=',
       content: '=',
       dirty: '=',
+      disableemptymessage: '<',
       editmode: '=',
       headersubtitle: '<',
       savedcontent: '=',

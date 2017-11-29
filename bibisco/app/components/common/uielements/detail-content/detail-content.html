@@ -1,7 +1,7 @@
 <div ng-class="{'detail-content-with-header-subtitle': $ctrl.headersubtitle,
   'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
   <div class="container" style="height: 100%;">
-    <div ng-if="$ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
+    <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
         class="row" style="height: 100%;">
       <div class="col-sm-8" ng-class="{
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
@@ -22,5 +22,6 @@
           buttonlabel="{{'common.getstarted' | translate}}"
           buttonfunction="$ctrl.enableeditmode()"></jumbotronbutton>
     </div>
+     <b>$ctrl.words = {{$ctrl.words}}</b>
   </div>
 </div>

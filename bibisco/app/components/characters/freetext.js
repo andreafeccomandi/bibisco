@@ -19,7 +19,6 @@ angular.
     controller: FreetextEditorController,
     bindings: {
       autosaveenabled: '=',
-      characters: '=',
       content: '=',
       dirty: '=',
       editmode: '=',
@@ -27,8 +26,7 @@ angular.
       maincharacter: '=',
       savedcontent: '=',
       showprojectexplorer: '<',
-      type: '<',
-      words: '='
+      type: '<'
     }
   });
 
