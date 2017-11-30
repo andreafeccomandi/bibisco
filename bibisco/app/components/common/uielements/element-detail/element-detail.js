@@ -30,6 +30,7 @@ angular.
       deleteforbidden: '<',
       deleteforbiddenmessage: '@',
       deletefunction: '&',
+      disableemptymessage: '<',
       eventname: '@',
       headertitle: '@',
       headersubtitle: '@',

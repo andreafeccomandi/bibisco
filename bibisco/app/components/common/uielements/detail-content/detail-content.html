@@ -17,11 +17,10 @@
           words="$ctrl.words"></richtexteditor>
       </div>
     </div>
-    <div ng-if="!$ctrl.editmode && $ctrl.words == 0">
+    <div ng-if="!$ctrl.disableemptymessage && !$ctrl.editmode && $ctrl.words == 0">
         <jumbotronbutton text="{{'jsp.projectFromScene.section.empty' | translate}}"
           buttonlabel="{{'common.getstarted' | translate}}"
           buttonfunction="$ctrl.enableeditmode()"></jumbotronbutton>
     </div>
-     <b>$ctrl.words = {{$ctrl.words}}</b>
   </div>
 </div>

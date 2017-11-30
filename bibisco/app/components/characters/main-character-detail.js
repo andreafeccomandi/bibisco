@@ -76,4 +76,9 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     $location.path('/maincharacters/' + self.maincharacter.$loki +
       '/infowithquestion/' + id);
   };
+
+  self.showInfoWithoutQuestion = function (id) {
+    $location.path('/maincharacters/' + self.maincharacter.$loki +
+      '/infowithoutquestion/' + id);
+  };
 }
