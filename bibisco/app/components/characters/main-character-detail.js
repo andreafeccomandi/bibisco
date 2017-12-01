@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterDetailController($location, $rootScope, $routeParams,
-  MainCharacterService) {
+  MainCharacterService, PopupBoxesService) {
 
   var self = this;
 
@@ -39,9 +39,21 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
       label: self.maincharacter.name
     });
 
+    // action items
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'jsp.character.button.updateTitle',
+      itemfunction: self.changeTitle
+    });
+    self.actionitems.push({
+      label: 'jsp.common.button.delete',
+      itemfunction: function () {
+        PopupBoxesService.confirm(self.delete, 'jsp.characters.delete.confirm');
+      }
+    });
+
     self.editmode = false;
     self.showprojectexplorer = true;
-
   };
 
   self.back = function() {
@@ -58,8 +70,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.delete = function() {
-    MainCharacterService.remove(self.maincharacter
-      .$loki);
+    MainCharacterService.remove(self.maincharacter.$loki);
     $location.path('/project/characters');
   };
 
