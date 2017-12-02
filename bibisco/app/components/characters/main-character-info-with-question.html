@@ -18,6 +18,7 @@
 
 <freetext ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === true"
   autosaveenabled="$ctrl.autosaveenabled"
+  characters="$ctrl.characters"
   content="$ctrl.content" 
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode" 
@@ -25,15 +26,18 @@
   maincharacter="$ctrl.maincharacter"
   savedcontent="$ctrl.savedcontent"
   showprojectexplorer="$ctrl.showprojectexplorer"
-  type="$ctrl.type">
+  type="$ctrl.type"
+  words="$ctrl.words">
 </freetext>
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
     <detailfootertop autosaveenabled="$ctrl.autosaveenabled" 
+      characters="$ctrl.characters"
       editmode="$ctrl.editmode" 
       lastsave="$ctrl.maincharacter.lastsave" 
-      wordscharactersenabled="false">
+      words="$ctrl.words"
+      wordscharactersenabled="true">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">

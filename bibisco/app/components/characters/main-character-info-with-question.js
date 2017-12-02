@@ -53,6 +53,9 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.editmode = false;
     self.questionselected;
     self.savedcontent;
+
+    self.characters;
+    self.words;
   };
 
   self.back = function() {
@@ -63,6 +66,8 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     if (self.maincharacter[self.type].freetextenabled === true) {
       self.maincharacter[self.type].freetext = self.content;
+      self.maincharacter[self.type].freetextcharacters = self.characters;
+      self.maincharacter[self.type].freetextwords = self.words;
     } else {
       let questions = self.maincharacter[self.type].questions;
       questions[self.questionselected] = self.content;
