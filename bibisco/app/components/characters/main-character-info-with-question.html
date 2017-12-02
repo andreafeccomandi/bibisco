@@ -8,12 +8,14 @@
 
 <interview ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === false"
   autosaveenabled="$ctrl.autosaveenabled"
+  characters="$ctrl.characters"
   content="$ctrl.content"
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
-  type="$ctrl.type">
+  type="$ctrl.type"
+  words="$ctrl.words">
 </interview>
 
 <freetext ng-if="$ctrl.maincharacter[$ctrl.type].freetextenabled === true"

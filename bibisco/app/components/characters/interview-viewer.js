@@ -18,8 +18,10 @@ angular.
     templateUrl: 'components/characters/interview-viewer.html',
     controller: InterviewViewerController,
     bindings: {
+      characters: '=',
       maincharacter: '<',
-      type: '<'
+      type: '<',
+      words: '='
     }
   });
 
@@ -31,5 +33,16 @@ function InterviewViewerController(MainCharacterService, RichTextEditorPreferenc
   self.$onInit = function() {
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+
+    let questions = self.maincharacter[self.type].questions;
+    let characters = 0;
+    let words = 0;
+    for (let i = 0; i < questions.length; i++) {
+      characters = characters + questions[i].characters;
+      words = words + questions[i].words;
+    }
+
+    self.characters = characters;
+    self.words = words;
   };
 }

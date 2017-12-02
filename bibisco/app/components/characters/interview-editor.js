@@ -19,11 +19,13 @@ angular.
     controller: InterviewEditorController,
     bindings: {
       autosaveenabled: '=',
+      characters: '=',
       content: '=',
       dirty: '=',
       maincharacter: '=',
       questionselected: '=',
-      type: '<'
+      type: '<',
+      words: '='
     }
   });
 

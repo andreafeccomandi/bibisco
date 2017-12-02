@@ -2,7 +2,7 @@
   <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
     <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index
       | translate}}</div>
-    <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}}" ng-bind-html="question">
+    <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}}" ng-bind-html="question.text">
     </div>
   </div>
 </div>

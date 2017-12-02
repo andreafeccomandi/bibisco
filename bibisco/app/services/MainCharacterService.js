@@ -123,7 +123,11 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
 
       let questions = [questionNumber];
       for (let i = 0; i < questionNumber; i++) {
-        questions[i.toString()] = '';
+        questions[i.toString()] = {
+          characters: 0, 
+          text: '', 
+          words: 0
+        };
       }
 
       return {

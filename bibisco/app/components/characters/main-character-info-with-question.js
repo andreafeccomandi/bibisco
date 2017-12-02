@@ -70,7 +70,10 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       self.maincharacter[self.type].freetextwords = self.words;
     } else {
       let questions = self.maincharacter[self.type].questions;
-      questions[self.questionselected] = self.content;
+      questions[self.questionselected].text = self.content;
+      questions[self.questionselected].characters = self.characters;
+      questions[self.questionselected].words = self.words;
+
       self.maincharacter[self.type].questions = questions;
     }
     MainCharacterService.update(self.maincharacter);

@@ -5,15 +5,19 @@
         'col-sm-offset-2': !$ctrl.showprojectexplorer,
         'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
         <interviewviewer ng-if="!$ctrl.editmode"
+          characters="$ctrl.characters"
           maincharacter="$ctrl.maincharacter" 
-          type="$ctrl.type"></interviewviewer>
+          type="$ctrl.type"
+          words="$ctrl.words"></interviewviewer>
         <intervieweditor ng-if="$ctrl.editmode" 
           autosaveenabled="$ctrl.autosaveenabled"
+          characters="$ctrl.characters"
           content="$ctrl.content"
           dirty="$ctrl.dirty"
           maincharacter="$ctrl.maincharacter" 
           questionselected="$ctrl.questionselected"
-          type="$ctrl.type"></intervieweditor>
+          type="$ctrl.type"
+          words="$ctrl.words"></intervieweditor>
       </div>
     </div>
   </div>

@@ -38,9 +38,13 @@ function QuestionEditorController() {
   };
 
   self.$onChanges = function (changesObj) {
-    if (changesObj.questionselected) {
+  
+    if (!angular.equals({}, changesObj.questionselected.previousValue)) {
       let questions = self.maincharacter[self.type].questions;
-      questions[changesObj.questionselected.previousValue] = self.content;
+      questions[changesObj.questionselected.previousValue].text = self.content;
+      questions[changesObj.questionselected.previousValue].characters = self.characters;
+      questions[changesObj.questionselected.previousValue].words = self.words;
+
       self.maincharacter[self.type].questions = questions;
       self.updateContent();
     }
@@ -49,9 +53,12 @@ function QuestionEditorController() {
   self.updateContent = function() {
     let question = self.maincharacter[self.type].questions[self.questionselected];
 
-    if (question === '') {
-      question = ' ';
+    let text = question.text;
+    if (text === '') {
+      text = ' ';
     }
-    self.content= question;
+    self.content = text;
+    self.characters = question.characters;
+    self.words = question.words;
   };
 }
