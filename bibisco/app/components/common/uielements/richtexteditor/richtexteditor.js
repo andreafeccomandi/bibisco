@@ -27,26 +27,30 @@ angular.
   });
 
 
-function RichTextEditorController($document, $scope, $timeout, $uibModal,
+function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibModal,
   hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
   RichTextEditorPreferencesService) {
 
   var self = this;
   self.$onInit = function() {
     self.countWordsAndCharacters();
-
+    
     // set <p> as default paragraph separator
     $document[0].execCommand('defaultParagraphSeparator', false, 'p');
+    
+    self.richtexteditor = document.getElementById('richtexteditor');
     self.focus();
   };
 
+  $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {
+    self.focus();
+  });
+
   self.focus = function() {
-    let div = document.getElementById('richtexteditor');
     setTimeout(function () {
-      div.focus();
+      self.richtexteditor.focus();
     }, 0);
   };
-
 
   if (ContextService.getOs() === 'darwin') {
     self.os = '_mac';

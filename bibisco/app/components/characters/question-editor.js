@@ -29,7 +29,7 @@ angular.
     }
   });
 
-function QuestionEditorController() {
+function QuestionEditorController($rootScope) {
 
   var self = this;
 
@@ -55,10 +55,12 @@ function QuestionEditorController() {
 
     let text = question.text;
     if (text === '') {
-      text = ' ';
+      text = '<p><br/></p>';
     }
     self.content = text;
     self.characters = question.characters;
     self.words = question.words;
+
+    $rootScope.$emit('INIT_RICH_TEXT_EDITOR');
   };
 }
