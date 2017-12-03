@@ -34,6 +34,10 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   var self = this;
   self.$onInit = function() {
 
+    if (self.content === '') {
+      self.content = '<p><br/></p>';
+    }
+
     self.countWordsAndCharacters();
     
     // set <p> as default paragraph separator
