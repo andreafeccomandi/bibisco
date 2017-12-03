@@ -19,7 +19,7 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, LocaleService,
+function CreateProjectController($location, $rootScope, ContextMenuService, LocaleService,
   ProjectService) {
 
   // hide menu
@@ -57,6 +57,7 @@ function CreateProjectController($location, $rootScope, LocaleService,
   self.save = function(isValid) {
     if (isValid) {
       ProjectService.create(self.projectName, self.projectLanguage);
+      ContextMenuService.create();
       $location.path('/project/projecthome');
     }
   };
