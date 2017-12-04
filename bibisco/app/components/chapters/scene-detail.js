@@ -37,10 +37,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
     // common element detail flags
     self.autosaveenabled;
-    self.content = self.scene.text;
     self.dirty = false;
     self.editmode = false;
-    self.savedcontent;
     self.showprojectexplorer = false;
 
     // breadcrumbs
@@ -69,6 +67,12 @@ function SceneDetailController($location, $rootScope, $routeParams,
         PopupBoxesService.confirm(self.delete, 'jsp.chapter.delete.scene.confirm');
       }
     });
+
+    // saved content
+    self.content = self.scene.text;
+    self.savedcontent = self.scene.text;
+    self.savedcharacters = self.scene.characters;
+    self.savedwords = self.scene.words;
   };
 
   self.back = function() {
@@ -89,6 +93,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
     }
     self.content = self.scene.text;
     self.savedcontent = self.scene.text;
+    self.savedcharacters = self.scene.characters;
+    self.savedwords = self.scene.words;
   };
 
   self.changeStatus = function(status) {

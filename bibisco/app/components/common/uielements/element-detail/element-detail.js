@@ -56,7 +56,6 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     self.autosaveenabled;
     self.dirty = false;
     self.editmode = false;
-    self.savedcontent;
     self.showprojectexplorer = false;
     
     // action items

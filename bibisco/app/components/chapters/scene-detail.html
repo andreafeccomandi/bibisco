@@ -7,7 +7,7 @@
 
 <detailcontent 
   autosaveenabled="$ctrl.autosaveenabled" 
-  characters="ctrl.scene.characters" 
+  characters="$ctrl.scene.characters" 
   content="$ctrl.content" 
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
@@ -46,12 +46,16 @@
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
+          characters="$ctrl.scene.characters"
           content="$ctrl.content"
           dirty="$ctrl.dirty" 
           editbuttonvisible="$ctrl.scene.words > 0" 
           editmode="$ctrl.editmode" 
+          savedcharacters="$ctrl.savedcharacters"
           savedcontent="$ctrl.savedcontent"
-          savefunction="$ctrl.save()">
+          savedwords="$ctrl.savedwords"
+          savefunction="$ctrl.save()"
+          words="$ctrl.scene.words">
         </editsavebackbuttonbar>
       </span>
     </div>
