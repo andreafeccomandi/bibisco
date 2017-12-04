@@ -26,7 +26,9 @@
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
+  savedcharacters="$ctrl.savedcharacters"
   savedcontent="$ctrl.savedcontent"
+  savedwords="$ctrl.savedwords"
   showprojectexplorer="$ctrl.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
@@ -53,12 +55,16 @@
         </dropdownmenu>
         <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
+          characters="$ctrl.characters"
           content="$ctrl.content"
           dirty="$ctrl.dirty" 
           editbuttonvisible="true" 
           editmode="$ctrl.editmode" 
+          savedcharacters="$ctrl.savedcharacters" 
           savedcontent="$ctrl.savedcontent" 
-          savefunction="$ctrl.save()">
+          savedwords="$ctrl.savedwords"
+          savefunction="$ctrl.save()"
+          words="$ctrl.words">
         </editsavebackbuttonbar>
       </span>
     </div>
