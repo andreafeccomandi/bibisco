@@ -21,18 +21,20 @@ angular.
       actionitems: '<',
       autosaveenabled: '<',
       backfunction: '&',
-      characters: '<',
+      characters: '=',
       content: '=',
       dirty: '=',
       imagesenabled: '<',
       editmode: '=',
       lastsave: '<',
+      savedcharacters: '=',
       savedcontent: '=',
+      savedwords: '=',
       savefunction: '&',
       showimagesfunction: '&',
       showimageslabel: '@',
       showprojectexplorer: '=',
-      words: '<',
+      words: '=',
       wordscharactersenabled: '<'
     }
   });

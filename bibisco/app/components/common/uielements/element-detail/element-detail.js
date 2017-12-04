@@ -79,5 +79,10 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
         }
       });
     }
+
+    // saved content
+    self.savedcontent = self.content;
+    self.savedcharacters = self.characters;
+    self.savedwords = self.words;
   };
 }
