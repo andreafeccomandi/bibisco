@@ -142,8 +142,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
 
     createInfoWithoutQuestions: function () {
       return {
+        characters: 0, 
         status: 'todo',
-        text: ''
+        text: '',
+        words: 0
       };
     },
     

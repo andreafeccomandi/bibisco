@@ -1,10 +1,9 @@
 <elementdetail backfunction="$ctrl.back()" 
   breadcrumbitems="$ctrl.breadcrumbitems" 
-  characters="1"
+  characters="$ctrl.maincharacter[$ctrl.type].characters"
   changetitleenabled="false" 
   content="$ctrl.maincharacter[$ctrl.type].text"
   deleteenabled="false"
-  disableemptymessage="true"
   eventname="SHOW_ELEMENT_DETAIL" 
   headersubtitle="{{$ctrl.headersubtitle}}"
   headertitle="{{$ctrl.headertitle}}" 
@@ -13,6 +12,6 @@
   savefunction="$ctrl.save()" 
   taskstatus="$ctrl.maincharacter[$ctrl.type].status" 
   taskstatuschangefunction="$ctrl.changestatus(status)"
-  words="1"
-  wordscharactersenabled="false">
+  words="$ctrl.maincharacter[$ctrl.type].words"
+  wordscharactersenabled="true">
 </elementdetail>
