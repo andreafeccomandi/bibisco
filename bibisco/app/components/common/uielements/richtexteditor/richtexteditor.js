@@ -29,7 +29,7 @@ angular.
 
 function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibModal,
   hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
-  RichTextEditorPreferencesService) {
+  RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
   self.$onInit = function() {
@@ -367,14 +367,9 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   };
 
   self.countWordsAndCharacters = function() {
-
-    let wordCount = require('html-word-count');
-
-    let div = document.createElement('div');
-    div.innerHTML = self.content;
-    let texttoprocess = div.textContent || div.innerText || '';
-
-    self.characters = texttoprocess.trim().length;
-    self.words = wordCount(self.content);
+  
+    let result = WordCharacterCountService.count(self.content);
+    self.words = result.words;
+    self.characters = result.characters;
   };
 }
