@@ -39,7 +39,7 @@
     "electron-spellchecker": "^1.2.0",
     "font-awesome": "^4.7.0",
     "fs-extra": "^2.1.2",
-    "html-word-count": "^2.0.0",
+    "html-to-text": "^3.3.0",
     "lokijs": "^1.4.3",
     "moment": "^2.19.1",
     "ng-focus-if": "^1.0.7",
