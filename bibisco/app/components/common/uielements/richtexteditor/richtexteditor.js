@@ -51,6 +51,11 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     self.focus();
   });
 
+  $rootScope.$on('REPLACE_MISSPELLING', function () {
+    self.dirty = true;
+    $scope.$apply();
+  });
+
   self.focus = function() {
     setTimeout(function () {
       self.richtexteditor.focus();

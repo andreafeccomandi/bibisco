@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ContextMenuService', function(
-  $translate, ContextService, LoggerService, ProjectService) {
+  $rootScope, $translate, ContextService, LoggerService, ProjectService) {
   'use strict';
 
   // config context menu and spell check
@@ -148,8 +148,10 @@ angular.module('bibiscoApp').service('ContextMenuService', function(
             corrections.forEach((correction) => {
               let item = new remote.MenuItem({
                 label: correction,
-                click: () => target.replaceMisspelling(
-                  correction)
+                click: function() {
+                  target.replaceMisspelling(correction);
+                  $rootScope.$emit('REPLACE_MISSPELLING');
+                } 
               });
 
               menu.append(item);
