@@ -23,7 +23,7 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
       element.bind('keyup', function() {
         if (!element.html() || element.html() === '') {
           document.execCommand('insertHTML', false,
-            '<p><br/></p>'); // This is necessary to start editing inside a <p>
+            '<p><br></p>'); // This is necessary to start editing inside a <p>
         }
         scope.$apply(function() {
           ctrl.$setViewValue(element.html());
@@ -39,7 +39,7 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
       ctrl.$render = function() {
         if (!ctrl.$viewValue) {
           document.execCommand('insertHTML', false,
-            '<p><br/></p>'); // This is necessary to start editing inside a <p>
+            '<p><br></p>'); // This is necessary to start editing inside a <p>
         } else {
           element.html(ctrl.$viewValue);
         }

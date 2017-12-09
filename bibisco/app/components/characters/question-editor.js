@@ -55,7 +55,7 @@ function QuestionEditorController($rootScope) {
 
     let text = question.text;
     if (text === '') {
-      text = '<p><br/></p>';
+      text = '<p><br></p>';
     }
     self.content = text;
     self.characters = question.characters;

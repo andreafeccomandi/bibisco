@@ -35,8 +35,9 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   self.$onInit = function() {
 
     if (self.content === '') {
-      self.content = '<p><br/></p>';
+      self.content = '<p><br></p>';
     }
+    self.previouscontent = self.content;
 
     self.countWordsAndCharacters();
     
@@ -363,16 +364,11 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   };
 
   self.contentChanged = function() {
-
-    let previouscharacters = self.characters;
     self.countWordsAndCharacters();
-    if (previouscharacters !== self.characters) {
-      self.dirty = true;
-    } 
+    self.dirty = true;
   };
 
   self.countWordsAndCharacters = function() {
-  
     let result = WordCharacterCountService.count(self.content);
     self.words = result.words;
     self.characters = result.characters;
