@@ -20,8 +20,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
     'chapters');
-  var chapterinfoscollection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'chapter_infos');
   var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
     collection, 'all_chapters');
   var scenecollection = ProjectDbConnectionService.getProjectDb().getCollection(
@@ -39,9 +37,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
     getChapter: function(id) {
       return collection.get(id);
     },
-    getChapterInfo: function(id) {
-      return chapterinfoscollection.get(id);
-    },
     getChaptersCount: function() {
       return collection.count();
     },
@@ -51,44 +46,23 @@ angular.module('bibiscoApp').service('ChapterService', function(
     insert: function(chapter) {
 
       // insert chapter
-      chapter.reason = -1;
-      chapter.notes = -1;
+      chapter.reason = this.createChapterInfo('todo');
+      chapter.notes = this.createChapterInfo(null);
       chapter = CollectionUtilService.insertWithoutCommit(collection,
         chapter);
-
-      // insert reason chapter info
-      let reason = this.insertChapterInfoWithoutCommit(chapter.$loki,
-        'reason');
-
-      // insert notes info
-      let notes = this.insertChapterInfoWithoutCommit(chapter.$loki,
-        'notes');
-
-      // update notes with null status
-      notes.status = null;
-      CollectionUtilService.updateWithoutCommit(chapterinfoscollection,
-        notes);
-
-      // update chapter with info
-      chapter.reason = reason.$loki;
-      chapter.notes = notes.$loki;
-      CollectionUtilService.updateWithoutCommit(collection, chapter);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
     },
 
-    insertChapterInfoWithoutCommit: function(chapterid, type) {
-      return CollectionUtilService.insertWithoutCommit(
-        chapterinfoscollection, {
-          chapterid: chapterid,
-          type: type,
-          text: ''
-        }, {
-          chapterid: {
-            '$eq': chapterid
-          }
-        });
+    createChapterInfo: function(status) {
+      return {
+        characters: 0,
+        lastsave: (new Date()).toJSON(),
+        status: status,
+        text: '',
+        words: 0
+      };
     },
 
     move: function(sourceId, targetId) {
@@ -106,13 +80,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
         this.removeSceneWithoutCommit(scenes[i].$loki);
       }
 
-      // remove all chapter infos
-      chapterinfoscollection.findAndRemove({
-        'chapterid': id
-      });
-      LoggerService.info('Removed elements with chapterid=' + id +
-        ' from ' + chapterinfoscollection.name);
-
       // remove chapter
       CollectionUtilService.removeWithoutCommit(collection, id);
 
@@ -124,26 +91,10 @@ angular.module('bibiscoApp').service('ChapterService', function(
       CollectionUtilService.update(collection, chapter);
     },
 
-    updateChapterInfo: function(chapterinfo) {
-
-      // update chapter info
-      CollectionUtilService.updateWithoutCommit(chapterinfoscollection,
-        chapterinfo);
-
-      // update chapter status
-      this.updateChapterStatusWordsCharactersWithoutCommit(chapterinfo.chapterid);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
-    },
-
     updateChapterStatusWordsCharactersWithoutCommit: function(id) {
 
       // get chapter
       let chapter = collection.get(id);
-
-      // get chapter reason
-      let chapterReason = this.getChapterInfo(chapter.reason);
 
       // get scenes
       let scenes = this.getScenes(id);
@@ -155,9 +106,9 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let words = 0;
       let characters = 0;
 
-      if (chapterReason.status === 'todo') {
+      if (chapter.reason.status === 'todo') {
         totalTodo = 1;
-      } else if (chapterReason.status === 'done') {
+      } else if (chapter.reason.status === 'done') {
         totalDone = 1;
       }
 

@@ -42,7 +42,7 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/chapters/:id/title', {
           template: '<chaptertitle></chaptertitle>'
         }).
-        when('/chapters/:chapterid/chapterinfos/:chapterinfoid', {
+        when('/chapters/:chapterid/chapterinfos/:type', {
           template: '<chapterinfodetail></chapterinfodetail>'
         }).
         when('/chapters/:chapterid/scenes/new', {

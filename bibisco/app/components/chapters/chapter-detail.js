@@ -54,12 +54,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
       }
     });
 
-    // get chapter reason
-    self.chapterreason = ChapterService.getChapterInfo(self.chapter.reason);
-
-    // get chapter notes
-    self.chapternotes = ChapterService.getChapterInfo(self.chapter.notes);
-
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
   };
@@ -103,8 +97,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $scope.$apply();
   };
 
-  self.selectChapterInfo = function(id) {
-    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + id);
+  self.selectChapterInfo = function(type) {
+    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type);
   };
 
   self.selectScene = function(id) {

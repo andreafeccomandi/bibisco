@@ -25,12 +25,17 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   self.$onInit = function() {
 
-    self.chapterinfo = ChapterService.getChapterInfo($routeParams.chapterinfoid);
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
 
-    self.title = 'jsp.chapter.thumbnail.' + self.chapterinfo.type + '.title';
-    self.subtitle = 'jsp.chapter.thumbnail.' + self.chapterinfo.type +
-      '.description';
+    self.chapterinfo;
+    if ($routeParams.type === 'reason') {
+      self.chapterinfo = self.chapter.reason;
+    } else if ($routeParams.type === 'notes') {
+      self.chapterinfo = self.chapter.notes;
+    }
+
+    self.title = 'jsp.chapter.thumbnail.' + $routeParams.type + '.title';
+    self.subtitle = 'jsp.chapter.thumbnail.' + $routeParams.type + '.description';
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -54,10 +59,10 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   self.changeStatus = function(status) {
     self.chapterinfo.status = status;
-    ChapterService.updateChapterInfo(self.chapterinfo);
+    ChapterService.update(self.chapter);
   };
 
   self.savefunction = function() {
-    ChapterService.updateChapterInfo(self.chapterinfo);
+    ChapterService.update(self.chapter);
   };
 }
