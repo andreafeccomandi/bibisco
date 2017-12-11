@@ -67,9 +67,6 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectdb.addCollection('strands');
       projectdb.addCollection('chapters');
       projectdb.addCollection('scenes');
-      projectdb.addCollection('scene_revision_characters');
-      projectdb.addCollection('scene_revision_strands');
-      projectdb.addCollection('scene_revisions');
       projectdb.addCollection('maincharacters');
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');

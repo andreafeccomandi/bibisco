@@ -24,13 +24,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
     collection, 'all_chapters');
   var scenecollection = ProjectDbConnectionService.getProjectDb().getCollection(
     'scenes');
-  var scenerevisionscollection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'scene_revisions');
-  var scenerevisioncharacterscollection = ProjectDbConnectionService.getProjectDb()
-    .getCollection('scene_revision_characters');
-  var scenerevisionstrandscollection = ProjectDbConnectionService.getProjectDb()
-    .getCollection('scene_revision_strands');
-
 
   return {
 
@@ -137,17 +130,15 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     changeSceneRevision: function(id, revision) {
       let scene = scenecollection.get(id);
-      let scenerevision = this.getSceneRevisionByPosition(id, revision);
-
-      // update scene with revision info
-      scene.revisionid = scenerevision.$loki;
-      scene.revision = scenerevision.position;
+      scene.revision = revision;
+      scene.characters = scene.revisions[revision].characters;
+      scene.words = scene.revisions[revision].words;
       CollectionUtilService.update(scenecollection, scene);
 
       return this.getScene(id);
     },
 
-    createSceneRevision: function(id, fromActual) {
+    insertSceneRevision: function(id, fromActual) {
 
       let scene = scenecollection.get(id);
 
@@ -155,21 +146,20 @@ angular.module('bibiscoApp').service('ChapterService', function(
       let scenerevision;
       let actualscenerevision;
       if (fromActual) {
-        actualscenerevision = scenerevisionscollection.get(scene.revisionid);
-        scenerevision = this.insertSceneRevision(scene.$loki,
-          actualscenerevision);
+        actualscenerevision = scene.revisions[scene.revision];
+        scenerevision = this.createSceneRevision(actualscenerevision);
       } else {
-        scenerevision = this.insertSceneRevision(scene.$loki);
+        scenerevision = this.createSceneRevision();
       }
 
       // update scene with revision info
-      scene.revisionid = scenerevision.$loki;
-      scene.revision = scenerevision.position;
-      scene.revisioncount = scene.revisioncount + 1;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
+      let revisions = scene.revisions;
+      revisions.push(scenerevision);
+      scene.revisions = revisions;
+      scene.revision = revisions.length - 1;
+      scene.characters = scenerevision.characters;
+      scene.words = scenerevision.words;
+      CollectionUtilService.update(scenecollection, scene);
 
       if (fromActual) {
         LoggerService.info('Created revision ' + scene.revision +
@@ -184,11 +174,11 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
       return this.getScene(id);
     },
-    createSceneRevisionFromActual: function(id) {
-      return this.createSceneRevision(id, true);
+    insertSceneRevisionFromActual: function(id) {
+      return this.insertSceneRevision(id, true);
     },
-    createSceneRevisionFromScratch: function(id) {
-      return this.createSceneRevision(id, false);
+    insertSceneRevisionFromScratch: function(id) {
+      return this.insertSceneRevision(id, false);
     },
 
     removeSceneRevisionWithoutCommit: function(sceneid, revisionid) {
@@ -233,14 +223,12 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     getScene: function(id) {
       let scene = scenecollection.get(id);
-      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+      let scenerevision = scene.revisions[scene.revision];
 
       scene.characters = scenerevision.characters;
-      scene.lastsave = scenerevision.lastsave;
       scene.locationid = scenerevision.locationid;
       scene.povid = scenerevision.povid;
       scene.povcharacterid = scenerevision.povcharacterid;
-      scene.revision = scenerevision.position;
       scene.text = scenerevision.text;
       scene.time = scenerevision.time;
       scene.timegregorian = scenerevision.timegregorian;
@@ -276,22 +264,17 @@ angular.module('bibiscoApp').service('ChapterService', function(
     insertScene: function(scene) {
 
       // insert scene
-      scene.revisioncount = 1;
-      scene.revisionid = -1;
+      let revisions = [];
+      let scenerevision = this.createSceneRevision();
+      revisions.push(scenerevision);
+      scene.revision = 0;
+      scene.revisions = revisions;      
       scene = CollectionUtilService.insertWithoutCommit(scenecollection,
         scene, {
           chapterid: {
             '$eq': scene.chapterid
           }
         });
-
-      // insert first revision
-      let scenerevision = this.insertSceneRevision(scene.$loki);
-
-      // update scene with revision info
-      scene.revisionid = scenerevision.$loki;
-      scene.revision = scenerevision.position;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
@@ -300,58 +283,38 @@ angular.module('bibiscoApp').service('ChapterService', function(
       ProjectDbConnectionService.saveDatabase();
     },
 
-    insertSceneRevision: function(sceneid, actualscenerevision) {
+    createSceneRevision: function(actualscenerevision) {
 
       let scenerevision;
-      let scenecharacters;
-      let scenestrands;
 
       if (actualscenerevision !== undefined) {
         scenerevision = {
-          sceneid: sceneid,
-          text: actualscenerevision.text,
+          characters: 0,
           locationid: actualscenerevision.locationid,
           povid: actualscenerevision.povid,
           povcharacterid: actualscenerevision.povcharacterid,
+          scenecharacters: actualscenerevision.scenecharacters,
+          scenestrands: actualscenerevision.scenestrands,
+          text: actualscenerevision.text,
           time: actualscenerevision.time,
-          timegregorian: actualscenerevision.timegregorian
+          timegregorian: actualscenerevision.timegregorian,
+          words: 0
         };
-        scenecharacters = this.getSceneCharacters(actualscenerevision.$loki)
-          .characters;
-        scenestrands = this.getSceneStrands(actualscenerevision.$loki).strands;
+
       } else {
         scenerevision = {
-          sceneid: sceneid,
-          text: '',
+          characters: 0,
           locationid: null,
           povid: null,
           povcharacterid: null,
+          scenecharacters: [],
+          scenestrands: [],
+          text: '',
           time: null,
-          timegregorian: true
+          timegregorian: true,
+          words: 0
         };
-        scenecharacters = [];
-        scenestrands = [];
       }
-
-      // insert scene revision
-      scenerevision = CollectionUtilService.insertWithoutCommit(
-        scenerevisionscollection, scenerevision, {
-          sceneid: {
-            '$eq': sceneid
-          }
-        });
-
-      // insert characters tags
-      scenerevisioncharacterscollection.insert({
-        id: scenerevision.$loki,
-        characters: scenecharacters
-      });
-
-      // insert strand tags
-      scenerevisionstrandscollection.insert({
-        id: scenerevision.$loki,
-        strands: scenestrands
-      });
 
       return scenerevision;
     },
@@ -410,13 +373,10 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     updateSceneWithoutCommit: function(scene) {
 
-      // update scene
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
-
       // update scene revision
-      let scenerevision = scenerevisionscollection.get(scene.revisionid);
+      let revisions = scene.revisions;
+      let scenerevision = {};
       scenerevision.characters = scene.characters;
-      scenerevision.lastsave = scene.lastsave;
       scenerevision.locationid = scene.locationid;
       scenerevision.povid = scene.povid;
       scenerevision.povcharacterid = scene.povcharacterid;
@@ -424,9 +384,10 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scenerevision.time = scene.time;
       scenerevision.timegregorian = scene.timegregorian;
       scenerevision.words = scene.words;
-
-      CollectionUtilService.updateWithoutCommit(
-        scenerevisionscollection, scenerevision);
+      revisions[scene.revision] = scenerevision;
+      scene.revisions = revisions;
+      
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(

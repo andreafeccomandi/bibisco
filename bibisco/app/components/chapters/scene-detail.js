@@ -81,10 +81,10 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
   self.changerevision = function(action, revision) {
     if (action === 'new-from-actual') {
-      self.scene = ChapterService.createSceneRevisionFromActual($routeParams.sceneid);
+      self.scene = ChapterService.insertSceneRevisionFromActual($routeParams.sceneid);
       self.editmode = true;
     } else if (action === 'new-from-scratch') {
-      self.scene = ChapterService.createSceneRevisionFromScratch($routeParams.sceneid);
+      self.scene = ChapterService.insertSceneRevisionFromScratch($routeParams.sceneid);
       self.editmode = true;
     } else if (action === 'change') {
       self.scene = ChapterService.changeSceneRevision($routeParams.sceneid, revision);

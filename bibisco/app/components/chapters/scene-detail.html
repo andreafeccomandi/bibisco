@@ -34,7 +34,7 @@
           ng-click="$ctrl.tags()">{{'jsp.scene.button.tags' | translate}}</button>
         <revisionselect ng-if="!$ctrl.editmode" 
           class="btn-group" revisionactive="$ctrl.scene.revision" 
-          revisioncount="$ctrl.scene.revisioncount" revisionenabled="true" 
+          revisioncount="$ctrl.scene.revisions.length" revisionenabled="true" 
           revisionfunction="$ctrl.changerevision(action,revision)">
         </revisionselect>
       </span>

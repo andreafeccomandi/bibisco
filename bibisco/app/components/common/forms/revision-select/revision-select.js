@@ -45,7 +45,7 @@ function RevisionSelectController($location, $translate, PopupBoxesService) {
     self.revisionactual;
     self.revisionselected;
 
-    for (let i = self.revisioncount; i > 0; i--) {
+    for (let i = self.revisioncount - 1; i > -1; i--) {
       let revision = self.createRevisionItem(i);
       self.revisions.push(revision);
 
@@ -122,7 +122,7 @@ function RevisionSelectController($location, $translate, PopupBoxesService) {
   self.addRevision = function() {
     self.revisioncount++;
 
-    let newrevision = self.createRevisionItem(self.revisioncount);
+    let newrevision = self.createRevisionItem(self.revisioncount-1);
     self.revisions.unshift(newrevision);
     self.revisionselected = newrevision;
     self.revisionactual = newrevision;
@@ -134,8 +134,8 @@ function RevisionSelectController($location, $translate, PopupBoxesService) {
 
   self.createRevisionItem = function(revisionNumber) {
     return {
-      key: '' + revisionNumber,
-      description: self.translations.revision_label + ' ' + revisionNumber
+      key: revisionNumber,
+      description: self.translations.revision_label + ' ' + (revisionNumber+1)
     };
   };
 
