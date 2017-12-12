@@ -181,42 +181,18 @@ angular.module('bibiscoApp').service('ChapterService', function(
       return this.insertSceneRevision(id, false);
     },
 
-    removeSceneRevisionWithoutCommit: function(sceneid, revisionid) {
-
-      // remove scene revision
-      CollectionUtilService.removeWithoutCommit(scenerevisionscollection,
-        revisionid, {
-          sceneid: {
-            '$eq': sceneid
-          }
-        });
-
-      // remove scene characters tags
-      this.removeSceneCharactersWithoutCommit(revisionid);
-
-      // remove scene strands
-      this.removeSceneStrandsWithoutCommit(revisionid);
-    },
-
     deleteActualSceneRevision: function(id) {
 
       let scene = scenecollection.get(id);
-
+      
       // remove actual revision
-      this.removeSceneRevisionWithoutCommit(parseInt(id), scene.revisionid);
-
-      // get the new revision
-      let newrevision = this.getSceneRevisionByPosition(id, (scene.revisioncount -
-        1));
+      let revisions = scene.revisions;
+      revisions.splice(scene.revision, 1);
+      scene.revisions = revisions;
 
       // update scene with revision info
-      scene.revisionid = newrevision.$loki;
-      scene.revision = newrevision.position;
-      scene.revisioncount = scene.revisioncount - 1;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
+      scene.revision = scene.revisions.length - 1;
+      CollectionUtilService.update(scenecollection, scene);
 
       return this.getScene(id);
     },
@@ -235,13 +211,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.words = scenerevision.words;
 
       return scene;
-    },
-
-    getSceneRevisionByPosition: function(sceneid, revisionposition) {
-      return scenerevisionscollection.findOne({
-        sceneid: parseInt(sceneid),
-        position: parseInt(revisionposition)
-      });
     },
 
     getScenesCount: function(chapterid) {
@@ -396,26 +365,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     updateSceneTitle: function(scene) {
       CollectionUtilService.update(scenecollection, scene);
-    },
-
-    removeSceneCharactersWithoutCommit: function(scenerevisionid) {
-      scenerevisioncharacterscollection.findAndRemove({
-        id: {
-          '$eq': scenerevisionid
-        }
-      });
-      LoggerService.info('Removed elements with id=' + scenerevisionid +
-        ' from ' + scenerevisioncharacterscollection.name);
-    },
-
-    removeSceneStrandsWithoutCommit: function(scenerevisionid) {
-      scenerevisionstrandscollection.findAndRemove({
-        id: {
-          '$eq': scenerevisionid
-        }
-      });
-      LoggerService.info('Removed elements with id=' + scenerevisionid +
-        ' from ' + scenerevisionstrandscollection.name);
     },
 
     getSceneCharacters: function(scenerevisionid) {

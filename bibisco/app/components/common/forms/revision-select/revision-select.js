@@ -100,10 +100,10 @@ function RevisionSelectController($location, $translate, PopupBoxesService) {
       'revision': self.revisionactual.key
     });
 
-    let revisionToDelete = parseInt(self.revisionselected.key);
+    let revisionToDelete = self.revisionselected.key;
 
     for (let i = 0; i < self.revisioncount; i++) {
-      let revisionitem = parseInt(self.revisions[i].key);
+      let revisionitem = self.revisions[i].key;
       if (revisionitem > revisionToDelete) {
         self.revisions[i] = self.createRevisionItem(revisionitem - 1);
       }
