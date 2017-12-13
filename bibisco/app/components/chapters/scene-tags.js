@@ -29,6 +29,7 @@ function SceneTagsController($location, $routeParams, $translate,
 
     let chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
+    self.scenerevision = self.scene.revisions[self.scene.revision];
 
     // load translations
     self.translations = $translate.instant([
@@ -82,64 +83,68 @@ function SceneTagsController($location, $routeParams, $translate,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: (self.scene.povid === '1stOnMajor')
+      selected: (self.scenerevision.povid === '1stOnMajor')
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: (self.scene.povid === '1stOnMinor')
+      selected: (self.scenerevision.povid === '1stOnMinor')
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: (self.scene.povid === '3rdLimited')
+      selected: (self.scenerevision.povid === '3rdLimited')
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: (self.scene.povid === '3rdOmniscient')
+      selected: (self.scenerevision.povid === '3rdOmniscient')
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: (self.scene.povid === '3rdObjective')
+      selected: (self.scenerevision.povid === '3rdObjective')
     });
     self.povs.push({
       id: '2nd',
-      selected: (self.scene.povid === '2nd')
+      selected: (self.scenerevision.povid === '2nd')
     });
 
-    if (self.scene.povid === '1stOnMajor' || self.scene.povid ===
-      '1stOnMinor' || self.scene.povid === '3rdLimited') {
+    if (self.scenerevision.povid === '1stOnMajor' || self.scenerevision.povid ===
+      '1stOnMinor' || self.scenerevision.povid === '3rdLimited') {
       self.showpovcharacter = true;
       self.initPovCharacters();
     } else {
       self.showpovcharacter = false;
-      self.scene.povcharacterid = null;
+      self.scenerevision.povcharacterid = null;
     }
   };
 
   self.togglePov = function(id) {
-    self.scene.povid = id;
+    self.scenerevision.povid = id;
     self.initPointOfViews();
     self.dirty = true;
   };
 
   self.togglePovCharacter = function(id) {
-    self.scene.povcharacterid = id;
+    self.scenerevision.povcharacterid = id;
     self.initPovCharacters();
     self.dirty = true;
   };
 
   self.toggleSceneCharacter = function(id) {
-    self.toggleTagElement(self.scene.scenecharacters, id);
+    let scenecharacters = self.scenerevision.scenecharacters;
+    self.toggleTagElement(scenecharacters, id);
+    self.scenerevision.scenecharacters = scenecharacters;
     self.initSceneCharacters();
   };
 
   self.toggleLocation = function(id) {
-    self.scene.locationid = id;
+    self.scenerevision.locationid = id;
     self.initLocations();
     self.dirty = true;
   };
 
   self.toggleStrand = function(id) {
-    self.toggleTagElement(self.scene.scenestrands, id);
+    let scenestrands = self.scenerevision.scenestrands;
+    self.toggleTagElement(scenestrands, id);
+    self.scenerevision.scenestrands = scenestrands;
     self.initStrands();
   };
 
@@ -156,13 +161,13 @@ function SceneTagsController($location, $routeParams, $translate,
 
   self.initPovCharacters = function() {
     self.povcharacters = self.initCharacters(function(id) {
-      return self.scene.povcharacterid === id;
+      return self.scenerevision.povcharacterid === id;
     });
   };
 
   self.initSceneCharacters = function() {
     self.scenecharacters = self.initCharacters(function(id) {
-      return UtilService.array.contains(self.scene.scenecharacters, id);
+      return UtilService.array.contains(self.scenerevision.scenecharacters, id);
     });
   };
 
@@ -212,7 +217,7 @@ function SceneTagsController($location, $routeParams, $translate,
       self.locations.push({
         id: locations[i].$loki,
         name: name,
-        selected: (self.scene.locationid === locations[i].$loki)
+        selected: (self.scenerevision.locationid === locations[i].$loki)
       });
     }
 
@@ -228,7 +233,7 @@ function SceneTagsController($location, $routeParams, $translate,
     let strands = StrandService.getStrands();
     self.strands = [];
     for (let i = 0; i < strands.length; i++) {
-      let isselected = UtilService.array.contains(self.scene.scenestrands,
+      let isselected = UtilService.array.contains(self.scenerevision.scenestrands,
         strands[i].$loki);
       self.strands.push({
         id: strands[i].$loki,
@@ -244,6 +249,7 @@ function SceneTagsController($location, $routeParams, $translate,
   };
 
   self.save = function() {
+    self.scene.revisions[self.scene.revision] = self.scenerevision;
     ChapterService.updateScene(self.scene);
     self.dirty = false;
   };
