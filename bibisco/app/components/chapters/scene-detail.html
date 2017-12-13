@@ -7,27 +7,27 @@
 
 <detailcontent 
   autosaveenabled="$ctrl.autosaveenabled" 
-  characters="$ctrl.scene.characters" 
+  characters="$ctrl.scenerevision.characters" 
   content="$ctrl.content" 
   dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
   savedcontent="$ctrl.savedcontent" 
   savefunction="$ctrl.save()"
   showprojectexplorer="$ctrl.showprojectexplorer" 
-  words="$ctrl.scene.words">
+  words="$ctrl.scenerevision.words">
 </detailcontent>
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
     <detailfootertop autosaveenabled="$ctrl.autosaveenabled" 
-      characters="$ctrl.scene.characters" editmode="$ctrl.editmode" 
-      lastsave="$ctrl.scene.lastsave" words="$ctrl.scene.words" 
+      characters="$ctrl.scenerevision.characters" editmode="$ctrl.editmode" 
+      lastsave="$ctrl.scene.lastsave" words="$ctrl.scenerevision.words" 
       wordscharactersenabled="true">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
         <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" 
-          visible="$ctrl.editmode || $ctrl.scene.words > 0"></projectexplorerbutton>
+          visible="$ctrl.editmode || $ctrl.scenerevision.words > 0"></projectexplorerbutton>
         <button ng-if="!$ctrl.editmode" type="button" 
           class="btn btn-default" 
           uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
@@ -46,16 +46,16 @@
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
-          characters="$ctrl.scene.characters"
+          characters="$ctrl.scenerevision.characters"
           content="$ctrl.content"
           dirty="$ctrl.dirty" 
-          editbuttonvisible="$ctrl.scene.words > 0" 
+          editbuttonvisible="$ctrl.scenerevision.words > 0" 
           editmode="$ctrl.editmode" 
           savedcharacters="$ctrl.savedcharacters"
           savedcontent="$ctrl.savedcontent"
           savedwords="$ctrl.savedwords"
           savefunction="$ctrl.save()"
-          words="$ctrl.scene.words">
+          words="$ctrl.scenerevision.words">
         </editsavebackbuttonbar>
       </span>
     </div>

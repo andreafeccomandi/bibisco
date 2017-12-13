@@ -198,22 +198,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     getScene: function(id) {
-      
-      let scene = scenecollection.get(id);
-      let scenerevision = scene.revisions[scene.revision];
-
-      scene.characters = scenerevision.characters;
-      scene.locationid = scenerevision.locationid;
-      scene.povid = scenerevision.povid;
-      scene.povcharacterid = scenerevision.povcharacterid;
-      scene.scenecharacters = scenerevision.scenecharacters;
-      scene.scenestrands = scenerevision.scenestrands;
-      scene.text = scenerevision.text;
-      scene.time = scenerevision.time;
-      scene.timegregorian = scenerevision.timegregorian;
-      scene.words = scenerevision.words;
-
-      return scene;
+      return scenecollection.get(id);
     },
 
     getScenesCount: function(chapterid) {
@@ -328,23 +313,9 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     updateScene: function(scene) {
 
-      // update scene revision
-      let revisions = scene.revisions;
-      let scenerevision = {};
-      scenerevision.characters = scene.characters;
-      scenerevision.locationid = scene.locationid;
-      scenerevision.povid = scene.povid;
-      scenerevision.povcharacterid = scene.povcharacterid;
-      scenerevision.scenecharacters = scene.scenecharacters;
-      scenerevision.scenestrands = scene.scenestrands;
-      scenerevision.text = scene.text;
-      scenerevision.time = scene.time;
-      scenerevision.timegregorian = scene.timegregorian;
-      scenerevision.words = scene.words;
-
-      revisions[scene.revision] = scenerevision;
-      scene.revisions = revisions;
-      
+      // update scene
+      scene.characters = scene.revisions[scene.revision].characters;
+      scene.words = scene.revisions[scene.revision].words;
       CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
       // update last scenetime tag

@@ -32,6 +32,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
+    self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
     self.deleteforbidden = false; //TODO
 
@@ -69,10 +70,10 @@ function SceneDetailController($location, $rootScope, $routeParams,
     });
 
     // saved content
-    self.content = self.scene.text;
-    self.savedcontent = self.scene.text;
-    self.savedcharacters = self.scene.characters;
-    self.savedwords = self.scene.words;
+    self.content = self.scenerevision.text;
+    self.savedcontent = self.scenerevision.text;
+    self.savedcharacters = self.scenerevision.characters;
+    self.savedwords = self.scenerevision.words;
   };
 
   self.back = function() {
@@ -91,10 +92,12 @@ function SceneDetailController($location, $rootScope, $routeParams,
     } else if (action === 'delete') {
       self.scene = ChapterService.deleteActualSceneRevision($routeParams.sceneid);
     }
-    self.content = self.scene.text;
-    self.savedcontent = self.scene.text;
-    self.savedcharacters = self.scene.characters;
-    self.savedwords = self.scene.words;
+
+    self.scenerevision = self.scene.revisions[self.scene.revision];
+    self.content = self.scenerevision.text;
+    self.savedcontent = self.scenerevision.text;
+    self.savedcharacters = self.scenerevision.characters;
+    self.savedwords = self.scenerevision.words;
   };
 
   self.changeStatus = function(status) {
@@ -113,7 +116,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
   };
 
   self.save = function() {
-    self.scene.text = self.content;
+    self.scenerevision.text = self.content;
+    self.scene.revisions[self.scene.revision] = self.scenerevision;
     ChapterService.updateScene(self.scene);
   };
 
