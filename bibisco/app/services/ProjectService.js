@@ -276,10 +276,10 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
     },
 
-    updateLastScenetimeTag: function(time) {
+    updateLastScenetimeTagWithoutCommit: function(time) {
       let projectInfo = this.getProjectInfo();
       projectInfo.lastScenetimeTag = time;
-      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+      CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
     }
   };

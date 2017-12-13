@@ -129,11 +129,19 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     changeSceneRevision: function(id, revision) {
+
+      // update scene
       let scene = scenecollection.get(id);
       scene.revision = revision;
       scene.characters = scene.revisions[revision].characters;
       scene.words = scene.revisions[revision].words;
-      CollectionUtilService.update(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
 
       return this.getScene(id);
     },
@@ -159,7 +167,14 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.revision = revisions.length - 1;
       scene.characters = scenerevision.characters;
       scene.words = scenerevision.words;
-      CollectionUtilService.update(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(
+        scene.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
 
       if (fromActual) {
         LoggerService.info('Created revision ' + scene.revision +
@@ -192,7 +207,15 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
       // update scene with revision info
       scene.revision = scene.revisions.length - 1;
-      CollectionUtilService.update(scenecollection, scene);
+      scene.characters = scene.revisions[scene.revision].characters;
+      scene.words = scene.revisions[scene.revision].words;
+      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+
+      // update chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
 
       return this.getScene(id);
     },
@@ -319,8 +342,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
       CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
       // update last scenetime tag
-      if (scene.timegregorian === true) {
-        ProjectService.updateLastScenetimeTag(scene.time);
+      if (scene.revisions[scene.revision].timegregorian === true) {
+        ProjectService.updateLastScenetimeTagWithoutCommit(scene.revisions[scene.revision].time);
       }
 
       // update chapter status
