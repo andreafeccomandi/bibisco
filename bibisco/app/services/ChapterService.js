@@ -315,16 +315,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
       // remove scene
       CollectionUtilService.removeWithoutCommit(scenecollection, id);
 
-      // remove all scene revisions
-      let scenerevisions = scenerevisionscollection.find({
-        sceneid: {
-          '$eq': id
-        }
-      });
-      for (let i = 0; i < scenerevisions.length; i++) {
-        this.removeSceneRevisionWithoutCommit(id, scenerevisions[i].$loki);
-      }
-
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
     },
