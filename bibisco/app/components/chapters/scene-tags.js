@@ -27,6 +27,9 @@ function SceneTagsController($location, $routeParams, $translate,
 
   self.$onInit = function() {
 
+    let chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.scene = ChapterService.getScene($routeParams.sceneid);
+
     // load translations
     self.translations = $translate.instant([
       'year_bc_scene_tags'
@@ -36,21 +39,16 @@ function SceneTagsController($location, $routeParams, $translate,
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.nav.li.chapters'
     });
-
-    let chapter = ChapterService.getChapter($routeParams.chapterid);
+    
     self.breadcrumbitems.push({
       label: '#' + chapter.position + ' ' + chapter.title
     });
-    let scene = ChapterService.getScene($routeParams.sceneid);
     self.breadcrumbitems.push({
-      label: scene.title
+      label: self.scene.title
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
     });
-
-    // get scene tags
-    self.scenetags = ChapterService.getSceneTags(scene.$loki);
 
     // init point of views
     self.initPointOfViews();
@@ -69,7 +67,7 @@ function SceneTagsController($location, $routeParams, $translate,
     // init narrative strands
     self.initStrands();
 
-    self.title = scene.title;
+    self.title = self.scene.title;
     self.pageheadertitle =
       'jsp.scene.dialog.title.updateTitle';
 
@@ -84,64 +82,64 @@ function SceneTagsController($location, $routeParams, $translate,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: (self.scenetags.povid === '1stOnMajor')
+      selected: (self.scene.povid === '1stOnMajor')
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: (self.scenetags.povid === '1stOnMinor')
+      selected: (self.scene.povid === '1stOnMinor')
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: (self.scenetags.povid === '3rdLimited')
+      selected: (self.scene.povid === '3rdLimited')
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: (self.scenetags.povid === '3rdOmniscient')
+      selected: (self.scene.povid === '3rdOmniscient')
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: (self.scenetags.povid === '3rdObjective')
+      selected: (self.scene.povid === '3rdObjective')
     });
     self.povs.push({
       id: '2nd',
-      selected: (self.scenetags.povid === '2nd')
+      selected: (self.scene.povid === '2nd')
     });
 
-    if (self.scenetags.povid === '1stOnMajor' || self.scenetags.povid ===
-      '1stOnMinor' || self.scenetags.povid === '3rdLimited') {
+    if (self.scene.povid === '1stOnMajor' || self.scene.povid ===
+      '1stOnMinor' || self.scene.povid === '3rdLimited') {
       self.showpovcharacter = true;
       self.initPovCharacters();
     } else {
       self.showpovcharacter = false;
-      self.scenetags.povcharacterid = null;
+      self.scene.povcharacterid = null;
     }
   };
 
   self.togglePov = function(id) {
-    self.scenetags.povid = id;
+    self.scene.povid = id;
     self.initPointOfViews();
     self.dirty = true;
   };
 
   self.togglePovCharacter = function(id) {
-    self.scenetags.povcharacterid = id;
+    self.scene.povcharacterid = id;
     self.initPovCharacters();
     self.dirty = true;
   };
 
   self.toggleSceneCharacter = function(id) {
-    self.toggleTagElement(self.scenetags.characters, id);
+    self.toggleTagElement(self.scene.scenecharacters, id);
     self.initSceneCharacters();
   };
 
   self.toggleLocation = function(id) {
-    self.scenetags.locationid = id;
+    self.scene.locationid = id;
     self.initLocations();
     self.dirty = true;
   };
 
   self.toggleStrand = function(id) {
-    self.toggleTagElement(self.scenetags.strands, id);
+    self.toggleTagElement(self.scene.scenestrands, id);
     self.initStrands();
   };
 
@@ -158,13 +156,13 @@ function SceneTagsController($location, $routeParams, $translate,
 
   self.initPovCharacters = function() {
     self.povcharacters = self.initCharacters(function(id) {
-      return self.scenetags.povcharacterid === id;
+      return self.scene.povcharacterid === id;
     });
   };
 
   self.initSceneCharacters = function() {
     self.scenecharacters = self.initCharacters(function(id) {
-      return UtilService.array.contains(self.scenetags.characters, id);
+      return UtilService.array.contains(self.scene.scenecharacters, id);
     });
   };
 
@@ -214,7 +212,7 @@ function SceneTagsController($location, $routeParams, $translate,
       self.locations.push({
         id: locations[i].$loki,
         name: name,
-        selected: (self.scenetags.locationid === locations[i].$loki)
+        selected: (self.scene.locationid === locations[i].$loki)
       });
     }
 
@@ -230,7 +228,7 @@ function SceneTagsController($location, $routeParams, $translate,
     let strands = StrandService.getStrands();
     self.strands = [];
     for (let i = 0; i < strands.length; i++) {
-      let isselected = UtilService.array.contains(self.scenetags.strands,
+      let isselected = UtilService.array.contains(self.scene.scenestrands,
         strands[i].$loki);
       self.strands.push({
         id: strands[i].$loki,
@@ -246,7 +244,7 @@ function SceneTagsController($location, $routeParams, $translate,
   };
 
   self.save = function() {
-    ChapterService.updateSceneTags(self.scenetags);
+    ChapterService.updateScene(self.scene);
     self.dirty = false;
   };
 

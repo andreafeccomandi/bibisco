@@ -198,6 +198,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     getScene: function(id) {
+      
       let scene = scenecollection.get(id);
       let scenerevision = scene.revisions[scene.revision];
 
@@ -205,6 +206,8 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scene.locationid = scenerevision.locationid;
       scene.povid = scenerevision.povid;
       scene.povcharacterid = scenerevision.povcharacterid;
+      scene.scenecharacters = scenerevision.scenecharacters;
+      scene.scenestrands = scenerevision.scenestrands;
       scene.text = scenerevision.text;
       scene.time = scenerevision.time;
       scene.timegregorian = scenerevision.timegregorian;
@@ -258,7 +261,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
       if (actualscenerevision !== undefined) {
         scenerevision = {
-          characters: 0,
+          characters: actualscenerevision.characters,
           locationid: actualscenerevision.locationid,
           povid: actualscenerevision.povid,
           povcharacterid: actualscenerevision.povcharacterid,
@@ -267,7 +270,7 @@ angular.module('bibiscoApp').service('ChapterService', function(
           text: actualscenerevision.text,
           time: actualscenerevision.time,
           timegregorian: actualscenerevision.timegregorian,
-          words: 0
+          words: actualscenerevision.words
         };
 
       } else {
@@ -334,13 +337,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
     },
 
     updateScene: function(scene) {
-      this.updateSceneWithoutCommit(scene);
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
-    },
-
-    updateSceneWithoutCommit: function(scene) {
 
       // update scene revision
       let revisions = scene.revisions;
@@ -349,96 +345,33 @@ angular.module('bibiscoApp').service('ChapterService', function(
       scenerevision.locationid = scene.locationid;
       scenerevision.povid = scene.povid;
       scenerevision.povcharacterid = scene.povcharacterid;
+      scenerevision.scenecharacters = scene.scenecharacters;
+      scenerevision.scenestrands = scene.scenestrands;
       scenerevision.text = scene.text;
       scenerevision.time = scene.time;
       scenerevision.timegregorian = scene.timegregorian;
       scenerevision.words = scene.words;
+
       revisions[scene.revision] = scenerevision;
       scene.revisions = revisions;
       
       CollectionUtilService.updateWithoutCommit(scenecollection, scene);
 
+      // update last scenetime tag
+      if (scene.timegregorian === true) {
+        ProjectService.updateLastScenetimeTag(scene.time);
+      }
+
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(
         scene.chapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
     },
 
     updateSceneTitle: function(scene) {
       CollectionUtilService.update(scenecollection, scene);
-    },
-
-    getSceneCharacters: function(scenerevisionid) {
-      return scenerevisioncharacterscollection.findOne({
-        id: {
-          '$eq': scenerevisionid
-        }
-      });
-    },
-
-    getSceneStrands: function(scenerevisionid) {
-      return scenerevisionstrandscollection.findOne({
-        id: {
-          '$eq': scenerevisionid
-        }
-      });
-    },
-
-    getSceneTags: function(sceneid) {
-
-      let scene = scenecollection.get(sceneid);
-      let scenecharacters = this.getSceneCharacters(scene.revisionid);
-      let scenestrands = this.getSceneStrands(scene.revisionid);
-
-      return {
-        sceneid: sceneid,
-        characters: scenecharacters.characters,
-        locationid: scene.locationid,
-        povid: scene.povid,
-        povcharacterid: scene.povcharacterid,
-        strands: scenestrands.strands,
-        time: scene.time,
-        timegregorian: scene.timegregorian
-      };
-    },
-
-    updateSceneTags: function(scenetags) {
-
-      // get scene
-      let scene = scenecollection.get(scenetags.sceneid);
-
-      // update location, pov and time tags
-      scene.locationid = scenetags.locationid;
-      scene.povid = scenetags.povid;
-      scene.povcharacterid = scenetags.povcharacterid;
-      scene.time = scenetags.time;
-      scene.timegregorian = scenetags.timegregorian;
-      this.updateSceneWithoutCommit(scene);
-
-      // remove previous scene characters tags
-      this.removeSceneCharactersWithoutCommit(scene.revisionid);
-
-      // insert selected characters tags
-      scenerevisioncharacterscollection.insert({
-        id: scene.revisionid,
-        characters: scenetags.characters
-      });
-
-      // remove previous scene strand tag
-      this.removeSceneStrandsWithoutCommit(scene.revisionid);
-
-      // insert selected strands tags
-      scenerevisionstrandscollection.insert({
-        id: scene.revisionid,
-        strands: scenetags.strands
-      });
-
-      // update last scenetime tag
-      if (scenetags.timegregorian === true) {
-        ProjectService.updateLastScenetimeTag(scenetags.time);
-      }
-
-      // save database
-      ProjectDbConnectionService.saveDatabase();
     },
 
     getLastScenetime: function() {

@@ -108,7 +108,7 @@ function RevisionSelectController($location, $translate, PopupBoxesService) {
         self.revisions[i] = self.createRevisionItem(revisionitem - 1);
       }
     }
-    let revisionItemToDeletePosition = self.revisioncount - revisionToDelete;
+    let revisionItemToDeletePosition = self.revisioncount - revisionToDelete - 1;
     self.revisions.splice(revisionItemToDeletePosition, 1);
     self.revisioncount--;
     self.revisionselected = self.revisions[0];
