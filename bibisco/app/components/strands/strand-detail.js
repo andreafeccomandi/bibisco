@@ -29,7 +29,7 @@ function StrandDetailController($location, $routeParams, StrandService) {
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.architecture',
+      label: 'common_architecture',
       href: '/project/architecture'
     });
     self.breadcrumbitems.push({

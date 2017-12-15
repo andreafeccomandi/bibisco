@@ -34,7 +34,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     // breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.chapters',
+      label: 'common_chapters',
       href: '/project/chapters'
     });
     self.breadcrumbitems.push({

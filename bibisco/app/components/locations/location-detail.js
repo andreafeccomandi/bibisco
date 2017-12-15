@@ -30,7 +30,7 @@ function LocationDetailController($location, $routeParams, LocationService) {
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.locations',
+      label: 'common_locations',
       href: '/project/locations'
     });
     self.breadcrumbitems.push({

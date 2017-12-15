@@ -32,7 +32,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
     // common breadcrumb root
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.locations'
+      label: 'common_locations'
     });
     if ($routeParams.id !== undefined) {
       let location = LocationService.getLocation($routeParams.id);

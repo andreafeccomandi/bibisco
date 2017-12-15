@@ -98,6 +98,11 @@ h6, label, th, td, p {
 	height: 20px;
 }
 
+.project-explorer {
+	overflow-y: auto;
+	height: calc(100% - 20px);
+}
+
 /* RICH TEXT EDITOR */
 .richtexteditor-toolbar {
 	margin-bottom: 10px;

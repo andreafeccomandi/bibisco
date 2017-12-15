@@ -39,7 +39,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.chapters',
+      label: 'common_chapters',
       href: '/project/chapters'
     });
     self.breadcrumbitems.push({

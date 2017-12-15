@@ -32,7 +32,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.characters',
+      label: 'common_characters',
       href: '/project/characters'
     });
     self.breadcrumbitems.push({

@@ -13,9 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('ChapterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService,
-  ProjectService) {
+angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilService, 
+  LoggerService, ProjectDbConnectionService, ProjectService) {
   'use strict';
 
   var collection = ProjectDbConnectionService.getProjectDb().getCollection(
@@ -360,6 +359,6 @@ angular.module('bibiscoApp').service('ChapterService', function(
 
     getLastScenetime: function() {
       return ProjectService.getProjectInfo().lastScenetimeTag;
-    }
+    },
   };
 });

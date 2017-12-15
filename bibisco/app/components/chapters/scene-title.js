@@ -28,7 +28,7 @@ function SceneTitleController($location, $routeParams, ChapterService) {
     // common breadcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.chapters'
+      label: 'common_chapters'
     });
 
     let chapter = ChapterService.getChapter($routeParams.chapterid);

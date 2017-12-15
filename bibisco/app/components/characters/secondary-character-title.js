@@ -29,7 +29,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
     // common breadcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.characters'
+      label: 'common_characters'
     });
 
     if ($routeParams.id !== undefined) {

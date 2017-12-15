@@ -28,7 +28,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
     // common bradcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.architecture'
+      label: 'common_architecture'
     });
 
     if ($routeParams.id !== undefined) {

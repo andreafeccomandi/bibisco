@@ -27,7 +27,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
     // common breadcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.projectFromScene.nav.li.chapters'
+      label: 'common_chapters'
     });
 
     if ($routeParams.id !== undefined) {

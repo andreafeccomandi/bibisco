@@ -38,7 +38,7 @@ function SceneTagsController($location, $routeParams, $translate,
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.nav.li.chapters'
+      label: 'common_chapters'
     });
     
     self.breadcrumbitems.push({

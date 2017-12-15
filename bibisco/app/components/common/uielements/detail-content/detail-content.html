@@ -3,9 +3,12 @@
   <div class="container" style="height: 100%;">
     <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
         class="row" style="height: 100%;">
-      <div class="col-sm-8" ng-class="{
-        'col-sm-offset-2': !$ctrl.showprojectexplorer,
-        'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
+      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4" style="height: 100%;">
+        <projectexplorer></projectexplorer>
+      </div>
+      <div class="col-sm-8" 
+        ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}" 
+        style="height: 100%;">
         <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
           content="{{$ctrl.savedcontent}}">
         </richtextviewer>
@@ -18,7 +21,7 @@
       </div>
     </div>
     <div ng-if="!$ctrl.disableemptymessage && !$ctrl.editmode && $ctrl.words == 0">
-        <jumbotronbutton text="{{'jsp.projectFromScene.section.empty' | translate}}"
+        <jumbotronbutton text="{{'common_empty_section' | translate}}"
           buttonlabel="{{'common.getstarted' | translate}}"
           buttonfunction="$ctrl.enableeditmode()"></jumbotronbutton>
     </div>
