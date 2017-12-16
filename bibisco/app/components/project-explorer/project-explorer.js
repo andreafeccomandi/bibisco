@@ -34,6 +34,15 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       'common_chapter_reason',
       'common_chapters',
       'common_characters',
+      'common_characters_behaviors',
+      'common_characters_conflict',
+      'common_characters_evolutionduringthestory',
+      'common_characters_ideas',
+      'common_characters_lifebeforestorybeginning',
+      'common_characters_personaldata',
+      'common_characters_physionomy',
+      'common_characters_psychology',
+      'common_characters_sociology',
       'common_empty_section',
       'common_fabula',
       'common_locations',
@@ -42,6 +51,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       'common_strands'
     ]);
 
+    self.type;
     self.text;
     self.selectedItem;
     self.items = [];
@@ -169,84 +179,43 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
   };
 
   self.showPremise = function() {
-    let premise = ArchitectureService.getPremise();
-    self.text = self.defaultString(premise.text);
+    self.text = ArchitectureService.getPremise().text;
+    self.type = 'simpletext';
   };
 
   self.showFabula = function () {
-    let fabula = ArchitectureService.getFabula();
-    self.text = self.defaultString(fabula.text);
+    self.text = ArchitectureService.getFabula().text;
+    self.type = 'simpletext';
   };
 
   self.showSetting = function () {
-    let setting = ArchitectureService.getSetting();
-    self.text = self.defaultString(setting.text);
+    self.text = ArchitectureService.getSetting().text;
+    self.type = 'simpletext';
   };
 
   self.showStrands = function () {
-    
-    let html = '';
-    let strands = StrandService.getStrands();
-    if (strands.length > 0) {
-      for (let i = 0; i < strands.length; i++) {
-        html += '<h5>' + strands[i].name + '</h5>';
-        html += self.defaultString(strands[i].description);
-      }
-    } else {
-      html = self.emptytext;
-    }
+    self.strands = StrandService.getStrands();
+    self.type = 'strands';
+  };
 
-    self.text = html;
+  self.showMainCharacter = function (id) {
+    self.maincharacter = MainCharacterService.getMainCharacter(id);
+    self.type = 'maincharacter';
   };
 
   self.showSecondaryCharacter = function(id) {
-    let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(id);
-    self.text = self.defaultString(secondarycharacter.description);
+    self.text = SecondaryCharacterService.getSecondaryCharacter(id).description;
+    self.type = 'simpletext';
   };
 
   self.showLocation = function(id) {
-    let location = LocationService.getLocation(id);
-    self.text = self.defaultString(location.description);
+    self.text = LocationService.getLocation(id).description;
+    self.type = 'simpletext';
   };
 
   self.showChapter = function(id) {
-    let html;
-    let chapter = ChapterService.getChapter(id);
-    
-    html = self.getAllScenesAsHtml(id);
-    html += '<hr>';
-    html += '<h5>' + self.translations.common_chapter_reason + '</h5>';
-    html += self.defaultString(chapter.reason.text);
-    html += '<hr>';
-    html += '<h5>' + self.translations.common_chapter_notes + '</h5>';
-    html += self.defaultString(chapter.reason.text);
-    
-    self.text = html;
-  };
-
-  self.getAllScenesAsHtml =  function (id) {
-
-    let html = '';
-    let scenes = ChapterService.getScenes(id);
-
-    if (scenes.length > 0) {
-      for (let i = 0; i < scenes.length; i++) {
-        html += '<h5>' + scenes[i].title + '</h5>';
-        html += self.defaultString(scenes[i].revisions[scenes[i].revision].text);
-      }
-    } else {
-      html = self.emptytext;
-    }
-
-    return html;
-  };
-
-
-  self.defaultString = function (text) {
-    if (text) {
-      return text;
-    } else {
-      return self.emptytext; 
-    }
+    self.chapter = ChapterService.getChapter(id);
+    self.scenes = ChapterService.getScenes(id);
+    self.type = 'chapter';
   };
 }

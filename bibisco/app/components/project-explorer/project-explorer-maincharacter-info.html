@@ -1,0 +1,6 @@
+<div ng-if="!$ctrl.info.freextextenabled" 
+    ng-repeat="question in $ctrl.info.questions track by $index">
+    <b><i>({{$index+1}}/{{$ctrl.info.questions.length}}) {{'characterInfo.question.'+$ctrl.type+'.'+$index  | translate}}</i></b>
+    <div ng-bind-html="question.text"></div>
+</div>
+<div ng-if="$ctrl.info.freextextenabled" ng-bind-html="$ctrl.info.freextext"></div>

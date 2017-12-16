@@ -8,6 +8,17 @@
       </ui-select-choices>
     </ui-select>
     <hr>
-    <div ng-bind-html="$ctrl.text"></div>
+    <div>
+      <projectexplorersimpletext ng-if="$ctrl.type == 'simpletext'" text="$ctrl.text">
+      </projectexplorersimpletext>
+      <projectexplorerstrands ng-if="$ctrl.type == 'strands'" strands="$ctrl.strands">
+      </projectexplorerstrands>
+      <projectexplorerchapter ng-if="$ctrl.type == 'chapter'" 
+        chapter="$ctrl.chapter" scenes="$ctrl.scenes">
+      </projectexplorerchapter>
+      <projectexplorermaincharacter ng-if="$ctrl.type == 'maincharacter'"
+        maincharacter="$ctrl.maincharacter">
+      </projectexplorermaincharacter>
+    </div>
   </div>
 </div>
