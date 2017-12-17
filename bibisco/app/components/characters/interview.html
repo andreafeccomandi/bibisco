@@ -1,9 +1,11 @@
 <div class="detail-content-with-header-subtitle">
   <div class="container" style="height: 100%;">
     <div class="row" style="height: 100%;">
-      <div class="col-sm-8" ng-class="{
-        'col-sm-offset-2': !$ctrl.showprojectexplorer,
-        'col-sm-offset-4': $ctrl.showprojectexplorer}" style="height: 100%;">
+      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4" style="height: 100%;">
+        <projectexplorer></projectexplorer>
+      </div>
+      <div class="col-sm-8" ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}"
+       style="height: 100%;">
         <interviewviewer ng-if="!$ctrl.editmode"
           characters="$ctrl.characters"
           maincharacter="$ctrl.maincharacter" 

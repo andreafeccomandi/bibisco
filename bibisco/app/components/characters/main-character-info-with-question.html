@@ -14,6 +14,7 @@
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
+  showprojectexplorer="$ctrl.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
 </interview>
@@ -45,6 +46,7 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
+        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="$ctrl.editmode || $ctrl.words > 0"></projectexplorerbutton>
         <interviewswitch ng-if="$ctrl.editmode"
           dirty="$ctrl.dirty"
           freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">

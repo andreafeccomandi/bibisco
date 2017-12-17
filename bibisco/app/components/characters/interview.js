@@ -25,6 +25,7 @@ angular.
       editmode: '=',
       maincharacter: '=',
       questionselected: '=',
+      showprojectexplorer: '<',
       type: '<',
       words: '='
     }
@@ -35,6 +36,6 @@ function InterviewController() {
   var self = this;
 
   self.$onInit = function() {
-    self.showprojectexplorer = false;
+    
   };
 }

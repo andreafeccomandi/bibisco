@@ -673,5 +673,6 @@
   "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+flèche gauche",
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+flèche gauche",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+flèche droite",
-  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+flèche droite"
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+flèche droite",
+  "common_select_or_search": "Sélectionner ou rechercher"
 }

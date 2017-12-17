@@ -664,5 +664,6 @@
   "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+šipka vlevo",
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+šipka vlevo",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+šipka vpravo",
-  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+šipka vpravo"
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+šipka vpravo",
+  "common_select_or_search": "Vyberte nebo vyhledávat"
 }

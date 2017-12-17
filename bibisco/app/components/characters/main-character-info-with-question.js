@@ -53,6 +53,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.editmode = false;
     self.questionselected;
     self.savedcontent;
+    self.showprojectexplorer = false;
 
     self.characters;
     self.words;

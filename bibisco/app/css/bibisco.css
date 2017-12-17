@@ -100,7 +100,23 @@ h6, label, th, td, p {
 
 .project-explorer {
 	overflow-y: auto;
-	height: calc(100% - 20px);
+	height: calc(100% - 0px);
+	margin-bottom: 0px;
+}
+
+.project-explorer-select {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* RICH TEXT VIEWER */
+.richtextviewer-container {
+	height: calc(100% - 40px);
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 100%;
 }
 
 /* RICH TEXT EDITOR */

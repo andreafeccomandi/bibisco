@@ -700,5 +700,6 @@
   "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+left arrow",
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+left arrow",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+right arrow",
-  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+right arrow"
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+right arrow",
+  "common_select_or_search": "Select or search"
 }

@@ -665,5 +665,6 @@
   "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+strzałka w lewo",
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+strzałka w lewo",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+strzałka w prawo",
-  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+strzałka w prawo"
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+strzałka w prawo",
+  "common_select_or_search": "Wybierz lub wyszukać"
 }

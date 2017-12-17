@@ -680,5 +680,6 @@
   "maincharacterquestionbuttonbar.previous.tooltip": "CTRL+freccia sinistra",
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+freccia sinistra",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+freccia destra",
-  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+freccia destra"
+  "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+freccia destra",
+  "common_select_or_search": "Seleziona o cerca"
 }
