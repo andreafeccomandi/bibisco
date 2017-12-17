@@ -177,7 +177,7 @@
   "jsp.export.button.bibiscoExportAArchive.popover": "Eksportuj projekt do pliku .bibisco, aby użyć go jako kopię zapasową lub aby zaimportować go do innej instalacji bibisco.",
   "jsp.export.button.bibiscoExportAWord.popover": "RTF (Rich Text Format) jest to format dokumentu do odczytu i zapisu przez większość dostępnych edytorów tekstowych, takich jak Microsoft Word, LibreOffice, OpenOffice.",
   "jsp.export.dialog.title.exportProjectDirectory": "Wybierz katalog dla eksportu",
-  "jsp.export.dialog.exportProjectDirectory.label": "Wybierz katalog, kt\ufffdry bibisco użyje do eksportu twojego projektu:",
+  "jsp.export.dialog.exportProjectDirectory.label": "Wybierz katalog, który bibisco użyje do eksportu twojego projektu:",
   "jsp.importProject.label.file": "Plik archiwum",
   "jsp.importProject.form.input.file.validationMessage": "Niepoprawny plik archiwum",
   "jsp.closeImportProject.importAlreadyPresent.confirm": "Plik archiwum zawiera projekt {{projectName}}, który jest już w bibisco. Jeśli go zaimportujesz, to nadpiszesz aktualną wersję. Czy chesz kontynuować?",
