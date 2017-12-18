@@ -67,7 +67,6 @@ function LocationDetailController($location, $routeParams, LocationService) {
   };
 
   self.showimagesfunction = function() {
-    alert('Qui si visualizzeranno le immagini per id=' + self.location
-      .$loki);
+    $location.path('/locations/' + self.location.$loki + '/images');
   };
 }

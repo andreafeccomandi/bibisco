@@ -63,8 +63,14 @@ function MenuController($location, $rootScope) {
     self.disabled = true;
   });
 
+  // SHOW ELEMENT images
+  $rootScope.$on('SHOW_ELEMENT_IMAGES', function() {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW ELEMENT title
-  $rootScope.$on('SHOW_ELEMENT_TITLE', function() {
+  $rootScope.$on('SHOW_ELEMENT_TITLE', function () {
     self.visible = true;
     self.disabled = true;
   });

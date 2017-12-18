@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  </div>
+  <div class="row">
+    <pageheader headertitle="{{'jsp.carouselImage.dialog.title' | translate}} {{$ctrl.pageheadertitle}}"
+       buttonlabel="jsp.addImageForm.dialog.title"
+       buttonfunction="$ctrl.addImage()"
+       buttonshow="$ctrl.images && $ctrl.images.length > 0">
+    </pageheader>
+  </div>
+  <div class="row" ng-if="$ctrl.images && $ctrl.images.length > 0">
+    IMAGES!  
+  </div>
+  <div ng-if="!$ctrl.images || $ctrl.images.length == 0">
+    <jumbotronbutton text="{{'jsp.carouselImage.bibiscoEmptyThumbnailListBox.text' | translate}}" 
+      buttonlabel="{{'jsp.carouselImage.a.addFirstImage' | translate}}" 
+      buttonfunction="$ctrl.addImage()"></jumbotronbutton>
+  </div>
+</div>
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <div class="row detail-footer-top">
+      <span class="pull-left">
+        <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
+      </span>
+    </div>
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-right">
+        <button type="button" class="btn btn-default" 
+          ng-click="$ctrl.backfunction()">{{'jsp.common.button.back' | translate}}</button>
+      </span>
+    </div>
+  </div>
+</div>
