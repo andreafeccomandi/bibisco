@@ -39,6 +39,12 @@ function MenuController($location, $rootScope) {
   self.settingsActive = false;
   self.infoActive = false;
 
+  // ADD ELEMENT IMAGE
+  $rootScope.$on('ADD_ELEMENT_IMAGE', function () {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW START EVENT
   $rootScope.$on('SHOW_START', function() {
     self.visible = false;

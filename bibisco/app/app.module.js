@@ -75,6 +75,9 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/locations/:id/images', {
           template: '<locationimages></locationimages>'
         }).
+        when('/locations/:id/images/new', {
+          template: '<locationaddimage></locationaddimage>'
+        }).
         when('/locations/:id/title', {
           template: '<locationtitle></locationtitle>'
         }).

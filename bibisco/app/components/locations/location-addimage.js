@@ -14,21 +14,22 @@
  */
 angular.
   module('bibiscoApp').
-  component('locationimages', {
-    templateUrl: 'components/locations/location-images.html',
-    controller: ImagesViewerController
+  component('locationaddimage', {
+    templateUrl: 'components/locations/location-addimage.html',
+    controller: LocationAddImageController
   });
 
-function ImagesViewerController($location, $rootScope, $routeParams,
+function LocationAddImageController($location, $rootScope, $routeParams,
   LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
-    
+
     let location = LocationService.getLocation($routeParams.id);
     let locationName = LocationService.calculateLocationName(location);
-    
+
+    // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations'
@@ -39,20 +40,14 @@ function ImagesViewerController($location, $rootScope, $routeParams,
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
     });
+    self.breadcrumbitems.push({
+      label: 'jsp.addImageForm.dialog.title'
+    });
 
-    self.lastsave = location.lastsave;
-    self.pageheadertitle = locationName;
+    self.exitpath = '/locations/' + $routeParams.id + '/images';
   };
 
-  self.delete = function(id) {
-    
-  };
-
-  self.insert = function() {
-    $location.path('/locations/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/locations/' + $routeParams.id);
+  self.save = function(name, path) {
+    alert('Name: ' + name);
   };
 }

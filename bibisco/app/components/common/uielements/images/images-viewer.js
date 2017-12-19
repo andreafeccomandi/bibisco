@@ -39,6 +39,6 @@ function ImagesViewerController($rootScope) {
   };
 
   self.addImage = function() {
-    alert('addImage');
+    self.insertfunction();
   };
 }
