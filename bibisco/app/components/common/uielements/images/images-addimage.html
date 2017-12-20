@@ -15,6 +15,12 @@
           label="jsp.addImageForm.label.imageName"
           labelcols="3" inputcols="8">
         </textinputfield>
+        <fileinputfield field="imagesAddImageForm.imagepath" 
+          model="$ctrl.imagepath" name="imagepath" required
+          filefilter="['bmp','gif','jpg','png']"
+          label="jsp.addImageForm.label.file" 
+          labelcols="3" inputcols="8">
+        </fileinputfield>
         <formbuttons form="imagesAddImageForm" backfunction="$ctrl.back()"
           offsetcols="3" sizecols="8">
         </formbuttons>

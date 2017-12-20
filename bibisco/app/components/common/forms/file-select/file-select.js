@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('fileselect', {
-    templateUrl: 'components/file-select/file-select.html',
+    templateUrl: 'components/common/forms/file-select/file-select.html',
     controller: FileSelectController,
     bindings: {
       filefilter: '<',

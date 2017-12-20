@@ -48,6 +48,6 @@ function LocationAddImageController($location, $rootScope, $routeParams,
   };
 
   self.save = function(name, path) {
-    alert('Name: ' + name);
+    alert('Name: ' + name + ' path: ' + path);
   };
 }
