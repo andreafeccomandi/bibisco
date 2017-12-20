@@ -24,6 +24,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   var zip = remote.getGlobal('zip');
 
   return {
+    basename: function(filepath) {
+      return path.basename(filepath);
+    },
     concatPath: function(a, b) {
       return path.join(a, b);
     },
@@ -45,11 +48,17 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       }
       return result;
     },
+    dirname: function (filepath) {
+      return path.dirname(filepath);
+    },
     deleteDirectory: function(path) {
       fs.removeSync(path);
     },
     exists: function(path) {
       return fs.existsSync(path);
+    },
+    extname: function (filepath) {
+      return path.extname(filepath);
     },
     getFilesInDirectory: function(path) {
       return fs.readdirSync(path);

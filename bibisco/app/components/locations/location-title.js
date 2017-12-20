@@ -93,7 +93,7 @@ function LocationTitleController($location, $rootScope, $routeParams,
           description: '',
           location: self.location,
           nation: self.nation,
-          state: self.state
+          state: self.state,
         });
       }
       $location.path(self.exitpath);

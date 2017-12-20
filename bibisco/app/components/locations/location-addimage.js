@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationAddImageController($location, $rootScope, $routeParams,
-  LocationService) {
+  ImageService, LocationService) {
 
   var self = this;
 
@@ -48,6 +48,7 @@ function LocationAddImageController($location, $rootScope, $routeParams,
   };
 
   self.save = function(name, path) {
-    alert('Name: ' + name + ' path: ' + path);
+    let imagefilename = ImageService.addImageToProject(path);
+    LocationService.addImage($routeParams.id, name, imagefilename);
   };
 }

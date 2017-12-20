@@ -30,6 +30,16 @@ angular.module('bibiscoApp').service('LocationService', function(
     'city');
 
   return {
+    addImage: function(id, name, filename) {
+      let location = this.getLocation(id);
+      let images = location.images;
+      images.push({
+        name: name,
+        filename: filename
+      });
+      location.images = images;
+      CollectionUtilService.update(collection, location);
+    },
     calculateLocationName: function(location) {
       let useComma = false;
       let name = location.location;
@@ -114,6 +124,8 @@ angular.module('bibiscoApp').service('LocationService', function(
       return usedstates;
     },
     insert: function(location) {
+      let images = [];
+      location.images = images;
       CollectionUtilService.insert(collection, location);
     },
     move: function(sourceId, targetId) {

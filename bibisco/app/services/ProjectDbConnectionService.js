@@ -48,6 +48,11 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
     },
     getProjectDb: function() {
       return projectdb;
-    }
+    },
+    getProjectPath: function () {
+      let projectsDirectoryPath = BibiscoPropertiesService.getProperty(
+        'projectsDirectory');
+      return FileSystemService.concatPath(projectsDirectoryPath, projectId);
+    },
   };
 });
