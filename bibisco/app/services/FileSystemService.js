@@ -48,11 +48,14 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       }
       return result;
     },
-    dirname: function (filepath) {
-      return path.dirname(filepath);
-    },
     deleteDirectory: function(path) {
       fs.removeSync(path);
+    },
+    deleteFile: function(path) {
+      fs.unlinkSync(path);
+    },
+    dirname: function (filepath) {
+      return path.dirname(filepath);
     },
     exists: function(path) {
       return fs.existsSync(path);
