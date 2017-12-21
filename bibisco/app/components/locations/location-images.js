@@ -40,12 +40,14 @@ function ImagesViewerController($location, $rootScope, $routeParams,
       label: 'jsp.projectFromScene.select.location.images'
     });
 
+    self.images = location.images;
     self.lastsave = location.lastsave;
     self.pageheadertitle = locationName;
   };
 
-  self.delete = function(id) {
-    
+  self.delete = function(filename) {
+    let location = LocationService.deleteImage($routeParams.id, filename);
+    self.images = location.images;
   };
 
   self.insert = function() {

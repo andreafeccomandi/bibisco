@@ -35,6 +35,11 @@ angular.module('bibiscoApp').service('ImageService', function (BibiscoProperties
       return newfilename;
     },
 
+    deleteImage: function (filename) {
+      let imagepath = FileSystemService.concatPath(this.getProjectImagesDirectoryPath(), filename);
+      FileSystemService.deleteFile(imagepath);
+    },
+
     getProjectImagesDirectoryPath: function() {
       let projectId = ProjectService.getProjectInfo().id;
       let projectPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
@@ -42,6 +47,10 @@ angular.module('bibiscoApp').service('ImageService', function (BibiscoProperties
       let projectImagesDirectoryPath = FileSystemService.concatPath(projectPath, 'images');
 
       return projectImagesDirectoryPath;
+    },
+
+    getImageFullPath: function (filename) {
+      return FileSystemService.concatPath(this.getProjectImagesDirectoryPath(), filename);
     }
   };
 });

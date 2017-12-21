@@ -147,6 +147,11 @@ h6, label, th, td, p {
 	width: 100%;
 }
 
+/* IMAGES VIEWER */
+.image-viewer-image {
+	max-height: 450px;
+}
+
 @media (max-width: 1199px) {
 	.richtexteditor-contenteditable-container {
 		height: calc(100% - 70px);

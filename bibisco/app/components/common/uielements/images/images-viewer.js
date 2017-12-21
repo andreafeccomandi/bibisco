@@ -28,7 +28,7 @@ angular.
     }
   });
 
-function ImagesViewerController($rootScope) {
+function ImagesViewerController($rootScope, FileSystemService, ImageService) {
 
   var self = this;
 
@@ -38,7 +38,7 @@ function ImagesViewerController($rootScope) {
     $rootScope.$emit('SHOW_ELEMENT_IMAGES');
   };
 
-  self.addImage = function() {
-    self.insertfunction();
+  self.fullpath = function(filename) {
+    return ImageService.getImageFullPath(filename);
   };
 }
