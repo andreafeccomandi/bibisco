@@ -11,7 +11,9 @@
     </ui-select>
     <hr>
     <div>
-      <projectexplorersimpletext ng-if="$ctrl.type == 'simpletext'" text="$ctrl.text">
+      <projectexplorersimpletext ng-if="$ctrl.type == 'simpletext'" 
+        images="$ctrl.images"
+        text="$ctrl.text">
       </projectexplorersimpletext>
       <projectexplorerstrands ng-if="$ctrl.type == 'strands'" strands="$ctrl.strands">
       </projectexplorerstrands>

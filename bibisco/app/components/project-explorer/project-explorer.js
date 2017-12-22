@@ -53,6 +53,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
     self.type;
     self.text;
+    self.images;
     self.selectedItem;
     self.items = [];
     self.emptytext = '<i>' + self.translations.common_empty_section + '</i>'; 
@@ -180,16 +181,19 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showPremise = function() {
     self.text = ArchitectureService.getPremise().text;
+    self.images = null;
     self.type = 'simpletext';
   };
 
   self.showFabula = function () {
     self.text = ArchitectureService.getFabula().text;
+    self.images = null;
     self.type = 'simpletext';
   };
 
   self.showSetting = function () {
     self.text = ArchitectureService.getSetting().text;
+    self.images = null;
     self.type = 'simpletext';
   };
 
@@ -205,11 +209,14 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showSecondaryCharacter = function(id) {
     self.text = SecondaryCharacterService.getSecondaryCharacter(id).description;
+    self.images = null;
     self.type = 'simpletext';
   };
 
   self.showLocation = function(id) {
-    self.text = LocationService.getLocation(id).description;
+    let location = LocationService.getLocation(id);
+    self.text = location.description;
+    self.images = location.images;
     self.type = 'simpletext';
   };
 

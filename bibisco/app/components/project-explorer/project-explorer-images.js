@@ -14,16 +14,15 @@
  */
 angular.
   module('bibiscoApp').
-  component('projectexplorersimpletext', {
-    templateUrl: 'components/project-explorer/project-explorer-simple-text.html',
-    controller: ProjectExplorerSimpleTextController,
+  component('projectexplorerimages', {
+    templateUrl: 'components/project-explorer/project-explorer-images.html',
+    controller: ProjectExplorerImagesController,
     bindings: {
-      images: '<',
-      text: '<'
+      images: '<'
     }
   });
 
-function ProjectExplorerSimpleTextController(ImageService) {
+function ProjectExplorerImagesController(ImageService) {
 
   var self = this;
 

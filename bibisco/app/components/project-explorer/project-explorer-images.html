@@ -1,0 +1,6 @@
+<div ng-if="$ctrl.images && $ctrl.images.length > 0"
+    ng-repeat="image in $ctrl.images track by image.name">
+    <h5>{{image.name}}</h5>
+    <img class="img-responsive center-block project-explorer-image" 
+        src="{{$ctrl.fullpath(image.filename)}}" />
+</div>

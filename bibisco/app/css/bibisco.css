@@ -111,6 +111,11 @@ h6, label, th, td, p {
   text-overflow: ellipsis;
 }
 
+.project-explorer-image {
+	max-height: 400px;
+	margin-bottom: 25px;
+}
+
 /* RICH TEXT VIEWER */
 .richtextviewer-container {
 	height: calc(100% - 40px);
@@ -149,7 +154,7 @@ h6, label, th, td, p {
 
 /* IMAGES VIEWER */
 .image-viewer-image {
-	max-height: 450px;
+	max-height: 500px;
 }
 
 @media (max-width: 1199px) {
