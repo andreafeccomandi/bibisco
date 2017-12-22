@@ -29,6 +29,7 @@ angular.
       savedcontent: '=',
       savedwords: '=',
       savefunction: '&',
+      showprojectexplorer: '=',
       words: '='
     }
   });
@@ -54,6 +55,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
 
   self.enableeditmode = function () {
     self.editmode = true;
+    self.showprojectexplorer = false;
   };
 
   self.back = function () {
@@ -64,6 +66,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
       //  back to view mode
       self.editmode = false;
       self.dirty = false;
+      self.showprojectexplorer = false;
     } else {
       // back to previous page
       self.backfunction();
