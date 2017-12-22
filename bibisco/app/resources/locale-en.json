@@ -268,7 +268,7 @@
   "jsp.sceneTitle.form.title": "Scene title",
   "revision_confirm_delete_revision": "Do you really want to delete the current version?",
   "revision_confirm_new_revision_from_actual": "Do you want to create a new version starting from the current one?",
-  "jsp.scene.button.viewProjectFromScene": "view characters, locations, architecture of the novel, and chapters youʼve already written",
+  "jsp.scene.button.viewProjectFromScene": "view characters, locations, architecture of the novel and chapters youʼve already written",
   "jsp.scene.projectFromScene.dialog.title": "Architecture, characters, locations, chapters",
   "jsp.characters.h1.main": "Main characters",
   "jsp.characters.h1.small.main": "each main character has a conflict, driving force of the plot",
