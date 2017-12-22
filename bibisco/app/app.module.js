@@ -97,7 +97,10 @@ angular.module('bibiscoApp', ['ngRoute',
           template: '<maincharacterinfowithquestion></maincharacterinfowithquestion>'
         }).
         when('/maincharacters/:id/images', {
-          template: '<maincharactersimages></maincharactersimages>'
+          template: '<maincharacterimages></maincharacterimages>'
+        }).
+        when('/maincharacters/:id/images/new', {
+          template: '<maincharacteraddimage></maincharacteraddimage>'
         }).
         when('/maincharacters/:id/title', {
           template: '<maincharactertitle></maincharactertitle>'
@@ -115,7 +118,10 @@ angular.module('bibiscoApp', ['ngRoute',
           template: '<secondarycharacterdetail></secondarycharacterdetail>'
         }).
         when('/secondarycharacters/:id/images', {
-          template: '<secondarycharactersimages></secondarycharactersimages>'
+          template: '<secondarycharacterimages></secondarycharacterimages>'
+        }).
+        when('/secondarycharacters/:id/images/new', {
+          template: '<secondarycharacteraddimage></secondarycharacteraddimage>'
         }).
         when('/secondarycharacters/:id/title', {
           template: '<secondarycharactertitle></secondarycharactertitle>'

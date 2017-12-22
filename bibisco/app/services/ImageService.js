@@ -37,7 +37,11 @@ angular.module('bibiscoApp').service('ImageService', function (BibiscoProperties
 
     deleteImage: function (filename) {
       let imagepath = FileSystemService.concatPath(this.getProjectImagesDirectoryPath(), filename);
-      FileSystemService.deleteFile(imagepath);
+      try {
+        FileSystemService.deleteFile(imagepath);
+      } catch(error) {
+        LoggerService.error('Error deleting filename: ' + error);
+      }
     },
 
     getProjectImagesDirectoryPath: function() {

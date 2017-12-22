@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('MainCharacterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
 
@@ -24,6 +24,20 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     collection, 'all_maincharacters');
 
   return {
+    addImage: function (id, name, path) {
+      let filename = ImageService.addImageToProject(path);
+      LoggerService.info('Added image file: ' + filename + ' for element with $loki='
+        + id + ' in maincharacters');
+
+      let maincharacter = this.getMainCharacter(id);
+      let images = maincharacter.images;
+      images.push({
+        name: name,
+        filename: filename
+      });
+      maincharacter.images = images;
+      CollectionUtilService.update(collection, maincharacter);
+    },
     calculateStatus: function (maincharacter) {
       let result;
 
@@ -54,6 +68,29 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       }
 
       return result;
+    },
+    deleteImage: function (id, filename) {
+
+      // delete image file
+      ImageService.deleteImage(filename);
+      LoggerService.info('Deleted image file: ' + filename + ' for element with $loki='
+        + id + ' in maincharacters');
+
+      // delete reference
+      let maincharacter = this.getMainCharacter(id);
+      let images = maincharacter.images;
+      let imageToRemovePosition;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i].filename === filename) {
+          imageToRemovePosition = i;
+          break;
+        }
+      }
+      images.splice(imageToRemovePosition, 1);
+      maincharacter.images = images;
+      CollectionUtilService.update(collection, maincharacter);
+
+      return maincharacter;
     },
     getMainCharacter: function(id) {
       return collection.get(id);
@@ -92,6 +129,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
 
       // evolutionduringthestory
       maincharacter.evolutionduringthestory = this.createInfoWithoutQuestions();
+
+      // images
+      let images = [];
+      maincharacter.images = images;
 
       // insert character
       maincharacter = CollectionUtilService.insert(collection, maincharacter);

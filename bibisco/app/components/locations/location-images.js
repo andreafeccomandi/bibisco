@@ -16,10 +16,10 @@ angular.
   module('bibiscoApp').
   component('locationimages', {
     templateUrl: 'components/locations/location-images.html',
-    controller: ImagesViewerController
+    controller: LocationImagesController
   });
 
-function ImagesViewerController($location, $rootScope, $routeParams,
+function LocationImagesController($location, $rootScope, $routeParams,
   LocationService) {
 
   var self = this;

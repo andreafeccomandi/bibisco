@@ -208,8 +208,9 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
   };
 
   self.showSecondaryCharacter = function(id) {
-    self.text = SecondaryCharacterService.getSecondaryCharacter(id).description;
-    self.images = null;
+    let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(id);
+    self.text = secondarycharacter.description;
+    self.images = secondarycharacter.images;
     self.type = 'simpletext';
   };
 

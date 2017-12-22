@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('SecondaryCharacterService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
 
@@ -24,6 +24,43 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
     collection, 'all_secondarycharacters');
 
   return {
+    addImage: function (id, name, path) {
+      let filename = ImageService.addImageToProject(path);
+      LoggerService.info('Added image file: ' + filename + ' for element with $loki='
+        + id + ' in secondarycharacters');
+
+      let secondarycharacter = this.getSecondaryCharacter(id);
+      let images = secondarycharacter.images;
+      images.push({
+        name: name,
+        filename: filename
+      });
+      secondarycharacter.images = images;
+      CollectionUtilService.update(collection, secondarycharacter);
+    },
+    deleteImage: function (id, filename) {
+
+      // delete image file
+      ImageService.deleteImage(filename);
+      LoggerService.info('Deleted image file: ' + filename + ' for element with $loki='
+        + id + ' in secondarycharacters');
+
+      // delete reference
+      let secondarycharacter = this.getSecondaryCharacter(id);
+      let images = secondarycharacter.images;
+      let imageToRemovePosition;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i].filename === filename) {
+          imageToRemovePosition = i;
+          break;
+        }
+      }
+      images.splice(imageToRemovePosition, 1);
+      secondarycharacter.images = images;
+      CollectionUtilService.update(collection, secondarycharacter);
+
+      return secondarycharacter;
+    },
     getSecondaryCharacter: function(id) {
       return collection.get(id);
     },
@@ -34,6 +71,8 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       return dynamicView.data();
     },
     insert: function(secondarycharacter) {
+      let images = [];
+      secondarycharacter.images = images;
       CollectionUtilService.insert(collection, secondarycharacter);
     },
     move: function(sourceId, targetId) {

@@ -14,39 +14,38 @@
  */
 angular.
   module('bibiscoApp').
-  component('locationaddimage', {
-    templateUrl: 'components/locations/location-addimage.html',
-    controller: LocationAddImageController
+  component('secondarycharacteraddimage', {
+    templateUrl: 'components/characters/secondary-character-addimage.html',
+    controller: SecondaryCharacterAddImageController
   });
 
-function LocationAddImageController($routeParams, LocationService) {
+function SecondaryCharacterAddImageController($routeParams, SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let location = LocationService.getLocation($routeParams.id);
-    let locationName = LocationService.calculateLocationName(location);
+    let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter($routeParams.id);
 
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_locations'
+      label: 'common_characters'
     });
     self.breadcrumbitems.push({
-      label: locationName
+      label: secondaryCharacter.name
     });
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images'
+      label: 'common_characters_images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'
     });
 
-    self.exitpath = '/locations/' + $routeParams.id + '/images';
+    self.exitpath = '/secondarycharacters/' + $routeParams.id + '/images';
   };
 
   self.save = function(name, path) {
-    LocationService.addImage($routeParams.id, name, path);
+    SecondaryCharacterService.addImage($routeParams.id, name, path);
   };
 }

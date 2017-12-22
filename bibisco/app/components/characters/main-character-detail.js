@@ -79,8 +79,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.showimagesfunction = function() {
-    alert('Qui si visualizzeranno le immagini per id=' + self.maincharacter
-      .$loki);
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images');
   };
 
   self.showInfoWithQuestion = function(id) {

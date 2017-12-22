@@ -67,7 +67,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.showimagesfunction = function() {
-    alert('Qui si visualizzeranno le immagini per id=' + self.secondarycharacter
-      .$loki);
+    $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/images');
   };
 }

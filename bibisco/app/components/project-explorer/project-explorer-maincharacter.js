@@ -27,5 +27,6 @@ function ProjectExplorerMainCharacterController() {
   var self = this;
 
   self.$onInit = function () {
+    self.images = self.maincharacter.images;
   };
 }
