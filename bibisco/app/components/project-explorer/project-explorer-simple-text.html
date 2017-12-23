@@ -1,4 +1,4 @@
 <div ng-if="$ctrl.text" ng-bind-html="$ctrl.text" class="bibiscoNotSelectableText"></div>
 <div ng-if="!$ctrl.text"><i class="bibiscoNotSelectableText">{{ 'common_empty_section' | translate}}</i></div>
-<hr>
+<hr ng-if="$ctrl.images">
 <projectexplorerimages images="$ctrl.images"></projectexplorerimages>
