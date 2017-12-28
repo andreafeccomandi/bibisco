@@ -1,0 +1,22 @@
+<div class="panel panel-default analysis-items-distribution">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$ctrl.title | translate}}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-responsive table-condensed table-striped table-bordered analysis-items-table"
+      style="width: {{$ctrl.tablewidth}}px;">
+      <tbody>
+        <tr>
+          <th></th>
+          <th ng-repeat="chapter in $ctrl.chapters">{{chapter}}</th>
+        </tr>
+        <tr ng-repeat="item in $ctrl.items" ng-init="itemindex = $index">
+          <td>{{item.label}}</td>
+          <td ng-repeat="presence in item.presence track by $index"
+              ng-class="{ 'analysis-items-row-{{itemindex}}' : presence === 1 }">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

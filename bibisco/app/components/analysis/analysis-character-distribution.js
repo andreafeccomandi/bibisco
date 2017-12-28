@@ -16,10 +16,7 @@ angular.
   module('bibiscoApp').
   component('analysischaracterdistribution', {
     templateUrl: 'components/analysis/analysis-character-distribution.html',
-    controller: AnalysisCharacterDistributionController,
-    bindings: {
-
-    }
+    controller: AnalysisCharacterDistributionController
   });
 
 function AnalysisCharacterDistributionController() {
@@ -27,15 +24,7 @@ function AnalysisCharacterDistributionController() {
   var self = this;
 
   self.$onInit = function () {
-    let chapterscount = 60;
-
-    self.tablewidth = chapterscount*20+200;
-
-    self.chapters = [];
-    for (let i = 1; i <= chapterscount; i++) {
-      self.chapters.push(i);
-    }
-
+    self.chapterscount = 60;
 
     self.items = [
       {
