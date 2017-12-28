@@ -18,9 +18,9 @@ angular.
     templateUrl: 'components/analysis/items-chapters-distribution.html',
     controller: ItemsChaptersDistributionController,
     bindings: {
+      analysistitle: '@',
       chapterscount: '<',
-      items: '<',
-      title: '@'
+      items: '<'
     }
   });
 
