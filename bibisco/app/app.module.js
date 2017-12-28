@@ -16,6 +16,7 @@
 // Define the 'bibisco' module
 angular.module('bibiscoApp', ['ngRoute',
   'cfp.hotkeys',
+  'chart.js',
   'focus-if',
   'mwl.confirm',
   'ngSanitize',
