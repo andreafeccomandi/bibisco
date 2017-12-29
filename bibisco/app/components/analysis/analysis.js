@@ -16,10 +16,7 @@ angular.
   module('bibiscoApp').
   component('analysis', {
     templateUrl: 'components/analysis/analysis.html',
-    controller: AnalysisController,
-    bindings: {
-
-    }
+    controller: AnalysisController
   });
 
 function AnalysisController() {
@@ -27,6 +24,5 @@ function AnalysisController() {
   var self = this;
 
   self.$onInit = function () {
-    alert('Init AnalysisController');
   };
 }
