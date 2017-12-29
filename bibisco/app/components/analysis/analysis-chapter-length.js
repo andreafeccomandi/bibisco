@@ -16,13 +16,13 @@ angular.
   module('bibiscoApp').
   component('analysischapterlength', {
     templateUrl: 'components/analysis/analysis-chapter-length.html',
-    controller: AnalysisChapterLengthController,
+    controller: AnalysisController,
     bindings: {
 
     }
   });
 
-function AnalysisChapterLengthController() {
+function AnalysisController() {
 
   var self = this;
 
