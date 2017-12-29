@@ -638,7 +638,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Êtes-vous certain de vouloir fermer bibisco ?",
   "jsp.menu.analysis": "analyse",
   "jsp.analysis.h1": "Analyse",
-  "jsp.analysis.a.readme": "&nbsp;note importante",
+  "jsp.analysis.a.readme": "note importante",
   "jsp.analysis.importantNote.alert.text": "Pour obtenir des données dʼanalyse complètes, vous devez compléter la section des étiquettes pour la scène. Les étiquettes regroupent les informations relatives aux personnages, au lieu et à lʼépoque de la scène ainsi que les points de vue narratifs et les fils narratifs auxquels appartient la scène.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Longueur du chapitre",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Vérifier la longueur du chapitre.",

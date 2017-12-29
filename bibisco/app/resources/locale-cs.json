@@ -629,7 +629,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Jste si jistý že chcete zavřít bibisco?",
   "jsp.menu.analysis": "analýza",
   "jsp.analysis.h1": "Analýza",
-  "jsp.analysis.a.readme": "&nbsp;důležitá poznámka",
+  "jsp.analysis.a.readme": "důležitá poznámka",
   "jsp.analysis.importantNote.alert.text": "Aby bylo možné analyzovat data úplně, musíte vytvořit oddílové scény. Oddílová scéna shromažďuje informace týkající se přítomné v scény, místo a čas scény, příběhový úhel pohledu, a příběhové vlákna které patří ke scéně.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Délka kapitoly",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Zkontrolujte délku kapitoly.",

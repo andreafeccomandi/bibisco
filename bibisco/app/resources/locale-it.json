@@ -645,7 +645,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Sei sicuro di volere uscire da bibisco?",
   "jsp.menu.analysis": "analisi",
   "jsp.analysis.h1": "Analisi",
-  "jsp.analysis.a.readme": "&nbsp;nota importante",
+  "jsp.analysis.a.readme": "nota importante",
   "jsp.analysis.importantNote.alert.text": "<p>Perchè i dati di analisi siano completi, è necessario <em>per ogni scena</em> compilare <strong>la sezione etichette.</strong></p><p> Nella sezione etichette sono raccolte le informazioni relative ai personaggi presenti nella scena, il luogo e il momento in cui si svolge, il punto di vista da cui è raccontata e le linee narrative a cui appartiene.</p>",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Lunghezza capitoli",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Lunghezza dei capitoli.",

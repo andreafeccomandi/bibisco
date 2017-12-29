@@ -661,7 +661,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Are you sure you want to close bibisco?",
   "jsp.menu.analysis": "analysis",
   "jsp.analysis.h1": "Analysis",
-  "jsp.analysis.a.readme": "&nbsp;important note",
+  "jsp.analysis.a.readme": "important note",
   "jsp.analysis.importantNote.alert.text": "In order to be able to analyse the data completely, you must create the sceneʼs tags section. The tags section collects information related to characters present in the scene, location and time of the scene, narrative point of view, and narrative strands to which the scene belongs.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Chapters length",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Check out chapters length.",

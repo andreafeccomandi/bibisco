@@ -638,7 +638,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "¿Seguro de que quieres cerrar bibisco?",
   "jsp.menu.analysis": "análisis",
   "jsp.analysis.h1": "Análisis",
-  "jsp.analysis.a.readme": "&nbsp;nota importante",
+  "jsp.analysis.a.readme": "nota importante",
   "jsp.analysis.importantNote.alert.text": "<p>Para poder realizar un análisis completo de los datos, debes elaborar las etiquetas de las escenas. Las sección de etiquetas recopila información relativa a los personajes presentes en la escena, lugar, tiempo de la escena, punto de vista narrativo y los hilos narrativos con los que esta relacionada.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Longitud de los capítulos",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Echa un vistazo a la longitud de los capítulos",

@@ -630,7 +630,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Czy jesteś pewny, że chcesz zamknąć bibisco?",
   "jsp.menu.analysis": "analiza",
   "jsp.analysis.h1": "Analiza",
-  "jsp.analysis.a.readme": "&nbsp;ważna uwaga",
+  "jsp.analysis.a.readme": "ważna uwaga",
   "jsp.analysis.importantNote.alert.text": "W celu uzyskania pełnych danych analizy, musisz zwrócić się do sekcji tagów sceny. Sekcja tagów zbiera informacje dotyczące bohaterów występujących w scenie, miejsca i czasu, punktu widzenia narracji i należących do niej nici narracji.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Długość rozdziałów",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Sprawdź długość rozdziałów",

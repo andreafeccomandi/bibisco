@@ -631,7 +631,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Bist Du sicher, dass Du bibisco schließen willst?",
   "jsp.menu.analysis": "Analyse",
   "jsp.analysis.h1": "Analyse",
-  "jsp.analysis.a.readme": "&nbsp;Wichtiger Hinweis",
+  "jsp.analysis.a.readme": "Wichtiger Hinweis",
   "jsp.analysis.importantNote.alert.text": "Um eine vollständige Analyse der Daten durchzuführen, musst Du den Stichwortbereich für die Szene anlegen. Der Stichwortbereich der Szenen sammelt Informationen über in der Szene auftretende Charaktere, Schauplatz und Zeit der Szene, Erzählperspektive und Erzählstränge, zu denen die Szene gehört.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Länge der Kapitel",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Die Länge der Kapitel überprüfen.",

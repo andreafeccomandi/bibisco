@@ -629,7 +629,7 @@
   "com.bibisco.rcp.preShutdown.confirm.question": "Você tem certeza que quer fechar o bibisco?",
   "jsp.menu.analysis": "análise",
   "jsp.analysis.h1": "Análise",
-  "jsp.analysis.a.readme": "&nbsp;importar anotação",
+  "jsp.analysis.a.readme": "importar anotação",
   "jsp.analysis.importantNote.alert.text": "Para conseguir analisar os dados completamente, você precisa criar a seção de marcadores das cenas. A seção de marcadores coleta as informações relacionadas aos personagens presentes na cena, local e tempo da cena, ponto de vista narrativo, e fios narrativos aos quais a cena pertence.",
   "jsp.analysis.thumbnail.analysisWordCountChapters.title": "Tamanho dos capítulos",
   "jsp.analysis.thumbnail.analysisWordCountChapters.description": "Verifique o tamanho dos capítulos.",
