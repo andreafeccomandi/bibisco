@@ -20,7 +20,8 @@ angular.
     bindings: {
       analysistitle: '@',
       chapterscount: '<',
-      items: '<'
+      items: '<',
+      noitemsmessage: '@'
     }
   });
 

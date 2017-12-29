@@ -3,7 +3,8 @@
     <h3 class="panel-title">{{$ctrl.analysistitle | translate}}</h3>
   </div>
   <div class="panel-body">
-    <table class="table table-responsive table-condensed table-striped table-bordered analysis-items-table"
+    <table ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0"
+      class="table table-responsive table-condensed table-striped table-bordered analysis-items-table"
       style="width: {{$ctrl.tablewidth}}px;">
       <tbody>
         <tr>
@@ -18,5 +19,11 @@
         </tr>
       </tbody>
     </table>
+    <p ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length == 0">
+      <i>{{$ctrl.noitemsmessage | translate}}</i>
+    </p>
+    <p ng-if="$ctrl.chapterscount == 0">
+      <i>{{'jsp.analysisItemsChapters.em.noChapters' | translate}}</i>
+    </p>
   </div>
 </div>
