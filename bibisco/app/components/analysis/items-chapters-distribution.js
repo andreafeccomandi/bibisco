@@ -31,7 +31,7 @@ function ItemsChaptersDistributionController() {
 
   self.$onInit = function () {
   
-    self.tablewidth = self.chapterscount*20+200;
+    self.tablewidth = self.chapterscount*20+350;
 
     self.chapters = [];
     for (let i = 1; i <= self.chapterscount; i++) {
