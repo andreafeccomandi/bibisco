@@ -19,10 +19,10 @@
         <button ng-repeat="pov in $ctrl.povs" type="button"
           ng-class="{ 'btn-info': pov.selected }"
           class="btn btn-sm scene-tags-button"
-          uib-popover="{{'jsp.scene.button.pointOfView.'+pov.id+'.popover' | translate}}"
+          uib-popover="{{'common_pointOfView_'+pov.id+'.popover' | translate}}"
           popover-placement="bottom" popover-trigger="'mouseenter'"
           ng-click="$ctrl.togglePov(pov.id)">
-          {{'jsp.scene.button.pointOfView.'+pov.id | translate}}
+          {{'common_pointOfView_'+pov.id | translate}}
       </div>
     </div>
     <div class="row scene-tags-section-subtitle" ng-if="$ctrl.showpovcharacter">

@@ -13,13 +13,24 @@
  *
  */
 
-angular.module('bibiscoApp').service('AnalysisService', function(
+angular.module('bibiscoApp').service('AnalysisService', function ($translate,
   ChapterService, LocationService, MainCharacterService, 
   SecondaryCharacterService, StrandService
 ) {
   'use strict';
 
+  // load translations
+  let translations = $translate.instant([
+    'common_pointOfView_1stOnMajor',
+    'common_pointOfView_1stOnMinor',
+    'common_pointOfView_3rdLimited',
+    'common_pointOfView_3rdOmniscient',
+    'common_pointOfView_3rdObjective',
+    'common_pointOfView_2nd'
+  ]);
+
   return {
+
     getCharacterChapterDistribution: function() {
       
       let chapterscount = 0;
@@ -177,6 +188,100 @@ angular.module('bibiscoApp').service('AnalysisService', function(
       for (let i = 0; i < scenes.length; i++) {
         let scenestrands = scenes[i].revisions[scenes[i].revision].scenestrands;
         if (scenestrands.indexOf(strandId) > -1) {
+          presence = 1;
+          break;
+        }
+      }
+
+      return presence;
+    },
+
+    getPointOfViewChapterDistribution: function () {
+
+      let chapterscount = 0;
+      let items = [];
+
+      let chapters = ChapterService.getChapters();
+
+      if (chapters && chapters.length > 0) {
+        let povs = this.getPointOfViews();
+        chapterscount = chapters.length;
+
+        for (let i = 0; i < povs.length; i++) {
+          let presence = [];
+          let isPresent = false;
+          for (let j = 0; j < chapters.length; j++) {
+            let isPovInChapter = this.isPointOfViewInChapter(povs[i], chapters[j].$loki);
+            if (isPovInChapter) {
+              isPresent = true;
+            }
+            presence.push(isPovInChapter);
+          }
+
+          // add pov only if at least is present in one scene
+          if (isPresent) {
+            let item = {
+              label: povs[i].label,
+              presence: presence
+            };
+            items.push(item);
+          }
+        }
+      }
+
+      return {
+        chapterscount: chapterscount,
+        items: items
+      };
+    },
+
+    getPointOfViews: function() {
+      let povs = [];
+
+      let characters = this.getCharacters();
+      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMajor', true, characters));
+      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMinor', true, characters));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdLimited', true, characters));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdOmniscient', false, characters));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdObjective', false, characters)); 
+      povs.push.apply(povs, this.createEntriesForPointOfView('2nd', false, characters));
+
+      return povs;
+    },
+
+    createEntriesForPointOfView: function(povid, dependOnCharacter, characters) {
+
+      let entries = [];
+
+      let povname = translations['common_pointOfView_' + povid];
+      if (dependOnCharacter) {
+        for (let i = 0; i < characters.length; i++) {
+          entries.push({
+            id: povid,
+            characterid: characters[i].id,
+            label: povname + ': ' + characters[i].name
+          });
+          
+        }
+      } else {
+        entries.push({
+          id: povid,
+          characterid: null,
+          label: povname
+        });
+      }
+
+      return entries;
+    },
+
+    isPointOfViewInChapter: function (pov, chapterId) {
+      let presence = 0;
+      let scenes = ChapterService.getScenes(chapterId);
+      for (let i = 0; i < scenes.length; i++) {
+        let id = scenes[i].revisions[scenes[i].revision].povid;
+        let characterid = scenes[i].revisions[scenes[i].revision].povcharacterid;
+        
+        if (pov.id === id && pov.characterid === characterid) {
           presence = 1;
           break;
         }
