@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('AnalysisService', function(
-  ChapterService, LocationService, MainCharacterService, SecondaryCharacterService
+  ChapterService, LocationService, MainCharacterService, 
+  SecondaryCharacterService, StrandService
 ) {
   'use strict';
 
@@ -131,6 +132,51 @@ angular.module('bibiscoApp').service('AnalysisService', function(
       for (let i = 0; i < scenes.length; i++) {
         let sceneLocationId = scenes[i].revisions[scenes[i].revision].locationid;
         if (sceneLocationId === locationId) {
+          presence = 1;
+          break;
+        }
+      }
+
+      return presence;
+    },
+
+    getStrandChapterDistribution: function () {
+
+      let chapterscount = 0;
+      let items = [];
+
+      let chapters = ChapterService.getChapters();
+
+      if (chapters && chapters.length > 0) {
+        let strands = StrandService.getStrands();
+        chapterscount = chapters.length;
+
+        for (let i = 0; i < strands.length; i++) {
+          let presence = [];
+          for (let j = 0; j < chapters.length; j++) {
+            let isStrandInChapter = this.isStrandInChapter(strands[i].$loki, chapters[j].$loki);
+            presence.push(isStrandInChapter);
+          }
+          let item = {
+            label: strands[i].name,
+            presence: presence
+          };
+          items.push(item);
+        }
+      }
+
+      return {
+        chapterscount: chapterscount,
+        items: items
+      };
+    },
+
+    isStrandInChapter: function (strandId, chapterId) {
+      let presence = 0;
+      let scenes = ChapterService.getScenes(chapterId);
+      for (let i = 0; i < scenes.length; i++) {
+        let scenestrands = scenes[i].revisions[scenes[i].revision].scenestrands;
+        if (scenestrands.indexOf(strandId) > -1) {
           presence = 1;
           break;
         }
