@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('AnalysisService', function(
-  ChapterService, MainCharacterService, SecondaryCharacterService
+  ChapterService, LocationService, MainCharacterService, SecondaryCharacterService
 ) {
   'use strict';
 
@@ -92,7 +92,52 @@ angular.module('bibiscoApp').service('AnalysisService', function(
       }
 
       return presence;
-    }
+    },
+
+    getLocationChapterDistribution: function () {
+
+      let chapterscount = 0;
+      let items = [];
+
+      let chapters = ChapterService.getChapters();
+
+      if (chapters && chapters.length > 0) {
+        let locations = LocationService.getLocations();
+        chapterscount = chapters.length;
+
+        for (let i = 0; i < locations.length; i++) {
+          let presence = [];
+          for (let j = 0; j < chapters.length; j++) {
+            let isLocationInChapter = this.isLocationInChapter(locations[i].$loki, chapters[j].$loki);
+            presence.push(isLocationInChapter);
+          }
+          let item = {
+            label: LocationService.calculateLocationName(locations[i]),
+            presence: presence
+          };
+          items.push(item);
+        }
+      }
+
+      return {
+        chapterscount: chapterscount,
+        items: items
+      };
+    },
+
+    isLocationInChapter: function (locationId, chapterId) {
+      let presence = 0;
+      let scenes = ChapterService.getScenes(chapterId);
+      for (let i = 0; i < scenes.length; i++) {
+        let sceneLocationId = scenes[i].revisions[scenes[i].revision].locationid;
+        if (sceneLocationId === locationId) {
+          presence = 1;
+          break;
+        }
+      }
+
+      return presence;
+    },
   };
 });
 
