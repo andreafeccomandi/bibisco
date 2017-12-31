@@ -1,0 +1,38 @@
+<div class="panel panel-default analysis-character-appearances">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'jsp.analysis.thumbnail.charactersScene.title' | translate}}</h3>
+  </div>
+  <div class="panel-body">
+    <div ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0">
+      <div ng-repeat="item in $ctrl.items">
+        <h5>{{item.label}}</h5>
+        <table ng-if="item.appearances.length > 0" 
+            class="table table-responsive table-condensed table-striped table-bordered">
+          <tr>
+            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.dateTime' | translate}}</th>
+            <th style="width: 40%">{{'jsp.analysisCharacterScene.th.location' | translate}}</th>
+            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.scene' | translate}}</th>
+            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.chapter' | translate}}</th>
+          </tr>
+          <tr  ng-repeat="appearance in item.appearances">
+            <td ng-if="appearance.time && appearance.timegregorian">{{'date_format_scene_tags' | translate:{date:appearance.time} }}{{$ctrl.calculateSceneYear(appearance.time)}} {{'time_format_scene_tags'| translate:{date:appearance.time} }}</td>
+            <td ng-if="appearance.time && !appearance.timegregorian">{{appearance.time}}</td>
+            <td ng-if="!appearance.time"></td>
+            <td>{{appearance.location}}</td>
+            <td>{{appearance.scenetitle}}</td>
+            <td>{{appearance.chaptertitle}}</td>
+          </tr>
+        </table>
+        <p ng-if="item.appearances.length == 0">
+          <i>{{'jsp.analysisCharacterScene.noInfoAvailable' | translate}}</i>
+        </p>
+      </div>
+    </div>
+    <p ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length == 0">
+      <i>{{'jsp.analysisItemsChapters.em.noItemAvailable.characters' | translate}}</i>
+    </p>
+    <p ng-if="$ctrl.chapterscount == 0">
+      <i>{{'jsp.analysisItemsChapters.em.noChapters' | translate}}</i>
+    </p>
+  </div>
+</div>

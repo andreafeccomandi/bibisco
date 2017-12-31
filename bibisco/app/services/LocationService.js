@@ -45,6 +45,11 @@ angular.module('bibiscoApp').service('LocationService', function(
       CollectionUtilService.update(collection, location);
     },
     calculateLocationName: function(location) {
+
+      if(!location) {
+        return '';
+      }
+
       let useComma = false;
       let name = location.location;
 
@@ -100,7 +105,11 @@ angular.module('bibiscoApp').service('LocationService', function(
       return location;
     },
     getLocation: function(id) {
-      return collection.get(id);
+      if (id) {
+        return collection.get(id);
+      } else {
+        return null;
+      }
     },
     getLocationsCount: function() {
       return collection.count();

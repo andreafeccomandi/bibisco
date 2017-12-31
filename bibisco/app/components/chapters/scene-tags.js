@@ -20,7 +20,7 @@ angular.
   });
 
 function SceneTagsController($location, $routeParams, $translate,
-  ChapterService, LocaleService, LocationService,
+  ChapterService, DatetimeService, LocaleService, LocationService,
   MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
 
   var self = this;
@@ -30,11 +30,6 @@ function SceneTagsController($location, $routeParams, $translate,
     let chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.scenerevision = self.scene.revisions[self.scene.revision];
-
-    // load translations
-    self.translations = $translate.instant([
-      'year_bc_scene_tags'
-    ]);
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({

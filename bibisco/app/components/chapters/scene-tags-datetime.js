@@ -25,17 +25,11 @@ angular.
     }
   });
 
-function SceneTagsDatetimeController($location, $translate,
-  LocaleService, UtilService) {
+function SceneTagsDatetimeController($location, DatetimeService, LocaleService) {
 
   var self = this;
 
   self.$onInit = function() {
-
-    // load translations
-    self.translations = $translate.instant([
-      'year_bc_scene_tags'
-    ]);
 
     // init date time
     self.originalscenetime = null;
@@ -65,18 +59,7 @@ function SceneTagsDatetimeController($location, $translate,
   };
 
   self.calculateSceneYear = function() {
-    let result = null;
-    if (self.scenetimeshowed) {
-      let year = self.scenetimeshowed.getUTCFullYear();
-      let bc = '';
-      if (year < 0) {
-        year = year * (-1);
-        bc = ' ' + self.translations.year_bc_scene_tags;
-      }
-      let yearAsPaddedString = UtilService.number.pad(year, 4);
-      result = yearAsPaddedString + bc;
-    }
-    return result;
+    return DatetimeService.calculateSceneYear(self.scenetimeshowed);
   };
 
   self.calendarToggled = function(open) {

@@ -289,6 +289,99 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
       return presence;
     },
+
+    getCharactersListOfAppearance: function() {
+
+      let chapterscount = 0;
+      let items = [];
+
+      let chapters = ChapterService.getChapters();
+
+      if (chapters && chapters.length > 0) {
+        chapterscount = chapters.length;
+        let characters = this.getCharacters();
+
+        for (let i = 0; i < characters.length; i++) {
+          let appearances = [];
+          for (let j = 0; j < chapters.length; j++) {
+            appearances.push.apply(appearances, this.getCharacterAppearencesInChapter(characters[i].id, chapters[j]));
+          }
+
+          // sort appearences by time, chapter position, scene position
+          appearances = this.sortAppearances(appearances);
+          
+          let item = {
+            label: characters[i].name,
+            appearances: appearances
+          };
+          items.push(item);
+        }
+      }
+
+      return {
+        chapterscount: chapterscount,
+        items: items
+      };
+    },
+
+    sortAppearances: function (appearances) {
+      appearances.sort(function (a, b) {
+        if (a.time > b.time) {
+          return 1;
+        } else if (a.time < b.time) {
+          return -1;
+        } else {
+          if (a.chapterposition > b.chapterposition) {
+            return 1;
+          } else if (a.chapterposition < b.chapterposition) {
+            return -1;
+          } else {
+            if (a.sceneposition > b.sceneposition) {
+              return 1;
+            } else if (a.sceneposition < b.sceneposition) {
+              return -1;
+            } else {
+              return 0;
+            }
+          }
+        }
+      });
+
+      return appearances;
+    },
+    
+    getCharacterAppearencesInChapter: function (characterId, chapter) {
+      
+      let appearances = [];
+      let scenes = ChapterService.getScenes(chapter.$loki);
+      for (let i = 0; i < scenes.length; i++) {
+        let scenecharacters = scenes[i].revisions[scenes[i].revision].scenecharacters;
+        if (scenecharacters.indexOf(characterId) > -1) {
+          let chapterposition = chapter.position;
+          let chaptertitle = '#' + chapter.position + ' ' + chapter.title;
+          let locationId = scenes[i].revisions[scenes[i].revision].locationid;
+          let sceneposition = scenes[i].position;
+          let scenetitle = scenes[i].title;
+          let time = scenes[i].revisions[scenes[i].revision].time;
+          let timegregorian = scenes[i].revisions[scenes[i].revision].timegregorian;
+          if (time && timegregorian) {
+            time = new Date(time);
+          } 
+
+          appearances.push({
+            chapterposition: chapterposition,
+            chaptertitle: chaptertitle,
+            location: LocationService.calculateLocationName(LocationService.getLocation(locationId)),
+            sceneposition: sceneposition,
+            scenetitle: scenetitle,
+            time: time,
+            timegregorian: timegregorian
+          });
+        }
+      }
+
+      return appearances;
+    }
   };
 });
 

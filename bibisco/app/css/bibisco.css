@@ -663,6 +663,21 @@ h3 {
     background-color: #C5000B !important;
 }
 
+.analysis-character-appearances table {
+	table-layout: fixed; 
+	font-size: 12px;
+	width: 100%;
+}
+
+.analysis-character-appearances table tr th, 
+.analysis-character-appearances table tr td {
+	padding-left: 5px; 
+	padding-right: 5px; 
+	text-align: left;
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
 
 @media (max-width: 1000px) {
 		.navbar {
