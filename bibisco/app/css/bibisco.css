@@ -589,6 +589,10 @@ h3 {
     top: 145px;
 }
 
+.analysis-chapter-length div.panel-body div{
+	height: 350px;
+}
+
 .analysis-items-distribution div.panel-body {
 	overflow-x: auto;
 }

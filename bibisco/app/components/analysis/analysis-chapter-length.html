@@ -1,14 +1,16 @@
-<div class="panel panel-default">
+<div class="panel panel-default analysis-chapter-length">
   <div class="panel-heading">
     <h3 class="panel-title">{{'jsp.analysis.thumbnail.analysisWordCountChapters.title' | translate}}</h3>
   </div>
   <div class="panel-body">
-    <canvas ng-if="$ctrl.data.length > 0" class="chart chart-bar" 
-      chart-data="$ctrl.data" 
-      chart-labels="$ctrl.labels" 
-      chart-options="$ctrl.options"></canvas>
-      <p ng-if="$ctrl.data.length == 0"><i>
-         {{'jsp.analysisItemsChapters.em.noChapters' | translate}}
-      </i></p>
+    <div ng-if="$ctrl.data.length > 0">
+      <canvas  class="chart chart-bar" 
+        chart-data="$ctrl.data" 
+        chart-labels="$ctrl.labels" 
+        chart-options="$ctrl.options"></canvas>
+    </div>
+    <p ng-if="$ctrl.data.length == 0"><i>
+        {{'jsp.analysisItemsChapters.em.noChapters' | translate}}
+    </i></p>
   </div>
 </div>

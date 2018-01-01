@@ -37,7 +37,7 @@ function AnalysisController($translate, AnalysisService) {
     self.labels = [];
     self.data = [];
     let words = AnalysisService.getChaptersLength();
-    let max = 10;
+    let max = 0;
 
     for (let i = 0; i < words.length; i++) {
       self.labels.push('#' + (i+1));
@@ -47,28 +47,55 @@ function AnalysisController($translate, AnalysisService) {
       }
     }
 
-    self.options = {
-      scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: translations.common_chapters.toLowerCase()
-          }
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: translations.common_words.toLowerCase()
-          },
-          ticks: {
-            beginAtZero: true,
-            steps: max / 10 >= 1 ? max / 10 : 1,
-            stepValue: max / 10 >= 1 ? max / 10 : 1,
-            max: max >= 10 ? max : 10
-          }
-        }]
-      }
-    };
+    if (max > 10) {
+      self.options = {
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: translations.common_chapters.toLowerCase()
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: translations.common_words.toLowerCase()
+            },
+            ticks: {
+              beginAtZero: true,
+            }
+          }]
+        }
+      };
+    } else {
+      self.options = {
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: translations.common_chapters.toLowerCase()
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: translations.common_words.toLowerCase()
+            },
+            ticks: {
+              beginAtZero: true,
+              steps: max / 10 >= 1 ? max / 10 : 1,
+              stepValue: max / 10 >= 1 ? max / 10 : 1,
+              max: max >= 10 ? max : 10
+            }
+          }]
+        }
+      };
+    }
+    
     
   };
 }
