@@ -44,7 +44,7 @@
   "jsp.common.button.enabled": "Habilitado",
   "jsp.common.button.disabled": "Desabilitado",
   "jsp.common.button.select": "selecionar",
-  "jsp.common.span.words": "palavras",
+  "common_words": "palavras",
   "jsp.common.span.characters": "caracteres",
   "jsp.common.message.forbidden.directory": "bibisco não tem permissão para salvar nesse diretório. Por favor, escolha outro.",
   "jsp.common.message.invalid.directory": "O diretório selecionado não existe. Por favor, escolha outro.",

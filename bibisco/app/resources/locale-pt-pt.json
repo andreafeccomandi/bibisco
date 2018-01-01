@@ -41,7 +41,7 @@
   "jsp.common.button.moveleft": "Mover para a posição anterior",
   "jsp.common.button.moveright": "Mover para a posição seguinte",
   "jsp.common.button.movelast": "Mover para a última posição",
-  "jsp.common.span.words": "palavras",
+  "common_words": "palavras",
   "jsp.common.span.characters": "caracteres",
   "jsp.common.span.lastupdate": "Última actualização",
   "tag.bibiscothumbnail.taskstatus.todo": "!!!",

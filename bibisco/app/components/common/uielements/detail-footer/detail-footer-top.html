@@ -9,7 +9,7 @@
     <span ng-if="$ctrl.editmode || $ctrl.words > 0" class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
   </span>
   <span class="pull-right" ng-if="$ctrl.wordscharactersenabled">
-    <span ng-if="$ctrl.editmode || $ctrl.words > 0" class="label label-info">{{"jsp.common.span.words" | translate}}: {{$ctrl.words}}</span>
+    <span ng-if="$ctrl.editmode || $ctrl.words > 0" class="label label-info">{{"common_words" | translate}}: {{$ctrl.words}}</span>
     <span ng-if="$ctrl.editmode || $ctrl.words > 0" class="label label-info">{{"jsp.common.span.characters" | translate}}: {{$ctrl.characters}}</span>
   </span>
 </div>

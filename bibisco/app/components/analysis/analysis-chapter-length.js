@@ -22,32 +22,53 @@ angular.
     }
   });
 
-function AnalysisController() {
+function AnalysisController($translate, AnalysisService) {
 
   var self = this;
 
   self.$onInit = function () {
 
-    self.labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 
-      'Friday', 'Saturday', 'Sunday', 'Lunedì', 'Martedì', 'Mercoledì', 
-      'Giovedì', 'Venerdì', 'Sabato', 'Domenica', 'Monday', 'Tuesday', 
-      'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    self.type = 'StackedBar';
-    self.series = ['2015', '2016'];
+    // load translations
+    let translations = $translate.instant([
+      'common_chapters',
+      'common_words'
+    ]);
+
+    self.labels = [];
+    self.data = [];
+    let words = AnalysisService.getChaptersLength();
+    let max = 10;
+
+    for (let i = 0; i < words.length; i++) {
+      self.labels.push('#' + (i+1));
+      self.data.push(words[i]);
+      if (words[i] > max) {
+        max = words[i];
+      }
+    }
+
     self.options = {
       scales: {
         xAxes: [{
-          stacked: true,
+          scaleLabel: {
+            display: true,
+            labelString: translations.common_chapters.toLowerCase()
+          }
         }],
         yAxes: [{
-          stacked: true
+          scaleLabel: {
+            display: true,
+            labelString: translations.common_words.toLowerCase()
+          },
+          ticks: {
+            beginAtZero: true,
+            steps: max / 10 >= 1 ? max / 10 : 1,
+            stepValue: max / 10 >= 1 ? max / 10 : 1,
+            max: max >= 10 ? max : 10
+          }
         }]
       }
     };
-
-    self.data = [
-      [65, 59, 90, 81, 56, 55, 40, 65, 59, 90, 81, 56, 55, 40, 65, 59, 90, 81, 56, 55, 40],
-      [28, 48, 40, 19, 96, 27, 100, 28, 48, 40, 19, 96, 27, 100, 28, 48, 40, 19, 96, 27, 100]
-    ];
+    
   };
 }

@@ -56,7 +56,7 @@
   "jsp.common.button.enabled": "Enabled",
   "jsp.common.button.disabled": "Disabled",
   "jsp.common.button.select": "select",
-  "jsp.common.span.words": "words",
+  "common_words": "words",
   "jsp.common.span.characters": "characters",
   "jsp.common.message.forbidden.directory": "bibisco doesnʼt have write permission on this directory. Please choose another.",
   "jsp.common.message.invalid.directory": "The selected directory doesnʼt exist. Please choose another.",

@@ -31,6 +31,18 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
   return {
 
+    getChaptersLength: function() {
+      let words = [];
+      let chapters = ChapterService.getChapters();
+      if (chapters && chapters.length > 0) {
+        for (let i = 0; i < chapters.length; i++) {
+          words.push(chapters[i].words);
+        }
+      }
+
+      return words;
+    },
+
     getCharacterChapterDistribution: function() {
       
       let chapterscount = 0;

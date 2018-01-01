@@ -50,7 +50,7 @@
   "jsp.common.button.enabled": "Включено",
   "jsp.common.button.disabled": "Выключено",
   "jsp.common.button.select": "выделить",
-  "jsp.common.span.words": "слов",
+  "common_words": "слов",
   "jsp.common.span.characters": "символов",
   "jsp.common.message.forbidden.directory": "bibisco не имеет прав на запись в эту директорию. Пожалуйста, выберите другую.",
   "jsp.common.message.invalid.directory": "Выбранная директория не существует. Пожалуйста, выберите другую.",

@@ -1,10 +1,14 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Lunghezza capitoli</h3>
+    <h3 class="panel-title">{{'jsp.analysis.thumbnail.analysisWordCountChapters.title' | translate}}</h3>
   </div>
-  <canvas class="chart chart-bar" 
-    chart-data="$ctrl.data" 
-    chart-labels="$ctrl.labels" 
-    chart-options="$ctrl.options" 
-    chart-series="$ctrl.series"></canvas>
+  <div class="panel-body">
+    <canvas ng-if="$ctrl.data.length > 0" class="chart chart-bar" 
+      chart-data="$ctrl.data" 
+      chart-labels="$ctrl.labels" 
+      chart-options="$ctrl.options"></canvas>
+      <p ng-if="$ctrl.data.length == 0"><i>
+         {{'jsp.analysisItemsChapters.em.noChapters' | translate}}
+      </i></p>
+  </div>
 </div>

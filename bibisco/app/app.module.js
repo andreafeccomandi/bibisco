@@ -188,6 +188,13 @@ angular.module('bibiscoApp', ['ngRoute',
       'mouseenter': 'mouseleave'
     });
   })
+  .config(function (ChartJsProvider) {
+    ChartJsProvider.setOptions({
+      global: {
+        colors: ['#0084D1', '#004586', '#FF420E', '#FFD320', '#579D1C', '#7E0021', '#83CAFF', '#314004', '#AECF00', '#4B1F6F', '#FF950E', '#C5000B']
+      }
+    });
+  })
 
 // By default, AngularJS will catch errors and log them to
 // the Console. I want to keep that behavior; however, I

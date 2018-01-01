@@ -44,7 +44,7 @@
   "jsp.common.button.enabled": "Activé",
   "jsp.common.button.disabled": "Désactivé",
   "jsp.common.button.select": "sélectionner",
-  "jsp.common.span.words": "mots",
+  "common_words": "mots",
   "jsp.common.span.characters": "caractères",
   "jsp.common.message.forbidden.directory": "Vous nʼavez pas le droit dʼécrire dans le dossier sélectionné ! Merci dʼen choisir un autre !",
   "jsp.common.message.invalid.directory": "Le dossier sélectionné nʼexiste pas. Veuillez en choisir un autre.",
