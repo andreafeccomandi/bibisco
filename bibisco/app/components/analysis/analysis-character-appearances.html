@@ -9,10 +9,10 @@
         <table ng-if="item.appearances.length > 0" 
             class="table table-responsive table-condensed table-striped table-bordered">
           <tr>
-            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.dateTime' | translate}}</th>
-            <th style="width: 40%">{{'jsp.analysisCharacterScene.th.location' | translate}}</th>
-            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.scene' | translate}}</th>
-            <th style="width: 20%">{{'jsp.analysisCharacterScene.th.chapter' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.dateTime' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.location' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.scene' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.chapter' | translate}}</th>
           </tr>
           <tr  ng-repeat="appearance in item.appearances">
             <td ng-if="appearance.time && appearance.timegregorian">{{'date_format_scene_tags' | translate:{date:appearance.time} }}{{$ctrl.calculateSceneYear(appearance.time)}} {{'time_format_scene_tags'| translate:{date:appearance.time} }}</td>

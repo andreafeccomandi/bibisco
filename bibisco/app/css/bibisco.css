@@ -683,6 +683,22 @@ h3 {
 	text-overflow: ellipsis;
 }
 
+.analysis-character-appearances table tr th:nth-child(1) { 
+	width: 20%;
+ }
+
+ .analysis-character-appearances table tr th:nth-child(2) { 
+	width: 40%;
+ }
+
+ .analysis-character-appearances table tr th:nth-child(3) { 
+	width: 20%;
+ }
+
+ .analysis-character-appearances table tr th:nth-child(4) { 
+	width: 20%;
+ }
+
 @media (max-width: 1000px) {
 		.navbar {
 			border-radius: 0px;
