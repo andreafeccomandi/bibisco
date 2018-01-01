@@ -141,6 +141,11 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
           };
           items.push(item);
         }
+
+        // sort by label
+        items.sort(function (a, b) {
+          return (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0);
+        });
       }
 
       return {
@@ -186,6 +191,11 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
           };
           items.push(item);
         }
+
+        // sort by label
+        items.sort(function (a, b) {
+          return (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0);
+        });
       }
 
       return {
