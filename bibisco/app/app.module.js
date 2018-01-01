@@ -189,9 +189,15 @@ angular.module('bibiscoApp', ['ngRoute',
     });
   })
   .config(function (ChartJsProvider) {
+ 
+    let colors = [];
+    for (let i = 0; i < 100; i++) {
+      colors.push.apply(colors, ['#0084D1', '#004586', '#FF420E', '#FFD320', '#579D1C', '#7E0021', '#83CAFF', '#314004', '#AECF00', '#4B1F6F', '#FF950E', '#C5000B']);
+    }  
+
     ChartJsProvider.setOptions({
       global: {
-        colors: ['#0084D1', '#004586', '#FF420E', '#FFD320', '#579D1C', '#7E0021', '#83CAFF', '#314004', '#AECF00', '#4B1F6F', '#FF950E', '#C5000B']
+        colors: colors
       }
     });
   })

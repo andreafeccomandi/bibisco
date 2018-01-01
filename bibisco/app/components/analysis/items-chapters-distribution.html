@@ -3,22 +3,30 @@
     <h3 class="panel-title">{{$ctrl.analysistitle | translate}}</h3>
   </div>
   <div class="panel-body">
-    <table ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0"
-      class="table table-responsive table-condensed table-striped table-bordered analysis-items-table"
-      style="width: {{$ctrl.tablewidth}}px;">
-      <tbody>
-        <tr>
-          <th></th>
-          <th ng-repeat="chapter in $ctrl.chapters">{{chapter}}</th>
-        </tr>
-        <tr ng-repeat="item in $ctrl.items" ng-init="itemindex = $index">
-          <td>{{item.label}}</td>
-          <td ng-repeat="presence in item.presence track by $index"
-              ng-class="{ 'analysis-items-row-{{itemindex}}' : presence === 1 }">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0">
+      <div class="analysiscanvasbarcontainer">
+        <canvas class="chart chart-bar" chart-data="$ctrl.data" 
+        chart-labels="$ctrl.labels" chart-options="$ctrl.options"></canvas>
+      </div>
+      <hr>
+      <div class="analysistablecontainer">
+        <table class="table table-responsive table-condensed table-striped table-bordered analysis-items-table"
+          style="width: {{$ctrl.tablewidth}}px;">
+          <tbody>
+            <tr>
+              <th></th>
+              <th ng-repeat="chapter in $ctrl.chapters">{{chapter}}</th>
+            </tr>
+            <tr ng-repeat="item in $ctrl.items" ng-init="itemindex = $index">
+              <td>{{item.label}}</td>
+              <td ng-repeat="presence in item.presence track by $index"
+                  ng-class="{ 'analysis-items-row-{{(itemindex % 12)}}' : presence === 1 }">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <p ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length == 0">
       <i>{{$ctrl.noitemsmessage | translate}}</i>
     </p>

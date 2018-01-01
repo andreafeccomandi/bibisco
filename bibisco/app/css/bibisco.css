@@ -589,12 +589,16 @@ h3 {
     top: 145px;
 }
 
-.analysis-chapter-length div.panel-body div{
-	height: 350px;
+.analysis-chapter-length div.analysiscanvasbarcontainer {
+	height: 250px;
 }
 
-.analysis-items-distribution div.panel-body {
+.analysis-items-distribution div.analysistablecontainer {
 	overflow-x: auto;
+}
+
+.analysis-items-distribution div.analysiscanvasbarcontainer {
+	height: 250px;
 }
 
 .analysis-items-distribution table {

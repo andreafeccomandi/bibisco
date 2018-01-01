@@ -56,13 +56,18 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
         for (let i = 0; i < characters.length; i++) {
           let presence = [];
+          let presencecount = 0;
           for (let j = 0; j < chapters.length; j++) {
             let isCharacterInChapter = this.isCharacterInChapter(characters[i].id, chapters[j].$loki);
+            if (isCharacterInChapter === 1) {
+              presencecount++;
+            }
             presence.push(isCharacterInChapter);
           }
           let item = {
             label: characters[i].name,
-            presence: presence
+            presence: presence,
+            percentage: ((presencecount / chapterscount) * 100).toFixed(2)
           };
           items.push(item);
         }
@@ -181,13 +186,18 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
         for (let i = 0; i < strands.length; i++) {
           let presence = [];
+          let presencecount = 0;
           for (let j = 0; j < chapters.length; j++) {
             let isStrandInChapter = this.isStrandInChapter(strands[i].$loki, chapters[j].$loki);
+            if (isStrandInChapter === 1) {
+              presencecount++;
+            }
             presence.push(isStrandInChapter);
           }
           let item = {
             label: strands[i].name,
-            presence: presence
+            presence: presence,
+            percentage: ((presencecount / chapterscount) * 100).toFixed(2)
           };
           items.push(item);
         }
