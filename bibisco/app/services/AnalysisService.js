@@ -19,16 +19,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 ) {
   'use strict';
 
-  // load translations
-  let translations = $translate.instant([
-    'common_pointOfView_1stOnMajor',
-    'common_pointOfView_1stOnMinor',
-    'common_pointOfView_3rdLimited',
-    'common_pointOfView_3rdOmniscient',
-    'common_pointOfView_3rdObjective',
-    'common_pointOfView_2nd'
-  ]);
-
   return {
 
     getChaptersLength: function() {
@@ -136,13 +126,18 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
         for (let i = 0; i < locations.length; i++) {
           let presence = [];
+          let presencecount = 0;
           for (let j = 0; j < chapters.length; j++) {
             let isLocationInChapter = this.isLocationInChapter(locations[i].$loki, chapters[j].$loki);
+            if (isLocationInChapter === 1) {
+              presencecount++;
+            }
             presence.push(isLocationInChapter);
           }
           let item = {
             label: LocationService.calculateLocationName(locations[i]),
-            presence: presence
+            presence: presence,
+            percentage: ((presencecount / chapterscount) * 100).toFixed(2)
           };
           items.push(item);
         }
@@ -241,11 +236,13 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
         for (let i = 0; i < povs.length; i++) {
           let presence = [];
+          let presencecount = 0;
           let isPresent = false;
           for (let j = 0; j < chapters.length; j++) {
             let isPovInChapter = this.isPointOfViewInChapter(povs[i], chapters[j].$loki);
             if (isPovInChapter) {
               isPresent = true;
+              presencecount++;
             }
             presence.push(isPovInChapter);
           }
@@ -254,7 +251,9 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
           if (isPresent) {
             let item = {
               label: povs[i].label,
-              presence: presence
+              labelshort: povs[i].labelshort,
+              presence: presence,
+              percentage: ((presencecount / chapterscount) * 100).toFixed(2)
             };
             items.push(item);
           }
@@ -268,30 +267,49 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
     },
 
     getPointOfViews: function() {
+
+      // load translations
+      let translations = $translate.instant([
+        'common_pointOfView_1stOnMajor',
+        'common_pointOfView_1stOnMajor_short',
+        'common_pointOfView_1stOnMinor',
+        'common_pointOfView_1stOnMinor_short',
+        'common_pointOfView_3rdLimited',
+        'common_pointOfView_3rdLimited_short',
+        'common_pointOfView_3rdOmniscient',
+        'common_pointOfView_3rdOmniscient_short',
+        'common_pointOfView_3rdObjective',
+        'common_pointOfView_3rdObjective_short',
+        'common_pointOfView_2nd',
+        'common_pointOfView_2nd_short'
+      ]);
+
       let povs = [];
 
       let characters = this.getCharacters();
-      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMajor', true, characters));
-      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMinor', true, characters));
-      povs.push.apply(povs, this.createEntriesForPointOfView('3rdLimited', true, characters));
-      povs.push.apply(povs, this.createEntriesForPointOfView('3rdOmniscient', false, characters));
-      povs.push.apply(povs, this.createEntriesForPointOfView('3rdObjective', false, characters)); 
-      povs.push.apply(povs, this.createEntriesForPointOfView('2nd', false, characters));
+      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMajor', true, characters, translations));
+      povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMinor', true, characters, translations));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdLimited', true, characters, translations));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdOmniscient', false, characters, translations));
+      povs.push.apply(povs, this.createEntriesForPointOfView('3rdObjective', false, characters, translations)); 
+      povs.push.apply(povs, this.createEntriesForPointOfView('2nd', false, characters, translations));
 
       return povs;
     },
 
-    createEntriesForPointOfView: function(povid, dependOnCharacter, characters) {
+    createEntriesForPointOfView: function (povid, dependOnCharacter, characters, translations) {
 
       let entries = [];
 
       let povname = translations['common_pointOfView_' + povid];
+      let povnameshort = translations['common_pointOfView_' + povid + '_short'];
       if (dependOnCharacter) {
         for (let i = 0; i < characters.length; i++) {
           entries.push({
             id: povid,
             characterid: characters[i].id,
-            label: povname + ': ' + characters[i].name
+            label: povname + ': ' + characters[i].name,
+            labelshort: povnameshort + ' ' + characters[i].name,
           });
           
         }
@@ -299,7 +317,8 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
         entries.push({
           id: povid,
           characterid: null,
-          label: povname
+          label: povname,
+          labelshort: povnameshort
         });
       }
 

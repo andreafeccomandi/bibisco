@@ -26,7 +26,7 @@ angular.
     }
   });
 
-function ItemsChaptersDistributionController($translate, UtilService) {
+function ItemsChaptersDistributionController(UtilService) {
 
   var self = this;
 
@@ -42,16 +42,10 @@ function ItemsChaptersDistributionController($translate, UtilService) {
     self.labels = [];
     self.data = [];
     for (let i = 0; i < self.items.length; i++) {
-      self.labels.push(UtilService.string.truncate(self.items[i].label, 20));
+      let labeltouse = self.items[i].labelshort ? self.items[i].labelshort : self.items[i].label;
+      self.labels.push(UtilService.string.truncate(labeltouse, 25));
       self.data.push(self.items[i].percentage);
     }
-
-    // load translations
-    let translations = $translate.instant([
-      'common_chapters',
-      'common_words'
-    ]);
-
 
     self.options = {
       maintainAspectRatio: false,
@@ -69,6 +63,5 @@ function ItemsChaptersDistributionController($translate, UtilService) {
         }]
       }
     };
-    
   };
 }
