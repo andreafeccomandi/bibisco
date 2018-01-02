@@ -5,11 +5,7 @@
   </div>
 </div>
 <div class="analysis">
-  <div ng-if="$ctrl.loading" class="container top100">
-    <span class="text-center text-info">
-      <h1><i class="fa fa-circle-o-notch fa-spin fa-5x"></i></h1>
-    </span>
-  </div>
+  <fullpageloader ng-if="$ctrl.loading"></fullpageloader>
   <div ng-if="!$ctrl.loading" class="container">
     <div class="row">
       <div class="col-sm-12">
