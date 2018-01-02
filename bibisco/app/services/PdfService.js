@@ -12,21 +12,13 @@
  * See the GNU General Public License for more details.
  *
  */
-angular.
-  module('bibiscoApp').
-  component('export', {
-    templateUrl: 'components/export/export.html',
-    controller: ExportController,
-    bindings: {
 
+angular.module('bibiscoApp').service('PdfService', function () {
+  'use strict';
+
+  return {
+    createFirstPdf: function() {
+      alert('PdfService.createFirstPdf() proviamo a creare il file...');
     }
-  });
-
-function ExportController(PdfService) {
-  var self = this;
-
-  self.exportPdf = function() {
-    alert('exportPdf!');
-    PdfService.createFirstPdf();
   };
-}
+});
