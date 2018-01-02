@@ -21,6 +21,11 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
   return {
 
+    // empty function, just to create the service while loading page
+    // without eslint error
+    ping: function () {
+    },
+
     getChaptersLength: function() {
       let words = [];
       let chapters = ChapterService.getChapters();
