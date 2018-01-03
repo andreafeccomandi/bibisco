@@ -28,6 +28,8 @@ angular.module('bibiscoApp').service('PdfService', function () {
     }
   };
 
+  let paragraphmargin = [0, 0, 0, 10];
+
   return {
     createFirstPdf: function() {
     
@@ -90,14 +92,33 @@ angular.module('bibiscoApp').service('PdfService', function () {
       let currentText;
       let boldActive = false;
       let italicsActive = false;
+      let alignment;
 
       var parser = new htmlparser.Parser({
 
         onopentag: function (name, attribs) {
-          if (name === 'script' && attribs.type === 'text/javascript') {
-            // do nothing
-          } else if (name === 'p') {
+          if (name === 'p') {
             currentText = [];
+            
+            // alignment
+            if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
+              alignment = 'left';
+            } else if (attribs.style.indexOf('text-align: center') > -1) {
+              alignment = 'center';
+            } else if (attribs.style.indexOf('text-align: right') > -1) {
+              alignment = 'right';
+            } else if (attribs.style.indexOf('text-align: justify') > -1) {
+              alignment = 'justify';
+            }
+
+            // indent
+            currentText.push({
+              text: '   ',
+              bold: boldActive,
+              italics: italicsActive,
+              preserveLeadingSpaces: true
+            });
+    
           } else if (name === 'b') {
             boldActive = true;
           } else if (name === 'i') {
@@ -106,7 +127,6 @@ angular.module('bibiscoApp').service('PdfService', function () {
         },
 
         ontext: function (text) {
-          text = '   ' + text;
           currentText.push({
             text: text,
             bold: boldActive,
@@ -116,11 +136,11 @@ angular.module('bibiscoApp').service('PdfService', function () {
         },
 
         onclosetag: function (name) {
-          if (name === 'script') {
-            // do nothing
-          } else if (name === 'p') {
+          if (name === 'p') {
             content.push({
-              text: currentText
+              text: currentText,
+              alignment: alignment,
+              margin: paragraphmargin
             });
             currentText = [];
           } else if (name === 'b') {
@@ -145,6 +165,7 @@ angular.module('bibiscoApp').service('PdfService', function () {
       html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
       html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
       html += '<p>Questo è <i>occhio</i> <b>bello</b>, <b><i>questo</i></b> è suo fratello!</p> <p>Questa è la casina, questo è il campanello!</p> <p>Din, din din!</p>';
+      html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style=\"text-align: center;\">Questa riga è <b>centrata</b></p><p style=\"text-align: right;\">Questa riga è allineata a destra</p><p style=\"text-align: justify;\">Questa riga è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella.</p><p style=\"text-align: justify;\">Questa riga continua ad essere giustificata, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style=\"text-align: left;\">Questa riga <i>torna</i> ad essere allineata a sinistra, sinistra, sinistra, sinistra. Molto bene.</p>';
       this.createPdfFromHtml(html, this.createAndDownloadPdf);
     }
   };
