@@ -16,6 +16,18 @@
 angular.module('bibiscoApp').service('PdfService', function () {
   'use strict';
 
+  var remote = require('electron').remote;
+  var htmlparser = remote.getGlobal('htmlparser');
+
+  pdfMake.fonts = {
+    courier: {
+      normal: 'cour.ttf',
+      bold: 'courbd.ttf',
+      italics: 'couri.ttf',
+      bolditalics: 'courbi.ttf'
+    }
+  };
+
   return {
     createFirstPdf: function() {
     
@@ -51,18 +63,89 @@ angular.module('bibiscoApp').service('PdfService', function () {
           font: 'courier'
         }
       };
-
-      pdfMake.fonts = {
-        courier: {
-          normal: 'cour.ttf',
-          bold: 'courbd.ttf',
-          italics: 'couri.ttf',
-          bolditalics: 'courbi.ttf'
-        }
-      };
       
       // download the PDF
-      pdfMake.createPdf(docDefinition).download('optionalName.pdf');    
+      pdfMake.createPdf(docDefinition).download('optionalName.pdf');   
+
+      // test createTextFromHtml
+      this.createTextFromHtml('Xyz <script type="text/javascript">var foo = "<<bar>>";</ script>');
+    },
+
+    createAndDownloadPdf: function(content) {
+
+      var docDefinition = {
+        content: content,
+        defaultStyle: {
+          font: 'courier'
+        }
+      };
+
+      // download the PDF
+      pdfMake.createPdf(docDefinition).download('export.pdf');  
+    },
+
+    createPdfFromHtml: function(html, createAndDownloadPdf) {
+
+      let content = [];
+      let currentText;
+      let boldActive = false;
+      let italicsActive = false;
+
+      var parser = new htmlparser.Parser({
+
+        onopentag: function (name, attribs) {
+          if (name === 'script' && attribs.type === 'text/javascript') {
+            // do nothing
+          } else if (name === 'p') {
+            currentText = [];
+          } else if (name === 'b') {
+            boldActive = true;
+          } else if (name === 'i') {
+            italicsActive = true;
+          }
+        },
+
+        ontext: function (text) {
+          text = '   ' + text;
+          currentText.push({
+            text: text,
+            bold: boldActive,
+            italics: italicsActive,
+            preserveLeadingSpaces: true
+          });
+        },
+
+        onclosetag: function (name) {
+          if (name === 'script') {
+            // do nothing
+          } else if (name === 'p') {
+            content.push({
+              text: currentText
+            });
+            currentText = [];
+          } else if (name === 'b') {
+            boldActive = false;
+          } else if (name === 'i') {
+            italicsActive = false;
+          }
+        },
+
+        onend: function() {
+          createAndDownloadPdf(content);
+        }
+      }, { decodeEntities: true });
+
+      parser.write(html);
+      parser.end();
+    },
+
+    exportPdf: function() {
+      let html = '';
+      html += '<p>This is a standard paragraph, using default style</p>';
+      html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
+      html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
+      html += '<p>Questo è <i>occhio</i> <b>bello</b>, <b><i>questo</i></b> è suo fratello!</p> <p>Questa è la casina, questo è il campanello!</p> <p>Din, din din!</p>';
+      this.createPdfFromHtml(html, this.createAndDownloadPdf);
     }
   };
 });

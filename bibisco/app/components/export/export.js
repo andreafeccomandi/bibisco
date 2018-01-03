@@ -26,7 +26,6 @@ function ExportController(PdfService) {
   var self = this;
 
   self.exportPdf = function() {
-    alert('exportPdf!');
-    PdfService.createFirstPdf();
+    PdfService.exportPdf();
   };
 }

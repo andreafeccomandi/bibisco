@@ -72,6 +72,10 @@ global.uuid = uuid;
 const sanitizeHtml = require('sanitize-html');
 global.sanitizeHtml = sanitizeHtml;
 
+// add htmlparser2
+const htmlparser = require('htmlparser2');
+global.htmlparser = htmlparser;
+
 // prevent window being garbage collected
 let mainWindow;
 
