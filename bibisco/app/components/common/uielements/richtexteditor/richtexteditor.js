@@ -222,10 +222,12 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.undo = function() {
     $document[0].execCommand('undo');
+    self.dirty = true;
   };
 
   self.redo = function() {
     $document[0].execCommand('redo');
+    self.dirty = true;
   };
 
   self.print = function() {
@@ -243,35 +245,42 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.copy = function() {
     $document[0].execCommand('copy');
+    self.dirty = true;
   };
 
   self.cut = function() {
     $document[0].execCommand('cut');
+    self.dirty = true;
   };
 
   self.paste = function() {
     $timeout(function() {
       $document[0].execCommand('paste');
+      self.dirty = true;
     });
   };
 
   self.bold = function() {
     $document[0].execCommand('bold');
+    self.dirty = true;
     self.checkselectionstate();
   };
 
   self.italic = function() {
     $document[0].execCommand('italic');
+    self.dirty = true;
     self.checkselectionstate();
   };
 
   self.underline = function() {
     $document[0].execCommand('underline');
+    self.dirty = true;
     self.checkselectionstate();
   };
 
   self.strikethrough = function() {
     $document[0].execCommand('strikeThrough');
+    self.dirty = true;
     self.checkselectionstate();
   };
 
@@ -282,7 +291,7 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     } else {
       $document[0].execCommand('hiliteColor', false, 'rgb(255, 255, 0)');
     }
-
+    self.dirty = true;
     self.checkselectionstate();
   };
 
@@ -314,21 +323,25 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   self.aligncenter = function() {
     $document[0].execCommand('justifyCenter');
     self.checkselectionstate();
+    self.dirty = true;
   };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
     self.checkselectionstate();
+    self.dirty = true;
   };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
     self.checkselectionstate();
+    self.dirty = true;
   };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
     self.checkselectionstate();
+    self.dirty = true;
   };
 
   self.sanitizePaste = function($event) {
