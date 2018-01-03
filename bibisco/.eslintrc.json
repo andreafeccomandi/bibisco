@@ -9,6 +9,7 @@
     "angular": 1,
     "logger": 1,
     "moment": 1,
+    "pdfMake": 1,
     "validator": 1
   },
   "extends": "eslint:recommended",
