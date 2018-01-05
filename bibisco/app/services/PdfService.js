@@ -89,15 +89,21 @@ angular.module('bibiscoApp').service('PdfService', function () {
     createPdfFromHtml: function(html, createAndDownloadPdf) {
 
       let content = [];
+      let currentList = [];
       let currentText;
       let boldActive = false;
       let italicsActive = false;
+      let underlineActive = false;
+      let strikeActive = false;
       let alignment;
 
       var parser = new htmlparser.Parser({
 
         onopentag: function (name, attribs) {
-          if (name === 'p') {
+
+          if (name === 'ul' || name === 'ol') {
+            currentList = [];
+          } else if (name === 'p' || name === 'li') {
             currentText = [];
             
             // alignment
@@ -118,35 +124,70 @@ angular.module('bibiscoApp').service('PdfService', function () {
               italics: italicsActive,
               preserveLeadingSpaces: true
             });
-    
+            
           } else if (name === 'b') {
             boldActive = true;
           } else if (name === 'i') {
             italicsActive = true;
+          } else if (name === 'u') {
+            underlineActive = true;
+          } else if (name === 'strike') {
+            strikeActive = true;
           }
         },
 
         ontext: function (text) {
+          let decoration = null;
+          // Is not possible to have more than one decoration at the same time
+          if (underlineActive) {
+            decoration = 'underline';
+          }
+          if (strikeActive) {
+            decoration = 'lineThrough';
+          }
+
           currentText.push({
             text: text,
             bold: boldActive,
             italics: italicsActive,
+            decoration: decoration,
             preserveLeadingSpaces: true
           });
         },
 
         onclosetag: function (name) {
-          if (name === 'p') {
+          if (name === 'ul') {
+            content.push({
+              ul: currentList
+            });
+            currentList = [];
+          } else if (name === 'ol') {
+            content.push({
+              ol: currentList
+            });
+            currentList = [];
+          } else if (name === 'li') {
+            currentList.push({
+              text: currentText,
+              alignment: alignment,
+              margin: paragraphmargin
+            });
+            currentText = [];
+          } else if (name === 'p') {
             content.push({
               text: currentText,
               alignment: alignment,
               margin: paragraphmargin
             });
             currentText = [];
-          } else if (name === 'b') {
+          }  else if (name === 'b') {
             boldActive = false;
           } else if (name === 'i') {
             italicsActive = false;
+          } else if (name === 'u') {
+            underlineActive = false;
+          } else if (name === 'strike') {
+            strikeActive = false;
           }
         },
 
@@ -165,7 +206,7 @@ angular.module('bibiscoApp').service('PdfService', function () {
       html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
       html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
       html += '<p>Questo è <i>occhio</i> <b>bello</b>, <b><i>questo</i></b> è suo fratello!</p> <p>Questa è la casina, questo è il campanello!</p> <p>Din, din din!</p>';
-      html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style=\"text-align: center;\">Questa riga è <b>centrata</b></p><p style=\"text-align: right;\">Questa riga è allineata a destra</p><p style=\"text-align: justify;\">Questa riga è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella.</p><p style=\"text-align: justify;\">Questa riga continua ad essere giustificata, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style=\"text-align: left;\">Questa riga <i>torna</i> ad essere allineata a sinistra, sinistra, sinistra, sinistra. Molto bene.</p>';
+      html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style=\"text-align: center;\">Questa riga è <b>centrata</b></p><p style=\"text-align: right;\">Questa <span style=\"background-color: rgb(255, 255, 0);\">riga è allineata</span> a destra</p><p style=\"text-align: justify;\">Questaa <strike>riga</strike> è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella.</p><p style=\"text-align: justify;\"><u>Questa <i>riga </i><strike><i>continua ad essere</i> giustificata</strike></u>, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style=\"text-align: left;\">Questa riga <i>torna</i> ad <u>essere <i>allineata <b>a</b></i><b> sinistra</b>, sinistra,</u> sinistra, sinistra. Molto bene.</p><p style=\"text-align: left;\"></p><ol><li>Galli</li><li>Tassotti, <i>terzino</i> destro.</li><li>Maldini, <u>terzino</u> sinistro.</li></ol><ul><li style=\"text-align: center;\"><i><b><u>Colombo</u></b></i></li><li style=\"text-align: right;\">Costacurta</li><li style=\"text-align: right;\">Baresi</li><li style=\"text-align: right;\">Donadoni</li></ul><p style=\"text-align: right;\">Che due palle! Ma perchè non</p><p style=\"text-align: right;\"><ul><li>si methane d\'accordo ?</li ></ul > <p style=\"text-align: justify;\">« Prove tecniche »</p><p style=\"text-align: left;\">— Di dialogo</p></p><p></p>';
       this.createPdfFromHtml(html, this.createAndDownloadPdf);
     }
   };
