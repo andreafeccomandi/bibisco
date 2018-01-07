@@ -22,10 +22,10 @@ angular.
     }
   });
 
-function ExportController(PdfService) {
+function ExportController(ExportService) {
   var self = this;
 
   self.exportPdf = function() {
-    PdfService.exportPdf();
+    ExportService.exportPdf();
   };
 }

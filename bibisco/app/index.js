@@ -76,6 +76,10 @@ global.sanitizeHtml = sanitizeHtml;
 const htmlparser = require('htmlparser2');
 global.htmlparser = htmlparser;
 
+// add docx
+const docx = require('docx');
+global.docx = docx;
+
 // prevent window being garbage collected
 let mainWindow;
 
