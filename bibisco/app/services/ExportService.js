@@ -28,14 +28,14 @@ angular.module('bibiscoApp').service('ExportService', function () {
       let html = '';
       html += '<h1>Questo è un titolo di primo livello</h1>';
       html += '<h2>Questo è un titolo di secondo livello</h2>';
-      html += '<h3>Questo è un titolo di terzo livello</h3>';
+      html += '<h3>Questo è un <i>titolo</i> <b>di</b> terzo livello</h3>';
       html += '<h4>Questo è un titolo di quarto livello</h4>';
       html += '<h5>Questo è un titolo di quinto livello</h5>';
       html += '<title>Questo è un title</title>';
-      html += '<p>This is a standard paragraph, using default style</p>';
+      html += '<p>This is a <b>standard</b> <i>paragraph</i>, using default style</p>';
       html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
       html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
-      html += '<p>Questo è <i>occhio</i><b> bello</b>    <b><i>questo</i></b> è suo fratello!</p><p>Questa è la casina, questo è il campanello!</p><p>Din, din din!</p>';
+      html += '<p>Questo è <i>occhio</i><b> bello</b> <b><i>questo</i></b> è suo fratello!</p><p>Questa è la casina, questo è il campanello!</p><p>Din, din din!</p>';
       html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style="text-align: center;">Questa riga è <b>centrata</b></p><p style="text-align: right;">Questa <span style="background-color: rgb(255, 255, 0);">riga è allineata</span> a destra</p> <p style="text-align: justify;">Questaa <strike>riga</strike> è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella. Che è sempre molto bella, snella, piella, biella, sella, <i>rella</i> <u>fella</u> previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing</p><p style="text-align: justify;"><u>Questa <i>riga </i><strike><i>continua ad essere</i> giustificata</strike></u>, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style="text-align: left;">Questa riga <i>torna</i> ad <u>essere <i>allineata <b>a</b></i><b> sinistra</b>, sinistra,</u> sinistra, sinistra. Molto bene.</p><p style="text-align: left;"></p>';
       html += '<ol><li>Galli</li><li>Tassotti, <i>terzino</i> destro.</li><li>Maldini, <u>terzino</u> sinistro.</li></ol><ul><li style=\"text-align: center;\"><i><b><u>Colombo</u></b></i></li><li style=\"text-align: right;\">Costacurta</li><li style=\"text-align: right;\">Baresi</li><li style=\"text-align: right;\">Donadoni</li></ul><p style=\"text-align: right;\">Che due palle! Ma perchè non</p><p style=\"text-align: right;\"><ul><li>si methane d\'accordo ?</li ></ul > <p style=\"text-align: justify;\">« Prove tecniche »</p><p style=\"text-align: left;\">— Di dialogo</p></p><p></p>';
      
@@ -56,7 +56,6 @@ angular.module('bibiscoApp').service('ExportService', function () {
       let strikeActive = false;
       let orderedListActive = false;
       let unorderedListActive = false;
-      let precedingWhiteSpaces = null;
     
       const numbering = new docx.Numbering();
       const numberedAbstract = numbering.createAbstractNumbering();
@@ -137,37 +136,29 @@ angular.module('bibiscoApp').service('ExportService', function () {
         ontext: function (text) {
 
           if (currentParagraph) {
-            if (text.trim().length === 0) {
-              precedingWhiteSpaces = text;     
-            } else {
 
-              if (precedingWhiteSpaces) {
-                text = precedingWhiteSpaces + text;
-                precedingWhiteSpaces = null;
-              }
-
-              let currentText = new docx.TextRun(text);
-              currentText.size(fontSize);
-              currentText.font(font);
+            let currentText = new docx.TextRun(text);
+            currentText.size(fontSize);
+            currentText.font(font);
  
-              if (boldActive) {
-                currentText.bold();
-              }
-              if(italicsActive) {
-                currentText.italic();
-              }
-              if (underlineActive) {
-                currentText.underline();
-              }
-              if (strikeActive) {
-                currentText.strike();
-              }
-              currentParagraph.addRun(currentText);
+            if (boldActive) {
+              currentText.bold();
             }
+            if(italicsActive) {
+              currentText.italic();
+            }
+            if (underlineActive) {
+              currentText.underline();
+            }
+            if (strikeActive) {
+              currentText.strike();
+            }
+            currentParagraph.addRun(currentText);
           }
         },
 
         onclosetag: function (name) {
+
           if (name === 'ul') {
             unorderedListActive = false;
           } else if (name === 'ol') {
@@ -182,7 +173,6 @@ angular.module('bibiscoApp').service('ExportService', function () {
             name === 'li') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
-            precedingWhiteSpaces = null;
           } else if (name === 'b') {
             boldActive = false;
           } else if (name === 'i') {
@@ -200,7 +190,7 @@ angular.module('bibiscoApp').service('ExportService', function () {
       }, { decodeEntities: true });
 
       // replace all &nbsp; with white spaces
-      html = html.replace(/&nbsp;/g, '');
+      html = html.replace(/&nbsp;/g, ' ');
       parser.write(html);
       parser.end();
     }
