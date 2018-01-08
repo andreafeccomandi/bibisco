@@ -63,6 +63,8 @@ angular.module('bibiscoApp').service('ExportService', function () {
       numberedAbstract.createLevel(0, 'decimal', '%1. ', 'left');
       const letterNumbering = numbering.createConcreteNumbering(numberedAbstract);
 
+      let fontSize = 24; // font size, measured in half-points
+
       var parser = new htmlparser.Parser({
 
         onopentag: function (name, attribs) {
@@ -142,6 +144,7 @@ angular.module('bibiscoApp').service('ExportService', function () {
               }
 
               let currentText = new docx.TextRun(text);
+              currentText.size(fontSize);
  
               if (boldActive) {
                 currentText.bold();
