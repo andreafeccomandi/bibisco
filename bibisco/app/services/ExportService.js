@@ -25,6 +25,8 @@ angular.module('bibiscoApp').service('ExportService', function () {
 
       // Create document
       let doc = new docx.Document();
+
+
       let html = '';
       html += '<h1>Questo è un titolo di primo livello</h1>';
       html += '<h2>Questo è un titolo di secondo livello</h2>';
@@ -62,9 +64,9 @@ angular.module('bibiscoApp').service('ExportService', function () {
       numberedAbstract.createLevel(0, 'decimal', '%1. ', 'left');
       const letterNumbering = numbering.createConcreteNumbering(numberedAbstract);
 
-      //let font = 'Courier';
+      let font = 'Courier';
       //let font = 'Arial';
-      let font = 'Times New Roman';
+      //let font = 'Times New Roman';
       let fontSize = 24; // font size, measured in half-points
 
       var parser = new htmlparser.Parser({
@@ -98,7 +100,7 @@ angular.module('bibiscoApp').service('ExportService', function () {
             currentParagraph = new docx.Paragraph();
 
             // spacing
-            currentParagraph.spacing({ after: 80 });
+            currentParagraph.spacing({ after: 100 });
             
             // alignment
             if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
