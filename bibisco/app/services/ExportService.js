@@ -21,11 +21,19 @@ angular.module('bibiscoApp').service('ExportService', function () {
   var docx = remote.getGlobal('docx');
   
   return {
-    exportPdf: function() {
+
+    exportPdf: function () {
+      this.export(this.createPdf);
+    },
+
+    exportWord: function () {
+      this.export(this.createDocx);
+    },
+
+    export: function(exportFunction) {
 
       // Create document
       let doc = new docx.Document();
-
 
       let html = '';
       html += '<h1>Questo è un titolo di primo livello</h1>';
@@ -41,13 +49,18 @@ angular.module('bibiscoApp').service('ExportService', function () {
       html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style="text-align: center;">Questa riga è <b>centrata</b></p><p style="text-align: right;">Questa <span style="background-color: rgb(255, 255, 0);">riga è allineata</span> a destra</p> <p style="text-align: justify;">Questaa <strike>riga</strike> è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella. Che è sempre molto bella, snella, piella, biella, sella, <i>rella</i> <u>fella</u> previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing</p><p style="text-align: justify;"><u>Questa <i>riga </i><strike><i>continua ad essere</i> giustificata</strike></u>, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style="text-align: left;">Questa riga <i>torna</i> ad <u>essere <i>allineata <b>a</b></i><b> sinistra</b>, sinistra,</u> sinistra, sinistra. Molto bene.</p><p style="text-align: left;"></p>';
       html += '<ol><li>Galli</li><li>Tassotti, <i>terzino</i> destro.</li><li>Maldini, <u>terzino</u> sinistro.</li></ol><ul><li style=\"text-align: center;\"><i><b><u>Colombo</u></b></i></li><li style=\"text-align: right;\">Costacurta</li><li style=\"text-align: right;\">Baresi</li><li style=\"text-align: right;\">Donadoni</li></ul><p style=\"text-align: right;\">Che due palle! Ma perchè non</p><p style=\"text-align: right;\"><ul><li>si methane d\'accordo ?</li ></ul > <p style=\"text-align: justify;\">« Prove tecniche »</p><p style=\"text-align: left;\">— Di dialogo</p></p><p></p>';
      
-      this.parseHtml(doc, html, '/Users/andreafeccomandi/Downloads/MyFirstDocumentGiorgioneIndent.pdf', this.createPdf);
+      this.parseHtml(doc, html, '/Users/andreafeccomandi/Downloads/MyFirstDocumentGiorgioneIndent.pdf', exportFunction);
     },
 
     createPdf: function (doc, path, numbering) {
       let exporter = new docx.LocalPacker(doc, undefined, undefined, numbering);
+      exporter.packPdf(path);
+    },   
+    
+    createDocx: function (doc, path, numbering) {
+      let exporter = new docx.LocalPacker(doc, undefined, undefined, numbering);
       exporter.pack(path);
-    },    
+    },
   
     parseHtml: function (doc, html, path, callback) {
 

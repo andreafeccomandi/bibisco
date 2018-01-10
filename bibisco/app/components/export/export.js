@@ -28,4 +28,12 @@ function ExportController(ExportService) {
   self.exportPdf = function() {
     ExportService.exportPdf();
   };
+
+  self.exportWord = function () {
+    ExportService.exportWord();
+  };
+
+  self.exportArchive = function () {
+    alert('Export as archive!');
+  };
 }
