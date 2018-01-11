@@ -14,9 +14,9 @@
  */
 angular.
   module('bibiscoApp').
-  component('projectsdirectoryinputfield', {
-    templateUrl: 'components/common/forms/projects-directory-input-field/projects-directory-input-field.html',
-    controller: ProjectsDirectoryInputFieldController,
+  component('directoryinputfield', {
+    templateUrl: 'components/common/forms/directory-input-field/directory-input-field.html',
+    controller: DirectoryInputFieldController,
     bindings: {
       model: '=',
       field: '<',
@@ -24,10 +24,10 @@ angular.
       name: '@',
       labelcols: '@',
       inputcols: '@',
-      onselectprojectsdirectory: '&',
+      onselectdirectory: '&',
       forbiddendirectory: '<'
     }
   });
 
 
-function ProjectsDirectoryInputFieldController() {}
+function DirectoryInputFieldController() {}

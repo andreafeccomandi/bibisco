@@ -16,7 +16,7 @@ angular.
   module('bibiscoApp').
   component('directoryselect', {
     templateUrl: 'components/common/forms/directory-select/directory-select.html',
-    controller: ProjectsDirectorySelectController,
+    controller: DirectorySelectController,
     bindings: {
       model: '=',
       field: '<',
@@ -27,7 +27,7 @@ angular.
   });
 
 
-function ProjectsDirectorySelectController() {
+function DirectorySelectController() {
 
   var remote = require('electron').remote;
   var dialog = remote.getGlobal('dialog');

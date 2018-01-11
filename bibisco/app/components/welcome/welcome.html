@@ -12,11 +12,11 @@
         <div ng-show="$ctrl.step==2">
 
           <p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
-          <projectsdirectoryselect model='$ctrl.selectedProjectsDirectory'
+          <directoryselect model='$ctrl.selectedProjectsDirectory'
           field='welcomeForm.projectsDirectory' name='projectsDirectory'
-          onselectprojectsdirectory='$ctrl.selectProjectsDirectory(directory)'
+          onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
           forbiddendirectory='$ctrl.forbiddenDirectory'>
-          </projectsdirectoryselect>
+          </directoryselect>
 
           <div class="bibiscoWelcomeWizardNotes">
             <p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>

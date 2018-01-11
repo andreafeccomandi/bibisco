@@ -1,9 +1,9 @@
 <div class="form-group">
   <label class="col-sm-{{$ctrl.labelcols}} control-label" for="{{$ctrl.label}}">{{$ctrl.label | translate}}</label>
   <div class="col-sm-{{$ctrl.inputcols}}">
-    <projectsdirectoryselect model='$ctrl.model' field='$ctrl.field'
-    name='{{$ctrl.name}}' onselectprojectsdirectory='$ctrl.onselectprojectsdirectory({directory: directory})'
+    <directoryselect model='$ctrl.model' field='$ctrl.field'
+    name='{{$ctrl.name}}' onselectdirectory='$ctrl.onselectdirectory({directory: directory})'
     forbiddendirectory='$ctrl.forbiddendirectory'>
-    </projectsdirectoryselect>
+    </directoryselect>
   </div>
 </div>
