@@ -45,6 +45,7 @@ function ExportToFormat($location, $routeParams,
     });
 
     self.saving = false;
+    self.exportpath;
   };
 
   self.export = function(isValid) {
@@ -52,9 +53,9 @@ function ExportToFormat($location, $routeParams,
       self.saving = true;
       $timeout(function () {
         if ($routeParams.format === 'pdf') {
-          ExportService.exportPdf();
+          ExportService.exportPdf(self.exportpath);
         } else if ($routeParams.format === 'docx') {
-          ExportService.exportWord();
+          ExportService.exportWord(self.exportpath);
         } else if ($routeParams.format === 'archive') {
           alert('export as archive!');
         }
