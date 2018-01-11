@@ -20,7 +20,7 @@ angular.
   });
 
 function ExportToFormat($location, $routeParams, 
-  $rootScope, $scope, ExportService) {
+  $rootScope, $scope, $timeout, ExportService, FileSystemService) {
 
   var self = this;
 
@@ -43,25 +43,34 @@ function ExportToFormat($location, $routeParams,
     self.breadcrumbitems.push({
       label: self.pageheadertitle
     });
+
+    self.saving = false;
   };
 
   self.export = function(isValid) {
-    if (isValid) {
-      if ($routeParams.format === 'pdf') {
-        ExportService.exportPdf();
-      } else if ($routeParams.format === 'docx') {
-        ExportService.exportWord();
-      } else if ($routeParams.format === 'archive') {
-        alert('export as archive!');
-      }
-      
-      $location.path('/project/export');
+    if (isValid && !self.forbiddenDirectory) {
+      self.saving = true;
+      $timeout(function () {
+        if ($routeParams.format === 'pdf') {
+          ExportService.exportPdf();
+        } else if ($routeParams.format === 'docx') {
+          ExportService.exportWord();
+        } else if ($routeParams.format === 'archive') {
+          alert('export as archive!');
+        }
+        $location.path('/project/export');
+      }, 250);
     }
   };
 
   self.selectProjectsDirectory = function (directory) {
     self.exportpath = directory;
-    self.forbiddenDirectory = false;
+    if (FileSystemService.canWriteDirectory(directory)) {
+      self.forbiddenDirectory = false;
+    } else {
+      self.forbiddenDirectory = true;
+    }
+    
     $scope.$apply();
   };
 

@@ -27,6 +27,17 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     basename: function(filepath) {
       return path.basename(filepath);
     },
+    canWriteDirectory: function (directoryPath) {
+      if (!directoryPath) {
+        return false;
+      }
+      let tempDirectoryPath = path.join(directoryPath, 'temp__' + Date.now());
+      let result = this.createDirectory(tempDirectoryPath);
+      if (result) {
+        this.deleteDirectory(tempDirectoryPath);
+      }
+      return result;
+    },
     concatPath: function(a, b) {
       return path.join(a, b);
     },

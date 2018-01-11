@@ -3,7 +3,8 @@
     class="btn btn-primary" 
     ng-click="$ctrl.enableeditmode()">{{"jsp.common.button.edit" | translate}}</button>
 
-<button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty" ng-click="$ctrl.save()">
+<button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" 
+    ng-disabled="!$ctrl.dirty" ng-click="$ctrl.save()">
     <span ng-if="$ctrl.saving">
         <i class="fa fa-circle-o-notch fa-spin"></i>
     </span>
