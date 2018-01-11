@@ -22,18 +22,18 @@ angular.
     }
   });
 
-function ExportController(ExportService) {
+function ExportController($location) {
   var self = this;
 
   self.exportPdf = function() {
-    ExportService.exportPdf();
+    $location.path('/exporttoformat/pdf');
   };
 
   self.exportWord = function () {
-    ExportService.exportWord();
+    $location.path('/exporttoformat/docx');
   };
 
   self.exportArchive = function () {
-    alert('Export as archive!');
+    $location.path('/exporttoformat/archive');
   };
 }

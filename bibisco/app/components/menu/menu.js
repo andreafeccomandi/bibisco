@@ -45,6 +45,12 @@ function MenuController($location, $rootScope) {
     self.disabled = true;
   });
 
+  // EXPORT SELECT DIRECTORY
+  $rootScope.$on('EXPORT_SELECT_DIRECTORY', function () {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW START EVENT
   $rootScope.$on('SHOW_START', function() {
     self.visible = false;

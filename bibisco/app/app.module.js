@@ -64,6 +64,9 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/error', {
           template: '<error></error>'
         }).
+        when('/exporttoformat/:format', {
+          template: '<exporttoformat></exporttoformat>'
+        }).
         when('/importproject', {
           template: '<importproject></importproject>'
         }).
