@@ -13,14 +13,14 @@
  *
  */
 
-angular.module('bibiscoApp').service('PdfService', function () {
+angular.module('bibiscoApp').service('PdfService', function (FileSystemService) {
   'use strict';
 
   var remote = require('electron').remote;
   var htmlparser = remote.getGlobal('htmlparser');
 
   pdfMake.fonts = {
-    courier: {
+    Courier: {
       normal: 'cour.ttf',
       bold: 'courbd.ttf',
       italics: 'couri.ttf',
@@ -31,62 +31,8 @@ angular.module('bibiscoApp').service('PdfService', function () {
   let paragraphmargin = [0, 0, 0, 10];
 
   return {
-    createFirstPdf: function() {
-    
-      var docDefinition = {
-        content: [
-          // if you don't need styles, you can use a simple string to define a paragraph
-          'This is a standard paragraph, using default style',
 
-          // using a { text: '...' } object lets you set styling properties
-          { text: 'Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.', fontSize: 15, alignment: 'justify' },
-
-          // using a { text: '...' } object lets you set styling properties
-          { text: 'Вы уверены, что хотите удалить эту сцену?', fontSize: 15, alignment: 'right' },
-
-          // if you set pass an array instead of a string, you'll be able
-          // to style any fragment individually
-          {
-            text: [
-              'This paragraph is defined as an array of elements to make it possible to ',
-              { text: 'restyle part of it and make it bigger ', fontSize: 15, bold: true},
-              { text: 'restyle part of it and make it bigger ', fontSize: 15, italics: true },
-              { text: 'restyle part of it and make it bigger ', fontSize: 15, decoration: 'underline', },
-              { text: 'restyle part of it and make it bigger ', fontSize: 15, bold: true, italics: true, decoration: 'underline' },
-              { text: 'Underline decoration', decoration: 'underline' },
-              { text: 'Underline as property', underline: true },
-              { text: 'Line Through decoration', decoration: 'lineThrough' },
-              { text: 'Overline decoration', decoration: 'overline' },
-              'than the rest.'
-            ], pageBreak: 'before', margin: [40, 40, 40, 40] 
-          }
-        ],
-        defaultStyle: {
-          font: 'courier'
-        }
-      };
-      
-      // download the PDF
-      pdfMake.createPdf(docDefinition).download('optionalName.pdf');   
-
-      // test createTextFromHtml
-      this.createTextFromHtml('Xyz <script type="text/javascript">var foo = "<<bar>>";</ script>');
-    },
-
-    createAndDownloadPdf: function(content) {
-
-      var docDefinition = {
-        content: content,
-        defaultStyle: {
-          font: 'courier'
-        }
-      };
-
-      // download the PDF
-      pdfMake.createPdf(docDefinition).download('export.pdf');  
-    },
-
-    createPdfFromHtml: function(html, createAndDownloadPdf) {
+    export: function (options) {
 
       let content = [];
       let currentList = [];
@@ -192,22 +138,23 @@ angular.module('bibiscoApp').service('PdfService', function () {
         },
 
         onend: function() {
-          createAndDownloadPdf(content);
+          var docDefinition = {
+            content: content,
+            defaultStyle: {
+              font: options.font
+            }
+          };
+          
+          let document = pdfMake.createPdf(docDefinition);
+          document.getBuffer(function (buffer) {
+            FileSystemService.writeFileSync(options.novelfilepath + '.pdf', buffer);
+            options.callback();
+          });
         }
       }, { decodeEntities: true });
 
-      parser.write(html);
+      parser.write(options.novelhtml);
       parser.end();
-    },
-
-    exportPdf: function() {
-      let html = '';
-      html += '<p>This is a standard paragraph, using default style</p>';
-      html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
-      html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
-      html += '<p>Questo è <i>occhio</i> <b>bello</b>, <b><i>questo</i></b> è suo fratello!</p> <p>Questa è la casina, questo è il campanello!</p> <p>Din, din din!</p>';
-      html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style=\"text-align: center;\">Questa riga è <b>centrata</b></p><p style=\"text-align: right;\">Questa <span style=\"background-color: rgb(255, 255, 0);\">riga è allineata</span> a destra</p><p style=\"text-align: justify;\">Questaa <strike>riga</strike> è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella.</p><p style=\"text-align: justify;\"><u>Questa <i>riga </i><strike><i>continua ad essere</i> giustificata</strike></u>, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style=\"text-align: left;\">Questa riga <i>torna</i> ad <u>essere <i>allineata <b>a</b></i><b> sinistra</b>, sinistra,</u> sinistra, sinistra. Molto bene.</p><p style=\"text-align: left;\"></p><ol><li>Galli</li><li>Tassotti, <i>terzino</i> destro.</li><li>Maldini, <u>terzino</u> sinistro.</li></ol><ul><li style=\"text-align: center;\"><i><b><u>Colombo</u></b></i></li><li style=\"text-align: right;\">Costacurta</li><li style=\"text-align: right;\">Baresi</li><li style=\"text-align: right;\">Donadoni</li></ul><p style=\"text-align: right;\">Che due palle! Ma perchè non</p><p style=\"text-align: right;\"><ul><li>si methane d\'accordo ?</li ></ul > <p style=\"text-align: justify;\">« Prove tecniche »</p><p style=\"text-align: left;\">— Di dialogo</p></p><p></p>';
-      this.createPdfFromHtml(html, this.createAndDownloadPdf);
     }
   };
 });

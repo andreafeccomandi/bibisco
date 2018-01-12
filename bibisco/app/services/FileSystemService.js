@@ -59,6 +59,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       }
       return result;
     },
+    createStream: function(stream, path) {
+      fs.createStream();
+    },
     deleteDirectory: function(path) {
       fs.removeSync(path);
     },
@@ -85,6 +88,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     unzip: function(zippedFilePath, destinationFolder, callback) {
       return zip.unzip(zippedFilePath, destinationFolder, callback);
+    },
+    writeFileSync: function(path, buffer) {
+      fs.writeFileSync(path, buffer);
     },
     zipFolder: function(folderToZip, zippedFilePath, callback) {
       return zip.zipFolder(folderToZip, zippedFilePath, callback);
