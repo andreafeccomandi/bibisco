@@ -46,6 +46,7 @@
     "lokijs": "^1.4.3",
     "moment": "^2.19.1",
     "ng-focus-if": "^1.0.7",
+    "pdfmake": "^0.1.35",
     "sanitize-html": "^1.14.1",
     "ui-select": "^0.19.6",
     "uuid": "^3.0.1",
