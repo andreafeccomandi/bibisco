@@ -28,7 +28,11 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
     }
   };
 
-  let paragraphmargin = [0, 0, 0, 10];
+  let pageMargins = [60, 100, 60, 100];
+  let exportitleMargins = [0, 280, 0, 10];
+  let h1Margins = [0, 0, 0, 10];
+  let h2Margins = [0, 10, 0, 10];
+  let paragraphMargins = [0, 0, 0, 10];
 
   return {
 
@@ -42,6 +46,9 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
       let underlineActive = false;
       let strikeActive = false;
       let alignment;
+      let h1counter = 0;
+      let h2counter = 0;
+      let leadingIndent = indent ? 30 : 0;
 
       var parser = new htmlparser.Parser({
 
@@ -53,6 +60,24 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           } else if (name === 'exportsubtitle') {
             currentText = [];
             boldActive = true;
+          } else if (name === 'h1') {
+            h1counter += 1;
+            currentText = [];
+            boldActive = true;
+            currentText.push({
+              text: h1counter+' ',
+              bold: true,
+              preserveLeadingSpaces: true
+            });
+          } else if (name === 'h2') {
+            h2counter += 1;
+            currentText = [];
+            italicsActive = true;
+            currentText.push({
+              text: h1counter + '.' + h2counter + ' ',
+              italics: true,
+              preserveLeadingSpaces: true
+            });
           } else if (name === 'ul' || name === 'ol') {
             currentList = [];
           } else if (name === 'p' || name === 'li') {
@@ -68,14 +93,6 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             } else if (attribs.style.indexOf('text-align: justify') > -1) {
               alignment = 'justify';
             }
-
-            // indent
-            currentText.push({
-              text: '   ',
-              bold: boldActive,
-              italics: italicsActive,
-              preserveLeadingSpaces: true
-            });
             
           } else if (name === 'b') {
             boldActive = true;
@@ -103,7 +120,9 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             bold: boldActive,
             italics: italicsActive,
             decoration: decoration,
-            preserveLeadingSpaces: true
+            preserveLeadingSpaces: true,
+            lineHeight: 1.5,
+            leadingIndent: leadingIndent
           });
         },
 
@@ -112,7 +131,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             content.push({
               text: currentText,
               alignment: 'center',
-              margin: [0, 350, 0, 10]
+              margin: exportitleMargins
             });
             currentText = [];
             boldActive = false;
@@ -120,10 +139,26 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             content.push({
               text: currentText,
               alignment: 'center',
-              margin: paragraphmargin
+              margin: paragraphMargins
             });
             currentText = [];
             boldActive = false;
+          } else if (name === 'h1') {
+            content.push({
+              text: currentText,
+              margin: h1Margins,
+              pageBreak: 'before'
+            });
+            currentText = [];
+            boldActive = false;
+            h2counter = 0;
+          } else if (name === 'h2') {
+            content.push({
+              text: currentText,
+              margin: h2Margins
+            });
+            currentText = [];
+            italicsActive = false;
           } else if (name === 'ul') {
             content.push({
               ul: currentList
@@ -138,14 +173,14 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             currentList.push({
               text: currentText,
               alignment: alignment,
-              margin: paragraphmargin
+              margin: paragraphMargins
             });
             currentText = [];
           } else if (name === 'p') {
             content.push({
               text: currentText,
               alignment: alignment,
-              margin: paragraphmargin
+              margin: paragraphMargins
             });
             currentText = [];
           }  else if (name === 'b') {
@@ -164,7 +199,8 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             content: content,
             defaultStyle: {
               font: font
-            }
+            },
+            pageMargins: pageMargins,
           };
           
           let document = pdfMake.createPdf(docDefinition);

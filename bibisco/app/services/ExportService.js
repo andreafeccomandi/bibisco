@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function (
-  $translate, DocxExporterService, FileSystemService, PdfExporterService, ProjectService) {
+  $translate, ArchitectureService, DocxExporterService, FileSystemService, 
+  PdfExporterService, ProjectService, StrandService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -32,21 +33,7 @@ angular.module('bibiscoApp').service('ExportService', function (
     },
 
     export: function (exportpath, exporter) {
-
-      // let html = '';
-      // html += '<h1>Questo è un titolo di primo livello</h1>';
-      // html += '<h2>Questo è un titolo di secondo livello</h2>';
-      // html += '<h3>Questo è un <i>titolo</i> <b>di</b> terzo livello</h3>';
-      // html += '<h4>Questo è un titolo di quarto livello</h4>';
-      // html += '<h5>Questo è un titolo di quinto livello</h5>';
-      // html += '<title>Questo è un title</title>';
-      // html += '<p>This is a <b>standard</b> <i>paragraph</i>, using default style</p>';
-      // html += '<p>Wtórna pierwsza osoba: historia jest opowiedziana z perpektywy pierwszej osoby przez drugorzędnego bohatera, który nie jest protagonistą relacjonującym wydarzenia. Ten punkt widzenia musi być stosowany, tylko jeżeli główni bohaterowie nie są świadomi swoich działań i dlatego nie są w stanie poprawnie opowiedzieć swojej historiii. Narrator nie zna myśli głównych bohaterów i może zrelacjonować tylko te wydarzenia, których był świadkiem.</p>';
-      // html += '<p>Вы уверены, что хотите удалить эту сцену?</p>';
-      // html += '<p>Questo è <i>occhio</i><b> bello</b> <b><i>questo</i></b> è suo fratello!</p><p>Questa è la casina, questo è il campanello!</p><p>Din, din din!</p>';
-      // html += '<p>Questa riga è allineata a sinistra,&nbsp;sinistra,&nbsp;sinistra, sinistra, sinistra.</p><p style="text-align: center;">Questa riga è <b>centrata</b></p><p style="text-align: right;">Questa <span style="background-color: rgb(255, 255, 0);">riga è allineata</span> a destra</p> <p style="text-align: justify;">Questaa <strike>riga</strike> è giustificata, <i>perchè</i>&nbsp;non si è presentata a scuola al suono della campanella. Che è sempre molto bella, snella, piella, biella, sella, <i>rella</i> <u>fella</u> previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing, previous, preceding, prior, former, precedent, foregoing</p><p style="text-align: justify;"><u>Questa <i>riga </i><strike><i>continua ad essere</i> giustificata</strike></u>, perchè è andata dal dottore e si è fatta <i>rilasciare</i> un certificato.</p><p style="text-align: left;">Questa riga <i>torna</i> ad <u>essere <i>allineata <b>a</b></i><b> sinistra</b>, sinistra,</u> sinistra, sinistra. Molto bene.</p><p style="text-align: left;"></p>';
-      // html += '<ol><li>Galli</li><li>Tassotti, <i>terzino</i> destro.</li><li>Maldini, <u>terzino</u> sinistro.</li></ol><ul><li style=\"text-align: center;\"><i><b><u>Colombo</u></b></i></li><li style=\"text-align: right;\">Costacurta</li><li style=\"text-align: right;\">Baresi</li><li style=\"text-align: right;\">Donadoni</li></ul><p style=\"text-align: right;\">Che due palle! Ma perchè non</p><p style=\"text-align: right;\"><ul><li>si methane d\'accordo ?</li ></ul > <p style=\"text-align: justify;\">« Prove tecniche »</p><p style=\"text-align: left;\">— Di dialogo</p></p><p></p>';
-      
+  
       // load translations
       this.loadTranslations();
 
@@ -85,6 +72,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       // subtitle
       html += this.createProjectSubtitle();
 
+      // architecture
+      html += this.createArchitecture();
+
       return html;
     },
 
@@ -112,6 +102,36 @@ angular.module('bibiscoApp').service('ExportService', function (
       return this.createTag('exportsubtitle', translations.export_project_subtitle);
     },
 
+    createArchitecture: function () {
+      let html = '';
+
+      html += this.createTag('h1', translations.common_architecture);
+
+      // premise
+      html += this.createTag('h2', translations.common_premise);
+      html += ArchitectureService.getPremise().text;
+
+      // fabula
+      html += this.createTag('h2', translations.common_fabula);
+      html += ArchitectureService.getFabula().text;
+
+      // settings
+      html += this.createTag('h2', translations.common_setting);
+      html += ArchitectureService.getSetting().text;
+
+      // strands
+      let strands = StrandService.getStrands();
+      if (strands && strands.length > 0) {
+        html += this.createTag('h1', translations.common_strands);
+        for (let i = 0; i < strands.length; i++) {
+          html += this.createTag('h2', strands[i].name);
+          html += strands[i].description;
+        }
+      }
+    
+      return html;
+    },
+
     createTag: function (tagname, content, attribs) {
       let html = '';
       html += '<' + tagname;
@@ -132,6 +152,11 @@ angular.module('bibiscoApp').service('ExportService', function (
 
     loadTranslations: function() {
       translations = $translate.instant([
+        'common_architecture',
+        'common_fabula',
+        'common_premise',
+        'common_setting',
+        'common_strands',
         'export_project_subtitle',
       ]);
     }

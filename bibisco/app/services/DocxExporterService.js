@@ -19,6 +19,13 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
   var remote = require('electron').remote;
   var htmlparser = remote.getGlobal('htmlparser');
   var docx = remote.getGlobal('docx');
+
+  let fontSize = 24; // font size, measured in half-points
+
+  let exportitlespacing = { before: 5000, after: 200, line: 350 };
+  let h1marginspacing = { after: 250, before: 250, line: 350 };
+  let h2marginspacing = { after: 250, before: 250, line: 350 };
+  let paragraphspacing = { after: 250, line: 350 };
   
   return {
   
@@ -31,13 +38,13 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
       let strikeActive = false;
       let orderedListActive = false;
       let unorderedListActive = false;
+      let h1counter = 0;
+      let h2counter = 0;
     
       const numbering = new docx.Numbering();
       const numberedAbstract = numbering.createAbstractNumbering();
       numberedAbstract.createLevel(0, 'decimal', '%1. ', 'left');
       const letterNumbering = numbering.createConcreteNumbering(numberedAbstract);
-
-      let fontSize = 24; // font size, measured in half-points
 
       // Create document
       let doc = new docx.Document();
@@ -49,34 +56,47 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
           if (name === 'exporttitle') {
             currentParagraph = new docx.Paragraph();
             currentParagraph.center();
-            currentParagraph.spacing({ before: 5000, after: 200 });
+            currentParagraph.spacing(exportitlespacing);
             boldActive = true;
+
           } else if (name === 'exportsubtitle') {
             currentParagraph = new docx.Paragraph();
             currentParagraph.center();
             boldActive = true;
+
+          } else if (name === 'h1') {
+            h1counter += 1;
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.pageBreak();
+            boldActive = true;
+            let currentText = new docx.TextRun(h1counter + ' ');
+            currentText.size(fontSize);
+            currentText.font(font);
+            currentText.bold();
+            currentParagraph.addRun(currentText);
+            currentParagraph.spacing(h1marginspacing);
+
+          } else if (name === 'h2') {
+            h2counter += 1;
+            currentParagraph = new docx.Paragraph();
+            italicsActive = true;
+            let currentText = new docx.TextRun(h1counter + '.' + h2counter + ' ');
+            currentText.size(fontSize);
+            currentText.font(font);
+            currentText.italic();
+            currentParagraph.addRun(currentText);
+            currentParagraph.spacing(h2marginspacing);
+
           } else if (name === 'ul') {
             unorderedListActive = true;
           } else if (name === 'ol') {
             orderedListActive = true;
-          } else if(name === 'h1') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.heading1();
-          } else if (name === 'h2') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.heading2();
-          } else if (name === 'h3') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.heading3();
-          } else if (name === 'h4') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.heading4();
           } else if (name === 'p' || name === 'li') {
 
             currentParagraph = new docx.Paragraph();
 
             // spacing
-            currentParagraph.spacing({ after: 100 });
+            currentParagraph.spacing(paragraphspacing);
             
             // alignment
             if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
@@ -142,6 +162,15 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             boldActive = false;
+          } else if (name === 'h1') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
+            boldActive = false;
+            h2counter = 0;
+          } else if (name === 'h2') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
+            italicsActive = false;
           } else if (name === 'ul') {
             unorderedListActive = false;
           } else if (name === 'ol') {
