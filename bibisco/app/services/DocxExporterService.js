@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('DocxService', function () {
+angular.module('bibiscoApp').service('DocxExporterService', function () {
   'use strict';
 
   var remote = require('electron').remote;
@@ -22,7 +22,7 @@ angular.module('bibiscoApp').service('DocxService', function () {
   
   return {
   
-    export: function (options) {
+    export: function (path, html, font, indent, callback) {
 
       let currentParagraph = null;
       let boldActive = false;
@@ -46,7 +46,16 @@ angular.module('bibiscoApp').service('DocxService', function () {
 
         onopentag: function (name, attribs) {
 
-          if (name === 'ul') {
+          if (name === 'exporttitle') {
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.center();
+            currentParagraph.spacing({ before: 5000, after: 200 });
+            boldActive = true;
+          } else if (name === 'exportsubtitle') {
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.center();
+            boldActive = true;
+          } else if (name === 'ul') {
             unorderedListActive = true;
           } else if (name === 'ol') {
             orderedListActive = true;
@@ -62,12 +71,6 @@ angular.module('bibiscoApp').service('DocxService', function () {
           } else if (name === 'h4') {
             currentParagraph = new docx.Paragraph();
             currentParagraph.heading4();
-          } else if (name === 'h5') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.heading5();
-          } else if (name === 'title') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.title();
           } else if (name === 'p' || name === 'li') {
 
             currentParagraph = new docx.Paragraph();
@@ -87,7 +90,7 @@ angular.module('bibiscoApp').service('DocxService', function () {
             }
 
             // indent
-            if (options.indent) {
+            if (indent) {
               currentParagraph.indent({ firstLine: 600 });
             }
 
@@ -113,10 +116,9 @@ angular.module('bibiscoApp').service('DocxService', function () {
         ontext: function (text) {
 
           if (currentParagraph) {
-
             let currentText = new docx.TextRun(text);
             currentText.size(fontSize);
-            currentText.font(options.font);
+            currentText.font(font);
  
             if (boldActive) {
               currentText.bold();
@@ -136,17 +138,15 @@ angular.module('bibiscoApp').service('DocxService', function () {
 
         onclosetag: function (name) {
 
-          if (name === 'ul') {
+          if (name === 'exporttitle' || name === 'exportsubtitle') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
+            boldActive = false;
+          } else if (name === 'ul') {
             unorderedListActive = false;
           } else if (name === 'ol') {
             orderedListActive = false;
-          } else if ( name === 'h1' ||
-            name === 'h2' ||
-            name === 'h3' ||
-            name === 'h4' ||
-            name === 'h5' ||
-            name === 'title' ||
-            name === 'p' || 
+          } else if ( name === 'p' || 
             name === 'li') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
@@ -163,14 +163,16 @@ angular.module('bibiscoApp').service('DocxService', function () {
 
         onend: function() {
           let exporter = new docx.LocalPacker(doc, undefined, undefined, numbering);
-          exporter.pack(options.novelfilepath + '.docx');
-          options.callback();
+          exporter.pack(path + '.docx');
+          if (callback) {
+            callback();
+          }
         }
       }, { decodeEntities: true });
 
       // replace all &nbsp; with white spaces
-      options.novelhtml = options.novelhtml.replace(/&nbsp;/g, ' ');
-      parser.write(options.novelhtml);
+      html = html.replace(/&nbsp;/g, ' ');
+      parser.write(html);
       parser.end();
     }
   };

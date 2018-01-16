@@ -619,7 +619,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Vedlejší postavy",
   "com.bibisco.manager.projectManager.strands": "Příběhové vlákna",
   "com.bibisco.manager.projectManager.chapter.reasons": "Důvod pro tuto kapitolu",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "- nový projekt -",
+  "export_project_subtitle": "- nový projekt -",
   "com.bibisco.manager.projectManager.physionomy": "Tělesná stránka",
   "com.bibisco.manager.projectManager.personaldata": "Osobní data",
   "com.bibisco.manager.projectManager.psychology": "Mentalita",

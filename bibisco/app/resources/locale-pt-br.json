@@ -619,7 +619,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Personagens secundários",
   "com.bibisco.manager.projectManager.strands": "Fios narrativos",
   "com.bibisco.manager.projectManager.chapter.reasons": "Razão para esse capítulo",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "- projeto de romance -",
+  "export_project_subtitle": "- projeto de romance -",
   "com.bibisco.manager.projectManager.physionomy": "Aspecto físico",
   "com.bibisco.manager.projectManager.personaldata": "Dados pessoais",
   "com.bibisco.manager.projectManager.psychology": "Psicologia",

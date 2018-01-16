@@ -651,7 +651,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Secondary characters",
   "com.bibisco.manager.projectManager.strands": "Narrative strands",
   "com.bibisco.manager.projectManager.chapter.reasons": "Reason for this chapter",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "- novel project -",
+  "export_project_subtitle": "- novel project -",
   "com.bibisco.manager.projectManager.physionomy": "Physical aspect",
   "com.bibisco.manager.projectManager.personaldata": "Personal data",
   "com.bibisco.manager.projectManager.psychology": "Psychology",

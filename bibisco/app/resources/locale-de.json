@@ -621,7 +621,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Nebencharaktere",
   "com.bibisco.manager.projectManager.strands": "Erzählstränge",
   "com.bibisco.manager.projectManager.chapter.reasons": "Zweck dieses Kapitels",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "– Romanprojekt –",
+  "export_project_subtitle": "– Romanprojekt –",
   "com.bibisco.manager.projectManager.physionomy": "Körperliche Merkmale",
   "com.bibisco.manager.projectManager.personaldata": "Persönliche Daten",
   "com.bibisco.manager.projectManager.psychology": "Psyche",

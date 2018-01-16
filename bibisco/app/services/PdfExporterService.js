@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('PdfService', function (FileSystemService) {
+angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemService) {
   'use strict';
 
   var remote = require('electron').remote;
@@ -32,7 +32,7 @@ angular.module('bibiscoApp').service('PdfService', function (FileSystemService) 
 
   return {
 
-    export: function (options) {
+    export: function (path, html, font, indent, callback) {
 
       let content = [];
       let currentList = [];
@@ -47,7 +47,13 @@ angular.module('bibiscoApp').service('PdfService', function (FileSystemService) 
 
         onopentag: function (name, attribs) {
 
-          if (name === 'ul' || name === 'ol') {
+          if (name === 'exporttitle') {
+            currentText = [];
+            boldActive = true;
+          } else if (name === 'exportsubtitle') {
+            currentText = [];
+            boldActive = true;
+          } else if (name === 'ul' || name === 'ol') {
             currentList = [];
           } else if (name === 'p' || name === 'li') {
             currentText = [];
@@ -102,7 +108,23 @@ angular.module('bibiscoApp').service('PdfService', function (FileSystemService) 
         },
 
         onclosetag: function (name) {
-          if (name === 'ul') {
+          if (name === 'exporttitle') {
+            content.push({
+              text: currentText,
+              alignment: 'center',
+              margin: [0, 350, 0, 10]
+            });
+            currentText = [];
+            boldActive = false;
+          } else if (name === 'exportsubtitle') {
+            content.push({
+              text: currentText,
+              alignment: 'center',
+              margin: paragraphmargin
+            });
+            currentText = [];
+            boldActive = false;
+          } else if (name === 'ul') {
             content.push({
               ul: currentList
             });
@@ -141,19 +163,22 @@ angular.module('bibiscoApp').service('PdfService', function (FileSystemService) 
           var docDefinition = {
             content: content,
             defaultStyle: {
-              font: options.font
+              font: font
             }
           };
           
           let document = pdfMake.createPdf(docDefinition);
           document.getBuffer(function (buffer) {
-            FileSystemService.writeFileSync(options.novelfilepath + '.pdf', buffer);
-            options.callback();
+            FileSystemService.writeFileSync(path + '.pdf', buffer);
+            if (callback) {
+              callback();
+            }
           });
         }
       }, { decodeEntities: true });
 
-      parser.write(options.novelhtml);
+      parser.write(html);
+
       parser.end();
     }
   };

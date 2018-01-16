@@ -666,7 +666,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Всторостепенные персонажи",
   "com.bibisco.manager.projectManager.strands": "Нити повествования",
   "com.bibisco.manager.projectManager.chapter.reasons": "Причины существования этой главы",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "- проект романа -",
+  "export_project_subtitle": "- проект романа -",
   "com.bibisco.manager.projectManager.physionomy": "Физические характеристики",
   "com.bibisco.manager.projectManager.personaldata": "Персональная информация",
   "com.bibisco.manager.projectManager.psychology": "Психология",

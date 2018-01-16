@@ -620,7 +620,7 @@
   "com.bibisco.manager.projectManager.secondaryCharacters": "Bohaterowie poboczni",
   "com.bibisco.manager.projectManager.strands": "Nici narracji",
   "com.bibisco.manager.projectManager.chapter.reasons": "Motywacja rodziału",
-  "com.bibisco.manager.projectManager.export.project.subtitle": "- novel project -",
+  "export_project_subtitle": "- novel project -",
   "com.bibisco.manager.projectManager.physionomy": "Aspekt fizyczny",
   "com.bibisco.manager.projectManager.personaldata": "Dane osobowe",
   "com.bibisco.manager.projectManager.psychology": "Psychologia",
