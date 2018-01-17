@@ -54,7 +54,7 @@ function QuestionSelectController($translate) {
   self.createQuestionItem = function (item) {
     let description = $translate.instant('jsp.characterInfo.question') 
       + ' (' + (item+1)  + '/' + self.questioncount
-      + '): ' + $translate.instant('characterInfo.question.' + self.type + '.' + item);
+      + '): ' + $translate.instant('characterInfo_question_' + self.type + '_' + item);
     return {
       key: item,
       description: description

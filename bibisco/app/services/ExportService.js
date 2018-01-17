@@ -21,6 +21,13 @@ angular.module('bibiscoApp').service('ExportService', function (
   const { shell } = require('electron');
   let dateFormat = require('dateformat');
   let translations;
+
+  const behaviors_questions_count = 12;
+  const ideas_questions_count = 18;
+  const personaldata_questions_count = 12;
+  const physionomy_questions_count = 24;
+  const psychology_questions_count = 62;
+  const sociology_questions_count = 10;
   
   return {
 
@@ -153,21 +160,33 @@ angular.module('bibiscoApp').service('ExportService', function (
       let html = '';
       // mainCharacters[i].$loki
       html += this.createTag('h2', mainCharacter.name);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'personaldata');
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'physionomy');
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'behaviors');
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology');
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas');
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'personaldata', personaldata_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'physionomy', physionomy_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'behaviors', behaviors_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology',psychology_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas', ideas_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology', sociology_questions_count);
      
       return html;
     },
 
-    createMainCharacterInfoWithQuestions: function (mainCharacter, info) {
+    createMainCharacterInfoWithQuestions: function (mainCharacter, info, questionsCount) {
+      
       let html = '';
-      let translation_key = 'common_' + info;
-
-      html += this.createTag('h3', translations[translation_key]);
+      html += this.createTag('h3', translations['common_' + info]);
+      
+      // freetext
+      if (mainCharacter[info].freetextenabled) {
+        html += mainCharacter[info].freetext;
+      } 
+      // questions
+      else {
+        for (let i = 0; i < questionsCount; i++) {
+          let question = '(' + (i+1) + '/' + questionsCount + ') ' + translations['characterInfo_question_' + info + '_' + i];
+          html += this.createTag('question', question);   
+          html += mainCharacter[info].questions[i].text;
+        }
+      }
       return html;
     },
 
@@ -190,8 +209,8 @@ angular.module('bibiscoApp').service('ExportService', function (
     },
 
     loadTranslations: function() {
-      translations = $translate.instant([
-        'common_architecture',
+      
+      let translationkeys = ['common_architecture',
         'common_behaviors',
         'common_fabula',
         'common_ideas',
@@ -204,8 +223,30 @@ angular.module('bibiscoApp').service('ExportService', function (
         'common_setting',
         'common_sociology',
         'common_strands',
-        'export_project_subtitle',
-      ]);
-    }
+        'export_project_subtitle'];
+
+      translationkeys.push.apply(translationkeys, 
+        this.addInfoQuestionsTranslationKeys('behaviors', behaviors_questions_count));
+      translationkeys.push.apply(translationkeys,
+        this.addInfoQuestionsTranslationKeys('ideas', ideas_questions_count));
+      translationkeys.push.apply(translationkeys,
+        this.addInfoQuestionsTranslationKeys('personaldata', personaldata_questions_count));
+      translationkeys.push.apply(translationkeys,
+        this.addInfoQuestionsTranslationKeys('physionomy', physionomy_questions_count));
+      translationkeys.push.apply(translationkeys,
+        this.addInfoQuestionsTranslationKeys('psychology', psychology_questions_count));
+      translationkeys.push.apply(translationkeys,
+        this.addInfoQuestionsTranslationKeys('sociology', sociology_questions_count));
+
+      translations = $translate.instant(translationkeys);
+    },
+
+    addInfoQuestionsTranslationKeys: function(info, questionNumber) {
+      let infoQuestionsTranslationKeys = [];
+      for (let i = 0; i < questionNumber; i++) {    
+        infoQuestionsTranslationKeys.push('characterInfo_question_' + info + '_' + i);
+      }
+      return infoQuestionsTranslationKeys;
+    } 
   };
 });

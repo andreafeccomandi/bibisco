@@ -98,6 +98,12 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentParagraph.addRun(currentText);
             currentParagraph.spacing(h3marginspacing);
 
+          } else if (name === 'question') {
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.spacing(paragraphspacing);
+            boldActive = true;
+            italicsActive = true;
+        
           } else if (name === 'ul') {
             unorderedListActive = true;
           } else if (name === 'ol') {
@@ -173,19 +179,29 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             boldActive = false;
+
           } else if (name === 'h1') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             boldActive = false;
             h2counter = 0;
+
           } else if (name === 'h2') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             italicsActive = false;
             h3counter = 0;
+
           } else if (name === 'h3') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
+
+          } else if (name === 'question') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
+            boldActive = false;
+            italicsActive = false;
+
           } else if (name === 'ul') {
             unorderedListActive = false;
           } else if (name === 'ol') {

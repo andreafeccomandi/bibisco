@@ -87,6 +87,10 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
               text: h1counter + '.' + h2counter + '.' + h3counter + ' ',
               preserveLeadingSpaces: true
             });
+          } else if (name === 'question') {
+            currentText = [];
+            boldActive = true;
+            italicsActive = true;
           } else if (name === 'ul' || name === 'ol') {
             currentList = [];
           } else if (name === 'p' || name === 'li') {
@@ -175,6 +179,14 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
               margin: h3Margins,
             });
             currentText = [];
+          } else if (name === 'question') {
+            content.push({
+              text: currentText,
+              margin: paragraphMargins
+            });
+            currentText = [];
+            boldActive = false;
+            italicsActive = false;
           } else if (name === 'ul') {
             content.push({
               ul: currentList
