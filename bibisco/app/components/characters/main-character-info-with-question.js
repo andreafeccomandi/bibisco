@@ -41,10 +41,10 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       href: '/maincharacters/' + $routeParams.id
     });
     self.breadcrumbitems.push({
-      label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
+      label: 'common_' + $routeParams.info
     });
 
-    self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info + '.title';
+    self.headertitle = 'common_' + $routeParams.info;
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
 
     self.autosaveenabled;

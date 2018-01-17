@@ -32,6 +32,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
   let exportitleMargins = [0, 280, 0, 10];
   let h1Margins = [0, 0, 0, 10];
   let h2Margins = [0, 10, 0, 10];
+  let h3Margins = [0, 0, 0, 10];
   let paragraphMargins = [0, 0, 0, 10];
 
   return {
@@ -48,6 +49,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
       let alignment;
       let h1counter = 0;
       let h2counter = 0;
+      let h3counter = 0;
       let leadingIndent = indent ? 30 : 0;
 
       var parser = new htmlparser.Parser({
@@ -76,6 +78,13 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             currentText.push({
               text: h1counter + '.' + h2counter + ' ',
               italics: true,
+              preserveLeadingSpaces: true
+            });
+          } else if (name === 'h3') {
+            h3counter += 1;
+            currentText = [];
+            currentText.push({
+              text: h1counter + '.' + h2counter + '.' + h3counter + ' ',
               preserveLeadingSpaces: true
             });
           } else if (name === 'ul' || name === 'ol') {
@@ -159,6 +168,13 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             });
             currentText = [];
             italicsActive = false;
+            h3counter = 0;
+          } else if (name === 'h3') {
+            content.push({
+              text: currentText,
+              margin: h3Margins,
+            });
+            currentText = [];
           } else if (name === 'ul') {
             content.push({
               ul: currentList

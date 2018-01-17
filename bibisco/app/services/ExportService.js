@@ -15,7 +15,7 @@
 
 angular.module('bibiscoApp').service('ExportService', function (
   $translate, ArchitectureService, DocxExporterService, FileSystemService, 
-  PdfExporterService, ProjectService, StrandService) {
+  MainCharacterService, PdfExporterService, ProjectService, StrandService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -75,6 +75,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       // architecture
       html += this.createArchitecture();
 
+      // main characters
+      html += this.createMainCharacters();
+
       return html;
     },
 
@@ -132,6 +135,42 @@ angular.module('bibiscoApp').service('ExportService', function (
       return html;
     },
 
+    createMainCharacters: function () {
+      let html = '';
+
+      let mainCharacters = MainCharacterService.getMainCharacters();
+      if (mainCharacters && mainCharacters.length > 0) {
+        html += this.createTag('h1', translations.common_main_characters);
+        for (let i = 0; i < mainCharacters.length; i++) {
+          html += this.createMainCharacter(mainCharacters[i]);          
+        }
+      }
+
+      return html;
+    },
+
+    createMainCharacter: function (mainCharacter) {
+      let html = '';
+      // mainCharacters[i].$loki
+      html += this.createTag('h2', mainCharacter.name);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'personaldata');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'physionomy');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'behaviors');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas');
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology');
+     
+      return html;
+    },
+
+    createMainCharacterInfoWithQuestions: function (mainCharacter, info) {
+      let html = '';
+      let translation_key = 'common_' + info;
+
+      html += this.createTag('h3', translations[translation_key]);
+      return html;
+    },
+
     createTag: function (tagname, content, attribs) {
       let html = '';
       html += '<' + tagname;
@@ -153,9 +192,17 @@ angular.module('bibiscoApp').service('ExportService', function (
     loadTranslations: function() {
       translations = $translate.instant([
         'common_architecture',
+        'common_behaviors',
         'common_fabula',
+        'common_ideas',
+        'common_main_characters',
+        'common_personaldata',
+        'common_physionomy',
         'common_premise',
+        'common_psychology',
+        'common_secondary_characters',
         'common_setting',
+        'common_sociology',
         'common_strands',
         'export_project_subtitle',
       ]);

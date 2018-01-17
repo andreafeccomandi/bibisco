@@ -25,6 +25,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
   let exportitlespacing = { before: 5000, after: 200, line: 350 };
   let h1marginspacing = { after: 250, before: 250, line: 350 };
   let h2marginspacing = { after: 250, before: 250, line: 350 };
+  let h3marginspacing = { after: 250, line: 350 };
   let paragraphspacing = { after: 250, line: 350 };
   
   return {
@@ -40,6 +41,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
       let unorderedListActive = false;
       let h1counter = 0;
       let h2counter = 0;
+      let h3counter = 0;
     
       const numbering = new docx.Numbering();
       const numberedAbstract = numbering.createAbstractNumbering();
@@ -86,6 +88,15 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentText.italic();
             currentParagraph.addRun(currentText);
             currentParagraph.spacing(h2marginspacing);
+
+          } else if (name === 'h3') {
+            h3counter += 1;
+            currentParagraph = new docx.Paragraph();
+            let currentText = new docx.TextRun(h1counter + '.' + h2counter + '.' + h3counter + ' ');
+            currentText.size(fontSize);
+            currentText.font(font);
+            currentParagraph.addRun(currentText);
+            currentParagraph.spacing(h3marginspacing);
 
           } else if (name === 'ul') {
             unorderedListActive = true;
@@ -171,6 +182,10 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             italicsActive = false;
+            h3counter = 0;
+          } else if (name === 'h3') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
           } else if (name === 'ul') {
             unorderedListActive = false;
           } else if (name === 'ol') {
