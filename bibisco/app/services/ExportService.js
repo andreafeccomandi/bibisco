@@ -166,7 +166,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology',psychology_questions_count);
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas', ideas_questions_count);
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology', sociology_questions_count);
-     
+      html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'lifebeforestorybeginning');
+      html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'conflict');
+      html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'evolutionduringthestory');
       return html;
     },
 
@@ -188,6 +190,13 @@ angular.module('bibiscoApp').service('ExportService', function (
         }
       }
       return html;
+    },
+
+    createMainCharacterInfoWithoutQuestions: function (mainCharacter, info) {
+      let html = '';
+      html += this.createTag('h3', translations['common_characters_' + info]);
+      html += mainCharacter[info].text;
+      return html; 
     },
 
     createTag: function (tagname, content, attribs) {
@@ -212,6 +221,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       
       let translationkeys = ['common_architecture',
         'common_behaviors',
+        'common_characters_conflict',
+        'common_characters_evolutionduringthestory',
+        'common_characters_lifebeforestorybeginning',
         'common_fabula',
         'common_ideas',
         'common_main_characters',
