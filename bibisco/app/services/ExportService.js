@@ -15,7 +15,8 @@
 
 angular.module('bibiscoApp').service('ExportService', function (
   $translate, ArchitectureService, DocxExporterService, FileSystemService, 
-  MainCharacterService, PdfExporterService, ProjectService, StrandService) {
+  MainCharacterService, PdfExporterService, ProjectService, SecondaryCharacterService,
+  StrandService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -84,6 +85,9 @@ angular.module('bibiscoApp').service('ExportService', function (
 
       // main characters
       html += this.createMainCharacters();
+
+      // secondary characters
+      html += this.createSecondaryCharacters();
 
       return html;
     },
@@ -197,6 +201,19 @@ angular.module('bibiscoApp').service('ExportService', function (
       html += this.createTag('h3', translations['common_characters_' + info]);
       html += mainCharacter[info].text;
       return html; 
+    },
+
+    createSecondaryCharacters: function () {
+      let html = '';
+      let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
+      if (secondaryCharacters && secondaryCharacters.length > 0) {
+        html += this.createTag('h1', translations.common_secondary_characters);
+        for (let i = 0; i < secondaryCharacters.length; i++) {
+          html += this.createTag('h2', secondaryCharacters[i].name);
+          html += secondaryCharacters[i].description;
+        }
+      }
+      return html;
     },
 
     createTag: function (tagname, content, attribs) {
