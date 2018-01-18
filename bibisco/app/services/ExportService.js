@@ -14,9 +14,9 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function (
-  $translate, ArchitectureService, ChapterService, DocxExporterService, FileSystemService, 
-  LocationService, MainCharacterService, PdfExporterService, ProjectService, 
-  SecondaryCharacterService, StrandService) {
+  $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, 
+  DocxExporterService, FileSystemService, LocationService, MainCharacterService, 
+  PdfExporterService, ProjectService, SecondaryCharacterService, StrandService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -45,10 +45,8 @@ angular.module('bibiscoApp').service('ExportService', function (
       // load translations
       this.loadTranslations();
 
-      // select font
-      //let font = 'Courier';
-      //let font = 'Arial';
-      let font = 'Times New Roman';
+      // font
+      let font = this.getFont();
 
       // indent
       let indent = true;
@@ -69,6 +67,17 @@ angular.module('bibiscoApp').service('ExportService', function (
       exporter.export(novelfilepath, novelhtml, font, indent, 
         exporter.export(projectfilepath, projecthtml, font, indent, 
           shell.showItemInFolder(exportpath)));
+    },
+
+    getFont: function() {
+      let font = BibiscoPropertiesService.getProperty('font');
+      if (font === 'courier') {
+        return 'Courier';
+      } else if (font === 'times') {
+        return 'Times New Roman';
+      } else if (font === 'arial') {
+        return 'Arial';
+      }
     },
 
     createProjectHtml: function () {
