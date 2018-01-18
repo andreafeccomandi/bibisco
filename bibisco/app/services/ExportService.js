@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function (
-  $translate, ArchitectureService, DocxExporterService, FileSystemService, 
+  $translate, ArchitectureService, DocxExporterService, FileSystemService, LocationService,
   MainCharacterService, PdfExporterService, ProjectService, SecondaryCharacterService,
   StrandService) {
   'use strict';
@@ -88,6 +88,9 @@ angular.module('bibiscoApp').service('ExportService', function (
 
       // secondary characters
       html += this.createSecondaryCharacters();
+
+      // locations
+      html += this.createLocations();
 
       return html;
     },
@@ -203,7 +206,7 @@ angular.module('bibiscoApp').service('ExportService', function (
       return html; 
     },
 
-    createSecondaryCharacters: function () {
+    createSecondaryCharacters: function() {
       let html = '';
       let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
       if (secondaryCharacters && secondaryCharacters.length > 0) {
@@ -216,7 +219,20 @@ angular.module('bibiscoApp').service('ExportService', function (
       return html;
     },
 
-    createTag: function (tagname, content, attribs) {
+    createLocations: function() {
+      let html = '';
+      let locations = LocationService.getLocations();
+      if (locations && locations.length > 0) {
+        html += this.createTag('h1', translations.common_locations);
+        for (let i = 0; i < locations.length; i++) {
+          html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
+          html += locations[i].description;
+        }
+      }
+      return html;
+    },
+
+    createTag: function(tagname, content, attribs) {
       let html = '';
       html += '<' + tagname;
       if (attribs && attribs.length > 0) {
@@ -243,6 +259,7 @@ angular.module('bibiscoApp').service('ExportService', function (
         'common_characters_lifebeforestorybeginning',
         'common_fabula',
         'common_ideas',
+        'common_locations',
         'common_main_characters',
         'common_personaldata',
         'common_physionomy',
