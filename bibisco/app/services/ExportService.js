@@ -46,9 +46,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       this.loadTranslations();
 
       // select font
-      let font = 'Courier';
+      //let font = 'Courier';
       //let font = 'Arial';
-      //let font = 'Times New Roman';
+      let font = 'Times New Roman';
 
       // indent
       let indent = true;

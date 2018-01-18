@@ -20,11 +20,23 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
   var htmlparser = remote.getGlobal('htmlparser');
 
   pdfMake.fonts = {
+    Arial: {
+      normal: 'arial.ttf',
+      bold: 'arialbd.ttf',
+      italics: 'ariali.ttf',
+      bolditalics: 'arialbi.ttf'
+    },
     Courier: {
       normal: 'cour.ttf',
       bold: 'courbd.ttf',
       italics: 'couri.ttf',
       bolditalics: 'courbi.ttf'
+    },
+    'Times New Roman': {
+      normal: 'times.ttf',
+      bold: 'timesbd.ttf',
+      italics: 'timesi.ttf',
+      bolditalics: 'timesbi.ttf'
     }
   };
 
