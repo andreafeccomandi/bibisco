@@ -49,7 +49,7 @@ angular.module('bibiscoApp').service('ExportService', function (
       let font = this.getFont();
 
       // indent
-      let indent = true;
+      let indent = (BibiscoPropertiesService.getProperty('indentParagraphEnabled') === 'true');
 
       // export timestamp
       let timestamp = dateFormat(new Date(), 'yyyymmddHHMMss');
