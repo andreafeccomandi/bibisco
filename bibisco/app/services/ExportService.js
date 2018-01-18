@@ -14,9 +14,9 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function (
-  $translate, ArchitectureService, DocxExporterService, FileSystemService, LocationService,
-  MainCharacterService, PdfExporterService, ProjectService, SecondaryCharacterService,
-  StrandService) {
+  $translate, ArchitectureService, ChapterService, DocxExporterService, FileSystemService, 
+  LocationService, MainCharacterService, PdfExporterService, ProjectService, 
+  SecondaryCharacterService, StrandService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -74,35 +74,23 @@ angular.module('bibiscoApp').service('ExportService', function (
     createProjectHtml: function () {
       let html = '';
 
-      // title
       html += this.createTitle();
-
-      // subtitle
       html += this.createProjectSubtitle();
-
-      // architecture
       html += this.createArchitecture();
-
-      // main characters
       html += this.createMainCharacters();
-
-      // secondary characters
       html += this.createSecondaryCharacters();
-
-      // locations
       html += this.createLocations();
-
+      html += this.createChaptersForProject();
+      
       return html;
     },
 
     createNovelHtml: function() {
       let html = '';
 
-      // title
       html += this.createTitle();
-
-      // subtitle
       html += this.createNovelSubtitle();
+      html += this.createChaptersForNovel();
 
       return html;
     },
@@ -232,6 +220,38 @@ angular.module('bibiscoApp').service('ExportService', function (
       return html;
     },
 
+    createChaptersForProject: function () {
+      let html = '';
+      let chapters = ChapterService.getChapters();
+      if (chapters && chapters.length > 0) {
+        html += this.createTag('h1', translations.common_chapters);
+        for (let i = 0; i < chapters.length; i++) {
+          html += this.createTag('h2', '#' + chapters[i].position + ' ' + chapters[i].title);
+          html += this.createTag('h3', translations.common_chapter_reason);
+          html += chapters[i].reason.text;
+          html += this.createTag('h3', translations.common_chapter_notes);
+          html += chapters[i].notes.text;
+        }
+      }
+      return html;
+    },
+
+    createChaptersForNovel: function () {
+      let html = '';
+      let chapters = ChapterService.getChapters();
+      if (chapters && chapters.length > 0) {
+        for (let i = 0; i < chapters.length; i++) {
+          html += this.createTag('h1', chapters[i].title);
+          let scenes = ChapterService.getScenes(chapters[i].$loki);
+          for (let j = 0; j < scenes.length; j++) {
+            html += scenes[j].revisions[scenes[j].revision].text;
+            html += this.createTag('p', '');
+          }
+        }
+      }
+      return html;
+    },
+
     createTag: function(tagname, content, attribs) {
       let html = '';
       html += '<' + tagname;
@@ -254,6 +274,9 @@ angular.module('bibiscoApp').service('ExportService', function (
       
       let translationkeys = ['common_architecture',
         'common_behaviors',
+        'common_chapter_notes',
+        'common_chapter_reason',
+        'common_chapters',
         'common_characters_conflict',
         'common_characters_evolutionduringthestory',
         'common_characters_lifebeforestorybeginning',
