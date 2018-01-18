@@ -23,9 +23,11 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
   let fontSize = 24; // font size, measured in half-points
 
   let exportitlespacing = { before: 5000, after: 200, line: 350 };
-  let h1marginspacing = { after: 250, before: 250, line: 350 };
+  let h1marginspacing = { after: 400, before: 0, line: 350 };
+  let h2marginspacing1st = { after: 250, before: 0, line: 350 };
   let h2marginspacing = { after: 250, before: 250, line: 350 };
-  let h3marginspacing = { after: 250, line: 350 };
+  let h3marginspacing1st = { after: 250, line: 350 };
+  let h3marginspacing = { after: 250, before: 250, line: 350 };
   let paragraphspacing = { after: 250, line: 350 };
   
   return {
@@ -87,7 +89,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentText.font(font);
             currentText.italic();
             currentParagraph.addRun(currentText);
-            currentParagraph.spacing(h2marginspacing);
+            currentParagraph.spacing(h2counter ===1 ? h2marginspacing1st : h2marginspacing);
 
           } else if (name === 'h3') {
             h3counter += 1;
@@ -96,7 +98,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentText.size(fontSize);
             currentText.font(font);
             currentParagraph.addRun(currentText);
-            currentParagraph.spacing(h3marginspacing);
+            currentParagraph.spacing(h3counter === 1 ? h3marginspacing1st : h3marginspacing);
 
           } else if (name === 'question') {
             currentParagraph = new docx.Paragraph();

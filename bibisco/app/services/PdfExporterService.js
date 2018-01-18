@@ -30,9 +30,11 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
 
   let pageMargins = [60, 100, 60, 100];
   let exportitleMargins = [0, 280, 0, 10];
-  let h1Margins = [0, 0, 0, 10];
-  let h2Margins = [0, 10, 0, 10];
-  let h3Margins = [0, 0, 0, 10];
+  let h1Margins = [0, 0, 0, 20];
+  let h2Margins1st = [0, 0, 0, 10];
+  let h2Margins = [0, 15, 0, 10];
+  let h3Margins1st = [0, 0, 0, 10];
+  let h3Margins = [0, 10, 0, 10];
   let paragraphMargins = [0, 0, 0, 10];
 
   return {
@@ -168,7 +170,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           } else if (name === 'h2') {
             content.push({
               text: currentText,
-              margin: h2Margins
+              margin: h2counter === 1 ? h2Margins1st : h2Margins
             });
             currentText = [];
             italicsActive = false;
@@ -176,7 +178,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           } else if (name === 'h3') {
             content.push({
               text: currentText,
-              margin: h3Margins,
+              margin: h3counter === 1 ? h3Margins1st : h3Margins,
             });
             currentText = [];
           } else if (name === 'question') {
