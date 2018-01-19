@@ -33,15 +33,15 @@ angular.module('bibiscoApp').service('ExportService', function (
   
   return {
 
-    exportPdf: function (exportpath) {
-      this.export(exportpath, PdfExporterService);
+    exportPdf: function (exportpath, callback) {
+      this.export(exportpath, PdfExporterService, callback);
     },
 
-    exportWord: function (exportpath) {
-      this.export(exportpath, DocxExporterService);
+    exportWord: function (exportpath, callback) {
+      this.export(exportpath, DocxExporterService, callback);
     },
 
-    export: function (exportpath, exporter) {
+    export: function (exportpath, exporter, callback) {
   
       // load translations
       this.loadTranslations();
@@ -67,8 +67,13 @@ angular.module('bibiscoApp').service('ExportService', function (
       let projecthtml = this.createProjectHtml();
 
       exporter.export(novelfilepath, novelhtml, font, indent, 
-        exporter.export(projectfilepath, projecthtml, font, indent, 
-          shell.showItemInFolder(exportpath)));
+        function() {
+          exporter.export(projectfilepath, projecthtml, font, indent,
+            function () {
+              shell.showItemInFolder(exportpath);
+              callback();
+            }); 
+        });
     },
 
     getFont: function() {

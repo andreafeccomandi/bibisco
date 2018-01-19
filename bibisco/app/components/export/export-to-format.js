@@ -53,16 +53,22 @@ function ExportToFormat($location, $routeParams,
       self.saving = true;
       $timeout(function () {
         if ($routeParams.format === 'pdf') {
-          ExportService.exportPdf(self.exportpath);
+          ExportService.exportPdf(self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'docx') {
-          ExportService.exportWord(self.exportpath);
+          ExportService.exportWord(self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'archive') {
           alert('export as archive!');
         }
-        $location.path('/project/export');
+        
       }, 250);
     }
-  };
+  },
+
+  self.exportCallback = function() {
+    $timeout(function () {
+      $location.path('/project/export');
+    }, 0);
+  },
 
   self.selectProjectsDirectory = function (directory) {
     self.exportpath = directory;
