@@ -16,7 +16,8 @@
 angular.module('bibiscoApp').service('ExportService', function (
   $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, 
   DocxExporterService, FileSystemService, LocationService, MainCharacterService, 
-  PdfExporterService, ProjectService, SecondaryCharacterService, StrandService) {
+  PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
+  UtilService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -54,13 +55,14 @@ angular.module('bibiscoApp').service('ExportService', function (
       // export timestamp
       let timestamp = dateFormat(new Date(), 'yyyymmddHHMMss');
       
-      // novel
-      let novelfilename = 'novel_' + timestamp;
+      // novelcd 
+      let name = UtilService.string.slugify(ProjectService.getProjectInfo().name, '_');
+      let novelfilename = name + '_novel_' + timestamp;
       let novelfilepath = FileSystemService.concatPath(exportpath, novelfilename);
       let novelhtml = this.createNovelHtml();
       
       // project
-      let projectfilename = 'project_' + timestamp;
+      let projectfilename = name + '_project_' + timestamp;
       let projectfilepath = FileSystemService.concatPath(exportpath, projectfilename);
       let projecthtml = this.createProjectHtml();
 
