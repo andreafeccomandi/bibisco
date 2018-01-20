@@ -57,9 +57,8 @@ function ExportToFormat($location, $routeParams,
         } else if ($routeParams.format === 'docx') {
           ExportService.exportWord(self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'archive') {
-          alert('export as archive!');
+          ExportService.exportArchive(self.exportpath, self.exportCallback);
         }
-        
       }, 250);
     }
   },

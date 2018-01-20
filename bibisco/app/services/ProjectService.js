@@ -199,16 +199,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
       FileSystemService.copyFileToDirectory(tempProjectPath,
         projectsDirectoryPath);
     },
-    export: function(callback) {
-      LoggerService.debug('***** Start ProjectService.export...');
-      let projectId = '55c41472-aa6d-41bc-930e-29c0014e9351';
-      let projectPath = ProjectDbConnectionService.calculateProjectPath(
-        projectId);
-      FileSystemService.zipFolder(projectPath,
-        '/Users/andreafeccomandi/Documents/export/' + projectId +
-        '.bibisco2', callback);
-      LoggerService.debug('***** End ProjectService.export...');
+
+    export: function (exportPath, callback) {
+      let projectId = this.getProjectInfo().id;
+      let projectPath = ProjectDbConnectionService.calculateProjectPath(projectId);
+      FileSystemService.zipFolder(projectPath, exportPath + '.bibisco2', callback);
     },
+
     syncProjectDirectoryWithBibiscoDb: function() {
       LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
 

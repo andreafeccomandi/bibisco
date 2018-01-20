@@ -41,6 +41,21 @@ angular.module('bibiscoApp').service('ExportService', function (
       this.export(exportpath, DocxExporterService, callback);
     },
 
+    exportArchive: function (exportpath, callback) {
+      let archivefilepath = this.calculateExportFilePath(exportpath, 'archive', new Date());
+      ProjectService.export(archivefilepath, function () {
+        shell.showItemInFolder(exportpath);
+        callback();
+      });
+    },
+
+    calculateExportFilePath: function (exportpath, type, timestamp) {
+      let timestampFormatted = dateFormat(timestamp, 'yyyy_mm_dd_HH_MM_ss');
+      let name = UtilService.string.slugify(ProjectService.getProjectInfo().name, '_');
+      let filename = name + '_' + type + '_' + timestampFormatted;
+      return FileSystemService.concatPath(exportpath, filename);
+    },
+
     export: function (exportpath, exporter, callback) {
   
       // load translations
@@ -53,17 +68,14 @@ angular.module('bibiscoApp').service('ExportService', function (
       let indent = (BibiscoPropertiesService.getProperty('indentParagraphEnabled') === 'true');
 
       // export timestamp
-      let timestamp = dateFormat(new Date(), 'yyyymmddHHMMss');
+      let timestamp = new Date();
       
-      // novelcd 
-      let name = UtilService.string.slugify(ProjectService.getProjectInfo().name, '_');
-      let novelfilename = name + '_novel_' + timestamp;
-      let novelfilepath = FileSystemService.concatPath(exportpath, novelfilename);
+      // novel
+      let novelfilepath = this.calculateExportFilePath(exportpath, 'novel', timestamp);
       let novelhtml = this.createNovelHtml();
       
       // project
-      let projectfilename = name + '_project_' + timestamp;
-      let projectfilepath = FileSystemService.concatPath(exportpath, projectfilename);
+      let projectfilepath = this.calculateExportFilePath(exportpath, 'project', timestamp);
       let projecthtml = this.createProjectHtml();
 
       exporter.export(novelfilepath, novelhtml, font, indent, 
