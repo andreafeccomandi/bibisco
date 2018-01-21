@@ -112,6 +112,9 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/openproject', {
           template: '<openproject></openproject>'
         }).
+        when('/project/title', {
+          template: '<projecttitle></projecttitle>'
+        }).
         when('/project/:item', {
           template: '<project></project>'
         }).

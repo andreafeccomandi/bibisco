@@ -33,7 +33,7 @@ function ProjectHomeController($location, $rootScope, ContextMenuService,
     self.actionitems.push({
       label: 'jsp.project.button.updateTitle',
       itemfunction: function() {
-        alert('Change project name!');
+        $location.path('/project/title');
       }
     });
   };
@@ -46,6 +46,4 @@ function ProjectHomeController($location, $rootScope, ContextMenuService,
     $location.path('/start');
     ContextMenuService.destroy();
   };
-
-  
 }

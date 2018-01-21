@@ -278,6 +278,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectInfo.lastScenetimeTag = time;
       CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
+    },
+
+    updateProjectName: function (name) {
+      let projectInfo = this.getProjectInfo();
+      projectInfo.name = name;
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
     }
   };
 });
