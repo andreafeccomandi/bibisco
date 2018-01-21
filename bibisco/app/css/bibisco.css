@@ -201,7 +201,7 @@ h3 {
 }
 
 .page-header-truncate-title {
-  width: calc(100% - 250px);
+  width: calc(100% - 300px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -558,6 +558,16 @@ h3 {
 
 .bibiscoRichTextEditorSettings-arial {
 	font-family: Helvetica, Arial, sans-serif;
+}
+
+/* PROJECT HOME */
+.project-motivational h1 {
+	margin-top: 0px;
+}
+
+.project-motivational p {
+	margin-top: 30px;
+	margin-bottom: 0px;
 }
 
 /* CHARACTER INFO */

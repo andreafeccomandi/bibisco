@@ -21,6 +21,9 @@ angular.
       buttonlabel: '@',
       buttonfunction: '&',
       buttonshow: '<',
+      buttonstyle: '@', 
+      dropdownitems: '<',
+      dropdownopen: '@',
       headertitle: '@',
       headersubtitle: '@',
       taskstatus: '<',
@@ -31,4 +34,12 @@ angular.
   });
 
 
-function PageHeaderController() {}
+function PageHeaderController() {
+  var self = this;
+
+  self.$onInit = function () {
+    if (!self.buttonstyle) {
+      self.buttonstyle = 'primary';
+    }
+  };
+}

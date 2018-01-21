@@ -27,6 +27,17 @@ function ProjectHomeController($location, $rootScope, ContextMenuService,
   
   var self = this;
 
+  self.$onInit = function () {
+    // action items
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'jsp.project.button.updateTitle',
+      itemfunction: function() {
+        alert('Change project name!');
+      }
+    });
+  };
+
   self.project = function() {
     return ProjectService.getProjectInfo();
   };

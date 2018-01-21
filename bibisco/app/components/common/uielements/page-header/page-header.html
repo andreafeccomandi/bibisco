@@ -3,7 +3,12 @@
         {{$ctrl.headertitle | translate}}
       </span>
     <span ng-if="$ctrl.buttonshow" class="pull-right">
-      <button type="button" class="btn btn-primary"
+      <dropdownmenu buttonlabel="jsp.common.button.more" 
+        items="$ctrl.dropdownitems" 
+        open="{{$ctrl.dropdownopen}}"
+        visible="$ctrl.dropdownitems && $ctrl.dropdownitems.length > 0">
+      </dropdownmenu>
+      <button type="button" class="btn btn-{{$ctrl.buttonstyle}}"
         ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
     </span>
     <span ng-if="$ctrl.taskstatus" class="pull-right">
