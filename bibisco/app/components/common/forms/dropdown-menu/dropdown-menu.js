@@ -20,8 +20,18 @@ angular.
     bindings: {
       buttonlabel: '@',
       items: '<',
+      open: '@',
       visible: '<'
     }
   });
 
-function DropdownmenuController() {}
+function DropdownmenuController() {
+  var self = this;
+
+  self.$onInit = function () {
+    self.direction = '';
+    if (self.open === 'up') {
+      self.direction = 'dropup';
+    } 
+  };
+}

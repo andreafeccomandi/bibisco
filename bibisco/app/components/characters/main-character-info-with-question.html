@@ -53,7 +53,10 @@
         </interviewswitch>
       </span>
       <span class="pull-right">
-        <dropdownmenu buttonlabel="jsp.common.button.more" items="$ctrl.actionitems" visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
+        <dropdownmenu buttonlabel="jsp.common.button.more" 
+          items="$ctrl.actionitems" 
+          open="up"
+          visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
         <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
