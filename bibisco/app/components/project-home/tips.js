@@ -14,39 +14,34 @@
  */
 angular.
   module('bibiscoApp').
-  component('projecthome', {
-    templateUrl: 'components/project-home/project-home.html',
+  component('tips', {
+    templateUrl: 'components/project-home/tips.html',
     controller: TipsController,
     bindings: {
 
     }
   });
 
-function TipsController($location, ContextMenuService, ProjectService) {
+function TipsController($location, $rootScope) {
   
   var self = this;
 
   self.$onInit = function () {
-    // action items
-    self.actionitems = [];
-    self.actionitems.push({
-      label: 'jsp.project.button.updateTitle',
-      itemfunction: function() {
-        $location.path('/project/title');
-      }
+    
+    $rootScope.$emit('SHOW_TIPS');
+
+    self.breadcrumbitems = [];
+    self.breadcrumbitems.push({
+      label: 'jsp.menu.project',
+      href: '/project/projecthome'
     });
-  };
+    self.breadcrumbitems.push({
+      label: 'jsp.project.dialog.title.suggestions'
+    });
 
-  self.project = function() {
-    return ProjectService.getProjectInfo();
-  };
-
-  self.showTips = function() {
-    $location.path('/project/tips');
   };
 
   self.back = function() {
-    $location.path('/start');
-    ContextMenuService.destroy();
+    $location.path('/project/projecthome');
   };
 }

@@ -19,7 +19,7 @@ angular.
     controller: projectTitleController
   });
 
-function projectTitleController($location, $routeParams, ProjectService) {
+function projectTitleController(ProjectService) {
 
   var self = this;
 

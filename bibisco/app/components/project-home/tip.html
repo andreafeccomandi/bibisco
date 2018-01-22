@@ -1,0 +1,15 @@
+<li ng-class="{ 'timeline-inverted' : $ctrl.even}">
+    <div class="timeline-badge primary">
+        <i class="glyphicon glyphicon-check"></i>
+    </div>
+    <div class="timeline-panel">
+        <div class="timeline-heading">
+            <h4 class="timeline-title">{{$ctrl.title | translate}}</h4>
+        </div>
+        <div class="timeline-body">
+            <p ng-repeat="paragraph in $ctrl.paragraphshtml" 
+                 ng-bind-html="paragraph"></p>
+        </div>
+    </div>
+</li>
+            

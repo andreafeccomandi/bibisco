@@ -93,6 +93,12 @@ function MenuController($location, $rootScope) {
     self.disabled = false;
   });
 
+  // SHOW TIPS
+  $rootScope.$on('SHOW_TIPS', function () {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW WELCOME EVENT
   $rootScope.$on('SHOW_WELCOME', function() {
     self.visible = false;
