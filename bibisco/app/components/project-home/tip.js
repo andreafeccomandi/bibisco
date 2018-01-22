@@ -30,8 +30,8 @@ function TipController($translate) {
 
   self.$onInit = function () {
     self.paragraphshtml = [];
-    for (let i = 0; i < self.paragraphs.length; i++) {
-      self.paragraphshtml.push($translate.instant(self.paragraphs[i]));
+    for (let i = 1; i <= self.paragraphs; i++) {
+      self.paragraphshtml.push($translate.instant('jsp.suggestions.'+self.type+'.p'+i));
     }
   };
 }
