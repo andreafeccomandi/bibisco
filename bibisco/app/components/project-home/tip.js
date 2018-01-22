@@ -19,8 +19,9 @@ angular.
     controller: TipController,
     bindings: {
       even: '<',
+      icon: '@',
       paragraphs: '<',
-      title: '@'
+      type: '@'
     }
   });
 

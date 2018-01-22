@@ -884,24 +884,28 @@ h3 {
 	right: auto;
 }
 
-.timeline-badge.primary {
-    background-color: #2e6da4 !important;
+.tips-characters {
+	background-color: #004586 !important;
 }
 
-.timeline-badge.success {
-    background-color: #3f903f !important;
+.tips-conflict {
+   background-color: #FF420E !important;
 }
 
-.timeline-badge.warning {
-    background-color: #f0ad4e !important;
+.tips-premise {
+    background-color: #FFD320 !important;
 }
 
-.timeline-badge.danger {
-    background-color: #d9534f !important;
+.tips-setting {
+    background-color: #579D1C !important;
 }
 
-.timeline-badge.info {
-    background-color: #5bc0de !important;
+.tips-fabula {
+   background-color: #4B1F6F !important;
+}
+
+.tips-pointofview {
+	background-color: #0084D1 !important;
 }
 
 .timeline-title {
