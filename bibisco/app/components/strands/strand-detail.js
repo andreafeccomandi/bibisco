@@ -19,7 +19,8 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, StrandService) {
+function StrandDetailController($location, $routeParams, ChapterService, 
+  StrandService, UtilService) {
 
   var self = this;
 
@@ -35,6 +36,8 @@ function StrandDetailController($location, $routeParams, StrandService) {
     self.breadcrumbitems.push({
       label: self.strand.name
     });
+
+    self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.back = function() {
@@ -62,5 +65,25 @@ function StrandDetailController($location, $routeParams, StrandService) {
 
   self.savefunction = function() {
     StrandService.update(self.strand);
+  };
+
+  self.isDeleteForbidden = function () {
+
+    let deleteForbidden = false;
+    let id = self.strand.$loki;
+    let chapters = ChapterService.getChapters();
+    for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
+      let scenes = ChapterService.getScenes(chapters[i].$loki);
+      for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
+        let revisions = scenes[j].revisions;
+        for (let h = 0; h < revisions.length && !deleteForbidden; h++) {
+          if (UtilService.array.contains(revisions[h].scenestrands, id)) {
+            deleteForbidden = true;
+          }
+        }
+      }
+    }
+
+    return deleteForbidden;
   };
 }
