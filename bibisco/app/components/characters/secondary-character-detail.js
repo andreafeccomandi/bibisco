@@ -20,7 +20,7 @@ angular.
   });
 
 function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
-  SecondaryCharacterService) {
+  ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
 
@@ -36,6 +36,8 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
+
+    self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.back = function() {
@@ -68,5 +70,26 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
   self.showimagesfunction = function() {
     $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/images');
+  };
+
+  self.isDeleteForbidden = function() {
+
+    let deleteForbidden = false;
+    let id = 's_' + self.secondarycharacter.$loki;
+    let chapters = ChapterService.getChapters();
+    for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
+      let scenes = ChapterService.getScenes(chapters[i].$loki);
+      for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
+        let revisions = scenes[j].revisions;
+        for (let h = 0; h < revisions.length && !deleteForbidden; h++) {
+          if (UtilService.array.contains(revisions[h].scenecharacters, id) ||
+            revisions[h].povcharacterid === id) {
+            deleteForbidden = true;
+          }
+        }
+      }
+    }
+
+    return deleteForbidden;
   };
 }
