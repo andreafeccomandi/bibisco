@@ -19,7 +19,8 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, LocationService) {
+function LocationDetailController($location, $routeParams, ChapterService, 
+  LocationService) {
 
   var self = this;
 
@@ -37,6 +38,7 @@ function LocationDetailController($location, $routeParams, LocationService) {
       label: self.name
     });
   
+    self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.back = function() {
@@ -68,5 +70,25 @@ function LocationDetailController($location, $routeParams, LocationService) {
 
   self.showimagesfunction = function() {
     $location.path('/locations/' + self.location.$loki + '/images');
+  };
+
+  self.isDeleteForbidden = function () {
+
+    let deleteForbidden = false;
+    let id = self.location.$loki;
+    let chapters = ChapterService.getChapters();
+    for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
+      let scenes = ChapterService.getScenes(chapters[i].$loki);
+      for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
+        let revisions = scenes[j].revisions;
+        for (let h = 0; h < revisions.length && !deleteForbidden; h++) {
+          if (revisions[h].locationid === id) {
+            deleteForbidden = true;
+          }
+        }
+      }
+    }
+
+    return deleteForbidden;
   };
 }
