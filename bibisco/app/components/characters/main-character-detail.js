@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterDetailController($location, $rootScope, $routeParams,
-  MainCharacterService, PopupBoxesService) {
+  ChapterService, MainCharacterService, PopupBoxesService, UtilService) {
 
   var self = this;
 
@@ -29,6 +29,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.maincharacter = self.getMainCharacter($routeParams.id);
+    self.deleteforbidden = self.isDeleteForbidden();
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -49,6 +50,13 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
       label: 'jsp.common.button.delete',
       itemfunction: function () {
         PopupBoxesService.confirm(self.delete, 'jsp.characters.delete.confirm');
+      },
+      itemfunction: function () {
+        if (self.deleteforbidden) {
+          PopupBoxesService.alert('jsp.characters.delete.ko');
+        } else {
+          PopupBoxesService.confirm(self.delete, 'jsp.characters.delete.confirm');
+        }
       }
     });
 
@@ -90,5 +98,26 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
   self.showInfoWithoutQuestion = function (id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
       '/infowithoutquestion/' + id);
+  };
+
+  self.isDeleteForbidden = function () {
+
+    let deleteForbidden = false;
+    let id = 'm_' + self.maincharacter.$loki;
+    let chapters = ChapterService.getChapters();
+    for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
+      let scenes = ChapterService.getScenes(chapters[i].$loki);
+      for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
+        let revisions = scenes[j].revisions;
+        for (let h = 0; h < revisions.length && !deleteForbidden; h++) {
+          if (UtilService.array.contains(revisions[h].scenecharacters, id) ||
+            revisions[h].povcharacterid === id) {
+            deleteForbidden = true;
+          }
+        }
+      }
+    }
+
+    return deleteForbidden;
   };
 }
