@@ -23,10 +23,4 @@ angular.
     }
   });
 
-function ProjectExplorerMainCharacterInfoController() {
-
-  var self = this;
-
-  self.$onInit = function () {
-  };
-}
+function ProjectExplorerMainCharacterInfoController() {}
