@@ -161,7 +161,7 @@ app.on('ready', function() {
 
 function initLogger() {
   const logger = require('winston');
-  logger.level = (env === 'development' ? 'info' : 'info');
+  logger.level = (env === 'development' ? 'debug' : 'info');
   logger.add(logger.transports.File, {
     filename: './logs/bibisco.log',
     json: false,
