@@ -18,32 +18,33 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
 ) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'architecture');
-
   return {
     getArchitectureItem: function(id) {
-      return collection.findOne({
+      return this.getCollection().findOne({
         type: id
       });
     },
+    getCollection: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'architecture');
+    },
     getFabula: function() {
-      return collection.findOne({
+      return this.getCollection().findOne({
         type: 'fabula'
       });
     },
     getPremise: function() {
-      return collection.findOne({
+      return this.getCollection().findOne({
         type: 'premise'
       });
     },
     getSetting: function() {
-      return collection.findOne({
+      return this.getCollection().findOne({
         type: 'setting'
       });
     },
     update: function(architectureItem) {
-      CollectionUtilService.update(collection, architectureItem);
+      CollectionUtilService.update(this.getCollection(), architectureItem);
     }
   };
 });

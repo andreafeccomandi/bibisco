@@ -18,11 +18,6 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
 ) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'maincharacters');
-  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
-    collection, 'all_maincharacters');
-
   return {
     addImage: function (id, name, path) {
       let filename = ImageService.addImageToProject(path);
@@ -36,7 +31,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
         filename: filename
       });
       maincharacter.images = images;
-      CollectionUtilService.update(collection, maincharacter);
+      CollectionUtilService.update(this.getCollection(), maincharacter);
     },
     calculateStatus: function (maincharacter) {
       let result;
@@ -88,18 +83,25 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       }
       images.splice(imageToRemovePosition, 1);
       maincharacter.images = images;
-      CollectionUtilService.update(collection, maincharacter);
+      CollectionUtilService.update(this.getCollection(), maincharacter);
 
       return maincharacter;
     },
+    getCollection: function() { 
+      return ProjectDbConnectionService.getProjectDb().getCollection('maincharacters');
+    },
+    getDynamicView: function() {
+      return CollectionUtilService.getDynamicViewSortedByPosition(
+        this.getCollection(), 'all_maincharacters');
+    }, 
     getMainCharacter: function(id) {
-      return collection.get(id);
+      return this.getCollection().get(id);
     },
     getMainCharactersCount: function() {
-      return collection.count();
+      return this.getCollection().count();
     },
     getMainCharacters: function() {
-      return dynamicView.data();
+      return this.getDynamicView().data();
     },
     insert: function(maincharacter) {
 
@@ -135,7 +137,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       maincharacter.images = images;
 
       // insert character
-      maincharacter = CollectionUtilService.insert(collection, maincharacter);
+      maincharacter = CollectionUtilService.insert(this.getCollection(), maincharacter);
     },
 
     createInfoWithQuestions: function(type) {
@@ -191,15 +193,15 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     },
     
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
+      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
+        this.getDynamicView());
     },
     remove: function(id) {
-      CollectionUtilService.remove(collection, id);
+      CollectionUtilService.remove(this.getCollection(), id);
     },
     update: function(maincharacter) {
       maincharacter.status = this.calculateStatus(maincharacter);
-      CollectionUtilService.update(collection, maincharacter);
+      CollectionUtilService.update(this.getCollection(), maincharacter);
     }
   };
 });

@@ -17,30 +17,34 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
   LoggerService, ProjectDbConnectionService, ProjectService) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'chapters');
-  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
-    collection, 'all_chapters');
-  var scenecollection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'scenes');
-
   return {
 
     getChapter: function(id) {
-      return collection.get(id);
+      return this.getCollection().get(id);
     },
     getChaptersCount: function() {
-      return collection.count();
+      return this.getCollection().count();
     },
     getChapters: function() {
-      return dynamicView.data();
+      return this.getDynamicView().data();
+    },
+    getCollection: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'chapters');
+    },
+    getDynamicView: function() {
+      return CollectionUtilService.getDynamicViewSortedByPosition(
+        this.getCollection(), 'all_chapters');
+    },
+    getSceneCollection: function() { 
+      return ProjectDbConnectionService.getProjectDb().getCollection('scenes');
     },
     insert: function(chapter) {
 
       // insert chapter
       chapter.reason = this.createChapterInfo('todo');
       chapter.notes = this.createChapterInfo(null);
-      chapter = CollectionUtilService.insertWithoutCommit(collection,
+      chapter = CollectionUtilService.insertWithoutCommit(this.getCollection(),
         chapter);
 
       // save database
@@ -58,14 +62,14 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
 
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
+      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
+        this.getDynamicView());
     },
 
     remove: function(id) {
 
       // remove all scenes
-      let scenes = scenecollection.find({
+      let scenes = this.getSceneCollection().find({
         'chapterid': id
       });
       for (let i = 0; i < scenes.length; i++) {
@@ -73,20 +77,20 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
 
       // remove chapter
-      CollectionUtilService.removeWithoutCommit(collection, id);
+      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
     },
 
     update: function(chapter) {
-      CollectionUtilService.update(collection, chapter);
+      CollectionUtilService.update(this.getCollection(), chapter);
     },
 
     updateChapterStatusWordsCharactersWithoutCommit: function(id) {
 
       // get chapter
-      let chapter = collection.get(id);
+      let chapter = this.getCollection().get(id);
 
       // get scenes
       let scenes = this.getScenes(id);
@@ -124,17 +128,17 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
         chapter.status = 'tocomplete';
       }
 
-      CollectionUtilService.updateWithoutCommit(collection, chapter);
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
     },
 
     changeSceneRevision: function(id, revision) {
 
       // update scene
-      let scene = scenecollection.get(id);
+      let scene = this.getSceneCollection().get(id);
       scene.revision = revision;
       scene.characters = scene.revisions[revision].characters;
       scene.words = scene.revisions[revision].words;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(this.getSceneCollection(), scene);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
@@ -147,7 +151,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
     insertSceneRevision: function(id, fromActual) {
 
-      let scene = scenecollection.get(id);
+      let scene = this.getSceneCollection().get(id);
 
       // insert new revision
       let scenerevision;
@@ -166,7 +170,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       scene.revision = revisions.length - 1;
       scene.characters = scenerevision.characters;
       scene.words = scenerevision.words;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(this.getSceneCollection(), scene);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(
@@ -197,7 +201,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
     deleteActualSceneRevision: function(id) {
 
-      let scene = scenecollection.get(id);
+      let scene = this.getSceneCollection().get(id);
       
       // remove actual revision
       let revisions = scene.revisions;
@@ -208,7 +212,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       scene.revision = scene.revisions.length - 1;
       scene.characters = scene.revisions[scene.revision].characters;
       scene.words = scene.revisions[scene.revision].words;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(this.getSceneCollection(), scene);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
@@ -220,18 +224,18 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
 
     getScene: function(id) {
-      return scenecollection.get(id);
+      return this.getSceneCollection().get(id);
     },
 
     getScenesCount: function(chapterid) {
-      return scenecollection.count({
+      return this.getSceneCollection().count({
         'chapterid': chapterid
       });
     },
 
     getScenes: function(chapterid) {
       let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
-        scenecollection, 'chapterscenes_' + chapterid, {
+        this.getSceneCollection(), 'chapterscenes_' + chapterid, {
           chapterid: {
             '$eq': chapterid
           }
@@ -248,7 +252,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       revisions.push(scenerevision);
       scene.revision = 0;
       scene.revisions = revisions;      
-      scene = CollectionUtilService.insertWithoutCommit(scenecollection,
+      scene = CollectionUtilService.insertWithoutCommit(this.getSceneCollection(),
         scene, {
           chapterid: {
             '$eq': scene.chapterid
@@ -301,12 +305,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     moveScene: function(sourceId, targetId) {
       let chapterid = this.getScene(sourceId).chapterid;
       let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
-        scenecollection, 'chapterscenes_' + chapterid, {
+        this.getSceneCollection(), 'chapterscenes_' + chapterid, {
           chapterid: {
             '$eq': chapterid
           }
         });
-      return CollectionUtilService.move(scenecollection, sourceId,
+      return CollectionUtilService.move(this.getSceneCollection(), sourceId,
         targetId,
         chapterscenes, {
           chapterid: {
@@ -320,7 +324,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       let scene = this.getScene(id);
 
       // remove scene
-      CollectionUtilService.removeWithoutCommit(scenecollection, id);
+      CollectionUtilService.removeWithoutCommit(this.getSceneCollection(), id);
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
@@ -338,7 +342,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       // update scene
       scene.characters = scene.revisions[scene.revision].characters;
       scene.words = scene.revisions[scene.revision].words;
-      CollectionUtilService.updateWithoutCommit(scenecollection, scene);
+      CollectionUtilService.updateWithoutCommit(this.getSceneCollection(), scene);
 
       // update last scenetime tag
       if (scene.revisions[scene.revision].timegregorian === true) {
@@ -354,7 +358,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
 
     updateSceneTitle: function(scene) {
-      CollectionUtilService.update(scenecollection, scene);
+      CollectionUtilService.update(this.getSceneCollection(), scene);
     },
 
     getLastScenetime: function() {

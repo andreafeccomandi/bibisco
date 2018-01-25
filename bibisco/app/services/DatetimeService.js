@@ -17,11 +17,6 @@ angular.module('bibiscoApp').service('DatetimeService', function (
   $translate, UtilService) {
   'use strict';
 
-  // load translations
-  let translations = $translate.instant([
-    'year_bc_scene_tags'
-  ]);
-
   return {
     calculateSceneYear: function (datetime) {
       let result = null;
@@ -30,7 +25,7 @@ angular.module('bibiscoApp').service('DatetimeService', function (
         let bc = '';
         if (year < 0) {
           year = year * (-1);
-          bc = ' ' + translations.year_bc_scene_tags;
+          bc = ' ' + $translate.instant('year_bc_scene_tags');
         }
         let yearAsPaddedString = UtilService.number.pad(year, 4);
         result = yearAsPaddedString + bc;

@@ -18,17 +18,6 @@ angular.module('bibiscoApp').service('LocationService', function(
 ) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'locations');
-  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
-    collection, 'all_locations');
-  var nations = collection.addDynamicView('nations').applySimpleSort(
-    'nation');
-  var states = collection.addDynamicView('states').applySimpleSort(
-    'state');
-  var cities = collection.addDynamicView('cities').applySimpleSort(
-    'city');
-
   return {
     addImage: function(id, name, path) {
       let filename = ImageService.addImageToProject(path);
@@ -42,7 +31,7 @@ angular.module('bibiscoApp').service('LocationService', function(
         filename: filename
       });
       location.images = images;
-      CollectionUtilService.update(collection, location);
+      CollectionUtilService.update(this.getCollection(), location);
     },
     calculateLocationName: function(location) {
 
@@ -100,28 +89,48 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
       images.splice(imageToRemovePosition, 1);
       location.images = images;
-      CollectionUtilService.update(collection, location);
+      CollectionUtilService.update(this.getCollection(), location);
 
       return location;
     },
+    getCities: function() {
+      return this.getCollection().addDynamicView('cities').applySimpleSort(
+        'city');
+    },
+    getCollection: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'locations');
+    },
+    getDynamicView: function() {
+      return CollectionUtilService.getDynamicViewSortedByPosition(
+        this.getCollection(), 'all_locations');
+    },
     getLocation: function(id) {
       if (id) {
-        return collection.get(id);
+        return this.getCollection().get(id);
       } else {
         return null;
       }
     },
     getLocationsCount: function() {
-      return collection.count();
+      return this.getCollection().count();
     },
     getLocations: function() {
-      return dynamicView.data();
+      return this.getDynamicView().data();
+    },
+    getNations: function() {
+      return this.getCollection().addDynamicView('nations').applySimpleSort(
+        'nation');
+    },
+    getStates: function() {
+      return this.getCollection().addDynamicView('states').applySimpleSort(
+        'state');
     },
     getUsedCities: function() {
       let usedcities = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = cities.data();
+        let locations = this.getCities().data();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].city);
         }
@@ -135,7 +144,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       let usednations = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = nations.data();
+        let locations = this.getNations().data();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].nation);
         }
@@ -149,7 +158,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       let usedstates = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = states.data();
+        let locations = this.getStates().data();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].state);
         }
@@ -162,11 +171,11 @@ angular.module('bibiscoApp').service('LocationService', function(
     insert: function(location) {
       let images = [];
       location.images = images;
-      CollectionUtilService.insert(collection, location);
+      CollectionUtilService.insert(this.getCollection(), location);
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
+      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
+        this.getDynamicView());
     },
     remove: function(id) {
       
@@ -178,10 +187,10 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
 
       // delete location
-      CollectionUtilService.remove(collection, id);
+      CollectionUtilService.remove(this.getCollection(), id);
     },
     update: function(location) {
-      CollectionUtilService.update(collection, location);
+      CollectionUtilService.update(this.getCollection(), location);
     },
   };
 });

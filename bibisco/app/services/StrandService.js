@@ -18,33 +18,36 @@ angular.module('bibiscoApp').service('StrandService', function(
 ) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'strands');
-  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
-    collection, 'all_strands');
-
   return {
+    getCollection: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'strands');
+    },
+    getDynamicView: function() {
+      return CollectionUtilService.getDynamicViewSortedByPosition(
+        this.getCollection(), 'all_strands');
+    },
     getStrand: function(id) {
-      return collection.get(id);
+      return this.getCollection().get(id);
     },
     getStrandsCount: function() {
-      return collection.count();
+      return this.getCollection().count();
     },
     getStrands: function() {
-      return dynamicView.data();
+      return this.getDynamicView().data();
     },
     insert: function(strand) {
-      CollectionUtilService.insert(collection, strand);
+      CollectionUtilService.insert(this.getCollection(), strand);
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
+      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
+        this.getDynamicView());
     },
     remove: function(id) {
-      CollectionUtilService.remove(collection, id);
+      CollectionUtilService.remove(this.getCollection(), id);
     },
     update: function(strand) {
-      CollectionUtilService.update(collection, strand);
+      CollectionUtilService.update(this.getCollection(), strand);
     }
   };
 });

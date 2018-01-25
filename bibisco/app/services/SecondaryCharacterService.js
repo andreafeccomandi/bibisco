@@ -18,11 +18,6 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
 ) {
   'use strict';
 
-  var collection = ProjectDbConnectionService.getProjectDb().getCollection(
-    'secondarycharacters');
-  var dynamicView = CollectionUtilService.getDynamicViewSortedByPosition(
-    collection, 'all_secondarycharacters');
-
   return {
     addImage: function (id, name, path) {
       let filename = ImageService.addImageToProject(path);
@@ -36,7 +31,7 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
         filename: filename
       });
       secondarycharacter.images = images;
-      CollectionUtilService.update(collection, secondarycharacter);
+      CollectionUtilService.update(this.getCollection(), secondarycharacter);
     },
     deleteImage: function (id, filename) {
 
@@ -57,33 +52,41 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       }
       images.splice(imageToRemovePosition, 1);
       secondarycharacter.images = images;
-      CollectionUtilService.update(collection, secondarycharacter);
+      CollectionUtilService.update(this.getCollection(), secondarycharacter);
 
       return secondarycharacter;
     },
+    getCollection: function() {
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'secondarycharacters');
+    },
+    getDynamicView: function() {
+      return CollectionUtilService.getDynamicViewSortedByPosition(
+        this.getCollection(), 'all_secondarycharacters');
+    },
     getSecondaryCharacter: function(id) {
-      return collection.get(id);
+      return this.getCollection().get(id);
     },
     getSecondaryCharactersCount: function() {
-      return collection.count();
+      return this.getCollection().count();
     },
     getSecondaryCharacters: function() {
-      return dynamicView.data();
+      return this.getDynamicView().data();
     },
     insert: function(secondarycharacter) {
       let images = [];
       secondarycharacter.images = images;
-      CollectionUtilService.insert(collection, secondarycharacter);
+      CollectionUtilService.insert(this.getCollection(), secondarycharacter);
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(collection, sourceId, targetId,
-        dynamicView);
+      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
+        this.getDynamicView());
     },
     remove: function(id) {
-      CollectionUtilService.remove(collection, id);
+      CollectionUtilService.remove(this.getCollection(), id);
     },
     update: function(secondarycharacter) {
-      CollectionUtilService.update(collection, secondarycharacter);
+      CollectionUtilService.update(this.getCollection(), secondarycharacter);
     }
   };
 });
