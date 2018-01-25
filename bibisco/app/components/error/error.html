@@ -1,9 +1,12 @@
+<div class="container">
 <h1>
-  Pagina di errore!
+  {{"js.bibisco.loading.end.error" | translate}}
 </h1>
 <p>
-  Cause: {{$ctrl.cause}}
+  <b>Cause</b>: {{$ctrl.cause}}
 </p>
 <p>
-  Stacktrace: {{$ctrl.stacktrace}}
+  <b>Stacktrace</b>: {{$ctrl.stacktrace}}
 </p>
+<button class="btn btn-primary btn-lg top30 center-block" ng-click="$ctrl.goHome()">{{"jsp.common.button.back" | translate}}</button>
+</div>

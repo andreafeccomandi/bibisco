@@ -63,6 +63,12 @@ function MenuController($location, $rootScope) {
     self.disabled = false;
   });
 
+  // SHOW ERROR PAGE
+  $rootScope.$on('SHOW_ERROR_PAGE', function () {
+    self.visible = false;
+    self.disabled = false;
+  });
+
   // SHOW IMPORT PROJECT EVENT
   $rootScope.$on('SHOW_IMPORT_PROJECT', function() {
     self.visible = false;

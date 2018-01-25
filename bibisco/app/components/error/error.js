@@ -19,9 +19,16 @@ angular.
     controller: ErrorController
   });
 
-function ErrorController(ContextService) {
+function ErrorController($location, $rootScope, ContextService) {
 
   var self = this;
-  self.cause = ContextService.getLastError().cause;
-  self.stacktrace = ContextService.getLastError().stacktrace;
+  self.$onInit = function () {
+    $rootScope.$emit('SHOW_ERROR_PAGE');
+    self.cause = ContextService.getLastError().cause;
+    self.stacktrace = ContextService.getLastError().stacktrace;
+  };
+
+  self.goHome = function() {
+    $location.path('/start');
+  };
 }
