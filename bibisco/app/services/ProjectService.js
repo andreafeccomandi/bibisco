@@ -20,6 +20,8 @@ angular.module('bibiscoApp').service('ProjectService', function(
 ) {
   'use strict';
 
+  let dateFormat = require('dateformat');
+
   return {
 
     addProjectToBibiscoDb: function(projectId, name) {
@@ -178,7 +180,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
         function() {
 
-          let checkArchiveResult = checkArchive(
+          let checkArchiveResult = this.checkArchive(
             tempDirectoryPath, BibiscoDbConnectionService,
             FileSystemService,
             LoggerService, ProjectDbConnectionService);
@@ -202,6 +204,10 @@ angular.module('bibiscoApp').service('ProjectService', function(
 
     export: function (exportPath, callback) {
       let projectId = this.getProjectInfo().id;
+      this.exportProject(projectId, exportPath, callback);
+    },
+
+    exportProject: function (projectId, exportPath, callback) {
       let projectPath = ProjectDbConnectionService.calculateProjectPath(projectId);
       FileSystemService.zipFolder(projectPath, exportPath + '.bibisco2', callback);
     },
@@ -221,6 +227,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
         0) {
         for (let i = 0; i < filesInProjectDirectories.length; i++) {
           let projectDirectoryName = filesInProjectDirectories[i];
+          LoggerService.info('-----------------------------------');
           LoggerService.info('Processing ' + projectDirectoryName);
           try {
             let projectInfo = checkProjectValidity(projectDirectoryName,
@@ -230,6 +237,10 @@ angular.module('bibiscoApp').service('ProjectService', function(
             projectsInProjectDirectoriesMap.set(projectInfo.id,
               projectInfo.name);
             LoggerService.info(projectDirectoryName + ' is valid.');
+            
+            // execute backup
+            this.executeBackup(projectInfo.id);
+            
           } catch (err) {
             LoggerService.info(projectDirectoryName + ' is not valid: ' +
               err);
@@ -273,6 +284,30 @@ angular.module('bibiscoApp').service('ProjectService', function(
       LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
     },
 
+    getProjectBackupPath: function (projectId) {
+      let projectPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
+        'projectsDirectory'), projectId);
+      return FileSystemService.concatPath(projectPath, 'backup');
+    },
+
+    executeBackup: function(projectId) {
+      try {
+        let projectBackupDirectoryPath = this.getProjectBackupPath(projectId);
+        
+        FileSystemService.deleteDirectory(projectBackupDirectoryPath);
+        FileSystemService.createDirectory(projectBackupDirectoryPath);
+        
+        let timestampFormatted = dateFormat(new Date(), 'yyyy_mm_dd_HH_MM_ss');     
+        let filename = FileSystemService.concatPath(projectBackupDirectoryPath, projectId + '_archive_' + timestampFormatted);
+  
+        this.exportProject(projectId, filename);
+        LoggerService.info(projectId + ' backup done.');
+      } catch (err) {
+        LoggerService.error(projectId + ' backup failed: ' +
+          err);
+      }
+    },
+
     updateLastScenetimeTagWithoutCommit: function(time) {
       let projectInfo = this.getProjectInfo();
       projectInfo.lastScenetimeTag = time;
@@ -285,71 +320,72 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectInfo.name = name;
       CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
+    },
+
+    checkArchive: function(tempDirectoryPath) {
+
+      LoggerService.debug('Start checkArchive()');
+
+      let isValidArchive = false;
+      let isAlreadyPresent = false;
+      let projectId;
+      let projectName;
+
+      try {
+      // get json loki file
+        let fileList = FileSystemService.getFilesInDirectoryRecursively(
+          tempDirectoryPath, {
+            directories: false,
+            globs: ['**/*.json']
+          });
+
+        if (!fileList || fileList.length !== 1) {
+          throw 'Invalid archive';
+        }
+
+        // calculate project id from file name
+        // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
+        let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
+        LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
+
+        // check project validity
+        let projectInfo = checkProjectValidity(calculatedProjectId,
+          tempDirectoryPath,
+          FileSystemService, ProjectDbConnectionService);
+        projectId = projectInfo.id;
+        projectName = projectInfo.name;
+
+        // check if project already exists in the installation of bibisco
+        let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
+          'projects').addDynamicView(
+          'project_by_id').applyFind({
+          id: projectId
+        });
+        if (projects.count() === 1) {
+          isAlreadyPresent = true;
+          projectName = projects.data()[0].name;
+        }
+        isValidArchive = true;
+
+      } catch (err) {
+        LoggerService.error(err);
+      }
+
+      let result = {
+        isValidArchive: isValidArchive,
+        isAlreadyPresent: isAlreadyPresent,
+        projectId: projectId,
+        projectName: projectName
+      };
+
+      LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
+
+      return result;
     }
   };
 });
 
-function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
-  FileSystemService, LoggerService, ProjectDbConnectionService) {
 
-  LoggerService.debug('Start checkArchive()');
-
-  let isValidArchive = false;
-  let isAlreadyPresent = false;
-  let projectId;
-  let projectName;
-
-  try {
-    // get json loki file
-    let fileList = FileSystemService.getFilesInDirectoryRecursively(
-      tempDirectoryPath, {
-        directories: false,
-        globs: ['**/*.json']
-      });
-
-    if (!fileList || fileList.length !== 1) {
-      throw 'Invalid archive';
-    }
-
-    // calculate project id from file name
-    // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
-    let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
-    LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
-
-    // check project validity
-    let projectInfo = checkProjectValidity(calculatedProjectId,
-      tempDirectoryPath,
-      FileSystemService, ProjectDbConnectionService);
-    projectId = projectInfo.id;
-    projectName = projectInfo.name;
-
-    // check if project already exists in the installation of bibisco
-    let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
-      'projects').addDynamicView(
-      'project_by_id').applyFind({
-      id: projectId
-    });
-    if (projects.count() === 1) {
-      isAlreadyPresent = true;
-      projectName = projects.data()[0].name;
-    }
-    isValidArchive = true;
-
-  } catch (err) {
-    LoggerService.error(err);
-  }
-
-  let result = {
-    isValidArchive: isValidArchive,
-    isAlreadyPresent: isAlreadyPresent,
-    projectId: projectId,
-    projectName: projectName
-  };
-
-  LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
-
-  return result;
-}
 
 function checkProjectValidity(projectDirectoryName, projectsDirectory,
   FileSystemService, ProjectDbConnectionService) {

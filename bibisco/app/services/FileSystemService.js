@@ -83,6 +83,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     getFilesInDirectoryRecursively: function(path, filter) {
       return walkSync(path, filter);
     },
+    isDirectory: function(path) {
+      return fs.lstatSync(path).isDirectory();
+    },
     rename: function(oldPath, newPath) {
       fs.renameSync(oldPath, newPath);
     },
