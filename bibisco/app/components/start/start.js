@@ -40,12 +40,6 @@ function StartController($location, $rootScope, LoggerService,
     $location.path('/openproject');
   };
 
-  self.exportProject = function() {
-    ProjectService.export(function() {
-      alert('Esportato!!!');
-    });
-  };
-
   self.importProject = function() {
     $location.path('/importproject');
   };

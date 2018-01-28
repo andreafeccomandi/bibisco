@@ -59,7 +59,7 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       }
       return result;
     },
-    createStream: function(stream, path) {
+    createStream: function() {
       fs.createStream();
     },
     deleteDirectory: function(path) {

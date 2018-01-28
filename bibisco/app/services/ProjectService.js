@@ -212,11 +212,39 @@ angular.module('bibiscoApp').service('ProjectService', function(
       FileSystemService.zipFolder(projectPath, exportPath + '.bibisco2', callback);
     },
 
+    duplicateBackupDirectory: function (backupPath, backupPathOld) {
+
+      if (FileSystemService.exists(backupPath)) {
+        if (FileSystemService.exists(backupPathOld)) {
+          FileSystemService.deleteDirectory(backupPathOld);
+        }
+        FileSystemService.createDirectory(backupPathOld);
+
+        let filesInBackupDirectory = FileSystemService.getFilesInDirectory(backupPath);
+        if (filesInBackupDirectory && filesInBackupDirectory.length > 0) {
+          for (let i = 0; i < filesInBackupDirectory.length; i++) {
+            let filename = FileSystemService.concatPath(backupPath, filesInBackupDirectory[i]);
+            FileSystemService.copyFileToDirectory(filename, backupPathOld);
+            FileSystemService.deleteFile(filename);
+          }
+        }
+      } else {
+        FileSystemService.createDirectory(backupPath);
+      }
+    },
+
     syncProjectDirectoryWithBibiscoDb: function() {
       LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
 
       let projectsDirectory = BibiscoPropertiesService.getProperty(
         'projectsDirectory');
+      let backupPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
+        'projectsDirectory'), 'backup');
+      let backupPathOld = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
+        'projectsDirectory'), 'backup.1');
+
+      // duplicate backup directory 
+      this.duplicateBackupDirectory(backupPath, backupPathOld);
 
       // populate projectsInProjectDirectories
       let projectsInProjectDirectories = [];
@@ -227,6 +255,9 @@ angular.module('bibiscoApp').service('ProjectService', function(
         0) {
         for (let i = 0; i < filesInProjectDirectories.length; i++) {
           let projectDirectoryName = filesInProjectDirectories[i];
+          if (projectDirectoryName === 'backup' || projectDirectoryName === 'backup.1') {
+            continue;
+          }
           LoggerService.info('-----------------------------------');
           LoggerService.info('Processing ' + projectDirectoryName);
           try {
@@ -239,7 +270,12 @@ angular.module('bibiscoApp').service('ProjectService', function(
             LoggerService.info(projectDirectoryName + ' is valid.');
             
             // execute backup
-            this.executeBackup(projectInfo.id);
+            try {
+              this.executeBackup(projectInfo.id, projectInfo.name, backupPath);
+            } catch (err) {
+              LoggerService.error(projectInfo.id + ' backup failed: ' +
+                err);
+            }
             
           } catch (err) {
             LoggerService.info(projectDirectoryName + ' is not valid: ' +
@@ -290,21 +326,19 @@ angular.module('bibiscoApp').service('ProjectService', function(
       return FileSystemService.concatPath(projectPath, 'backup');
     },
 
-    executeBackup: function(projectId) {
+    executeBackup: function (projectId, projectName, backupPath) {
+    
+      let timestampFormatted = dateFormat(new Date(), 'yyyy_mm_dd_HH_MM_ss');
+      let name = UtilService.string.slugify(projectName, '_');
+      let filename = name + '_' + projectId + '_' + timestampFormatted;
+      let completeBackupFilename = FileSystemService.concatPath(backupPath, filename);
+
       try {
-        let projectBackupDirectoryPath = this.getProjectBackupPath(projectId);
-        
-        FileSystemService.deleteDirectory(projectBackupDirectoryPath);
-        FileSystemService.createDirectory(projectBackupDirectoryPath);
-        
-        let timestampFormatted = dateFormat(new Date(), 'yyyy_mm_dd_HH_MM_ss');     
-        let filename = FileSystemService.concatPath(projectBackupDirectoryPath, projectId + '_archive_' + timestampFormatted);
-  
-        this.exportProject(projectId, filename);
-        LoggerService.info(projectId + ' backup done.');
+        this.exportProject(projectId, completeBackupFilename, function(){
+          LoggerService.info(projectId + ' backup done.');
+        });
       } catch (err) {
-        LoggerService.error(projectId + ' backup failed: ' +
-          err);
+        LoggerService.error(projectId + ' backup failed: ' + err);
       }
     },
 
