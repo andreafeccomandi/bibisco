@@ -180,7 +180,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       FileSystemService.unzip(archiveFilePath, tempDirectoryPath,
         function() {
 
-          let checkArchiveResult = this.checkArchive(
+          let checkArchiveResult = checkArchive(
             tempDirectoryPath, BibiscoDbConnectionService,
             FileSystemService,
             LoggerService, ProjectDbConnectionService);
@@ -356,69 +356,69 @@ angular.module('bibiscoApp').service('ProjectService', function(
         .getCollection('project'), projectInfo);
     },
 
-    checkArchive: function(tempDirectoryPath) {
-
-      LoggerService.debug('Start checkArchive()');
-
-      let isValidArchive = false;
-      let isAlreadyPresent = false;
-      let projectId;
-      let projectName;
-
-      try {
-      // get json loki file
-        let fileList = FileSystemService.getFilesInDirectoryRecursively(
-          tempDirectoryPath, {
-            directories: false,
-            globs: ['**/*.json']
-          });
-
-        if (!fileList || fileList.length !== 1) {
-          throw 'Invalid archive';
-        }
-
-        // calculate project id from file name
-        // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
-        let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
-        LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
-
-        // check project validity
-        let projectInfo = checkProjectValidity(calculatedProjectId,
-          tempDirectoryPath,
-          FileSystemService, ProjectDbConnectionService);
-        projectId = projectInfo.id;
-        projectName = projectInfo.name;
-
-        // check if project already exists in the installation of bibisco
-        let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
-          'projects').addDynamicView(
-          'project_by_id').applyFind({
-          id: projectId
-        });
-        if (projects.count() === 1) {
-          isAlreadyPresent = true;
-          projectName = projects.data()[0].name;
-        }
-        isValidArchive = true;
-
-      } catch (err) {
-        LoggerService.error(err);
-      }
-
-      let result = {
-        isValidArchive: isValidArchive,
-        isAlreadyPresent: isAlreadyPresent,
-        projectId: projectId,
-        projectName: projectName
-      };
-
-      LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
-
-      return result;
-    }
   };
 });
 
+function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
+  FileSystemService, LoggerService, ProjectDbConnectionService) {
+  LoggerService.debug('Start checkArchive()');
+
+  let isValidArchive = false;
+  let isAlreadyPresent = false;
+  let projectId;
+  let projectName;
+
+  try {
+    // get json loki file
+    let fileList = FileSystemService.getFilesInDirectoryRecursively(
+      tempDirectoryPath, {
+        directories: false,
+        globs: ['**/*.json']
+      });
+
+    if (!fileList || fileList.length !== 1) {
+      throw 'Invalid archive';
+    }
+
+    // calculate project id from file name
+    // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
+    let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
+    LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
+
+    // check project validity
+    let projectInfo = checkProjectValidity(calculatedProjectId,
+      tempDirectoryPath,
+      FileSystemService, ProjectDbConnectionService);
+    projectId = projectInfo.id;
+    projectName = projectInfo.name;
+
+    // check if project already exists in the installation of bibisco
+    let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
+      'projects').addDynamicView(
+      'project_by_id').applyFind({
+      id: projectId
+    });
+    if (projects.count() === 1) {
+      isAlreadyPresent = true;
+      projectName = projects.data()[0].name;
+    }
+    isValidArchive = true;
+
+  } catch (err) {
+    LoggerService.error(err);
+  }
+
+  let result = {
+    isValidArchive: isValidArchive,
+    isAlreadyPresent: isAlreadyPresent,
+    projectId: projectId,
+    projectName: projectName
+  };
+
+  LoggerService.debug('End checkArchive() : ' + JSON.stringify(result));
+
+  return result;
+}
 
 
 function checkProjectValidity(projectDirectoryName, projectsDirectory,
