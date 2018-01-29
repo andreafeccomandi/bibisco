@@ -62,7 +62,7 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService) 
       if (result.isValidArchive && !result.isAlreadyPresent) {
         ProjectService.import(result.projectId, result.projectName,
           function() {
-            $location.path('/project');
+            $location.path('/project/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
       } else if (result.isValidArchive && result.isAlreadyPresent) {
