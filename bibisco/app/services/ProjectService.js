@@ -212,27 +212,6 @@ angular.module('bibiscoApp').service('ProjectService', function(
       FileSystemService.zipFolder(projectPath, exportPath + '.bibisco2', callback);
     },
 
-    duplicateBackupDirectory: function (backupPath, backupPathOld) {
-
-      if (FileSystemService.exists(backupPath)) {
-        if (FileSystemService.exists(backupPathOld)) {
-          FileSystemService.deleteDirectory(backupPathOld);
-        }
-        FileSystemService.createDirectory(backupPathOld);
-
-        let filesInBackupDirectory = FileSystemService.getFilesInDirectory(backupPath);
-        if (filesInBackupDirectory && filesInBackupDirectory.length > 0) {
-          for (let i = 0; i < filesInBackupDirectory.length; i++) {
-            let filename = FileSystemService.concatPath(backupPath, filesInBackupDirectory[i]);
-            FileSystemService.copyFileToDirectory(filename, backupPathOld);
-            FileSystemService.deleteFile(filename);
-          }
-        }
-      } else {
-        FileSystemService.createDirectory(backupPath);
-      }
-    },
-
     syncProjectDirectoryWithBibiscoDb: function() {
       LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
 
@@ -240,13 +219,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
         'projectsDirectory');
       let backupPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
         'projectsDirectory'), 'backup');
-      let backupPathOld = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
-        'projectsDirectory'), 'backup.1');
 
-      // duplicate backup directory 
-      this.duplicateBackupDirectory(backupPath, backupPathOld);
+      // create backup directory if not exists
+      if (!FileSystemService.exists(backupPath)) {
+        FileSystemService.createDirectory(backupPath);
+      }
 
-      // populate projectsInProjectDirectories
+      // cycle projects in project directories
       let projectsInProjectDirectories = [];
       let projectsInProjectDirectoriesMap = new Map();
       let filesInProjectDirectories = FileSystemService.getFilesInDirectory(
@@ -269,13 +248,11 @@ angular.module('bibiscoApp').service('ProjectService', function(
               projectInfo.name);
             LoggerService.info(projectDirectoryName + ' is valid.');
             
+            // delete previous backup
+            this.deletePreviousBackup(projectInfo.id, backupPath);  
+
             // execute backup
-            try {
-              this.executeBackup(projectInfo.id, projectInfo.name, backupPath);
-            } catch (err) {
-              LoggerService.error(projectInfo.id + ' backup failed: ' +
-                err);
-            }
+            this.executeBackup(projectInfo.id, projectInfo.name, backupPath);
             
           } catch (err) {
             LoggerService.info(projectDirectoryName + ' is not valid: ' +
@@ -324,6 +301,24 @@ angular.module('bibiscoApp').service('ProjectService', function(
       let projectPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
         'projectsDirectory'), projectId);
       return FileSystemService.concatPath(projectPath, 'backup');
+    },
+
+    deletePreviousBackup: function (projectId, backupPath) {
+      let filesInBackupDirectory = FileSystemService.getFilesInDirectory(backupPath);
+      if (filesInBackupDirectory && filesInBackupDirectory.length > 0) {
+        for (let i = 0; i < filesInBackupDirectory.length; i++) {
+          let filename = FileSystemService.concatPath(backupPath, filesInBackupDirectory[i]);
+          if (UtilService.string.contains(filename, projectId)) {
+            try {
+              FileSystemService.deleteFile(filename);
+              LoggerService.info('Delete previous backup: ' + filename + ' done');
+            } catch (err) {
+              LoggerService.error('Delete previous backup: ' + filename + ' failed: ' + err);
+            }
+            
+          }
+        }
+      }
     },
 
     executeBackup: function (projectId, projectName, backupPath) {
