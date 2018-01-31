@@ -31,8 +31,6 @@ angular.
       pageheadertitle: '@',
       pageheadersubtitle: '@',
       pageheadertipcode: '@',
-      pageheadertipenabled: '<',
-      pageheadertiphtml: '@',
       selectfunction: '&',
       type: '@'
     }
@@ -55,5 +53,6 @@ function CardGridController() {
     self.emptygridclass = 'card-grid-emptyitems-' + headersubtitleclass + '-' +
       self.type;
     self.headerclass = 'card-grid-header-' + self.type;
+    self.tipenabled = (self.pageheadertipcode && self.items && self.items.length>1);
   };
 }
