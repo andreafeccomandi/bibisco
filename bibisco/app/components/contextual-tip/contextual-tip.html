@@ -1,0 +1,11 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
+  <div class="modal-body" id="modal-body" 
+    ng-include="$ctrl.tiphtml()">
+  </div>
+  <div class="modal-footer bibiscoNotSelectableText">
+    <button class="btn btn-primary" type="button" 
+      ng-click="$ctrl.dontTellMeMore()">{{"jsp.tip.button.donttellmemore" | translate}}</button>
+    <button class="btn" type="button" 
+      ng-click="$ctrl.cancel()">{{"jsp.common.button.close" | translate}}</button>
+  </div>
+</modal-component>

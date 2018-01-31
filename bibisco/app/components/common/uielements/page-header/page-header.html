@@ -3,11 +3,8 @@
         {{$ctrl.headertitle | translate}}
       </span>
     <span ng-if="$ctrl.buttonshow" class="pull-right">
-      <button class="btn btn-warning" 
-      ng-if="$ctrl.tipenabled"  
-      ng-click="$ctrl.showTip()">
-       {{'jsp.tip.title' | translate}}
-      </button>
+      <contextualtipbutton ng-if="$ctrl.tipenabled" 
+        tipcode="{{$ctrl.tipcode}}"></contextualtipbutton>
       <dropdownmenu buttonlabel="jsp.common.button.more" 
         items="$ctrl.dropdownitems" 
         open="{{$ctrl.dropdownopen}}"

@@ -14,15 +14,17 @@
  */
 angular.
   module('bibiscoApp').
-  component('modaltip', {
-    templateUrl: 'components/common/uielements/modal/modal-tip/modal-tip.html',
-    controller: ModalTipController,
+  component('contextualtip', {
+    templateUrl: 'components/contextual-tip/contextual-tip.html',
+    controller: ContextualTipController,
     bindings: {
+      close: '&',
+      dismiss: '&',
       resolve: '<'
     },
   });
 
-function ModalTipController() {
+function ContextualTipController() {
   var self = this;
 
   self.$onInit = function () {
@@ -30,7 +32,7 @@ function ModalTipController() {
   };
 
   self.tiphtml = function() {
-    return 'tips/' + self.tipcode + '.html';
+    return 'components/contextual-tip/tips/' + self.tipcode + '.html';
   };
 
   self.dontTellMeMore = function () {

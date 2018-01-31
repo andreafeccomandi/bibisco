@@ -28,8 +28,7 @@ function ChaptersController($location, $rootScope, $scope, $translate,
 
   self.$onInit = function() {
     self.cardgriditems = this.getCardGridItems();
-    self.tipenabled = ((BibiscoPropertiesService.getProperty('chaptersdndTip') === 'true')
-    && self.cardgriditems && self.cardgriditems.length > 1);
+    self.tipenabled = (self.cardgriditems && self.cardgriditems.length > 1);
   };
   
   self.create = function() {

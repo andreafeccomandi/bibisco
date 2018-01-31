@@ -56,24 +56,6 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
           cancelFunction();
         }
       });
-    },
-    tip: function (tipcode) {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        backdrop: 'static',
-        component: 'modaltip',
-        resolve: {
-          tipcode: function () {
-            return tipcode;
-          }
-        },
-        size: 'sm'
-      });
-
-      modalInstance.result.then(function () {
-        alert('Non te lo dico più');
-      }, function () {
-      });
     }
   };
 });
