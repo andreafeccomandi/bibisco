@@ -30,6 +30,9 @@ angular.
       pageheaderbuttonfunction: '&',
       pageheadertitle: '@',
       pageheadersubtitle: '@',
+      pageheadertipcode: '@',
+      pageheadertipenabled: '<',
+      pageheadertiphtml: '@',
       selectfunction: '&',
       type: '@'
     }

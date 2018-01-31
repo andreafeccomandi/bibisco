@@ -22,9 +22,16 @@ angular.
     }
   });
 
-function ChaptersController($location, $rootScope, $scope, ChapterService) {
+function ChaptersController($location, $rootScope, $scope, $translate, 
+  BibiscoPropertiesService, ChapterService) {
   var self = this;
 
+  self.$onInit = function() {
+    self.cardgriditems = this.getCardGridItems();
+    self.tipenabled = ((BibiscoPropertiesService.getProperty('chaptersdndTip') === 'true')
+    && self.cardgriditems && self.cardgriditems.length > 1);
+  };
+  
   self.create = function() {
     $location.path('/chapters/new');
   };
@@ -59,6 +66,6 @@ function ChaptersController($location, $rootScope, $scope, ChapterService) {
     $location.path('/chapters/' + id);
   };
 
-  self.cardgriditems = this.getCardGridItems();
+  
 
 }

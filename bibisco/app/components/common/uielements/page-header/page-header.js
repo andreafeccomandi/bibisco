@@ -29,17 +29,23 @@ angular.
       taskstatus: '<',
       taskstatuschangefunction: '&',
       taskstatusreadonly: '<',
-      taskstatusshow: '<'
+      taskstatusshow: '<',
+      tipcode: '@',
+      tipenabled: '<'
     }
   });
 
 
-function PageHeaderController() {
+function PageHeaderController(PopupBoxesService) {
   var self = this;
 
   self.$onInit = function () {
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
     }
+  };
+
+  self.showTip = function () {
+    PopupBoxesService.tip(self.tipcode);
   };
 }
