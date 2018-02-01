@@ -20,6 +20,8 @@ angular.
     bindings: {
       breadcrumbitems: '<',
       editmode: '<',
+      headertipcode: '@',
+      headertipenabled: '<',
       headertitle: '@',
       headersubtitle: '@',
       taskstatus: '<',

@@ -212,6 +212,11 @@ h3 {
 	 font-size: 16px;
 }
 
+.page-header-taskstatus-selector {
+	margin-left: 5px;
+    margin-top: 2px;
+}
+
 .page-subheader-truncate-title {
   width: calc(100% - 50px);
   white-space: nowrap;
