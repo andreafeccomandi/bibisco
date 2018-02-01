@@ -116,6 +116,23 @@ h6, label, th, td, p {
 	margin-bottom: 25px;
 }
 
+.social-media-button {
+    margin-top: 5px;
+    text-align: center:
+}
+
+.social-media-button img {
+	cursor: pointer;
+}
+
+.social-media-button-facebook {
+    margin-left: 2px;
+}
+
+.social-media-button-twitter {
+    margin-left: 5px;
+}
+
 /* RICH TEXT VIEWER */
 .richtextviewer-container {
 	height: calc(100% - 40px);
