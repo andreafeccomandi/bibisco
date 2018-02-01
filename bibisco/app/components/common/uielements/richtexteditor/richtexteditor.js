@@ -349,7 +349,11 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     let sanitizedText;
     if ($event.clipboardData) {
       text = $event.clipboardData.getData('text/html');
-      sanitizedText = SanitizeHtmlService.sanitize(text);
+      if (text) {
+        sanitizedText = SanitizeHtmlService.sanitize(text);
+      } else {
+        sanitizedText = $event.clipboardData.getData('text/plain');
+      }
       $event.preventDefault();
       $timeout(function() {
         $document[0].execCommand('insertHTML', false, sanitizedText);
