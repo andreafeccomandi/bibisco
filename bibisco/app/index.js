@@ -49,8 +49,7 @@ global.zip = initZip();
 
 // add loki
 const loki = require('lokijs');
-const LokiFsSyncAdapter = require(
-  '../app/adapters/lokijs/loki-fs-sync-adapter.js');
+const LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
 
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
@@ -304,7 +303,8 @@ function initBibiscoDbConnection() {
   return {
     // add function to load bibisco db
     load: function() {
-      var bibiscodb = new loki('./db/bibisco.json', {
+      let bibiscodbpath = path.join(global.appPath, 'bibisco.json');  
+      var bibiscodb = new loki(bibiscodbpath, {
         adapter: new LokiFsSyncAdapter()
       });
       bibiscodb.loadDatabase({}, function() {
