@@ -17,9 +17,6 @@ const electron = require('electron');
 const app = electron.app;
 const env = process.env.NODE_ENV || 'development';
 
-// add debug features like hotkeys for triggering dev tools and reload
-require('electron-debug')();
-
 // add os info
 global.os = process.platform;
 
@@ -39,6 +36,15 @@ global.walkSync = walkSync;
 
 // add winston logger
 global.logger = initLogger();
+
+// add debug features like hotkeys for triggering dev tools and reload
+const isDev = require('electron-is-dev');
+if (isDev) {
+  logger.debug('Running in development');
+  require('electron-debug')();
+} else {
+  logger.debug('Running in production');
+}
 
 // add mout
 const mout = require('mout');
