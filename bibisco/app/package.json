@@ -4,23 +4,24 @@
   "version": "0.0.0",
   "description": "writing novel applicatoin",
   "license": "GPL v2",
-  "repository": "andreafeccomandi@gmail.com/bibisco",
+  "repository": "https://github.com/andreafeccomandi/bibisco",
   "author": {
     "name": "Andrea Feccomandi",
-    "email": "andreafeccomandi@gmail.com",
-    "url": "bibisco.com"
+    "email": "andrea@bibisco.com",
+    "url": "http://www.bibisco.com"
   },
   "scripts": {
     "test": "xo",
     "start": "electron .",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds",
-    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
-    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
+    "package-win": "electron-packager . electron-tutorial-app --debug --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+    "create-installer-mac": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/Bibisco-darwin-x64/Bibisco.app bibisco --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite"
   },
   "files": [
-    "app/index.js",
-    "app/index.html"
+    "index.js",
+    "index.html"
   ],
   "keywords": [
     "electron-app",
@@ -41,6 +42,7 @@
     "bootstrap": "^3.3.7",
     "dateformat": "^3.0.2",
     "docx": "^3.1.0",
+    "electron-debug": "^1.5.0",
     "electron-is-dev": "^0.3.0",
     "electron-spellchecker": "^1.1.2",
     "font-awesome": "^4.7.0",
@@ -65,7 +67,7 @@
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron": "^1.6.16",
-    "electron-debug": "^1.5.0",
+    "electron-installer-dmg": "^0.2.1",
     "electron-packager": "^10.1.2",
     "eslint": "^4.11.0",
     "grunt": "^1.0.1",

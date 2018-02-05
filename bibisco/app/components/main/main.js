@@ -21,7 +21,6 @@ angular.
 
 function MainController($location, LoggerService, BibiscoPropertiesService,
   ContextService, FileSystemService, LocaleService, ProjectService) {
-
   
   let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
   let projectsDirectory = BibiscoPropertiesService.getProperty(

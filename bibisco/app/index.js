@@ -40,10 +40,11 @@ global.logger = initLogger();
 // add debug features like hotkeys for triggering dev tools and reload
 const isDev = require('electron-is-dev');
 if (isDev) {
-  logger.debug('Running in development');
+  logger.debug('Running in development -  global path:' + global.appPath);
   require('electron-debug')();
 } else {
-  logger.debug('Running in production');
+  logger.debug('Running in production -  global path:' + global.appPath);
+  //require('electron-debug')();
 }
 
 // add mout
@@ -55,7 +56,9 @@ global.zip = initZip();
 
 // add loki
 const loki = require('lokijs');
+logger.debug('Start requiring LokiFsSyncAdapter');
 const LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
+logger.debug('End requiring LokiFsSyncAdapter');
 
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
@@ -101,11 +104,12 @@ function createMainWindow() {
     minWidth: 1024,
     minHeight: 768
   });
-
+  logger.debug('Start createMainWindow()');
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
   });
   win.on('closed', onClosed);
+  logger.debug('End createMainWindow()');
 
   return win;
 }
@@ -309,13 +313,16 @@ function initBibiscoDbConnection() {
   return {
     // add function to load bibisco db
     load: function() {
-      let bibiscodbpath = path.join(global.appPath, 'bibisco.json');  
+      logger.debug('Start initBibiscoDbConnection()');
+      let bibiscodbpath = path.join(global.appPath, path.join('db','bibisco.json'));  
+      logger.debug('bibisco db path: ' + bibiscodbpath);
       var bibiscodb = new loki(bibiscodbpath, {
         adapter: new LokiFsSyncAdapter()
       });
       bibiscodb.loadDatabase({}, function() {
-        logger.info('bibisco.json db loaded');
+        logger.debug('bibisco.json db loaded');
       });
+      logger.debug('End initBibiscoDbConnection()');
       return bibiscodb;
     }
   };
