@@ -52,6 +52,9 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/chapters/:chapterid/scenes/:sceneid', {
           template: '<scenedetail></scenedetail>'
         }).
+        when('/chapters/:chapterid/scenes/:sceneid/move', {
+          template: '<chapterselect></chapterselect>'
+        }).
         when('/chapters/:chapterid/scenes/:sceneid/tags', {
           template: '<scenetags></scenetags>'
         }).

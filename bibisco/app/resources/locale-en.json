@@ -274,6 +274,8 @@
   "revision_label": "Revision",
   "jsp.scene.revision.change.message": "There are unsaved changes. Do you want to continue?",
   "jsp.scene.button.updateTitle": "change scene title",
+  "jsp.scene.button.moveSceneToAnotherChapter": "move scene to another chapter",
+  "jsp.scene.button.moveSceneToAnotherChapter.title": "Move scene to another chapter",
   "jsp.scene.dialog.title.updateTitle": "Change scene title",
   "jsp.sceneTitle.form.title": "Scene title",
   "revision_confirm_delete_revision": "Do you really want to delete the current version?",

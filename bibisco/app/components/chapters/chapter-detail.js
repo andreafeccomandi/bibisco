@@ -110,8 +110,4 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $location.path('/project/chapters');
   };
 
-  self.showimagesfunction = function() {
-    alert('Qui si visualizzeranno le immagini per id=' + self.chapter
-      .$loki);
-  };
 }

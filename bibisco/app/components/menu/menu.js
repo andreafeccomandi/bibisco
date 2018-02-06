@@ -51,6 +51,12 @@ function MenuController($location, $rootScope) {
     self.disabled = true;
   });
 
+  // MOVE SCENE SELECT CHAPTER
+  $rootScope.$on('MOVE_SCENE_SELECT_CHAPTER', function () {
+    self.visible = true;
+    self.disabled = true;
+  });
+
   // SHOW START EVENT
   $rootScope.$on('SHOW_START', function() {
     self.visible = false;
@@ -81,13 +87,13 @@ function MenuController($location, $rootScope) {
     self.disabled = true;
   });
 
-  // SHOW ELEMENT images
+  // SHOW ELEMENT IMAGES
   $rootScope.$on('SHOW_ELEMENT_IMAGES', function() {
     self.visible = true;
     self.disabled = true;
   });
 
-  // SHOW ELEMENT title
+  // SHOW ELEMENT TITLE
   $rootScope.$on('SHOW_ELEMENT_TITLE', function () {
     self.visible = true;
     self.disabled = true;

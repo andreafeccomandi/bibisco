@@ -63,6 +63,10 @@ function SceneDetailController($location, $rootScope, $routeParams,
       itemfunction: self.changetitle
     });
     self.actionitems.push({
+      label: 'jsp.scene.button.moveSceneToAnotherChapter',
+      itemfunction: self.moveSceneToAnotherChapter
+    });
+    self.actionitems.push({
       label: 'jsp.common.button.delete',
       itemfunction: function () {
         PopupBoxesService.confirm(self.delete, 'jsp.chapter.delete.scene.confirm');
@@ -108,6 +112,11 @@ function SceneDetailController($location, $rootScope, $routeParams,
   self.changetitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/title');
+  };
+
+  self.moveSceneToAnotherChapter = function() {
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      .$loki + '/move');
   };
 
   self.delete = function() {
