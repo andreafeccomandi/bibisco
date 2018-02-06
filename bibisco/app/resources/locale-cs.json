@@ -41,6 +41,8 @@
   "jsp.common.button.moveleft": "přejít na předchozí pozici",
   "jsp.common.button.moveright": "přejít na následující pozici",
   "jsp.common.button.movelast": "přejít na poslední pozici",
+  "jsp.scene.button.moveSceneToAnotherChapter": "přesunout scénu do jiné kapitoly",
+  "jsp.scene.button.moveSceneToAnotherChapter.title": "Přesunout scénu do jiné kapitoly",
   "jsp.common.button.enabled": "Povoleno",
   "jsp.common.button.disabled": "Zakázáno",
   "jsp.common.button.select": "výber",

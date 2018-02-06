@@ -47,6 +47,8 @@
   "jsp.common.button.moveleft": "перейти назад",
   "jsp.common.button.moveright": "перейти вперед",
   "jsp.common.button.movelast": "перейти в конец",
+  "jsp.scene.button.moveSceneToAnotherChapter": "переместить сцену в другую главу",
+  "jsp.scene.button.moveSceneToAnotherChapter.title": "Переместить сцену в другую главу",
   "jsp.common.button.enabled": "Включено",
   "jsp.common.button.disabled": "Выключено",
   "jsp.common.button.select": "выделить",

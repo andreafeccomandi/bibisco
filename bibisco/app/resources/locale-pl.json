@@ -41,6 +41,8 @@
   "jsp.common.button.moveleft": "przesuń do poprzedniej pozycji",
   "jsp.common.button.moveright": "przesuń do następnej pozycji",
   "jsp.common.button.movelast": "przesuń do ostatniej pozycji",
+  "jsp.scene.button.moveSceneToAnotherChapter": "przenieś scenę do innego rozdziału",
+  "jsp.scene.button.moveSceneToAnotherChapter.title": "Przenieś scenę do innego rozdziału",
   "jsp.common.button.enabled": "Włączone",
   "jsp.common.button.disabled": "Wyłączone",
   "jsp.common.button.select": "wybierz",

@@ -38,6 +38,8 @@
   "jsp.common.button.moveleft": "Zur vorigen Position springen",
   "jsp.common.button.moveright": "Zur nächsten Position springen",
   "jsp.common.button.movelast": "Zum Ende springen",
+  "jsp.scene.button.moveSceneToAnotherChapter": "verschiebe die Szene in ein anderes Kapitel",
+  "jsp.scene.button.moveSceneToAnotherChapter.title": "Verschiebe die Szene in ein anderes Kapitel",
   "jsp.common.button.enabled": "Aktiv",
   "jsp.common.button.disabled": "Inaktiv",
   "jsp.common.button.select": "Auswählen",
