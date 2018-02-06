@@ -337,7 +337,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       ProjectDbConnectionService.saveDatabase();
     },
 
-    updateScene: function(scene) {
+    updateSceneWithoutCommit: function(scene) {
 
       // update scene
       scene.characters = scene.revisions[scene.revision].characters;
@@ -352,7 +352,13 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(
         scene.chapterid);
+    },
 
+    updateScene: function (scene) {
+
+      // update scene
+      this.updateSceneWithoutCommit(scene);
+      
       // save database
       ProjectDbConnectionService.saveDatabase();
     },
@@ -364,5 +370,32 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     getLastScenetime: function() {
       return ProjectService.getProjectInfo().lastScenetimeTag;
     },
+
+    moveSceneToAnotherChapter: function(sceneid, chapterid) {
+      
+      let maxPosition = this.getScenesCount(chapterid);
+      let scene = this.getScene(sceneid);
+      let previousChapterid = scene.chapterid;
+      let previousPosition = scene.position;
+      let previousChapterScenesCount = this.getScenesCount(previousChapterid);
+      
+      // update scene
+      scene.chapterid = chapterid;
+      scene.position = maxPosition + 1;
+      this.updateSceneWithoutCommit(scene);
+
+      // shift down previous chapter scenes
+      CollectionUtilService.shiftDown(this.getSceneCollection(), 
+        previousPosition + 1, 
+        previousChapterScenesCount, {
+          'chapterid': previousChapterid
+        });
+
+      // update previous chapter status
+      this.updateChapterStatusWordsCharactersWithoutCommit(previousChapterid);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+    }
   };
 });
