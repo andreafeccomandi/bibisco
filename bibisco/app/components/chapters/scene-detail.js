@@ -23,7 +23,7 @@ angular.
   });
 
 function SceneDetailController($location, $rootScope, $routeParams,
-  ChapterService, PopupBoxesService) {
+  ChapterService, PopupBoxesService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
@@ -115,8 +115,13 @@ function SceneDetailController($location, $rootScope, $routeParams,
   };
 
   self.moveSceneToAnotherChapter = function() {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
-      .$loki + '/move');
+    if (SupporterEditionChecker.isSupporterEdition()) {
+      $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+        .$loki + '/move');
+    } else {
+      SupporterEditionChecker.showSupporterMessage();
+    }
+    
   };
 
   self.delete = function() {

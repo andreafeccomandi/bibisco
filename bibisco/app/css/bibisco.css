@@ -133,6 +133,22 @@ h6, label, th, td, p {
     margin-left: 5px;
 }
 
+/* SUPPORTER EDITION MESSAGE */
+.supporter-edition-popup p.heart  {
+	color: red;
+	margin-top: 10px;
+}
+
+.supporter-edition-popup blockquote {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.supporter-edition-popup img {
+	width: 100px;
+	height:100px;
+}
+
 /* RICH TEXT VIEWER */
 .richtextviewer-container {
 	height: calc(100% - 40px);

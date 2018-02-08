@@ -14,13 +14,27 @@
  */
 
 angular.module('bibiscoApp').service('SupporterEditionChecker', function (
-  BibiscoPropertiesService, UtilService) {
+  $uibModal) {
   'use strict';
 
+  const { shell } = require('electron');
+
   return {
-    isSupporterEdition: function() {
-      let property = BibiscoPropertiesService.getProperty('version');
-      return UtilService.string.contains(property, 'SE');
+    isSupporterEdition: function () {
+      return false;
+    },
+    showSupporterMessage: function () {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        backdrop: 'static',
+        component: 'supportereditionpopup',
+        size: 'md'
+      });
+
+      modalInstance.result.then(function () {
+        shell.openExternal('http://www.bibisco.com');
+      }, function () {
+      });
     }
   };
 });
