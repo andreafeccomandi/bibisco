@@ -66,6 +66,10 @@ angular.module('bibiscoApp').service('ProjectService', function(
         type: 'setting',
         text: ''
       });
+      CollectionUtilService.insert(architectureCollection, {
+        type: 'globalnotes',
+        text: ''
+      });
       projectdb.addCollection('strands');
       projectdb.addCollection('chapters');
       projectdb.addCollection('scenes');

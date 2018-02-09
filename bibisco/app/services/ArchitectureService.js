@@ -43,6 +43,11 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
         type: 'setting'
       });
     },
+    getGlobalNotes: function () {
+      return this.getCollection().findOne({
+        type: 'globalnotes'
+      });
+    },
     update: function(architectureItem) {
       CollectionUtilService.update(this.getCollection(), architectureItem);
     }

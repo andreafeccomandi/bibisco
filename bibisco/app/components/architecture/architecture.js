@@ -65,6 +65,18 @@ function ArchitectureController($location, $rootScope, $scope,
       title: 'jsp.architecture.thumbnail.setting.title'
     });
 
+    /* Global notes */
+    let globalnotes = ArchitectureService.getGlobalNotes();
+    items.push({
+      id: 'globalnotes',
+      position: 4,
+      status: globalnotes.status,
+      text: 'common_notes_description',
+      title: 'common_notes_title'
+    });
+
+    return items;
+
     return items;
   };
 

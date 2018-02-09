@@ -45,6 +45,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       'common_characters_sociology',
       'common_empty_section',
       'common_fabula',
+      'common_notes_title',
       'common_locations',
       'common_premise',
       'common_setting',
@@ -93,6 +94,12 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       family: family,
       selectfunction: self.showSetting
     }); 
+    architecturefamily.push({
+      id: 'globalnotes',
+      name: self.translations.common_notes_title,
+      family: family,
+      selectfunction: self.showGlobalNotes
+    });
     architecturefamily.push({
       id: 'strands',
       name: self.translations.common_strands,
@@ -193,6 +200,12 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showSetting = function () {
     self.text = ArchitectureService.getSetting().text;
+    self.images = null;
+    self.type = 'simpletext';
+  };
+
+  self.showGlobalNotes = function () {
+    self.text = ArchitectureService.getGlobalNotes().text;
     self.images = null;
     self.type = 'simpletext';
   };

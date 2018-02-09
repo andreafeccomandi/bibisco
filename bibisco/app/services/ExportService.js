@@ -152,6 +152,10 @@ angular.module('bibiscoApp').service('ExportService', function (
       html += this.createTag('h2', translations.common_setting);
       html += ArchitectureService.getSetting().text;
 
+      // global notes
+      html += this.createTag('h2', translations.common_notes_title);
+      html += ArchitectureService.getGlobalNotes().text;
+
       // strands
       let strands = StrandService.getStrands();
       if (strands && strands.length > 0) {
@@ -310,6 +314,7 @@ angular.module('bibiscoApp').service('ExportService', function (
         'common_characters_lifebeforestorybeginning',
         'common_fabula',
         'common_ideas',
+        'common_notes_title',
         'common_locations',
         'common_main_characters',
         'common_personaldata',

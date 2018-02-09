@@ -330,11 +330,11 @@ h3 {
 }
 
 .card-grid-header-half-bottom {
-    top: 375px;
+    top: 400px;
 }
 
 .card-grid-header-half-bottom-detail {
-    top: 375px;
+    top: 400px;
 }
 
 .card-grid-emptyitems {
@@ -358,15 +358,15 @@ h3 {
 }
 
 .card-grid-emptyitems-with-header-subtitle-half-bottom {
-	top: 470px;
+	top: 495px;
 }
 
 .card-grid-emptyitems-no-header-subtitle-half-bottom {
-	top: 420px;
+	top: 445px;
 }
 
 .card-grid-emptyitems-no-header-subtitle-half-bottom-detail {
-	top: 430px;
+	top: 455px;
 }
 
 .card-grid-items {
@@ -397,18 +397,18 @@ h3 {
 }
 
 .card-grid-items-with-header-subtitle-half-bottom {
-    height: calc(100% - 530px);
-    top: 500px;
+    height: calc(100% - 555px);
+    top: 525px;
 }
 
 .card-grid-items-no-header-subtitle-half-bottom {
-    height: calc(100% - 490px);
-    top: 460px;
+    height: calc(100% - 515px);
+    top: 485px;
 }
 
 .card-grid-items-no-header-subtitle-half-bottom-detail {
-    height: calc(100% - 560px);
-    top: 460px;
+    height: calc(100% - 585px);
+    top: 485px;
 }
 
 /* BADGE */

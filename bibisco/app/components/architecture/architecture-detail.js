@@ -63,6 +63,9 @@ function ArchitectureDetailController($location, $routeParams,
     } else if (id === 'setting') {
       title = 'jsp.architecture.thumbnail.setting.title';
       subtitle = 'jsp.architecture.thumbnail.setting.description';
+    } else if (id === 'globalnotes') {
+      title = 'common_notes_title';
+      subtitle = 'common_notes_description';
     }
 
     architectureitem.title = title;
