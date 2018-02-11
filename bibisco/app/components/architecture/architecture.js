@@ -23,7 +23,7 @@ angular.
   });
 
 function ArchitectureController($location, $rootScope, $scope,
-  ArchitectureService, StrandService) {
+  ArchitectureService, StrandService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -76,12 +76,14 @@ function ArchitectureController($location, $rootScope, $scope,
     });
 
     return items;
-
-    return items;
   };
 
   self.architectureItemSelect = function(id) {
-    $location.path('/architectureitems/' + id);
+    if (id === 'globalnotes' && !SupporterEditionChecker.isSupporterEdition()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $location.path('/architectureitems/' + id);
+    }
   };
 
   self.getStrandCardGridItems = function() {
