@@ -19,14 +19,13 @@ angular.
     controller: AnalysisController
   });
 
-function AnalysisController($timeout, AnalysisService) {
+function AnalysisController($timeout) {
 
   var self = this;
 
   self.$onInit = function () {
     self.loading = true;
     $timeout(function () {
-      AnalysisService.ping();
       self.loading = false;
     }, 250);
   };

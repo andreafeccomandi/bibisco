@@ -22,9 +22,12 @@ angular.
     }
   });
 
-function ProjectController($location, $rootScope, $routeParams) {
+function ProjectController($location, $rootScope, $routeParams, AnalysisService) {
 
   var self = this;
+
+  // init AnalysisService
+  AnalysisService.ping();
 
   // menu items status
   self.projecthomeActive = false;
