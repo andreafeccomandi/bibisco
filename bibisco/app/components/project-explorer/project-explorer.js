@@ -20,7 +20,7 @@ angular.
   });
 
 function ProjectExplorerController($translate, ArchitectureService, ChapterService, 
-  LocationService, MainCharacterService, SecondaryCharacterService,
+  ItemService, LocationService, MainCharacterService, SecondaryCharacterService,
   StrandService) {
   
   var self = this;
@@ -49,7 +49,8 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       'common_locations',
       'common_premise',
       'common_setting',
-      'common_strands'
+      'common_strands',
+      'items'
     ]);
 
     self.type;
@@ -67,6 +68,9 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
     // Locations
     self.items.push.apply(self.items, self.getLocationsFamily());
+
+    // Items
+    self.items.push.apply(self.items, self.getItemsFamily());
 
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
@@ -164,6 +168,24 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     return locationsfamily;
   };
 
+  self.getItemsFamily = function () {
+
+    let itemsfamily = [];
+    let family = self.translations.items;
+
+    let items = ItemService.getItems();
+    for (let i = 0; i < items.length; i++) {
+      itemsfamily.push({
+        id: items[i].$loki,
+        name: items[i].name,
+        family: family,
+        selectfunction: self.showNovelItem
+      });
+    }
+
+    return itemsfamily;
+  };
+
   self.getChaptersFamily = function () {
   
     let chaptersfamily = [];
@@ -231,6 +253,13 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     let location = LocationService.getLocation(id);
     self.text = location.description;
     self.images = location.images;
+    self.type = 'simpletext';
+  };
+
+  self.showNovelItem = function (id) {
+    let item = ItemService.getItem(id);
+    self.text = item.name;
+    self.images = item.images;
     self.type = 'simpletext';
   };
 
