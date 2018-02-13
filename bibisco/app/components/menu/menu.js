@@ -33,6 +33,7 @@ function MenuController($location, $rootScope) {
   self.architectureActive = false;
   self.charactersActive = false;
   self.locationsActive = false;
+  self.itemsActive = false;
   self.chaptersActive = false;
   self.exportActive = false;
   self.analysisActive = false;
@@ -145,6 +146,7 @@ function MenuController($location, $rootScope) {
     self.architectureActive = false;
     self.charactersActive = false;
     self.locationsActive = false;
+    self.itemsActive = false;
     self.chaptersActive = false;
     self.exportActive = false;
     self.analysisActive = false;

@@ -76,6 +76,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectdb.addCollection('maincharacters');
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');
+      projectdb.addCollection('items');
 
       // save project database
       ProjectDbConnectionService.saveDatabase();

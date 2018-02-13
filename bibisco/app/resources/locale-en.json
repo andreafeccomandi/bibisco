@@ -113,6 +113,7 @@
   "jsp.menu.chapters": "chapters",
   "jsp.menu.characters": "characters",
   "jsp.menu.locations": "locations",
+  "jsp.menu.items": "items",
   "jsp.menu.settings": "settings",
   "jsp.menu.export": "export",
   "common_export": "Export",
@@ -715,5 +716,18 @@
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+right arrow",
   "common_select_or_search": "Select or search",
   "only_for_supporter_edition": "Only for bibisco supporter!",
-  "only_for_supporter_edition_button": "download bibisco supporter edition!"
+  "only_for_supporter_edition_button": "download bibisco supporter edition!",
+  "items": "Items",
+  "items_emptylist": "There are no items yet.",
+  "items_description": "Items useful for story development: magic wand, gun, treasure map...",
+  "item": "Item",
+  "item_delete_confirm": "Are you sure you want to delete this item?",
+  "item_delete_ko": "You cannot delete this location, because you have already used it in some scenes.",
+  "item_create_title": "Create item",
+  "item_create": "create item",
+  "item_create_first": "create the first item",
+  "item_change_name_title": "Change the name of the item",
+  "item_change_name_label": "change the name of the item",
+  "item_display_images": "display images of the item",
+  "item_title_form_name": "Name of the item"
 }

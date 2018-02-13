@@ -1,0 +1,17 @@
+<div class="container">
+  <cardgrid
+    carddimension="normal"
+    dndenabled="true"
+    dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+    emptylisttext="items_emptylist"
+    emptylistbuttonlabel="item_create_first"
+    emptylistbuttonfunction="$ctrl.create()"
+    family="items"
+    items="$ctrl.cardgriditems"
+    pageheaderbuttonlabel="item_create"
+    pageheaderbuttonfunction="$ctrl.create()"
+    pageheadersubtitle="items_description"
+    pageheadertitle="items"
+    selectfunction="$ctrl.select(id)"
+    type="full"></cardgrid>
+</div>
