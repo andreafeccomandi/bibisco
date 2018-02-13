@@ -20,7 +20,7 @@ angular.
   });
 
 function SceneTagsController($location, $routeParams, $translate,
-  ChapterService, DatetimeService, LocaleService, LocationService,
+  ChapterService, DatetimeService, ItemService, LocaleService, LocationService,
   MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
 
   var self = this;
@@ -54,6 +54,9 @@ function SceneTagsController($location, $routeParams, $translate,
 
     // init locations
     self.initLocations();
+
+    // init items
+    self.initItems();
 
     // init date time
     if (ChapterService.getLastScenetime() !== '') {
@@ -134,6 +137,13 @@ function SceneTagsController($location, $routeParams, $translate,
     self.scenerevision.locationid = id;
     self.initLocations();
     self.dirty = true;
+  };
+
+  self.toggleItem = function (id) {
+    let sceneitems = self.scenerevision.sceneitems;
+    self.toggleTagElement(sceneitems, id);
+    self.scenerevision.sceneitems = sceneitems;
+    self.initItems();
   };
 
   self.toggleStrand = function(id) {
@@ -218,6 +228,27 @@ function SceneTagsController($location, $routeParams, $translate,
 
     // sort by name
     self.locations.sort(function(a, b) {
+      return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+    });
+  };
+
+  self.initItems = function () {
+
+    // items
+    let items = ItemService.getItems();
+    self.items = [];
+    for (let i = 0; i < items.length; i++) {
+      let isselected = UtilService.array.contains(self.scenerevision.sceneitems,
+        items[i].$loki);
+      self.items.push({
+        id: items[i].$loki,
+        name: items[i].name,
+        selected: isselected
+      });
+    }
+
+    // sort by name
+    self.items.sort(function (a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
     });
   };

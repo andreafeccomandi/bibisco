@@ -83,6 +83,24 @@
       </div>
     </div>
 
+    <!-- ITEMS -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+            {{'items' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="item in $ctrl.items" type="button" ng-class="{ 'btn-info': item.selected }" class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleItem(item.id)">
+          {{item.name}}
+        </button>
+      </div>
+    </div>
+
     <!-- TIME -->
     <div class="row scene-tags-section-title">
       <div class="col-sm-12">
