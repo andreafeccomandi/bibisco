@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ItemsController($location, $scope, ItemService) {
+function ItemsController($location, $scope, ItemService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -35,7 +35,9 @@ function ItemsController($location, $scope, ItemService) {
   };
 
   self.create = function() {
-    $location.path('/items/new');
+    self.supporterEditionFilterAction(function () {
+      $location.path('/items/new');
+    });
   };
 
   self.getCardGridItems = function () {
@@ -62,7 +64,16 @@ function ItemsController($location, $scope, ItemService) {
   };
 
   self.select = function(id) {
-    $location.path('/items/' + id);
+    self.supporterEditionFilterAction(function() {
+      $location.path('/items/' + id);
+    });
   };
 
+  self.supporterEditionFilterAction = function(action) {
+    if (!SupporterEditionChecker.isSupporterEdition()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      action();
+    }
+  };
 }
