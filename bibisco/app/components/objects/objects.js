@@ -14,15 +14,15 @@
  */
 angular.
   module('bibiscoApp').
-  component('items', {
-    templateUrl: 'components/items/items.html',
-    controller: ItemsController,
+  component('objects', {
+    templateUrl: 'components/objects/objects.html',
+    controller: ObjectsController,
     bindings: {
 
     }
   });
 
-function ItemsController($location, $scope, ItemService, SupporterEditionChecker) {
+function ObjectsController($location, $scope, ObjectService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -31,26 +31,26 @@ function ItemsController($location, $scope, ItemService, SupporterEditionChecker
   };
 
   self.itemsPresent = function() {
-    return ItemService.getItemsCount() > 0;
+    return ObjectService.getObjectsCount() > 0;
   };
 
   self.create = function() {
     self.supporterEditionFilterAction(function () {
-      $location.path('/items/new');
+      $location.path('/objects/new');
     });
   };
 
   self.getCardGridItems = function () {
     let cardgriditems = null;
-    if (ItemService.getItemsCount() > 0) {
-      let items = ItemService.getItems();
+    if (ObjectService.getObjectsCount() > 0) {
+      let objects = ObjectService.getObjects();
       cardgriditems = [];
-      for (let i = 0; i < items.length; i++) {
+      for (let i = 0; i < objects.length; i++) {
         cardgriditems.push({
-          id: items[i].$loki,
-          position: items[i].position,
-          status: items[i].status,
-          title: items[i].name
+          id: objects[i].$loki,
+          position: objects[i].position,
+          status: objects[i].status,
+          title: objects[i].name
         });
       }
     }
@@ -58,14 +58,14 @@ function ItemsController($location, $scope, ItemService, SupporterEditionChecker
   };
 
   self.move = function(draggedObjectId, destinationObjectId) {
-    ItemService.move(draggedObjectId, destinationObjectId);
+    ObjectService.move(draggedObjectId, destinationObjectId);
     self.cardgriditems = this.getCardGridItems();
     $scope.$apply();
   };
 
   self.select = function(id) {
     self.supporterEditionFilterAction(function() {
-      $location.path('/items/' + id);
+      $location.path('/objects/' + id);
     });
   };
 

@@ -15,66 +15,66 @@
 angular.
   module('bibiscoApp').
   component('itemdetail', {
-    templateUrl: 'components/items/item-detail.html',
+    templateUrl: 'components/objects/object-detail.html',
     controller: ItemDetailController
   });
 
 function ItemDetailController($location, $routeParams, ChapterService, 
-  ItemService) {
+  ObjectService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.item = self.getItem($routeParams.id);
+    self.object = self.getObject($routeParams.id);
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'items',
-      href: '/project/items'
+      label: 'objects',
+      href: '/project/objects'
     });
     self.breadcrumbitems.push({
-      label: self.item.name
+      label: self.object.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.back = function() {
-    $location.path('/project/items');
+    $location.path('/project/objects');
   };
 
   self.changeStatus = function(status) {
-    self.item.status = status;
-    ItemService.update(self.item);
+    self.object.status = status;
+    ObjectService.update(self.object);
   };
 
   self.changeTitle = function() {
-    $location.path('/items/' + self.item.$loki + '/title');
+    $location.path('/objects/' + self.object.$loki + '/title');
   };
 
   self.delete = function() {
-    ItemService.remove(self.item
+    ObjectService.remove(self.object
       .$loki);
-    $location.path('/project/items');
+    $location.path('/project/objects');
   };
 
-  self.getItem = function(id) {
-    return ItemService.getItem(id);
+  self.getObject = function(id) {
+    return ObjectService.getObject(id);
   };
 
   self.savefunction = function() {
-    ItemService.update(self.item);
+    ObjectService.update(self.object);
   };
 
   self.showimagesfunction = function() {
-    $location.path('/items/' + self.item.$loki + '/images');
+    $location.path('/objects/' + self.object.$loki + '/images');
   };
 
   self.isDeleteForbidden = function () {
 
     let deleteForbidden = false;
-    let id = self.item.$loki;
+    let id = self.object.$loki;
     let chapters = ChapterService.getChapters();
     for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
       let scenes = ChapterService.getScenes(chapters[i].$loki);

@@ -15,11 +15,11 @@
 angular.
   module('bibiscoApp').
   component('itemtitle', {
-    templateUrl: 'components/items/item-title.html',
+    templateUrl: 'components/objects/object-title.html',
     controller: ItemTitleController
   });
 
-function ItemTitleController($location, $routeParams, ItemService) {
+function ItemTitleController($location, $routeParams, ObjectService) {
 
   var self = this;
 
@@ -28,46 +28,46 @@ function ItemTitleController($location, $routeParams, ItemService) {
     // common bradcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'items'
+      label: 'objects'
     });
 
     if ($routeParams.id !== undefined) {
-      let item = ItemService.getItem(
+      let object = ObjectService.getObject(
         $routeParams.id);
 
-      // edit breadcrumb items
+      // edit breadcrumb objects
       self.breadcrumbItems.push({
-        label: item.name
+        label: object.name
       });
       self.breadcrumbItems.push({
-        label: 'item_change_name_title'
+        label: 'object_change_name_title'
       });
 
-      self.exitpath = '/items/' + $routeParams.id;
-      self.name = item.name;
+      self.exitpath = '/objects/' + $routeParams.id;
+      self.name = object.name;
       self.pageheadertitle =
-        'item_change_name_title';
+        'object_change_name_title';
     } else {
 
-      // create breadcrumb items
+      // create breadcrumb objects
       self.breadcrumbItems.push({
-        label: 'item_create_title'
+        label: 'object_create_title'
       });
-      self.exitpath = '/project/items';
+      self.exitpath = '/project/objects';
       self.name = null;
       self.pageheadertitle =
-        'item_create_title';
+        'object_create_title';
     }
   };
 
   self.save = function(title) {
     if ($routeParams.id !== undefined) {
-      let item = ItemService.getItem(
+      let object = ObjectService.getObject(
         $routeParams.id);
-      item.name = title;
-      ItemService.update(item);
+      object.name = title;
+      ObjectService.update(object);
     } else {
-      ItemService.insert({
+      ObjectService.insert({
         description: '',
         name: title
       });

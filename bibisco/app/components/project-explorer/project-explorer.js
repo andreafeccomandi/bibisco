@@ -20,7 +20,7 @@ angular.
   });
 
 function ProjectExplorerController($translate, ArchitectureService, ChapterService, 
-  ItemService, LocationService, MainCharacterService, SecondaryCharacterService,
+  ObjectService, LocationService, MainCharacterService, SecondaryCharacterService,
   StrandService) {
   
   var self = this;
@@ -50,7 +50,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
       'common_premise',
       'common_setting',
       'common_strands',
-      'items'
+      'objects'
     ]);
 
     self.type;
@@ -69,8 +69,8 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     // Locations
     self.items.push.apply(self.items, self.getLocationsFamily());
 
-    // Items
-    self.items.push.apply(self.items, self.getItemsFamily());
+    // Objects
+    self.items.push.apply(self.items, self.getObjectsFamily());
 
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
@@ -168,22 +168,22 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     return locationsfamily;
   };
 
-  self.getItemsFamily = function () {
+  self.getObjectsFamily = function () {
 
-    let itemsfamily = [];
-    let family = self.translations.items;
+    let objectsfamily = [];
+    let family = self.translations.objects;
 
-    let items = ItemService.getItems();
-    for (let i = 0; i < items.length; i++) {
-      itemsfamily.push({
-        id: items[i].$loki,
-        name: items[i].name,
+    let objects = ObjectService.getObjects();
+    for (let i = 0; i < objects.length; i++) {
+      objectsfamily.push({
+        id: objects[i].$loki,
+        name: objects[i].name,
         family: family,
-        selectfunction: self.showNovelItem
+        selectfunction: self.showObject
       });
     }
 
-    return itemsfamily;
+    return objectsfamily;
   };
 
   self.getChaptersFamily = function () {
@@ -256,10 +256,10 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.type = 'simpletext';
   };
 
-  self.showNovelItem = function (id) {
-    let item = ItemService.getItem(id);
-    self.text = item.name;
-    self.images = item.images;
+  self.showObject = function (id) {
+    let object = ObjectService.getObject(id);
+    self.text = object.description;
+    self.images = object.images;
     self.type = 'simpletext';
   };
 

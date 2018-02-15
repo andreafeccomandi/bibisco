@@ -83,20 +83,20 @@
       </div>
     </div>
 
-    <!-- ITEMS -->
+    <!-- OBJECTS -->
     <div class="row scene-tags-section-title">
       <div class="col-sm-12">
         <blockquote>
           <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
-            {{'items' | translate}}</i>
+            {{'objects' | translate}}</i>
         </blockquote>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="item in $ctrl.items" type="button" ng-class="{ 'btn-info': item.selected }" class="btn btn-sm scene-tags-button"
-          ng-click="$ctrl.toggleItem(item.id)">
-          {{item.name}}
+        <button ng-repeat="object in $ctrl.objects" type="button" ng-class="{ 'btn-info': object.selected }" class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleItem(object.id)">
+          {{object.name}}
         </button>
       </div>
     </div>

@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('ItemService', function(
+angular.module('bibiscoApp').service('ObjectService', function(
   CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
@@ -22,27 +22,27 @@ angular.module('bibiscoApp').service('ItemService', function(
     addImage: function (id, name, path) {
       let filename = ImageService.addImageToProject(path);
       LoggerService.info('Added image file: ' + filename + ' for element with $loki='
-        + id + ' in items');
+        + id + ' in objects');
 
-      let item = this.getItem(id);
-      let images = item.images;
+      let object = this.getObject(id);
+      let images = object.images;
       images.push({
         name: name,
         filename: filename
       });
-      item.images = images;
-      CollectionUtilService.update(this.getCollection(), item);
+      object.images = images;
+      CollectionUtilService.update(this.getCollection(), object);
     },
     deleteImage: function (id, filename) {
 
       // delete image file
       ImageService.deleteImage(filename);
       LoggerService.info('Deleted image file: ' + filename + ' for element with $loki='
-        + id + ' in items');
+        + id + ' in objects');
 
       // delete reference
-      let item = this.getItem(id);
-      let images = item.images;
+      let object = this.getObject(id);
+      let images = object.images;
       let imageToRemovePosition;
       for (let i = 0; i < images.length; i++) {
         if (images[i].filename === filename) {
@@ -51,32 +51,32 @@ angular.module('bibiscoApp').service('ItemService', function(
         }
       }
       images.splice(imageToRemovePosition, 1);
-      item.images = images;
-      CollectionUtilService.update(this.getCollection(), item);
+      object.images = images;
+      CollectionUtilService.update(this.getCollection(), object);
 
-      return item;
+      return object;
     },
     getCollection: function() {
       return ProjectDbConnectionService.getProjectDb().getCollection(
-        'items');
+        'objects');
     },
     getDynamicView: function() {
       return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_items');
+        this.getCollection(), 'all_objects');
     },
-    getItem: function(id) {
+    getObject: function(id) {
       return this.getCollection().get(id);
     },
-    getItemsCount: function() {
+    getObjectsCount: function() {
       return this.getCollection().count();
     },
-    getItems: function() {
+    getObjects: function() {
       return this.getDynamicView().data();
     },
-    insert: function(item) {
+    insert: function(object) {
       let images = [];
-      item.images = images;
-      CollectionUtilService.insert(this.getCollection(), item);
+      object.images = images;
+      CollectionUtilService.insert(this.getCollection(), object);
     },
     move: function(sourceId, targetId) {
       return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
@@ -85,8 +85,8 @@ angular.module('bibiscoApp').service('ItemService', function(
     remove: function(id) {
       CollectionUtilService.remove(this.getCollection(), id);
     },
-    update: function(item) {
-      CollectionUtilService.update(this.getCollection(), item);
+    update: function(object) {
+      CollectionUtilService.update(this.getCollection(), object);
     }
   };
 });

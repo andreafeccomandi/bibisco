@@ -73,19 +73,19 @@ angular.module('bibiscoApp', ['ngRoute',
         when('/importproject', {
           template: '<importproject></importproject>'
         }).
-        when('/items/new', {
+        when('/objects/new', {
           template: '<itemtitle></itemtitle>'
         }).
-        when('/items/:id', {
+        when('/objects/:id', {
           template: '<itemdetail></itemdetail>'
         }).
-        when('/items/:id/images', {
+        when('/objects/:id/images', {
           template: '<itemimages></itemimages>'
         }).
-        when('/items/:id/images/new', {
+        when('/objects/:id/images/new', {
           template: '<itemaddimage></itemaddimage>'
         }).
-        when('/items/:id/title', {
+        when('/objects/:id/title', {
           template: '<itemtitle></itemtitle>'
         }).
         when('/locations/new', {

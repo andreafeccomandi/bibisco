@@ -20,7 +20,7 @@ angular.
   });
 
 function SceneTagsController($location, $routeParams, $translate,
-  ChapterService, DatetimeService, ItemService, LocaleService, LocationService,
+  ChapterService, DatetimeService, ObjectService, LocaleService, LocationService,
   MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
 
   var self = this;
@@ -55,8 +55,8 @@ function SceneTagsController($location, $routeParams, $translate,
     // init locations
     self.initLocations();
 
-    // init items
-    self.initItems();
+    // init objects
+    self.initObjects();
 
     // init date time
     if (ChapterService.getLastScenetime() !== '') {
@@ -139,11 +139,11 @@ function SceneTagsController($location, $routeParams, $translate,
     self.dirty = true;
   };
 
-  self.toggleItem = function (id) {
-    let sceneitems = self.scenerevision.sceneitems;
-    self.toggleTagElement(sceneitems, id);
-    self.scenerevision.sceneitems = sceneitems;
-    self.initItems();
+  self.toggleObject = function (id) {
+    let objects = self.scenerevision.objects;
+    self.toggleTagElement(objects, id);
+    self.scenerevision.objects = objects;
+    self.initObjects();
   };
 
   self.toggleStrand = function(id) {
@@ -232,23 +232,23 @@ function SceneTagsController($location, $routeParams, $translate,
     });
   };
 
-  self.initItems = function () {
+  self.initObjects = function () {
 
-    // items
-    let items = ItemService.getItems();
-    self.items = [];
-    for (let i = 0; i < items.length; i++) {
-      let isselected = UtilService.array.contains(self.scenerevision.sceneitems,
-        items[i].$loki);
-      self.items.push({
-        id: items[i].$loki,
-        name: items[i].name,
+    // objects
+    let objects = ObjectService.getObjects();
+    self.objects = [];
+    for (let i = 0; i < objects.length; i++) {
+      let isselected = UtilService.array.contains(self.scenerevision.objects,
+        objects[i].$loki);
+      self.objects.push({
+        id: objects[i].$loki,
+        name: objects[i].name,
         selected: isselected
       });
     }
 
     // sort by name
-    self.items.sort(function (a, b) {
+    self.objects.sort(function (a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
     });
   };

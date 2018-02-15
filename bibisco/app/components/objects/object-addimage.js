@@ -14,46 +14,38 @@
  */
 angular.
   module('bibiscoApp').
-  component('itemimages', {
-    templateUrl: 'components/items/item-images.html',
-    controller: ItemImagesController
+  component('itemaddimage', {
+    templateUrl: 'components/objects/object-addimage.html',
+    controller: ItemAddImageController
   });
 
-function ItemImagesController($location, $rootScope, $routeParams,
-  ItemService) {
+function ItemAddImageController($routeParams, ObjectService) {
 
   var self = this;
 
   self.$onInit = function() {
-    
-    let item = ItemService.getItem($routeParams.id);
-    
+
+    let object = ObjectService.getObject($routeParams.id);
+
+    // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'items'
+      label: 'common_items'
     });
     self.breadcrumbitems.push({
-      label: item.name
+      label: object.name
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
     });
+    self.breadcrumbitems.push({
+      label: 'jsp.addImageForm.dialog.title'
+    });
 
-    self.images = item.images;
-    self.lastsave = item.lastsave;
-    self.pageheadertitle = item.name;
+    self.exitpath = '/objects/' + $routeParams.id + '/images';
   };
 
-  self.delete = function(filename) {
-    let item = ItemService.deleteImage($routeParams.id, filename);
-    self.images = item.images;
-  };
-
-  self.insert = function() {
-    $location.path('/items/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/items/' + $routeParams.id);
+  self.save = function(name, path) {
+    ObjectService.addImage($routeParams.id, name, path);
   };
 }
