@@ -678,5 +678,19 @@
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+strzałka w lewo",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+strzałka w prawo",
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+strzałka w prawo",
-  "common_select_or_search": "Wybierz lub wyszukać"
+  "common_select_or_search": "Wybierz lub wyszukać",
+  "jsp.menu.items": "obiekty",
+  "items": "Obiekty",
+  "items_emptylist": "Brak obiektów w polu",
+  "items_description": "obiekty pomocne w rozwoju historii: magiczna różdżka, pistolet, mapa skarbów ...",
+  "item": "Obiekt",
+  "item_delete_confirm": "Czy na pewno chcesz usunąć ten obiekt?",
+  "item_delete_ko": "Nie można usunąć tego obiekt, bo jest już wykorzystane w niektórych scenach.",
+  "item_create_title": "Utwórz obiekt",
+  "item_create": "utwórz obiekt",
+  "item_create_first": "utwórz pierwszy obiekt",
+  "item_change_name_title": "Zmień nazwę obiektu",
+  "item_change_name_label": "zmień nazwę obiektu",
+  "item_display_images": "pokaż obraz obiektu",
+  "item_title_form_name": "Nazwa obiektu"
 }

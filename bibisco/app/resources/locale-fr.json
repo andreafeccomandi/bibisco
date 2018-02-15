@@ -686,5 +686,19 @@
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+flèche gauche",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+flèche droite",
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+flèche droite",
-  "common_select_or_search": "Sélectionner ou rechercher"
+  "common_select_or_search": "Sélectionner ou rechercher",
+  "jsp.menu.items": "objets",
+  "items": "Objets",
+  "items_emptylist": "Il nʼy a aucun objet pour lʼinstant.",
+  "items_description": "objets utiles au développement de l'histoire: baguette magique, pistolet, carte au trésor...",
+  "item": "object",
+  "item_delete_confirm": "Êtes-vous certains de vouloir supprimer ce objet ?",
+  "item_delete_ko": "Vous ne pouvez pas supprimer ce objet car il est déjà utilisé dans certaines scènes.",
+  "item_create_title": "Créer un objet",
+  "item_create": "créer un objet",
+  "item_create_first": "créer le premier objet",
+  "item_change_name_title": "Changer le nom du objet",
+  "item_change_name_label": "changer le nom du objet",
+  "item_display_images": "display object images",
+  "item_title_form_name": "Nom du objet"
 }

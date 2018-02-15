@@ -679,5 +679,19 @@
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+NACH-LINKS-TASTE",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+NACH-RECHTS-TASTE",
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+NACH-RECHTS-TASTE",
-  "common_select_or_search": "Wählen oder suchen"
+  "common_select_or_search": "Wählen oder suchen",
+  "jsp.menu.items": "Objekte",
+  "items": "Objekte",
+  "items_emptylist": "Es wurden bisher noch keine Objekte angelegt.",
+  "items_description": "Objekte, die für die Entwicklung der Geschichte nützlich sind: Zauberstab, Pistole, Schatzkarte ...",
+  "item": "Objekt",
+  "item_delete_confirm": "Willst Du diesen Objekt wirklich löschen?",
+  "item_delete_ko": "Du kannst diesen Objekt nicht löschen, weil er in einer Szene verwendet wird.",
+  "item_create_title": "Objekt anlegen",
+  "item_create": "Objekt anlegen",
+  "item_create_first": "Den ersten Objekt anlegen",
+  "item_change_name_title": "Den Namen des Objekts ändern",
+  "item_change_name_label": "Den Namen des Objekts ändern",
+  "item_display_images": "Bilder des Objekts anzeigen",
+  "item_title_form_name": "Name des Objekts"
 }

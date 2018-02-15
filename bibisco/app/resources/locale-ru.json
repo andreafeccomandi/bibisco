@@ -724,5 +724,19 @@
   "maincharacterquestionbuttonbar.previous.tooltip_mac": "CMD+стрелка влево",
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+стрелка вправо",
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+стрелка вправо",
-  "common_select_or_search": "выбрать или поиск"
+  "common_select_or_search": "выбрать или поиск",
+  "jsp.menu.items": "объекты",
+  "items": "объекты",
+  "items_emptylist": "Ни одной объекты не было создано.",
+  "items_description": "объекты полезные для развития истории: волшебная палочка, пистолет, карта сокровищ ...",
+  "item": "объект",
+  "item_delete_confirm": "Вы уверены, что хотите удалить этот объект?",
+  "item_delete_ko": "Вы не можете удалить этот объект, потому что вы уже использовали его в некоторых сценах.",
+  "item_create_title": "Создать объект",
+  "item_create": "создать объект",
+  "item_create_first": "создать первый объект",
+  "item_change_name_title": "Изменить название объекта",
+  "item_change_name_label": "Изменить название объекта",
+  "item_display_images": "показать фотографии объекта",
+  "item_title_form_name": "Название объекта"
 }
