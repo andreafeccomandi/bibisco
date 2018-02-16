@@ -139,10 +139,10 @@ function SceneTagsController($location, $routeParams, $translate,
     self.dirty = true;
   };
 
-  self.toggleObject = function (id) {
-    let objects = self.scenerevision.objects;
+  self.toggleObject = function(id) {
+    let objects = self.scenerevision.sceneobjects;
     self.toggleTagElement(objects, id);
-    self.scenerevision.objects = objects;
+    self.scenerevision.sceneobjects = objects;
     self.initObjects();
   };
 
@@ -238,7 +238,7 @@ function SceneTagsController($location, $routeParams, $translate,
     let objects = ObjectService.getObjects();
     self.objects = [];
     for (let i = 0; i < objects.length; i++) {
-      let isselected = UtilService.array.contains(self.scenerevision.objects,
+      let isselected = UtilService.array.contains(self.scenerevision.sceneobjects,
         objects[i].$loki);
       self.objects.push({
         id: objects[i].$loki,
