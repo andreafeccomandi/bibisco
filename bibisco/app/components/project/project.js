@@ -36,6 +36,7 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
   self.locationsActive = false;
   self.objectsActive = false;
   self.chaptersActive = false;
+  self.timelineActive = false;
   self.exportActive = false;
   self.analysisActive = false;
   self.settingsActive = false;
@@ -63,6 +64,7 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
     self.locationsActive = false;
     self.objectsActive = false;
     self.chaptersActive = false;
+    self.timelineActive = false;
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;

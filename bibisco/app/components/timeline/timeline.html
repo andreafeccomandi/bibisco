@@ -1,0 +1,18 @@
+<div class="detail-header">
+  <div class="container">
+    <div class="row">
+      <pageheader headertitle="Timeline" buttonshow="false">
+      </pageheader>
+    </div>
+  </div>
+</div>
+<div class="tips">
+  <div class="container">
+    <div class="row">
+      <ul class="timeline">
+        <timelineelement ng-repeat="scene in $ctrl.scenes track by $index" 
+          index="($index % 12)" scene="scene"></timelineelement>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -35,6 +35,7 @@ function MenuController($location, $rootScope) {
   self.locationsActive = false;
   self.objectsActive = false;
   self.chaptersActive = false;
+  self.timelineActive = false;
   self.exportActive = false;
   self.analysisActive = false;
   self.settingsActive = false;
@@ -148,6 +149,7 @@ function MenuController($location, $rootScope) {
     self.locationsActive = false;
     self.objectsActive = false;
     self.chaptersActive = false;
+    self.timelineActive = false;
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;

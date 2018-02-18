@@ -39,6 +39,43 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     getSceneCollection: function() { 
       return ProjectDbConnectionService.getProjectDb().getCollection('scenes');
     },
+    getScenesSortedByTime: function() {
+      let collection = ProjectDbConnectionService.getProjectDb().getCollection('scenes');
+      let dynamicViewName = 'scenes_sorted_by_time';
+      let dynamicView = collection.getDynamicView(dynamicViewName);
+      if (!dynamicView) {
+        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
+        dynamicView = collection.addDynamicView(dynamicViewName, {
+          sortPriority: 'active'
+        });
+      } else {
+        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
+      }
+
+      let scenes = dynamicView.data();
+      scenes.sort(function (scene1, scene2) {
+        let time1 = scene1.revisions[scene1.revision].time;
+        let time2 = scene2.revisions[scene2.revision].time;
+        if (time1 === time2) {
+          if (scene1.chapterid === scene2.chapterid) {
+            if (scene1.position === scene2.position) return 0;
+            if (scene1.position > scene2.position) return 1;
+            if (scene1.position < scene2.position) return -1;
+          } else {
+            let chapter1 = this.getChapter(scene1.chapterid);
+            let chapter2 = this.getChapter(scene2.chapterid);
+            if (chapter1.position === chapter2.position) return 0;
+            if (chapter1.position > chapter2.position) return 1;
+            if (chapter1.position < chapter2.position) return -1;
+          }
+          return 0;
+        }
+        if (time1 > time2) return 1;
+        if (time1 < time2) return -1;
+      });
+
+      return scenes;
+    },
     insert: function(chapter) {
 
       // insert chapter
@@ -401,3 +438,4 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     }
   };
 });
+
