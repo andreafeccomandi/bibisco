@@ -23,7 +23,7 @@ angular.
     }
   });
 
-function TimelineElementController($location, DatetimeService) {
+function TimelineElementController($location, DatetimeService, LocationService) {
   var self = this;
 
   self.$onInit = function () {
@@ -35,6 +35,11 @@ function TimelineElementController($location, DatetimeService) {
       self.time = new Date(self.time);
       self.sceneyear = DatetimeService.calculateSceneYear(new Date(self.time));
     }
+    self.locationname = '';
+    if (revision.locationid) {
+      let location = LocationService.getLocation(revision.locationid);
+      self.locationname = LocationService.calculateLocationName(location);
+    } 
   };
 
   self.showScene = function() {
