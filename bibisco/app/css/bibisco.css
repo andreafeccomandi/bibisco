@@ -799,7 +799,7 @@ h3 {
 
 /* TIMELINE */
 
-.tips {
+.timeline-container {
 	top: 190px;
 	position: absolute;
 	overflow-y: scroll;
@@ -911,7 +911,7 @@ h3 {
 	border-bottom-left-radius: 50%;
 }
 
-.timeline-element > li > .scene-time-badge {
+.timeline-element > li > .timeline-scene-badge {
 	color: #fff;
     width: 25px;
     height: 25px;
@@ -929,7 +929,7 @@ h3 {
     border-bottom-left-radius: 50%;
 }
 
-.timeline-element > li > .scene-time-timestamp {
+.timeline-element > li > .timeline-scene-datetime {
 	position: absolute;
 	left: calc(35% - 375px);
 	width: 350px;
@@ -1014,7 +1014,7 @@ h3 {
         top: 16px;
 	}
 	
-	.timeline-element > li > .scene-time-badge {
+	.timeline-element > li > .timeline-scene-badge {
         left: 15px;
         margin-left: 0;
         top: 16px;
