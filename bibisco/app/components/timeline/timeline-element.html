@@ -2,7 +2,8 @@
 <li class="timeline-inverted">
     <div class="timeline-scene-badge list-item-color-{{$ctrl.index}}"></div>
     <div class="timeline-scene-datetime">
-        <h2>23/04/1975 <small>10:23:23 PM</small></h2>
+        <h2 ng-if="$ctrl.time && $ctrl.timegregorian">{{'date_format_scene_tags' | translate:{date:$ctrl.time} }}{{$ctrl.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.time} }}</small></h2>
+        <h2 ng-if="$ctrl.time && !$ctrl.timegregorian">{{$ctrl.time}}</h2>
     </div>
     <div class="timeline-panel timeline-panel-scene">
         <div class="timeline-heading">

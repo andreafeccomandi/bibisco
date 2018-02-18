@@ -23,10 +23,17 @@ angular.
     }
   });
 
-function TimelineElementController() {
+function TimelineElementController(DatetimeService) {
   var self = this;
 
   self.$onInit = function () {
-    
+    let revision = self.scene.revisions[self.scene.revision];
+    self.time = revision.time;
+    self.timegregorian = revision.timegregorian;
+    self.sceneyear = null;
+    if (self.time && self.timegregorian) {
+      self.time = new Date(self.time);
+      self.sceneyear = DatetimeService.calculateSceneYear(new Date(self.time));
+    }
   };
 }

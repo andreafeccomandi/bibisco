@@ -53,25 +53,31 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
 
       let scenes = dynamicView.data();
+      for (let i = 0; i < scenes.length; i++) {
+        let chapter = this.getChapter(scenes[i].chapterid);
+        scenes[i].chapterposition = chapter.position;
+      }
+
       scenes.sort(function (scene1, scene2) {
         let time1 = scene1.revisions[scene1.revision].time;
+        if (time1 && scene1.revisions[scene1.revision].timegregorian) {
+          time1 = new Date(time1);
+        }
         let time2 = scene2.revisions[scene2.revision].time;
-        if (time1 === time2) {
-          if (scene1.chapterid === scene2.chapterid) {
-            if (scene1.position === scene2.position) return 0;
-            if (scene1.position > scene2.position) return 1;
-            if (scene1.position < scene2.position) return -1;
-          } else {
-            let chapter1 = this.getChapter(scene1.chapterid);
-            let chapter2 = this.getChapter(scene2.chapterid);
-            if (chapter1.position === chapter2.position) return 0;
-            if (chapter1.position > chapter2.position) return 1;
-            if (chapter1.position < chapter2.position) return -1;
-          }
-          return 0;
+        if (time2 && scene2.revisions[scene2.revision].timegregorian) {
+          time2 = new Date(time2);
         }
         if (time1 > time2) return 1;
-        if (time1 < time2) return -1;
+        else if (time1 < time2) return -1;
+        else {
+          if (scene1.chapterposition > scene2.chapterposition) return 1;
+          else if (scene1.chapterposition < scene2.chapterposition) return -1;
+          else {
+            if (scene1.position > scene2.position) return 1;
+            else if (scene1.position < scene2.position) return -1;
+            else return 0;
+          }
+        }
       });
 
       return scenes;

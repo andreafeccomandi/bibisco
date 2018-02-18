@@ -934,7 +934,10 @@ h3 {
 	left: calc(35% - 375px);
 	width: 350px;
 	top: 4px;
-	text-align: right
+	text-align: right;
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
 }
 
 .timeline-element > li.timeline-inverted > .timeline-panel-tip {
