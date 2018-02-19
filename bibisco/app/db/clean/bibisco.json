@@ -183,6 +183,16 @@
             "version": 0
           },
           "$loki": 18
+        },
+        {
+          "name": "analysisTip",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 19
         }
       ],
       "idIndex": [
