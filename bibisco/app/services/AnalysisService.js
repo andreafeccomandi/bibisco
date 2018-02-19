@@ -382,7 +382,10 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     sortAppearances: function (appearances) {
       appearances.sort(function (a, b) {
-        if (a.time > b.time) {
+        if (!a.time && !b.time) return 0;
+        else if (a.time && !b.time) return 1;
+        else if (!a.time && b.time) return -1;
+        else if (a.time > b.time) {
           return 1;
         } else if (a.time < b.time) {
           return -1;

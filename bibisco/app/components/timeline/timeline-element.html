@@ -4,6 +4,7 @@
     <div class="timeline-scene-datetime">
         <h2 ng-if="$ctrl.element.time && $ctrl.element.timegregorian">{{'date_format_scene_tags' | translate:{date:$ctrl.element.time} }}{{$ctrl.element.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.element.time} }}</small></h2>
         <h2 ng-if="$ctrl.element.time && !$ctrl.element.timegregorian">{{$ctrl.element.time}}</h2>
+        <h2 ng-if="!$ctrl.element.time"><small>{{'jsp.analysisCharacterScene.noInfoAvailable' | translate}}</small></h2>
     </div>
     <div class="timeline-panel timeline-panel-scene">
         <div class="timeline-heading">
