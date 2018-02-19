@@ -2,16 +2,16 @@
 <li class="timeline-inverted">
     <div class="timeline-scene-badge list-item-color-{{$ctrl.index}}"></div>
     <div class="timeline-scene-datetime">
-        <h2 ng-if="$ctrl.time && $ctrl.timegregorian">{{'date_format_scene_tags' | translate:{date:$ctrl.time} }}{{$ctrl.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.time} }}</small></h2>
-        <h2 ng-if="$ctrl.time && !$ctrl.timegregorian">{{$ctrl.time}}</h2>
+        <h2 ng-if="$ctrl.element.time && $ctrl.element.timegregorian">{{'date_format_scene_tags' | translate:{date:$ctrl.element.time} }}{{$ctrl.element.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.element.time} }}</small></h2>
+        <h2 ng-if="$ctrl.element.time && !$ctrl.element.timegregorian">{{$ctrl.element.time}}</h2>
     </div>
     <div class="timeline-panel timeline-panel-scene">
         <div class="timeline-heading">
-            <p><a ng-click="$ctrl.showScene()"><b>{{$ctrl.scene.title}}</b></a></p>
+            <p><a ng-click="$ctrl.showScene()"><b>{{$ctrl.element.title}}</b></a></p>
         </div>
         <div class="timeline-body top10">
-            <p><i>Characters</i>: Pippo, Pluto, Paperino</p>
-            <p><i>{{'jsp.analysisCharacterScene.th.location' | translate}}</i>: {{$ctrl.locationname}}</p>
+            <p><i>{{'common_characters' | translate}}</i>: {{$ctrl.element.characters}}</p>
+            <p><i>{{'jsp.analysisCharacterScene.th.location' | translate}}</i>: {{$ctrl.element.locationname}}</p>
         </div>
     </div>
 </li>

@@ -10,8 +10,8 @@
   <div class="container">
     <div class="row">
       <ul class="timeline timeline-scenes">
-        <timelineelement ng-repeat="scene in $ctrl.scenes track by $index" 
-          index="($index % 12)" scene="scene"></timelineelement>
+        <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
+          index="($index % 12)" element="timelineelement"></timelineelement>
       </ul>
     </div>
   </div>

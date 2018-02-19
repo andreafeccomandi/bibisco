@@ -19,10 +19,10 @@ angular.
     controller: TimelineController
   });
 
-function TimelineController(ChapterService) {
+function TimelineController(TimelineService) {
 
   var self = this;
   self.$onInit = function() {
-    self.scenes = ChapterService.getScenesSortedByTime();    
+    self.timeline = TimelineService.getTimeline();    
   };
 }

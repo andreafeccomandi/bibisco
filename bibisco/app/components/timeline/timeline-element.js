@@ -19,30 +19,18 @@ angular.
     controller: TimelineElementController,
     bindings: {
       index: '<',
-      scene: '<'
+      element: '<'
     }
   });
 
-function TimelineElementController($location, DatetimeService, LocationService) {
+function TimelineElementController($location) {
   var self = this;
 
   self.$onInit = function () {
-    let revision = self.scene.revisions[self.scene.revision];
-    self.time = revision.time;
-    self.timegregorian = revision.timegregorian;
-    self.sceneyear = null;
-    if (self.time && self.timegregorian) {
-      self.time = new Date(self.time);
-      self.sceneyear = DatetimeService.calculateSceneYear(new Date(self.time));
-    }
-    self.locationname = '';
-    if (revision.locationid) {
-      let location = LocationService.getLocation(revision.locationid);
-      self.locationname = LocationService.calculateLocationName(location);
-    } 
+
   };
 
   self.showScene = function() {
-    $location.path('/chapters/' + self.scene.chapterid + '/scenes/' + self.scene.$loki);
+    $location.path('/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid);
   };
 }
