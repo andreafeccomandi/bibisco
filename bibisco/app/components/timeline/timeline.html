@@ -7,7 +7,17 @@
     </div>
   </div>
 </div>
-<div class="timeline-container timeline-container-scenes">
+<div ng-show="$ctrl.timeline.length == 0">
+  <div class="container">
+  <div class="card-grid-emptyitems card-grid-emptyitems-no-header-subtitle-full">
+    <div class="container">
+      <jumbotronbutton text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" >
+      </jumbotronbutton>
+    </div>
+  </div>
+  </div>
+</div>
+<div ng-show="$ctrl.timeline.length > 0" class="timeline-container timeline-container-scenes">
   <div class="container">
     <div class="row">
       <ul class="timeline timeline-scenes">
