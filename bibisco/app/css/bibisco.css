@@ -807,6 +807,14 @@ h3 {
 	width: 100%;
 }
 
+.timeline-container-tips {
+	top: 190px;
+}
+
+.timeline-container-scenes {
+	top: 150px;
+}
+
 .timeline {
     list-style: none;
     padding: 20px 0 20px;
