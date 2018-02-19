@@ -21,7 +21,7 @@ angular.module('bibiscoApp').service('SupporterEditionChecker', function (
 
   return {
     isSupporterEdition: function () {
-      return true;
+      return false;
     },
     showSupporterMessage: function () {
       var modalInstance = $uibModal.open({
