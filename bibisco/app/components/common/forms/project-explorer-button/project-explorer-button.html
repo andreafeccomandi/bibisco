@@ -1,5 +1,5 @@
 <button type="button" ng-if="$ctrl.visible"
-    ng-class="{ 'btn-info': $ctrl.showprojectexplorer }" 
+    ng-class="{ 'btn-info': $ctrl.showprojectexplorer, 'btn-unselected': !$ctrl.showprojectexplorer }" 
     uib-tooltip="{{'jsp.scene.button.viewProjectFromScene' | translate}}"
     class="btn" ng-click="$ctrl.toggleProjectExplorer()">
     {{'detailfooterleftbuttonbar.projectexplorer.button' | translate}}

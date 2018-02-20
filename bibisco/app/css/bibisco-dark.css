@@ -1,0 +1,64 @@
+.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
+	background-color: #424242 !important;
+	border-color: #424242 !important;
+	color: #428bca !important;
+}
+
+.btn-unselected {
+    background-color: #222 !important;
+	border-color: #222 !important;
+}
+
+.card {
+	border: 1px solid #555;
+}
+
+.card-hover {
+	background-color: #222222;
+	border: 1px solid #888;
+}
+
+.ui-select-bootstrap .ui-select-choices-row>span {
+    color: #666;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #ddd;
+}
+
+h4, .h4 {
+    font-size: 18px;
+}
+
+h5, .h5 {
+    font-size: 14px;
+}
+
+.jumbotron h1, .jumbotron h2, .jumbotron h3, .jumbotron h4, .jumbotron h5, .jumbotron h6 {
+    color: #ddd;
+}
+
+.btn {
+    color: #ddd !important;
+}
+
+table, .table {
+    color: #ddd;
+}
+
+.dropdown-menu>li>a {
+    color: #ddd;
+}
+
+.nav-tabs a, .nav-pills a, .breadcrumb a, .pager a {
+    color: #ddd;
+}
+
+.datetimepicker .minute:hover, .datetimepicker .hour:hover, .datetimepicker .day:hover, .datetimepicker .switch:hover, .datetimepicker .left:hover, .datetimepicker .right:hover {
+    background: #444;
+}
+
+.form-control {
+    color: #ddd;
+    background-color: #222;
+}

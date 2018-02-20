@@ -12,7 +12,7 @@
     </button>
     <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'tocomplete'})"
-      ng-class="{ 'active': $ctrl.status == 'done',
+      ng-class="{ 'active': $ctrl.status == 'tocomplete',
         'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
         class="label bibiscoTaskStatus"
@@ -22,7 +22,7 @@
     </button>
     <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'todo'})"
-      ng-class="{ 'active': $ctrl.status == 'done',
+      ng-class="{ 'active': $ctrl.status == 'todo',
         'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
         class="label bibiscoTaskStatus"
