@@ -26,155 +26,168 @@ angular.module('bibiscoApp', ['ngRoute',
   'ui.bootstrap',
   'ui.bootstrap.datetimepicker',
   'ui.select'
+]).controller('indexController', function ($injector, $rootScope, $scope) {
+
+  let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService');
+  $scope.theme = BibiscoPropertiesService.getProperty('theme');
+
+  $rootScope.$on('SWITCH_CLASSIC_THEME', function () {
+    $scope.theme = 'classic';
+  });
+
+  $rootScope.$on('SWITCH_DARK_THEME', function () {
+    $scope.theme = 'dark';
+  });
+
+
+}).config(['$locationProvider', '$routeProvider',
+  function config($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('!');
+    $routeProvider.
+      when('/architectureitems/:id', {
+        template: '<architecturedetail></architecturedetail>'
+      }).
+      when('/chapters/new', {
+        template: '<chaptertitle></chaptertitle>'
+      }).
+      when('/chapters/:id', {
+        template: '<chapterdetail></chapterdetail>'
+      }).
+      when('/chapters/:id/title', {
+        template: '<chaptertitle></chaptertitle>'
+      }).
+      when('/chapters/:chapterid/chapterinfos/:type', {
+        template: '<chapterinfodetail></chapterinfodetail>'
+      }).
+      when('/chapters/:chapterid/scenes/new', {
+        template: '<scenetitle></scenetitle>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid', {
+        template: '<scenedetail></scenedetail>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/move', {
+        template: '<chapterselect></chapterselect>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags', {
+        template: '<scenetags></scenetags>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/title', {
+        template: '<scenetitle></scenetitle>'
+      }).
+      when('/createproject', {
+        template: '<createproject></createproject>'
+      }).
+      when('/error', {
+        template: '<error></error>'
+      }).
+      when('/exporttoformat/:format', {
+        template: '<exporttoformat></exporttoformat>'
+      }).
+      when('/importproject', {
+        template: '<importproject></importproject>'
+      }).
+      when('/objects/new', {
+        template: '<itemtitle></itemtitle>'
+      }).
+      when('/objects/:id', {
+        template: '<itemdetail></itemdetail>'
+      }).
+      when('/objects/:id/images', {
+        template: '<itemimages></itemimages>'
+      }).
+      when('/objects/:id/images/new', {
+        template: '<itemaddimage></itemaddimage>'
+      }).
+      when('/objects/:id/title', {
+        template: '<itemtitle></itemtitle>'
+      }).
+      when('/locations/new', {
+        template: '<locationtitle></locationtitle>'
+      }).
+      when('/locations/:id', {
+        template: '<locationdetail></locationdetail>'
+      }).
+      when('/locations/:id/images', {
+        template: '<locationimages></locationimages>'
+      }).
+      when('/locations/:id/images/new', {
+        template: '<locationaddimage></locationaddimage>'
+      }).
+      when('/locations/:id/title', {
+        template: '<locationtitle></locationtitle>'
+      }).
+      when('/main', {
+        template: '<main></main>'
+      }).
+      when('/maincharacters/new', {
+        template: '<maincharactertitle></maincharactertitle>'
+      }).
+      when('/maincharacters/:id', {
+        template: '<maincharacterdetail></maincharacterdetail>'
+      }).
+      when('/maincharacters/:id/infowithoutquestion/:info', {
+        template: '<maincharacterinfowithoutquestion></maincharacterinfowithoutquestion>'
+      }).
+      when('/maincharacters/:id/infowithquestion/:info', {
+        template: '<maincharacterinfowithquestion></maincharacterinfowithquestion>'
+      }).
+      when('/maincharacters/:id/images', {
+        template: '<maincharacterimages></maincharacterimages>'
+      }).
+      when('/maincharacters/:id/images/new', {
+        template: '<maincharacteraddimage></maincharacteraddimage>'
+      }).
+      when('/maincharacters/:id/title', {
+        template: '<maincharactertitle></maincharactertitle>'
+      }).
+      when('/openproject', {
+        template: '<openproject></openproject>'
+      }).
+      when('/project/tips', {
+        template: '<tips></tips>'
+      }).
+      when('/project/title', {
+        template: '<projecttitle></projecttitle>'
+      }).
+      when('/project/:item', {
+        template: '<project></project>'
+      }).
+      when('/secondarycharacters/new', {
+        template: '<secondarycharactertitle></secondarycharactertitle>'
+      }).
+      when('/secondarycharacters/:id', {
+        template: '<secondarycharacterdetail></secondarycharacterdetail>'
+      }).
+      when('/secondarycharacters/:id/images', {
+        template: '<secondarycharacterimages></secondarycharacterimages>'
+      }).
+      when('/secondarycharacters/:id/images/new', {
+        template: '<secondarycharacteraddimage></secondarycharacteraddimage>'
+      }).
+      when('/secondarycharacters/:id/title', {
+        template: '<secondarycharactertitle></secondarycharactertitle>'
+      }).
+      when('/settings', {
+        template: '<settings></settings>'
+      }).
+      when('/start', {
+        template: '<start></start>'
+      }).
+      when('/strands/new', {
+        template: '<strandtitle></strandtitle>'
+      }).
+      when('/strands/:id', {
+        template: '<stranddetail></stranddetail>'
+      }).
+      when('/strands/:id/title', {
+        template: '<strandtitle></strandtitle>'
+      }).
+      when('/welcome', {
+        template: '<welcome></welcome>'
+      }).
+      otherwise('/main');
+  }
 ])
-  .config(['$locationProvider', '$routeProvider',
-    function config($locationProvider, $routeProvider) {
-      $locationProvider.hashPrefix('!');
-      $routeProvider.
-        when('/architectureitems/:id', {
-          template: '<architecturedetail></architecturedetail>'
-        }).
-        when('/chapters/new', {
-          template: '<chaptertitle></chaptertitle>'
-        }).
-        when('/chapters/:id', {
-          template: '<chapterdetail></chapterdetail>'
-        }).
-        when('/chapters/:id/title', {
-          template: '<chaptertitle></chaptertitle>'
-        }).
-        when('/chapters/:chapterid/chapterinfos/:type', {
-          template: '<chapterinfodetail></chapterinfodetail>'
-        }).
-        when('/chapters/:chapterid/scenes/new', {
-          template: '<scenetitle></scenetitle>'
-        }).
-        when('/chapters/:chapterid/scenes/:sceneid', {
-          template: '<scenedetail></scenedetail>'
-        }).
-        when('/chapters/:chapterid/scenes/:sceneid/move', {
-          template: '<chapterselect></chapterselect>'
-        }).
-        when('/chapters/:chapterid/scenes/:sceneid/tags', {
-          template: '<scenetags></scenetags>'
-        }).
-        when('/chapters/:chapterid/scenes/:sceneid/title', {
-          template: '<scenetitle></scenetitle>'
-        }).
-        when('/createproject', {
-          template: '<createproject></createproject>'
-        }).
-        when('/error', {
-          template: '<error></error>'
-        }).
-        when('/exporttoformat/:format', {
-          template: '<exporttoformat></exporttoformat>'
-        }).
-        when('/importproject', {
-          template: '<importproject></importproject>'
-        }).
-        when('/objects/new', {
-          template: '<itemtitle></itemtitle>'
-        }).
-        when('/objects/:id', {
-          template: '<itemdetail></itemdetail>'
-        }).
-        when('/objects/:id/images', {
-          template: '<itemimages></itemimages>'
-        }).
-        when('/objects/:id/images/new', {
-          template: '<itemaddimage></itemaddimage>'
-        }).
-        when('/objects/:id/title', {
-          template: '<itemtitle></itemtitle>'
-        }).
-        when('/locations/new', {
-          template: '<locationtitle></locationtitle>'
-        }).
-        when('/locations/:id', {
-          template: '<locationdetail></locationdetail>'
-        }).
-        when('/locations/:id/images', {
-          template: '<locationimages></locationimages>'
-        }).
-        when('/locations/:id/images/new', {
-          template: '<locationaddimage></locationaddimage>'
-        }).
-        when('/locations/:id/title', {
-          template: '<locationtitle></locationtitle>'
-        }).
-        when('/main', {
-          template: '<main></main>'
-        }).
-        when('/maincharacters/new', {
-          template: '<maincharactertitle></maincharactertitle>'
-        }).
-        when('/maincharacters/:id', {
-          template: '<maincharacterdetail></maincharacterdetail>'
-        }).
-        when('/maincharacters/:id/infowithoutquestion/:info', {
-          template: '<maincharacterinfowithoutquestion></maincharacterinfowithoutquestion>'
-        }).
-        when('/maincharacters/:id/infowithquestion/:info', {
-          template: '<maincharacterinfowithquestion></maincharacterinfowithquestion>'
-        }).
-        when('/maincharacters/:id/images', {
-          template: '<maincharacterimages></maincharacterimages>'
-        }).
-        when('/maincharacters/:id/images/new', {
-          template: '<maincharacteraddimage></maincharacteraddimage>'
-        }).
-        when('/maincharacters/:id/title', {
-          template: '<maincharactertitle></maincharactertitle>'
-        }).
-        when('/openproject', {
-          template: '<openproject></openproject>'
-        }).
-        when('/project/tips', {
-          template: '<tips></tips>'
-        }).
-        when('/project/title', {
-          template: '<projecttitle></projecttitle>'
-        }).
-        when('/project/:item', {
-          template: '<project></project>'
-        }).
-        when('/secondarycharacters/new', {
-          template: '<secondarycharactertitle></secondarycharactertitle>'
-        }).
-        when('/secondarycharacters/:id', {
-          template: '<secondarycharacterdetail></secondarycharacterdetail>'
-        }).
-        when('/secondarycharacters/:id/images', {
-          template: '<secondarycharacterimages></secondarycharacterimages>'
-        }).
-        when('/secondarycharacters/:id/images/new', {
-          template: '<secondarycharacteraddimage></secondarycharacteraddimage>'
-        }).
-        when('/secondarycharacters/:id/title', {
-          template: '<secondarycharactertitle></secondarycharactertitle>'
-        }).
-        when('/settings', {
-          template: '<settings></settings>'
-        }).
-        when('/start', {
-          template: '<start></start>'
-        }).
-        when('/strands/new', {
-          template: '<strandtitle></strandtitle>'
-        }).
-        when('/strands/:id', {
-          template: '<stranddetail></stranddetail>'
-        }).
-        when('/strands/:id/title', {
-          template: '<strandtitle></strandtitle>'
-        }).
-        when('/welcome', {
-          template: '<welcome></welcome>'
-        }).
-        otherwise('/main');
-    }
-  ])
   .config(function($translateProvider) {
 
     $translateProvider

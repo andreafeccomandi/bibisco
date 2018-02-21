@@ -193,6 +193,16 @@
             "version": 0
           },
           "$loki": 19
+        },
+        {
+          "name": "theme",
+          "value": "classic",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 20
         }
       ],
       "idIndex": [

@@ -58,7 +58,20 @@ table, .table {
     background: #444;
 }
 
+.datetimepicker span:hover {
+    background: #333;
+}
+
+.datetimepicker .current, .datetimepicker .current:hover, .datetimepicker .current.disabled, .datetimepicker .current.disabled:hover {
+    background-color: #555;
+}
+
 .form-control {
     color: #ddd;
     background-color: #222;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #333;
+    opacity: 1;
 }

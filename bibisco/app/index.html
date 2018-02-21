@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="bibiscoApp">
+<html ng-app="bibiscoApp" ng-controller="indexController">
 
 <head>
   <meta charset="utf-8">
@@ -179,14 +179,13 @@
   <script src="services/UtilService.js"></script>
   <script src="services/UuidService.js"></script>
   <script src="services/WordCharacterCountService.js"></script>
-   
-  <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" /> -->
-  <link rel="stylesheet" href="css/bootstrap-dark-theme.css" /> 
+  
+  <link rel="stylesheet" ng-href="css/bootstrap-{{theme}}-theme.css" /> 
   <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="node_modules/ui-select/dist/select.min.css" />
   <link rel="stylesheet" href="directives/datetimepicker/datetimepicker.css"/>
   <link rel="stylesheet" href="css/bibisco.css" />
-  <link rel="stylesheet" href="css/bibisco-dark.css" />
+  <link rel="stylesheet" ng-href="css/bibisco-{{theme}}-theme.css" />
 </head>
 
 <body>

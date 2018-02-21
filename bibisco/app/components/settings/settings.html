@@ -9,6 +9,22 @@
         ng-submit="$ctrl.save(settingsForm.$valid, settingsForm.$dirty)"
         novalidate>
 
+        <div class="form-group">
+          <label class="col-sm-3 control-label">{{'Theme' | translate}}</label>
+          <div class="col-sm-8">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" ng-click="$ctrl.selectClassicTheme()" 
+                ng-class="{ 'active' : $ctrl.theme === 'classic' }">
+                {{'classic' | translate}}
+              </button>
+              <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkTheme()" 
+                ng-class="{ 'active' : $ctrl.theme === 'dark' }">
+                {{'dark' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+
         <languageinputfield applyonchange="false"
           onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"
           label="jsp.language.form.selectLanguage.label"
@@ -27,6 +43,7 @@
         <div class="col-sm-8 col-sm-offset-3">
           <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
         </div>
+
 
         <formbuttons form="settingsForm" backfunction="$ctrl.back()"
           offsetcols="3" sizecols="8">

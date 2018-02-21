@@ -21,20 +21,34 @@ angular.
 
 function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, UtilService, ProjectService) {
+  LocaleService, LoggerService, ProjectService) {
   
-
   var self = this;
-  self.selectedLanguage = LocaleService.getCurrentLocale();
-  let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
-    'projectsDirectory');
 
-  // show directory name without "/_internal_bibisco2_projects_db_"
-  // that is 32 characters
-  self.selectedProjectsDirectory = currentProjectsDirectory.substring(0,
-    currentProjectsDirectory.length - 32);
+  self.$onInit = function () {
+    self.theme = BibiscoPropertiesService.getProperty(
+      'theme');
+    self.selectedLanguage = LocaleService.getCurrentLocale();
+    let currentProjectsDirectory = BibiscoPropertiesService.getProperty(
+      'projectsDirectory');
 
-  self.forbiddenDirectory = false;
+    // show directory name without "/_internal_bibisco2_projects_db_"
+    // that is 32 characters
+    self.selectedProjectsDirectory = currentProjectsDirectory.substring(0,
+      currentProjectsDirectory.length - 32);
+
+    self.forbiddenDirectory = false;
+  };
+
+  self.selectDarkTheme = function() {
+    self.theme = 'dark';
+    $scope.settingsForm.$setDirty();
+  };
+
+  self.selectClassicTheme = function() {
+    self.theme = 'classic';
+    $scope.settingsForm.$setDirty();
+  };
 
   self.selectLanguage = function(selectedLanguage) {
     self.selectedLanguage = selectedLanguage;
@@ -48,9 +62,7 @@ function SettingsController($location, $rootScope, $scope,
   };
 
   self.save = function(isValid, isDirty) {
-    LoggerService.debug('save: isValid = ' + isValid + ' - isDirty = ' +
-      isDirty);
-
+    
     if (!isDirty) {
       $location.path('/start');
     } else if (isValid) {
@@ -58,6 +70,7 @@ function SettingsController($location, $rootScope, $scope,
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
+        BibiscoPropertiesService.setProperty('theme', self.theme);
         BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
         BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
@@ -66,10 +79,17 @@ function SettingsController($location, $rootScope, $scope,
         // sync bibisco db with projects directory
         ProjectService.syncProjectDirectoryWithBibiscoDb();
 
-        LoggerService.debug('Saved preferences: selectedLanguage=' +
-          LocaleService.getCurrentLocale() +
-          ' - selectedProjectsDirectory=' + self.selectedProjectsDirectory
+        LoggerService.info('Saved preferences: ' 
+          + ' theme=' + self.theme  
+          + ' - language=' + LocaleService.getCurrentLocale() 
+          + ' - projects directory=' + self.selectedProjectsDirectory
         );
+
+        if (self.theme === 'dark') {
+          $rootScope.$emit('SWITCH_DARK_THEME');
+        } else {
+          $rootScope.$emit('SWITCH_CLASSIC_THEME');
+        }
 
         $location.path('/start');
       } else {
