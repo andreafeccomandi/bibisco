@@ -21,7 +21,7 @@ angular.
 
 function SettingsController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, ProjectService) {
+  LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
   
   var self = this;
 
@@ -41,8 +41,12 @@ function SettingsController($location, $rootScope, $scope,
   };
 
   self.selectDarkTheme = function() {
-    self.theme = 'dark';
-    $scope.settingsForm.$setDirty();
+    if (!SupporterEditionChecker.isSupporterEdition()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      self.theme = 'dark';
+      $scope.settingsForm.$setDirty();
+    }
   };
 
   self.selectClassicTheme = function() {
