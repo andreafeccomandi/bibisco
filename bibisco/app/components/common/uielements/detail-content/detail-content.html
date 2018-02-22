@@ -1,14 +1,13 @@
 <div ng-class="{'detail-content-with-header-subtitle': $ctrl.headersubtitle,
   'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
-  <div class="container" style="height: 100%;">
+  <div class="container full-height">
     <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
-        class="row" style="height: 100%;">
-      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4" style="height: 100%;">
+        class="row full-height">
+      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4 full-height">
         <projectexplorer></projectexplorer>
       </div>
-      <div class="col-sm-8" 
-        ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}" 
-        style="height: 100%;">
+      <div class="col-sm-8 full-height" 
+        ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}">
         <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
           content="{{$ctrl.savedcontent}}">
         </richtextviewer>

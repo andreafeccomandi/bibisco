@@ -13,6 +13,9 @@
 .bottom50 { margin-bottom:50px; }
 .bottom100 { margin-bottom:100px; }
 
+.full-height { height:100%; }
+
+
 /*UI BOOTSTRAP: take a look at this:
 https://angular-ui.github.io/bootstrap/#!#getting_started
 Original Bootstrap's CSS depends on empty href attributes to style cursors for
