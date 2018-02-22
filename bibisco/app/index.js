@@ -56,9 +56,7 @@ global.zip = initZip();
 
 // add loki
 const loki = require('lokijs');
-logger.debug('Start requiring LokiFsSyncAdapter');
 const LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
-logger.debug('End requiring LokiFsSyncAdapter');
 
 // add project db connection
 global.projectdbconnection = initProjectDbConnection();
@@ -104,12 +102,10 @@ function createMainWindow() {
     minWidth: 1024,
     minHeight: 768
   });
-  logger.debug('Start createMainWindow()');
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
   });
   win.on('closed', onClosed);
-  logger.debug('End createMainWindow()');
 
   return win;
 }
@@ -313,7 +309,6 @@ function initBibiscoDbConnection() {
   return {
     // add function to load bibisco db
     load: function() {
-      logger.debug('Start initBibiscoDbConnection()');
       let bibiscodbpath = path.join(global.appPath, path.join('db','bibisco.json'));  
       logger.debug('bibisco db path: ' + bibiscodbpath);
       var bibiscodb = new loki(bibiscodbpath, {
@@ -322,7 +317,6 @@ function initBibiscoDbConnection() {
       bibiscodb.loadDatabase({}, function() {
         logger.debug('bibisco.json db loaded');
       });
-      logger.debug('End initBibiscoDbConnection()');
       return bibiscodb;
     }
   };
