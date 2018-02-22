@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('createproject', {
-    templateUrl: 'components/create-project/create-project.html',
+    templateUrl: 'components/project/create-project.html',
     controller: CreateProjectController
   });
 

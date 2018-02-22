@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('openproject', {
-    templateUrl: 'components/open-project/open-project.html',
+    templateUrl: 'components/project/open-project.html',
     controller: OpenProjectController
   });
 

@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('importproject', {
-    templateUrl: 'components/import-project/import-project.html',
+    templateUrl: 'components/project/import-project.html',
     controller: ImportProjectController
   });
 
