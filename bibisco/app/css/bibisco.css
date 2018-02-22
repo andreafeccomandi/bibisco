@@ -511,6 +511,27 @@ h3 {
 	 box-shadow: none !important;
 }
 
+.external-url {
+	cursor: pointer;
+}
+
+/* INFO */
+.info {
+    overflow-y: scroll;
+    width: 100%;
+    position: absolute;
+	left: 0px;
+	height: calc(100% - 150px);
+    top: 145px;
+}
+
+/* LICENSE */
+.license {
+    overflow-y: scroll;
+	height: 500px;
+	text-align: justify;
+}
+
 /* REVISION SELECT */
 .revision-select {
 	width: 200px;
@@ -748,6 +769,10 @@ h3 {
 
  .analysis-character-appearances table tr th:nth-child(4) { 
 	width: 20%;
+ }
+
+ .image-external-link {
+	 cursor: pointer;
  }
 
 @media (max-width: 1200px) {

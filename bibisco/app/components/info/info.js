@@ -22,6 +22,37 @@ angular.
     }
   });
 
-function InfoController() {
+function InfoController($location, $uibModal, BibiscoPropertiesService) {
 
+  var self = this;
+  const { shell } = require('electron');
+
+  self.$onInit = function () {
+    self.version = BibiscoPropertiesService.getProperty('version');
+  };
+
+  self.gotoWebsite = function() {
+    shell.openExternal('http://www.bibisco.com');
+  };
+
+  self.writeEmail = function () {
+    shell.openExternal('mailto:info@bibisco.com');
+  };
+
+  self.showLicense = function () {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: 'static',
+      component: 'license',
+      resolve: {
+      },
+      size: 'lg'
+    });
+
+    modalInstance.result.then(function () {}, function () {});
+  };
+
+  self.back = function () {
+    $location.path('/start');
+  };
 }

@@ -39,7 +39,6 @@ function MenuController($location, $rootScope, SupporterEditionChecker) {
   self.exportActive = false;
   self.analysisActive = false;
   self.settingsActive = false;
-  self.infoActive = false;
 
   // ADD ELEMENT IMAGE
   $rootScope.$on('ADD_ELEMENT_IMAGE', function () {
@@ -158,6 +157,5 @@ function MenuController($location, $rootScope, SupporterEditionChecker) {
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;
-    self.infoActive = false;
   };
 }

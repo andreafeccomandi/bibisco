@@ -1,6 +1,114 @@
-<div class="container">
-  <div class="row">
-    <pageheader headertitle="jsp.info.h1">
-    </pageheader>
+<div class="detail-header">
+  <div class="container">
+    <div class="row">
+      <pageheader headertitle="jsp.info.h1"
+      buttonlabel="jsp.common.button.back" 
+      buttonfunction="$ctrl.back()" buttonstyle="default"
+      buttonshow="true">
+      </pageheader>
+    </div>
   </div>
+</div>
+
+<div class="info">
+  <div class="container">
+  <div class="row bibiscoNotSelectableText">
+    <div class="col-sm-4">
+      <h3>
+        {{"jsp.info.h3.about" | translate}}
+      </h3>
+      <h5>
+        {{"jsp.info.h5.version" | translate}}
+      </h5>
+      <p>{{$ctrl.version}}</p>
+      <h5>
+        {{"jsp.info.h5.author" | translate}}
+      </h5>
+      <p>
+        {{"jsp.info.p.author" | translate}}
+      </p>
+      <h5>
+        {{"jsp.info.h5.credits" | translate}}
+      </h5>
+      <p>
+        {{"jsp.info.p.credits.1" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.2" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.3" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.4" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.5" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.6" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.7" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.8" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.9" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.credits.10" | translate}}
+      </p>
+    </div>
+    <div class="col-sm-4">
+      <h3>
+        {{"jsp.info.h3.license" | translate}}
+      </h3>
+      <p>
+        {{"jsp.info.p.license" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.license.copyright" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.license.warranty" | translate}}
+      </p>
+      <button id="bibiscoInfoLicense" class="btn btn-default" 
+        ng-click="$ctrl.showLicense()">
+        {{"jsp.info.a.seelicense" | translate}}
+      </button>
+    </div>
+    <div class="col-sm-4">
+      <h3>
+        {{"jsp.info.h3.project" | translate}}
+      </h3>
+      <p>
+        {{"jsp.info.p.project.1" | translate}}
+      </p>
+      <p>
+        {{"jsp.info.p.project.2" | translate}}
+      </p>
+      <h5>
+        {{"jsp.info.h5.website" | translate}}
+      </h5>
+      <p>
+        <a ng-click="$ctrl.gotoWebsite()" class="external-url">
+           {{"jsp.info.p.websiteurl" | translate}}
+        </a>
+      </p>
+      <h5>Email</h5>
+      <p class="bibiscoDefaultBrowserUrl">
+        <a ng-click="$ctrl.writeEmail()" class="external-url">
+           mailto:info@bibisco.com
+        </a>
+      </p>
+      <h5>Social media</h5>
+      <p>
+        <imageexternallink url="https://www.facebook.com/bibisco.official.page" src="images/facebook.png" class="social-media-button-facebook"></imageexternallink>
+        <imageexternallink url="https://twitter.com/bibiscotweet" src="images/twitter.png" class="social-media-button-twitter"></imageexternallink>
+      </p>
+    </div>
+  </div>
+</div>
 </div>

@@ -48,5 +48,7 @@ function StartController($location, $rootScope, LoggerService,
     $location.path('/settings');
   };
 
-  
+  self.info = function () {
+    $location.path('/info');
+  };
 }
