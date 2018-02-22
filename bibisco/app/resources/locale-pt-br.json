@@ -691,5 +691,9 @@
   "object_change_name_title": "Mudar o nome do objeto",
   "object_change_name_label": "mudar o nome do objeto",
   "object_display_images": "exibir imagens do objeto",
-  "object_title_form_name": "Nome do objeto"
+  "object_title_form_name": "Nome do objeto",
+  "theme": "Tema",
+  "theme_classic": "clássico",
+  "theme_dark": "escuro",
+  "timeline": "linha do tempo"
 }

@@ -707,5 +707,9 @@
   "object_change_name_title": "Modifica nome oggetto",
   "object_change_name_label": "modifica nome oggetto",
   "object_display_images": "visualizza immagini oggetto",
-  "object_title_form_name": "Nome oggetto"
+  "object_title_form_name": "Nome oggetto",
+  "theme": "Tema",
+  "theme_classic": "classico",
+  "theme_dark": "scuro",
+  "timeline": "timeline"
 }

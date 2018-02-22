@@ -693,5 +693,9 @@
   "object_change_name_title": "Den Namen des Objekts ändern",
   "object_change_name_label": "Den Namen des Objekts ändern",
   "object_display_images": "Bilder des Objekts anzeigen",
-  "object_title_form_name": "Name des Objekts"
+  "object_title_form_name": "Name des Objekts",
+  "theme": "Design",
+  "theme_classic": "klassisches",
+  "theme_dark": "dunkles",
+  "timeline": "Zeitskala"
 }

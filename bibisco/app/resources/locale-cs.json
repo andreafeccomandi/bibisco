@@ -691,5 +691,9 @@
   "object_change_name_title": "Změnit název objektu",
   "object_change_name_label": "změnit název objektu",
   "object_display_images": "zobrazit obrázky objektu",
-  "object_title_form_name": "Název objektu"
+  "object_title_form_name": "Název objektu",
+  "theme": "Motiv",
+  "theme_classic": "klasický",
+  "theme_dark": "tmavý",
+  "timeline": "časová osa"
 }

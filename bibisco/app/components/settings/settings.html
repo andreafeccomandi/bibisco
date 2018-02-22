@@ -10,16 +10,16 @@
         novalidate>
 
         <div class="form-group">
-          <label class="col-sm-3 control-label">{{'Theme' | translate}}</label>
+          <label class="col-sm-3 control-label">{{'theme' | translate}}</label>
           <div class="col-sm-8">
             <div class="btn-group">
               <button type="button" class="btn btn-default" ng-click="$ctrl.selectClassicTheme()" 
                 ng-class="{ 'active' : $ctrl.theme === 'classic' }">
-                {{'classic' | translate}}
+                {{'theme_classic' | translate}}
               </button>
               <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkTheme()" 
                 ng-class="{ 'active' : $ctrl.theme === 'dark' }">
-                {{'dark' | translate}}
+                {{'theme_dark' | translate}}
               </button>
             </div>
           </div>

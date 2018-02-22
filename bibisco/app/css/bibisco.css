@@ -750,16 +750,16 @@ h3 {
 	width: 20%;
  }
 
-@media (max-width: 1000px) {
-		.navbar {
-			border-radius: 0px;
-		}
+@media (max-width: 1200px) {
+	.navbar {
+		border-radius: 0px;
+	}
     .navbar-header {
         float: none;
     }
-		.navbar-right {
-			float: none!important;
-		}
+	.navbar-right {
+		float: none!important;
+	}
     .navbar-toggle {
         display: block;
     }

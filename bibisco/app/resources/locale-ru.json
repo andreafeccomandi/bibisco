@@ -738,5 +738,9 @@
   "object_change_name_title": "Изменить название объекта",
   "object_change_name_label": "Изменить название объекта",
   "object_display_images": "показать фотографии объекта",
-  "object_title_form_name": "Название объекта"
+  "object_title_form_name": "Название объекта",
+  "theme": "тема",
+  "theme_classic": "классической",
+  "theme_dark": "темная",
+  "timeline": "временная шкала"
 }
