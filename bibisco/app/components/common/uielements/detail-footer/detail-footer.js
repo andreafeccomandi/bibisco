@@ -24,6 +24,7 @@ angular.
       characters: '=',
       content: '=',
       dirty: '=',
+      hideprojectexplorerbutton: '<',
       imagesenabled: '<',
       editmode: '=',
       lastsave: '<',

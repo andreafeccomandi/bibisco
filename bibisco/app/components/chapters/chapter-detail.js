@@ -56,6 +56,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
+    self.showprojectexplorer = false;
   };
 
   self.getScenesCardGridItems = function(chapterid) {

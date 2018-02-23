@@ -10,7 +10,7 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="$ctrl.editmode || $ctrl.words > 0"></projectexplorerbutton>
+        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="!$ctrl.hideprojectexplorerbutton && ($ctrl.editmode || $ctrl.words > 0)"></projectexplorerbutton>
         <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{$ctrl.showimageslabel}}" visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
       </span>
       <span class="pull-right">
