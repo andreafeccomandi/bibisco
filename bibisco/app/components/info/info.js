@@ -39,6 +39,10 @@ function InfoController($location, $uibModal, BibiscoPropertiesService) {
     shell.openExternal('mailto:info@bibisco.com');
   };
 
+  self.gotoValeIGProfile = function () {
+    shell.openExternal('https://www.instagram.com/cloudsandcowfish/');
+  };
+
   self.showLicense = function () {
     var modalInstance = $uibModal.open({
       animation: true,
