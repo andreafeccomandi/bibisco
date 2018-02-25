@@ -199,7 +199,7 @@ angular.module('bibiscoApp', ['ngRoute',
         suffix: '.json' // suffix, currently- extension of the translations
       })
       .registerAvailableLanguageKeys(['cs', 'de', 'en', 'en-us',
-        'es', 'fr', 'it', 'pl', 'pt-br', 'pt-pt', 'ru'
+        'es', 'fr', 'it', 'pl', 'pt-br', 'pt-pt', 'ru', 'sr', 'tr'
       ], {
         'cs': 'cs',
         'de': 'de',
@@ -212,7 +212,9 @@ angular.module('bibiscoApp', ['ngRoute',
         'pl': 'pl',
         'pt-br': 'pt-br',
         'pt-pt': 'pt-pt',
-        'ru': 'ru'
+        'ru': 'ru',
+        'sr': 'sr',
+        'tr': 'tr'
       }) // register available languages
       .determinePreferredLanguage() // is applied on first load
       .fallbackLanguage(['en']) // fallback language

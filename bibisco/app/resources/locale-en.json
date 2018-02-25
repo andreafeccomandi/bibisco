@@ -561,6 +561,7 @@
   "jsp.suggestedReadings.book.marks.title": "Inside story - The Power of the Transformational Arc",
   "jsp.suggestedReadings.book.marks.authors": "by Dara Marks",
   "jsp.suggestedReadings.book.marks.description": "What is the secret to writing a great screenplay? Whether youʼre a beginning screenwriter or an A-list Academy Award winner, all writers struggle with the same thing: to get to the great script inside. Step by step, Inside Story: The Power of the Transformational Arc guides you through an extraordinary new process that helps identify your thematic intention-what your story is really about-and teaches you how to turn that intention into the driving force behind all your creative choices. The result is a profound relationship between the movement of the plot and the internal development of character, which is the foundation for the transformational arc. The transformational arc is the deeper line of structure found inside the story. Knowing how to work with the arc enhances your ability to: 1) Express your unique point of view 2) Give meaning and urgency to the line of action 3) Infuse your characters with richness, subtlety, and surprise 4) Develop a powerful emotional undercurrent 5) Make your stories stand out and get attention A strong transformational arc is the single most important element that makes the difference between a good screenplay and a great one. Inside Story delivers what the name implies: itʼs the real inside scoop on how to write a great screenplay with depth, dimension, and substance. It is a must-have for any serious screenwriter, playwright, or novelist.",
+  
   "jsp.suggestions.button.forward": "forward",
   "jsp.suggestions.characters.h4": "1. Have a deep relationship with your characters",
   "jsp.suggestions.characters.p1": "Novels only work if their characters are believable.",
@@ -714,8 +715,8 @@
   "maincharacterquestionbuttonbar.next.tooltip": "CTRL+right arrow",
   "maincharacterquestionbuttonbar.next.tooltip_mac": "CMD+right arrow",
   "common_select_or_search": "Select or search",
-  "only_for_supporter_edition": "Only for bibisco supporter!",
-  "only_for_supporter_edition_button": "download bibisco supporter edition!",
+  "only_for_supporter_edition": "Only for bibisco supporters!",
+  "only_for_supporter_edition_button": "download bibisco supporters edition!",
   "jsp.menu.objects": "objects",
   "objects": "Objects",
   "object_emptylist": "There are no objects yet.",

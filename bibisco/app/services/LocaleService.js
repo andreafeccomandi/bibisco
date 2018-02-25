@@ -66,7 +66,9 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'pl': 'Polski',
         'pt-br': 'Português (Brasil)',
         'pt-pt': 'Português (Portugal)',
-        'ru': 'Русский'
+        'ru': 'Русский',
+        'sr': 'Srpski',
+        'tr': 'Türkçe', 
       };
     }
   };
@@ -92,6 +94,10 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'pl';
   } else if (preferredLanguage.startsWith('ru')) {
     preferredLocale = 'ru';
+  } else if (preferredLanguage.startsWith('sr')) {
+    preferredLocale = 'sr';
+  } else if (preferredLanguage.startsWith('tr')) {
+    preferredLocale = 'tr';
   } else if (preferredLanguage === 'pt-br') {
     preferredLocale = 'pt_BR';
   } else if (preferredLanguage === 'en-ca') {

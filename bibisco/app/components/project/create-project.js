@@ -51,7 +51,9 @@ function CreateProjectController($location, $rootScope, ContextMenuService, Loca
     'pt-br': 'Português (Brasil)',
     'pt-pt': 'Português (Portugal)',
     'ru': 'Русский',
-    'sv': 'Svenska'
+    'sr': 'Srpski',
+    'sv': 'Svenska',
+    'tr': 'Türkçe'
   };
 
   self.save = function(isValid) {
