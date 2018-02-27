@@ -124,9 +124,8 @@ app.on('activate', function() {
 
 app.on('ready', function() {
   mainWindow = createMainWindow();
-  const electronMenu = electron.Menu;
-  let menuTemplate;
   if (process.platform === 'darwin') {
+    let menuTemplate;
     menuTemplate = [{
       label: 'bibisco',
       submenu: [{
@@ -159,9 +158,10 @@ app.on('ready', function() {
         role: 'quit'
       }]
     }];
+    const electronMenu = electron.Menu;
+    const applicationMenu = electronMenu.buildFromTemplate(menuTemplate);
+    electronMenu.setApplicationMenu(applicationMenu);
   }
-  const applicationMenu = electronMenu.buildFromTemplate(menuTemplate);
-  electronMenu.setApplicationMenu(applicationMenu);
 });
 
 function initLogger() {
