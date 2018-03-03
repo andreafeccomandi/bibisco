@@ -1,8 +1,8 @@
 {
   "name": "bibisco",
-  "productName": "Bibisco",
-  "version": "0.0.0",
-  "description": "writing novel applicatoin",
+  "productName": "bibisco",
+  "version": "2.0.0",
+  "description": "writing novel application",
   "license": "GPL v2",
   "repository": "https://github.com/andreafeccomandi/bibisco",
   "author": {
@@ -15,7 +15,8 @@
     "start": "electron .",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds",
-    "package-win": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
+    "package-win32": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
+    "package-win64": "electron-packager . bibisco --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=/Users/andreafeccomandi/work/release-builds",
     "create-installer-mac": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/Bibisco-darwin-x64/Bibisco.app bibisco --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite"
   },
