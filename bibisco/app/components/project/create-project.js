@@ -46,7 +46,7 @@ function CreateProjectController($location, $rootScope, ContextMenuService, Loca
     'fr': 'Français',
     'it': 'Italiano',
     'nl': 'Nederlands',
-    'no': 'Norsk',
+    'nb-no': 'Norsk',
     'pl': 'Polski',
     'pt-br': 'Português (Brasil)',
     'pt-pt': 'Português (Portugal)',
