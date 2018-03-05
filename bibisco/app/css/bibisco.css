@@ -445,6 +445,14 @@ h3 {
 	padding-left: 15px !important;
 }
 
+.open-project-container {
+	top: 150px;
+	position: absolute;
+	overflow-y: scroll;
+	height: calc(100% - 200px);
+	width: 100%;
+}
+
 /* EMPTY LIST BOX */
 .bibiscoEmptyListBox {
 	margin-top: 30px;
