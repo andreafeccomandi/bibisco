@@ -96,11 +96,20 @@ function onClosed() {
 }
 
 function createMainWindow() {
+  let icon = undefined;
+  if (process.platform === 'linux') {
+    icon = `${__dirname}/assets/icons/linux/bibisco-circle-hr.png`;
+  } else if (process.platform === 'darwin') {
+    icon = `${__dirname}/assets/icons/mac/icon.icns`;
+  } else if (process.platform === 'win32') {
+    icon = `${__dirname}/assets/icons/win/bibisco_circle_hr_MYa_icon.ico`;
+  }
   const win = new electron.BrowserWindow({
     width: 1024,
     height: 768,
     minWidth: 1024,
-    minHeight: 768
+    minHeight: 768,
+    icon: icon
   });
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
