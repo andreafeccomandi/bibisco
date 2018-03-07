@@ -17,15 +17,18 @@ angular.module('bibiscoApp').service('BibiscoDbConnectionService', function() {
   'use strict';
 
   var remote = require('electron').remote;
-  var bibiscodbconnection = remote.getGlobal('bibiscodbconnection');
-  var bibiscodb = bibiscodbconnection.load();
+  var bibiscodb;
 
   return {
-    saveDatabase: function(callback) {
-      return bibiscodb.saveDatabase(callback);
-    },
     getBibiscoDb: function() {
+      if (!bibiscodb) {
+        let bibiscodbconnection = remote.getGlobal('bibiscodbconnection')();
+        bibiscodb = bibiscodbconnection.load();
+      }
       return bibiscodb;
-    }
+    },
+    saveDatabase: function(callback) {
+      return this.getBibiscoDb().saveDatabase(callback);
+    },
   };
 });

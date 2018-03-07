@@ -21,7 +21,7 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   var fs = remote.getGlobal('fs');
   var path = remote.getGlobal('path');
   var walkSync = remote.getGlobal('walkSync');
-  var zip = remote.getGlobal('zip');
+  var zip;
 
   return {
     basename: function(filepath) {
@@ -83,6 +83,12 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     getFilesInDirectoryRecursively: function(path, filter) {
       return walkSync(path, filter);
     },
+    getZip: function() {
+      if(!zip) {
+        zip = remote.getGlobal('zip')();
+      }
+      return zip;
+    },
     isDirectory: function(path) {
       return fs.lstatSync(path).isDirectory();
     },
@@ -90,13 +96,13 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       fs.renameSync(oldPath, newPath);
     },
     unzip: function(zippedFilePath, destinationFolder, callback) {
-      return zip.unzip(zippedFilePath, destinationFolder, callback);
+      return this.getZip().unzip(zippedFilePath, destinationFolder, callback);
     },
     writeFileSync: function(path, buffer) {
       fs.writeFileSync(path, buffer);
     },
     zipFolder: function(folderToZip, zippedFilePath, callback) {
-      return zip.zipFolder(folderToZip, zippedFilePath, callback);
+      return this.getZip().zipFolder(folderToZip, zippedFilePath, callback);
     }
   };
 });

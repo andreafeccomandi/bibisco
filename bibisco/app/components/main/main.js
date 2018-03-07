@@ -15,52 +15,56 @@
 angular.
   module('bibiscoApp').
   component('main', {
-    controller: MainController
+    controller: MainController,
+    templateUrl: 'components/loading/loading.html',
   });
 
 
-function MainController($location, LoggerService, BibiscoPropertiesService,
+function MainController($location, $timeout, LoggerService, BibiscoPropertiesService,
   ContextService, FileSystemService, LocaleService, ProjectService) {
   
-  let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
-  let projectsDirectory = BibiscoPropertiesService.getProperty(
-    'projectsDirectory');
-  let projectsDirectoryExists = false;
-
-  // Log installation information
-  LoggerService.info('*** Application path: ' + ContextService.getAppPath());
-  LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
-    'version'));
-  LoggerService.info('*** First access: ' + firstAccess);
-  LoggerService.info('*** Locale: ' + BibiscoPropertiesService.getProperty(
-    'locale'));
-  LoggerService.info('*** OS: ' + ContextService.getOs());
-  LoggerService.info('*** Projects directory: ' + projectsDirectory);
-
-  if (!firstAccess) {
-    // check if projects directory still exists
-    projectsDirectoryExists = FileSystemService.exists(projectsDirectory);
-    LoggerService.info('*** Projects directory exists: ' +
-      projectsDirectoryExists);
-    if (!projectsDirectoryExists) {
-      LoggerService.error(
-        '*** Projects directory NOT EXISTS, so I clean bibisco db: restart from welcome page!'
-      );
-      BibiscoPropertiesService.setProperty('projectsDirectory', null);
-      ProjectService.deleteAllProjectsFromBibiscoDb();
-    }
-  }
-
-  // sync bibisco db with projects directory
-  if (projectsDirectoryExists) {
-    ProjectService.syncProjectDirectoryWithBibiscoDb();
-  }
-
-  // Routing based on first access or not
-  if (firstAccess || !projectsDirectoryExists) {
-    $location.path('/welcome');
-  } else {
-    $location.path('/start');
-  }
+  $timeout(function () {
+    let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
+    let projectsDirectory = BibiscoPropertiesService.getProperty(
+      'projectsDirectory');
+    let projectsDirectoryExists = false;
   
+    // Log installation information
+    LoggerService.info('*** Application path: ' + ContextService.getAppPath());
+    LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
+      'version'));
+    LoggerService.info('*** First access: ' + firstAccess);
+    LoggerService.info('*** Locale: ' + BibiscoPropertiesService.getProperty(
+      'locale'));
+    LoggerService.info('*** OS: ' + ContextService.getOs());
+    LoggerService.info('*** Projects directory: ' + projectsDirectory);
+  
+    if (!firstAccess) {
+      // check if projects directory still exists
+      projectsDirectoryExists = FileSystemService.exists(projectsDirectory);
+      LoggerService.info('*** Projects directory exists: ' +
+        projectsDirectoryExists);
+      if (!projectsDirectoryExists) {
+        LoggerService.error(
+          '*** Projects directory NOT EXISTS, so I clean bibisco db: restart from welcome page!'
+        );
+        BibiscoPropertiesService.setProperty('projectsDirectory', null);
+        ProjectService.deleteAllProjectsFromBibiscoDb();
+      }
+    }
+  
+    // sync bibisco db with projects directory
+    if (projectsDirectoryExists) {
+      ProjectService.syncProjectDirectoryWithBibiscoDb();
+    }
+  
+    // Routing based on first access or not
+    if (firstAccess || !projectsDirectoryExists) {
+      $location.path('/welcome');
+    } else {
+      $location.path('/start');
+    }
+  }, 100);
+
+  $location.path('/loading');
 }

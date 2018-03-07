@@ -19,7 +19,7 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
   'use strict';
 
   var remote = require('electron').remote;
-  var projectdbconnection = remote.getGlobal('projectdbconnection');
+  var projectdbconnection;
   var projectdb;
 
   return {
@@ -32,16 +32,22 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
     },
     create: function(id) {
       var projectPath = this.calculateProjectPath(id);
-      projectdb = projectdbconnection.create(id, projectPath);
+      projectdb = this.getProjectDbConnection().create(id, projectPath);
       LoggerService.debug('Created ' + projectdb);
+    },
+    getProjectDbConnection: function() {
+      if (!projectdbconnection) {
+        projectdbconnection = remote.getGlobal('projectdbconnection')();
+      }
+      return projectdbconnection;
     },
     load: function(id) {
       var projectPath = this.calculateProjectPath(id);
-      projectdb = projectdbconnection.load(id, projectPath);
+      projectdb = this.getProjectDbConnection().load(id, projectPath);
       LoggerService.debug('Loaded ' + projectdb);
     },
     open: function(dbName, dbPath) {
-      return projectdbconnection.load(dbName, dbPath);
+      return this.getProjectDbConnection().load(dbName, dbPath);
     },
     saveDatabase: function(callback) {
       return projectdb.saveDatabase(callback);

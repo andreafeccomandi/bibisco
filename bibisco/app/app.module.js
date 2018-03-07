@@ -104,6 +104,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/objects/:id/title', {
         template: '<itemtitle></itemtitle>'
       }).
+      when('/loading', {
+        template: '<loading></loading>'
+      }).
       when('/locations/new', {
         template: '<locationtitle></locationtitle>'
       }).

@@ -52,17 +52,17 @@ const mout = require('mout');
 global.mout = mout;
 
 // add zipper/unzipper
-global.zip = initZip();
+global.zip = initZip;
 
 // add loki
 const loki = require('lokijs');
 const LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
 
 // add project db connection
-global.projectdbconnection = initProjectDbConnection();
+global.projectdbconnection = initProjectDbConnection;
 
 // add bibisco db connection
-global.bibiscodbconnection = initBibiscoDbConnection();
+global.bibiscodbconnection = initBibiscoDbConnection;
 
 // add dialog
 const {
@@ -109,11 +109,13 @@ function createMainWindow() {
     height: 768,
     minWidth: 1024,
     minHeight: 768,
-    icon: icon
+    icon: icon,
+    backgroundColor: '#004000'
   });
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
   });
+  
   win.on('closed', onClosed);
 
   return win;
@@ -284,6 +286,7 @@ function initZip() {
 
 
 function initProjectDbConnection() {
+  logger.info('initProjectDbConnection()');
   return {
     // add function to create project db
     create: function(dbName, dbPath) {
