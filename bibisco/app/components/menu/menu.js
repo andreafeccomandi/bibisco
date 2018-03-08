@@ -19,7 +19,7 @@ angular.
     controller: MenuController
   });
 
-function MenuController($location, $rootScope, SupporterEditionChecker) {
+function MenuController($injector, $location, $rootScope, SupporterEditionChecker) {
 
   var self = this;
 
@@ -133,10 +133,13 @@ function MenuController($location, $rootScope, SupporterEditionChecker) {
   };
 
   self.selectItem = function(item) {
-    if (item === 'timeline' && !SupporterEditionChecker.isSupporterEdition()) {
+    if (item === 'timeline' && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     }
     else {
+      if (item === 'timeline') {
+        $injector.get('IntegrityService').ok();
+      }
       self.disableAllItems();
       eval('self.' + item + 'Active = true');
       $rootScope.$emit('MENU_ITEM_SELECTED', {

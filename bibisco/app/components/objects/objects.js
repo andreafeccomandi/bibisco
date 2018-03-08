@@ -22,7 +22,8 @@ angular.
     }
   });
 
-function ObjectsController($location, $scope, ObjectService, SupporterEditionChecker) {
+function ObjectsController($injector, $location, $scope, 
+  ObjectService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -70,9 +71,10 @@ function ObjectsController($location, $scope, ObjectService, SupporterEditionChe
   };
 
   self.supporterEditionFilterAction = function(action) {
-    if (!SupporterEditionChecker.isSupporterEdition()) {
+    if (!SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     } else {
+      $injector.get('IntegrityService').ok();
       action();
     }
   };

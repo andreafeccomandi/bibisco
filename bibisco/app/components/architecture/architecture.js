@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ArchitectureController($location, $rootScope, $scope,
+function ArchitectureController($injector, $location, $rootScope, $scope,
   ArchitectureService, StrandService, SupporterEditionChecker) {
 
   var self = this;
@@ -79,9 +79,10 @@ function ArchitectureController($location, $rootScope, $scope,
   };
 
   self.architectureItemSelect = function(id) {
-    if (id === 'globalnotes' && !SupporterEditionChecker.isSupporterEdition()) {
+    if (id === 'globalnotes' && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     } else {
+      $injector.get('IntegrityService').ok();
       $location.path('/architectureitems/' + id);
     }
   };

@@ -19,7 +19,7 @@ angular.
     controller: SettingsController
   });
 
-function SettingsController($location, $rootScope, $scope,
+function SettingsController($injector, $location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
   
@@ -41,16 +41,19 @@ function SettingsController($location, $rootScope, $scope,
   };
 
   self.selectDarkTheme = function() {
-    if (!SupporterEditionChecker.isSupporterEdition()) {
+    if (!SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     } else {
+      $injector.get('IntegrityService').ok();
       self.theme = 'dark';
+      $rootScope.$emit('SWITCH_DARK_THEME');
       $scope.settingsForm.$setDirty();
     }
   };
 
   self.selectClassicTheme = function() {
     self.theme = 'classic';
+    $rootScope.$emit('SWITCH_CLASSIC_THEME');
     $scope.settingsForm.$setDirty();
   };
 
@@ -89,12 +92,6 @@ function SettingsController($location, $rootScope, $scope,
           + ' - projects directory=' + self.selectedProjectsDirectory
         );
 
-        if (self.theme === 'dark') {
-          $rootScope.$emit('SWITCH_DARK_THEME');
-        } else {
-          $rootScope.$emit('SWITCH_CLASSIC_THEME');
-        }
-
         $location.path('/start');
       } else {
         self.forbiddenDirectory = true;
@@ -103,6 +100,12 @@ function SettingsController($location, $rootScope, $scope,
   };
 
   self.back = function() {
+    self.theme = BibiscoPropertiesService.getProperty('theme');
+    if (self.theme === 'dark') {
+      $rootScope.$emit('SWITCH_DARK_THEME');
+    } else {
+      $rootScope.$emit('SWITCH_CLASSIC_THEME');
+    }
     $location.path('/start');
   };
 

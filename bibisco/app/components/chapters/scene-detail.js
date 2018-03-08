@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function SceneDetailController($location, $rootScope, $routeParams,
+function SceneDetailController($injector, $location, $rootScope, $routeParams,
   ChapterService, PopupBoxesService, SupporterEditionChecker) {
   var self = this;
 
@@ -115,7 +115,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
   };
 
   self.moveSceneToAnotherChapter = function() {
-    if (SupporterEditionChecker.isSupporterEdition()) {
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
       $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
         .$loki + '/move');
     } else {
