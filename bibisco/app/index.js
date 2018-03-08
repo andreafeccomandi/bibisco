@@ -23,17 +23,6 @@ global.os = process.platform;
 // add absolute path
 global.appPath = __dirname;
 
-// add path module
-const path = require('path');
-global.path = path;
-
-// adds file system
-const fs = require('fs-extra');
-global.fs = fs;
-
-const walkSync = require('walk-sync');
-global.walkSync = walkSync;
-
 // add winston logger
 global.logger = initLogger();
 
@@ -47,22 +36,33 @@ if (isDev) {
   //require('electron-debug')();
 }
 
-// add mout
-const mout = require('mout');
-global.mout = mout;
 
-// add zipper/unzipper
-global.zip = initZip;
+// zipper/unzipper
+var zip;
+global.getzip = function () {
+  if (!zip) {
+    zip = initZip();
+  }
+  return zip;
+};
 
-// add loki
-const loki = require('lokijs');
-const LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
+// project db connection
+var projectdbconnection;
+global.getprojectdbconnection = function() {
+  if (!projectdbconnection) {
+    projectdbconnection = initProjectDbConnection();
+  }
+  return projectdbconnection;
+};
 
-// add project db connection
-global.projectdbconnection = initProjectDbConnection;
-
-// add bibisco db connection
-global.bibiscodbconnection = initBibiscoDbConnection;
+// bibisco db connection
+var bibiscodbconnection;
+global.getbibiscodbconnection = function() {
+  if (!bibiscodbconnection) {
+    bibiscodbconnection = initBibiscoDbConnection();
+  }
+  return bibiscodbconnection;
+};
 
 // add dialog
 const {
@@ -70,21 +70,6 @@ const {
 } = require('electron');
 global.dialog = dialog;
 
-// add uuid
-const uuid = require('uuid/v4');
-global.uuid = uuid;
-
-// add sanitize
-const sanitizeHtml = require('sanitize-html');
-global.sanitizeHtml = sanitizeHtml;
-
-// add htmlparser2
-const htmlparser = require('htmlparser2');
-global.htmlparser = htmlparser;
-
-// add docx
-const docx = require('docx');
-global.docx = docx;
 
 // prevent window being garbage collected
 let mainWindow;
@@ -110,10 +95,13 @@ function createMainWindow() {
     minWidth: 1024,
     minHeight: 768,
     icon: icon,
-    backgroundColor: '#004000'
+    show: false
   });
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
+  });
+  win.once('ready-to-show', () => {
+    win.show();
   });
   
   win.on('closed', onClosed);
@@ -201,9 +189,11 @@ function initLogger() {
 }
 
 function initZip() {
-
-  const yazl = require('yazl');
-  const yauzl = require('yauzl');
+  let fs = require('fs-extra');
+  let path = require('path');
+  let yazl = require('yazl');
+  let yauzl = require('yauzl');
+  let walkSync = require('walk-sync');
 
   return {
     zipFolder: function(folderToZip, zippedFilePath, callback) {
@@ -287,6 +277,10 @@ function initZip() {
 
 function initProjectDbConnection() {
   logger.info('initProjectDbConnection()');
+  let fs = require('fs-extra');
+  let loki = require('lokijs');
+  let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
+
   return {
     // add function to create project db
     create: function(dbName, dbPath) {
@@ -318,6 +312,11 @@ function initProjectDbConnection() {
 }
 
 function initBibiscoDbConnection() {
+
+  let path = require('path');
+  let loki = require('lokijs');
+  let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
+
   return {
     // add function to load bibisco db
     load: function() {

@@ -16,8 +16,7 @@
 angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemService) {
   'use strict';
 
-  var remote = require('electron').remote;
-  var htmlparser = remote.getGlobal('htmlparser');
+  var htmlparser = require('htmlparser2');
 
   pdfMake.fonts = {
     Arial: {

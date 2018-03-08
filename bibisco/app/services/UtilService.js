@@ -16,8 +16,7 @@
 angular.module('bibiscoApp').service('UtilService', function() {
   'use strict';
 
-  var remote = require('electron').remote;
-  var mout = remote.getGlobal('mout');
+  var mout = require('mout');
 
   return mout;
 });

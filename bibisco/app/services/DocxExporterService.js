@@ -16,9 +16,8 @@
 angular.module('bibiscoApp').service('DocxExporterService', function () {
   'use strict';
 
-  var remote = require('electron').remote;
-  var htmlparser = remote.getGlobal('htmlparser');
-  var docx = remote.getGlobal('docx');
+  var htmlparser = require('htmlparser2');
+  var docx = require('docx');
 
   let fontSize = 24; // font size, measured in half-points
 

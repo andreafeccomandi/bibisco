@@ -16,9 +16,7 @@
 angular.module('bibiscoApp').service('UuidService', function() {
   'use strict';
 
-  var remote = require('electron').remote;
-  var uuid = remote.getGlobal('uuid');
-
+  var uuid = require('uuid/v4');
   return {
     generateUuid: function() {
       return uuid();

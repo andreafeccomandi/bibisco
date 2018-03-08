@@ -37,7 +37,7 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
     },
     getProjectDbConnection: function() {
       if (!projectdbconnection) {
-        projectdbconnection = remote.getGlobal('projectdbconnection')();
+        projectdbconnection = remote.getGlobal('getprojectdbconnection')();
       }
       return projectdbconnection;
     },

@@ -22,7 +22,7 @@ angular.module('bibiscoApp').service('BibiscoDbConnectionService', function() {
   return {
     getBibiscoDb: function() {
       if (!bibiscodb) {
-        let bibiscodbconnection = remote.getGlobal('bibiscodbconnection')();
+        let bibiscodbconnection = remote.getGlobal('getbibiscodbconnection')();
         bibiscodb = bibiscodbconnection.load();
       }
       return bibiscodb;

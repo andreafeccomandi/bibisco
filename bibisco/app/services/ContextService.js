@@ -19,7 +19,7 @@ angular.module('bibiscoApp').service('ContextService', function() {
   var remote = require('electron').remote;
   var appPath = remote.getGlobal('appPath');
   var os = remote.getGlobal('os');
-  var path = remote.getGlobal('path');
+  var path = require('path');
   var lastError;
 
   return {

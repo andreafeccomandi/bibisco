@@ -18,9 +18,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
   'use strict';
 
   var remote = require('electron').remote;
-  var fs = remote.getGlobal('fs');
-  var path = remote.getGlobal('path');
-  var walkSync = remote.getGlobal('walkSync');
+  var fs = require('fs-extra');
+  var path = require('path');
+  var walkSync = require('walk-sync');
   var zip;
 
   return {
@@ -85,7 +85,7 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     getZip: function() {
       if(!zip) {
-        zip = remote.getGlobal('zip')();
+        zip = remote.getGlobal('getzip')();
       }
       return zip;
     },

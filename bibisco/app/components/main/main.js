@@ -20,10 +20,15 @@ angular.
   });
 
 
-function MainController($location, $timeout, LoggerService, BibiscoPropertiesService,
-  ContextService, FileSystemService, LocaleService, ProjectService) {
+function MainController($injector, $location, $timeout) {
   
   $timeout(function () {
+    let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService');
+    let ContextService = $injector.get('ContextService');
+    let FileSystemService = $injector.get('FileSystemService');
+    let LoggerService = $injector.get('LoggerService');
+    let ProjectService = $injector.get('ProjectService');
+
     let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
     let projectsDirectory = BibiscoPropertiesService.getProperty(
       'projectsDirectory');
@@ -64,7 +69,7 @@ function MainController($location, $timeout, LoggerService, BibiscoPropertiesSer
     } else {
       $location.path('/start');
     }
-  }, 100);
+  }, 1000);
 
   $location.path('/loading');
 }
