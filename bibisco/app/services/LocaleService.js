@@ -68,7 +68,7 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'pt-pt': 'Português (Portugal)',
         'ru': 'Русский',
         'sr': 'Srpski',
-        'tr': 'Türkçe', 
+        'tr': 'Türkçe'
       };
     }
   };
