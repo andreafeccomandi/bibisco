@@ -1037,7 +1037,8 @@ h3 {
 
 .timeline-body > p,
 .timeline-body > ul {
-    margin-bottom: 0;
+	margin-bottom: 0;
+	text-align: justify;
 }
 
 .timeline-body > p + p {
