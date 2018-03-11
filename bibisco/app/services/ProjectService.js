@@ -105,7 +105,6 @@ angular.module('bibiscoApp').service('ProjectService', function(
       return result;
     },
     delete: function(id) {
-      //let project = this.getProjectInfo(id);
       this.deleteProjectFromBibiscoDb(id);
       let projectPath = ProjectDbConnectionService.calculateProjectPath(
         id);
@@ -354,6 +353,18 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectInfo.name = name;
       CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
+
+      // update project in bibisco db
+      let project = BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .find({
+          id: projectInfo.id
+        })[0];
+      project.name = name;
+      BibiscoDbConnectionService.getBibiscoDb().getCollection('projects')
+        .update(project);
+      LoggerService.info('Update element with $loki=' + project.$loki +
+        ' in projects (bibiscodb)');
+      BibiscoDbConnectionService.saveDatabase();
     },
 
   };
