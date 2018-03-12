@@ -18,7 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
     controller: RichTextViewerController,
     bindings: {
-      content: '@'
+      content: '<'
     }
   });
 
@@ -30,6 +30,10 @@ function RichTextViewerController($sce, LoggerService,
   self.$onInit = function () {
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+    self.contenttrusted = $sce.trustAsHtml(self.content);
+  };
+
+  self.$onChanges = function () {
     self.contenttrusted = $sce.trustAsHtml(self.content);
   };
 }
