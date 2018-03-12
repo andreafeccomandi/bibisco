@@ -103,7 +103,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       if (filter) {
         endPosition = collection.count(filter);
       } else {
-        endPosition = elementPosition + 1;
+        endPosition = collection.count();
       }
 
       this.shiftDown(collection, elementPosition + 1, endPosition, filter);
