@@ -26,6 +26,7 @@ function MainController($injector, $location, $timeout) {
     let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService');
     let ContextService = $injector.get('ContextService');
     let FileSystemService = $injector.get('FileSystemService');
+    let LocaleService = $injector.get('LocaleService');
     let LoggerService = $injector.get('LoggerService');
     let ProjectService = $injector.get('ProjectService');
 
@@ -39,8 +40,7 @@ function MainController($injector, $location, $timeout) {
     LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
       'version'));
     LoggerService.info('*** First access: ' + firstAccess);
-    LoggerService.info('*** Locale: ' + BibiscoPropertiesService.getProperty(
-      'locale'));
+    LoggerService.info('*** Locale: ' + LocaleService.getCurrentLocale());
     LoggerService.info('*** OS: ' + ContextService.getOs());
     LoggerService.info('*** Projects directory: ' + projectsDirectory);
   
