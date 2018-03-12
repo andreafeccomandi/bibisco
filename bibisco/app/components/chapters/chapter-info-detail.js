@@ -30,12 +30,13 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
       self.chapterinfo = self.chapter.reason;
+      self.title = 'common_chapter_reason';
+      self.subtitle = 'jsp.chapter.thumbnail.reason.description';
     } else if ($routeParams.type === 'notes') {
       self.chapterinfo = self.chapter.notes;
+      self.title = 'common_chapter_notes';
+      self.subtitle = 'common_notes_description';
     }
-
-    self.title = 'jsp.chapter.thumbnail.' + $routeParams.type + '.title';
-    self.subtitle = 'jsp.chapter.thumbnail.' + $routeParams.type + '.description';
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
