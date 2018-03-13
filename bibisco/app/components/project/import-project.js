@@ -19,7 +19,8 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, ProjectService) {
+function ImportProjectController($location, $rootScope, $scope, ContextMenuService, 
+  ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -46,6 +47,7 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService) 
   self.confirmImportExistingProject = function() {
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
+        ContextMenuService.create();
         $location.path('/project/projecthome');
       });
   };
@@ -62,6 +64,7 @@ function ImportProjectController($location, $rootScope, $scope, ProjectService) 
       if (result.isValidArchive && !result.isAlreadyPresent) {
         ProjectService.import(result.projectId, result.projectName,
           function() {
+            ContextMenuService.create();
             $location.path('/project/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
