@@ -196,7 +196,7 @@
   "jsp.export.dialog.exportProjectDirectory.label": "Select the directory into which bibisco will export your project:",
   "jsp.importProject.label.file": "Archive file",
   "jsp.importProject.form.input.file.validationMessage": "Archive file not valid.",
-  "jsp.closeImportProject.importAlreadyPresent.confirm": "Archive file contains project {{projectName}}, that is already in your bibisco. By importing this project, you will overwrite the current version. Do you want to continue?",
+  "jsp.closeImportProject.importAlreadyPresent.confirm": "Archive file contains project <i>{{projectName}}</i>, that is already in your bibisco. By importing this project, you will overwrite the current version. Do you want to continue?",
   "jsp.chapters.delete.confirm": "Do you really want to delete this chapter?",
   "jsp.chapters.h1": "Chapters",
   "jsp.chapters.dialog.title.createChapter": "Create chapter",
