@@ -20,7 +20,7 @@ angular.
   });
 
 function ItemDetailController($location, $routeParams, ChapterService, 
-  ObjectService) {
+  ObjectService, UtilService) {
 
   var self = this;
 
@@ -81,7 +81,7 @@ function ItemDetailController($location, $routeParams, ChapterService,
       for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
         let revisions = scenes[j].revisions;
         for (let h = 0; h < revisions.length && !deleteForbidden; h++) {
-          if (revisions[h].itemid === id) {
+          if (UtilService.array.contains(revisions[h].sceneobjects, id)) {
             deleteForbidden = true;
           }
         }
