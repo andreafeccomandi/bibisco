@@ -18,6 +18,38 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
   SecondaryCharacterService, StrandService
 ) {
   'use strict';
+  
+  // chapters and scenes
+  let chapters = ChapterService.getChapters();
+  let chapter_scenes = [];
+  if (chapters && chapters.length > 0) {
+    for (let i = 0; i < chapters.length; i++) {
+      chapter_scenes[chapters[i].$loki] = ChapterService.getScenes(chapters[i].$loki);
+    }
+  }
+  
+  // characters
+  let characters = [];
+  let mainCharacters = MainCharacterService.getMainCharacters();
+  let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
+  for (let i = 0; i < mainCharacters.length; i++) {
+    characters.push({
+      id: 'm_' + mainCharacters[i].$loki,
+      name: mainCharacters[i].name
+    });
+  }
+  for (let i = 0; i < secondaryCharacters.length; i++) {
+    characters.push({
+      id: 's_' + secondaryCharacters[i].$loki,
+      name: secondaryCharacters[i].name
+    });
+  }
+  characters.sort(function (a, b) {
+    return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+  });
+
+  let locations = LocationService.getLocations();
+  let strands = StrandService.getStrands();
 
   return {
 
@@ -28,7 +60,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     getChaptersLength: function() {
       let words = [];
-      let chapters = ChapterService.getChapters();
       if (chapters && chapters.length > 0) {
         for (let i = 0; i < chapters.length; i++) {
           words.push(chapters[i].words);
@@ -42,11 +73,8 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       
       let chapterscount = 0;
       let items = [];
-      
-      let chapters = ChapterService.getChapters();
-      
+            
       if (chapters && chapters.length > 0) {
-        let characters = this.getCharacters();
         chapterscount = chapters.length;
 
         for (let i = 0; i < characters.length; i++) {
@@ -79,7 +107,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       let characters = [];
 
       // main characters
-      let mainCharacters = MainCharacterService.getMainCharacters();
       for (let i = 0; i < mainCharacters.length; i++) {
         characters.push({
           id: 'm_' + mainCharacters[i].$loki,
@@ -88,7 +115,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       }
 
       // secondary characters
-      let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
       for (let i = 0; i < secondaryCharacters.length; i++) {
         characters.push({
           id: 's_' + secondaryCharacters[i].$loki,
@@ -106,7 +132,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     isCharacterInChapter: function(characterId, chapterId) {
       let presence = 0;
-      let scenes = ChapterService.getScenes(chapterId);
+      let scenes = chapter_scenes[chapterId];
       for (let i = 0; i < scenes.length; i++) {
         let scenecharacters = scenes[i].revisions[scenes[i].revision].scenecharacters;
         if (scenecharacters.indexOf(characterId) > -1) {
@@ -123,10 +149,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       let chapterscount = 0;
       let items = [];
 
-      let chapters = ChapterService.getChapters();
-
       if (chapters && chapters.length > 0) {
-        let locations = LocationService.getLocations();
         chapterscount = chapters.length;
 
         for (let i = 0; i < locations.length; i++) {
@@ -161,7 +184,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     isLocationInChapter: function (locationId, chapterId) {
       let presence = 0;
-      let scenes = ChapterService.getScenes(chapterId);
+      let scenes = chapter_scenes[chapterId];
       for (let i = 0; i < scenes.length; i++) {
         let sceneLocationId = scenes[i].revisions[scenes[i].revision].locationid;
         if (sceneLocationId === locationId) {
@@ -178,10 +201,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       let chapterscount = 0;
       let items = [];
 
-      let chapters = ChapterService.getChapters();
-
       if (chapters && chapters.length > 0) {
-        let strands = StrandService.getStrands();
         chapterscount = chapters.length;
 
         for (let i = 0; i < strands.length; i++) {
@@ -216,7 +236,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     isStrandInChapter: function (strandId, chapterId) {
       let presence = 0;
-      let scenes = ChapterService.getScenes(chapterId);
+      let scenes = chapter_scenes[chapterId];
       for (let i = 0; i < scenes.length; i++) {
         let scenestrands = scenes[i].revisions[scenes[i].revision].scenestrands;
         if (scenestrands.indexOf(strandId) > -1) {
@@ -232,8 +252,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
       let chapterscount = 0;
       let items = [];
-
-      let chapters = ChapterService.getChapters();
 
       if (chapters && chapters.length > 0) {
         let povs = this.getPointOfViews();
@@ -291,7 +309,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
       let povs = [];
 
-      let characters = this.getCharacters();
       povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMajor', true, characters, translations));
       povs.push.apply(povs, this.createEntriesForPointOfView('1stOnMinor', true, characters, translations));
       povs.push.apply(povs, this.createEntriesForPointOfView('3rdLimited', true, characters, translations));
@@ -332,7 +349,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     isPointOfViewInChapter: function (pov, chapterId) {
       let presence = 0;
-      let scenes = ChapterService.getScenes(chapterId);
+      let scenes = chapter_scenes[chapterId];
       for (let i = 0; i < scenes.length; i++) {
         let id = scenes[i].revisions[scenes[i].revision].povid;
         let characterid = scenes[i].revisions[scenes[i].revision].povcharacterid;
@@ -351,11 +368,8 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
       let chapterscount = 0;
       let items = [];
 
-      let chapters = ChapterService.getChapters();
-
       if (chapters && chapters.length > 0) {
         chapterscount = chapters.length;
-        let characters = this.getCharacters();
 
         for (let i = 0; i < characters.length; i++) {
           let appearances = [];
@@ -412,7 +426,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
     getCharacterAppearencesInChapter: function (characterId, chapter) {
       
       let appearances = [];
-      let scenes = ChapterService.getScenes(chapter.$loki);
+      let scenes = chapter_scenes[chapter.$loki];
       for (let i = 0; i < scenes.length; i++) {
         let scenecharacters = scenes[i].revisions[scenes[i].revision].scenecharacters;
         if (scenecharacters.indexOf(characterId) > -1) {
