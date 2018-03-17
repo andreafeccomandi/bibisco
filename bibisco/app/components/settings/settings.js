@@ -20,7 +20,7 @@ angular.
   });
 
 function SettingsController($injector, $location, $rootScope, $scope,
-  BibiscoDbConnectionService, BibiscoPropertiesService,
+  $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
   
   var self = this;
@@ -44,17 +44,21 @@ function SettingsController($injector, $location, $rootScope, $scope,
     if (!SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     } else {
-      $injector.get('IntegrityService').ok();
-      self.theme = 'dark';
       $rootScope.$emit('SWITCH_DARK_THEME');
-      $scope.settingsForm.$setDirty();
+      $timeout(function () {
+        $injector.get('IntegrityService').ok();
+        self.theme = 'dark';
+        $scope.settingsForm.$setDirty();
+      }, 0);
     }
   };
 
   self.selectClassicTheme = function() {
-    self.theme = 'classic';
     $rootScope.$emit('SWITCH_CLASSIC_THEME');
-    $scope.settingsForm.$setDirty();
+    $timeout(function () {
+      self.theme = 'classic';
+      $scope.settingsForm.$setDirty();
+    }, 0);
   };
 
   self.selectLanguage = function(selectedLanguage) {
