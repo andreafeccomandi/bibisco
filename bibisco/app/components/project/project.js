@@ -27,7 +27,7 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
   var self = this;
 
   // init AnalysisService
-  AnalysisService.ping();
+  AnalysisService.init();
 
   // menu items status
   self.projecthomeActive = false;

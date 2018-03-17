@@ -43,7 +43,7 @@ function ItemsChaptersDistributionController(UtilService) {
     self.data = [];
     for (let i = 0; i < self.items.length; i++) {
       let labeltouse = self.items[i].labelshort ? self.items[i].labelshort : self.items[i].label;
-      self.labels.push(UtilService.string.truncate(labeltouse, 25));
+      self.labels.push(UtilService.string.truncate(labeltouse, 20));
       self.data.push(self.items[i].percentage);
     }
 

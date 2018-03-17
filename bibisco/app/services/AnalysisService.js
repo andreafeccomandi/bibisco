@@ -19,43 +19,50 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 ) {
   'use strict';
   
-  // chapters and scenes
-  let chapters = ChapterService.getChapters();
-  let chapter_scenes = [];
-  if (chapters && chapters.length > 0) {
-    for (let i = 0; i < chapters.length; i++) {
-      chapter_scenes[chapters[i].$loki] = ChapterService.getScenes(chapters[i].$loki);
-    }
-  }
-  
-  // characters
-  let characters = [];
-  let mainCharacters = MainCharacterService.getMainCharacters();
-  let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
-  for (let i = 0; i < mainCharacters.length; i++) {
-    characters.push({
-      id: 'm_' + mainCharacters[i].$loki,
-      name: mainCharacters[i].name
-    });
-  }
-  for (let i = 0; i < secondaryCharacters.length; i++) {
-    characters.push({
-      id: 's_' + secondaryCharacters[i].$loki,
-      name: secondaryCharacters[i].name
-    });
-  }
-  characters.sort(function (a, b) {
-    return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-  });
-
-  let locations = LocationService.getLocations();
-  let strands = StrandService.getStrands();
+  let chapters;
+  let chapter_scenes;
+  let characters;
+  let mainCharacters;
+  let secondaryCharacters;
+  let locations;
+  let strands;
 
   return {
 
     // empty function, just to create the service while loading page
     // without eslint error
-    ping: function () {
+    init: function () {
+      // chapters and scenes
+      chapters = ChapterService.getChapters();
+      chapter_scenes = [];
+      if (chapters && chapters.length > 0) {
+        for (let i = 0; i < chapters.length; i++) {
+          chapter_scenes[chapters[i].$loki] = ChapterService.getScenes(chapters[i].$loki);
+        }
+      }
+
+      // characters
+      characters = [];
+      mainCharacters = MainCharacterService.getMainCharacters();
+      secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
+      for (let i = 0; i < mainCharacters.length; i++) {
+        characters.push({
+          id: 'm_' + mainCharacters[i].$loki,
+          name: mainCharacters[i].name
+        });
+      }
+      for (let i = 0; i < secondaryCharacters.length; i++) {
+        characters.push({
+          id: 's_' + secondaryCharacters[i].$loki,
+          name: secondaryCharacters[i].name
+        });
+      }
+      characters.sort(function (a, b) {
+        return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+      });
+
+      locations = LocationService.getLocations();
+      strands = StrandService.getStrands();
     },
 
     getChaptersLength: function() {
