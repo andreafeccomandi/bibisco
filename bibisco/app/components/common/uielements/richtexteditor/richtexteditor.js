@@ -223,11 +223,15 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   self.undo = function() {
     $document[0].execCommand('undo');
     self.dirty = true;
+    self.focus();
+    self.countWordsAndCharacters();
   };
 
   self.redo = function() {
     $document[0].execCommand('redo');
     self.dirty = true;
+    self.focus();
+    self.countWordsAndCharacters();
   };
 
   self.print = function() {
@@ -324,24 +328,28 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     $document[0].execCommand('justifyCenter');
     self.checkselectionstate();
     self.dirty = true;
+    self.focus();
   };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
     self.checkselectionstate();
     self.dirty = true;
+    self.focus();
   };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
     self.checkselectionstate();
     self.dirty = true;
+    self.focus();
   };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
     self.checkselectionstate();
     self.dirty = true;
+    self.focus();
   };
 
   self.sanitizePaste = function($event) {

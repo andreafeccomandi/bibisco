@@ -20,7 +20,7 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
 
   return {
     sanitize: function(html) {
-
+      html = html.replace(/\r?\n|\r/g, ' ');
       let result = sanitizeHtml(html, {
         allowedTags: ['p', 'ul', 'ol', 'li', 'b', 'i', 'u', 'strike',
           'span'
@@ -28,6 +28,18 @@ angular.module('bibiscoApp').service('SanitizeHtmlService', function() {
         allowedAttributes: {
           p: ['style'],
           span: ['style']
+        },
+        exclusiveFilter: function (frame) {
+          return (frame.tag === 'p' 
+            || frame.tag === 'ul'
+            || frame.tag === 'ol'
+            || frame.tag === 'li'
+            || frame.tag === 'b'
+            || frame.tag === 'i'
+            || frame.tag === 'u'
+            || frame.tag === 'strike'
+            || frame.tag === 'span') 
+            && !frame.text.trim();
         },
         parser: {
           lowerCaseTags: true

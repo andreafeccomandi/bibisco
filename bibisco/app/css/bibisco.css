@@ -614,6 +614,10 @@ h3 {
 	text-indent: 30px;
 }
 
+.bibiscoRichTextEditor-bodyClass-indent-true li{
+	list-style-position: inside;
+}
+
 .bibiscoRichTextEditorSettings-arial {
 	font-family: Helvetica, Arial, sans-serif;
 }
