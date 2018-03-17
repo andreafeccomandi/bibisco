@@ -403,14 +403,16 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     sortAppearances: function (appearances) {
       appearances.sort(function (a, b) {
-        if (!a.time && !b.time) return 0;
-        else if (a.time && !b.time) return 1;
+
+        if (a.time && !b.time) return 1;
         else if (!a.time && b.time) return -1;
-        else if (a.time > b.time) {
-          return 1;
-        } else if (a.time < b.time) {
-          return -1;
-        } else {
+        else if (a.time && b.time && a.timegregorian && !b.timegregorian) return 1;
+        else if (a.time && b.time && !a.timegregorian && b.timegregorian) return -1;
+        else if (a.time && b.time && a.timegregorian && b.timegregorian && a.time > b.time) return 1;
+        else if (a.time && b.time && a.timegregorian && b.timegregorian && a.time < b.time) return -1;
+        else if (a.time && b.time && !a.timegregorian && !b.timegregorian && a.time.toUpperCase() > b.time.toUpperCase()) return 1;
+        else if (a.time && b.time && !a.timegregorian && !b.timegregorian && a.time.toUpperCase() < b.time.toUpperCase()) return -1;
+        else {
           if (a.chapterposition > b.chapterposition) {
             return 1;
           } else if (a.chapterposition < b.chapterposition) {

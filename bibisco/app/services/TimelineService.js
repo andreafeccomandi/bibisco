@@ -81,11 +81,14 @@ angular.module('bibiscoApp').service('TimelineService', function (
       }
 
       timeline.sort(function (item1, item2) {
-        if (!item1.time && !item2.time) return 0; 
-        else if (item1.time && !item2.time) return 1;
+        if (item1.time && !item2.time) return 1;
         else if (!item1.time && item2.time) return -1;
-        else if (item1.time > item2.time) return 1;
-        else if (item1.time < item2.time) return -1;
+        else if (item1.time && item2.time && item1.timegregorian && !item2.timegregorian) return 1;
+        else if (item1.time && item2.time && !item1.timegregorian && item2.timegregorian) return -1;
+        else if (item1.time && item2.time && item1.timegregorian && item2.timegregorian && item1.time > item2.time) return 1;
+        else if (item1.time && item2.time && item1.timegregorian && item2.timegregorian && item1.time < item2.time) return -1;
+        else if (item1.time && item2.time && !item1.timegregorian && !item2.timegregorian && item1.time.toUpperCase() > item2.time.toUpperCase()) return 1;
+        else if (item1.time && item2.time && !item1.timegregorian && !item2.timegregorian && item1.time.toUpperCase() < item2.time.toUpperCase()) return -1;
         else {
           if (item1.chapterposition > item2.chapterposition) return 1;
           else if (item1.chapterposition < item2.chapterposition) return -1;
