@@ -112,6 +112,7 @@
   "jsp.welcome.step2.p.2": "Falls der Ordner bereits Projekte enthält, werden diese automatisch importiert.",
   "jsp.welcome.step2.label.3": "Idee",
   "jsp.welcome.step2.p.3": "Speichert den Ordner in Google Drive oder Dropbox. Damit werden Deine Projekte gesichert und Du kannst von verschiedenen Computern aus daran arbeiten.",
+  "jsp.welcome.a.accept": "Lizenzbedingungen annehmen",
   "jsp.welcome.a.next": "Weiter",
   "jsp.welcome.a.previous": "Zurück",
   "jsp.welcome.a.finish": "Abschließen",

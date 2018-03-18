@@ -111,6 +111,7 @@
   "jsp.welcome.step2.p.3": "Guarde a pasta no Google Drive ou no Dropbox. Assim obtém uma cópia de segurança e pode trabalhar nos seus projectos a partir de vários computadores.",
   "jsp.welcome.step2.forbidden.message": "O Bibisco não tem permissão de escrita nessa pasta. Por favor, escolha outra.",
   "jsp.welcome.step2.invalid.message": "A pasta seleccionada não existe. Por favor, escolha outra.",
+  "jsp.welcome.a.accept": "Aceitação dos Termos de Licenciamento",
   "jsp.welcome.a.next": "Seguinte",
   "jsp.welcome.a.previous": "Anterior",
   "jsp.welcome.a.finish": "Terminar",

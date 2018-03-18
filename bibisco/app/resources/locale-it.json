@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "se nella cartella selezionata sono già presenti progetti saranno automaticamente importati.",
   "jsp.welcome.step2.label.3": "Idea",
   "jsp.welcome.step2.p.3": "metti la cartella sotto il controllo di Google Drive o Dropbox per avere il backup automatico dei progetti e per poter lavorare sui progetti da pc diversi.",
+  "jsp.welcome.a.accept": "Accetta condizioni di Licenza",
   "jsp.welcome.a.next": "avanti",
   "jsp.welcome.a.previous": "indietro",
   "jsp.welcome.a.finish": "fine",

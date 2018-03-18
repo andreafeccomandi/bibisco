@@ -1,5 +1,29 @@
 <div class="container">
-  <div class="jumbotron top50">
+  <div ng-show="$ctrl.step==0">
+    <div class="row">
+      <pageheader headertitle="jsp.info.h3.license" buttonshow="false">
+      </pageheader>
+    </div>
+    <div class="welcome-license">
+      <div class="container">
+        <p>
+          {{"jsp.info.p.license" | translate}}
+        </p>
+        <p>
+          {{"jsp.info.p.license.copyright" | translate}}
+        </p>
+        <p>
+          {{"jsp.info.p.license.warranty" | translate}}
+        </p>
+        <hr>
+        <licensetext></licensetext>
+        <div class="text-center top15 bottom30">
+          <button ng-click="$ctrl.acceptLicense()" type="button" class="btn btn-lg btn-primary">{{"jsp.welcome.a.accept" | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="$ctrl.step==1 || $ctrl.step==2" class="jumbotron top50">
     <form name="welcomeForm" ng-submit="$ctrl.finish(welcomeForm.$valid)" novalidate>
       <div class="row">
         <h1 class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
@@ -10,7 +34,6 @@
           </div>
         </div>
         <div ng-show="$ctrl.step==2">
-
           <p class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
           <directoryselect model='$ctrl.selectedProjectsDirectory'
           field='welcomeForm.projectsDirectory' name='projectsDirectory'

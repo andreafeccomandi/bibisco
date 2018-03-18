@@ -96,6 +96,7 @@
     "jsp.welcome.step2.p.2": "eğer dizinde projeler varsa otomatik olarak içe aktarılır.",
     "jsp.welcome.step2.label.3": "fikir",
     "jsp.welcome.step2.p.3": "dizini Google Drive’da veya Dropbox’ta saklayın. Bu bir yedekleme sağlar ve projeyle farklı bilgisayardan çalışmanıza olanak tanır.",
+    "jsp.welcome.a.accept": "Lisans Koşullarını Kabul Et",
     "jsp.welcome.a.next": "sonraki",
     "jsp.welcome.a.previous": "önceki",
     "jsp.welcome.a.finish": "bitir",

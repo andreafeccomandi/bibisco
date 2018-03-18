@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "pokud adresář již obsahuje projekty, budou automaticky importovány.",
   "jsp.welcome.step2.label.3": "Nápad",
   "jsp.welcome.step2.p.3": "uložit adresář na Google Drive nebo Dropbox.  Poskytuje to zálohování a umožňuje to práci na projektu z několika počítačů.",
+  "jsp.welcome.a.accept": "Přijmout licenční podmínky",
   "jsp.welcome.a.next": "další",
   "jsp.welcome.a.previous": "předchozí",
   "jsp.welcome.a.finish": "konec",

@@ -1,11 +1,10 @@
-<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
-    <div class="modal-body" id="modal-body">
-        <div class="license">
+
+        <div>
             <h3 style="text-align: center;">GNU GENERAL PUBLIC LICENSE</h3>
             <p style="text-align: center;">Version 3, 29 June 2007</p>
             
             <p>Copyright &copy; 2007 Free Software Foundation, Inc. &lt;
-                <a href="https://fsf.org/">https://fsf.org/</a>&gt;</p>
+                <a ng-click="$ctrl.gotoWebsite()" class="external-url">https://fsf.org/</a>&gt;</p>
             <p>
                 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</p>
             
@@ -460,8 +459,3 @@
             
             <p>END OF TERMS AND CONDITIONS</p>
         </div>
-    </div>
-    <div class="modal-footer bibiscoNotSelectableText">
-        <button class="btn btn-default" type="button" ng-click="$ctrl.close()">{{"jsp.common.button.close" | translate}}</button>
-    </div>
-</modal-component>

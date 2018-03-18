@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "se o diretório já contém projetos, eles serão importados automaticamente.",
   "jsp.welcome.step2.label.3": "Ideia",
   "jsp.welcome.step2.p.3": "armazene o diretório no Google Drive ou Dropbox. Isso criará uma cópia de segurança e permitirá que você trabalhe no projeto a partir de diversos computadores.",
+  "jsp.welcome.a.accept": "Aceitar Termos de Licença",
   "jsp.welcome.a.next": "próximo",
   "jsp.welcome.a.previous": "anterior",
   "jsp.welcome.a.finish": "finalizar",

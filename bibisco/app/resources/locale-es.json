@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "si el directorio ya contiene proyectos, éstos se importarán automáticamente.",
   "jsp.welcome.step2.label.3": "Idea",
   "jsp.welcome.step2.p.3": "pon el directorio en Google Drive o Dropbox, así harás una copia de seguridad de tus proyectos, y podrás trabajar en distintos ordenadores.",
+  "jsp.welcome.a.accept": "Aceptar los términos de la licencia",
   "jsp.welcome.a.next": "siguiente",
   "jsp.welcome.a.previous": "anterior",
   "jsp.welcome.a.finish": "terminar",

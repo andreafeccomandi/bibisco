@@ -121,6 +121,7 @@
   "jsp.welcome.step2.p.2": "если директория содержит проекты, они будут автоматически импортированы.",
   "jsp.welcome.step2.label.3": "Совет",
   "jsp.welcome.step2.p.3": "выберите папку в Google Drive или Dropbox. Это позволит работать над проектом с любого компьютера.",
+  "jsp.welcome.a.accept": "Принятие условий лицензии",
   "jsp.welcome.a.next": "далее",
   "jsp.welcome.a.previous": "назад",
   "jsp.welcome.a.finish": "завершить",

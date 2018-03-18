@@ -24,19 +24,21 @@ function WelcomeController($location, $rootScope, $scope,
   BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
   
-
-  // hide menu
-  $rootScope.$emit('SHOW_WELCOME');
-
   var self = this;
-  self.selectedProjectsDirectory = null;
-  self.step = 1;
-  self.forbiddenDirectory = false;
+  self.$onInit = function () {
+    $rootScope.$emit('SHOW_WELCOME');
+    self.selectedProjectsDirectory = null;
+    self.step = 0;
+    self.forbiddenDirectory = false;
+  };
 
   self.selectProjectsDirectory = function(directory) {
     self.selectedProjectsDirectory = directory;
     self.forbiddenDirectory = false;
     $scope.$apply();
+  };
+  self.acceptLicense = function () {
+    self.step = 1;
   };
   self.next = function() {
     self.step = 2;

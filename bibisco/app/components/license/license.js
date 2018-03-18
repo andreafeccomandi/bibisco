@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('license', {
-    templateUrl: 'components/info/license.html',
+    templateUrl: 'components/license/license.html',
     controller: LicenseController,
     bindings: {
       dismiss: '&'

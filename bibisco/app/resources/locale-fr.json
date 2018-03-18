@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "si le dossier contient déjà des projets, ils seront automatiquement importés.",
   "jsp.welcome.step2.label.3": "Idée",
   "jsp.welcome.step2.p.3": "synchronisez le dossier avec Google Drive ou Dropbox pour avoir une sauvegarde automatique de vos projets ou pour travailler sur différents ordinateurs.",
+  "jsp.welcome.a.accept": "Accepter le contrat de licence",
   "jsp.welcome.a.next": "suivant",
   "jsp.welcome.a.previous": "précédent",
   "jsp.welcome.a.finish": "fin",

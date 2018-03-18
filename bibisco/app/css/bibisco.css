@@ -434,6 +434,15 @@ h3 {
 }
 
 /* WELCOME */
+.welcome-license {
+    overflow-y: scroll;
+    width: 100%;
+    position: absolute;
+	left: 0px;
+	height: calc(100% - 150px);
+    top: 145px;
+}
+
 .bibiscoWelcomeWizardNotes p {
 	margin-top: 10px;
 	font-size: 16px;

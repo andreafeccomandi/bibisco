@@ -115,6 +115,7 @@
   "jsp.welcome.step2.p.2": "jeśli katalog już zawiera projekty, zostaną one automatycznie zaimportowane.",
   "jsp.welcome.step2.label.3": "Wskazówka",
   "jsp.welcome.step2.p.3": "umieszczając katalog pod kontrolą Dysku Google lub Dropbox uzyskujesz automatyczną kopię zapasową swoich projektów oraz możliwość pracy z nimi na różnych komputerach.",
+  "jsp.welcome.a.accept": "Zaakceptuj postanowienia licencyjne",
   "jsp.welcome.a.next": "dalej",
   "jsp.welcome.a.previous": "wstecz",
   "jsp.welcome.a.finish": "zakończ",
