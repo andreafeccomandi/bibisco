@@ -19,7 +19,7 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $routeParams, $translate,
+function SceneTagsController($location, $routeParams, $scope, $translate,
   ChapterService, DatetimeService, ObjectService, LocaleService, LocationService,
   MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
 
@@ -61,6 +61,7 @@ function SceneTagsController($location, $routeParams, $translate,
     // init date time
     if (ChapterService.getLastScenetime() !== '') {
       self.lastscenetime = new Date(ChapterService.getLastScenetime());
+      self.scenetime = self.scenerevision.time;
     }
 
     // init narrative strands
@@ -284,4 +285,8 @@ function SceneTagsController($location, $routeParams, $translate,
     $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
       $routeParams.sceneid);
   };
+
+   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
+    self.scenerevision.time = data;
+  });
 }

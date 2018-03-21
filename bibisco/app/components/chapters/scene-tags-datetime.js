@@ -20,12 +20,12 @@ angular.
     bindings: {
       dirty: '=',
       lastscenetime: '<',
-      scenetime: '=',
+      scenetime: '<',
       scenetimegregorian: '='
     }
   });
 
-function SceneTagsDatetimeController($location, DatetimeService, LocaleService) {
+function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleService) {
 
   var self = this;
 
@@ -52,10 +52,11 @@ function SceneTagsDatetimeController($location, DatetimeService, LocaleService) 
 
   self.onTimeSet = function(newDate) {
     self.scenetime = newDate;
-    self.scenetimeshowed = self.scenetime;
+    self.scenetimeshowed = newDate;
     self.scenetimeCalendarOpen = false;
     self.dirty = true;
     self.scenetimeselected = true;
+    $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };
 
   self.calculateSceneYear = function() {
@@ -82,5 +83,6 @@ function SceneTagsDatetimeController($location, DatetimeService, LocaleService) 
   self.changeScenetimeCustom = function() {
     self.dirty = true;
     self.scenetime = self.scenetimecustom;
+    $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };
 }
