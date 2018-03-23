@@ -21,7 +21,7 @@ angular.
 
 
 function WelcomeController($location, $rootScope, $scope,
-  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService,
+  BibiscoDbConnectionService, BibiscoPropertiesService,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
   
   var self = this;

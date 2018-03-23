@@ -16,12 +16,7 @@
 const electron = require('electron');
 const app = electron.app;
 const env = process.env.NODE_ENV || 'development';
-
-// add os info
-global.os = process.platform;
-
-// add absolute path
-global.appPath = __dirname;
+const ipc = require('electron').ipcMain;
 
 // add winston logger
 global.logger = initLogger();
@@ -29,10 +24,10 @@ global.logger = initLogger();
 // add debug features like hotkeys for triggering dev tools and reload
 const isDev = require('electron-is-dev');
 if (isDev) {
-  logger.debug('Running in development -  global path:' + global.appPath);
+  logger.debug('Running in development -  global path:' + __dirname);
   require('electron-debug')();
 } else {
-  logger.debug('Running in production -  global path:' + global.appPath);
+  logger.debug('Running in production -  global path:' + __dirname);
   //require('electron-debug')();
 }
 
@@ -48,12 +43,27 @@ global.getzip = function () {
 
 // project db connection
 var projectdbconnection;
+// ipc.on('getprojectdbconnection', function (event) {
+//   logger.debug('start getprojectdbconnection');
+//   if (!projectdbconnection) {
+//     projectdbconnection = initProjectDbConnection();
+//   }
+//   event.returnValue = projectdbconnection;
+// });
 global.getprojectdbconnection = function() {
   if (!projectdbconnection) {
     projectdbconnection = initProjectDbConnection();
   }
   return projectdbconnection;
 };
+
+ipc.on('getcontextinfo', function (event) {
+  let contextInfo = {
+    os: process.platform,
+    appPath: __dirname
+  };
+  event.returnValue = contextInfo;
+});
 
 // bibisco db connection
 var bibiscodbconnection;
@@ -320,7 +330,7 @@ function initBibiscoDbConnection() {
   return {
     // add function to load bibisco db
     load: function() {
-      let bibiscodbpath = path.join(global.appPath, path.join('db','bibisco.json'));  
+      let bibiscodbpath = path.join(__dirname, path.join('db','bibisco.json'));  
       logger.debug('bibisco db path: ' + bibiscodbpath);
       var bibiscodb = new loki(bibiscodbpath, {
         adapter: new LokiFsSyncAdapter()

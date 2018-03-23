@@ -16,9 +16,10 @@
 angular.module('bibiscoApp').service('ContextService', function() {
   'use strict';
 
-  var remote = require('electron').remote;
-  var appPath = remote.getGlobal('appPath');
-  var os = remote.getGlobal('os');
+  const ipc = require('electron').ipcRenderer;
+  let contextInfo = ipc.sendSync('getcontextinfo');
+  var appPath = contextInfo.appPath;
+  var os = contextInfo.os;
   var path = require('path');
   var lastError;
 
