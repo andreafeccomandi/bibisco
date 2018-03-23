@@ -16,8 +16,17 @@
 angular.module('bibiscoApp').service('LoggerService', function() {
   'use strict';
 
-  var remote = require('electron').remote;
-  var logger = remote.getGlobal('logger');
+  const ipc = require('electron').ipcRenderer;
 
-  return logger;
+  return {
+    debug: function(text) {
+      ipc.send('logger-debug', text);
+    },
+    info: function (text) {
+      ipc.send('logger-info', text);
+    },
+    error: function (text) {
+      ipc.send('logger-error', text);
+    },
+  };
 });

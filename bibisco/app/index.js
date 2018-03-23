@@ -19,7 +19,16 @@ const env = process.env.NODE_ENV || 'development';
 const ipc = require('electron').ipcMain;
 
 // add winston logger
-global.logger = initLogger();
+const logger = initLogger();
+ipc.on('logger-debug', function (event, arg) {
+  logger.debug(arg);
+});
+ipc.on('logger-info', function (event, arg) {
+  logger.info(arg);
+});
+ipc.on('logger-error', function (event, arg) {
+  logger.error(arg);
+});
 
 // add debug features like hotkeys for triggering dev tools and reload
 const isDev = require('electron-is-dev');
@@ -177,7 +186,7 @@ function initLogger() {
   const logger = require('winston');
   logger.level = (env === 'development' ? 'debug' : 'info');
   logger.add(logger.transports.File, {
-    filename: './logs/bibisco.log',
+    filename: __dirname + '/logs/bibisco.log',
     json: false,
     maxsize: 1000000,
     maxFiles: 2,
