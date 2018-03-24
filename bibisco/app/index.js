@@ -18,6 +18,9 @@ const app = electron.app;
 const env = process.env.NODE_ENV || 'development';
 const ipc = require('electron').ipcMain;
 
+// prevent window being garbage collected
+let mainWindow;
+
 // add winston logger
 const logger = initLogger();
 ipc.on('logger-debug', function (event, arg) {
@@ -37,18 +40,20 @@ if (isDev) {
   require('electron-debug')();
 } else {
   logger.debug('Running in production -  global path:' + __dirname);
-  //require('electron-debug')();
 }
-
 
 // zipper/unzipper
 var zip;
-global.getzip = function () {
-  if (!zip) {
-    zip = initZip();
-  }
-  return zip;
-};
+ipc.on('zipFolder', function (event, arg) {
+  getZip().zipFolder(arg.folderToZip, arg.zippedFilePath, function () {
+    mainWindow.webContents.send('master-process-callback', arg.callbackId);
+  });
+});
+ipc.on('unzip', function (event, arg) {
+  getZip().unzip(arg.zippedFilePath, arg.destinationFolder, function() {
+    mainWindow.webContents.send('master-process-callback', arg.callbackId);
+  });
+});
 
 // project db connection
 var projectdbconnection;
@@ -88,10 +93,6 @@ const {
   dialog
 } = require('electron');
 global.dialog = dialog;
-
-
-// prevent window being garbage collected
-let mainWindow;
 
 function onClosed() {
   // dereference the window
@@ -205,6 +206,14 @@ function initLogger() {
   });
 
   return logger;
+}
+
+function getZip() {
+  if (!zip) {
+    zip = initZip();
+  }
+
+  return zip;
 }
 
 function initZip() {

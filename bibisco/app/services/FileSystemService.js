@@ -14,14 +14,13 @@
  */
 
 angular.module('bibiscoApp').service('FileSystemService', function(
-  LoggerService) {
+  LoggerService, MainProcessCallbackExecutorService) {
   'use strict';
 
-  var remote = require('electron').remote;
-  var fs = require('fs-extra');
-  var path = require('path');
-  var walkSync = require('walk-sync');
-  var zip;
+  const ipc = require('electron').ipcRenderer;
+  const fs = require('fs-extra');
+  const path = require('path');
+  const walkSync = require('walk-sync');
 
   return {
     basename: function(filepath) {
@@ -83,12 +82,6 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     getFilesInDirectoryRecursively: function(path, filter) {
       return walkSync(path, filter);
     },
-    getZip: function() {
-      if(!zip) {
-        zip = remote.getGlobal('getzip')();
-      }
-      return zip;
-    },
     isDirectory: function(path) {
       return fs.lstatSync(path).isDirectory();
     },
@@ -96,13 +89,23 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       fs.renameSync(oldPath, newPath);
     },
     unzip: function(zippedFilePath, destinationFolder, callback) {
-      return this.getZip().unzip(zippedFilePath, destinationFolder, callback);
+      let callbackId = MainProcessCallbackExecutorService.register(callback);
+      ipc.send('unzip', {
+        zippedFilePath: zippedFilePath,
+        destinationFolder: destinationFolder,
+        callbackId: callbackId
+      });
     },
     writeFileSync: function(path, buffer) {
       fs.writeFileSync(path, buffer);
     },
     zipFolder: function(folderToZip, zippedFilePath, callback) {
-      return this.getZip().zipFolder(folderToZip, zippedFilePath, callback);
+      let callbackId = MainProcessCallbackExecutorService.register(callback);
+      ipc.send('zipFolder', {
+        folderToZip: folderToZip,
+        zippedFilePath: zippedFilePath,
+        callbackId: callbackId
+      });
     }
   };
 });
