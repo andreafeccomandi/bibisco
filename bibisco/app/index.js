@@ -55,22 +55,6 @@ ipc.on('unzip', function (event, arg) {
   });
 });
 
-// project db connection
-var projectdbconnection;
-// ipc.on('getprojectdbconnection', function (event) {
-//   logger.debug('start getprojectdbconnection');
-//   if (!projectdbconnection) {
-//     projectdbconnection = initProjectDbConnection();
-//   }
-//   event.returnValue = projectdbconnection;
-// });
-global.getprojectdbconnection = function() {
-  if (!projectdbconnection) {
-    projectdbconnection = initProjectDbConnection();
-  }
-  return projectdbconnection;
-};
-
 ipc.on('getcontextinfo', function (event) {
   let contextInfo = {
     os: process.platform,
@@ -330,43 +314,6 @@ function initZip() {
           }
         });
       });
-    }
-  };
-}
-
-
-function initProjectDbConnection() {
-  logger.info('initProjectDbConnection()');
-  let fs = require('fs-extra');
-  let loki = require('lokijs');
-  let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
-
-  return {
-    // add function to create project db
-    create: function(dbName, dbPath) {
-      fs.mkdirSync(dbPath);
-      fs.mkdirSync(dbPath + '/images' );
-      var projectdbfilepath = dbPath + '/' + dbName + '.json';
-      var projectdb = new loki(projectdbfilepath, {
-        adapter: new LokiFsSyncAdapter()
-      });
-      projectdb.saveDatabase(function() {
-        logger.info('Database ' + projectdbfilepath + ' created!');
-      });
-
-      return projectdb;
-    },
-
-    // add function to load project db
-    load: function(dbName, dbPath) {
-      var projectdbfilepath = dbPath + '/' + dbName + '.json';
-      var projectdb = new loki(projectdbfilepath, {
-        adapter: new LokiFsSyncAdapter()
-      });
-      projectdb.loadDatabase({}, function() {
-        logger.info('Database ' + projectdbfilepath + ' loaded!');
-      });
-      return projectdb;
     }
   };
 }
