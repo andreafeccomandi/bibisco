@@ -21,9 +21,9 @@ angular.module('bibiscoApp').service('MainProcessCallbackExecutorService',
     let callbacks = [];
 
     ipc.on('master-process-callback', function (event, arg) {
-      let callback = callbacks[arg];
-      delete callbacks[arg];
-      callback();
+      let callback = callbacks[arg.callbackId];
+      delete callbacks[arg.callbackId];
+      callback.apply(this, arg.params);
     });
 
     return {

@@ -27,23 +27,16 @@ angular.
   });
 
 
-function DirectorySelectController() {
+function DirectorySelectController(MainProcessCallbackExecutorService) {
 
-  var remote = require('electron').remote;
-  var dialog = remote.getGlobal('dialog');
+  const ipc = require('electron').ipcRenderer;
   var self = this;
 
   self.projectsdirectory = null;
   self.opendirectorydialog = function() {
-    dialog.showOpenDialog({
-      properties: ['openDirectory', 'createDirectory']
-    },
-    function(filenames) {
-      if (filenames) {
-        self.onselectdirectory({
-          directory: filenames[0]
-        });
-      }
+    let callbackId = MainProcessCallbackExecutorService.register(self.onselectdirectory);
+    ipc.send('opendialog', {
+      callbackId: callbackId
     });
   };
 

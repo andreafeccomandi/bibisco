@@ -46,12 +46,12 @@ if (isDev) {
 var zip;
 ipc.on('zipFolder', function (event, arg) {
   getZip().zipFolder(arg.folderToZip, arg.zippedFilePath, function () {
-    mainWindow.webContents.send('master-process-callback', arg.callbackId);
+    mainWindow.webContents.send('master-process-callback', { callbackId: arg.callbackId });
   });
 });
 ipc.on('unzip', function (event, arg) {
   getZip().unzip(arg.zippedFilePath, arg.destinationFolder, function() {
-    mainWindow.webContents.send('master-process-callback', arg.callbackId);
+    mainWindow.webContents.send('master-process-callback', { callbackId: arg.callbackId });
   });
 });
 
@@ -92,7 +92,22 @@ global.getbibiscodbconnection = function() {
 const {
   dialog
 } = require('electron');
-global.dialog = dialog;
+ipc.on('opendialog', function (event, arg) {
+  dialog.showOpenDialog({
+    properties: ['openDirectory', 'createDirectory']
+  },
+  function (filenames) {
+    if (filenames) {
+      let params = [];
+      params.push({directory: filenames[0]});
+      mainWindow.webContents.send('master-process-callback', 
+        { 
+          callbackId: arg.callbackId,
+          params: params
+        });
+    }
+  });
+});
 
 function onClosed() {
   // dereference the window
