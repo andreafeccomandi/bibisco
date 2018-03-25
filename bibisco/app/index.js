@@ -92,7 +92,7 @@ global.getbibiscodbconnection = function() {
 const {
   dialog
 } = require('electron');
-ipc.on('opendialog', function (event, arg) {
+ipc.on('selectdirectory', function (event, arg) {
   dialog.showOpenDialog({
     properties: ['openDirectory', 'createDirectory']
   },
@@ -102,6 +102,32 @@ ipc.on('opendialog', function (event, arg) {
       params.push({directory: filenames[0]});
       mainWindow.webContents.send('master-process-callback', 
         { 
+          callbackId: arg.callbackId,
+          params: params
+        });
+    }
+  });
+});
+ipc.on('selectfile', function (event, arg) {
+  let filters;
+  if (!arg.filefilter) {
+    filters = [];
+  } else {
+    filters = [{
+      name: 'filters',
+      extensions: arg.filefilter
+    }];
+  }
+  dialog.showOpenDialog({
+    filters: filters,
+    properties: ['openFile']
+  },
+  function (filenames) {
+    if (filenames) {
+      let params = [];
+      params.push({ file: filenames[0] });
+      mainWindow.webContents.send('master-process-callback',
+        {
           callbackId: arg.callbackId,
           params: params
         });

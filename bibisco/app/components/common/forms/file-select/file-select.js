@@ -24,32 +24,16 @@ angular.
   });
 
 
-function FileSelectController() {
+function FileSelectController(MainProcessCallbackExecutorService) {
 
-  var remote = require('electron').remote;
-  var dialog = remote.getGlobal('dialog');
+  const ipc = require('electron').ipcRenderer;
   var self = this;
 
   self.openfiledialog = function() {
-    let filters;
-    if (!self.filefilter) {
-      filters = [];
-    } else {
-      filters = [{
-        name: 'filters',
-        extensions: self.filefilter
-      }];
-    }
-    dialog.showOpenDialog({
-      filters: filters,
-      properties: ['openFile']
-    },
-    function(filenames) {
-      if (filenames) {
-        self.onselectfile({
-          file: filenames[0]
-        });
-      }
+    let callbackId = MainProcessCallbackExecutorService.register(self.onselectfile);
+    ipc.send('selectfile', {
+      callbackId: callbackId,
+      filefilter: self.filefilter
     });
   };
 }

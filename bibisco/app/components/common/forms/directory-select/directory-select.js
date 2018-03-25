@@ -35,7 +35,7 @@ function DirectorySelectController(MainProcessCallbackExecutorService) {
   self.projectsdirectory = null;
   self.opendirectorydialog = function() {
     let callbackId = MainProcessCallbackExecutorService.register(self.onselectdirectory);
-    ipc.send('opendialog', {
+    ipc.send('selectdirectory', {
       callbackId: callbackId
     });
   };
