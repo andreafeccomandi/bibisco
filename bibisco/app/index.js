@@ -79,15 +79,6 @@ ipc.on('getcontextinfo', function (event) {
   event.returnValue = contextInfo;
 });
 
-// bibisco db connection
-var bibiscodbconnection;
-global.getbibiscodbconnection = function() {
-  if (!bibiscodbconnection) {
-    bibiscodbconnection = initBibiscoDbConnection();
-  }
-  return bibiscodbconnection;
-};
-
 // add dialog
 const {
   dialog
@@ -380,24 +371,3 @@ function initProjectDbConnection() {
   };
 }
 
-function initBibiscoDbConnection() {
-
-  let path = require('path');
-  let loki = require('lokijs');
-  let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
-
-  return {
-    // add function to load bibisco db
-    load: function() {
-      let bibiscodbpath = path.join(__dirname, path.join('db','bibisco.json'));  
-      logger.debug('bibisco db path: ' + bibiscodbpath);
-      var bibiscodb = new loki(bibiscodbpath, {
-        adapter: new LokiFsSyncAdapter()
-      });
-      bibiscodb.loadDatabase({}, function() {
-        logger.debug('bibisco.json db loaded');
-      });
-      return bibiscodb;
-    }
-  };
-}

@@ -13,19 +13,38 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoDbConnectionService', function() {
+angular.module('bibiscoApp').service('BibiscoDbConnectionService', function (LoggerService) {
   'use strict';
 
-  var remote = require('electron').remote;
-  var bibiscodb;
+  let path = require('path');
+  let loki = require('lokijs');
+  let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
+  let bibiscodb;
 
   return {
     getBibiscoDb: function() {
       if (!bibiscodb) {
-        let bibiscodbconnection = remote.getGlobal('getbibiscodbconnection')();
+        let bibiscodbconnection = this.initBibiscoDb();
         bibiscodb = bibiscodbconnection.load();
       }
       return bibiscodb;
+    },
+    initBibiscoDb: function() {
+
+      return {
+        // add function to load bibisco db
+        load: function () {
+          let bibiscodbpath = path.join(__dirname, path.join('db', 'bibisco.json'));
+          LoggerService.debug('bibisco db path: ' + bibiscodbpath);
+          var bibiscodb = new loki(bibiscodbpath, {
+            adapter: new LokiFsSyncAdapter()
+          });
+          bibiscodb.loadDatabase({}, function () {
+            LoggerService.debug('bibisco.json db loaded');
+          });
+          return bibiscodb;
+        }
+      };
     },
     saveDatabase: function(callback) {
       return this.getBibiscoDb().saveDatabase(callback);
