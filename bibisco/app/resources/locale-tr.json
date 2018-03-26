@@ -28,6 +28,7 @@
     "jsp.common.button.disabled": "Devre dışı",
     "jsp.common.button.select": "seç",
     "common_words": "kelimeler",
+    "common_total": "toplam",
     "jsp.common.span.characters": "karakterler",
     "jsp.common.message.forbidden.directory": "bibisco’nun bu dizine oluşturmaya izni yok. Lütfen başka bir dizin seçin.",
     "jsp.common.message.invalid.directory": "Seçilen dizin yok. Lütfen başka bir dizin seçin.",

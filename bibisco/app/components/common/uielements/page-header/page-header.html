@@ -1,6 +1,11 @@
 <div class="col-sm-12 page-header">
   <h1><span class="pull-left page-header-truncate-title">
         {{$ctrl.headertitle | translate}}
+        <small>
+        <wordscharacterscounter ng-if="$ctrl.words != null" 
+          words="$ctrl.words" characters="$ctrl.characters">
+        </wordscharacterscounter>
+        </small>
       </span>
       <span ng-if="$ctrl.taskstatus" class="pull-right page-header-taskstatus-selector">
         <taskstatusselector 

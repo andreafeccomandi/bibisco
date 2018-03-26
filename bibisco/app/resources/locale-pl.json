@@ -47,6 +47,7 @@
   "jsp.common.button.disabled": "Wyłączone",
   "jsp.common.button.select": "wybierz",
   "common_words": "słowa",
+  "common_total": "suma",
   "jsp.common.span.characters": "znaki",
   "jsp.common.message.forbidden.directory": "Wybrany katalog jest zabezpieczony przed zapisem! Wybierz inny katalog!",
   "jsp.common.message.invalid.directory": "Wybrany katalog nie istnieje. Proszę wybrać inny.",

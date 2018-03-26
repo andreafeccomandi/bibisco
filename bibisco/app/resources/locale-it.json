@@ -47,6 +47,7 @@
   "jsp.common.button.disabled": "Disabilitato",
   "jsp.common.button.select": "seleziona",
   "common_words": "parole",
+  "common_total": "totale",
   "jsp.common.span.characters": "caratteri",
   "jsp.common.message.forbidden.directory": "La cartella selezionata è protetta da scrittura! Scegli unʼaltra cartella.",
   "jsp.common.message.invalid.directory": "La cartella selezionata non esiste. Scegli unʼaltra cartella.",

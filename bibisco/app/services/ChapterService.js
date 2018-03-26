@@ -28,6 +28,19 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     getChapters: function() {
       return this.getDynamicView().data();
     },
+    getTotalWordsAndCharacters: function() {
+      let characters = 0;
+      let words = 0;
+      this.getChapters().forEach(chapter => {
+        characters += chapter.characters;
+        words += chapter.words;
+      });
+
+      return {
+        characters: characters,
+        words: words
+      };
+    },
     getCollection: function() {
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'chapters');

@@ -36,7 +36,9 @@ function AnalysisController($translate, AnalysisService) {
 
     self.labels = [];
     self.data = [];
-    let words = AnalysisService.getChaptersLength();
+    let chaptersLength = AnalysisService.getChaptersLength();
+    self.total = chaptersLength.total;
+    let words = chaptersLength.words;
     let max = 0;
 
     for (let i = 0; i < words.length; i++) {

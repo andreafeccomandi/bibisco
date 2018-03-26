@@ -230,7 +230,7 @@ h3 {
 }
 
 .page-header small {
-	font-size: 60%;
+	font-size: 55%;
 }
 
 .page-header-title-button {
@@ -418,7 +418,7 @@ h3 {
 .bibiscoBadge {
 	font-weight: bold;
 	margin-left: 5px;
-	padding: .3em .6em .3em;
+	padding: .3em .4em .3em;
 	vertical-align: .3em;
 }
 

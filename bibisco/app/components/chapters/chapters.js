@@ -29,6 +29,9 @@ function ChaptersController($location, $rootScope, $scope, $translate,
   self.$onInit = function() {
     self.cardgriditems = this.getCardGridItems();
     self.tipenabled = (self.cardgriditems && self.cardgriditems.length > 1);
+    let totalWordsAndCharacters = ChapterService.getTotalWordsAndCharacters();
+    self.pageheadercharacters = totalWordsAndCharacters.characters;
+    self.pageheaderwords = totalWordsAndCharacters.words;
   };
   
   self.create = function() {

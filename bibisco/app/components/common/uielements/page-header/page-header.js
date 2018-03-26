@@ -22,6 +22,7 @@ angular.
       buttonfunction: '&',
       buttonshow: '<',
       buttonstyle: '@', 
+      characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
       headertitle: '@',
@@ -31,7 +32,8 @@ angular.
       taskstatusreadonly: '<',
       taskstatusshow: '<',
       tipcode: '@',
-      tipenabled: '<'
+      tipenabled: '<',
+      words: '<'
     }
   });
 

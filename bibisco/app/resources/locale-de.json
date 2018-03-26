@@ -44,6 +44,7 @@
   "jsp.common.button.disabled": "Inaktiv",
   "jsp.common.button.select": "Auswählen",
   "common_words": "Wörter",
+  "common_total": "gesamt",
   "jsp.common.span.characters": "Charaktere",
   "jsp.common.message.forbidden.directory": "bibisco hat keine Berechtigung, in den ausgewählten Ordner zu schreiben. Bitte wähle einen anderen Ordner.",
   "jsp.common.message.invalid.directory": "Das ausgewählte Verzeichnis existiert nicht. Bitte wähle ein anderes.",

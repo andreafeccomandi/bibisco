@@ -53,6 +53,7 @@
   "jsp.common.button.disabled": "Выключено",
   "jsp.common.button.select": "выделить",
   "common_words": "слов",
+  "common_total": "итог",
   "jsp.common.span.characters": "знаков",
   "jsp.common.message.forbidden.directory": "Нет прав на запись в эту папку. Пожалуйста, выберите другую.",
   "jsp.common.message.invalid.directory": "Выбранная папка не существует. Пожалуйста, выберите другую.",

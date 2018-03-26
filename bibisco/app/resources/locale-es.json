@@ -47,6 +47,7 @@
   "jsp.common.button.disabled": "Desactivado",
   "jsp.common.button.select": "selecciona",
   "common_words": "palabras",
+  "common_total": "total",
   "jsp.common.span.characters": "caracteres",
   "jsp.common.message.forbidden.directory": "Bibisco no puede escribir en el directorio. Por favor, elige otro directorio.",
   "jsp.common.message.invalid.directory": "El directorio seleccionado no existe. Por favor, elige otro directorio.",

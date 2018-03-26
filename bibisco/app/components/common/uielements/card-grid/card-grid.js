@@ -31,6 +31,8 @@ angular.
       pageheadertitle: '@',
       pageheadersubtitle: '@',
       pageheadertipcode: '@',
+      pageheadercharacters: '<',
+      pageheaderwords: '<',
       selectfunction: '&',
       type: '@'
     }

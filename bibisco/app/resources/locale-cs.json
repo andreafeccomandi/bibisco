@@ -47,6 +47,7 @@
   "jsp.common.button.disabled": "Zakázáno",
   "jsp.common.button.select": "výber",
   "common_words": "slova",
+  "common_total": "celkem",
   "jsp.common.span.characters": "postavy",
   "jsp.common.message.forbidden.directory": "bibisco nemá oprávnění zapisovat do tohoto adresáře. Prosím vyberte jiný.",
   "jsp.common.message.invalid.directory": "Vybraný adresář neexistuje. Prosím vyberte jiný.",
