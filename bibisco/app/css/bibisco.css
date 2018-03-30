@@ -56,6 +56,35 @@ h6, label, th, td, p {
 	-o-user-select: none;
 }
 
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 18px;
+}
+::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+	background-clip: padding-box;
+	border-radius: 7px;
+    -webkit-border-radius: 7px;
+	background-color: rgba(0, 0, 0, 0.15);
+	box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
 /* DETAIL ELEMENT HEADER, FOOTER, CONTENT */
 .detail-content-with-header-subtitle {
 	overflow-y: auto;
@@ -373,7 +402,7 @@ h3 {
 }
 
 .card-grid-items {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 100%;
     position: absolute;
     left: 0px;
@@ -435,7 +464,7 @@ h3 {
 
 /* WELCOME */
 .welcome-license {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 100%;
     position: absolute;
 	left: 0px;
@@ -458,7 +487,7 @@ h3 {
 .open-project-container {
 	top: 150px;
 	position: absolute;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: calc(100% - 200px);
 	width: 100%;
 }
@@ -538,7 +567,7 @@ h3 {
 
 /* INFO */
 .info {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 100%;
     position: absolute;
 	left: 0px;
@@ -548,7 +577,7 @@ h3 {
 
 /* LICENSE */
 .license {
-    overflow-y: scroll;
+    overflow-y: auto;
 	height: 500px;
 	text-align: justify;
 }
@@ -674,7 +703,7 @@ h3 {
 
 /* ANALYSIS */
 .analysis {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 100%;
     position: absolute;
 	left: 0px;
@@ -851,7 +880,7 @@ h3 {
 .timeline-container {
 	top: 190px;
 	position: absolute;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: calc(100% - 200px);
 	width: 100%;
 }
