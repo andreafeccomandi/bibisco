@@ -112,7 +112,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
 
     update: function(chapter) {
-      CollectionUtilService.update(this.getCollection(), chapter);
+      this.updateChapterStatusWordsCharactersWithoutCommit(chapter.$loki);
+      
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase();
     },
 
     updateChapterStatusWordsCharactersWithoutCommit: function(id) {
