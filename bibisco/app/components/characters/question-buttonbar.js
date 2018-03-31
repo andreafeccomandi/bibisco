@@ -35,39 +35,21 @@ function QuestionButtonbarController($scope, ContextService, hotkeys) {
       self.os = '';
     }
 
-    if (ContextService.getOs() === 'darwin') {
-      hotkeys.bindTo($scope)
-        .add({
-          combo: ['ctrl+left', 'command+left'],
-          description: 'previousQuestion',
-          callback: function () {
-            self.previousQuestion();
-          }
-        })
-        .add({
-          combo: ['ctrl+right', 'command+right'],
-          description: 'nextQuestion',
-          callback: function () {
-            self.nextQuestion();
-          }
-        });
-    } else {
-      hotkeys.bindTo($scope)
-        .add({
-          combo: ['alt+left', 'alt+left'],
-          description: 'previousQuestion',
-          callback: function () {
-            self.previousQuestion();
-          }
-        })
-        .add({
-          combo: ['alt+right', 'alt+right'],
-          description: 'nextQuestion',
-          callback: function () {
-            self.nextQuestion();
-          }
-        });
-    }
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['alt+left', 'alt+left'],
+        description: 'previousQuestion',
+        callback: function () {
+          self.previousQuestion();
+        }
+      })
+      .add({
+        combo: ['alt+right', 'alt+right'],
+        description: 'nextQuestion',
+        callback: function () {
+          self.nextQuestion();
+        }
+      });
   };
 
   self.previousQuestion = function() {
