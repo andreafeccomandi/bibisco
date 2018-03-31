@@ -101,14 +101,14 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+y', 'command+y'],
+      combo: ['ctrl+Y', 'command+y'],
       description: 'redo',
       callback: function() {
         self.redo();
       }
     })
     .add({
-      combo: ['ctrl+u', 'command+u'],
+      combo: ['command+u'],
       description: 'underline',
       callback: function() {
         self.underline();
