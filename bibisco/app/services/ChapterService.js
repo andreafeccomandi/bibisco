@@ -129,7 +129,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       let scenes = this.getScenes(id);
 
       // total statuses: all scenes + reason card
-      let totalStatuses = scenes.length + 1;
+      let totalStatuses;
+      if (scenes.length === 0) {  
+        totalStatuses = 2;
+      } else {
+        totalStatuses = scenes.length + 1
+      }
       let totalTodo = 0;
       let totalDone = 0;
       let words = 0;
