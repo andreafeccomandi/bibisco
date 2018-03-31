@@ -91,16 +91,16 @@ h6, label, th, td, p {
 	height: calc(100% - 335px);
 	width: 100%;
 	position: absolute;
-	top: 225px;
+	top: 220px;
 	left: 0px;
 }
 
 .detail-content-no-header-subtitle {
 	overflow-y: auto;
-	height: calc(100% - 300px);
+	height: calc(100% - 265px);
 	width: 100%;
 	position: absolute;
-	top: 190px;
+	top: 185px;
 	left: 0px;
 }
 
