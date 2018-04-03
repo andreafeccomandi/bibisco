@@ -29,6 +29,7 @@ function WelcomeController($location, $rootScope, $scope,
     $rootScope.$emit('SHOW_WELCOME');
     self.selectedProjectsDirectory = null;
     self.step = 0;
+    self.showLicenseTextExpressAcceptance = false;
     self.forbiddenDirectory = false;
   };
 
@@ -38,6 +39,9 @@ function WelcomeController($location, $rootScope, $scope,
     $scope.$apply();
   };
   self.acceptLicense = function () {
+    self.showLicenseTextExpressAcceptance = true;    
+  };
+  self.expressAccept = function () {
     self.step = 1;
   };
   self.next = function() {
