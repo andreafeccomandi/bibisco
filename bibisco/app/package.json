@@ -14,7 +14,7 @@
     "test": "xo",
     "start": "electron .",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-CE --app-version=2.0.0-CE --build-version=1.0.100 --osx-sign",
     "package-win32": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-win64": "electron-packager . bibisco --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder",
