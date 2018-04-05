@@ -203,6 +203,16 @@
             "version": 0
           },
           "$loki": 20
+        },
+        {
+          "name": "signers",
+          "value": [],
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 21
         }
       ],
       "idIndex": [
@@ -223,7 +233,10 @@
         15,
         16,
         17,
-        18
+        18,
+        19,
+        20,
+        21
       ],
       "binaryIndices": {},
       "constraints": null,

@@ -25,11 +25,26 @@ function WelcomeController($location, $rootScope, $scope,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
   
   var self = this;
+  const os = require('os');
   self.$onInit = function () {
     $rootScope.$emit('SHOW_WELCOME');
+    let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
+    self.actualUser = os.userInfo().username;
+    self.signers = BibiscoPropertiesService.getProperty('signers');
+    let actualUserInSigners = false;
+    self.signers.forEach(element => {
+      if (self.actualUser === element) {
+        actualUserInSigners = true;
+      }
+    });
+
+    if (firstAccess || !actualUserInSigners) {
+      self.step = 0;
+      self.showLicenseTextExpressAcceptance = false;
+    } else {
+      self.step = 2;
+    }
     self.selectedProjectsDirectory = null;
-    self.step = 0;
-    self.showLicenseTextExpressAcceptance = false;
     self.forbiddenDirectory = false;
   };
 
@@ -59,6 +74,8 @@ function WelcomeController($location, $rootScope, $scope,
         BibiscoPropertiesService.setProperty('projectsDirectory',
           projectsDirectory);
         BibiscoPropertiesService.setProperty('firstAccess', false);
+        self.signers.push(self.actualUser);
+        BibiscoPropertiesService.setProperty('signers', self.signers);
         BibiscoDbConnectionService.saveDatabase();
 
         // sync bibisco db with projects directory
