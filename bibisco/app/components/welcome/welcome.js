@@ -28,9 +28,32 @@ function WelcomeController($location, $rootScope, $scope,
   const os = require('os');
   self.$onInit = function () {
     $rootScope.$emit('SHOW_WELCOME');
+
+    // check for first access
     let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
+    
+    // check if the current user has accepted the license
     self.actualUser = os.userInfo().username;
     self.signers = BibiscoPropertiesService.getProperty('signers');
+    let actualUserInSigners = self.isActualUserInSigners();
+
+    self.previousProjectsDirectory = null;
+    self.selectedProjectsDirectory = null;
+    self.forbiddenDirectory = false;
+    if (firstAccess || !actualUserInSigners) {
+      self.step = 0;
+      self.showLicenseTextExpressAcceptance = false;
+    } else {
+      self.step = 2;
+      let previousProjectsDirectory = BibiscoPropertiesService.getProperty('projectsDirectory');
+      // show directory name without "/_internal_bibisco2_projects_db_"
+      // that is 32 characters
+      self.previousProjectsDirectory = previousProjectsDirectory.substring(0,
+        previousProjectsDirectory.length - 32);
+    }
+  };
+
+  self.isActualUserInSigners = function() {
     let actualUserInSigners = false;
     self.signers.forEach(element => {
       if (self.actualUser === element) {
@@ -38,14 +61,7 @@ function WelcomeController($location, $rootScope, $scope,
       }
     });
 
-    if (firstAccess || !actualUserInSigners) {
-      self.step = 0;
-      self.showLicenseTextExpressAcceptance = false;
-    } else {
-      self.step = 2;
-    }
-    self.selectedProjectsDirectory = null;
-    self.forbiddenDirectory = false;
+    return actualUserInSigners;
   };
 
   self.selectProjectsDirectory = function(directory) {
@@ -71,11 +87,13 @@ function WelcomeController($location, $rootScope, $scope,
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
-        BibiscoPropertiesService.setProperty('projectsDirectory',
-          projectsDirectory);
+        BibiscoPropertiesService.setProperty('projectsDirectory', projectsDirectory);
         BibiscoPropertiesService.setProperty('firstAccess', false);
-        self.signers.push(self.actualUser);
-        BibiscoPropertiesService.setProperty('signers', self.signers);
+        if (!self.isActualUserInSigners()) {
+          self.signers.push(self.actualUser);
+          BibiscoPropertiesService.setProperty('signers', self.signers);
+          LoggerService.info('*** Added ' + self.actualUser + ' to signers');
+        }
         BibiscoDbConnectionService.saveDatabase();
 
         // sync bibisco db with projects directory

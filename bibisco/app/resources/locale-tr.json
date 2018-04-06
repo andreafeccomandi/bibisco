@@ -92,6 +92,8 @@
     "jsp.menu.suggestedReadings": "önerilen yazılar",
     "jsp.welcome.h1": "Hoşgaeldiniz!",
     "jsp.welcome.step1.p.1": "Başlamak için dili seçin:",
+    "jsp.welcome.step2.p.missing.projectsdirectory.1": "Projelerin dizini bulunamadı",
+    "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Lütfen başka bir dizin seçin:",
     "jsp.welcome.step2.p.1": "Şimdi de Bibisco'nun projelerinizi kaydedeceği dizini seçin:",
     "jsp.welcome.step2.label.2": "Not",
     "jsp.welcome.step2.p.2": "eğer dizinde projeler varsa otomatik olarak içe aktarılır.",

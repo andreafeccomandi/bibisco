@@ -117,6 +117,8 @@
   "jsp.menu.suggestedReadings": "рекомендуем прочитать",
   "jsp.welcome.h1": "Добро пожаловать!",
   "jsp.welcome.step1.p.1": "Выберите язык, чтобы начать:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Не удалось найти Папка с проектами",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Пожалуйста, выберите другую:",
   "jsp.welcome.step2.p.1": "А теперь выберите папку, в которой будем хранить проекты:",
   "jsp.welcome.step2.label.2": "Заметка",
   "jsp.welcome.step2.p.2": "если директория содержит проекты, они будут автоматически импортированы.",

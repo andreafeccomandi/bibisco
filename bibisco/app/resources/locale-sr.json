@@ -90,6 +90,8 @@
     "jsp.menu.suggestedReadings": "preporuke za čitanje",
     "jsp.welcome.h1": "Dobrodošli!",
     "jsp.welcome.step1.p.1": "Odaberite jezik da bi počeli:",
+    "jsp.welcome.step2.p.missing.projectsdirectory.1": "Can't find directory of the projects",
+    "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Please choose another:",
     "jsp.welcome.step2.p.1": "Sada odaberite direktorijum u kojem želite da bibisco čuva vaše projekte",
     "jsp.welcome.step2.label.2": "Zabeleška",
     "jsp.welcome.step2.p.2": "Ako direktorijum već sadrži projekte, oni će biti automatski uvezeni.",

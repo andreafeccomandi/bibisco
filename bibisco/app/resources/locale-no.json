@@ -90,6 +90,8 @@
     "jsp.menu.suggestedReadings": "anbefalt lesing",
     "jsp.welcome.h1": "Velkommen!",
     "jsp.welcome.step1.p.1": "Velg språk for å starte:",
+    "jsp.welcome.step2.p.missing.projectsdirectory.1": "Can't find directory of the projects",
+    "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Please choose another:",
     "jsp.welcome.step2.p.1": "Og nå, velg hvor bibisco skal lagre prosjektene dine:",
     "jsp.welcome.step2.label.2": "velg",
     "jsp.welcome.step2.p.2": "Notat",

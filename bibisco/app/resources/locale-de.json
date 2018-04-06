@@ -108,6 +108,8 @@
   "jsp.menu.suggestedReadings": "Lesenswertes",
   "jsp.welcome.h1": "Willkommen!",
   "jsp.welcome.step1.p.1": "Bitte wähle zuerst Deine Sprache:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Das Ordner der Projekte kann nicht gefunden werden",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Bitte wähle einen anderen Ordner:",
   "jsp.welcome.step2.p.1": "Wählen nun, in welchem Ordner bibisco Deine Projekte speichern soll:",
   "jsp.welcome.step2.label.2": "Hinweis",
   "jsp.welcome.step2.p.2": "Falls der Ordner bereits Projekte enthält, werden diese automatisch importiert.",

@@ -111,6 +111,8 @@
   "jsp.menu.suggestedReadings": "doporučená literatura",
   "jsp.welcome.h1": "Vítejte!",
   "jsp.welcome.step1.p.1": "Nejprve vyberte jazyk pro Váš projekt:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Nelze najít adresář projektů",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Prosím, vyberte jiný:",
   "jsp.welcome.step2.p.1": "A nyní vybrte adresář, do kterého bibisco bude ukládat Vaše projekty:",
   "jsp.welcome.step2.label.2": "Poznámka",
   "jsp.welcome.step2.p.2": "pokud adresář již obsahuje projekty, budou automaticky importovány.",

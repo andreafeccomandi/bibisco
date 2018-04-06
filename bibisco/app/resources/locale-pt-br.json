@@ -111,6 +111,8 @@
   "jsp.menu.suggestedReadings": "leituras sugeridas",
   "jsp.welcome.h1": "Bem-vindo(a)!",
   "jsp.welcome.step1.p.1": "Escolha um idioma para começar:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Não é possível localizar o diretório dos projetos",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Por favor, escolha outro:",
   "jsp.welcome.step2.p.1": "E agora selecione um diretório no qual o bibisco irá salvar os seus projetos:",
   "jsp.welcome.step2.label.2": "Aviso",
   "jsp.welcome.step2.p.2": "se o diretório já contém projetos, eles serão importados automaticamente.",

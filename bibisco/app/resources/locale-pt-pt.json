@@ -104,6 +104,8 @@
   "jsp.menu.suggestedReadings": "leituras sugeridas",
   "jsp.welcome.h1": "Boas vindas!",
   "jsp.welcome.step1.p.1": "Escolha o idioma para começar:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Não foi possível localizar o pasta dos projectos",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Por favor, escolha outra:",
   "jsp.welcome.step2.p.1": "E agora escolha a pasta onde o Bibisco vai gravar os seus projectos:",
   "jsp.welcome.step2.button.select": "Seleccionar",
   "jsp.welcome.step2.label.2": "Nota",

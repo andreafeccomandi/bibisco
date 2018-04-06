@@ -111,6 +111,8 @@
   "jsp.menu.suggestedReadings": "sugerowane lektury",
   "jsp.welcome.h1": "Witaj!",
   "jsp.welcome.step1.p.1": "Po pierwsze - wybierz język:",
+  "jsp.welcome.step2.p.missing.projectsdirectory.1": "Nie można odnaleźć katalogu projektów",
+  "jsp.welcome.step2.p.missing.projectsdirectory.2": ". Proszę wybrać inny:",
   "jsp.welcome.step2.p.1": "A teraz wybierz folder, w którym bibisco zapisze twoje projekty:",
   "jsp.welcome.step2.label.2": "Uwaga",
   "jsp.welcome.step2.p.2": "jeśli katalog już zawiera projekty, zostaną one automatycznie zaimportowane.",
