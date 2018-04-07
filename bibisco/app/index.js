@@ -15,14 +15,16 @@
 'use strict';
 const electron = require('electron');
 const app = electron.app;
-const env = process.env.NODE_ENV || 'development';
 const ipc = require('electron').ipcMain;
 
 // prevent window being garbage collected
 let mainWindow;
 
+// development or production?
+const isDev = require('electron-is-dev');
+
 // add winston logger
-const logger = initLogger();
+const logger = initLogger(isDev);
 ipc.on('logger-debug', function (event, arg) {
   logger.debug(arg);
 });
@@ -34,7 +36,6 @@ ipc.on('logger-error', function (event, arg) {
 });
 
 // add debug features like hotkeys for triggering dev tools and reload
-const isDev = require('electron-is-dev');
 if (isDev) {
   logger.debug('Running in development -  global path:' + __dirname);
   require('electron-debug')();
@@ -199,11 +200,11 @@ app.on('ready', function() {
   }
 });
 
-function initLogger() {
+function initLogger(isDev) {
   const logger = require('winston');
-  logger.level = (env === 'development' ? 'debug' : 'info');
+  logger.level = (isDev ? 'debug' : 'info');
   logger.add(logger.transports.File, {
-    filename: __dirname + '/logs/bibisco.log',
+    filename: __dirname + '/log/bibisco.log',
     json: false,
     maxsize: 1000000,
     maxFiles: 2,
