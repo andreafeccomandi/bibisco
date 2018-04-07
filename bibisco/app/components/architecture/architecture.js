@@ -81,8 +81,10 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
   self.architectureItemSelect = function(id) {
     if (id === 'globalnotes' && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
-    } else {
+    } else if (id === 'globalnotes' && SupporterEditionChecker.check()) {
       $injector.get('IntegrityService').ok();
+      $location.path('/architectureitems/' + id);
+    } else {
       $location.path('/architectureitems/' + id);
     }
   };
