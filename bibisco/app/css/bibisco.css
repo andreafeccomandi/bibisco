@@ -91,7 +91,7 @@ h6, label, th, td, p {
 
 .detail-content-no-header-subtitle {
 	overflow-y: auto;
-	height: calc(100% - 265px);
+	height: calc(100% - 290px);
 	width: 100%;
 	position: absolute;
 	top: 185px;
