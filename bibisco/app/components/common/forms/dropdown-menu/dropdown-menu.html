@@ -7,7 +7,7 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" uib-dropdown role="menu" aria-labelledby="single-button">
-        <li ng-repeat="item in $ctrl.items" role="menuitem">
+        <li ng-repeat="item in $ctrl.items track by $index" role="menuitem">
             <a href="" ng-click="item.itemfunction()">
                  {{item.label | translate}}
             </a>

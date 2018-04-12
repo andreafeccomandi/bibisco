@@ -16,7 +16,7 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="pov in $ctrl.povs" type="button"
+        <button ng-repeat="pov in $ctrl.povs track by $index" type="button"
           ng-class="{ 'btn-info': pov.selected, 'btn-unselected': !pov.selected }"
           class="btn btn-sm scene-tags-button"
           uib-popover="{{'common_pointOfView_'+pov.id+'.popover' | translate}}"
@@ -35,7 +35,7 @@
     </div>
     <div class="row" ng-if="$ctrl.showpovcharacter">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="character in $ctrl.povcharacters" type="button"
+        <button ng-repeat="character in $ctrl.povcharacters track by $index" type="button"
           ng-class="{ 'btn-info': character.selected, 'btn-unselected': !character.selected }"
           class="btn btn-sm scene-tags-button"
           ng-click="$ctrl.togglePovCharacter(character.id)">
@@ -55,7 +55,7 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="character in $ctrl.scenecharacters" type="button"
+        <button ng-repeat="character in $ctrl.scenecharacters track by $index" type="button"
           ng-class="{ 'btn-info': character.selected, 'btn-unselected': !character.selected }"
           class="btn btn-sm scene-tags-button"
           ng-click="$ctrl.toggleSceneCharacter(character.id)">
@@ -75,7 +75,7 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="location in $ctrl.locations" type="button"
+        <button ng-repeat="location in $ctrl.locations track by $index" type="button"
           ng-class="{ 'btn-info': location.selected, 'btn-unselected': !location.selected }"
           class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleLocation(location.id)">
           {{location.name}}
@@ -94,7 +94,7 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="object in $ctrl.objects" type="button" 
+        <button ng-repeat="object in $ctrl.objects track by $index" type="button" 
           ng-class="{ 'btn-info': object.selected, 'btn-unselected': !object.selected }" 
           class="btn btn-sm scene-tags-button"
           ng-click="$ctrl.toggleObject(object.id)">
@@ -131,7 +131,7 @@
     </div>
     <div class="row">
       <div class="col-sm-offset-1 col-sm-10">
-        <button ng-repeat="strand in $ctrl.strands" type="button"
+        <button ng-repeat="strand in $ctrl.strands track by $index" type="button"
           ng-class="{ 'btn-info': strand.selected, 'btn-unselected': !strand.selected}"
           class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleStrand(strand.id)">
           {{strand.name}}

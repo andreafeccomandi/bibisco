@@ -1,4 +1,4 @@
-<div ng-if="$ctrl.scenes.length > 0" ng-repeat="scene in $ctrl.scenes">
+<div ng-if="$ctrl.scenes.length > 0" ng-repeat="scene in $ctrl.scenes track by $index">
     <h5>{{scene.title}}</h5>
     <projectexplorersimpletext text="scene.revisions[scene.revision].text">
     </projectexplorersimpletext>

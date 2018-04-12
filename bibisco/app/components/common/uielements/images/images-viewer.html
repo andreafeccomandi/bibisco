@@ -12,7 +12,7 @@
   <div class="detail-content-no-header-subtitle">
     <div class="container full-height">
       <div class="row" ng-if="$ctrl.images && $ctrl.images.length > 0">
-        <div class="col-sm-offset-1 col-sm-10" ng-repeat="image in $ctrl.images track by image.name">
+        <div class="col-sm-offset-1 col-sm-10" ng-repeat="image in $ctrl.images track by $index">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">{{image.name}}</h3>

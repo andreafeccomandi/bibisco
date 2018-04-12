@@ -8,7 +8,7 @@
             <h4 class="timeline-title">{{'jsp.suggestions.'+$ctrl.type+'.h4' | translate}}</h4>
         </div>
         <div class="timeline-body">
-            <p ng-repeat="paragraph in $ctrl.paragraphshtml" 
+            <p ng-repeat="paragraph in $ctrl.paragraphshtml track by $index" 
                  ng-bind-html="paragraph"></p>
         </div>
     </div>

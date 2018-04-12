@@ -4,7 +4,7 @@
   </div>
   <div class="panel-body">
     <div ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0">
-      <div ng-repeat="item in $ctrl.items">
+      <div ng-repeat="item in $ctrl.items track by $index">
         <h5>{{item.label}}</h5>
         <table ng-if="item.appearances.length > 0" 
             class="table table-responsive table-condensed table-striped table-bordered">
@@ -14,7 +14,7 @@
             <th>{{'jsp.analysisCharacterScene.th.scene' | translate}}</th>
             <th>{{'jsp.analysisCharacterScene.th.chapter' | translate}}</th>
           </tr>
-          <tr  ng-repeat="appearance in item.appearances">
+          <tr  ng-repeat="appearance in item.appearances track by $index">
             <td ng-if="appearance.time && appearance.timegregorian">{{'date_format_scene_tags' | translate:{date:appearance.time} }}{{$ctrl.calculateSceneYear(appearance.time)}} {{'time_format_scene_tags'| translate:{date:appearance.time} }}</td>
             <td ng-if="appearance.time && !appearance.timegregorian">{{appearance.time}}</td>
             <td ng-if="!appearance.time"></td>

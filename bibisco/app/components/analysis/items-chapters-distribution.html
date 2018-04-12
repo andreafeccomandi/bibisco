@@ -15,9 +15,9 @@
           <tbody>
             <tr>
               <th></th>
-              <th ng-repeat="chapter in $ctrl.chapters">{{chapter}}</th>
+              <th ng-repeat="chapter in $ctrl.chapters track by $index">{{chapter}}</th>
             </tr>
-            <tr ng-repeat="item in $ctrl.items" ng-init="itemindex = $index">
+            <tr ng-repeat="item in $ctrl.items track by $index" ng-init="itemindex = $index">
               <td>{{item.label}}</td>
               <td ng-repeat="presence in item.presence track by $index"
                   ng-class="{ 'list-item-color-{{(itemindex % 12)}}' : presence === 1 }">

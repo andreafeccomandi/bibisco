@@ -2,7 +2,7 @@
   <label class="col-sm-{{$ctrl.labelcols}} control-label">{{$ctrl.label | translate}}</label>
   <div class="col-sm-{{$ctrl.inputcols}}">
     <div class="btn-group pull-left">
-        <button ng-repeat="item in $ctrl.group"
+        <button ng-repeat="item in $ctrl.group track by $index"
           type="button" class="btn btn-default {{item.buttonclass}}"
           ng-click="$ctrl.change(item.value)"
           ng-class="{ 'active' : $ctrl.model == item.value }">
