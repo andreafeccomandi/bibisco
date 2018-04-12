@@ -23,17 +23,11 @@ angular.
   });
 
 
-function RichTextViewerController($sce, LoggerService,
-  RichTextEditorPreferencesService) {
+function RichTextViewerController(RichTextEditorPreferencesService) {
 
   var self = this;
   self.$onInit = function () {
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-    self.contenttrusted = $sce.trustAsHtml(self.content);
-  };
-
-  self.$onChanges = function () {
-    self.contenttrusted = $sce.trustAsHtml(self.content);
   };
 }

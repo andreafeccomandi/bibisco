@@ -2,8 +2,8 @@
     ng-repeat="question in $ctrl.info.questions track by $index"
     class="bibiscoNotSelectableText">
     <b><i>({{$index+1}}/{{$ctrl.info.questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index  | translate}}</i></b>
-    <div ng-bind-html="question.text"></div>
+    <div ng-bind-html="question.text | trusted"></div>
 </div>
 <div ng-if="$ctrl.info.freetextenabled" 
-    ng-bind-html="$ctrl.info.freetext"
+    ng-bind-html="$ctrl.info.freetext | trusted"
     class="bibiscoNotSelectableText"></div>

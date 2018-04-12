@@ -290,6 +290,9 @@ angular.module('bibiscoApp', ['ngRoute',
     };
   }])
 
+  // trusted html filter
+  .filter('trusted', function ($sce) { return $sce.trustAsHtml; })
+
 // Set confirm dialog default
   .run(function(confirmationPopoverDefaults) {
     confirmationPopoverDefaults.cancelButtonType = 'default';
