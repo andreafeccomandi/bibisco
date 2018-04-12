@@ -3,7 +3,7 @@
   "productName": "bibisco",
   "version": "2.0.0",
   "description": "writing novel application",
-  "license": "GPL v2",
+  "license": "GPL v3",
   "repository": "https://github.com/andreafeccomandi/bibisco",
   "author": {
     "name": "Andrea Feccomandi",
@@ -14,11 +14,13 @@
     "test": "xo",
     "start": "electron .",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-CE --app-version=2.0.0-CE --build-version=1.0.100 --osx-sign",
+    "package-mac-ce": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-CE --app-version=2.0.0-CE --build-version=1.0.100 --osx-sign",
+    "package-mac-se": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-SE --app-version=2.0.0-SE --build-version=1.0.100 --osx-sign",
     "package-win32": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-win64": "electron-packager . bibisco --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder",
-    "create-installer-mac": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/Bibisco-darwin-x64/Bibisco.app bibisco --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite"
+    "create-installer-mac-ce": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-darwin-x64-2.0.0-CE/bibisco.app bibisco-2.0.0-CE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
+    "create-installer-mac-se": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-darwin-x64-2.0.0-SE/bibisco.app bibisco-2.0.0-SE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite"
   },
   "files": [
     "index.js",
