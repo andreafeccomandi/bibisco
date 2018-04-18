@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label class="col-sm-{{$ctrl.labelcols}} control-label">{{$ctrl.label | translate}}</label>
+  <div class="col-sm-{{$ctrl.inputcols}}">
+    <languageselect applyonchange="$ctrl.applyonchange" onselectlanguage="$ctrl.onselectlanguage({selectedLanguage: selectedLanguage})"></languageselect>
+  </div>
+</div>

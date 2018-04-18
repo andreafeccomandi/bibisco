@@ -1,0 +1,17 @@
+<div class="container">
+  <cardgrid
+    carddimension="normal"
+    dndenabled="true"
+    dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+    emptylisttext="jsp.locations.bibiscoEmptyThumbnailListBox.text"
+    emptylistbuttonlabel="jsp.locations.a.createFirstLocation"
+    emptylistbuttonfunction="$ctrl.create()"
+    family="locations"
+    items="$ctrl.cardgriditems"
+    pageheaderbuttonlabel="jsp.locations.a.createLocation"
+    pageheaderbuttonfunction="$ctrl.create()"
+    pageheadertitle="jsp.locations.h1"
+    pageheadertipcode="locationsdndTip"
+    selectfunction="$ctrl.select(id)"
+    type="full"></cardgrid>
+</div>

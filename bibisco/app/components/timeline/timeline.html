@@ -1,0 +1,29 @@
+<div class="detail-header">
+  <div class="container">
+    <div class="row">
+      <pageheader headertitle="Timeline" buttonshow="false"
+         tipcode="timelineTip" tipenabled="true">
+      </pageheader>
+    </div>
+  </div>
+</div>
+<div ng-show="$ctrl.timeline.length == 0">
+  <div class="container">
+  <div class="card-grid-emptyitems card-grid-emptyitems-no-header-subtitle-full">
+    <div class="container">
+      <jumbotronbutton text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" >
+      </jumbotronbutton>
+    </div>
+  </div>
+  </div>
+</div>
+<div ng-show="$ctrl.timeline.length > 0" class="timeline-container timeline-container-scenes">
+  <div class="container">
+    <div class="row">
+      <ul class="timeline timeline-scenes">
+        <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
+          index="($index % 12)" element="timelineelement"></timelineelement>
+      </ul>
+    </div>
+  </div>
+</div>

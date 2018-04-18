@@ -1,0 +1,31 @@
+<div class="container">
+<div class="row">
+  <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+</div>
+<div class="row">
+  <pageheader headertitle="{{'jsp.scene.button.moveSceneToAnotherChapter.title' | translate}}">
+  </pageheader>
+</div>
+<div class="row top15">
+  <div class="col-sm-12">
+    <form name="chapterSelectForm" ng-submit="$ctrl.save(chapterSelectForm.$valid)" class="form-horizontal" novalidate>
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="jsp.analysisCharacterScene.th.chapter">{{"jsp.analysisCharacterScene.th.chapter" | translate}}</label>
+        <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
+          <ui-select ng-model="$ctrl.selectedItem" on-select="$ctrl.selectChapter()">
+            <ui-select-match>
+              <span ng-bind="$select.selected.title"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'title':$select.search}">
+              <span ng-bind-html="item.title"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+      <formbuttons form="chapterSelectForm" backfunction="$ctrl.back()"
+        offsetcols="3" sizecols="8">
+      </formbuttons>
+  </div>
+  </form>
+</div>
+</div>

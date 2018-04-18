@@ -1,0 +1,42 @@
+{
+  "env": {
+    "amd": true,
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "angular": 1,
+    "logger": 1,
+    "moment": 1,
+    "pdfMake": 1,
+    "validator": 1
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "rules": {
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
+}

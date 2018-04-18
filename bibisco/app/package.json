@@ -1,0 +1,87 @@
+{
+  "name": "bibisco",
+  "productName": "bibisco",
+  "version": "2.0.0",
+  "description": "writing novel application",
+  "license": "GPL v3",
+  "repository": "https://github.com/andreafeccomandi/bibisco",
+  "author": {
+    "name": "Andrea Feccomandi",
+    "email": "andrea@bibisco.com",
+    "url": "http://www.bibisco.com"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --all",
+    "package-mac-ce": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-CE --app-version=2.0.0-CE --build-version=1.0.100 --osx-sign",
+    "package-mac-se": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=/Users/andreafeccomandi/work/release-builds --version=0.35.6 --app-bundle-id=com.bibisco.2.0.0-SE --app-version=2.0.0-SE --build-version=1.0.100 --osx-sign",
+    "package-win32": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
+    "package-win64": "electron-packager . bibisco --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder",
+    "create-installer-mac-ce": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.0-CE/bibisco.app bibisco-mac-x64-2.0.0-CE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
+    "create-installer-mac-se": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.0-SE/bibisco.app bibisco-mac-x64-2.0.0-SE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite"
+  },
+  "files": [
+    "index.js",
+    "index.html"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-bootstrap-confirm": "^2.5.0",
+    "angular-chart.js": "^1.1.1",
+    "angular-dynamic-locale": "^0.1.32",
+    "angular-hotkeys": "^1.7.0",
+    "angular-i18n": "^1.6.4",
+    "angular-messages": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "angular-sanitize": "^1.6.4",
+    "angular-translate": "^2.15.1",
+    "angular-ui-bootstrap": "^2.5.0",
+    "bootstrap": "^3.3.7",
+    "dateformat": "^3.0.2",
+    "docx": "^3.1.0",
+    "electron-debug": "^1.5.0",
+    "electron-is-dev": "^0.3.0",
+    "electron-spellchecker": "^1.1.2",
+    "font-awesome": "^4.7.0",
+    "fs-extra": "^2.1.2",
+    "html-to-text": "^3.3.0",
+    "htmlparser2": "^3.9.2",
+    "lokijs": "^1.4.3",
+    "moment": "^2.19.1",
+    "mout": "^1.1.0",
+    "ng-focus-if": "^1.0.7",
+    "pdfmake": "^0.1.35",
+    "request": "^2.83.0",
+    "sanitize-html": "^1.14.1",
+    "ui-select": "^0.19.6",
+    "uuid": "^3.0.1",
+    "validator": "^7.0.0",
+    "walk-sync": "^0.3.1",
+    "winston": "^2.3.0",
+    "yauzl": "^2.7.0",
+    "yazl": "^2.4.2"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron": "^1.6.16",
+    "electron-installer-dmg": "^0.2.1",
+    "electron-packager": "^10.1.2",
+    "eslint": "^4.11.0",
+    "grunt": "^1.0.1",
+    "grunt-properties-to-json": "^0.6.0",
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}

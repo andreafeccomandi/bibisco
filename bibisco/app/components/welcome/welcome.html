@@ -1,0 +1,70 @@
+<div class="container">
+  <div ng-show="$ctrl.step==0">
+    <div class="row">
+      <pageheader headertitle="jsp.info.h3.license" buttonshow="false">
+      </pageheader>
+    </div>
+    <div class="welcome-license">
+      <div class="container">
+        <p>
+          {{"jsp.info.p.license" | translate}}
+        </p>
+        <p>
+          {{"jsp.info.p.license.copyright" | translate}}
+        </p>
+        <p>
+          {{"jsp.info.p.license.warranty" | translate}}
+        </p>
+        <hr>
+        <licensetext></licensetext>
+        <div class="text-center top15 bottom30">
+          <button ng-click="$ctrl.acceptLicense()" type="button" 
+            ng-disabled="$ctrl.showLicenseTextExpressAcceptance"
+            class="btn btn-lg btn-primary">Accept License Terms</button>
+        </div>
+        <licensetextexpressacceptance ng-if="$ctrl.showLicenseTextExpressAcceptance">
+        </licensetextexpressacceptance>
+        <div ng-if="$ctrl.showLicenseTextExpressAcceptance"
+          class="text-center top15 bottom30">
+          <button ng-click="$ctrl.expressAccept()" type="button"
+            class="btn btn-lg btn-primary">Accept</button>
+        </div>
+        <div style="height: 200px;"></div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="$ctrl.step==1 || $ctrl.step==2" class="jumbotron top50">
+    <form name="welcomeForm" ng-submit="$ctrl.finish(welcomeForm.$valid)" novalidate>
+      <div class="row">
+        <h1 ng-show="!$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
+        <div ng-show="$ctrl.step==1">
+          <p class="bibiscoNotSelectableText">{{"jsp.welcome.step1.p.1" | translate}}</p>
+          <div>
+            <languageselect applyOnChange="true"></languageselect>
+          </div>
+        </div>
+        <div ng-show="$ctrl.step==2">
+          <p ng-show="$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">
+            {{"jsp.welcome.step2.p.missing.projectsdirectory.1" | translate}}&nbsp;[&nbsp;<b><i>{{$ctrl.previousProjectsDirectory}}</i></b>&nbsp;]{{"jsp.welcome.step2.p.missing.projectsdirectory.2" | translate}}</p>
+          <p ng-show="!$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
+          <directoryselect model='$ctrl.selectedProjectsDirectory'
+          field='welcomeForm.projectsDirectory' name='projectsDirectory'
+          onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+          forbiddendirectory='$ctrl.forbiddenDirectory'>
+          </directoryselect>
+
+          <div class="bibiscoWelcomeWizardNotes">
+            <p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
+            <p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row top15"></div>
+      <div class="row">
+        <button ng-show="$ctrl.step==1" ng-click="$ctrl.next()" type="button" class="btn btn-lg btn-primary">{{"jsp.welcome.a.next" | translate}}</button>
+        <button ng-show="$ctrl.step==2 && !$ctrl.previousProjectsDirectory" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"jsp.welcome.a.previous" | translate}}</button>
+        <button ng-show="$ctrl.step==2" type="submit" class="btn btn-lg btn-primary">{{"jsp.welcome.a.finish" | translate}}</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container">
+
+  <!-- MAIN CHARACTERS -->
+  <cardgrid
+    carddimension="small"
+    dndenabled="true"
+    dropfunction="$ctrl.mainCharacterMove(draggedObjectId, destinationObjectId)"
+    family="maincharacters"
+    emptylisttext="jsp.characters.bibiscoEmptyThumbnailListBox.text.main"
+    emptylistbuttonlabel="jsp.characters.a.createFirstMainCharacter"
+    emptylistbuttonfunction="$ctrl.createMainCharacter()"
+    items="$ctrl.maincharacterscardgriditems"
+    pageheaderbuttonlabel="jsp.characters.a.createMainCharacter"
+    pageheaderbuttonfunction="$ctrl.createMainCharacter()"
+    pageheadertipcode="charactersdndTip"
+    pageheadertitle="common_main_characters"
+    pageheadersubtitle="jsp.characters.h1.small.main"
+    selectfunction="$ctrl.mainCharacterSelect(id)"
+    type="half-top"></cardgrid>
+
+  <!-- SECONDARY CHARACTERS -->
+  <cardgrid
+    carddimension="small"
+    dndenabled="true"
+    dropfunction="$ctrl.secondaryCharacterMove(draggedObjectId, destinationObjectId)"
+    family="secondarycharacters"
+    emptylisttext="jsp.characters.bibiscoEmptyThumbnailListBox.text.secondary"
+    emptylistbuttonlabel="jsp.characters.a.createFirstSecondaryCharacter"
+    emptylistbuttonfunction="$ctrl.createSecondaryCharacter()"
+    items="$ctrl.secondarycharacterscardgriditems"
+    pageheaderbuttonlabel="jsp.characters.a.createSecondaryCharacter"
+    pageheaderbuttonfunction="$ctrl.createSecondaryCharacter()"
+    pageheadertitle="common_secondary_characters"
+    pageheadersubtitle="jsp.characters.h1.small.secondary"
+    selectfunction="$ctrl.secondaryCharacterSelect(id)"
+    type="half-bottom"></cardgrid>
+</div>

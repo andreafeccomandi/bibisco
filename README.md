@@ -6,7 +6,7 @@ bibisco is a personal project, made with love.
 
 We love books and we want to help writers to write beautiful novels.
 
-With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf or rtf, and write with a fully featured text editor.
+With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf or docx, and write with a fully featured text editor.
 
 You can create a novel structure, define premise, fabula, narrative strands and settings: geographic, temporal and social context.
 
@@ -14,7 +14,7 @@ And, most of all, with bibisco you can **know everything about your characters**
 
 ## Installation
 
-Download bibisco for your operating system at https://github.com/andreafeccomandi/bibisco/releases
+Download bibisco from bibisco website www.bibisco.com
 
 ### Windows and Linux
 
@@ -26,25 +26,9 @@ bibisco doesn't need to be installed. After download:
 
 ### Mac OS X
 
-1. on System Preferences -> Security and Privacy, you must have "Allow apps downloaded from" set to "Anywhere." 
-2. open downloaded dmg file
-3. follow the istructions
-4. write your novel
-
-Note!  bibisco is a java application and ships its own JRE (Java Runtime Environment). You don't need to install or update JRE.
-
-## Upgrade
-
-If you upgrade bibisco from version 1.3.0 or next:
-
-1. Download new version
-2. In the new version of bibisco choose the directory that already contains your projects: they will be automatically imported
-
-If you upgrade bibisco from version 1.2.1 or previous:
-
-1. From the version you're using, export your project as archive: section export -> button export as archive
-2. Download new version
-3. In the new version of bibisco import your projects: after bibisco start up -> button import the first project or button import a new project
+1. open downloaded dmg file
+2. follow the istructions
+3. write your novel
 
 
 ## Support
@@ -57,12 +41,10 @@ You can support bibisco in various ways:
 * like [bibisco Facebook page](https://www.facebook.com/bibisco.official.page).
 * like [bibisco alternativeTo page](http://alternativeto.net/software/bibisco).
 * follow [bibisco Twitter account](https://twitter.com/bibiscotweet).
-* donate with [Paypal](http://www.bibisco.com/donatePayPal).
-
 
 ## License
 
-bibisco is licensed under the terms of [GNU GPL License](http://www.gnu.org/licenses/gpl-2.0.html).
+bibisco is licensed under the terms of [GNU GPL License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 
 ## Contribution

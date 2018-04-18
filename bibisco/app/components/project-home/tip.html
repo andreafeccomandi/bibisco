@@ -1,0 +1,17 @@
+<div class="timeline-element">
+<li ng-class="{ 'timeline-inverted' : $ctrl.even}">
+    <div class="timeline-badge tips-{{$ctrl.type}}">
+        <i class="fa fa-lg fa-{{$ctrl.icon}}"></i>
+    </div>
+    <div class="timeline-panel timeline-panel-tip">
+        <div class="timeline-heading">
+            <h4 class="timeline-title">{{'jsp.suggestions.'+$ctrl.type+'.h4' | translate}}</h4>
+        </div>
+        <div class="timeline-body">
+            <p ng-repeat="paragraph in $ctrl.paragraphshtml track by $index" 
+                 ng-bind-html="paragraph"></p>
+        </div>
+    </div>
+</li>
+</div>
+            

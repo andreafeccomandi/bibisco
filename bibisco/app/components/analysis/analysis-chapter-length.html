@@ -1,0 +1,17 @@
+<div class="panel panel-default analysis-chapter-length">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'jsp.analysis.thumbnail.analysisWordCountChapters.title' | translate}} ({{'common_total' | translate}}: <b>{{$ctrl.total}}</b> {{'common_words' | translate}})</h3>
+  </div>
+  <div class="panel-body">
+    <div ng-if="$ctrl.data.length > 0" 
+        class="analysiscanvasbarcontainer">
+      <canvas  class="chart chart-bar" 
+        chart-data="$ctrl.data" 
+        chart-labels="$ctrl.labels" 
+        chart-options="$ctrl.options"></canvas>
+    </div>
+    <p ng-if="$ctrl.data.length == 0"><i>
+        {{'jsp.analysisItemsChapters.em.noChapters' | translate}}
+    </i></p>
+  </div>
+</div>

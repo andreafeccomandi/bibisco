@@ -1,0 +1,10 @@
+<ui-select class="revision-select" ng-model="$ctrl.revisionselected" on-select="$ctrl.selectRevision()">
+  <ui-select-match>
+      <span ng-if="$select.selected.key != 'new' && $select.selected.key != 'delete'" ng-bind="$select.selected.description"></span>
+      <span><i ng-if="$select.selected.key == 'new' || $select.selected.key == 'delete'" ng-bind="$select.selected.description"></i></span>
+  </ui-select-match>
+  <ui-select-choices repeat="revision in $ctrl.revisions | filter: {'description':$select.search}">
+    <span ng-if="revision.key != 'new' && revision.key != 'delete'" ng-bind-html="revision.description"></span>
+    <span><i ng-if="revision.key == 'new' || revision.key == 'delete'" ng-bind-html="revision.description"></i></span>
+  </ui-select-choices>
+</ui-select>

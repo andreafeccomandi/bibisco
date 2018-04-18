@@ -1,0 +1,24 @@
+<!-- Why did I use card-hover instead of card:hover?
+Take a look at this: http://stackoverflow.com/questions/17946886/hover-sticks-to-element-on-drag-and-drop (problem)
+http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directive (workaround)
+-->
+
+<div class="card card-{{$ctrl.dimension}}" id="{{$ctrl.cardid}}" ng-class="{'card-hover': hover}"
+	ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="$ctrl.selectfunction({id: $ctrl.cardid})"
+	ng-attr-draggable="{{$ctrl.dndenabled}}" ng-attr-droppable="{{$ctrl.dndenabled}}"
+	dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})" family="{{$ctrl.family}}">
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="pull-left card-heading-title"><strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle  | translate}}</strong></span>
+      <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
+				<wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
+				<taskstatus status="$ctrl.status"></taskstatus></strong>
+			</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <p class="card-text">{{$ctrl.text | translate}}</p>
+    </div>
+  </div>
+</div>

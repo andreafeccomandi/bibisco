@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <pageheader headertitle="jsp.analysis.h1"
+     tipcode="analysisTip" tipenabled="true">
+    </pageheader>
+  </div>
+</div>
+<div class="analysis">
+  <fullpageloader ng-if="$ctrl.loading"></fullpageloader>
+  <div ng-if="!$ctrl.loading" class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <analysischapterlength></analysischapterlength>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <analysischaracterdistribution></analysischaracterdistribution>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <analysischaractersappearances></analysischaractersappearances>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <analysislocationdistribution></analysislocationdistribution>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <analysisstranddistribution></analysisstranddistribution>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <analysispovdistribution></analysispovdistribution>
+      </div>
+    </div>
+  </div>
+</div>
+
+

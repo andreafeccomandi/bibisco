@@ -1,0 +1,19 @@
+<div class="container">
+  <cardgrid
+    carddimension="normal"
+    dndenabled="true"
+    dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+    family="chapters"
+    emptylisttext="jsp.chapters.bibiscoEmptyThumbnailListBox.text"
+    emptylistbuttonlabel="jsp.chapters.a.createFirstChapter"
+    emptylistbuttonfunction="$ctrl.create()"
+    items="$ctrl.cardgriditems"
+    pageheaderbuttonlabel="jsp.chapters.a.createChapter"
+    pageheaderbuttonfunction="$ctrl.create()"
+    pageheadertitle="jsp.chapters.h1"
+    pageheadertipcode="chaptersdndTip"
+    pageheadercharacters="$ctrl.pageheadercharacters"
+    pageheaderwords="$ctrl.pageheaderwords"
+    selectfunction="$ctrl.select(id)"
+    type="full"></cardgrid>
+</div>

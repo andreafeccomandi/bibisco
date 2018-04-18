@@ -1,0 +1,28 @@
+<div ng-class="{'detail-content-with-header-subtitle': $ctrl.headersubtitle,
+  'detail-content-no-header-subtitle': !$ctrl.headersubtitle}">
+  <div class="container full-height">
+    <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && $ctrl.words > 0)"
+        class="row full-height">
+      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4 full-height">
+        <projectexplorer></projectexplorer>
+      </div>
+      <div class="col-sm-8 full-height" 
+        ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}">
+        <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
+          content="$ctrl.savedcontent">
+        </richtextviewer>
+        <richtexteditor ng-if="$ctrl.editmode"
+          autosaveenabled="$ctrl.autosaveenabled"
+          characters="$ctrl.characters"
+          content="$ctrl.content"
+          dirty="$ctrl.dirty"
+          words="$ctrl.words"></richtexteditor>
+      </div>
+    </div>
+    <div ng-if="!$ctrl.disableemptymessage && !$ctrl.editmode && $ctrl.words == 0">
+        <jumbotronbutton text="{{'common_empty_section' | translate}}"
+          buttonlabel="{{'common.getstarted' | translate}}"
+          buttonfunction="$ctrl.enableeditmode()"></jumbotronbutton>
+    </div>
+  </div>
+</div>
