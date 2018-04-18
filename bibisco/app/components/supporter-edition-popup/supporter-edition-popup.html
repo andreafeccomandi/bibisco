@@ -1,0 +1,26 @@
+<modal-component modal-instance="$uibModalInstance" 
+  class="ng-scope ng-isolate-scope supporter-edition-popup">
+  <div class="modal-body" id="modal-body">
+    <h3>{{"only_for_supporter_edition" | translate}}</h3>
+    <p class="heart"><i class="fa fa-heart fa-4x"></i></p>
+    <blockquote>
+      <div class="row">
+        <div class="col-sm-3 text-center">
+          <img class="img-circle" src="images/andrea.png">
+        </div>
+        <div class="col-sm-9">
+          <p class="text-left"><i>I'm not a big company.</i></p>
+          <p class="text-left"><i>bibisco is a personal and open 
+            source project and needs the help of everyone.</i></p>
+          <small class="text-left">Andrea Feccomandi, author of bibisco</small>
+        </div>
+      </div>
+    </blockquote>
+  </div>
+  <div class="modal-footer bibiscoNotSelectableText">
+    <button class="btn btn-primary" type="button" 
+      ng-click="$ctrl.getIt()">{{"only_for_supporter_edition_button" | translate}}</button>
+    <button class="btn btn-default" type="button" 
+      ng-click="$ctrl.cancel()">{{"jsp.common.button.close" | translate}}</button>
+  </div>
+</modal-component>

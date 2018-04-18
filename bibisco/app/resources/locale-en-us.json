@@ -1,0 +1,6 @@
+{
+  "timestamp_format": "{{date|date:'MM/dd/yyyy h:mm:ss a'}}",
+  "date_format_scene_tags": "{{date|date:'MM/dd/'}}",
+  "year_bc_scene_tags": "B.C",
+  "time_format_scene_tags": "{{date|date:'h:mm a'}}"
+}

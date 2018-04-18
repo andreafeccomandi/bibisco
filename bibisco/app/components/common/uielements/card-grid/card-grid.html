@@ -1,0 +1,45 @@
+<div class="card-grid-header {{$ctrl.headerclass}}">
+	<div class="container">
+	<div class="row">
+		<pageheader
+				headertitle="{{$ctrl.pageheadertitle}}"
+				headersubtitle="{{$ctrl.pageheadersubtitle}}"
+				buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
+				buttonfunction="$ctrl.pageheaderbuttonfunction()"
+				buttonshow="$ctrl.items && $ctrl.pageheaderbuttonlabel"
+				characters="$ctrl.pageheadercharacters"
+				tipcode="{{$ctrl.pageheadertipcode}}" 
+				tipenabled="$ctrl.tipenabled"
+				words="$ctrl.pageheaderwords">
+		</pageheader>
+	</div>
+</div>
+</div>
+<div ng-show="!$ctrl.items">
+	<div class="card-grid-emptyitems {{$ctrl.emptygridclass}}">
+	<div class="container">
+	<jumbotronbutton text="{{$ctrl.emptylisttext}}"
+		buttonlabel="{{$ctrl.emptylistbuttonlabel}}"
+		buttonfunction="$ctrl.emptylistbuttonfunction()"></jumbotronbutton>
+	</div>
+	</div>
+</div>
+<div ng-show="$ctrl.items">
+<div class="card-grid-items {{$ctrl.gridclass}}">
+	<div class="container">
+	<div class="row">
+		<div ng-repeat="item in $ctrl.items track by $index" class="col-sm-4 col-md-4 col-lg-3">
+			<card cardid="item.id" cardtitle="{{item.title}}"
+				dimension="{{$ctrl.carddimension}}"
+				dndenabled="$ctrl.dndenabled"
+				dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
+				family="{{$ctrl.family}}"
+				selectfunction="$ctrl.selectfunction({id})"
+				text="{{item.text}}" words="item.words" characters="item.characters"
+				status="item.status">
+			</card>
+		</div>
+	</div>
+	</div>
+</div>
+</div>

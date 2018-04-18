@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  </div>
+  <div class="row">
+    <pageheader headertitle="{{'jsp.carouselImage.dialog.title' | translate}} {{$ctrl.pageheadertitle}}"
+       buttonlabel="jsp.carouselImage.a.addImage"
+       buttonfunction="$ctrl.insertfunction()"
+       buttonshow="$ctrl.images && $ctrl.images.length > 0">
+    </pageheader>
+  </div>
+  <div class="detail-content-no-header-subtitle">
+    <div class="container full-height">
+      <div class="row" ng-if="$ctrl.images && $ctrl.images.length > 0">
+        <div class="col-sm-offset-1 col-sm-10" ng-repeat="image in $ctrl.images track by $index">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{image.name}}</h3>
+            </div>
+            <img class="img-responsive center-block image-viewer-image" 
+              src="{{$ctrl.fullpath(image.filename)}}" />
+            <div class="panel-footer text-right">
+              <buttonwithconfirm enableconfirm="true" 
+                buttonlabel="jsp.carouselImage.a.deleteCurrentImage" 
+                buttonfunction="$ctrl.deletefunction({filename: image.filename})"
+                buttonstyle="btn-default btn-xs" 
+                confirmmessage="jsp.carouselImage.dialog.deleteCurrentImage.confirm">
+              </buttonwithconfirm>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="!$ctrl.images || $ctrl.images.length == 0">
+        <jumbotronbutton text="{{'jsp.carouselImage.bibiscoEmptyThumbnailListBox.text' | translate}}" 
+          buttonlabel="{{'jsp.carouselImage.a.addFirstImage' | translate}}" 
+          buttonfunction="$ctrl.insertfunction()"></jumbotronbutton>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <div class="row detail-footer-top">
+      <span class="pull-left">
+        <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
+      </span>
+    </div>
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-right">
+        <button type="button" class="btn btn-default" 
+          ng-click="$ctrl.backfunction()">{{'jsp.common.button.back' | translate}}</button>
+      </span>
+    </div>
+  </div>
+</div>

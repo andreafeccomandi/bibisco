@@ -1,0 +1,20 @@
+<div class="row">
+  <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+</div>
+<div class="row">
+  <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+  </pageheader>
+</div>
+<div class="row top15">
+  <div class="col-sm-12">
+    <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
+      <textinputfield field="elementTitleForm.title" model="$ctrl.title"
+        name="title" autofocus maxlength="{{$ctrl.titlemaxlength}}"
+        required="{{$ctrl.titlemandatory}}" label="{{$ctrl.titlelabel}}" labelcols="3" inputcols="8">
+      </textinputfield>
+      <formbuttons form="elementTitleForm" backfunction="$ctrl.back()"
+        offsetcols="3" sizecols="8">
+      </formbuttons>
+  </div>
+  </form>
+</div>

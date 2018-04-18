@@ -1,0 +1,39 @@
+<div class="container bibiscoOpenProject">
+  <div class="row">
+    <pageheader headertitle="jsp.projects.dialog.title.openProject"
+     buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
+     buttonstyle="default" buttonshow="true"
+     tipcode="socialMediaTip" tipenabled="true">
+    </pageheader>
+  </div>
+</div>
+
+<div class="open-project-container">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      <h4>{{"jsp.projects.h1 " | translate}}</h4>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="project in $ctrl.getProjects() track by $index">
+            <td class="col-sm-8">{{ project.name }}</td>
+            <td class="col-sm-2 text-right">
+              <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>
+            </td>
+            <td class="col-sm-2 text-left">
+              <button class="btn btn-sm btn-default" mwl-confirm message="{{ 'jsp.selectProject.delete.confirm' | translate}}" confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}" cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}" placement="top" on-confirm="$ctrl.delete((project.id))"
+              on-cancel=" ">
+                {{"jsp.selectProject.button.delete " | translate}}</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>

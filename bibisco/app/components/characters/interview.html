@@ -1,0 +1,25 @@
+<div class="detail-content-with-header-subtitle">
+  <div class="container full-height">
+    <div class="row full-height">
+      <div ng-if="$ctrl.showprojectexplorer" class="col-sm-4 full-height">
+        <projectexplorer></projectexplorer>
+      </div>
+      <div class="col-sm-8 full-height" ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}">
+        <interviewviewer ng-if="!$ctrl.editmode"
+          characters="$ctrl.characters"
+          maincharacter="$ctrl.maincharacter" 
+          type="$ctrl.type"
+          words="$ctrl.words"></interviewviewer>
+        <intervieweditor ng-if="$ctrl.editmode" 
+          autosaveenabled="$ctrl.autosaveenabled"
+          characters="$ctrl.characters"
+          content="$ctrl.content"
+          dirty="$ctrl.dirty"
+          maincharacter="$ctrl.maincharacter" 
+          questionselected="$ctrl.questionselected"
+          type="$ctrl.type"
+          words="$ctrl.words"></intervieweditor>
+      </div>
+    </div>
+  </div>
+</div>

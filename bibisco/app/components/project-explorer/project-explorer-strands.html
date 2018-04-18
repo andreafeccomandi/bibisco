@@ -1,0 +1,8 @@
+<div ng-if="$ctrl.strands" ng-repeat="strand in $ctrl.strands track by $index">
+    <h5>{{strand.name}}</h5>
+    <projectexplorersimpletext text="strand.description">
+    </projectexplorersimpletext>
+</div>
+<div ng-if="!$ctrl.strands">
+    <i class="bibiscoNotSelectableText">{{ 'common_empty_section' | translate}}</i>
+</div>

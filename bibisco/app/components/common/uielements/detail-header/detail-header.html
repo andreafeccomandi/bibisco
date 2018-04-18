@@ -1,0 +1,17 @@
+<div class="detail-header">
+  <div class="container">
+    <div class="row">
+      <breadcrumb items="$ctrl.breadcrumbitems" linkdisabled="$ctrl.editmode"></breadcrumb>
+    </div>
+    <div class="row">
+      <pageheader buttonshow="false" headertitle="{{$ctrl.headertitle | translate}}"
+        headersubtitle="{{$ctrl.headersubtitle | translate}}"
+        taskstatus="$ctrl.taskstatus" taskstatusshow="true"
+        taskstatusreadonly="$ctrl.taskstatusreadonly"
+        taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})"
+        tipcode="{{$ctrl.headertipcode}}" 
+        tipenabled="$ctrl.headertipenabled">
+      </pageheader>
+    </div>
+  </div>
+</div>

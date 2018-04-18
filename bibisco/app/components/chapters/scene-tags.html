@@ -1,0 +1,162 @@
+<detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="true"
+  headertitle="jsp.scene.title.tags">
+</detailheader>
+
+<div class="detail-content-no-header-subtitle">
+  <div class="container">
+
+    <!-- POINT OF VIEW -->
+    <div class="row">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.pointOfView.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="pov in $ctrl.povs track by $index" type="button"
+          ng-class="{ 'btn-info': pov.selected, 'btn-unselected': !pov.selected }"
+          class="btn btn-sm scene-tags-button"
+          uib-popover="{{'common_pointOfView_'+pov.id+'.popover' | translate}}"
+          popover-placement="bottom" popover-trigger="'mouseenter'"
+          ng-click="$ctrl.togglePov(pov.id)">
+          {{'common_pointOfView_'+pov.id | translate}}
+      </div>
+    </div>
+    <div class="row scene-tags-section-subtitle" ng-if="$ctrl.showpovcharacter">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.label.pointOfView.character' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row" ng-if="$ctrl.showpovcharacter">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="character in $ctrl.povcharacters track by $index" type="button"
+          ng-class="{ 'btn-info': character.selected, 'btn-unselected': !character.selected }"
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.togglePovCharacter(character.id)">
+          {{character.name}}
+        </button>
+      </div>
+    </div>
+
+    <!-- CHARACTERS -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.characters.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="character in $ctrl.scenecharacters track by $index" type="button"
+          ng-class="{ 'btn-info': character.selected, 'btn-unselected': !character.selected }"
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleSceneCharacter(character.id)">
+          {{character.name}}
+        </button>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.location.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="location in $ctrl.locations track by $index" type="button"
+          ng-class="{ 'btn-info': location.selected, 'btn-unselected': !location.selected }"
+          class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleLocation(location.id)">
+          {{location.name}}
+        </button>
+      </div>
+    </div>
+
+    <!-- OBJECTS -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+            {{'objects' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="object in $ctrl.objects track by $index" type="button" 
+          ng-class="{ 'btn-info': object.selected, 'btn-unselected': !object.selected }" 
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleObject(object.id)">
+          {{object.name}}
+        </button>
+      </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.time.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <scenetagsdatetime dirty="$ctrl.dirty"
+        lastscenetime="$ctrl.lastscenetime"
+        scenetime="$ctrl.scenetime"
+        scenetimegregorian="$ctrl.scenerevision.timegregorian">
+      </scenetagsdatetime>
+    </div>
+
+    <!-- STRANDS -->
+    <div class="row scene-tags-section-title">
+      <div class="col-sm-12">
+        <blockquote>
+          <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{'jsp.scene.strands.subtitle' | translate}}</i>
+        </blockquote>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button ng-repeat="strand in $ctrl.strands track by $index" type="button"
+          ng-class="{ 'btn-info': strand.selected, 'btn-unselected': !strand.selected}"
+          class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleStrand(strand.id)">
+          {{strand.name}}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-right">
+        <button type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
+          ng-click="$ctrl.save()">
+          <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+      <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+      <buttonwithconfirm enableconfirm="$ctrl.dirty" buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+      </buttonwithconfirm>
+      </span>
+    </div>
+  </div>
+</div>

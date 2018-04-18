@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row">
+    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  </div>
+  <div class="row">
+    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+    </pageheader>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <form name="exportSelectDirectoryForm" 
+        ng-submit="$ctrl.export(exportSelectDirectoryForm.$valid)" 
+         novalidate>
+        
+        <div class="form-group">
+          <label class="col-sm-offset-1 col-sm-8 control-label" 
+            for="exportpath">{{'jsp.export.dialog.exportProjectDirectory.label' | translate}}</label>
+          <div class="col-sm-offset-1 col-sm-8">
+            <directoryselect model='$ctrl.exportpath' 
+              field='exportSelectDirectoryForm.exportpath' 
+              name='exportpath' 
+              onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+              forbiddendirectory='$ctrl.forbiddenDirectory' required>
+            </directoryselect>
+          </div>
+        </div>
+
+        <formbuttons form="exportSelectDirectoryForm" 
+          backfunction="$ctrl.back()"
+          saving="$ctrl.saving"
+          offsetcols="3" sizecols="8">
+        </formbuttons>
+    </div>
+    </form>
+  </div>
+</div>
+</div>

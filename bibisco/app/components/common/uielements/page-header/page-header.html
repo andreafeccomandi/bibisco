@@ -1,0 +1,36 @@
+<div class="col-sm-12 page-header">
+  <h1><span class="pull-left page-header-truncate-title">
+        {{$ctrl.headertitle | translate}}
+        <small>
+        <wordscharacterscounter ng-if="$ctrl.words != null" 
+          words="$ctrl.words" characters="$ctrl.characters">
+        </wordscharacterscounter>
+        </small>
+      </span>
+      <span ng-if="$ctrl.taskstatus" class="pull-right page-header-taskstatus-selector">
+        <taskstatusselector 
+          status="$ctrl.taskstatus" 
+          readonly="$ctrl.taskstatusreadonly" 
+          changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
+      </span>
+      <span ng-if="$ctrl.buttonshow || $ctrl.dropdownitems || $ctrl.tipenabled" class="pull-right">
+        <contextualtipbutton ng-if="$ctrl.tipenabled" 
+          tipcode="{{$ctrl.tipcode}}"></contextualtipbutton>
+        <dropdownmenu buttonlabel="jsp.common.button.more" 
+          items="$ctrl.dropdownitems" 
+          open="{{$ctrl.dropdownopen}}"
+          visible="$ctrl.dropdownitems && $ctrl.dropdownitems.length > 0">
+        </dropdownmenu>
+        <button ng-if="$ctrl.buttonshow" type="button" class="btn btn-{{$ctrl.buttonstyle}}"
+          ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
+      </span>
+  </h1>
+</div>
+<div class="row" ng-if="$ctrl.headersubtitle">
+  <div class="col-sm-12">
+    <blockquote>
+      <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+      {{$ctrl.headersubtitle | translate}}</i>
+    </blockquote>
+  </div>
+</div>

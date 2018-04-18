@@ -1,0 +1,11 @@
+<div class="input-group" ng-class="{ 'has-error': $ctrl.hasError() }">
+  <input name="{{$ctrl.name}}" class="form-control" type="text" readonly="readonly"
+    ng-model="$ctrl.model" required/>
+  <span class="input-group-btn">
+      <button class="btn btn-default" type="button"
+        ng-click="$ctrl.opendirectorydialog()">
+        {{"jsp.common.button.select" | translate}}</button>
+  </span>
+</div>
+<validationmessages field="$ctrl.field"></validationmessages>
+<p class="text-danger" ng-show="$ctrl.forbiddendirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>

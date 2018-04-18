@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  </div>
+  <div class="row">
+    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+    </pageheader>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <form name="locationTitleForm" ng-submit="$ctrl.save(locationTitleForm.$valid)" class="form-horizontal" novalidate>
+        <textinputfield field="locationTitleForm.nation"
+          model="$ctrl.nation" name="nation" autofocus
+          maxlength="30"
+          typeheadsource="$ctrl.usednations"
+          label="jsp.locationsTitleForm.label.nation"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="locationTitleForm.state"
+          model="$ctrl.state" name="state"
+          maxlength="30"
+          typeheadsource="$ctrl.usedstates"
+          label="jsp.locationsTitleForm.label.state"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="locationTitleForm.city"
+          model="$ctrl.city" name="city"
+          maxlength="30"
+          typeheadsource="$ctrl.usedcities"
+          label="jsp.locationsTitleForm.label.city"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="locationTitleForm.location"
+          model="$ctrl.location" name="location" required
+          maxlength="50"
+          label="jsp.locationsTitleForm.label.location"
+          placeholder="jsp.locationsTitleForm.label.location.placeholder"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+        <formbuttons form="locationTitleForm" backfunction="$ctrl.back()"
+          offsetcols="3" sizecols="8">
+        </formbuttons>
+    </div>
+    </form>
+  </div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+<ui-select ng-model="$ctrl.selectedItem" 
+  on-select="$ctrl.selectQuestion()">
+  <ui-select-match>
+      <span class="character-info-question-select-item" 
+        ng-bind="$select.selected.description"></span>
+  </ui-select-match>
+  <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'description':$select.search}">
+    <span class="character-info-question-select-item" 
+      ng-bind-html="item.description | translate"></span>
+  </ui-select-choices>
+</ui-select>

@@ -1,0 +1,33 @@
+<div class="container">
+
+  <!-- ARCHITECTURE -->
+  <cardgrid
+    carddimension="normal"
+    dndenabled="false"
+    family="architecture"
+    items="$ctrl.architecturecardgriditems"
+    pageheadertitle="jsp.architecture.h1"
+    selectfunction="$ctrl.architectureItemSelect(id)"
+    type="half-top">
+  </cardgrid>
+
+  <!-- STRANDS -->
+  <cardgrid
+    carddimension="small"
+    dndenabled="true"
+    dropfunction="$ctrl.strandMove(draggedObjectId, destinationObjectId)"
+    family="strands"
+    emptylisttext="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text"
+    emptylistbuttonlabel="jsp.strands.a.createFirstStrand"
+    emptylistbuttonfunction="$ctrl.createStrand()"
+    items="$ctrl.strandcardgriditems"
+    pageheaderbuttonlabel="jsp.architecture.a.createStrand"
+    pageheaderbuttonfunction="$ctrl.createStrand()"
+    pageheadertitle="jsp.architecture.strands.h2"
+    pageheadersubtitle="jsp.architecture.strands.h2.small" 
+    pageheadertipcode="strandsdndTip"
+    selectfunction="$ctrl.strandSelect(id)"
+    type="half-bottom">
+  </cardgrid>
+
+</div>

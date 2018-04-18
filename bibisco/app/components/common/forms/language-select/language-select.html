@@ -1,0 +1,10 @@
+<!-- How does it work? Take a look here:
+https://stackoverflow.com/questions/39032484/how-to-repeat-object-properties-in-angular-ui-select-choices/39035468#39035468 -->
+<ui-select ng-model="$ctrl.currentLocale" on-select="$ctrl.changeLanguage()">
+    <ui-select-match>
+        <span ng-bind="$select.selected.value"></span>
+    </ui-select-match>
+    <ui-select-choices repeat="language.key as (key, language) in $ctrl.locales | filter: {'value':$select.search}">
+      <span ng-bind-html="language.value"></span>
+    </ui-select-choices>
+</ui-select>
