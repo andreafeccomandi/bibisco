@@ -98,8 +98,10 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'sr';
   } else if (preferredLanguage.startsWith('tr')) {
     preferredLocale = 'tr';
+  } else if (preferredLanguage === 'pt-pt') {
+    preferredLocale = 'pt-pt';
   } else if (preferredLanguage === 'pt-br') {
-    preferredLocale = 'pt_BR';
+    preferredLocale = 'pt-br';
   } else if (preferredLanguage === 'en-ca') {
     preferredLocale = 'en-ca';
   } else if (preferredLanguage === 'en-gb') {
