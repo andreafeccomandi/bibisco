@@ -207,17 +207,23 @@ angular.module('bibiscoApp', ['ngRoute',
         'cs': 'cs',
         'de': 'de',
         'en-ca': 'en-us',
+        'en_CA': 'en-us',
         'en-gb': 'en',
+        'en_GB': 'en',
         'en-us': 'en-us',
+        'en_US': 'en-us',
         'es': 'es',
         'fr': 'fr',
         'it': 'it',
         'pl': 'pl',
         'pt-br': 'pt-br',
+        'pt_BR': 'pt-br',
         'pt-pt': 'pt-pt',
+        'pt_PT': 'pt-pt',
         'ru': 'ru',
         'sr': 'sr',
-        'tr': 'tr'
+        'tr': 'tr',
+        '*': 'en'
       }) // register available languages
       .determinePreferredLanguage() // is applied on first load
       .fallbackLanguage(['en']) // fallback language
