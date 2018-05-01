@@ -61,6 +61,13 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     // init date time
     if (ChapterService.getLastScenetime() !== '') {
       self.lastscenetime = new Date(ChapterService.getLastScenetime());
+      // check if is valid gregorian date
+      if (self.scenerevision.timegregorian) {
+        let testDate = new Date(self.scenerevision.time);
+        if (isNaN(testDate.getTime())) {
+          self.scenerevision.time = null;
+        }
+      }
       self.scenetime = self.scenerevision.time;
     }
 
@@ -286,7 +293,7 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
       $routeParams.sceneid);
   };
 
-   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
+  $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
     self.scenerevision.time = data;
   });
 }
