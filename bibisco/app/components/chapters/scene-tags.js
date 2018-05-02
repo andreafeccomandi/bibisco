@@ -59,17 +59,19 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     self.initObjects();
 
     // init date time
-    if (ChapterService.getLastScenetime() !== '') {
-      self.lastscenetime = new Date(ChapterService.getLastScenetime());
-      // check if is valid gregorian date
-      if (self.scenerevision.timegregorian) {
-        let testDate = new Date(self.scenerevision.time);
-        if (isNaN(testDate.getTime())) {
-          self.scenerevision.time = null;
-        }
-      }
-      self.scenetime = self.scenerevision.time;
-    }
+	if (ChapterService.getLastScenetime() !== '') {
+	  self.lastscenetime = new Date(ChapterService.getLastScenetime());
+	} else {
+	   self.lastscenetime = new Date();
+	}
+	// check if is valid gregorian date
+	if (self.scenerevision.timegregorian) {
+	  let testDate = new Date(self.scenerevision.time);
+	  if (isNaN(testDate.getTime())) {
+		self.scenerevision.time = null;
+	  }
+	}
+	self.scenetime = self.scenerevision.time;
 
     // init narrative strands
     self.initStrands();
