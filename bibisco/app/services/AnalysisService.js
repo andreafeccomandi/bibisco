@@ -450,6 +450,9 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
           let timegregorian = scenes[i].revisions[scenes[i].revision].timegregorian;
           if (time && timegregorian) {
             time = new Date(time);
+            if (isNaN(time.getTime())) {
+              time = null;
+            }
           } 
 
           appearances.push({
