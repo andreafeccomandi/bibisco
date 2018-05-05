@@ -37,7 +37,11 @@ angular.module('bibiscoApp').service('TimelineService', function (
         timelineitem.time = scenes[i].revisions[scenes[i].revision].time;
         if (timelineitem.time && timelineitem.timegregorian) {
           timelineitem.time = new Date(timelineitem.time);
-          timelineitem.sceneyear = DatetimeService.calculateSceneYear(timelineitem.time);
+          if (isNaN(timelineitem.time.getTime())) {
+            timelineitem.time = null;
+          } else {
+            timelineitem.sceneyear = DatetimeService.calculateSceneYear(timelineitem.time);
+          }
         } else {
           timelineitem.sceneyear = null;
         }

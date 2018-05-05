@@ -1,7 +1,7 @@
 {
   "name": "bibisco",
   "productName": "bibisco",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "writing novel application",
   "license": "GPL v3",
   "repository": "https://github.com/andreafeccomandi/bibisco",
@@ -19,8 +19,8 @@
     "package-win32": "electron-packager . bibisco --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-win64": "electron-packager . bibisco --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/bibisco_circle_hr_MYa_icon.ico --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"bibisco\"",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder",
-    "create-installer-mac-ce": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.1-CE/bibisco.app bibisco-mac-x64-2.0.1-CE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
-    "create-installer-mac-se": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.1-SE/bibisco.app bibisco-mac-x64-2.0.1-SE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
+    "create-installer-mac-ce": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.2-CE/bibisco.app bibisco-mac-x64-2.0.2-CE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
+    "create-installer-mac-se": "electron-installer-dmg /Users/andreafeccomandi/work/release-builds/bibisco-mac-x64-2.0.2-SE/bibisco.app bibisco-mac-x64-2.0.2-SE --background=assets/icons/mac/background.png  --icon=assets/icons/mac/icon.icns --debug --out=/Users/andreafeccomandi/work/release-builds --overwrite",
     "export-mac-ce": "npm run package-mac-ce && create-installer-mac-ce",
     "export-mac-se": "npm run package-mac-se && create-installer-mac-se"
   },
