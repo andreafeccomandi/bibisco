@@ -129,12 +129,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       let scenes = this.getScenes(id);
 
       // total statuses: all scenes + reason card
-      let totalStatuses;
-      if (scenes.length === 0) {  
-        totalStatuses = 2;
-      } else {
-        totalStatuses = scenes.length + 1
-      }
+      let totalStatuses = scenes.length + 1;
       let totalTodo = 0;
       let totalDone = 0;
       let words = 0;
@@ -158,12 +153,23 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       chapter.words = words;
       chapter.characters = characters;
-      if (totalTodo === totalStatuses) {
-        chapter.status = 'todo';
-      } else if (totalDone === totalStatuses) {
-        chapter.status = 'done';
-      } else {
-        chapter.status = 'tocomplete';
+
+      if (totalStatuses === 1) {
+        if (totalTodo === 1) {
+          chapter.status = 'todo';
+        } else {
+          chapter.status = 'tocomplete';
+        }
+      } 
+      
+      else {
+        if (totalTodo === totalStatuses) {
+          chapter.status = 'todo';
+        } else if (totalDone === totalStatuses) {
+          chapter.status = 'done';
+        } else {
+          chapter.status = 'tocomplete';
+        }
       }
 
       CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
