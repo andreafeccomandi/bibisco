@@ -12,7 +12,6 @@
     "pdfMake": 1,
     "validator": 1
   },
-  "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
