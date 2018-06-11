@@ -361,6 +361,7 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
         sanitizedText = SanitizeHtmlService.sanitize(text);
       } else {
         sanitizedText = $event.clipboardData.getData('text/plain');
+		  sanitizedText = sanitizedText.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
       }
       $event.preventDefault();
       $timeout(function() {

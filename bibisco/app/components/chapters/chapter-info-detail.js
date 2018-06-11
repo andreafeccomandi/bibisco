@@ -64,6 +64,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
   };
 
   self.savefunction = function() {
+    self.chapterinfo.lastsave = (new Date()).toJSON();
     ChapterService.update(self.chapter);
   };
 }

@@ -48,15 +48,31 @@
   </cardgrid>
 </div>
 
-<detailfooter 
-  actionitems="$ctrl.actionitems"
-  autosaveenabled="false" 
-  backfunction="$ctrl.back()"
-  characters="$ctrl.chapter.characters"
-  editmode="false"
-  hideprojectexplorerbutton="true"
-  imagesenabled="false" 
-  lastsave="$ctrl.chapter.lastsave"
-  words="$ctrl.chapter.words"
-  wordscharactersenabled="true">
-</detailfooter>
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="container">
+    <div class="row detail-footer-top">
+      <span class="pull-left">
+        <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.chapter.lastsave} }}</span>
+      </span>
+      <span class="pull-right">
+        <span class="label label-info">{{"common_words" | translate}}: {{$ctrl.chapter.words}}</span>
+        <span class="label label-info">{{"jsp.common.span.characters" | translate}}: {{$ctrl.chapter.characters}}</span>
+      </span>
+    </div>
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-right">
+        <dropdownmenu buttonlabel="jsp.common.button.more" 
+          items="$ctrl.actionitems" open="up" visible="true">
+        </dropdownmenu>
+        <buttonwithconfirm enableconfirm="false" 
+          buttonlabel="jsp.common.button.back" 
+          buttonfunction="$ctrl.back()" buttonstyle="btn-default"
+          confirmmessage="js.common.message.confirmExitWithoutSave">
+        </buttonwithconfirm>
+      </span>
+    </div>
+  </div>
+</div>
