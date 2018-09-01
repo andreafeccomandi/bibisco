@@ -1,0 +1,1 @@
+!function(){"use strict";function c(c){function u(u,f,t){function n(f){f&&c(function(){i.focus()},u.$eval(t.focusDelay)||0)}var i=f[0];t.focusIf?u.$watch(t.focusIf,n):n(!0)}return{restrict:"A",link:u}}angular.module("focus-if",[]).directive("focusIf",c),c.$inject=["$timeout"]}();
