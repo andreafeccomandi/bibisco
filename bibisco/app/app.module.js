@@ -232,7 +232,7 @@ angular.module('bibiscoApp', ['ngRoute',
   })
   .config(function(tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern(
-      'node_modules/angular-i18n/angular-locale_{{locale}}.js');
+      'lib/angular-i18n/angular-locale_{{locale}}.js');
   })
   .config(function($uibTooltipProvider) {
     $uibTooltipProvider.options({

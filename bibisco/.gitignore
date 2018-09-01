@@ -1,3 +1,4 @@
-node_modules
 /dist
-app/temp
+bibiscoenv
+node_modules
+temp
