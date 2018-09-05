@@ -36,7 +36,15 @@
     "export-win64-ce": "npm run set-environment-ce && npm run package-win64 && npm run sign-exe-win64 && npm run zip-win64-ce && npm run finalize-export-win",
     "export-win64-se": "npm run set-environment-se && npm run package-win64 && npm run sign-exe-win64 && npm run zip-win64-se && npm run finalize-export-win",
     "export-win64": "npm run prepare-export-win && npm run export-win64-ce && npm run export-win64-se",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/Users/andreafeccomandi/VM/transfer_folder"
+    "prepare-export-linux": "shx rm -rf /home/test/work/release-builds/*",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/linux/bibisco-circle-hr.png --prune=true --out=/home/test/work/release-builds --ignore=/bibiscoenv --ignore=/@paulcbetts/cld/deps  --ignore=/@paulcbetts/cld/src --ignore=/@paulcbetts/cld/test --ignore=/@paulcbetts/spellchecker/src --ignore=/docx/ts --ignore=/example --ignore=/examples --ignore=/screenshots --ignore=/test --ignore=/tests",
+    "zip-linux-ce": "shx mv /home/test/work/release-builds/bibisco-linux-x64 /home/test/work/release-builds/bibisco-linux-x64-2.1.0-CE && cd /home/test/work/release-builds && bestzip bibisco-linux-x64-2.1.0-CE.zip bibisco-linux-x64-2.1.0-CE && shx rm -rf /home/test/work/release-builds/bibisco-linux-x64-2.1.0-CE",
+    "zip-linux-se": "shx mv /home/test/work/release-builds/bibisco-linux-x64 /home/test/work/release-builds/bibisco-linux-x64-2.1.0-SE && cd /home/test/work/release-builds && bestzip bibisco-linux-x64-2.1.0-SE.zip bibisco-linux-x64-2.1.0-SE && shx rm -rf /home/test/work/release-builds/bibisco-linux-x64-2.1.0-SE",
+    "finalize-export-linux": "chmod -R 777 /home/test/work/release-builds && shx cp -u /home/test/work/release-builds/*.zip /media/sf_transfer_folder",
+    "export-linux-ce": "npm run set-environment-ce && npm run package-linux && npm run zip-linux-ce && npm run finalize-export-linux",
+    "export-linux-se": "npm run set-environment-se && npm run package-linux && npm run zip-linux-se && npm run finalize-export-linux",
+    "export-linux": "npm run prepare-export-linux && npm run export-linux-ce && npm run export-linux-se"
+    
   },
   "files": [
     "index.js",
