@@ -22,24 +22,43 @@ angular.
       buttonlabel: '@',
       buttonstyle: '@',
       confirmmessage: '@',
-      enableconfirm: '<'
+      enableconfirm: '<',
+      hotkey: '@'
     }
   });
 
 
-function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
+function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
 
   
-
   var self = this;
 
-  self.click = function() {
+  self.$onInit = function () {
+    if (self.hotkey) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: [self.hotkey, self.hotkey],
+          description: self.hotkey,
+          callback: function ($event) {
+            $event.preventDefault();
+            setTimeout(function () { 
+              document.getElementById('confirmButton').focus();
+              document.getElementById('confirmButton').click();
+            }, 0);
+          }
+        });
+    }
+  };
+
+  self.click = function () {
+    self.executeAction();
+  };
+
+  self.executeAction = function() {
     if (self.enableconfirm) {
       PopupBoxesService.confirm(self.buttonfunction, self.confirmmessage);
     } else {
       self.buttonfunction();
     }
   };
-
-  
 }
