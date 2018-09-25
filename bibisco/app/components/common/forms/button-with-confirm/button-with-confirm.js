@@ -39,6 +39,7 @@ function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
         .add({
           combo: [self.hotkey, self.hotkey],
           description: self.hotkey,
+          allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
           callback: function ($event) {
             $event.preventDefault();
             setTimeout(function () { 
