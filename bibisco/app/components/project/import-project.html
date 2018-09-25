@@ -24,7 +24,7 @@
           cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}" placement="top" on-confirm="$ctrl.confirmImportExistingProject()" on-cancel="">
             {{"jsp.common.button.save" | translate}}
           </button>
-          <button type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+          <button id="importProjectBackButton" type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
         </div>
       </form>
     </div>
