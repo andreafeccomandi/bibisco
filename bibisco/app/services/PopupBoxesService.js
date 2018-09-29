@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
+angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, $uibModal) {
   'use strict';
 
   return {
@@ -49,11 +49,15 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         size: 'sm'
       });
 
+      $rootScope.$emit('OPEN_CONFIRM_DIALOG');
+
       modalInstance.result.then(function() {
         confirmFunction();
+        $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
       }, function() {
         if (cancelFunction) {
           cancelFunction();
+          $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
         }
       });
     }

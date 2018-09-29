@@ -33,7 +33,8 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   var self = this;
   self.$onInit = function() {
-
+    self.contenteditable = true;
+    
     if (self.content === '') {
       self.content = '<p><br></p>';
     }
@@ -55,6 +56,15 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   $rootScope.$on('REPLACE_MISSPELLING', function () {
     self.dirty = true;
     $scope.$apply();
+  });
+
+  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+    self.contenteditable = false;
+  });
+
+  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+    self.contenteditable = true;
+    self.focus();
   });
 
   self.focus = function() {

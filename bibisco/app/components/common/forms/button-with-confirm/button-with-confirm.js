@@ -34,6 +34,7 @@ function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function () {
+    self.popupopen = false;
     if (self.hotkey) {
       hotkeys.bindTo($scope)
         .add({
@@ -41,11 +42,13 @@ function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
           description: self.hotkey,
           allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
           callback: function ($event) {
-            $event.preventDefault();
-            setTimeout(function () { 
-              document.getElementById('confirmButton').focus();
-              document.getElementById('confirmButton').click();
-            }, 0);
+            if (!self.popupopen) {
+              $event.preventDefault();
+              setTimeout(function () { 
+                document.getElementById('confirmButton').focus();
+                document.getElementById('confirmButton').click();
+              }, 0);
+            }
           }
         });
     }
@@ -57,9 +60,19 @@ function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
 
   self.executeAction = function() {
     if (self.enableconfirm) {
-      PopupBoxesService.confirm(self.buttonfunction, self.confirmmessage);
+      self.popupopen = true;
+      PopupBoxesService.confirm(self.confirmokfunction, self.confirmmessage, self.confirmcancelfunction);
     } else {
       self.buttonfunction();
     }
+  };
+
+  self.confirmokfunction = function () {
+    self.buttonfunction();
+    self.popupopen = false;
+  };
+
+  self.confirmcancelfunction = function() {
+    self.popupopen = false;
   };
 }
