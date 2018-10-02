@@ -3,7 +3,7 @@ Take a look at this: http://stackoverflow.com/questions/17946886/hover-sticks-to
 http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directive (workaround)
 -->
 
-<div class="card card-{{$ctrl.dimension}}" id="{{$ctrl.cardid}}" 
+<div class="card card-{{$ctrl.dimension}}" id="{{$ctrl.family}}_{{$ctrl.cardid}}" 
   ng-class="{'card-hover': hover}"
   ng-mouseenter="hover = true" ng-mouseleave="hover = false" 
   ng-click="$ctrl.selectfunction({id: $ctrl.cardid})"
