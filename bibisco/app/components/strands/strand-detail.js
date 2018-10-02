@@ -43,7 +43,7 @@ function StrandDetailController($location, $routeParams, ChapterService,
 
   self.back = function() {
     $location.path('/project/architecture');
-    FocusService.focus(self.fromCardId);
+    FocusService.focus('strands_' + self.fromCardId);
   };
 
   self.changeStatus = function(status) {

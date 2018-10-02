@@ -41,7 +41,7 @@ function ArchitectureDetailController($location, $routeParams,
 
   self.back = function() {
     $location.path('/project/architecture');
-    FocusService.focus(self.fromCardId);
+    FocusService.focus('architecture_' + self.fromCardId);
   };
 
   self.changeStatus = function(status) {
