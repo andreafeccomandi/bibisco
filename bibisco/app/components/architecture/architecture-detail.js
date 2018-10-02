@@ -20,7 +20,7 @@ angular.
   });
 
 function ArchitectureDetailController($location, $routeParams,
-  ArchitectureService) {
+  ArchitectureService, FocusService) {
 
   var self = this;
 
@@ -36,10 +36,12 @@ function ArchitectureDetailController($location, $routeParams,
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
+    self.fromCardId = $routeParams.id;
   };
 
   self.back = function() {
     $location.path('/project/architecture');
+    FocusService.focus(self.fromCardId);
   };
 
   self.changeStatus = function(status) {

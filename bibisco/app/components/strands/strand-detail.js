@@ -20,7 +20,7 @@ angular.
   });
 
 function StrandDetailController($location, $routeParams, ChapterService, 
-  StrandService, UtilService) {
+  FocusService, StrandService, UtilService) {
 
   var self = this;
 
@@ -38,10 +38,12 @@ function StrandDetailController($location, $routeParams, ChapterService,
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
+    self.fromCardId = $routeParams.id;
   };
 
   self.back = function() {
     $location.path('/project/architecture');
+    FocusService.focus(self.fromCardId);
   };
 
   self.changeStatus = function(status) {
