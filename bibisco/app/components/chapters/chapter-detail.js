@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService, PopupBoxesService) {
+  ChapterService, FocusService, PopupBoxesService) {
 
   var self = this;
 
@@ -57,6 +57,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
     self.showprojectexplorer = false;
+
+    self.fromCardId = $routeParams.id;
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -82,6 +84,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.back = function() {
     $location.path('/project/chapters');
+    FocusService.focus('chapters_' + self.fromCardId);
   };
 
   self.changeTitle = function() {
