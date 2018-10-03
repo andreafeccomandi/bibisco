@@ -4,7 +4,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
 -->
 
 <div class="card card-{{$ctrl.dimension}}" id="{{$ctrl.family}}_{{$ctrl.cardid}}" 
-  ng-class="{'card-hover': hover}"
+  ng-class="{'card-hover': hover}" cardid="{{$ctrl.cardid}}"
   ng-mouseenter="hover = true" ng-mouseleave="hover = false" 
   ng-click="$ctrl.selectfunction({id: $ctrl.cardid})"
   ng-keypress="$event.which === 13 && $ctrl.selectfunction({id: $ctrl.cardid})"
