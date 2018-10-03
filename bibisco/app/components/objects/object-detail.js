@@ -16,10 +16,10 @@ angular.
   module('bibiscoApp').
   component('itemdetail', {
     templateUrl: 'components/objects/object-detail.html',
-    controller: ItemDetailController
+    controller: ObjectDetailController
   });
 
-function ItemDetailController($location, $routeParams, ChapterService, 
+function ObjectDetailController($location, $routeParams, CardUtilService, ChapterService, 
   ObjectService, UtilService) {
 
   var self = this;
@@ -42,6 +42,7 @@ function ItemDetailController($location, $routeParams, ChapterService,
 
   self.back = function() {
     $location.path('/project/objects');
+    CardUtilService.focus($routeParams.id, 'objects');
   };
 
   self.changeStatus = function(status) {
