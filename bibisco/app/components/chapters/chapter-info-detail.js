@@ -53,13 +53,11 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService,
     });
 
     self.showprojectexplorer = true;
-
-    self.fromCardId = 'chapterinfo_' + $routeParams.type;
   };
 
   self.back = function() {
     $location.path('/chapters/' + $routeParams.chapterid);
-    CardUtilService.focus(self.fromCardId);
+    CardUtilService.focus($routeParams.type, 'chapterinfo');
   };
 
   self.changeStatus = function(status) {

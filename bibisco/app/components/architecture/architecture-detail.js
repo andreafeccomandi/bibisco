@@ -36,12 +36,11 @@ function ArchitectureDetailController($location, $routeParams,
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
-    self.fromCardId = 'architecture_' + $routeParams.id;
   };
 
   self.back = function() {
     $location.path('/project/architecture');
-    CardUtilService.focus(self.fromCardId);
+    CardUtilService.focus($routeParams.id, 'architecture');
   };
 
   self.changeStatus = function(status) {

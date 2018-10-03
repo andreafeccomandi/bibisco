@@ -17,9 +17,9 @@ angular.module('bibiscoApp').service('CardUtilService', function ($timeout) {
   'use strict';
 
   return {
-    focus: function(elementId) {
+    focus: function(id, family) {
       $timeout(function () {
-        document.getElementById(elementId).focus();
+        document.getElementById(family+'_'+id).focus();
       }, 0);
     }
   };
