@@ -38,12 +38,12 @@ function StrandDetailController($location, $routeParams, ChapterService,
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
-    self.fromCardId = $routeParams.id;
+    self.fromCardId = 'strands_' + $routeParams.id;
   };
 
   self.back = function() {
     $location.path('/project/architecture');
-    FocusService.focus('strands_' + self.fromCardId);
+    FocusService.focus(self.fromCardId);
   };
 
   self.changeStatus = function(status) {
