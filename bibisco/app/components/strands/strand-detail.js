@@ -20,7 +20,7 @@ angular.
   });
 
 function StrandDetailController($location, $routeParams, ChapterService, 
-  FocusService, StrandService, UtilService) {
+  CardUtilService, StrandService, UtilService) {
 
   var self = this;
 
@@ -43,7 +43,7 @@ function StrandDetailController($location, $routeParams, ChapterService,
 
   self.back = function() {
     $location.path('/project/architecture');
-    FocusService.focus(self.fromCardId);
+    CardUtilService.focus(self.fromCardId);
   };
 
   self.changeStatus = function(status) {

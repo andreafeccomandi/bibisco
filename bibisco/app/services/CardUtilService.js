@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('FocusService', function ($timeout) {
+angular.module('bibiscoApp').service('CardUtilService', function ($timeout) {
   'use strict';
 
   return {

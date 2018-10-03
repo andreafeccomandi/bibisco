@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterInfoDetailController($location, $routeParams, ChapterService, 
-  FocusService) {
+  CardUtilService) {
 
   var self = this;
 
@@ -59,7 +59,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService,
 
   self.back = function() {
     $location.path('/chapters/' + $routeParams.chapterid);
-    FocusService.focus(self.fromCardId);
+    CardUtilService.focus(self.fromCardId);
   };
 
   self.changeStatus = function(status) {
