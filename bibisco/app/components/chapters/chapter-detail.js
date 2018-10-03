@@ -58,7 +58,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
     self.showprojectexplorer = false;
 
-    self.fromCardId = $routeParams.id;
+    self.fromCardId = 'chapters_' + $routeParams.id;
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -84,7 +84,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.back = function() {
     $location.path('/project/chapters');
-    FocusService.focus('chapters_' + self.fromCardId);
+    FocusService.focus(self.fromCardId);
   };
 
   self.changeTitle = function() {
