@@ -20,7 +20,8 @@ angular.
   });
 
 function MainCharacterDetailController($location, $rootScope, $routeParams,
-  ChapterService, MainCharacterService, PopupBoxesService, UtilService) {
+  CardUtilService, ChapterService, MainCharacterService, PopupBoxesService, 
+  UtilService) {
 
   var self = this;
 
@@ -66,6 +67,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.back = function() {
     $location.path('/project/characters');
+    CardUtilService.focus($routeParams.id, 'maincharacters');
   };
 
   self.changeStatus = function(status) {
