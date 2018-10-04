@@ -89,6 +89,13 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
       callback: function () {
         self.executeSave();
       }
+    })
+    .add({
+      combo: ['ctrl+e', 'command+e'],
+      description: 'edit',
+      callback: function () {
+        self.enableeditmode();
+      }
     });
 
   self.executeSave = function() {
