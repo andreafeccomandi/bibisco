@@ -23,12 +23,21 @@ angular.
     }
   });
 
-function ProjectExplorerButtonController() {
+function ProjectExplorerButtonController($scope, hotkeys) {
 
   var self = this;
 
   self.toggleProjectExplorer = function () {
     self.showprojectexplorer = !self.showprojectexplorer;
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+g', 'command+g'],
+      description: 'projectexplorer',
+      callback: function () {
+        self.toggleProjectExplorer();
+      }
+    });
 
 }
