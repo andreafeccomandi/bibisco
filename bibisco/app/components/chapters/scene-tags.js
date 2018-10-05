@@ -19,9 +19,9 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $routeParams, $scope, $translate,
-  ChapterService, DatetimeService, ObjectService, LocaleService, LocationService,
-  MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
+function SceneTagsController($location, $routeParams, $scope,
+  ChapterService, hotkeys, LocationService, MainCharacterService, 
+  ObjectService, SecondaryCharacterService, StrandService, UtilService) {
 
   var self = this;
 
@@ -31,6 +31,7 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.scenerevision = self.scene.revisions[self.scene.revision];
 
+    // init breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters'
@@ -59,26 +60,37 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     self.initObjects();
 
     // init date time
-	if (ChapterService.getLastScenetime() !== '') {
+    if (ChapterService.getLastScenetime() !== '') {
 	  self.lastscenetime = new Date(ChapterService.getLastScenetime());
-	} else {
+    } else {
 	   self.lastscenetime = new Date();
-	}
-	// check if is valid gregorian date
-	if (self.scenerevision.timegregorian) {
+    }
+    // check if is valid gregorian date
+    if (self.scenerevision.timegregorian) {
 	  let testDate = new Date(self.scenerevision.time);
 	  if (isNaN(testDate.getTime())) {
-		self.scenerevision.time = null;
+        self.scenerevision.time = null;
 	  }
-	}
-	self.scenetime = self.scenerevision.time;
+    }
+    self.scenetime = self.scenerevision.time;
 
     // init narrative strands
     self.initStrands();
 
+    // init title
     self.title = self.scene.title;
     self.pageheadertitle =
       'jsp.scene.dialog.title.updateTitle';
+
+    // init save hotkey
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+s', 'command+s'],
+        description: 'save',
+        callback: function () {
+          self.save();
+        }
+      });
 
     self.dirty = false;
 

@@ -313,6 +313,12 @@ h3 {
 	border: 1px solid #ddd;
 }
 
+.card:focus {
+	outline: none;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+}
+
 .card-heading {
 	margin-top: 0px;
 	margin-bottom: 5px;

@@ -40,7 +40,6 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
   self.exportActive = false;
   self.analysisActive = false;
   self.settingsActive = false;
-  self.infoActive = false;
 
   // select item from route
   eval('self.' + $routeParams.item + 'Active = true');
@@ -68,6 +67,5 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;
-    self.infoActive = false;
   };
 }

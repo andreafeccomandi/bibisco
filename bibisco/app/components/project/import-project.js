@@ -20,7 +20,7 @@ angular.
   });
 
 function ImportProjectController($location, $rootScope, $scope, ContextMenuService, 
-  ProjectService) {
+  hotkeys, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -32,6 +32,21 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
   self.openConfirm = false;
   self.projectName;
   self.projectId;
+
+  self.$onInit = function () {
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['esc', 'esc'],
+        description: 'esc',
+        callback: function ($event) {
+          $event.preventDefault();
+          setTimeout(function () {
+            document.getElementById('importProjectBackButton').focus();
+            document.getElementById('importProjectBackButton').click();
+          }, 0);
+        }
+      });
+  };
 
 
   self.selectFileToImport = function(file) {

@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService, PopupBoxesService) {
+  ChapterService,CardUtilService, PopupBoxesService) {
 
   var self = this;
 
@@ -82,6 +82,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.back = function() {
     $location.path('/project/chapters');
+    CardUtilService.focus($routeParams.id, 'chapters');
   };
 
   self.changeTitle = function() {

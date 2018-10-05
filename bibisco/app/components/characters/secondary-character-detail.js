@@ -20,7 +20,7 @@ angular.
   });
 
 function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
-  ChapterService, SecondaryCharacterService, UtilService) {
+  CardUtilService, ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
 
@@ -42,6 +42,7 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
   self.back = function() {
     $location.path('/project/characters');
+    CardUtilService.focus($routeParams.id, 'secondarycharacters');
   };
 
   self.changeStatus = function(status) {

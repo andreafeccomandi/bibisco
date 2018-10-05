@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
+      buttonhotkey: '@',
       buttonlabel: '@',
       buttonfunction: '&',
       buttonshow: '<',
@@ -38,12 +39,27 @@ angular.
   });
 
 
-function PageHeaderController() {
+function PageHeaderController($scope, hotkeys) {
   var self = this;
 
   self.$onInit = function () {
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
+    }
+
+    if (self.buttonhotkey) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: [self.buttonhotkey, self.buttonhotkey],
+          description: self.buttonhotkey,
+          callback: function ($event) {
+            $event.preventDefault();
+            setTimeout(function () {
+              document.getElementById('pageHeaderButton').focus();
+              document.getElementById('pageHeaderButton').click();
+            }, 0);
+          }
+        });
     }
   };
 }

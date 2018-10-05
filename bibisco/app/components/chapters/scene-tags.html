@@ -154,7 +154,10 @@
           <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
       <span>{{"jsp.common.button.save" | translate}}</span>
       </button>
-      <buttonwithconfirm enableconfirm="$ctrl.dirty" buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
+      <buttonwithconfirm enableconfirm="$ctrl.dirty" 
+        buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
+        buttonstyle="btn-default" hotkey="esc"
+        confirmmessage="js.common.message.confirmExitWithoutSave">
       </buttonwithconfirm>
       </span>
     </div>

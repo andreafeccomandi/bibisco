@@ -6,6 +6,7 @@
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
     <button ng-if="$ctrl.mode == 'confirm'" class="btn btn-danger" type="button"
+      id="modalBaseConfirmButton"
       ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
     <button ng-if="$ctrl.mode == 'confirm'" class="btn btn-default" type="button"
       ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>

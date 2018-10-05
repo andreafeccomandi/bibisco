@@ -25,12 +25,20 @@ angular.
     },
   });
 
-function ModalBaseController() {
+function ModalBaseController($scope, hotkeys) {
 
   var self = this;
 
   self.$onInit = function() {
     self.message = self.resolve.message;
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['enter', 'enter'],
+        description: 'enter',
+        callback: function ($event) {
+          self.ok();
+        }
+      });
   };
 
   self.ok = function() {

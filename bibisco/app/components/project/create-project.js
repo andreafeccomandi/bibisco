@@ -19,13 +19,29 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, ContextMenuService, LocaleService,
-  ProjectService) {
+function CreateProjectController($location, $rootScope, $scope, 
+  ContextMenuService, LocaleService, hotkeys, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_CREATE_PROJECT');
 
   var self = this;
+
+  self.$onInit = function () {
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['esc', 'esc'],
+        description: 'esc',
+        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+        callback: function ($event) {
+          $event.preventDefault();
+          setTimeout(function () {
+            document.getElementById('createProjectBackButton').focus();
+            document.getElementById('createProjectBackButton').click();
+          }, 0);
+        }
+      });
+  };
 
   self.projectName = null;
   self.projectLanguage = LocaleService.getCurrentLocale();

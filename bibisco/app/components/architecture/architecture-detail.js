@@ -20,7 +20,7 @@ angular.
   });
 
 function ArchitectureDetailController($location, $routeParams,
-  ArchitectureService) {
+  ArchitectureService,CardUtilService) {
 
   var self = this;
 
@@ -40,6 +40,7 @@ function ArchitectureDetailController($location, $routeParams,
 
   self.back = function() {
     $location.path('/project/architecture');
+    CardUtilService.focus($routeParams.id, 'architecture');
   };
 
   self.changeStatus = function(status) {
