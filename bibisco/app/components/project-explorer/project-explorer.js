@@ -209,24 +209,28 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
   };
 
   self.showPremise = function() {
+    self.sectiontitle = 'jsp.architecture.thumbnail.premise.title';
     self.text = ArchitectureService.getPremise().text;
     self.images = null;
     self.type = 'simpletext';
   };
 
   self.showFabula = function () {
+    self.sectiontitle = 'jsp.architecture.thumbnail.fabula.title';   
     self.text = ArchitectureService.getFabula().text;
     self.images = null;
     self.type = 'simpletext';
   };
 
   self.showSetting = function () {
+    self.sectiontitle = 'jsp.architecture.thumbnail.setting.title';
     self.text = ArchitectureService.getSetting().text;
     self.images = null;
     self.type = 'simpletext';
   };
 
   self.showGlobalNotes = function () {
+    self.sectiontitle = 'common_notes_title';
     self.text = ArchitectureService.getGlobalNotes().text;
     self.images = null;
     self.type = 'simpletext';
@@ -244,6 +248,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showSecondaryCharacter = function(id) {
     let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(id);
+    self.sectiontitle = secondarycharacter.name;
     self.text = secondarycharacter.description;
     self.images = secondarycharacter.images;
     self.type = 'simpletext';
@@ -251,6 +256,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showLocation = function(id) {
     let location = LocationService.getLocation(id);
+    self.sectiontitle = LocationService.calculateLocationName(location);
     self.text = location.description;
     self.images = location.images;
     self.type = 'simpletext';
@@ -258,6 +264,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showObject = function (id) {
     let object = ObjectService.getObject(id);
+    self.sectiontitle = object.name;
     self.text = object.description;
     self.images = object.images;
     self.type = 'simpletext';

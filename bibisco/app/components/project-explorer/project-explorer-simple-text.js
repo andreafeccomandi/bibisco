@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/project-explorer/project-explorer-simple-text.html',
     controller: ProjectExplorerSimpleTextController,
     bindings: {
+      sectiontitle: '<',
       images: '<',
       text: '<'
     }

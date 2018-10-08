@@ -1,4 +1,5 @@
-<div ng-if="$ctrl.text" ng-bind-html="$ctrl.text | trusted" class="bibiscoNotSelectableText"></div>
+<h5>{{ $ctrl.sectiontitle | translate}}</h5>
+<div ng-if="$ctrl.text" ng-bind-html="$ctrl.text | trusted"></div>
 <div ng-if="!$ctrl.text"><i class="bibiscoNotSelectableText">{{ 'common_empty_section' | translate}}</i></div>
 <hr ng-if="$ctrl.images">
 <projectexplorerimages images="$ctrl.images"></projectexplorerimages>
