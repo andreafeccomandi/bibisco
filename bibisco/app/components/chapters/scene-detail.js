@@ -39,7 +39,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
     // common element detail flags
     self.autosaveenabled;
-    self.dirty = false;
+    $rootScope.dirty = false;
     self.editmode = false;
     self.showprojectexplorer = false;
 

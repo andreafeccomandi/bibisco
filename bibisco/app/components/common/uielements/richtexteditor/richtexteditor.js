@@ -21,14 +21,13 @@ angular.
       autosaveenabled: '=',
       characters: '=',
       content: '=',
-      dirty: '=',
       words: '='
     }
   });
 
 
 function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibModal,
-  hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
+  hotkeys, ContextService, SanitizeHtmlService,
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
@@ -54,7 +53,7 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   });
 
   $rootScope.$on('REPLACE_MISSPELLING', function () {
-    self.dirty = true;
+    $rootScope.dirty = true;
     $scope.$apply();
   });
 
@@ -232,14 +231,14 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.undo = function() {
     $document[0].execCommand('undo');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
     self.countWordsAndCharacters();
   };
 
   self.redo = function() {
     $document[0].execCommand('redo');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
     self.countWordsAndCharacters();
   };
@@ -259,42 +258,42 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.copy = function() {
     $document[0].execCommand('copy');
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.cut = function() {
     $document[0].execCommand('cut');
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.paste = function() {
     $timeout(function() {
       $document[0].execCommand('paste');
-      self.dirty = true;
+      $rootScope.dirty = true;
     });
   };
 
   self.bold = function() {
     $document[0].execCommand('bold');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.checkselectionstate();
   };
 
   self.italic = function() {
     $document[0].execCommand('italic');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.checkselectionstate();
   };
 
   self.underline = function() {
     $document[0].execCommand('underline');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.checkselectionstate();
   };
 
   self.strikethrough = function() {
     $document[0].execCommand('strikeThrough');
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.checkselectionstate();
   };
 
@@ -305,13 +304,13 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     } else {
       $document[0].execCommand('hiliteColor', false, 'rgb(255, 255, 0)');
     }
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.checkselectionstate();
   };
 
   self.leftguillemet = function() {
     $document[0].execCommand('insertText', false, '«');
-    self.checkselectionstate();
+    $rootScope.checkselectionstate();
   };
 
   self.rightguillemet = function() {
@@ -337,28 +336,28 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   self.aligncenter = function() {
     $document[0].execCommand('justifyCenter');
     self.checkselectionstate();
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
   };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
     self.checkselectionstate();
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
   };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
     self.checkselectionstate();
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
   };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
     self.checkselectionstate();
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.focus();
   };
 
@@ -401,7 +400,7 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.contentChanged = function() {
     self.countWordsAndCharacters();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.countWordsAndCharacters = function() {

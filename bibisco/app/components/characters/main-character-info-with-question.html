@@ -10,7 +10,6 @@
   autosaveenabled="$ctrl.autosaveenabled"
   characters="$ctrl.characters"
   content="$ctrl.content"
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
@@ -23,7 +22,6 @@
   autosaveenabled="$ctrl.autosaveenabled"
   characters="$ctrl.characters"
   content="$ctrl.content" 
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
@@ -48,7 +46,6 @@
       <span class="pull-left">
         <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="true"></projectexplorerbutton>
         <interviewswitch ng-if="$ctrl.editmode"
-          dirty="$ctrl.dirty"
           freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
         </interviewswitch>
       </span>
@@ -62,7 +59,6 @@
           backfunction="$ctrl.back()" 
           characters="$ctrl.characters"
           content="$ctrl.content"
-          dirty="$ctrl.dirty" 
           editbuttonvisible="true" 
           editmode="$ctrl.editmode" 
           savedcharacters="$ctrl.savedcharacters" 

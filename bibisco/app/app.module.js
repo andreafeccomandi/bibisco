@@ -39,7 +39,8 @@ angular.module('bibiscoApp', ['ngRoute',
     $scope.theme = 'dark';
   });
 
-
+  $rootScope.dirty = false;
+  
 }).config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');

@@ -19,7 +19,7 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $routeParams, $scope,
+function SceneTagsController($location, $rootScope, $routeParams, $scope,
   ChapterService, hotkeys, LocationService, MainCharacterService, 
   ObjectService, SecondaryCharacterService, StrandService, UtilService) {
 
@@ -92,7 +92,7 @@ function SceneTagsController($location, $routeParams, $scope,
         }
       });
 
-    self.dirty = false;
+    $rootScope.dirty = false;
 
   };
 
@@ -139,13 +139,13 @@ function SceneTagsController($location, $routeParams, $scope,
   self.togglePov = function(id) {
     self.scenerevision.povid = id;
     self.initPointOfViews();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.togglePovCharacter = function(id) {
     self.scenerevision.povcharacterid = id;
     self.initPovCharacters();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleSceneCharacter = function(id) {
@@ -158,7 +158,7 @@ function SceneTagsController($location, $routeParams, $scope,
   self.toggleLocation = function(id) {
     self.scenerevision.locationid = id;
     self.initLocations();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleObject = function(id) {
@@ -183,7 +183,7 @@ function SceneTagsController($location, $routeParams, $scope,
     } else {
       arr.push(id);
     }
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.initPovCharacters = function() {
@@ -299,7 +299,7 @@ function SceneTagsController($location, $routeParams, $scope,
   self.save = function() {
     self.scene.revisions[self.scene.revision] = self.scenerevision;
     ChapterService.updateScene(self.scene);
-    self.dirty = false;
+    $rootScope.dirty = false;
   };
 
   self.back = function() {

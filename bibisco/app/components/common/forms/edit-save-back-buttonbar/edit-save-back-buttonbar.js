@@ -22,7 +22,6 @@ angular.
       backfunction: '&',
       characters: '=',
       content: '=',
-      dirty: '=',
       editbuttonvisible: '<',
       editmode: '=',
       savedcharacters: '=',
@@ -34,8 +33,8 @@ angular.
     }
   });
 
-function EditSaveBackButtonbarController($interval, $scope, $timeout, 
-  hotkeys, RichTextEditorPreferencesService) {
+function EditSaveBackButtonbarController($interval, $rootScope, $scope, 
+  $timeout, hotkeys, RichTextEditorPreferencesService) {
 
   var self = this;
 
@@ -43,7 +42,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
     self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
     self.saving = false;
     self.autosavefunctionpromise = $interval(function () {
-      if (self.autosaveenabled && self.editmode && self.dirty) {
+      if (self.autosaveenabled && self.editmode && $rootScope.dirty) {
         self.save();
       }
     }, 60000);
@@ -65,7 +64,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
     if (self.editmode) {
       //  back to view mode
       self.editmode = false;
-      self.dirty = false;
+      $rootScope.dirty = false;
       self.showprojectexplorer = false;
     } else {
       // back to previous page
@@ -74,7 +73,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
   };
 
   self.save = function () {
-    if (self.dirty) {
+    if ($rootScope.dirty) {
       self.saving = true;
       $timeout(function () {
         self.executeSave();
@@ -101,7 +100,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
   self.executeSave = function() {
     self.savefunction();
     self.saving = false;
-    self.dirty = false;
+    $rootScope.dirty = false;
     self.savedcharacters = self.characters;
     self.savedcontent = self.content;
     self.savedwords = self.words;

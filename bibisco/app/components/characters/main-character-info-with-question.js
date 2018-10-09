@@ -49,7 +49,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.autosaveenabled;
     self.content;
-    self.dirty = false;
+    $rootScope.dirty = false;
     self.editmode = false;
     self.questionselected;
     self.savedcontent;

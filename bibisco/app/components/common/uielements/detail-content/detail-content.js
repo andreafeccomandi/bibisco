@@ -21,7 +21,6 @@ angular.
       autosaveenabled: '=',
       characters: '=',
       content: '=',
-      dirty: '=',
       disableemptymessage: '<',
       editmode: '=',
       headersubtitle: '<',

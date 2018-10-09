@@ -113,7 +113,7 @@
       </div>
     </div>
     <div class="row">
-      <scenetagsdatetime dirty="$ctrl.dirty"
+      <scenetagsdatetime
         lastscenetime="$ctrl.lastscenetime"
         scenetime="$ctrl.scenetime"
         scenetimegregorian="$ctrl.scenerevision.timegregorian">
@@ -149,12 +149,12 @@
     </div>
     <div class="row">
       <span class="pull-right">
-        <button type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
+        <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
           ng-click="$ctrl.save()">
           <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
       <span>{{"jsp.common.button.save" | translate}}</span>
       </button>
-      <buttonwithconfirm enableconfirm="$ctrl.dirty" 
+      <buttonwithconfirm enableconfirm="$root.dirty" 
         buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
         buttonstyle="btn-default" hotkey="esc"
         confirmmessage="js.common.message.confirmExitWithoutSave">

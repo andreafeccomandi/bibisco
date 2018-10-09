@@ -23,7 +23,6 @@ angular.
       backfunction: '&',
       characters: '=',
       content: '=',
-      dirty: '=',
       hideprojectexplorerbutton: '<',
       imagesenabled: '<',
       editmode: '=',

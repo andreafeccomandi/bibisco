@@ -18,14 +18,13 @@ angular.
     templateUrl: 'components/chapters/scene-tags-datetime.html',
     controller: SceneTagsDatetimeController,
     bindings: {
-      dirty: '=',
       lastscenetime: '<',
       scenetime: '<',
       scenetimegregorian: '='
     }
   });
 
-function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleService) {
+function SceneTagsDatetimeController($rootScope, $scope, DatetimeService, LocaleService) {
 
   var self = this;
 
@@ -54,7 +53,7 @@ function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleS
     self.scenetime = newDate;
     self.scenetimeshowed = newDate;
     self.scenetimeCalendarOpen = false;
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.scenetimeselected = true;
     $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };
@@ -81,7 +80,7 @@ function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleS
   };
 
   self.changeScenetimeCustom = function() {
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.scenetime = self.scenetimecustom;
     $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };

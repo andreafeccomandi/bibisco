@@ -46,7 +46,7 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope, PopupBoxesService) {
+function ElementDetailController($rootScope, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -54,7 +54,7 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     
     // common element detail flags
     self.autosaveenabled;
-    self.dirty = false;
+    $rootScope.dirty = false;
     self.editmode = false;
     self.showprojectexplorer = false;
     
