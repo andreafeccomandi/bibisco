@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('StrandService', function(
-  CollectionUtilService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ProjectDbConnectionService
 ) {
   'use strict';
 
