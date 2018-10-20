@@ -22,41 +22,17 @@ angular.
     }
   });
 
-function ProjectController($location, $rootScope, $routeParams, AnalysisService) {
+function ProjectController($rootScope, $routeParams, AnalysisService, 
+  CardUtilService) {
 
   var self = this;
 
-  // init AnalysisService
-  AnalysisService.init();
+  self.$onInit = function () {
 
-  // menu items status
-  self.projecthomeActive = false;
-  self.architectureActive = false;
-  self.charactersActive = false;
-  self.locationsActive = false;
-  self.objectsActive = false;
-  self.chaptersActive = false;
-  self.timelineActive = false;
-  self.exportActive = false;
-  self.analysisActive = false;
-  self.settingsActive = false;
-
-  // select item from route
-  eval('self.' + $routeParams.item + 'Active = true');
-
-  // show menu
-  $rootScope.$emit('SHOW_PROJECT', {
-    item: $routeParams.item
-  });
-
-  // change menu item
-  $rootScope.$on('MENU_ITEM_SELECTED', function(event, args) {
-    self.disableAllItems();
-    eval('self.' + args.item + 'Active = true');
-  });
-
-  // disable all items
-  self.disableAllItems = function() {
+    // init AnalysisService
+    AnalysisService.init();
+  
+    // menu items status
     self.projecthomeActive = false;
     self.architectureActive = false;
     self.charactersActive = false;
@@ -67,5 +43,37 @@ function ProjectController($location, $rootScope, $routeParams, AnalysisService)
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;
+  
+    // select item from route
+    eval('self.' + $routeParams.item.split('?')[0] + 'Active = true');
+  
+    // show menu
+    $rootScope.$emit('SHOW_PROJECT', {
+      item: $routeParams.item.split('?')[0]
+    });
+  
+    // change menu item
+    $rootScope.$on('MENU_ITEM_SELECTED', function(event, args) {
+      self.disableAllItems();
+      eval('self.' + args.item + 'Active = true');
+    });
+  
+    // disable all items
+    self.disableAllItems = function() {
+      self.projecthomeActive = false;
+      self.architectureActive = false;
+      self.charactersActive = false;
+      self.locationsActive = false;
+      self.objectsActive = false;
+      self.chaptersActive = false;
+      self.timelineActive = false;
+      self.exportActive = false;
+      self.analysisActive = false;
+      self.settingsActive = false;
+    };
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.item);
   };
+
 }

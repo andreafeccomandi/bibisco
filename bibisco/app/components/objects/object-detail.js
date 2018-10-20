@@ -19,7 +19,7 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $routeParams, CardUtilService, ChapterService, 
+function ObjectDetailController($location, $routeParams, ChapterService, 
   ObjectService, UtilService) {
 
   var self = this;
@@ -41,8 +41,7 @@ function ObjectDetailController($location, $routeParams, CardUtilService, Chapte
   };
 
   self.back = function() {
-    $location.path('/project/objects');
-    CardUtilService.focus($routeParams.id, 'objects');
+    $location.path('/project/objects?focus=objects_' + $routeParams.id);
   };
 
   self.changeStatus = function(status) {

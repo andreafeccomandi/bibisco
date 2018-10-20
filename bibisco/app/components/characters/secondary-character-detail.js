@@ -19,8 +19,8 @@ angular.
     controller: SecondaryCharacterDetailController
   });
 
-function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
-  CardUtilService, ChapterService, SecondaryCharacterService, UtilService) {
+function SecondaryCharacterDetailController($location, $routeParams, 
+  ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
 
@@ -41,8 +41,7 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/project/characters');
-    CardUtilService.focus($routeParams.id, 'secondarycharacters');
+    $location.path('/project/characters?focus=secondarycharacters_' + $routeParams.id);
   };
 
   self.changeStatus = function(status) {

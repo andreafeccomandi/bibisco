@@ -19,8 +19,8 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, ChapterService, 
-  CardUtilService, StrandService, UtilService) {
+function StrandDetailController($location, $routeParams, ChapterService, StrandService, 
+  UtilService) {
 
   var self = this;
 
@@ -41,8 +41,7 @@ function StrandDetailController($location, $routeParams, ChapterService,
   };
 
   self.back = function() {
-    $location.path('/project/architecture');
-    CardUtilService.focus($routeParams.id,'strands');
+    $location.path('/project/architecture?focus=strands_' + $routeParams.id);
   };
 
   self.changeStatus = function(status) {

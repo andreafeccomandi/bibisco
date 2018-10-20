@@ -23,8 +23,7 @@ angular.
   });
 
 function SceneDetailController($injector, $location, $rootScope, $routeParams,
-  $scope, CardUtilService, ChapterService, hotkeys, PopupBoxesService, 
-  SupporterEditionChecker) {
+  $scope, ChapterService, hotkeys, PopupBoxesService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
@@ -82,8 +81,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/chapters/' + self.chapter.$loki);
-    CardUtilService.focus($routeParams.sceneid, 'scenes');
+    $location.path('/chapters/' + self.chapter.$loki + '?focus=scenes_' + $routeParams.sceneid);
   };
 
   self.changerevision = function(action, revision) {

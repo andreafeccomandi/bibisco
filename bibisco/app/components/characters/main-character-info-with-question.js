@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
-  CardUtilService, MainCharacterService) {
+  MainCharacterService) {
 
   var self = this;
 
@@ -60,8 +60,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
-    CardUtilService.focus($routeParams.info, 'maincharactersdetails');
+    $location.path('/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info);
   };
 
   self.save = function () {

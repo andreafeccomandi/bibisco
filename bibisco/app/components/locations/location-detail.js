@@ -19,8 +19,7 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, CardUtilService, 
-  ChapterService, LocationService) {
+function LocationDetailController($location, $routeParams, ChapterService, LocationService) {
 
   var self = this;
 
@@ -42,8 +41,7 @@ function LocationDetailController($location, $routeParams, CardUtilService,
   };
 
   self.back = function() {
-    $location.path('/project/locations');
-    CardUtilService.focus($routeParams.id, 'locations');
+    $location.path('/project/locations?focus=locations_' + $routeParams.id);
   };
 
   self.changeStatus = function(status) {

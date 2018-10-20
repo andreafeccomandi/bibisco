@@ -19,8 +19,7 @@ angular.
     controller: ChapterInfoDetailController
   });
 
-function ChapterInfoDetailController($location, $routeParams, ChapterService, 
-  CardUtilService) {
+function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   var self = this;
 
@@ -56,8 +55,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService,
   };
 
   self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid);
-    CardUtilService.focus($routeParams.type, 'chapterinfo');
+    $location.path('/chapters/' + $routeParams.chapterid + '?focus=chapterinfo_' + $routeParams.type);
   };
 
   self.changeStatus = function(status) {

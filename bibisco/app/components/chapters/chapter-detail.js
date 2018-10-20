@@ -28,7 +28,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.chapter = ChapterService.getChapter($routeParams.id);
+    self.chapter = ChapterService.getChapter($routeParams.id.split('?')[0]);
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
 
     // breadcrumbs
@@ -57,6 +57,9 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
     self.showprojectexplorer = false;
+
+    // set focus
+    CardUtilService.focusElementInPath($routeParams.id);
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -81,8 +84,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   };
 
   self.back = function() {
-    $location.path('/project/chapters');
-    CardUtilService.focus($routeParams.id, 'chapters');
+    $location.path('/project/chapters?focus=chapters_' + self.chapter.$loki);
   };
 
   self.changeTitle = function() {

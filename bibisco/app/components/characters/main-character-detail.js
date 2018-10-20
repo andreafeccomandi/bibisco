@@ -29,7 +29,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.maincharacter = self.getMainCharacter($routeParams.id);
+    self.maincharacter = self.getMainCharacter($routeParams.id.split('?')[0]);
     self.deleteforbidden = self.isDeleteForbidden();
 
     self.breadcrumbitems = [];
@@ -63,11 +63,13 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     self.editmode = false;
     self.showprojectexplorer = true;
+
+    // set focus
+    CardUtilService.focusElementInPath($routeParams.id);
   };
 
   self.back = function() {
-    $location.path('/project/characters');
-    CardUtilService.focus($routeParams.id, 'maincharacters');
+    $location.path('/project/characters?focus=maincharacters_' + self.maincharacter.$loki);
   };
 
   self.changeStatus = function(status) {
