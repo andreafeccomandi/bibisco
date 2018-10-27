@@ -24,9 +24,6 @@ angular.
       editmode: '=',
       headersubtitle: '<',
       maincharacter: '=',
-      savedcharacters: '=',
-      savedcontent: '=',
-      savedwords: '=',
       showprojectexplorer: '<',
       type: '<',
       words: '='
@@ -41,8 +38,5 @@ function FreetextEditorController() {
     self.content = self.maincharacter[self.type].freetext;
     self.characters = self.maincharacter[self.type].freetextcharacters;
     self.words = self.maincharacter[self.type].freetextwords;
-    self.savedcontent = self.maincharacter[self.type].freetext;
-    self.savedcharacters = self.maincharacter[self.type].freetextcharacters;
-    self.savedwords = self.maincharacter[self.type].freetextwords;
   };
 }

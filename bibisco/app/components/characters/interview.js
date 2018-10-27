@@ -21,6 +21,7 @@ angular.
       autosaveenabled: '=',
       characters: '=',
       content: '=',
+      editfunction: '&',
       editmode: '=',
       maincharacter: '=',
       questionselected: '=',

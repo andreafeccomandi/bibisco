@@ -26,12 +26,13 @@ function LocationDetailController($location, $routeParams, ChapterService, Locat
   self.$onInit = function() {
 
     self.location = self.getLocation($routeParams.id);
+    self.mode = $routeParams.mode;
     self.name = LocationService.calculateLocationName(self.location);
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/project/locations'
+      href: '/project/locations?focus=locations_' + self.location.$loki
     });
     self.breadcrumbitems.push({
       label: self.name
@@ -40,8 +41,12 @@ function LocationDetailController($location, $routeParams, ChapterService, Locat
     self.deleteforbidden = self.isDeleteForbidden();
   };
 
-  self.back = function() {
-    $location.path('/project/locations?focus=locations_' + $routeParams.id);
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/project/locations?focus=locations_' + self.location.$loki);
+    } else if (self.mode === 'edit') {
+      $location.path('/locations/ ' + self.location.$loki + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
@@ -57,6 +62,10 @@ function LocationDetailController($location, $routeParams, ChapterService, Locat
     LocationService.remove(self.location
       .$loki);
     $location.path('/project/locations');
+  };
+
+  self.edit = function () {
+    $location.path('/locations/ ' + self.location.$loki + '/edit');
   };
 
   self.getLocation = function(id) {

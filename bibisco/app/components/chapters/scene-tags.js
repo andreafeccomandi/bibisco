@@ -303,8 +303,7 @@ function SceneTagsController($location, $rootScope, $routeParams, $scope,
   };
 
   self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
-      $routeParams.sceneid);
+    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' + $routeParams.sceneid + '/view');
   };
 
   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {

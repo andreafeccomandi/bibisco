@@ -11,10 +11,5 @@
     <span>{{"jsp.common.button.save" | translate}}</span>
 </button>
 
-<buttonwithconfirm enableconfirm="$root.dirty" 
-    buttonlabel="jsp.common.button.back" 
-    buttonfunction="$ctrl.back()"
-    buttonstyle="btn-default" 
-    confirmmessage="js.common.message.confirmExitWithoutSave"
-    hotkey="esc">
-</buttonwithconfirm>
+<button type="button" class="btn btn-default" 
+    ng-click="$ctrl.back()">{{"jsp.common.button.back" | translate}}</button>

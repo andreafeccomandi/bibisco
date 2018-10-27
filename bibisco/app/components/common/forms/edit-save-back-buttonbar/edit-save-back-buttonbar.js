@@ -20,16 +20,10 @@ angular.
     bindings: {
       autosaveenabled: '=',
       backfunction: '&',
-      characters: '=',
-      content: '=',
       editbuttonvisible: '<',
-      editmode: '=',
-      savedcharacters: '=',
-      savedcontent: '=',
-      savedwords: '=',
+      editfunction: '&',
+      editmode: '<',
       savefunction: '&',
-      showprojectexplorer: '=',
-      words: '='
     }
   });
 
@@ -41,6 +35,7 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
   self.$onInit = function () {
     self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
     self.saving = false;
+    self.confirmdialogopen = false;
     self.autosavefunctionpromise = $interval(function () {
       if (self.autosaveenabled && self.editmode && $rootScope.dirty) {
         self.save();
@@ -48,28 +43,24 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     }, 60000);
   };
 
+  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = false;
+  });
+
   self.$onDestroy = function () {
     $interval.cancel(self.autosavefunctionpromise);
   };
 
   self.enableeditmode = function () {
-    self.editmode = true;
-    self.showprojectexplorer = false;
+    self.editfunction();
   };
 
   self.back = function () {
-    self.characters = self.savedcharacters;
-    self.content = self.savedcontent;
-    self.words = self.savedwords;
-    if (self.editmode) {
-      //  back to view mode
-      self.editmode = false;
-      $rootScope.dirty = false;
-      self.showprojectexplorer = false;
-    } else {
-      // back to previous page
-      self.backfunction();
-    }
+    self.backfunction();
   };
 
   self.save = function () {
@@ -90,6 +81,17 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
       }
     })
     .add({
+      combo: ['esc', 'esc'],
+      description: 'back',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function ($event) {
+        if (!self.confirmdialogopen) {
+          $event.preventDefault();
+          self.back();
+        }
+      }
+    })
+    .add({
       combo: ['ctrl+e', 'command+e'],
       description: 'edit',
       callback: function () {
@@ -101,8 +103,6 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     self.savefunction();
     self.saving = false;
     $rootScope.dirty = false;
-    self.savedcharacters = self.characters;
-    self.savedcontent = self.content;
-    self.savedwords = self.words;
+    $rootScope.$emit('CONTENT_SAVED');
   };
 }

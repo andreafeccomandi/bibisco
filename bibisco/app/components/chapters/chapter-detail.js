@@ -35,7 +35,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters'
+      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -102,11 +102,11 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   };
 
   self.selectChapterInfo = function(type) {
-    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type);
+    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type + '/view');
   };
 
   self.selectScene = function(id) {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id);
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id + '/view');
   };
 
   self.delete = function() {

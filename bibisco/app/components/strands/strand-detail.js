@@ -27,11 +27,12 @@ function StrandDetailController($location, $routeParams, ChapterService, StrandS
   self.$onInit = function() {
 
     self.strand = self.getStrand($routeParams.id);
+    self.mode = $routeParams.mode;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture'
+      href: '/project/architecture?focus=strands_' + self.strand.$loki
     });
     self.breadcrumbitems.push({
       label: self.strand.name
@@ -40,8 +41,12 @@ function StrandDetailController($location, $routeParams, ChapterService, StrandS
     self.deleteforbidden = self.isDeleteForbidden();
   };
 
-  self.back = function() {
-    $location.path('/project/architecture?focus=strands_' + $routeParams.id);
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/project/architecture?focus=strands_' + self.strand.$loki);
+    } else if (self.mode === 'edit') {
+      $location.path('/strands/ ' + self.strand.$loki + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
@@ -57,6 +62,10 @@ function StrandDetailController($location, $routeParams, ChapterService, StrandS
     StrandService.remove(self.strand
       .$loki);
     $location.path('/project/architecture');
+  };
+
+  self.edit = function () {
+    $location.path('/strands/ ' + self.strand.$loki + '/edit');
   };
 
   self.getStrand = function(id) {

@@ -64,7 +64,7 @@ function LocationsController($location, $scope, LocationService) {
   };
 
   self.select = function(id) {
-    $location.path('/locations/' + id);
+    $location.path('/locations/' + id + '/view');
   };
 
   self.locationDescription = function(nation, state, city) {

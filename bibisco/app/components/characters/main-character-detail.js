@@ -35,7 +35,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -96,12 +96,12 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.showInfoWithQuestion = function(id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithquestion/' + id);
+      '/infowithquestion/' + id + '/view');
   };
 
   self.showInfoWithoutQuestion = function (id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithoutquestion/' + id);
+      '/infowithoutquestion/' + id + '/view');
   };
 
   self.isDeleteForbidden = function () {

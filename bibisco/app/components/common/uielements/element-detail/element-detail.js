@@ -31,6 +31,8 @@ angular.
       deleteforbiddenmessage: '@',
       deletefunction: '&',
       disableemptymessage: '<',
+      editmode: '<',
+      editfunction: '&',
       eventname: '@',
       headertitle: '@',
       headersubtitle: '@',
@@ -55,7 +57,6 @@ function ElementDetailController($rootScope, PopupBoxesService) {
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
-    self.editmode = false;
     self.showprojectexplorer = false;
     
     // action items
@@ -78,10 +79,5 @@ function ElementDetailController($rootScope, PopupBoxesService) {
         }
       });
     }
-
-    // saved content
-    self.savedcontent = self.content;
-    self.savedcharacters = self.characters;
-    self.savedwords = self.words;
   };
 }

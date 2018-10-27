@@ -24,7 +24,6 @@ angular.
       disableemptymessage: '<',
       editmode: '=',
       headersubtitle: '<',
-      savedcontent: '<',
       showprojectexplorer: '<',
       words: '='
     }

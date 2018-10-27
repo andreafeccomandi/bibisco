@@ -26,27 +26,60 @@ angular.
   });
 
 
-function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibModal,
-  hotkeys, ContextService, SanitizeHtmlService,
+function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, $uibModal,
+  hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
   self.$onInit = function() {
     self.contenteditable = true;
+    self.checkExitActive = true;
     
+    // saved content
+    self.savedcontent = self.content;
+    self.savedcharacters = self.characters;
+    self.savedwords = self.words;
+
+    console.log('onInit self.characters = ' + self.characters
+      + 'self.savedcharacters = ' + self.savedcharacters);
+
+    // init content
     if (self.content === '') {
       self.content = '<p><br></p>';
     }
-    self.previouscontent = self.content;
-
-    self.countWordsAndCharacters();
     
     // set <p> as default paragraph separator
     $document[0].execCommand('defaultParagraphSeparator', false, 'p');
-    
+
+    // init words and characters
+    self.countWordsAndCharacters();
+
+    // focus on editor
     self.richtexteditor = document.getElementById('richtexteditor');
     self.focus();
   };
+
+  $scope.$on('$locationChangeStart', function(event) {
+    
+    if (self.checkExitActive && $rootScope.dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        self.characters = self.savedcharacters;
+        self.content = self.savedcontent;
+        self.words = self.savedwords;
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function() {
+        self.checkExitActive = true;
+      });
+    }
+  });
 
   $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {
     self.focus();
@@ -64,6 +97,12 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
     self.contenteditable = true;
     self.focus();
+  });
+
+  $rootScope.$on('CONTENT_SAVED', function () {
+    self.savedcontent = self.content;
+    self.savedcharacters = self.characters;
+    self.savedwords = self.words;
   });
 
   self.focus = function() {

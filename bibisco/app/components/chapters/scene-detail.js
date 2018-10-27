@@ -29,7 +29,8 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   self.$onInit = function() {
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
-
+    
+    self.mode = $routeParams.mode;
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.scenerevision = self.scene.revisions[self.scene.revision];
@@ -39,18 +40,18 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
-    self.editmode = false;
+    self.editmode = (self.mode === 'edit');
     self.showprojectexplorer = false;
 
     // breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters'
+      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki
+      href: '/chapters/' + self.chapter.$loki + '?focus=scenes_' + self.scene.$loki
     });
     self.breadcrumbitems.push({
       label: self.scene.title
@@ -75,22 +76,23 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
     // saved content
     self.content = self.scenerevision.text;
-    self.savedcontent = self.scenerevision.text;
-    self.savedcharacters = self.scenerevision.characters;
-    self.savedwords = self.scenerevision.words;
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + self.chapter.$loki + '?focus=scenes_' + $routeParams.sceneid);
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/chapters/' + self.chapter.$loki + '?focus=scenes_' + $routeParams.sceneid);
+    } else if (self.mode === 'edit') {
+      $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view');
+    }
   };
 
   self.changerevision = function(action, revision) {
     if (action === 'new-from-actual') {
       self.scene = ChapterService.insertSceneRevisionFromActual($routeParams.sceneid);
-      self.editmode = true;
+      self.edit();
     } else if (action === 'new-from-scratch') {
       self.scene = ChapterService.insertSceneRevisionFromScratch($routeParams.sceneid);
-      self.editmode = true;
+      self.edit();
     } else if (action === 'change') {
       self.scene = ChapterService.changeSceneRevision($routeParams.sceneid, revision);
     } else if (action === 'delete') {
@@ -99,9 +101,6 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.content = self.scenerevision.text;
-    self.savedcontent = self.scenerevision.text;
-    self.savedcharacters = self.scenerevision.characters;
-    self.savedwords = self.scenerevision.words;
   };
 
   self.changeStatus = function(status) {
@@ -112,6 +111,11 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   self.changetitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/title');
+  };
+
+  self.edit = function () {
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      .$loki + '/edit');
   };
 
   self.moveSceneToAnotherChapter = function() {

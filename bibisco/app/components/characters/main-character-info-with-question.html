@@ -25,9 +25,6 @@
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
-  savedcharacters="$ctrl.savedcharacters"
-  savedcontent="$ctrl.savedcontent"
-  savedwords="$ctrl.savedwords"
   showprojectexplorer="$ctrl.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
@@ -35,9 +32,10 @@
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <detailfootertop autosaveenabled="$ctrl.autosaveenabled" 
+    <detailfootertop 
+      autosaveenabled="$ctrl.autosaveenabled" 
       characters="$ctrl.characters"
-      editmode="$ctrl.editmode" 
+      editmode="$ctrl.editmode"
       lastsave="$ctrl.maincharacter.lastsave" 
       words="$ctrl.words"
       wordscharactersenabled="true">
@@ -55,15 +53,13 @@
           open="up"
           visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
-        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" 
+        <editsavebackbuttonbar 
+          autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
           characters="$ctrl.characters"
-          content="$ctrl.content"
           editbuttonvisible="true" 
-          editmode="$ctrl.editmode" 
-          savedcharacters="$ctrl.savedcharacters" 
-          savedcontent="$ctrl.savedcontent" 
-          savedwords="$ctrl.savedwords"
+          editfunction="$ctrl.edit()"
+          editmode="$ctrl.editmode"
           savefunction="$ctrl.save()"
           showprojectexplorer="$ctrl.showprojectexplorer"
           words="$ctrl.words">
