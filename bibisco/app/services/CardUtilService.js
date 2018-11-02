@@ -17,10 +17,26 @@ angular.module('bibiscoApp').service('CardUtilService', function ($timeout) {
   'use strict';
 
   return {
-    focus: function(id, family) {
+    focus: function (focuselement) {
       $timeout(function () {
-        document.getElementById(family+'_'+id).focus();
+        document.getElementById(focuselement).focus();
       }, 0);
-    }
+    },
+
+    focusElementInPath: function (path) {
+
+      let pathparams = path.split('?')[1];
+      if (pathparams) {
+        let params = pathparams.split('&');
+        for (let index = 0; index < params.length; index++) {
+          let param = params[index];
+          if (param.split('=')[0] === 'focus') {
+            let focuselement = param.split('=')[1];
+            this.focus(focuselement);
+          }
+          continue;
+        }
+      }
+    },
   };
 });
