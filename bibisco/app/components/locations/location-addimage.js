@@ -31,13 +31,16 @@ function LocationAddImageController($routeParams, LocationService) {
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_locations'
+      label: 'common_locations',
+      href: '/project/locations?focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
-      label: locationName
+      label: locationName,
+      href: '/locations/ ' + location.$loki + '/view'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images'
+      label: 'jsp.projectFromScene.select.location.images',
+      href: '/locations/ ' + location.$loki + '/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'

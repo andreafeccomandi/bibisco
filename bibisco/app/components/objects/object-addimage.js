@@ -30,19 +30,22 @@ function ItemAddImageController($routeParams, ObjectService) {
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_items'
+      label: 'objects',
+      href: '/project/objects?focus=objects_' + object.$loki
     });
     self.breadcrumbitems.push({
-      label: object.name
+      label: object.name,
+      href: '/objects/' + object.$loki + '/view'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images'
+      label: 'jsp.projectFromScene.select.location.images',
+      href: '/objects/' + object.$loki + '/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'
     });
 
-    self.exitpath = '/objects/' + $routeParams.id + '/images';
+    self.exitpath = '/objects/' + object.$loki + '/images';
   };
 
   self.save = function(name, path) {

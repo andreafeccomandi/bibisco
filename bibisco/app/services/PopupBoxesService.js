@@ -57,8 +57,8 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, 
       }, function() {
         if (cancelFunction) {
           cancelFunction();
-          $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
         }
+        $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
       });
     }
   };

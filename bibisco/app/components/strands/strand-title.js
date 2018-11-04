@@ -27,27 +27,34 @@ function StrandTitleController($location, $routeParams, StrandService) {
 
     // common bradcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'common_architecture'
-    });
 
     if ($routeParams.id !== undefined) {
-      let strand = StrandService.getStrand(
-        $routeParams.id);
+      let strand = StrandService.getStrand($routeParams.id);
+
+      self.breadcrumbItems.push({
+        label: 'common_architecture',
+        href: '/project/architecture?focus=strands_' + strand.$loki
+      });
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: strand.name
+        label: strand.name,
+        href: '/strands/' + strand.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/strands/' + $routeParams.id;
+      self.exitpath = '/strands/' + strand.$loki + '/view';
       self.name = strand.name;
-      self.pageheadertitle =
-        'jsp.architecture.strand.dialog.title.updateTitle';
+      self.pageheadertitle = 'jsp.architecture.strand.dialog.title.updateTitle';
+
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'common_architecture',
+        href: '/project/architecture'
+      });
 
       // create breadcrumb items
       self.breadcrumbItems.push({

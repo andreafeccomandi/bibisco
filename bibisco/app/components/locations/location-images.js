@@ -31,10 +31,12 @@ function LocationImagesController($location, $rootScope, $routeParams,
     
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_locations'
+      label: 'common_locations',
+      href: '/project/locations?focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
-      label: locationName
+      label: locationName,
+      href: '/locations/ ' + location.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -55,6 +57,6 @@ function LocationImagesController($location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/locations/' + $routeParams.id);
+    $location.path('/locations/' + $routeParams.id + '/view');
   };
 }

@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService,CardUtilService, PopupBoxesService) {
+  ChapterService,CardUtilService, hotkeys, PopupBoxesService) {
 
   var self = this;
 
@@ -60,6 +60,8 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     // set focus
     CardUtilService.focusElementInPath($routeParams.id);
+
+    self.confirmdialogopen = false;
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -114,4 +116,24 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $location.path('/project/chapters');
   };
 
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['esc', 'esc'],
+      description: 'back',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function ($event) {
+        if (!self.confirmdialogopen) {
+          $event.preventDefault();
+          self.back();
+        }
+      }
+    });
+
+  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = false;
+  });
 }

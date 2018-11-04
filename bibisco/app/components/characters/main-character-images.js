@@ -30,10 +30,12 @@ function MainCharacterImagesController($location, $routeParams,
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_characters'
+      label: 'common_characters',
+      href: '/project/characters?focus=maincharacters_' + mainCharacter.$loki
     });
     self.breadcrumbitems.push({
-      label: mainCharacter.name
+      label: mainCharacter.name,
+      href: '/maincharacters/' + mainCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'

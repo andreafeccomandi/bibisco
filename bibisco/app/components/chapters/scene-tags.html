@@ -1,4 +1,5 @@
-<detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="true"
+<detailheader 
+breadcrumbitems="$ctrl.breadcrumbitems" 
   headertitle="jsp.scene.title.tags">
 </detailheader>
 
@@ -154,11 +155,8 @@
           <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
       <span>{{"jsp.common.button.save" | translate}}</span>
       </button>
-      <buttonwithconfirm enableconfirm="$root.dirty" 
-        buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
-        buttonstyle="btn-default" hotkey="esc"
-        confirmmessage="js.common.message.confirmExitWithoutSave">
-      </buttonwithconfirm>
+      <button type="button" class="btn btn-default" 
+        ng-click="$ctrl.back()">{{"jsp.common.button.back" | translate}}</button>
       </span>
     </div>
   </div>

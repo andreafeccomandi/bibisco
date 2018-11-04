@@ -28,27 +28,35 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
     // common breadcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'common_characters'
-    });
-
+    
     if ($routeParams.id !== undefined) {
       let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
         $routeParams.id);
 
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/project/characters?focus=secondarycharacters_' + secondarycharacter.$loki
+      });
+
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: secondarycharacter.name
+        label: secondarycharacter.name,
+        href: '/secondarycharacters/' + secondarycharacter.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/secondarycharacters/' + $routeParams.id;
+      self.exitpath = '/secondarycharacters/' + secondarycharacter.$loki + '/view';
       self.name = secondarycharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/project/characters'
+      });
 
       // create breadcrumb items
       self.breadcrumbItems.push({

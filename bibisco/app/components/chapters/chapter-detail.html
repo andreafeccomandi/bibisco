@@ -67,11 +67,8 @@
         <dropdownmenu buttonlabel="jsp.common.button.more" 
           items="$ctrl.actionitems" open="up" visible="true">
         </dropdownmenu>
-        <buttonwithconfirm enableconfirm="false" 
-          buttonlabel="jsp.common.button.back" hotkey="esc"
-          buttonfunction="$ctrl.back()" buttonstyle="btn-default"
-          confirmmessage="js.common.message.confirmExitWithoutSave">
-        </buttonwithconfirm>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.back()">
+          {{"jsp.common.button.back" | translate}}</button>
       </span>
     </div>
   </div>

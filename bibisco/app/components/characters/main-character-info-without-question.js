@@ -39,7 +39,7 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info
+      href: '/maincharacters/' + self.maincharacter.$loki + '?focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'

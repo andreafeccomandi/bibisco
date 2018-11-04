@@ -27,17 +27,32 @@ angular.
   });
 
 
-function FormButtonsController() {
+function FormButtonsController($rootScope, $scope, hotkeys) {
 
   var self = this;
 
-  self.backWithoutConfirm = function(isDirty) {
-    if (!isDirty) {
-      self.backfunction();
-    }
+  self.$onInit = function () {
+    self.confirmdialogopen = false;
   };
 
-  self.backWithConfirm = function() {
-    self.backfunction();
-  };
+  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+    self.confirmdialogopen = false;
+  });
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['esc', 'esc'],
+      description: 'back',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function ($event) {
+        if (!self.confirmdialogopen) {
+          $event.preventDefault();
+          self.backfunction();
+        }
+      }
+    });
 }
