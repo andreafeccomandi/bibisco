@@ -27,27 +27,34 @@ function MainCharacterTitleController($location, $routeParams,
 
     // common breadcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'common_characters'
-    });
 
     if ($routeParams.id !== undefined) {
-      let maincharacter = MainCharacterService.getMainCharacter(
-        $routeParams.id);
+      let maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
+
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/project/characters?focus=maincharacters_' + maincharacter.$loki
+      });
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: maincharacter.name
+        label: maincharacter.name,
+        href: '/maincharacters/' + maincharacter.$loki
       });
       self.breadcrumbItems.push({
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/maincharacters/' + $routeParams.id;
+      self.exitpath = '/maincharacters/' + maincharacter.$loki;
       self.name = maincharacter.name;
-      self.pageheadertitle =
-        'jsp.character.dialog.title.updateTitle';
+      self.pageheadertitle = 'jsp.character.dialog.title.updateTitle';
+
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/project/characters'
+      });
 
       // create breadcrumb items
       self.breadcrumbItems.push({
@@ -56,8 +63,7 @@ function MainCharacterTitleController($location, $routeParams,
 
       self.exitpath = '/project/characters';
       self.name = null;
-      self.pageheadertitle =
-        'jsp.characters.dialog.title.createMainCharacter';
+      self.pageheadertitle = 'jsp.characters.dialog.title.createMainCharacter';
     }
   };
 

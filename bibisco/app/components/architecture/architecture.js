@@ -83,9 +83,9 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
       SupporterEditionChecker.showSupporterMessage();
     } else if (id === 'globalnotes' && SupporterEditionChecker.check()) {
       $injector.get('IntegrityService').ok();
-      $location.path('/architectureitems/' + id);
+      $location.path('/architectureitems/' + id + '/view');
     } else {
-      $location.path('/architectureitems/' + id);
+      $location.path('/architectureitems/' + id + '/view');
     }
   };
 
@@ -111,7 +111,7 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
   };
 
   self.strandSelect = function(id) {
-    $location.path('/strands/' + id);
+    $location.path('/strands/' + id + '/view');
   };
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {

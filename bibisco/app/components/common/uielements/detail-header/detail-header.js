@@ -19,7 +19,6 @@ angular.
     controller: DetailHeaderController,
     bindings: {
       breadcrumbitems: '<',
-      editmode: '<',
       headertipcode: '@',
       headertipenabled: '<',
       headertitle: '@',

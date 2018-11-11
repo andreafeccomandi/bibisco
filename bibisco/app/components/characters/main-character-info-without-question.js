@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
-  CardUtilService, MainCharacterService) {
+  MainCharacterService) {
 
   var self = this;
 
@@ -30,15 +30,16 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
+    self.mode = $routeParams.mode;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id
+      href: '/maincharacters/' + self.maincharacter.$loki + '?focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -48,9 +49,16 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
   };
 
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
-    CardUtilService.focus($routeParams.info, 'maincharactersdetails');
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info);
+    } else if (self.mode === 'edit') {
+      $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/view');
+    }
+  };
+
+  self.edit = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/edit');
   };
 
   self.save = function () {

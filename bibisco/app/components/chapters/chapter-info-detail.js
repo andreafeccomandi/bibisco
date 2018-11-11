@@ -19,14 +19,14 @@ angular.
     controller: ChapterInfoDetailController
   });
 
-function ChapterInfoDetailController($location, $routeParams, ChapterService, 
-  CardUtilService) {
+function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.mode = $routeParams.mode;
 
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
@@ -42,11 +42,11 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters'
+      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki
+      href: '/chapters/' + $routeParams.chapterid + '?focus=chapterinfo_' + $routeParams.type
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -55,14 +55,21 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService,
     self.showprojectexplorer = true;
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid);
-    CardUtilService.focus($routeParams.type, 'chapterinfo');
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/chapters/' + $routeParams.chapterid + '?focus=chapterinfo_' + $routeParams.type);
+    } else if (self.mode === 'edit') {
+      $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
     self.chapterinfo.status = status;
     ChapterService.update(self.chapter);
+  };
+
+  self.edit = function () {
+    $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/edit');
   };
 
   self.savefunction = function() {

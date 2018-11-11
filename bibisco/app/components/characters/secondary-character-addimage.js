@@ -30,13 +30,16 @@ function SecondaryCharacterAddImageController($routeParams, SecondaryCharacterSe
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_characters'
+      label: 'common_characters',
+      href: '/project/characters?focus=secondarycharacters_' + secondaryCharacter.$loki
     });
     self.breadcrumbitems.push({
-      label: secondaryCharacter.name
+      label: secondaryCharacter.name,
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
     });
     self.breadcrumbitems.push({
-      label: 'common_characters_images'
+      label: 'common_characters_images',
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'

@@ -66,7 +66,7 @@ function ObjectsController($injector, $location, $scope,
 
   self.select = function(id) {
     self.supporterEditionFilterAction(function() {
-      $location.path('/objects/' + id);
+      $location.path('/objects/' + id + '/view');
     });
   };
 

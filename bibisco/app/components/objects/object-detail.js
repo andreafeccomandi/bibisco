@@ -19,7 +19,7 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $routeParams, CardUtilService, ChapterService, 
+function ObjectDetailController($location, $routeParams, ChapterService, 
   ObjectService, UtilService) {
 
   var self = this;
@@ -27,11 +27,12 @@ function ObjectDetailController($location, $routeParams, CardUtilService, Chapte
   self.$onInit = function() {
 
     self.object = self.getObject($routeParams.id);
+    self.mode = $routeParams.mode;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/project/objects'
+      href: '/project/objects?focus=objects_' + self.object.$loki
     });
     self.breadcrumbitems.push({
       label: self.object.name
@@ -40,9 +41,12 @@ function ObjectDetailController($location, $routeParams, CardUtilService, Chapte
     self.deleteforbidden = self.isDeleteForbidden();
   };
 
-  self.back = function() {
-    $location.path('/project/objects');
-    CardUtilService.focus($routeParams.id, 'objects');
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/project/objects?focus=objects_' + self.object.$loki);
+    } else if (self.mode === 'edit') {
+      $location.path('/objects/ ' + self.object.$loki + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
@@ -58,6 +62,10 @@ function ObjectDetailController($location, $routeParams, CardUtilService, Chapte
     ObjectService.remove(self.object
       .$loki);
     $location.path('/project/objects');
+  };
+
+  self.edit = function () {
+    $location.path('/objects/ ' + self.object.$loki + '/edit');
   };
 
   self.getObject = function(id) {

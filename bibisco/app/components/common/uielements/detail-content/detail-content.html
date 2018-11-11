@@ -9,13 +9,12 @@
       <div class="col-sm-8 full-height" 
         ng-class="{'col-sm-offset-2': !$ctrl.showprojectexplorer}">
         <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
-          content="$ctrl.savedcontent">
+          content="$ctrl.content">
         </richtextviewer>
         <richtexteditor ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"
           characters="$ctrl.characters"
           content="$ctrl.content"
-          dirty="$ctrl.dirty"
           words="$ctrl.words"></richtexteditor>
       </div>
     </div>

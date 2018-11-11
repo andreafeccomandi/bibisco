@@ -36,20 +36,6 @@ function ImagesViewerController($rootScope, $scope, hotkeys, ImageService) {
 
     // hide menu
     $rootScope.$emit('SHOW_ELEMENT_IMAGES');
-
-    hotkeys.bindTo($scope)
-      .add({
-        combo: ['esc', 'esc'],
-        description: 'esc',
-        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
-        callback: function ($event) {
-          $event.preventDefault();
-          setTimeout(function () {
-            document.getElementById('imagesViewerBackButton').focus();
-            document.getElementById('imagesViewerBackButton').click();
-          }, 0);
-        }
-      });
   };
 
   self.fullpath = function(filename) {

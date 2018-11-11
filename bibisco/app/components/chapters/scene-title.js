@@ -25,15 +25,17 @@ function SceneTitleController($location, $routeParams, ChapterService) {
 
   self.$onInit = function() {
 
+    let chapter = ChapterService.getChapter($routeParams.chapterid);
+
     // common breadcrumb root
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'common_chapters'
+      label: 'common_chapters',
+      href: '/project/chapters?focus=chapters_' + chapter.$loki
     });
-
-    let chapter = ChapterService.getChapter($routeParams.chapterid);
     self.breadcrumbItems.push({
-      label: '#' + chapter.position + ' ' + chapter.title
+      label: '#' + chapter.position + ' ' + chapter.title,
+      href: '/chapters/' + chapter.$loki
     });
 
     if ($routeParams.sceneid !== undefined) {
@@ -41,17 +43,17 @@ function SceneTitleController($location, $routeParams, ChapterService) {
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: scene.title
+        label: scene.title,
+        href: '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'jsp.scene.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/chapters/' + $routeParams.chapterid + '/scenes/' +
-        $routeParams.sceneid;
+      self.exitpath = '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view';
       self.title = scene.title;
-      self.pageheadertitle =
-        'jsp.scene.dialog.title.updateTitle';
+      self.pageheadertitle = 'jsp.scene.dialog.title.updateTitle';
+
     } else {
 
       // create breadcrumb items
@@ -59,7 +61,7 @@ function SceneTitleController($location, $routeParams, ChapterService) {
         label: 'jsp.chapter.dialog.title.createScene'
       });
 
-      self.exitpath = '/chapters/' + $routeParams.chapterid;
+      self.exitpath = '/chapters/' + chapter.$loki;
       self.name = null;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.createScene';

@@ -31,15 +31,20 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_chapters'
+      label: 'common_chapters',
+      href: '/project/chapters?focus=chapters_' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({
-      label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title
+      label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title,
+      href: '/chapters/' + self.sourceChapter.$loki + '?focus=scenes_' + self.scene.$loki
     });
+
     self.breadcrumbitems.push({
-      label: self.scene.title
+      label: self.scene.title,
+      href: '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view'
     });
+
     self.breadcrumbitems.push({
       label: 'jsp.scene.button.moveSceneToAnotherChapter.title'
     });

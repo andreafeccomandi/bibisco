@@ -20,22 +20,15 @@ angular.
     bindings: {
       autosaveenabled: '=',
       backfunction: '&',
-      characters: '=',
-      content: '=',
-      dirty: '=',
       editbuttonvisible: '<',
-      editmode: '=',
-      savedcharacters: '=',
-      savedcontent: '=',
-      savedwords: '=',
+      editfunction: '&',
+      editmode: '<',
       savefunction: '&',
-      showprojectexplorer: '=',
-      words: '='
     }
   });
 
-function EditSaveBackButtonbarController($interval, $scope, $timeout, 
-  hotkeys, RichTextEditorPreferencesService) {
+function EditSaveBackButtonbarController($interval, $rootScope, $scope, 
+  $timeout, hotkeys, RichTextEditorPreferencesService) {
 
   var self = this;
 
@@ -43,7 +36,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
     self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
     self.saving = false;
     self.autosavefunctionpromise = $interval(function () {
-      if (self.autosaveenabled && self.editmode && self.dirty) {
+      if (self.autosaveenabled && self.editmode && $rootScope.dirty) {
         self.save();
       }
     }, 60000);
@@ -54,27 +47,15 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
   };
 
   self.enableeditmode = function () {
-    self.editmode = true;
-    self.showprojectexplorer = false;
+    self.editfunction();
   };
 
   self.back = function () {
-    self.characters = self.savedcharacters;
-    self.content = self.savedcontent;
-    self.words = self.savedwords;
-    if (self.editmode) {
-      //  back to view mode
-      self.editmode = false;
-      self.dirty = false;
-      self.showprojectexplorer = false;
-    } else {
-      // back to previous page
-      self.backfunction();
-    }
+    self.backfunction();
   };
 
   self.save = function () {
-    if (self.dirty) {
+    if ($rootScope.dirty) {
       self.saving = true;
       $timeout(function () {
         self.executeSave();
@@ -101,9 +82,7 @@ function EditSaveBackButtonbarController($interval, $scope, $timeout,
   self.executeSave = function() {
     self.savefunction();
     self.saving = false;
-    self.dirty = false;
-    self.savedcharacters = self.characters;
-    self.savedcontent = self.content;
-    self.savedwords = self.words;
+    $rootScope.dirty = false;
+    $rootScope.$emit('CONTENT_SAVED');
   };
 }

@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
-  CardUtilService, MainCharacterService) {
+  MainCharacterService) {
 
   var self = this;
 
@@ -30,15 +30,17 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
+    self.mode = $routeParams.mode;
+    self.editmode = (self.mode === 'edit');
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id
+      href: '/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'common_' + $routeParams.info
@@ -49,19 +51,23 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.autosaveenabled;
     self.content;
-    self.dirty = false;
-    self.editmode = false;
+    $rootScope.dirty = false;
     self.questionselected;
-    self.savedcontent;
     self.showprojectexplorer = false;
-
     self.characters;
     self.words;
   };
 
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
-    CardUtilService.focus($routeParams.info, 'maincharactersdetails');
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info);
+    } else if (self.mode === 'edit') {
+      $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/view');
+    }
+  };
+
+  self.edit = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/edit');
   };
 
   self.save = function () {

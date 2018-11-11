@@ -19,19 +19,20 @@ angular.
     controller: SecondaryCharacterDetailController
   });
 
-function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
-  CardUtilService, ChapterService, SecondaryCharacterService, UtilService) {
+function SecondaryCharacterDetailController($location, $routeParams, 
+  ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
+    self.mode = $routeParams.mode;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/project/characters?focus=secondarycharacters_' + self.secondarycharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
@@ -41,8 +42,11 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/project/characters');
-    CardUtilService.focus($routeParams.id, 'secondarycharacters');
+    if (self.mode === 'view') {
+      $location.path('/project/characters?focus=secondarycharacters_' + self.secondarycharacter.$loki);
+    } else if (self.mode === 'edit') {
+      $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
@@ -59,6 +63,10 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     SecondaryCharacterService.remove(self.secondarycharacter
       .$loki);
     $location.path('/project/characters');
+  };
+
+  self.edit = function () {
+    $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/edit');
   };
 
   self.getSecondaryCharacter = function(id) {

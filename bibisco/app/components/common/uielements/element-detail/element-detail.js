@@ -31,6 +31,8 @@ angular.
       deleteforbiddenmessage: '@',
       deletefunction: '&',
       disableemptymessage: '<',
+      editmode: '<',
+      editfunction: '&',
       eventname: '@',
       headertitle: '@',
       headersubtitle: '@',
@@ -46,7 +48,7 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope, PopupBoxesService) {
+function ElementDetailController($rootScope, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -54,8 +56,7 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     
     // common element detail flags
     self.autosaveenabled;
-    self.dirty = false;
-    self.editmode = false;
+    $rootScope.dirty = false;
     self.showprojectexplorer = false;
     
     // action items
@@ -78,10 +79,5 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
         }
       });
     }
-
-    // saved content
-    self.savedcontent = self.content;
-    self.savedcharacters = self.characters;
-    self.savedwords = self.words;
   };
 }

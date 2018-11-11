@@ -1,5 +1,4 @@
 <detailheader breadcrumbitems="$ctrl.breadcrumbitems" 
-  editmode="$ctrl.editmode" 
   headertitle="{{$ctrl.title}}" 
   headertipcode="sceneTip"
   headertipenabled="!$ctrl.editmode"
@@ -11,54 +10,54 @@
   autosaveenabled="$ctrl.autosaveenabled" 
   characters="$ctrl.scenerevision.characters" 
   content="$ctrl.content" 
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
-  savedcontent="$ctrl.savedcontent" 
-  savefunction="$ctrl.save()"
   showprojectexplorer="$ctrl.showprojectexplorer" 
   words="$ctrl.scenerevision.words">
 </detailcontent>
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <detailfootertop autosaveenabled="$ctrl.autosaveenabled" 
-      characters="$ctrl.scenerevision.characters" editmode="$ctrl.editmode" 
-      lastsave="$ctrl.scene.lastsave" words="$ctrl.scenerevision.words" 
+    <detailfootertop 
+      autosaveenabled="$ctrl.autosaveenabled" 
+      characters="$ctrl.scenerevision.characters" 
+      editmode="$ctrl.editmode" 
+      lastsave="$ctrl.scene.lastsave" 
+      words="$ctrl.scenerevision.words" 
       wordscharactersenabled="true">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" 
-          visible="$ctrl.editmode || $ctrl.scenerevision.words > 0"></projectexplorerbutton>
-        <button ng-if="!$ctrl.editmode" type="button" 
+        <projectexplorerbutton 
+          showprojectexplorer="$ctrl.showprojectexplorer" 
+          visible="$ctrl.editmode || $ctrl.scenerevision.words > 0">
+        </projectexplorerbutton>
+        <button ng-if="!$ctrl.editmode" 
+          type="button" 
           class="btn btn-default" 
           uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
           ng-click="$ctrl.tags()">{{'jsp.scene.button.tags' | translate}}</button>
         <revisionselect ng-if="!$ctrl.editmode" 
-          class="btn-group" revisionactive="$ctrl.scene.revision" 
-          revisioncount="$ctrl.scene.revisions.length" revisionenabled="true" 
+          class="btn-group" 
+          revisionactive="$ctrl.scene.revision" 
+          revisioncount="$ctrl.scene.revisions.length" 
+          revisionenabled="true" 
           revisionfunction="$ctrl.changerevision(action,revision)">
         </revisionselect>
       </span>
       <span class="pull-right">
-        <dropdownmenu buttonlabel="jsp.common.button.more" 
-          items="$ctrl.actionitems" open="up"
+        <dropdownmenu 
+          buttonlabel="jsp.common.button.more" 
+          items="$ctrl.actionitems" 
+          open="up"
           visible="!$ctrl.editmode">
         </dropdownmenu>
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled" 
           backfunction="$ctrl.back()" 
-          characters="$ctrl.scenerevision.characters"
-          content="$ctrl.content"
-          dirty="$ctrl.dirty" 
           editbuttonvisible="$ctrl.scenerevision.words > 0" 
+          editfunction="$ctrl.edit()"
           editmode="$ctrl.editmode" 
-          savedcharacters="$ctrl.savedcharacters"
-          savedcontent="$ctrl.savedcontent"
-          savedwords="$ctrl.savedwords"
-          savefunction="$ctrl.save()"
-          showprojectexplorer="$ctrl.showprojectexplorer"
-          words="$ctrl.scenerevision.words">
+          savefunction="$ctrl.save()">
         </editsavebackbuttonbar>
       </span>
     </div>

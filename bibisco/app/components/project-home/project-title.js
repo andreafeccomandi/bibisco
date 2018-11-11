@@ -27,7 +27,8 @@ function projectTitleController(ProjectService) {
 
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
-      label: 'jsp.menu.project'
+      label: 'jsp.menu.project',
+      href: '/project/projecthome'
     });
     self.breadcrumbItems.push({
       label: 'jsp.project.dialog.title.updateTitle'

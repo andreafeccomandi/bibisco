@@ -19,29 +19,33 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $routeParams, $scope,
-  ChapterService, hotkeys, LocationService, MainCharacterService, 
-  ObjectService, SecondaryCharacterService, StrandService, UtilService) {
+function SceneTagsController($location, $rootScope, $routeParams, $scope,
+  $timeout, ChapterService, hotkeys, LocationService, MainCharacterService, 
+  ObjectService, PopupBoxesService, SecondaryCharacterService, 
+  StrandService, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
-    self.scenerevision = self.scene.revisions[self.scene.revision];
+    self.scenerevision = Object.assign({}, self.scene.revisions[self.scene.revision]);
 
     // init breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_chapters'
+      label: 'common_chapters',
+      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
     });
     
     self.breadcrumbitems.push({
-      label: '#' + chapter.position + ' ' + chapter.title
+      label: '#' + self.chapter.position + ' ' + self.chapter.title,
+      href: '/chapters/' + self.chapter.$loki + '?focus=scenes_' + self.scene.$loki
     });
     self.breadcrumbitems.push({
-      label: self.scene.title
+      label: self.scene.title,
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
@@ -92,8 +96,8 @@ function SceneTagsController($location, $routeParams, $scope,
         }
       });
 
-    self.dirty = false;
-
+    $rootScope.dirty = false;
+    self.checkExitActive = true;
   };
 
   self.initPointOfViews = function() {
@@ -139,13 +143,13 @@ function SceneTagsController($location, $routeParams, $scope,
   self.togglePov = function(id) {
     self.scenerevision.povid = id;
     self.initPointOfViews();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.togglePovCharacter = function(id) {
     self.scenerevision.povcharacterid = id;
     self.initPovCharacters();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleSceneCharacter = function(id) {
@@ -158,7 +162,7 @@ function SceneTagsController($location, $routeParams, $scope,
   self.toggleLocation = function(id) {
     self.scenerevision.locationid = id;
     self.initLocations();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleObject = function(id) {
@@ -183,7 +187,7 @@ function SceneTagsController($location, $routeParams, $scope,
     } else {
       arr.push(id);
     }
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.initPovCharacters = function() {
@@ -297,17 +301,36 @@ function SceneTagsController($location, $routeParams, $scope,
   };
 
   self.save = function() {
-    self.scene.revisions[self.scene.revision] = self.scenerevision;
+    self.scene.revisions[self.scene.revision] = Object.assign({}, self.scenerevision);
     ChapterService.updateScene(self.scene);
-    self.dirty = false;
+
+    $rootScope.dirty = false;
   };
 
   self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
-      $routeParams.sceneid);
+    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' + $routeParams.sceneid + '/view');
   };
 
   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
     self.scenerevision.time = data;
+  });
+
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $rootScope.dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
   });
 }

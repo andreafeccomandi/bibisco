@@ -36,6 +36,7 @@ function ModalBaseController($scope, hotkeys) {
         combo: ['enter', 'enter'],
         description: 'enter',
         callback: function ($event) {
+          $event.preventDefault();
           self.ok();
         }
       });

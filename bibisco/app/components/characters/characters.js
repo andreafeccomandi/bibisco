@@ -76,7 +76,7 @@ function CharactersController($location, $scope, MainCharacterService,
   };
 
   self.secondaryCharacterSelect = function(id) {
-    $location.path('/secondarycharacters/' + id);
+    $location.path('/secondarycharacters/' + id + '/view');
   };
 
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {

@@ -27,27 +27,34 @@ function ItemTitleController($location, $routeParams, ObjectService) {
 
     // common bradcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'objects'
-    });
 
     if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject(
-        $routeParams.id);
+      let object = ObjectService.getObject($routeParams.id);
+
+      self.breadcrumbItems.push({
+        label: 'objects',
+        href: '/project/objects?focus=objects_' + object.$loki
+      });
 
       // edit breadcrumb objects
       self.breadcrumbItems.push({
-        label: object.name
+        label: object.name,
+        href: '/objects/' + object.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'object_change_name_title'
       });
 
-      self.exitpath = '/objects/' + $routeParams.id;
+      self.exitpath = '/objects/' + object.$loki + '/view';
       self.name = object.name;
-      self.pageheadertitle =
-        'object_change_name_title';
+      self.pageheadertitle = 'object_change_name_title';
+      
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'objects',
+        href: '/project/objects'
+      });
 
       // create breadcrumb objects
       self.breadcrumbItems.push({

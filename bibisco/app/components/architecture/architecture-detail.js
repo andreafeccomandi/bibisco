@@ -20,32 +20,40 @@ angular.
   });
 
 function ArchitectureDetailController($location, $routeParams,
-  ArchitectureService,CardUtilService) {
+  ArchitectureService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
+    self.mode = $routeParams.mode;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture'
+      href: '/project/architecture?focus=architecture_' + $routeParams.id
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
   };
 
-  self.back = function() {
-    $location.path('/project/architecture');
-    CardUtilService.focus($routeParams.id, 'architecture');
+  self.back = function () {
+    if (self.mode === 'view') {
+      $location.path('/project/architecture?focus=architecture_' + $routeParams.id);
+    } else if (self.mode === 'edit') {
+      $location.path('/architectureitems/' + $routeParams.id + '/view');
+    }
   };
 
   self.changeStatus = function(status) {
     self.architectureitem.status = status;
     ArchitectureService.update(self.architectureitem);
+  };
+
+  self.edit = function () {
+    $location.path('/architectureitems/' + $routeParams.id + '/edit');
   };
 
   self.getArchitectureItem = function(id) {

@@ -31,13 +31,7 @@ function FormButtonsController() {
 
   var self = this;
 
-  self.backWithoutConfirm = function(isDirty) {
-    if (!isDirty) {
-      self.backfunction();
-    }
-  };
-
-  self.backWithConfirm = function() {
-    self.backfunction();
+  self.$onInit = function () {
+    
   };
 }
