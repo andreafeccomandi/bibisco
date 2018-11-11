@@ -24,11 +24,20 @@ angular.
     }
   });
 
-function ImagesButtonController($translate) {
+function ImagesButtonController($scope, $translate, hotkeys) {
 
   var self = this;
 
   self.$onInit = function () {
     self.tooltip = $translate.instant(self.showimageslabel);
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+j', 'command+j'],
+      description: 'showimages',
+      callback: function () {
+        self.showimagesfunction();
+      }
+    });
 }
