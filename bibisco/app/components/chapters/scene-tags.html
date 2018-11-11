@@ -153,11 +153,11 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
           ng-click="$ctrl.save()">
           <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
-      <span>{{"jsp.common.button.save" | translate}}</span>
-      </button>
-      <button type="button" class="btn btn-default" 
-        ng-click="$ctrl.back()">{{"jsp.common.button.back" | translate}}</button>
+          <span>{{"jsp.common.button.save" | translate}}</span>
+        </button>
+      <buttonback backfunction="$ctrl.back()"></buttonback>
       </span>
+
     </div>
   </div>
 </div>

@@ -36,33 +36,7 @@ function ImagesViewerController($rootScope, $scope, hotkeys, ImageService) {
 
     // hide menu
     $rootScope.$emit('SHOW_ELEMENT_IMAGES');
-
-    self.confirmdialogopen = false;
-
-    hotkeys.bindTo($scope)
-      .add({
-        combo: ['esc', 'esc'],
-        description: 'esc',
-        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
-        callback: function ($event) {
-          if (!self.confirmdialogopen) {
-            $event.preventDefault();
-            setTimeout(function () {
-              document.getElementById('imagesViewerBackButton').focus();
-              document.getElementById('imagesViewerBackButton').click();
-            }, 0);
-          }
-        }
-      });
   };
-
-  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
-    self.confirmdialogopen = true;
-  });
-
-  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
-    self.confirmdialogopen = false;
-  });
 
   self.fullpath = function(filename) {
     return ImageService.getImageFullPath(filename);

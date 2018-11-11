@@ -35,21 +35,12 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
   self.$onInit = function () {
     self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
     self.saving = false;
-    self.confirmdialogopen = false;
     self.autosavefunctionpromise = $interval(function () {
       if (self.autosaveenabled && self.editmode && $rootScope.dirty) {
         self.save();
       }
     }, 60000);
   };
-
-  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
-    self.confirmdialogopen = true;
-  });
-
-  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
-    self.confirmdialogopen = false;
-  });
 
   self.$onDestroy = function () {
     $interval.cancel(self.autosavefunctionpromise);
@@ -78,17 +69,6 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
       description: 'save',
       callback: function () {
         self.executeSave();
-      }
-    })
-    .add({
-      combo: ['esc', 'esc'],
-      description: 'back',
-      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
-      callback: function ($event) {
-        if (!self.confirmdialogopen) {
-          $event.preventDefault();
-          self.back();
-        }
       }
     })
     .add({
