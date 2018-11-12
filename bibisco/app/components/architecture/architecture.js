@@ -22,8 +22,8 @@ angular.
     }
   });
 
-function ArchitectureController($injector, $location, $rootScope, $scope,
-  ArchitectureService, StrandService, SupporterEditionChecker) {
+function ArchitectureController($injector, $location, $scope,
+  ArchitectureService, hotkeys, StrandService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -119,4 +119,13 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
     self.strandcardgriditems = this.getStrandCardGridItems();
     $scope.$apply();
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newstrand',
+      callback: function () {
+        self.createStrand();
+      }
+    });
 }

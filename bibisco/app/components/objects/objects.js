@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ObjectsController($injector, $location, $scope, 
+function ObjectsController($injector, $location, $scope, hotkeys,
   ObjectService, SupporterEditionChecker) {
 
   var self = this;
@@ -78,4 +78,13 @@ function ObjectsController($injector, $location, $scope,
       action();
     }
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newobject',
+      callback: function () {
+        self.create();
+      }
+    });
 }

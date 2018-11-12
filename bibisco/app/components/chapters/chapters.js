@@ -22,8 +22,7 @@ angular.
     }
   });
 
-function ChaptersController($location, $rootScope, $scope, $translate, 
-  BibiscoPropertiesService, ChapterService) {
+function ChaptersController($location, $scope, ChapterService, hotkeys) {
   var self = this;
 
   self.$onInit = function() {
@@ -68,6 +67,13 @@ function ChaptersController($location, $rootScope, $scope, $translate,
     $location.path('/chapters/' + id);
   };
 
-  
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newchapter',
+      callback: function () {
+        self.create();
+      }
+    });
 
 }

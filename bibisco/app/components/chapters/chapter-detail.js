@@ -113,4 +113,13 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     ChapterService.remove(self.chapter.$loki);
     $location.path('/project/chapters');
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newscene',
+      callback: function () {
+        self.createScene();
+      }
+    });
 }

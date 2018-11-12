@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function LocationsController($location, $scope, LocationService) {
+function LocationsController($location, $scope, hotkeys, LocationService) {
 
   var self = this;
 
@@ -90,4 +90,13 @@ function LocationsController($location, $scope, LocationService) {
 
     return description;
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newlocation',
+      callback: function () {
+        self.create();
+      }
+    });
 }
