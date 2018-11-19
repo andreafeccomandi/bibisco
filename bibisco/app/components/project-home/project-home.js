@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function TipsController($location, ContextMenuService, ProjectService) {
+function TipsController($location, $rootScope, ContextMenuService, ProjectService) {
   
   var self = this;
 

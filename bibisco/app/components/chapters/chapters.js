@@ -66,14 +66,4 @@ function ChaptersController($location, $scope, ChapterService, hotkeys) {
   self.select = function(id) {
     $location.path('/chapters/' + id);
   };
-
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newchapter',
-      callback: function () {
-        self.create();
-      }
-    });
-
 }

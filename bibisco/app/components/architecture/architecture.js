@@ -119,13 +119,4 @@ function ArchitectureController($injector, $location, $scope,
     self.strandcardgriditems = this.getStrandCardGridItems();
     $scope.$apply();
   };
-
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newstrand',
-      callback: function () {
-        self.createStrand();
-      }
-    });
 }

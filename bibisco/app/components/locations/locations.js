@@ -90,13 +90,4 @@ function LocationsController($location, $scope, hotkeys, LocationService) {
 
     return description;
   };
-
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newlocation',
-      callback: function () {
-        self.create();
-      }
-    });
 }

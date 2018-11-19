@@ -23,6 +23,7 @@ angular.
       buttonfunction: '&',
       buttonshow: '<',
       buttonstyle: '@', 
+      buttontooltip: '@',
       characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
@@ -39,7 +40,7 @@ angular.
   });
 
 
-function PageHeaderController($scope, hotkeys) {
+function PageHeaderController($rootScope, $scope, hotkeys) {
   var self = this;
 
   self.$onInit = function () {
@@ -53,13 +54,24 @@ function PageHeaderController($scope, hotkeys) {
           combo: [self.buttonhotkey, self.buttonhotkey],
           description: self.buttonhotkey,
           callback: function ($event) {
-            $event.preventDefault();
-            setTimeout(function () {
-              document.getElementById('pageHeaderButton').focus();
-              document.getElementById('pageHeaderButton').click();
-            }, 0);
+            if (!self.confirmdialogopen) {
+              $event.preventDefault();
+              setTimeout(function () {
+                document.getElementById('pageHeaderButton').focus();
+                document.getElementById('pageHeaderButton').click();
+              }, 0);
+            }
           }
         });
     }
+    self.confirmdialogopen = false;
   };
+
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
+    self.confirmdialogopen = false;
+  });
 }

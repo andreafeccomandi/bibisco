@@ -20,7 +20,7 @@ angular.
   });
 
 function ExportToFormat($location, $routeParams, 
-  $rootScope, $scope, $timeout, ExportService, FileSystemService) {
+  $rootScope, $scope, $timeout, ExportService, FileSystemService, PopupBoxesService) {
 
   var self = this;
 
@@ -46,10 +46,13 @@ function ExportToFormat($location, $routeParams,
 
     self.saving = false;
     self.exportpath;
+
+    self.checkExitActive = true;
   };
 
   self.export = function(isValid) {
     if (isValid && !self.forbiddenDirectory) {
+      self.checkExitActive = false;
       self.saving = true;
       $timeout(function () {
         if ($routeParams.format === 'pdf') {
@@ -83,4 +86,23 @@ function ExportToFormat($location, $routeParams,
   self.back = function() {
     $location.path('/project/export');
   };
+
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && self.exportpath) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

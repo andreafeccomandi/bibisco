@@ -25,12 +25,12 @@ angular.
     },
   });
 
-function ModalBaseController($scope, hotkeys) {
+function ModalBaseController($scope, $translate, hotkeys) {
 
   var self = this;
 
   self.$onInit = function() {
-    self.message = self.resolve.message;
+    self.message = $translate.instant(self.resolve.message);
     hotkeys.bindTo($scope)
       .add({
         combo: ['enter', 'enter'],

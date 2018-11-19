@@ -19,7 +19,8 @@ angular.
     controller: ChapterSelectController
   });
 
-function ChapterSelectController($location, $rootScope, $routeParams, ChapterService) {
+function ChapterSelectController($location, $rootScope, $routeParams, $scope, 
+  $timeout, ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -62,6 +63,12 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         self.selectedItem = chapterItem;
       }
     }
+
+    self.checkExitActive = true;
+  };
+
+  self.selectChapter = function() {
+
   };
 
   self.save = function(isValid) {
@@ -70,11 +77,31 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         ChapterService.moveSceneToAnotherChapter(self.scene.$loki, self.selectedItem.key);
       } 
       $location.path('/chapters/' + self.selectedItem.key);
+      self.checkExitActive = false;
     }
   };
 
   self.back = function() {
     $location.path('/chapters/' + self.chapterid + 
-      '/scenes/' + $routeParams.sceneid);
+      '/scenes/' + $routeParams.sceneid + '/view');
   };
+
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $scope.chapterSelectForm.$dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

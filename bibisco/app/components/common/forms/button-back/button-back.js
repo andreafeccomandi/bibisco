@@ -45,11 +45,11 @@ function ButtonBackController($rootScope, $scope, hotkeys) {
     self.confirmdialogopen = false;
   };
 
-  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
     self.confirmdialogopen = true;
   });
 
-  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
     self.confirmdialogopen = false;
   });
 

@@ -90,19 +90,4 @@ function CharactersController($location, $scope, hotkeys, MainCharacterService,
     self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
     $scope.$apply();
   };
-
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newmaincharacter',
-      callback: function () {
-        self.createMainCharacter();
-      }
-    }).add({
-      combo: ['ctrl+shift+n', 'command+shift+n'],
-      description: 'newsecondarycharacter',
-      callback: function () {
-        self.createSecondaryCharacter();
-      }
-    });
 }

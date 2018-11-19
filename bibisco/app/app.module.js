@@ -39,6 +39,9 @@ angular.module('bibiscoApp', ['ngRoute',
     $scope.theme = 'dark';
   });
 
+  let ContextService = $injector.get('ContextService');
+  $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
+
   $rootScope.dirty = false;
   
 }).config(['$locationProvider', '$routeProvider',

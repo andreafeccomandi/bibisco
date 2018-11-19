@@ -22,8 +22,9 @@ angular.
     }
   });
 
-function ProjectController($rootScope, $routeParams, AnalysisService, 
-  CardUtilService) {
+function ProjectController($location, $rootScope, $routeParams, $scope, 
+  AnalysisService, CardUtilService, ContextMenuService, hotkeys,
+  SupporterEditionChecker) {
 
   var self = this;
 
@@ -74,6 +75,47 @@ function ProjectController($rootScope, $routeParams, AnalysisService,
 
     // focus element
     CardUtilService.focusElementInPath($routeParams.item);
-  };
 
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+n', 'command+n'],
+        description: 'newentity',
+        callback: function () {
+          if (self.architectureActive) {
+            $location.path('/strands/new');
+          } else if (self.chaptersActive) {
+            $location.path('/chapters/new');
+          } else if (self.charactersActive) {
+            $location.path('/maincharacters/new');
+          } else if (self.locationsActive) {
+            $location.path('/locations/new');
+          } else if (self.objectsActive) {
+            if (!SupporterEditionChecker.check()) {
+              SupporterEditionChecker.showSupporterMessage();
+            } else {
+              $location.path('/objects/new');
+            }
+          }
+        }
+      })
+      .add({
+        combo: ['ctrl+shift+n', 'command+shift+n'],
+        description: 'newsecondarycharacter',
+        callback: function () {
+          if (self.charactersActive) {
+            $location.path('/secondarycharacters/new');
+          }
+        }
+      })
+      .add({
+        combo: ['esc', 'esc'],
+        description: 'exitproject',
+        callback: function () {
+          if (self.projecthomeActive) {
+            $location.path('/start');
+            ContextMenuService.destroy();
+          }
+        }
+      });;
+  };
 }

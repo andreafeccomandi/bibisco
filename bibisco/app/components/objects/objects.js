@@ -78,13 +78,4 @@ function ObjectsController($injector, $location, $scope, hotkeys,
       action();
     }
   };
-
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newobject',
-      callback: function () {
-        self.create();
-      }
-    });
 }

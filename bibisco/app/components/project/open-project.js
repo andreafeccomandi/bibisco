@@ -19,14 +19,16 @@ angular.
     controller: OpenProjectController
   });
 
-function OpenProjectController($location, $rootScope, ContextMenuService,
-  LoggerService, ProjectDbConnectionService, ProjectService) {
-  
+function OpenProjectController($location, $rootScope, $timeout, $translate, ContextMenuService,
+  LoggerService, PopupBoxesService, ProjectDbConnectionService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_OPEN_PROJECT');
 
   var self = this;
+  self.$onInit = function () {
+    self.confirmdialogopen = false;
+  };
 
   self.getProjects = function() {
     return ProjectService.getProjects();
@@ -39,13 +41,20 @@ function OpenProjectController($location, $rootScope, ContextMenuService,
     LoggerService.info('Open project ' + id);
   };
 
-  self.delete = function(id) {
-    ProjectService.delete(id);
+  self.delete = function (id, projectName) {
+    let message = $translate.instant('jsp.selectProject.delete.confirm', { projectName: projectName });
+    PopupBoxesService.confirm(function () {
+      $timeout(function () {
+        ProjectService.delete(id);
+      }, 0);
+    },
+    message,
+    function () {
+
+    });
   };
 
   self.back = function() {
     $location.path('/start');
   };
-
-  
 }

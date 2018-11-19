@@ -19,8 +19,8 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, $scope, 
-  ContextMenuService, LocaleService, hotkeys, ProjectService) {
+function CreateProjectController($location, $rootScope, $scope, $timeout,
+  ContextMenuService, LocaleService, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_CREATE_PROJECT');
@@ -28,55 +28,72 @@ function CreateProjectController($location, $rootScope, $scope,
   var self = this;
 
   self.$onInit = function () {
-    hotkeys.bindTo($scope)
-      .add({
-        combo: ['esc', 'esc'],
-        description: 'esc',
-        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
-        callback: function ($event) {
-          $event.preventDefault();
-          setTimeout(function () {
-            document.getElementById('createProjectBackButton').focus();
-            document.getElementById('createProjectBackButton').click();
-          }, 0);
-        }
-      });
+    self.projectName = null;
+    self.projectLanguage = LocaleService.getCurrentLocale();
+    self.projectLocales = {
+      'ca-es': 'Català',
+      'cs': 'Český',
+      'da-dk': 'Dansk',
+      'de': 'Deutsch',
+      'en-au': 'English (Australia)',
+      'en-ca': 'English (Canada)',
+      'en-za': 'English (South Africa)',
+      'en-gb': 'English (UK)',
+      'en-us': 'English (USA)',
+      'es-ar': 'Español (Argentina)',
+      'es-es': 'Español (España)',
+      'es-mx': 'Español (México)',
+      'es-ve': 'Español (Venezuela)',
+      'fr': 'Français',
+      'it': 'Italiano',
+      'nl': 'Nederlands',
+      'nb-no': 'Norsk',
+      'pl': 'Polski',
+      'pt-br': 'Português (Brasil)',
+      'pt-pt': 'Português (Portugal)',
+      'ru': 'Русский',
+      'sr': 'Srpski',
+      'sv': 'Svenska',
+      'tr': 'Türkçe'
+    };
+
+    self.checkExitActive = true;
   };
 
-  self.projectName = null;
-  self.projectLanguage = LocaleService.getCurrentLocale();
-  self.projectLocales = {
-    'ca-es': 'Català',
-    'cs': 'Český',
-    'da-dk': 'Dansk',
-    'de': 'Deutsch',
-    'en-au': 'English (Australia)',
-    'en-ca': 'English (Canada)',
-    'en-za': 'English (South Africa)',
-    'en-gb': 'English (UK)',
-    'en-us': 'English (USA)',
-    'es-ar': 'Español (Argentina)',
-    'es-es': 'Español (España)',
-    'es-mx': 'Español (México)',
-    'es-ve': 'Español (Venezuela)',
-    'fr': 'Français',
-    'it': 'Italiano',
-    'nl': 'Nederlands',
-    'nb-no': 'Norsk',
-    'pl': 'Polski',
-    'pt-br': 'Português (Brasil)',
-    'pt-pt': 'Português (Portugal)',
-    'ru': 'Русский',
-    'sr': 'Srpski',
-    'sv': 'Svenska',
-    'tr': 'Türkçe'
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $scope.createProjectForm.$dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 
   self.save = function(isValid) {
     if (isValid) {
-      ProjectService.create(self.projectName, self.projectLanguage);
-      ContextMenuService.create();
-      $location.path('/project/projecthome');
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          ProjectService.create(self.projectName, self.projectLanguage);
+          ContextMenuService.create();
+          self.checkExitActive = false;
+          $location.path('/project/projecthome');
+        }, 0);
+      },
+      'jsp.createProject.save.confirm',
+      function () {
+
+      });
+
     }
   };
 

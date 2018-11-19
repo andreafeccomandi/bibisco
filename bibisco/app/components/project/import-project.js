@@ -19,8 +19,8 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, ContextMenuService, 
-  hotkeys, ProjectService) {
+function ImportProjectController($location, $rootScope, $scope, $timeout, 
+  $translate, ContextMenuService, hotkeys, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -28,8 +28,6 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
   var self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
-  self.alreadyPresent = false;
-  self.openConfirm = false;
   self.projectName;
   self.projectId;
 
@@ -46,14 +44,14 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
           }, 0);
         }
       });
+
+    self.checkExitActive = true;
   };
 
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
     self.invalidArchive = false;
-    self.alreadyPresent = false;
-    self.openConfirm = false;
     self.projectName = null;
     self.projectId = null;
     $scope.$apply();
@@ -68,10 +66,11 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
   };
 
   self.save = function(isValid) {
-    if (!isValid || self.invalidArchive || self.alreadyPresent) {
+    if (!isValid || self.invalidArchive) {
       return;
     }
 
+    self.checkExitActive = false;
     ProjectService.importProjectArchiveFile(self.fileToImport, function(
       result) {
 
@@ -83,17 +82,29 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
             $location.path('/project/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
+
+      // is valid archive and the project is present in bibisco installation
       } else if (result.isValidArchive && result.isAlreadyPresent) {
-        self.invalidArchive = false;
-        self.alreadyPresent = true;
-        self.openConfirm = true;
+        self.invalidArchive = false;        
+        $scope.$apply();
+
         self.projectName = result.projectName;
         self.projectId = result.projectId;
-        $scope.$apply();
+        let message = $translate.instant('jsp.closeImportProject.importAlreadyPresent.confirm', { projectName: self.projectName });
+        PopupBoxesService.confirm(function () {
+          $timeout(function () {
+            self.confirmImportExistingProject();
+          }, 0);
+        },
+        message,
+        function () {
+          self.projectName = null;
+          self.projectId = null;
+        });
+
+      // is not valid archive
       } else {
         self.invalidArchive = true;
-        self.alreadyPresent = false;
-        self.openConfirm = false;
         self.projectName = null;
         self.projectId = null;
         $scope.$apply();
@@ -105,4 +116,23 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
   self.back = function() {
     $location.path('/start');
   };
+
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && self.fileToImport) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

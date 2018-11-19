@@ -23,8 +23,8 @@ angular.
     },
   });
 
-function RichtexteditorSettingsController(BibiscoDbConnectionService,
-  BibiscoPropertiesService, LoggerService, RichTextEditorPreferencesService) {
+function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
+  BibiscoPropertiesService, hotkeys, RichTextEditorPreferencesService) {
 
   var self = this;
   self.font;
@@ -83,6 +83,16 @@ function RichtexteditorSettingsController(BibiscoDbConnectionService,
       label: 'jsp.common.button.disabled',
       value: 'false'
     }];
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['enter', 'enter'],
+        description: 'enter',
+        callback: function ($event) {
+          $event.preventDefault();
+          self.ok();
+        }
+      });
   };
 
   self.ok = function() {

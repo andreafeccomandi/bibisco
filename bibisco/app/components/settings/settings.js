@@ -21,7 +21,8 @@ angular.
 
 function SettingsController($injector, $location, $rootScope, $scope,
   $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
+  LocaleService, LoggerService, PopupBoxesService, 
+  ProjectService, SupporterEditionChecker) {
   
   var self = this;
 
@@ -38,6 +39,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
       currentProjectsDirectory.length - 32);
 
     self.forbiddenDirectory = false;
+    self.checkExitActive = true;
   };
 
   self.selectDarkTheme = function() {
@@ -77,7 +79,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
     if (!isDirty) {
       $location.path('/start');
     } else if (isValid) {
-
+      self.checkExitActive = false;
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -113,5 +115,22 @@ function SettingsController($injector, $location, $rootScope, $scope,
     $location.path('/start');
   };
 
-  
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $scope.settingsForm.$dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          $location.path(wannaGoPath);
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }
