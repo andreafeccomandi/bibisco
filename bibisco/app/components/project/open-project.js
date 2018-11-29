@@ -28,6 +28,7 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Cont
   var self = this;
   self.$onInit = function () {
     self.confirmdialogopen = false;
+    self.hotkeys = ['esc'];
   };
 
   self.getProjects = function() {
@@ -36,7 +37,7 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Cont
 
   self.open = function(id) {
     ProjectDbConnectionService.load(id);
-    $location.path('/project/projecthome');
+    $location.path('/projecthome');
     ContextMenuService.create();
     LoggerService.info('Open project ' + id);
   };

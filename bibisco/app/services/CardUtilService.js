@@ -18,16 +18,21 @@ angular.module('bibiscoApp').service('CardUtilService', function ($timeout) {
 
   return {
     focus: function (focuselement) {
+      if (!focuselement) {
+        return;
+      }
       $timeout(function () {
         document.getElementById(focuselement).focus();
       }, 0);
     },
 
     focusElementInPath: function (path) {
+      if (!path) {
+        return;
+      }
 
-      let pathparams = path.split('?')[1];
-      if (pathparams) {
-        let params = pathparams.split('&');
+      if (path) {
+        let params = path.split('&');
         for (let index = 0; index < params.length; index++) {
           let param = params[index];
           if (param.split('=')[0] === 'focus') {

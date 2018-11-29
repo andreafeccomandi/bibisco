@@ -22,13 +22,25 @@ angular.
     }
   });
 
-function ObjectsController($injector, $location, $scope, hotkeys,
-  ObjectService, SupporterEditionChecker) {
+function ObjectsController($injector, $location, $rootScope, $routeParams, $scope,
+  CardUtilService, ObjectService, SupporterEditionChecker) {
 
   var self = this;
 
   self.$onInit = function() {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'objects'
+    });
+    
     self.cardgriditems = this.getCardGridItems();
+    
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
 
   self.itemsPresent = function() {

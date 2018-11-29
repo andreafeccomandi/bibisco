@@ -35,7 +35,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -64,12 +64,17 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     self.editmode = false;
     self.showprojectexplorer = true;
 
-    // set focus
-    CardUtilService.focusElementInPath($routeParams.id);
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'characters',
+      element: 'maincharacters_' + self.maincharacter.$loki
+    });
   };
 
   self.back = function() {
-    $location.path('/project/characters?focus=maincharacters_' + self.maincharacter.$loki);
+    $location.path('/characters/params/focus=maincharacters_' + self.maincharacter.$loki);
   };
 
   self.changeStatus = function(status) {
@@ -83,7 +88,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.delete = function() {
     MainCharacterService.remove(self.maincharacter.$loki);
-    $location.path('/project/characters');
+    $location.path('/characters');
   };
 
   self.getMainCharacter = function(id) {

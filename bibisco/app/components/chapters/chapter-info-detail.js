@@ -42,11 +42,11 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
+      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + $routeParams.chapterid + '?focus=chapterinfo_' + $routeParams.type
+      href: '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -57,7 +57,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
   self.back = function () {
     if (self.mode === 'view') {
-      $location.path('/chapters/' + $routeParams.chapterid + '?focus=chapterinfo_' + $routeParams.type);
+      $location.path('/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type);
     } else if (self.mode === 'edit') {
       $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/view');
     }

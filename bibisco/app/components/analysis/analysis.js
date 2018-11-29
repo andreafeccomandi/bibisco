@@ -19,13 +19,19 @@ angular.
     controller: AnalysisController
   });
 
-function AnalysisController($timeout) {
+function AnalysisController($rootScope, $timeout, AnalysisService) {
 
   var self = this;
 
   self.$onInit = function () {
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'analysis'
+    });
+
     self.loading = true;
     $timeout(function () {
+      AnalysisService.init();
       self.loading = false;
     }, 250);
   };

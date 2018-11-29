@@ -61,7 +61,7 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
         ContextMenuService.create();
-        $location.path('/project/projecthome');
+        $location.path('/projecthome');
       });
   };
 
@@ -79,7 +79,7 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
         ProjectService.import(result.projectId, result.projectName,
           function() {
             ContextMenuService.create();
-            $location.path('/project/projecthome');
+            $location.path('/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
 

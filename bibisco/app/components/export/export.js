@@ -22,8 +22,16 @@ angular.
     }
   });
 
-function ExportController($location) {
+function ExportController($location, $rootScope) {
   var self = this;
+
+  self.$onInit = function () {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'export'
+    });
+  };
 
   self.exportPdf = function() {
     $location.path('/exporttoformat/pdf');

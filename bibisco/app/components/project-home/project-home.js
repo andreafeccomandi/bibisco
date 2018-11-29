@@ -27,6 +27,12 @@ function TipsController($location, $rootScope, ContextMenuService, ProjectServic
   var self = this;
 
   self.$onInit = function () {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'projecthome'
+    });
+
     // action items
     self.actionitems = [];
     self.actionitems.push({
@@ -35,6 +41,9 @@ function TipsController($location, $rootScope, ContextMenuService, ProjectServic
         $location.path('/project/title');
       }
     });
+
+    // hotkeys
+    self.hotkeys = ['esc'];
   };
 
   self.project = function() {
@@ -42,7 +51,7 @@ function TipsController($location, $rootScope, ContextMenuService, ProjectServic
   };
 
   self.showTips = function() {
-    $location.path('/project/tips');
+    $location.path('/tips');
   };
 
   self.back = function() {

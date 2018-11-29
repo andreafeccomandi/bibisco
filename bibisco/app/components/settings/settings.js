@@ -27,6 +27,12 @@ function SettingsController($injector, $location, $rootScope, $scope,
   var self = this;
 
   self.$onInit = function () {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'settings'
+    });
+
     self.theme = BibiscoPropertiesService.getProperty(
       'theme');
     self.selectedLanguage = LocaleService.getCurrentLocale();

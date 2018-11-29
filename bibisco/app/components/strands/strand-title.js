@@ -33,7 +33,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
 
       self.breadcrumbItems.push({
         label: 'common_architecture',
-        href: '/project/architecture?focus=strands_' + strand.$loki
+        href: '/architecture/params/focus=strands_' + strand.$loki
       });
 
       // edit breadcrumb items
@@ -53,14 +53,14 @@ function StrandTitleController($location, $routeParams, StrandService) {
 
       self.breadcrumbItems.push({
         label: 'common_architecture',
-        href: '/project/architecture'
+        href: '/architecture'
       });
 
       // create breadcrumb items
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.createStrand'
       });
-      self.exitpath = '/project/architecture';
+      self.exitpath = '/architecture';
       self.name = null;
       self.pageheadertitle =
         'jsp.architecture.strand.dialog.title.createStrand';

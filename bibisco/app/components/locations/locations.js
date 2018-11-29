@@ -22,12 +22,25 @@ angular.
     }
   });
 
-function LocationsController($location, $scope, hotkeys, LocationService) {
+function LocationsController($location, $rootScope, $routeParams, $scope,
+  CardUtilService, LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'locations'
+    });
+    
     self.cardgriditems = this.getCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
 
   self.locationsPresent = function() {

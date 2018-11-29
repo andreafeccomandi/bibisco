@@ -36,11 +36,11 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info
+      href: '/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'common_' + $routeParams.info
@@ -60,7 +60,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
   self.back = function () {
     if (self.mode === 'view') {
-      $location.path('/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info);
+      $location.path('/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info);
     } else if (self.mode === 'edit') {
       $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/view');
     }

@@ -22,14 +22,27 @@ angular.
     }
   });
 
-function CharactersController($location, $scope, hotkeys, MainCharacterService,
-  SecondaryCharacterService) {
+function CharactersController($location, $rootScope, $routeParams, $scope, 
+  CardUtilService, MainCharacterService, SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'characters'
+    });
+    
     self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
     self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.maincharacterhotkeys = ['ctrl+n', 'command+n'];
+    self.secondarycharacterhotkeys = ['ctrl+shift+n', 'command+shift+n'];
   };
 
   self.createMainCharacter = function() {

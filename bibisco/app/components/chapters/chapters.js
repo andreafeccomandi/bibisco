@@ -22,15 +22,28 @@ angular.
     }
   });
 
-function ChaptersController($location, $scope, ChapterService, hotkeys) {
+function ChaptersController($location, $routeParams, $rootScope, $scope, 
+  CardUtilService, ChapterService, hotkeys) {
   var self = this;
 
   self.$onInit = function() {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'chapters'
+    });
+
     self.cardgriditems = this.getCardGridItems();
     self.tipenabled = (self.cardgriditems && self.cardgriditems.length > 1);
     let totalWordsAndCharacters = ChapterService.getTotalWordsAndCharacters();
     self.pageheadercharacters = totalWordsAndCharacters.characters;
     self.pageheaderwords = totalWordsAndCharacters.words;
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
   
   self.create = function() {

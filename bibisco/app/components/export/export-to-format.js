@@ -38,7 +38,7 @@ function ExportToFormat($location, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: '/project/export'
+      href: '/export'
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -68,7 +68,7 @@ function ExportToFormat($location, $routeParams,
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path('/project/export');
+      $location.path('/export');
     }, 0);
   },
 
@@ -84,7 +84,7 @@ function ExportToFormat($location, $routeParams,
   };
 
   self.back = function() {
-    $location.path('/project/export');
+    $location.path('/export');
   };
 
   $scope.$on('$locationChangeStart', function (event) {

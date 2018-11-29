@@ -38,7 +38,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       self.breadcrumbitems.push({
         label: 'common_locations',
-        href: '/project/locations?focus=locations_' + location.$loki
+        href: '/locations/params/focus=locations_' + location.$loki
       });
 
       // edit breadcrumb items
@@ -63,7 +63,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       self.breadcrumbitems.push({
         label: 'common_locations',
-        href: '/project/locations'
+        href: '/locations'
       });
 
       // create breadcrumb items
@@ -77,7 +77,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
       self.location = null;
 
       self.pageheadertitle = 'jsp.locations.dialog.title.createLocation';
-      self.exitpath = '/project/locations';
+      self.exitpath = '/locations';
     }
 
     self.usednations = LocationService.getUsedNations();

@@ -19,10 +19,17 @@ angular.
     controller: TimelineController
   });
 
-function TimelineController(TimelineService) {
+function TimelineController($rootScope, TimelineService) {
 
   var self = this;
   self.$onInit = function() {
-    self.timeline = TimelineService.getTimeline();    
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'timeline'
+    });
+
+    self.timeline = TimelineService.getTimeline();   
+    
   };
 }

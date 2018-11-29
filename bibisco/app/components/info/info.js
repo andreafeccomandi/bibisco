@@ -29,6 +29,7 @@ function InfoController($location, $uibModal, BibiscoPropertiesService) {
 
   self.$onInit = function () {
     self.version = BibiscoPropertiesService.getProperty('version');
+    self.hotkeys = ['esc'];
   };
 
   self.gotoWebsite = function() {

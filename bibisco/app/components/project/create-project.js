@@ -86,7 +86,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
           ProjectService.create(self.projectName, self.projectLanguage);
           ContextMenuService.create();
           self.checkExitActive = false;
-          $location.path('/project/projecthome');
+          $location.path('/projecthome');
         }, 0);
       },
       'jsp.createProject.save.confirm',

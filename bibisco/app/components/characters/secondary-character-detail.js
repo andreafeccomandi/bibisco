@@ -19,7 +19,7 @@ angular.
     controller: SecondaryCharacterDetailController
   });
 
-function SecondaryCharacterDetailController($location, $routeParams, 
+function SecondaryCharacterDetailController($location, $rootScope, $routeParams, 
   ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
@@ -32,18 +32,23 @@ function SecondaryCharacterDetailController($location, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters?focus=secondarycharacters_' + self.secondarycharacter.$loki
+      href: '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
+
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'characters',
+      element: 'secondarycharacters_' + self.secondarycharacter.$loki
+    });
   };
 
   self.back = function() {
     if (self.mode === 'view') {
-      $location.path('/project/characters?focus=secondarycharacters_' + self.secondarycharacter.$loki);
+      $location.path('/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki);
     } else if (self.mode === 'edit') {
       $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/view');
     }
@@ -62,7 +67,7 @@ function SecondaryCharacterDetailController($location, $routeParams,
   self.delete = function() {
     SecondaryCharacterService.remove(self.secondarycharacter
       .$loki);
-    $location.path('/project/characters');
+    $location.path('/characters');
   };
 
   self.edit = function () {

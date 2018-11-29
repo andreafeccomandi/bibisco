@@ -33,12 +33,12 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + self.sourceChapter.$loki
+      href: '/chapters/params/focus=chapters_' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({
       label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title,
-      href: '/chapters/' + self.sourceChapter.$loki + '?focus=scenes_' + self.scene.$loki
+      href: '/chapters/' + self.sourceChapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
 
     self.breadcrumbitems.push({

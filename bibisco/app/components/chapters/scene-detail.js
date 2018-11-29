@@ -47,11 +47,11 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
+      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki + '?focus=scenes_' + self.scene.$loki
+      href: '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
     self.breadcrumbitems.push({
       label: self.scene.title
@@ -80,7 +80,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
   self.back = function () {
     if (self.mode === 'view') {
-      $location.path('/chapters/' + self.chapter.$loki + '?focus=scenes_' + $routeParams.sceneid);
+      $location.path('/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + $routeParams.sceneid);
     } else if (self.mode === 'edit') {
       $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view');
     }

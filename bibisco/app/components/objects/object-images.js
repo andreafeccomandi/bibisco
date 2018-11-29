@@ -31,7 +31,7 @@ function ItemImagesController($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/project/objects?focus=objects_' + object.$loki
+      href: '/objects/params/focus=objects_' + object.$loki
     });
     self.breadcrumbitems.push({
       label: object.name,

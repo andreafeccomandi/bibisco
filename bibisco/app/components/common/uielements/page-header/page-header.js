@@ -18,7 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
-      buttonhotkey: '@',
+      buttonhotkey: '<',
       buttonlabel: '@',
       buttonfunction: '&',
       buttonshow: '<',
@@ -40,10 +40,12 @@ angular.
   });
 
 
-function PageHeaderController($rootScope, $scope, hotkeys) {
+function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
   var self = this;
 
   self.$onInit = function () {
+    self.buttonid = UuidService.generateUuid();
+    
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
     }
@@ -51,14 +53,14 @@ function PageHeaderController($rootScope, $scope, hotkeys) {
     if (self.buttonhotkey) {
       hotkeys.bindTo($scope)
         .add({
-          combo: [self.buttonhotkey, self.buttonhotkey],
-          description: self.buttonhotkey,
+          combo: self.buttonhotkey,
+          description: self.buttonlabel,
           callback: function ($event) {
             if (!self.confirmdialogopen) {
               $event.preventDefault();
               setTimeout(function () {
-                document.getElementById('pageHeaderButton').focus();
-                document.getElementById('pageHeaderButton').click();
+                document.getElementById(self.buttonid).focus();
+                document.getElementById(self.buttonid).click();
               }, 0);
             }
           }

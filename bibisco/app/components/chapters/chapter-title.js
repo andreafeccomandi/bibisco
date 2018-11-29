@@ -33,7 +33,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
       // edit breadcrumb items
       self.breadcrumbItems.push({
         label: 'common_chapters',
-        href: '/project/chapters?focus=chapters_' + chapter.$loki
+        href: '/chapters/params/focus=chapters_' + chapter.$loki
       });
       self.breadcrumbItems.push({
         label: '#' + chapter.position + ' ' + chapter.title,
@@ -50,7 +50,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
     } else {
       self.breadcrumbItems.push({
         label: 'common_chapters',
-        href: '/project/chapters'
+        href: '/chapters'
       });
 
       // create breadcrumb items
@@ -58,7 +58,7 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
         label: 'jsp.chapters.dialog.title.createChapter'
       });
 
-      self.exitpath = '/project/chapters';
+      self.exitpath = '/chapters';
       self.name = null;
       self.pageheadertitle =
         'jsp.chapters.dialog.title.createChapter';

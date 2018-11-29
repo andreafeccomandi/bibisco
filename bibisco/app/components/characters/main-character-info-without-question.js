@@ -35,11 +35,11 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters?focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + self.maincharacter.$loki + '?focus=maincharactersdetails_' + $routeParams.info
+      href: '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -51,7 +51,7 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
   self.back = function () {
     if (self.mode === 'view') {
-      $location.path('/maincharacters/' + $routeParams.id + '?focus=maincharactersdetails_' + $routeParams.info);
+      $location.path('/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info);
     } else if (self.mode === 'edit') {
       $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/view');
     }
