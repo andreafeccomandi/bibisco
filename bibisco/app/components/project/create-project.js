@@ -19,7 +19,7 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, $scope, $timeout,
+function CreateProjectController($location, $rootScope, $scope, $timeout, $window, 
   ContextMenuService, LocaleService, PopupBoxesService, ProjectService) {
 
   // hide menu
@@ -69,7 +69,11 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',
@@ -95,9 +99,5 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
       });
 
     }
-  };
-
-  self.back = function() {
-    $location.path('/start');
   };
 }

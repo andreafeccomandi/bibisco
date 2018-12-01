@@ -54,8 +54,4 @@ function MainCharacterImagesController($location, $routeParams,
   self.insert = function() {
     $location.path('/maincharacters/' + $routeParams.id + '/images/new');
   };
-
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
-  };
 }

@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterSelectController($location, $rootScope, $routeParams, $scope, 
-  $timeout, ChapterService, PopupBoxesService) {
+  $timeout, $window, ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -81,11 +81,6 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
     }
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + self.chapterid + 
-      '/scenes/' + $routeParams.sceneid + '/view');
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && $scope.chapterSelectForm.$dirty) {
@@ -95,7 +90,11 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

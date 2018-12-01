@@ -18,7 +18,6 @@ angular.
     templateUrl: 'components/common/uielements/images/images-viewer.html',
     controller: ImagesViewerController,
     bindings: {
-      backfunction: '&',
       breadcrumbitems: '<',
       deletefunction: '&',
       images: '<',

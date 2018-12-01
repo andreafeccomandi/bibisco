@@ -26,8 +26,8 @@ angular.
   });
 
 
-function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, $uibModal,
-  hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
+function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
+  $uibModal, $window, hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
@@ -68,7 +68,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
         self.content = self.savedcontent;
         self.words = self.savedwords;
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

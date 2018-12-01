@@ -20,7 +20,7 @@ angular.
   });
 
 function SceneTagsController($location, $rootScope, $routeParams, $scope,
-  $timeout, ChapterService, hotkeys, LocationService, MainCharacterService, 
+  $timeout, $window, ChapterService, hotkeys, LocationService, MainCharacterService, 
   ObjectService, PopupBoxesService, SecondaryCharacterService, 
   StrandService, UtilService) {
 
@@ -304,10 +304,6 @@ function SceneTagsController($location, $rootScope, $routeParams, $scope,
     $rootScope.dirty = false;
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' + $routeParams.sceneid + '/view');
-  };
-
   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
     self.workingscenerevision.time = data;
   });
@@ -321,7 +317,11 @@ function SceneTagsController($location, $rootScope, $routeParams, $scope,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

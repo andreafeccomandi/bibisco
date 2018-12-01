@@ -18,11 +18,10 @@ angular.
     templateUrl: 'components/common/forms/button-back/button-back.html',
     controller: ButtonBackController,
     bindings: {
-      backfunction: '&'
     }
   });
 
-function ButtonBackController($rootScope, $scope, hotkeys) {
+function ButtonBackController($rootScope, $scope, $window, hotkeys) {
 
   var self = this;
 
@@ -54,6 +53,6 @@ function ButtonBackController($rootScope, $scope, hotkeys) {
   });
 
   self.back = function() {
-    self.backfunction();
+    $window.history.back();
   };
 }

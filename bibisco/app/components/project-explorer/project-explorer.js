@@ -213,6 +213,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = ArchitectureService.getPremise().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/premise/edit';
   };
 
   self.showFabula = function () {
@@ -220,6 +221,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = ArchitectureService.getFabula().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/fabula/edit';
   };
 
   self.showSetting = function () {
@@ -227,6 +229,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = ArchitectureService.getSetting().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/setting/edit';
   };
 
   self.showGlobalNotes = function () {
@@ -234,6 +237,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = ArchitectureService.getGlobalNotes().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/globalnotes/edit';
   };
 
   self.showStrands = function () {
@@ -252,6 +256,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = secondarycharacter.description;
     self.images = secondarycharacter.images;
     self.type = 'simpletext';
+    self.path = '/secondarycharacters/'+id+'/edit';
   };
 
   self.showLocation = function(id) {
@@ -260,6 +265,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = location.description;
     self.images = location.images;
     self.type = 'simpletext';
+    self.path = '/locations/' + id + '/edit';
   };
 
   self.showObject = function (id) {
@@ -268,6 +274,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     self.text = object.description;
     self.images = object.images;
     self.type = 'simpletext';
+    self.path = '/objects/' + id + '/edit';
   };
 
   self.showChapter = function(id) {

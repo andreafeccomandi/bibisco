@@ -20,7 +20,7 @@ angular.
   });
 
 function SettingsController($injector, $location, $rootScope, $scope,
-  $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
+  $timeout, $window, BibiscoDbConnectionService, BibiscoPropertiesService,
   LocaleService, LoggerService, PopupBoxesService, 
   ProjectService, SupporterEditionChecker) {
   
@@ -118,7 +118,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }
-    $location.path('/start');
+    $window.history.back();
   };
 
   $scope.$on('$locationChangeStart', function (event) {
@@ -130,7 +130,11 @@ function SettingsController($injector, $location, $rootScope, $scope,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

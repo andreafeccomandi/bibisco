@@ -43,6 +43,13 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
 
   $rootScope.dirty = false;
+  $rootScope.previousPath = null;
+  $rootScope.$on('$locationChangeSuccess', 
+    function (event, newUrl, oldUrl) {
+      if (oldUrl) {
+        $rootScope.previousPath = oldUrl.split('!')[1];
+      }
+    });
   
 }).config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {

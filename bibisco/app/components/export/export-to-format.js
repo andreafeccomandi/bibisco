@@ -20,7 +20,8 @@ angular.
   });
 
 function ExportToFormat($location, $routeParams, 
-  $rootScope, $scope, $timeout, ExportService, FileSystemService, PopupBoxesService) {
+  $rootScope, $scope, $timeout, $window, 
+  ExportService, FileSystemService, PopupBoxesService) {
 
   var self = this;
 
@@ -83,10 +84,6 @@ function ExportToFormat($location, $routeParams,
     $scope.$apply();
   };
 
-  self.back = function() {
-    $location.path('/export');
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && self.exportpath) {
@@ -96,7 +93,11 @@ function ExportToFormat($location, $routeParams,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

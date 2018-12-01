@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationTitleController($location, $rootScope, $routeParams, $scope,
-  $timeout, LocationService, PopupBoxesService) {
+  $timeout, $window, LocationService, PopupBoxesService) {
 
   var self = this;
 
@@ -114,10 +114,6 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
     }
   };
 
-  self.back = function() {
-    $location.path(self.exitpath);
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && $scope.locationTitleForm.$dirty) {
@@ -127,7 +123,11 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

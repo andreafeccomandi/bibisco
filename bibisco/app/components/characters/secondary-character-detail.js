@@ -46,14 +46,6 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.back = function() {
-    if (self.mode === 'view') {
-      $location.path('/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.secondarycharacter.status = status;
     SecondaryCharacterService.update(self.secondarycharacter);

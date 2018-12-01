@@ -91,10 +91,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     return items;
   };
 
-  self.back = function() {
-    $location.path('chapters/params/focus=chapters_' + self.chapter.$loki);
-  };
-
   self.changeTitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/title');
   };

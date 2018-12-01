@@ -78,14 +78,6 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.content = self.scenerevision.text;
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + $routeParams.sceneid);
-    } else if (self.mode === 'edit') {
-      $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view');
-    }
-  };
-
   self.changerevision = function(action, revision) {
     if (action === 'new-from-actual') {
       self.scene = ChapterService.insertSceneRevisionFromActual($routeParams.sceneid);

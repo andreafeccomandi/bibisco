@@ -47,14 +47,6 @@ function LocationDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/locations/params/focus=locations_' + self.location.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/locations/ ' + self.location.$loki + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.location.status = status;
     LocationService.update(self.location);

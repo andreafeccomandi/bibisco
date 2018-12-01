@@ -55,8 +55,4 @@ function LocationImagesController($location, $rootScope, $routeParams,
   self.insert = function() {
     $location.path('/locations/' + $routeParams.id + '/images/new');
   };
-
-  self.back = function() {
-    $location.path('/locations/' + $routeParams.id + '/view');
-  };
 }

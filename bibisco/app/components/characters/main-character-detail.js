@@ -73,10 +73,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.back = function() {
-    $location.path('/characters/params/focus=maincharacters_' + self.maincharacter.$loki);
-  };
-
   self.changeStatus = function(status) {
     self.maincharacter.status = status;
     MainCharacterService.update(self.maincharacter);

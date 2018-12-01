@@ -1,4 +1,4 @@
-<h5>{{ $ctrl.sectiontitle | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement()">{{ $ctrl.sectiontitle | translate}}</a></h5>
 <div ng-if="$ctrl.text" ng-bind-html="$ctrl.text | trusted"></div>
 <div ng-if="!$ctrl.text"><i class="bibiscoNotSelectableText">{{ 'common_empty_section' | translate}}</i></div>
 <hr ng-if="$ctrl.images">

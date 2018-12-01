@@ -46,14 +46,6 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/objects/params/focus=objects_' + self.object.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/objects/ ' + self.object.$loki + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.object.status = status;
     ObjectService.update(self.object);

@@ -46,14 +46,6 @@ function StrandDetailController($location, $rootScope, $routeParams,
     self.deleteforbidden = self.isDeleteForbidden();
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/architecture/params/focus=strands_' + self.strand.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/strands/ ' + self.strand.$loki + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.strand.status = status;
     StrandService.update(self.strand);

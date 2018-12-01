@@ -55,14 +55,6 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     self.showprojectexplorer = true;
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type);
-    } else if (self.mode === 'edit') {
-      $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.chapterinfo.status = status;
     ChapterService.update(self.chapter);

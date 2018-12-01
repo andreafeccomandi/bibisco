@@ -18,7 +18,6 @@ angular.
     templateUrl: 'components/common/forms/form-buttons/form-buttons.html',
     controller: FormButtonsController,
     bindings: {
-      backfunction: '&',
       form: '<',
       offsetcols: '@',
       saving: '<',

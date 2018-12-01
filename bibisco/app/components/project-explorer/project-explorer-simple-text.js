@@ -20,11 +20,12 @@ angular.
     bindings: {
       sectiontitle: '<',
       images: '<',
+      path: '@',
       text: '<'
     }
   });
 
-function ProjectExplorerSimpleTextController(ImageService) {
+function ProjectExplorerSimpleTextController($location, ImageService) {
 
   var self = this;
 
@@ -33,5 +34,9 @@ function ProjectExplorerSimpleTextController(ImageService) {
 
   self.fullpath = function (filename) {
     return ImageService.getImageFullPath(filename);
+  };
+
+  self.gotoElement = function() {
+    $location.path(self.path);
   };
 }

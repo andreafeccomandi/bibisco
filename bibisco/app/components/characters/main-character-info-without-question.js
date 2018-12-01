@@ -49,14 +49,6 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info);
-    } else if (self.mode === 'edit') {
-      $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/view');
-    }
-  };
-
   self.edit = function () {
     $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/edit');
   };

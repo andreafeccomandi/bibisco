@@ -1,51 +1,63 @@
-<h5>{{'common_characters_personaldata' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/personaldata/edit')">
+        {{'common_characters_personaldata' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'personaldata'"
     info="$ctrl.maincharacter.personaldata">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_physionomy' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/physionomy/edit')">
+        {{'common_characters_physionomy' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'physionomy'" 
     info="$ctrl.maincharacter.physionomy">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_behaviors' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/behaviors/edit')">
+        {{'common_characters_behaviors' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'behaviors'" 
     info="$ctrl.maincharacter.behaviors">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_psychology' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/psychology/edit')">
+        {{'common_characters_psychology' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'psychology'" 
     info="$ctrl.maincharacter.psychology">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_ideas' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/ideas/edit')">
+    {{'common_characters_ideas' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'ideas'" 
     info="$ctrl.maincharacter.ideas">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_sociology' | translate}}</h5>
+<h5><a ng-click="$ctrl.gotoElement('/maincharacters/'+$ctrl.maincharacter.$loki+'/infowithquestion/sociology/edit')">
+    {{'common_characters_sociology' | translate}}</a></h5>
 <projectexplorermaincharacterinfo type="'sociology'" 
     info="$ctrl.maincharacter.sociology">
 </projectexplorermaincharacterinfo>
 
 <hr>
-<h5>{{'common_characters_lifebeforestorybeginning' | translate}}</h5>
-<projectexplorersimpletext text="$ctrl.maincharacter.lifebeforestorybeginning.text">
+<projectexplorersimpletext 
+    text="$ctrl.maincharacter.lifebeforestorybeginning.text"
+    path="/maincharacters/{{$ctrl.maincharacter.$loki}}/infowithoutquestion/lifebeforestorybeginning/edit"
+    sectiontitle="'common_characters_lifebeforestorybeginning'">
 </projectexplorersimpletext>
 
 <hr>
-<h5>{{'common_characters_conflict' | translate}}</h5>
-<projectexplorersimpletext text="$ctrl.maincharacter.conflict.text">
+<projectexplorersimpletext 
+    text="$ctrl.maincharacter.conflict.text"
+    path="/maincharacters/{{$ctrl.maincharacter.$loki}}/infowithoutquestion/conflict/edit"
+    sectiontitle="'common_characters_conflict'">
 </projectexplorersimpletext>
 
 <hr>
-<h5>{{'common_characters_evolutionduringthestory' | translate}}</h5>
-<projectexplorersimpletext text="$ctrl.maincharacter.evolutionduringthestory.text">
+<projectexplorersimpletext 
+    text="$ctrl.maincharacter.evolutionduringthestory.text" 
+    path="/maincharacters/{{$ctrl.maincharacter.$loki}}/infowithoutquestion/evolutionduringthestory/edit"
+    sectiontitle="'common_characters_evolutionduringthestory'">
 </projectexplorersimpletext>
 
 <hr>

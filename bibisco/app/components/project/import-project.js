@@ -19,7 +19,7 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, $timeout, 
+function ImportProjectController($location, $rootScope, $scope, $timeout, $window, 
   $translate, ContextMenuService, hotkeys, PopupBoxesService, ProjectService) {
 
   // hide menu
@@ -113,10 +113,6 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
     });
   };
 
-  self.back = function() {
-    $location.path('/start');
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && self.fileToImport) {
@@ -126,7 +122,11 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

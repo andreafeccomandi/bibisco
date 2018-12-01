@@ -44,14 +44,6 @@ function ArchitectureDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/architecture/params/focus=architecture_' + $routeParams.id);
-    } else if (self.mode === 'edit') {
-      $location.path('/architectureitems/' + $routeParams.id + '/view');
-    }
-  };
-
   self.changeStatus = function(status) {
     self.architectureitem.status = status;
     ArchitectureService.update(self.architectureitem);

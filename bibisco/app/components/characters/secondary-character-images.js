@@ -54,8 +54,4 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
   self.insert = function() {
     $location.path('/secondarycharacters/' + $routeParams.id + '/images/new');
   };
-
-  self.back = function() {
-    $location.path('/secondarycharacters/' + $routeParams.id + '/view');
-  };
 }

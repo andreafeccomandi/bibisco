@@ -19,8 +19,9 @@ angular.
     controller: OpenProjectController
   });
 
-function OpenProjectController($location, $rootScope, $timeout, $translate, ContextMenuService,
-  LoggerService, PopupBoxesService, ProjectDbConnectionService, ProjectService) {
+function OpenProjectController($location, $rootScope, $timeout, $translate, 
+  $window, ContextMenuService, LoggerService, PopupBoxesService, 
+  ProjectDbConnectionService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_OPEN_PROJECT');
@@ -56,6 +57,6 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Cont
   };
 
   self.back = function() {
-    $location.path('/start');
+    $window.history.back();
   };
 }
