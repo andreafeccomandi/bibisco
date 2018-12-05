@@ -143,6 +143,16 @@ h6, label, th, td, p {
 	margin-bottom: 25px;
 }
 
+.project-explorer-text p {
+	-webkit-touch-callout: text !important;
+	-webkit-user-select: text !important;
+	-khtml-user-select: text !important;
+	-moz-user-select: text !important;
+	-ms-user-select: text !important;
+	user-select: text !important;
+	-o-user-select: text !important;
+}
+
 .social-media-button {
     margin-top: 5px;
     text-align: center;
