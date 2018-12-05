@@ -35,7 +35,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
       self.breadcrumbItems.push({
         label: 'common_characters',
-        href: '/project/characters?focus=secondarycharacters_' + secondarycharacter.$loki
+        href: '/characters/params/focus=secondarycharacters_' + secondarycharacter.$loki
       });
 
       // edit breadcrumb items
@@ -55,7 +55,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
       self.breadcrumbItems.push({
         label: 'common_characters',
-        href: '/project/characters'
+        href: '/characters'
       });
 
       // create breadcrumb items
@@ -63,7 +63,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
         label: 'jsp.characters.dialog.title.createSecondaryCharacter'
       });
 
-      self.exitpath = '/project/characters';
+      self.exitpath = '/characters';
       self.name = null;
       self.pageheadertitle =
         'jsp.characters.dialog.title.createSecondaryCharacter';

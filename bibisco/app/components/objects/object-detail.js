@@ -19,8 +19,8 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $routeParams, ChapterService, 
-  ObjectService, UtilService) {
+function ObjectDetailController($location, $rootScope, $routeParams, 
+  ChapterService, ObjectService, UtilService) {
 
   var self = this;
 
@@ -32,21 +32,18 @@ function ObjectDetailController($location, $routeParams, ChapterService,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/project/objects?focus=objects_' + self.object.$loki
+      href: '/objects/params/focus=objects_' + self.object.$loki
     });
     self.breadcrumbitems.push({
       label: self.object.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
-  };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/project/objects?focus=objects_' + self.object.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/objects/ ' + self.object.$loki + '/view');
-    }
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'objects',
+      element: 'objects_' + self.object.$loki
+    });
   };
 
   self.changeStatus = function(status) {
@@ -61,7 +58,7 @@ function ObjectDetailController($location, $routeParams, ChapterService,
   self.delete = function() {
     ObjectService.remove(self.object
       .$loki);
-    $location.path('/project/objects');
+    $location.path('/objects');
   };
 
   self.edit = function () {

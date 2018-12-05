@@ -19,7 +19,8 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, ChapterService, LocationService) {
+function LocationDetailController($location, $rootScope, $routeParams, 
+  ChapterService, LocationService) {
 
   var self = this;
 
@@ -32,21 +33,18 @@ function LocationDetailController($location, $routeParams, ChapterService, Locat
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/project/locations?focus=locations_' + self.location.$loki
+      href: '/locations/params/focus=locations_' + self.location.$loki
     });
     self.breadcrumbitems.push({
       label: self.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
-  };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/project/locations?focus=locations_' + self.location.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/locations/ ' + self.location.$loki + '/view');
-    }
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'locations',
+      element: 'locations_' + self.location.$loki
+    });
   };
 
   self.changeStatus = function(status) {
@@ -61,7 +59,7 @@ function LocationDetailController($location, $routeParams, ChapterService, Locat
   self.delete = function() {
     LocationService.remove(self.location
       .$loki);
-    $location.path('/project/locations');
+    $location.path('/locations');
   };
 
   self.edit = function () {

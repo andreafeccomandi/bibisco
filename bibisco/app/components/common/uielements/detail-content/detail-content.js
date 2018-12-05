@@ -22,7 +22,8 @@ angular.
       characters: '=',
       content: '=',
       disableemptymessage: '<',
-      editmode: '=',
+      editfunction: '&',
+      editmode: '<',
       headersubtitle: '<',
       showprojectexplorer: '<',
       words: '='
@@ -32,9 +33,4 @@ angular.
 
 function DetailContentController() {
 
-  var self = this;
-
-  self.enableeditmode = function() {
-    self.editmode = true;
-  };
 }

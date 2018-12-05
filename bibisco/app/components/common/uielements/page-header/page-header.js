@@ -18,11 +18,12 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
-      buttonhotkey: '@',
+      buttonhotkey: '<',
       buttonlabel: '@',
       buttonfunction: '&',
       buttonshow: '<',
       buttonstyle: '@', 
+      buttontooltip: '@',
       characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
@@ -39,10 +40,12 @@ angular.
   });
 
 
-function PageHeaderController($scope, hotkeys) {
+function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
   var self = this;
 
   self.$onInit = function () {
+    self.buttonid = UuidService.generateUuid();
+    
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
     }
@@ -50,16 +53,27 @@ function PageHeaderController($scope, hotkeys) {
     if (self.buttonhotkey) {
       hotkeys.bindTo($scope)
         .add({
-          combo: [self.buttonhotkey, self.buttonhotkey],
-          description: self.buttonhotkey,
+          combo: self.buttonhotkey,
+          description: self.buttonlabel,
           callback: function ($event) {
-            $event.preventDefault();
-            setTimeout(function () {
-              document.getElementById('pageHeaderButton').focus();
-              document.getElementById('pageHeaderButton').click();
-            }, 0);
+            if (!self.confirmdialogopen) {
+              $event.preventDefault();
+              setTimeout(function () {
+                document.getElementById(self.buttonid).focus();
+                document.getElementById(self.buttonid).click();
+              }, 0);
+            }
           }
         });
     }
+    self.confirmdialogopen = false;
   };
+
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
+    self.confirmdialogopen = false;
+  });
 }

@@ -34,7 +34,7 @@
         <button ng-if="!$ctrl.editmode" 
           type="button" 
           class="btn btn-default" 
-          uib-tooltip="{{'jsp.scene.button.tags.tooltip' | translate}}"
+          uib-tooltip="{{'tags_tooltip'+$root.os | translate}}"
           ng-click="$ctrl.tags()">{{'jsp.scene.button.tags' | translate}}</button>
         <revisionselect ng-if="!$ctrl.editmode" 
           class="btn-group" 
@@ -53,7 +53,6 @@
         </dropdownmenu>
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled" 
-          backfunction="$ctrl.back()" 
           editbuttonvisible="$ctrl.scenerevision.words > 0" 
           editfunction="$ctrl.edit()"
           editmode="$ctrl.editmode" 

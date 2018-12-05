@@ -23,7 +23,7 @@ angular.
   });
 
 
-function ContextualTipButtonController($uibModal, BibiscoDbConnectionService, 
+function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectionService, 
   BibiscoPropertiesService) {
   var self = this;
 
@@ -44,11 +44,15 @@ function ContextualTipButtonController($uibModal, BibiscoDbConnectionService,
       size: 'sm'
     });
 
+    $rootScope.$emit('OPEN_POPUP_BOX');
+
     modalInstance.result.then(function () {
       BibiscoPropertiesService.setProperty(self.tipcode, 'false');
       BibiscoDbConnectionService.saveDatabase();
       self.buttonvisible = false;
+      $rootScope.$emit('CLOSE_POPUP_BOX');
     }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
     });
   };
 }

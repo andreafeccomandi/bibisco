@@ -6,7 +6,9 @@
 				headersubtitle="{{$ctrl.pageheadersubtitle}}"
 				buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
 				buttonfunction="$ctrl.pageheaderbuttonfunction()"
+				buttonhotkey="$ctrl.pageheaderbuttonhotkey"
 				buttonshow="$ctrl.items && $ctrl.pageheaderbuttonlabel"
+				buttontooltip="{{$ctrl.pageheaderbuttontooltip}}"
 				characters="$ctrl.pageheadercharacters"
 				tipcode="{{$ctrl.pageheadertipcode}}" 
 				tipenabled="$ctrl.tipenabled"
@@ -20,7 +22,8 @@
 	<div class="container">
 	<jumbotronbutton text="{{$ctrl.emptylisttext}}"
 		buttonlabel="{{$ctrl.emptylistbuttonlabel}}"
-		buttonfunction="$ctrl.emptylistbuttonfunction()"></jumbotronbutton>
+		buttonfunction="$ctrl.emptylistbuttonfunction()"
+		buttontooltip="{{$ctrl.emptylistbuttontooltip | translate}}"></jumbotronbutton>
 	</div>
 	</div>
 </div>

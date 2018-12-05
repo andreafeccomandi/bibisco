@@ -20,7 +20,8 @@ angular.
   });
 
 function ExportToFormat($location, $routeParams, 
-  $rootScope, $scope, $timeout, ExportService, FileSystemService) {
+  $rootScope, $scope, $timeout, $window, 
+  ExportService, FileSystemService, PopupBoxesService) {
 
   var self = this;
 
@@ -38,7 +39,7 @@ function ExportToFormat($location, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: '/project/export'
+      href: '/export'
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -46,10 +47,13 @@ function ExportToFormat($location, $routeParams,
 
     self.saving = false;
     self.exportpath;
+
+    self.checkExitActive = true;
   };
 
   self.export = function(isValid) {
     if (isValid && !self.forbiddenDirectory) {
+      self.checkExitActive = false;
       self.saving = true;
       $timeout(function () {
         if ($routeParams.format === 'pdf') {
@@ -65,7 +69,7 @@ function ExportToFormat($location, $routeParams,
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path('/project/export');
+      $location.path('/export');
     }, 0);
   },
 
@@ -80,7 +84,26 @@ function ExportToFormat($location, $routeParams,
     $scope.$apply();
   };
 
-  self.back = function() {
-    $location.path('/project/export');
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && self.exportpath) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

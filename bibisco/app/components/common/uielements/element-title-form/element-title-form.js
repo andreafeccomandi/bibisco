@@ -30,7 +30,8 @@ angular.
     }
   });
 
-function ElementTitleFormController($location, $rootScope, $scope, $timeout, PopupBoxesService) {
+function ElementTitleFormController($location, $rootScope, $scope, $timeout, 
+  $window, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -49,10 +50,6 @@ function ElementTitleFormController($location, $rootScope, $scope, $timeout, Pop
     }
   };
 
-  self.back = function() {
-    $location.path(self.exitpath);
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && $scope.elementTitleForm.$dirty) {
@@ -62,7 +59,11 @@ function ElementTitleFormController($location, $rootScope, $scope, $timeout, Pop
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

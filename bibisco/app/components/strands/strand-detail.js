@@ -19,8 +19,8 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, ChapterService, StrandService, 
-  UtilService) {
+function StrandDetailController($location, $rootScope, $routeParams, 
+  ChapterService, StrandService, UtilService) {
 
   var self = this;
 
@@ -32,21 +32,18 @@ function StrandDetailController($location, $routeParams, ChapterService, StrandS
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture?focus=strands_' + self.strand.$loki
+      href: '/architecture/params/focus=strands_' + self.strand.$loki
     });
     self.breadcrumbitems.push({
       label: self.strand.name
     });
 
-    self.deleteforbidden = self.isDeleteForbidden();
-  };
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'architecture',
+      element: 'strands_' + self.strand.$loki
+    });
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/project/architecture?focus=strands_' + self.strand.$loki);
-    } else if (self.mode === 'edit') {
-      $location.path('/strands/ ' + self.strand.$loki + '/view');
-    }
+    self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.changeStatus = function(status) {
@@ -61,7 +58,7 @@ function StrandDetailController($location, $routeParams, ChapterService, StrandS
   self.delete = function() {
     StrandService.remove(self.strand
       .$loki);
-    $location.path('/project/architecture');
+    $location.path('/architecture');
   };
 
   self.edit = function () {

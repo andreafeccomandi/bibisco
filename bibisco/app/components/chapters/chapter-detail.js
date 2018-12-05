@@ -35,7 +35,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + self.chapter.$loki
+      href: 'chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -58,8 +58,16 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
     self.showprojectexplorer = false;
 
-    // set focus
-    CardUtilService.focusElementInPath($routeParams.id);
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
+
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'chapters',
+      element: 'chapters_' + self.chapter.$loki
+    });
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -81,10 +89,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
       }
     }
     return items;
-  };
-
-  self.back = function() {
-    $location.path('/project/chapters?focus=chapters_' + self.chapter.$loki);
   };
 
   self.changeTitle = function() {
@@ -111,6 +115,15 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.delete = function() {
     ChapterService.remove(self.chapter.$loki);
-    $location.path('/project/chapters');
+    $location.path('/chapters');
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newscene',
+      callback: function () {
+        self.createScene();
+      }
+    });
 }

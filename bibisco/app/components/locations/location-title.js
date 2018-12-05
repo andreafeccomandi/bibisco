@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationTitleController($location, $rootScope, $routeParams, $scope,
-  $timeout, LocationService, PopupBoxesService) {
+  $timeout, $window, LocationService, PopupBoxesService) {
 
   var self = this;
 
@@ -38,7 +38,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       self.breadcrumbitems.push({
         label: 'common_locations',
-        href: '/project/locations?focus=locations_' + location.$loki
+        href: '/locations/params/focus=locations_' + location.$loki
       });
 
       // edit breadcrumb items
@@ -63,7 +63,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       self.breadcrumbitems.push({
         label: 'common_locations',
-        href: '/project/locations'
+        href: '/locations'
       });
 
       // create breadcrumb items
@@ -77,7 +77,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
       self.location = null;
 
       self.pageheadertitle = 'jsp.locations.dialog.title.createLocation';
-      self.exitpath = '/project/locations';
+      self.exitpath = '/locations';
     }
 
     self.usednations = LocationService.getUsedNations();
@@ -114,10 +114,6 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
     }
   };
 
-  self.back = function() {
-    $location.path(self.exitpath);
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
 
     if (self.checkExitActive && $scope.locationTitleForm.$dirty) {
@@ -127,7 +123,11 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',

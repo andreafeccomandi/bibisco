@@ -39,19 +39,47 @@ angular.module('bibiscoApp', ['ngRoute',
     $scope.theme = 'dark';
   });
 
+  let ContextService = $injector.get('ContextService');
+  $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
+
   $rootScope.dirty = false;
+  $rootScope.previousPath = null;
+  $rootScope.$on('$locationChangeSuccess', 
+    function (event, newUrl, oldUrl) {
+      if (oldUrl) {
+        $rootScope.previousPath = oldUrl.split('!')[1];
+      }
+    });
   
 }).config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');
     $routeProvider.
+      when('/analysis', {
+        template: '<analysis></analysis>'
+      }).
+      when('/architecture', {
+        template: '<architecture></architecture>'
+      }).
+      when('/architecture/params/:params', {
+        template: '<architecture></architecture>'
+      }).
       when('/architectureitems/:id/:mode', {
         template: '<architecturedetail></architecturedetail>'
+      }).
+      when('/chapters', {
+        template: '<chapters></chapters>'
+      }).
+      when('/chapters/params/:params', {
+        template: '<chapters></chapters>'
       }).
       when('/chapters/new', {
         template: '<chaptertitle></chaptertitle>'
       }).
       when('/chapters/:id', {
+        template: '<chapterdetail></chapterdetail>'
+      }).
+      when('/chapters/:id/params/:params', {
         template: '<chapterdetail></chapterdetail>'
       }).
       when('/chapters/:id/title', {
@@ -75,11 +103,20 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/chapters/:chapterid/scenes/:sceneid/:mode', {
         template: '<scenedetail></scenedetail>'
       }).
+      when('/characters', {
+        template: '<characters></characters>'
+      }).
+      when('/characters/params/:params', {
+        template: '<characters></characters>'
+      }).
       when('/createproject', {
         template: '<createproject></createproject>'
       }).
       when('/error', {
         template: '<error></error>'
+      }).
+      when('/export', {
+        template: '<export></export>'
       }).
       when('/exporttoformat/:format', {
         template: '<exporttoformat></exporttoformat>'
@@ -90,23 +127,14 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/info', {
         template: '<info></info>'
       }).
-      when('/objects/new', {
-        template: '<itemtitle></itemtitle>'
-      }).
-      when('/objects/:id/images', {
-        template: '<itemimages></itemimages>'
-      }).
-      when('/objects/:id/images/new', {
-        template: '<itemaddimage></itemaddimage>'
-      }).
-      when('/objects/:id/title', {
-        template: '<itemtitle></itemtitle>'
-      }).
-      when('/objects/:id/:mode', {
-        template: '<itemdetail></itemdetail>'
-      }).
       when('/loading', {
         template: '<loading></loading>'
+      }).
+      when('/locations', {
+        template: '<locations></locations>'
+      }).
+      when('/locations/params/:params', {
+        template: '<locations></locations>'
       }).
       when('/locations/new', {
         template: '<locationtitle></locationtitle>'
@@ -132,6 +160,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id', {
         template: '<maincharacterdetail></maincharacterdetail>'
       }).
+      when('/maincharacters/:id/params/:params', {
+        template: '<maincharacterdetail></maincharacterdetail>'
+      }).
       when('/maincharacters/:id/infowithoutquestion/:info/:mode', {
         template: '<maincharacterinfowithoutquestion></maincharacterinfowithoutquestion>'
       }).
@@ -147,17 +178,38 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id/title', {
         template: '<maincharactertitle></maincharactertitle>'
       }).
+      when('/objects', {
+        template: '<objects></objects>'
+      }).
+      when('/objects/params/:params', {
+        template: '<objects></objects>'
+      }).
+      when('/objects/new', {
+        template: '<itemtitle></itemtitle>'
+      }).
+      when('/objects/:id/images', {
+        template: '<itemimages></itemimages>'
+      }).
+      when('/objects/:id/images/new', {
+        template: '<itemaddimage></itemaddimage>'
+      }).
+      when('/objects/:id/title', {
+        template: '<itemtitle></itemtitle>'
+      }).
+      when('/objects/:id/:mode', {
+        template: '<itemdetail></itemdetail>'
+      }).
       when('/openproject', {
         template: '<openproject></openproject>'
       }).
-      when('/project/tips', {
+      when('/tips', {
         template: '<tips></tips>'
       }).
       when('/project/title', {
         template: '<projecttitle></projecttitle>'
       }).
-      when('/project/:item', {
-        template: '<project></project>'
+      when('/projecthome', {
+        template: '<projecthome></projecthome>'
       }).
       when('/secondarycharacters/new', {
         template: '<secondarycharactertitle></secondarycharactertitle>'
@@ -188,6 +240,9 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/strands/:id/:mode', {
         template: '<stranddetail></stranddetail>'
+      }).
+      when('/timeline', {
+        template: '<timeline></timeline>'
       }).
       when('/welcome', {
         template: '<welcome></welcome>'

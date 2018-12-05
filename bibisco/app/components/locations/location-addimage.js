@@ -32,7 +32,7 @@ function LocationAddImageController($routeParams, LocationService) {
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/project/locations?focus=locations_' + location.$loki
+      href: '/locations/params/focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
       label: locationName,

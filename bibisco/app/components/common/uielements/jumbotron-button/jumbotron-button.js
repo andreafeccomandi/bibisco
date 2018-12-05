@@ -20,7 +20,8 @@ angular.
     bindings: {
       text: '@',
       buttonlabel: '@',
-      buttonfunction: '&'
+      buttonfunction: '&',
+      buttontooltip: '@'
     }
   });
 

@@ -1,16 +1,22 @@
 <div ng-if="$ctrl.scenes.length > 0" ng-repeat="scene in $ctrl.scenes track by $index">
-    <h5>{{scene.title}}</h5>
-    <projectexplorersimpletext text="scene.revisions[scene.revision].text">
+    <projectexplorersimpletext 
+        text="scene.revisions[scene.revision].text"
+        path="/chapters/{{$ctrl.chapter.$loki}}/scenes/{{scene.$loki}}/edit"
+        sectiontitle="scene.title">
     </projectexplorersimpletext>
 </div>
 <div ng-if="$ctrl.scenes.length == 0">
     <i class="bibiscoNotSelectableText">{{ 'common_empty_section' | translate}}</i>
 </div>
 <hr>
-<h5>{{'common_chapter_reason' | translate}}</h5>
-<projectexplorersimpletext text="$ctrl.chapter.reason.text">
+<projectexplorersimpletext 
+    text="$ctrl.chapter.reason.text"
+    path="/chapters/{{$ctrl.chapter.$loki}}/chapterinfos/reason/edit"
+    sectiontitle="'common_chapter_reason'">
 </projectexplorersimpletext>
 <hr>
-<h5>{{'common_chapter_notes' | translate}}</h5>
-<projectexplorersimpletext text="$ctrl.chapter.notes.text">
+<projectexplorersimpletext 
+    text="$ctrl.chapter.notes.text"
+    path="/chapters/{{$ctrl.chapter.$loki}}/chapterinfos/notes/edit"
+    sectiontitle="'common_chapter_notes'">
 </projectexplorersimpletext>

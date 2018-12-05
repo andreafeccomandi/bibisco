@@ -19,7 +19,7 @@ angular.
     controller: ArchitectureDetailController
   });
 
-function ArchitectureDetailController($location, $routeParams,
+function ArchitectureDetailController($location, $rootScope, $routeParams, 
   ArchitectureService) {
 
   var self = this;
@@ -32,19 +32,16 @@ function ArchitectureDetailController($location, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture?focus=architecture_' + $routeParams.id
+      href: '/architecture/params/focus=architecture_' + $routeParams.id
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
-  };
 
-  self.back = function () {
-    if (self.mode === 'view') {
-      $location.path('/project/architecture?focus=architecture_' + $routeParams.id);
-    } else if (self.mode === 'edit') {
-      $location.path('/architectureitems/' + $routeParams.id + '/view');
-    }
+    $rootScope.$emit('REGISTER_FOCUS', {
+      page: 'architecture',
+      element: 'architecture_' + $routeParams.id
+    });
   };
 
   self.changeStatus = function(status) {

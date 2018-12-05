@@ -26,8 +26,8 @@ angular.
   });
 
 
-function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, $uibModal,
-  hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
+function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
+  $uibModal, $window, hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
@@ -39,9 +39,6 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.savedcontent = self.content;
     self.savedcharacters = self.characters;
     self.savedwords = self.words;
-
-    console.log('onInit self.characters = ' + self.characters
-      + 'self.savedcharacters = ' + self.savedcharacters);
 
     // init content
     if (self.content === '') {
@@ -71,7 +68,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
         self.content = self.savedcontent;
         self.words = self.savedwords;
         $timeout(function () {
-          $location.path(wannaGoPath);
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
         }, 0);
       },
       'js.common.message.confirmExitWithoutSave',
@@ -90,11 +91,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     $scope.$apply();
   });
 
-  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
     self.contenteditable = false;
   });
 
-  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
     self.contenteditable = true;
     self.focus();
   });
@@ -426,6 +427,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       size: 'richtexteditorsettings'
     });
 
+    $rootScope.$emit('OPEN_POPUP_BOX');
+
     modalInstance.result.then(function() {
       // save
       self.fontclass = RichTextEditorPreferencesService.getFontClass();
@@ -433,8 +436,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
 
-    }, function() {});
+    });
   };
 
   self.contentChanged = function() {

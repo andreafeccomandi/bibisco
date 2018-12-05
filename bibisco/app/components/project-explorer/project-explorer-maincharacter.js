@@ -22,11 +22,15 @@ angular.
     }
   });
 
-function ProjectExplorerMainCharacterController() {
+function ProjectExplorerMainCharacterController($location) {
 
   var self = this;
 
   self.$onInit = function () {
     self.images = self.maincharacter.images;
+  };
+
+  self.gotoElement = function (path) {
+    $location.path(path);
   };
 }

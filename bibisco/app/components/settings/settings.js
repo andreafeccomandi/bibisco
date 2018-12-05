@@ -20,12 +20,19 @@ angular.
   });
 
 function SettingsController($injector, $location, $rootScope, $scope,
-  $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
+  $timeout, $window, BibiscoDbConnectionService, BibiscoPropertiesService,
+  LocaleService, LoggerService, PopupBoxesService, 
+  ProjectService, SupporterEditionChecker) {
   
   var self = this;
 
   self.$onInit = function () {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'settings'
+    });
+
     self.theme = BibiscoPropertiesService.getProperty(
       'theme');
     self.selectedLanguage = LocaleService.getCurrentLocale();
@@ -38,6 +45,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
       currentProjectsDirectory.length - 32);
 
     self.forbiddenDirectory = false;
+    self.checkExitActive = true;
   };
 
   self.selectDarkTheme = function() {
@@ -77,7 +85,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
     if (!isDirty) {
       $location.path('/start');
     } else if (isValid) {
-
+      self.checkExitActive = false;
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -110,8 +118,29 @@ function SettingsController($injector, $location, $rootScope, $scope,
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }
-    $location.path('/start');
+    $window.history.back();
   };
 
-  
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $scope.settingsForm.$dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

@@ -1,5 +1,7 @@
 <div class="jumbotron bibiscoEmptyListBox">
 	<h3>{{$ctrl.text | translate}}</h3>
-  <button ng-if="$ctrl.buttonlabel" ng-click="$ctrl.buttonfunction()" type="button"
+	<button ng-if="$ctrl.buttonlabel" ng-click="$ctrl.buttonfunction()" type="button"
+		uib-tooltip="{{$ctrl.buttontooltip | translate}}"
+		tooltip-placement="bottom"
 		class="btn btn-primary">{{$ctrl.buttonlabel  | translate}}</button>
 </div>

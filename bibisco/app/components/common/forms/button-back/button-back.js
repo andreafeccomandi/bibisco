@@ -18,11 +18,10 @@ angular.
     templateUrl: 'components/common/forms/button-back/button-back.html',
     controller: ButtonBackController,
     bindings: {
-      backfunction: '&'
     }
   });
 
-function ButtonBackController($rootScope, $scope, hotkeys) {
+function ButtonBackController($rootScope, $scope, $window, hotkeys) {
 
   var self = this;
 
@@ -45,15 +44,15 @@ function ButtonBackController($rootScope, $scope, hotkeys) {
     self.confirmdialogopen = false;
   };
 
-  $rootScope.$on('OPEN_CONFIRM_DIALOG', function () {
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
     self.confirmdialogopen = true;
   });
 
-  $rootScope.$on('CLOSE_CONFIRM_DIALOG', function () {
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
     self.confirmdialogopen = false;
   });
 
   self.back = function() {
-    self.backfunction();
+    $window.history.back();
   };
 }

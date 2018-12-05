@@ -33,7 +33,7 @@ function MainCharacterTitleController($location, $routeParams,
 
       self.breadcrumbItems.push({
         label: 'common_characters',
-        href: '/project/characters?focus=maincharacters_' + maincharacter.$loki
+        href: '/characters/params/focus=maincharacters_' + maincharacter.$loki
       });
 
       // edit breadcrumb items
@@ -53,7 +53,7 @@ function MainCharacterTitleController($location, $routeParams,
 
       self.breadcrumbItems.push({
         label: 'common_characters',
-        href: '/project/characters'
+        href: '/characters'
       });
 
       // create breadcrumb items
@@ -61,7 +61,7 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.characters.dialog.title.createMainCharacter'
       });
 
-      self.exitpath = '/project/characters';
+      self.exitpath = '/characters';
       self.name = null;
       self.pageheadertitle = 'jsp.characters.dialog.title.createMainCharacter';
     }

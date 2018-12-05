@@ -31,7 +31,7 @@ function SceneTitleController($location, $routeParams, ChapterService) {
     self.breadcrumbItems = [];
     self.breadcrumbItems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + chapter.$loki
+      href: '/chapters/params/focus=chapters_' + chapter.$loki
     });
     self.breadcrumbItems.push({
       label: '#' + chapter.position + ' ' + chapter.title,

@@ -12,7 +12,7 @@
       <div class="form-group">
         <label class="col-sm-3 control-label" for="jsp.analysisCharacterScene.th.chapter">{{"jsp.analysisCharacterScene.th.chapter" | translate}}</label>
         <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
-          <ui-select ng-model="$ctrl.selectedItem" on-select="$ctrl.selectChapter()">
+          <ui-select ng-model="$ctrl.selectedItem">
             <ui-select-match>
               <span ng-bind="$select.selected.title"></span>
             </ui-select-match>
@@ -22,8 +22,7 @@
           </ui-select>
         </div>
       </div>
-      <formbuttons form="chapterSelectForm" backfunction="$ctrl.back()"
-        offsetcols="3" sizecols="8">
+      <formbuttons form="chapterSelectForm" offsetcols="3" sizecols="8">
       </formbuttons>
   </div>
   </form>

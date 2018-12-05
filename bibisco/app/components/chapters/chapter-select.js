@@ -19,7 +19,8 @@ angular.
     controller: ChapterSelectController
   });
 
-function ChapterSelectController($location, $rootScope, $routeParams, ChapterService) {
+function ChapterSelectController($location, $rootScope, $routeParams, $scope, 
+  $timeout, $window, ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -32,12 +33,12 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters?focus=chapters_' + self.sourceChapter.$loki
+      href: '/chapters/params/focus=chapters_' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({
       label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title,
-      href: '/chapters/' + self.sourceChapter.$loki + '?focus=scenes_' + self.scene.$loki
+      href: '/chapters/' + self.sourceChapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
 
     self.breadcrumbitems.push({
@@ -62,6 +63,12 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         self.selectedItem = chapterItem;
       }
     }
+
+    self.checkExitActive = true;
+  };
+
+  self.selectChapter = function() {
+
   };
 
   self.save = function(isValid) {
@@ -70,11 +77,30 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         ChapterService.moveSceneToAnotherChapter(self.scene.$loki, self.selectedItem.key);
       } 
       $location.path('/chapters/' + self.selectedItem.key);
+      self.checkExitActive = false;
     }
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + self.chapterid + 
-      '/scenes/' + $routeParams.sceneid);
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+
+    if (self.checkExitActive && $scope.chapterSelectForm.$dirty) {
+      event.preventDefault();
+      let wannaGoPath = $location.path();
+      self.checkExitActive = false;
+
+      PopupBoxesService.confirm(function () {
+        $timeout(function () {
+          if (wannaGoPath === $rootScope.previousPath) {
+            $window.history.back();
+          } else {
+            $location.path(wannaGoPath);
+          }
+        }, 0);
+      },
+      'js.common.message.confirmExitWithoutSave',
+      function () {
+        self.checkExitActive = true;
+      });
+    }
+  });
 }

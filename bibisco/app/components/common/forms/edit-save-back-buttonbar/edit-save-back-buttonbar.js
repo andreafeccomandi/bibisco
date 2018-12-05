@@ -19,7 +19,6 @@ angular.
     controller: EditSaveBackButtonbarController,
     bindings: {
       autosaveenabled: '=',
-      backfunction: '&',
       editbuttonvisible: '<',
       editfunction: '&',
       editmode: '<',
@@ -48,10 +47,6 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
 
   self.enableeditmode = function () {
     self.editfunction();
-  };
-
-  self.back = function () {
-    self.backfunction();
   };
 
   self.save = function () {

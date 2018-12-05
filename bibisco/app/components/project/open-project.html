@@ -2,7 +2,9 @@
   <div class="row">
     <pageheader headertitle="jsp.projects.dialog.title.openProject"
      buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
-     buttonstyle="default" buttonshow="true"  buttonhotkey="esc"
+     buttonstyle="default" buttonshow="true"  
+     buttonhotkey="$ctrl.hotkeys"
+     buttontooltip="{{'buttonback.button.tooltip'+$root.os}}"
      tipcode="socialMediaTip" tipenabled="true">
     </pageheader>
   </div>
@@ -26,8 +28,8 @@
               <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>
             </td>
             <td class="col-sm-2 text-left">
-              <button class="btn btn-sm btn-default" mwl-confirm message="{{ 'jsp.selectProject.delete.confirm' | translate}}" confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}" cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}" placement="top" on-confirm="$ctrl.delete((project.id))"
-              on-cancel=" ">
+              <button ng-click="$ctrl.delete(project.id, project.name)" 
+                class="btn btn-sm btn-default">
                 {{"jsp.selectProject.button.delete " | translate}}</button>
             </td>
           </tr>

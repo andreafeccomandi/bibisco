@@ -38,9 +38,12 @@
     emptylisttext="jsp.chapter.bibiscoEmptyThumbnailListBox.text"
     emptylistbuttonlabel="jsp.chapter.a.createFirstScene"
     emptylistbuttonfunction="$ctrl.createScene()"
+    emptylistbuttontooltip="{{'scene_firstcreate_tooltip'+$root.os}}"
     items="$ctrl.scenescardgriditems"
+    pageheaderbuttonhotkey="$ctrl.hotkeys"
     pageheaderbuttonlabel="jsp.chapter.a.createScene"
     pageheaderbuttonfunction="$ctrl.createScene()"
+    pageheaderbuttontooltip="{{'scene_create_tooltip'+$root.os}}"
     pageheadertitle="jsp.chapter.scene.h2"
     pageheadertipcode="scenesdndTip"
     selectfunction="$ctrl.selectScene(id)"
@@ -67,7 +70,7 @@
         <dropdownmenu buttonlabel="jsp.common.button.more" 
           items="$ctrl.actionitems" open="up" visible="true">
         </dropdownmenu>
-        <buttonback backfunction="$ctrl.back()"></buttonback>
+        <buttonback></buttonback>
       </span>
     </div>
   </div>

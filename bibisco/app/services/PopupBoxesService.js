@@ -30,10 +30,13 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, 
         size: 'sm'
       });
 
+      $rootScope.$emit('OPEN_POPUP_BOX');
+
       modalInstance.result.then(function() {
         // ok: unreachable code: we're in alert!
       }, function() {
         // cancel
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       });
     },
     confirm: function(confirmFunction, confirmMessage, cancelFunction) {
@@ -49,16 +52,16 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, 
         size: 'sm'
       });
 
-      $rootScope.$emit('OPEN_CONFIRM_DIALOG');
+      $rootScope.$emit('OPEN_POPUP_BOX');
 
       modalInstance.result.then(function() {
         confirmFunction();
-        $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       }, function() {
         if (cancelFunction) {
           cancelFunction();
         }
-        $rootScope.$emit('CLOSE_CONFIRM_DIALOG');
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       });
     }
   };

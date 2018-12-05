@@ -5,7 +5,8 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <form name="createProjectForm" class="form-horizontal" novalidate>
+      <form name="createProjectForm" ng-submit="$ctrl.save(createProjectForm.$valid)"
+          class="form-horizontal" novalidate>
 
         <textinputfield field="createProjectForm.projectName"
           model="$ctrl.projectName" name="projectName" autofocus required
@@ -29,17 +30,10 @@
           </div>
         </div>
         <div class="top30 col-sm-9 col-sm-offset-3">
-          <button type="submit" class="btn btn-primary"
-          mwl-confirm message="{{'jsp.createProject.save.confirm' | translate}}"
-          is-disabled="{{!createProjectForm.$valid}}"
-          confirm-text="{{ 'js.bibisco.confirm.ok' | translate }}"
-          cancel-text="{{ 'js.bibisco.confirm.cancel' | translate }}"
-          placement="top"
-          on-confirm="$ctrl.save(createProjectForm.$valid)"
-          on-cancel="">
+          <button type="submit" class="btn btn-primary">
             {{"jsp.common.button.save" | translate}}
           </button>
-          <button id="createProjectBackButton" type="button" ng-click="$ctrl.back()" class="btn btn-default">{{"jsp.common.button.back" | translate}}</button>
+          <buttonback></buttonback>
         </div>
       </form>
     </div>

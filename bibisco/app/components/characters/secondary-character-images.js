@@ -31,7 +31,7 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters?focus=secondarycharacters_' + secondaryCharacter.$loki
+      href: '/characters/params/focus=secondarycharacters_' + secondaryCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
@@ -53,9 +53,5 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
 
   self.insert = function() {
     $location.path('/secondarycharacters/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/secondarycharacters/' + $routeParams.id + '/view');
   };
 }

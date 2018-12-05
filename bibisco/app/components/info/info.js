@@ -22,13 +22,14 @@ angular.
     }
   });
 
-function InfoController($location, $uibModal, BibiscoPropertiesService) {
+function InfoController($uibModal, $window, BibiscoPropertiesService) {
 
   var self = this;
   const { shell } = require('electron');
 
   self.$onInit = function () {
     self.version = BibiscoPropertiesService.getProperty('version');
+    self.hotkeys = ['esc'];
   };
 
   self.gotoWebsite = function() {
@@ -57,6 +58,6 @@ function InfoController($location, $uibModal, BibiscoPropertiesService) {
   };
 
   self.back = function () {
-    $location.path('/start');
+    $window.history.back();
   };
 }

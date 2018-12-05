@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function TipsController($location, $rootScope) {
+function TipsController($rootScope, $window) {
   
   var self = this;
 
@@ -33,15 +33,16 @@ function TipsController($location, $rootScope) {
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'jsp.menu.project',
-      href: '/project/projecthome'
+      href: '/projecthome'
     });
     self.breadcrumbitems.push({
       label: 'jsp.project.dialog.title.suggestions'
     });
 
+    self.hotkeys = ['esc'];
   };
 
   self.back = function() {
-    $location.path('/project/projecthome');
+    $window.history.back();
   };
 }

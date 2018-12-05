@@ -22,14 +22,26 @@ angular.
     }
   });
 
-function ArchitectureController($injector, $location, $rootScope, $scope,
-  ArchitectureService, StrandService, SupporterEditionChecker) {
+function ArchitectureController($injector, $location, $rootScope, $routeParams, $scope,
+  ArchitectureService, CardUtilService, StrandService, SupporterEditionChecker) {
 
   var self = this;
 
   self.$onInit = function() {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'architecture'
+    });
+
     self.architecturecardgriditems = self.getArchitectureCardGridItems();
     self.strandcardgriditems = self.getStrandCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n','command+n'];
   };
 
   self.getArchitectureCardGridItems = function() {

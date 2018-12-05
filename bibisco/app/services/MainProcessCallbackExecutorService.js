@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('MainProcessCallbackExecutorService', 
-  function ($timeout, LoggerService, UtilService, UuidService) {
+  function (UuidService) {
     'use strict';
 
     const ipc = require('electron').ipcRenderer;

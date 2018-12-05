@@ -33,7 +33,7 @@ function ItemTitleController($location, $routeParams, ObjectService) {
 
       self.breadcrumbItems.push({
         label: 'objects',
-        href: '/project/objects?focus=objects_' + object.$loki
+        href: '/objects/params/focus=objects_' + object.$loki
       });
 
       // edit breadcrumb objects
@@ -53,14 +53,14 @@ function ItemTitleController($location, $routeParams, ObjectService) {
 
       self.breadcrumbItems.push({
         label: 'objects',
-        href: '/project/objects'
+        href: '/objects'
       });
 
       // create breadcrumb objects
       self.breadcrumbItems.push({
         label: 'object_create_title'
       });
-      self.exitpath = '/project/objects';
+      self.exitpath = '/objects';
       self.name = null;
       self.pageheadertitle =
         'object_create_title';
