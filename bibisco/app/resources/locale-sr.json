@@ -217,7 +217,6 @@
     "jsp.scene.pointOfView.subtitle": "Iz kog lica se priča piše?",
     "jsp.scene.title.tags": "Oznake",
     "jsp.scene.button.tags": "oznake",
-    "jsp.scene.button.tags.tooltip": "prikažite oznake",
     "tags_tooltip": "prikažite oznake (CTRL+T)",
     "tags_tooltip_mac": "prikažite oznake (CMD+T)",
     "jsp.scene.button.showTextScene": "prikažite tekst scene",

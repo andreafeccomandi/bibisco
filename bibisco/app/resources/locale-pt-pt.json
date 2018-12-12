@@ -265,7 +265,6 @@
   "jsp.scene.pointOfView.subtitle": "De que ponto de vista é a cena narrada?",
   "jsp.scene.title.tags": "Etiquetas",
   "jsp.scene.button.tags": "etiquetas",
-  "jsp.scene.button.tags.tooltip": "Mostrar etiquetas",
   "tags_tooltip": "Mostrar etiquetas (CTRL+T)",
   "tags_tooltip_mac": "Mostrar etiquetas (CMD+T)",
   "jsp.scene.button.showTextScene": "Mostrar o texto da cena",

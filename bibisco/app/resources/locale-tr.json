@@ -220,7 +220,6 @@
     "jsp.scene.pointOfView.subtitle": "Sahne hangi bakış açısıyla anlatıldı?",
     "jsp.scene.title.tags": "Etiketler",
     "jsp.scene.button.tags": "etiketler",
-    "jsp.scene.button.tags.tooltip": "etiketleri görüntüle",
     "tags_tooltip": "etiketleri görüntüle (CTRL+T)",
     "tags_tooltip_mac": "etiketleri görüntüle (CMD+T)",
     "jsp.scene.button.showTextScene": "sahne metnini görüntüle",

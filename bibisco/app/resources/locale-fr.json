@@ -238,7 +238,6 @@
   "jsp.scene.pointOfView.subtitle": "De quel point de vue la scène est-elle narrée ?",
   "jsp.scene.title.tags": "Étiquettes",
   "jsp.scene.button.tags": "étiquettes",
-  "jsp.scene.button.tags.tooltip": "afficher les étiquettes",
   "tags_tooltip": "afficher les étiquettes (CTRL+T)",
   "tags_tooltip_mac": "afficher les étiquettes (CMD+T)", 
   "jsp.scene.button.showTextScene": "afficher le texte de la scène",

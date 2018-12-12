@@ -267,7 +267,6 @@
   "jsp.scene.pointOfView.subtitle": "С какой (чьей) точки зрения идет повествование?",
   "jsp.scene.title.tags": "Теги",
   "jsp.scene.button.tags": "Теги",
-  "jsp.scene.button.tags.tooltip": "Отобразить теги",
   "tags_tooltip": "Отобразить теги (CTRL+T)",
   "tags_tooltip_mac": "Отобразить теги (CMD+T)",
   "jsp.scene.button.showTextScene": "Текст сцены",

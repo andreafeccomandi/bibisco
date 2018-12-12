@@ -238,7 +238,6 @@
   "jsp.scene.pointOfView.subtitle": "A partir de qual ponto de vista essa cena é narrada?",
   "jsp.scene.title.tags": "Marcadores",
   "jsp.scene.button.tags": "marcadores",
-  "jsp.scene.button.tags.tooltip": "mostrar marcadores",
   "tags_tooltip": "mostrar marcadores (CTRL+T)",
   "tags_tooltip_mac": "mostrar marcadores (CMD+T)",
   "jsp.scene.button.showTextScene": "mostrar texto da cena",
