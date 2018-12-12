@@ -211,6 +211,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/projecthome', {
         template: '<projecthome></projecthome>'
       }).
+      when('/search', {
+        template: '<search></search>'
+      }).
       when('/secondarycharacters/new', {
         template: '<secondarycharactertitle></secondarycharactertitle>'
       }).

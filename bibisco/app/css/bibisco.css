@@ -883,7 +883,15 @@ h3 {
     }
 }
 
+/* SEARCH */
 
+.search-container {
+	top: 190px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 200px);
+	width: 100%;
+}
 
 /* TIMELINE */
 
