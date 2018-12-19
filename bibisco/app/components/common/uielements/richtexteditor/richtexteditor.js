@@ -28,7 +28,7 @@ angular.
 
 function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
   $uibModal, $window, hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
-  RichTextEditorPreferencesService, WordCharacterCountService) {
+  SearchService, RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
   self.$onInit = function() {
@@ -417,6 +417,78 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
         $document[0].execCommand('insertHTML', false, sanitizedText);
       });
     }
+  };
+
+  self.openfind = function () {
+    let matches = SearchService.search(self.richtexteditor, 'caffè', 'alù');
+    let currentCursorPosition = self.getCurrentCursorPosition();
+    self.selectMatch(matches[0].startIndex, matches[0].endIndex);
+  };
+
+  self.selectMatch = function (start, end) {
+    if (end-start>0) {
+      let selection = window.getSelection();
+      let range = self.createRange(self.richtexteditor, { 
+        start: start, end: end
+      });
+      if (range) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      self.focus();
+    }
+  };
+
+  self.createRange = function (node, chars, range) {
+    if (!range) {
+      range = document.createRange();
+    }
+
+    if (chars.end === 0) {
+      range.setEnd(node, chars.end);
+
+    } else if (node && chars.end > 0) {
+      if (node.nodeType === Node.TEXT_NODE) {
+
+        // manage start
+        if (chars.start > -1 && chars.start < node.textContent.length) {
+          range.selectNode(node);
+          range.setStart(node, chars.start);
+          chars.start = -1;
+        } else {
+          chars.start -= node.textContent.length;
+        }
+
+        // manage end
+        if (node.textContent.length < chars.end) {
+          chars.end -= node.textContent.length;
+        } else {
+          range.setEnd(node, chars.end);
+          chars.end = 0;
+        }
+
+      } else {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          range = self.createRange(node.childNodes[i], chars, range);
+          if (chars.end === 0) {
+            break;
+          }
+        }
+      }
+    }
+
+    return range;
+  };
+
+  self.getCurrentCursorPosition = function() {
+    let range = window.getSelection().getRangeAt(0);
+    let preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(self.richtexteditor);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+    caretOffset = preCaretRange.toString().length;
+
+    return caretOffset;
   };
 
   self.opensettings = function() {

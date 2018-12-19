@@ -44,7 +44,6 @@
     "export-linux-ce": "npm run set-environment-ce && npm run package-linux && npm run zip-linux-ce && npm run finalize-export-linux",
     "export-linux-se": "npm run set-environment-se && npm run package-linux && npm run zip-linux-se && npm run finalize-export-linux",
     "export-linux": "npm run prepare-export-linux && npm run export-linux-ce && npm run export-linux-se"
-    
   },
   "files": [
     "index.js",
@@ -60,6 +59,7 @@
     "electron-debug": "^1.5.0",
     "electron-is-dev": "^0.3.0",
     "electron-spellchecker": "^1.1.2",
+    "findandreplacedomtext": "^0.4.6",
     "fs-extra": "^2.1.2",
     "html-to-text": "^3.3.0",
     "htmlparser2": "^3.9.2",
