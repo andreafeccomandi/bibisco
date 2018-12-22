@@ -118,8 +118,9 @@
   </div>
 </div>
 
-<div class="richtexteditor-contenteditable-container">
-  <div contenteditable="{{$ctrl.contenteditable}}" ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
+<div id="richtexteditorcontainer" class="richtexteditor-contenteditable-container">
+  <div contenteditable="{{$ctrl.contenteditable}}" 
+    ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
     spellcheck="{{$ctrl.spellcheckenabled}}"
     class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"

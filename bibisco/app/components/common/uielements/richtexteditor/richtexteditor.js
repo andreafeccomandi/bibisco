@@ -52,6 +52,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.countWordsAndCharacters();
 
     // focus on editor
+    self.richtexteditorcontainer = document.getElementById('richtexteditorcontainer');
     self.richtexteditor = document.getElementById('richtexteditor');
     self.focus();
   };
@@ -420,12 +421,26 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.openfind = function () {
+
     let matches = SearchService.search(self.richtexteditor, 'caffè', 'alù');
-    let currentCursorPosition = self.getCurrentCursorPosition();
-    self.selectMatch(matches[0].startIndex, matches[0].endIndex);
+    if (matches && matches.length > 0) {
+      let currentCursorPosition = self.getCurrentCursorPosition();
+      let found = false;
+      for (let i = 0; i < matches.length; i++) {
+        if (currentCursorPosition <= matches[i].endIndex) {
+          self.selectMatch(matches[i].startIndex, matches[i].endIndex);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        self.selectMatch(matches[0].startIndex, matches[0].endIndex);
+      }        
+    }
   };
 
   self.selectMatch = function (start, end) {
+    
     if (end-start>0) {
       let selection = window.getSelection();
       let range = self.createRange(self.richtexteditor, { 
@@ -434,9 +449,10 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       if (range) {
         selection.removeAllRanges();
         selection.addRange(range);
+        let rangeTop = self.getRangeTop(range);
+        self.richtexteditorcontainer.scrollTop = 
+          self.richtexteditorcontainer.scrollTop + rangeTop - 300;
       }
-
-      self.focus();
     }
   };
 
@@ -480,6 +496,20 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
     return range;
   };
+  
+  self.getRangeTop = function(range) {
+    let result = 0;
+    
+    if (range) {
+      let rects = range.getClientRects();
+      if (rects.length > 0) {
+        rect = rects[0];
+        result = rect.top;
+      }
+    } 
+
+    return result;
+  };
 
   self.getCurrentCursorPosition = function() {
     let range = window.getSelection().getRangeAt(0);
@@ -489,6 +519,21 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     caretOffset = preCaretRange.toString().length;
 
     return caretOffset;
+  };
+
+  self.setCurrentCursorPosition = function (chars) {
+    alert('setCurrentCursorPosition('+chars+')');
+    if (chars >= 0) {
+      let selection = window.getSelection();
+      let range = self.createRange(self.richtexteditor, { count: chars });
+      if (range) {
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      self.focus();
+    }
   };
 
   self.opensettings = function() {
