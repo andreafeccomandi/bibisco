@@ -512,28 +512,21 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.getCurrentCursorPosition = function() {
-    let range = window.getSelection().getRangeAt(0);
-    let preCaretRange = range.cloneRange();
-    preCaretRange.selectNodeContents(self.richtexteditor);
-    preCaretRange.setEnd(range.endContainer, range.endOffset);
-    caretOffset = preCaretRange.toString().length;
+
+    let caretOffset = 0;
+    try {
+      if (window.getSelection()) {
+        let range = window.getSelection().getRangeAt(0);
+        let preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(self.richtexteditor);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     return caretOffset;
-  };
-
-  self.setCurrentCursorPosition = function (chars) {
-    alert('setCurrentCursorPosition('+chars+')');
-    if (chars >= 0) {
-      let selection = window.getSelection();
-      let range = self.createRange(self.richtexteditor, { count: chars });
-      if (range) {
-        range.collapse(false);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
-
-      self.focus();
-    }
   };
 
   self.opensettings = function() {
