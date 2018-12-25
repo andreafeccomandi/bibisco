@@ -217,9 +217,20 @@ h6, label, th, td, p {
 	border-radius: 5px;
 	border-color: #2D6987;
 	border-style: solid;
-	height: calc(100% - 40px);
 	overflow-y: auto;
 	width: 100%;
+}
+
+.richtexteditor-contenteditable-container-nofindreplace {
+	height: calc(100% - 40px);
+}
+
+.richtexteditor-contenteditable-container-findreplace {
+	height: calc(100% - 80px);
+}
+
+.richtexteditor-find-replace-toolbar input {
+	width: 273px !important;
 }
 
 /* IMAGES VIEWER */
@@ -228,8 +239,11 @@ h6, label, th, td, p {
 }
 
 @media (max-width: 1199px) {
-	.richtexteditor-contenteditable-container {
+	.richtexteditor-contenteditable-container-nofindreplace {
 		height: calc(100% - 70px);
+	}
+	.richtexteditor-contenteditable-container-findreplace {
+		height: calc(100% - 140px);
 	}
 }
 

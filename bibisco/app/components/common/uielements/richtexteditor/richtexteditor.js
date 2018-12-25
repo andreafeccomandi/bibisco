@@ -149,6 +149,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.unorderedlistactive = false;
   };
 
+  self.showfindreplacetoolbar = false;
+
   hotkeys.bindTo($scope)
     .add({
       combo: ['ctrl+Y', 'command+y'],
@@ -420,8 +422,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }
   };
 
-  self.openfind = function () {
+  self.toggleFindReplaceToolbar = function () {
+    self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
+  };
 
+  self.find = function () {
     let matches = SearchService.search(self.richtexteditor, 'caffè', 'alù');
     if (matches && matches.length > 0) {
       let currentCursorPosition = self.getCurrentCursorPosition();
@@ -437,7 +442,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
         self.selectMatch(matches[0].startIndex, matches[0].endIndex);
       }        
     }
-  };
+  }; 
 
   self.selectMatch = function (start, end) {
     

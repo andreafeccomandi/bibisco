@@ -105,7 +105,8 @@
     </button>
   </div>
   <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.openfind()" 
+    <button class="btn btn-default btn-sm" ng-click="$ctrl.toggleFindReplaceToolbar()" 
+      ng-class="{ 'btn-info': $ctrl.showfindreplacetoolbar, 'btn-unselected': !$ctrl.showfindreplacetoolbar }" 
       uib-tooltip="{{'tag.bibiscoRichTextEditor.dialog.richTextEditorFind.title' | translate}}">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
@@ -117,7 +118,8 @@
     </button>
   </div>
 </div>
-<div class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
+<div ng-if="$ctrl.showfindreplacetoolbar"
+  class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
   <form class="form-inline">
       
       <div class="form-group">
@@ -151,7 +153,9 @@
   </div>
 </div>
 
-<div id="richtexteditorcontainer" class="richtexteditor-contenteditable-container">
+<div id="richtexteditorcontainer" 
+  ng-class="{ 'richtexteditor-contenteditable-container-findreplace': $ctrl.showfindreplacetoolbar, 'richtexteditor-contenteditable-container-nofindreplace': !$ctrl.showfindreplacetoolbar }" 
+  class="richtexteditor-contenteditable-container">
   <div contenteditable="{{$ctrl.contenteditable}}" 
     ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
     spellcheck="{{$ctrl.spellcheckenabled}}"
