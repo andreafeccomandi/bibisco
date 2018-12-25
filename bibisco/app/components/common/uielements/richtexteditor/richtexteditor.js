@@ -200,6 +200,13 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       callback: function() {
         self.highlight();
       }
+    })
+    .add({
+      combo: ['ctrl+f', 'command+f'],
+      description: 'find',
+      callback: function () {
+        self.toggleFindReplaceToolbar();
+      }
     });
 
   self.checkselectionstate = function() {
