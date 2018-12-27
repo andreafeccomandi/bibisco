@@ -124,10 +124,10 @@
       
       <div class="form-group">
         <div class="input-group">
-          <input type="text" class="form-control input-sm"
+          <input type="text" class="form-control input-sm" maxlength="30"
             ng-model="$ctrl.texttofind" placeholder="Find">
           </input>
-          <span class="richtexteditor-find-counter">26/27</span>
+          <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
           <span class="input-group-btn">
             <button class="btn btn-default btn-sm">
               <strong>Aa</strong>
@@ -135,15 +135,21 @@
             <button class="btn btn-default btn-sm" 
             ng-click="$ctrl.find()" >
               <i class="fa fa-search" aria-hidden="true"></i></button>
-            <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
-            <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+            <button class="btn btn-default btn-sm" 
+              ng-disabled="$ctrl.totalmatch == 0"
+              ng-click="$ctrl.previousMatch()">
+              <i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+            <button class="btn btn-default btn-sm" 
+              ng-disabled="$ctrl.totalmatch == 0"
+              ng-click="$ctrl.nextMatch()">
+              <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
           </span>
         </div>
       </div>
       <div class="form-group">
         <div class="input-group">
-          <input type="text" class="form-control input-sm"
-            id="exampleInputEmail2" placeholder="Replace">
+          <input type="text" class="form-control input-sm" maxlength="30"
+            ng-model="$ctrl.texttoreplace" placeholder="Replace">
           <span class="input-group-btn">
             <button class="btn btn-default btn-sm"><i class="fa fa-reply" aria-hidden="true"></i></button>
             <button class="btn btn-default btn-sm"><i class="fa fa-reply-all" aria-hidden="true"></i></button>

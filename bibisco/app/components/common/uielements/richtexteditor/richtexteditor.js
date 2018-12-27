@@ -62,8 +62,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.showfindreplacetoolbar = false;
 
     // init find & replace text
-    self.texttofind = null;
-    self.texttoreplace = null;
+    self.initFindReplace();
     
     // saved content
     self.savedcontent = self.content;
@@ -85,6 +84,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.richtexteditorcontainer = document.getElementById('richtexteditorcontainer');
     self.richtexteditor = document.getElementById('richtexteditor');
     self.focus();
+  };
+
+  self.initFindReplace = function() {
+    self.texttofind = null;
+    self.texttoreplace = null;
+    self.matches = null;
+    self.totalmatch = 0;
+    self.currentmatch = 0;
   };
 
   $scope.$on('$locationChangeStart', function(event) {
@@ -437,25 +444,57 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.toggleFindReplaceToolbar = function () {
     self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
+    if (!self.showfindreplacetoolbar) {
+      self.initFindReplace();
+    }
   };
 
   self.find = function () {
-    let matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
-    if (matches && matches.length > 0) {
+    self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
+    if (self.matches && self.matches.length > 0) {
+      self.totalmatch = self.matches.length;
       let currentCursorPosition = self.getCurrentCursorPosition();
       let found = false;
-      for (let i = 0; i < matches.length; i++) {
-        if (currentCursorPosition <= matches[i].endIndex) {
-          self.selectMatch(matches[i].startIndex, matches[i].endIndex);
+      for (let i = 0; i < self.matches.length; i++) {
+        if (currentCursorPosition <= self.matches[i].endIndex) {
+          self.currentmatch = (i+1);
+          self.selectMatch(self.matches[i].startIndex, self.matches[i].endIndex);
           found = true;
           break;
         }
       }
       if (!found) {
-        self.selectMatch(matches[0].startIndex, matches[0].endIndex);
+        self.selectMatch(self.matches[0].startIndex, self.matches[0].endIndex);
       }        
+    } else {
+      self.totalmatch = 0;
+      self.currentmatch = 0;
     }
   }; 
+
+  self.previousMatch = function() {
+    self.moveToMatch('previous');
+  };
+
+  self.nextMatch = function () {
+    self.moveToMatch('next');
+  };
+
+  self.moveToMatch = function(direction) {
+    if (direction === 'previous') {
+      self.currentmatch = self.currentmatch - 1;
+    } else {
+      self.currentmatch = self.currentmatch + 1;
+    }
+    if (self.currentmatch === 0) {
+      self.currentmatch = self.totalmatch;
+    } else if (self.currentmatch === (self.totalmatch + 1)) {
+      self.currentmatch = 1;
+    }
+
+    self.selectMatch(self.matches[self.currentmatch-1].startIndex, 
+      self.matches[self.currentmatch-1].endIndex);
+  };
 
   self.selectMatch = function (start, end) {
     
