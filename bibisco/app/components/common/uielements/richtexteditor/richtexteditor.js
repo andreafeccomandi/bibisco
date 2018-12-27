@@ -34,6 +34,36 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   self.$onInit = function() {
     self.contenteditable = true;
     self.checkExitActive = true;
+
+    // init OS
+    if (ContextService.getOs() === 'darwin') {
+      self.os = '_mac';
+    } else {
+      self.os = '';
+    }
+
+    // init styles and spell check
+    self.fontclass = RichTextEditorPreferencesService.getFontClass();
+    self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+    self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
+
+    // init editor button states
+    self.boldactive = false;
+    self.italicactive = false;
+    self.underlineactive = false;
+    self.strikethroughactive = false;
+    self.highlightactive = false;
+    self.aligncenteractive = false;
+    self.alignleftactive = false;
+    self.alignrightactive = false;
+    self.justifyactive = false;
+    self.orderedlistactive = false;
+    self.unorderedlistactive = false;
+    self.showfindreplacetoolbar = false;
+
+    // init find & replace text
+    self.texttofind = null;
+    self.texttoreplace = null;
     
     // saved content
     self.savedcontent = self.content;
@@ -113,28 +143,6 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }, 0);
   };
 
-  if (ContextService.getOs() === 'darwin') {
-    self.os = '_mac';
-  } else {
-    self.os = '';
-  }
-
-  self.fontclass = RichTextEditorPreferencesService.getFontClass();
-  self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-  self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
-
-  self.boldactive = false;
-  self.italicactive = false;
-  self.underlineactive = false;
-  self.strikethroughactive = false;
-  self.highlightactive = false;
-  self.aligncenteractive = false;
-  self.alignleftactive = false;
-  self.alignrightactive = false;
-  self.justifyactive = false;
-  self.orderedlistactive = false;
-  self.unorderedlistactive = false;
-
   self.disablestylebuttons = function() {
     self.boldactive = false;
     self.italicactive = false;
@@ -148,8 +156,6 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.orderedlistactive = false;
     self.unorderedlistactive = false;
   };
-
-  self.showfindreplacetoolbar = false;
 
   hotkeys.bindTo($scope)
     .add({
@@ -434,7 +440,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.find = function () {
-    let matches = SearchService.search(self.richtexteditor, 'caffè', 'alù');
+    let matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
     if (matches && matches.length > 0) {
       let currentCursorPosition = self.getCurrentCursorPosition();
       let found = false;

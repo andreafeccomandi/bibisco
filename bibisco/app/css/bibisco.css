@@ -233,6 +233,15 @@ h6, label, th, td, p {
 	width: 273px !important;
 }
 
+.richtexteditor-find-counter {
+	position: absolute; 
+	right: 135px; 
+	top: 6px; 
+	z-index: 100; 
+	color: #888; 
+	font-size: 13px;
+}
+
 /* IMAGES VIEWER */
 .image-viewer-image {
 	max-height: 500px;
