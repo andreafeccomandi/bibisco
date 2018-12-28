@@ -125,6 +125,7 @@
       <div class="form-group">
         <div class="input-group">
           <input type="text" class="form-control input-sm" maxlength="30"
+            id="richtexteditortexttofind"
             ng-model="$ctrl.texttofind" placeholder="Find">
           </input>
           <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
@@ -169,7 +170,7 @@
     spellcheck="{{$ctrl.spellcheckenabled}}"
     class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"
-    ng-blur="$ctrl.disablestylebuttons()"
+    ng-blur="$ctrl.blur()"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)">

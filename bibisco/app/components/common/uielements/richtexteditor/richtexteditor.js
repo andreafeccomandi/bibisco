@@ -63,7 +63,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
     // init find & replace text
     self.initFindReplace();
-    
+
     // saved content
     self.savedcontent = self.content;
     self.savedcharacters = self.characters;
@@ -83,6 +83,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     // focus on editor
     self.richtexteditorcontainer = document.getElementById('richtexteditorcontainer');
     self.richtexteditor = document.getElementById('richtexteditor');
+    self.lastcursorposition = 0;
     self.focus();
   };
 
@@ -143,6 +144,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.savedcharacters = self.characters;
     self.savedwords = self.words;
   });
+
+  self.blur = function() {
+    self.disablestylebuttons();
+    self.lastcursorposition = self.getCurrentCursorPosition();
+  };
 
   self.focus = function() {
     setTimeout(function () {
@@ -444,7 +450,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.toggleFindReplaceToolbar = function () {
     self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
-    if (!self.showfindreplacetoolbar) {
+    if (self.showfindreplacetoolbar) {
+      $timeout(function () {
+        document.getElementById('richtexteditortexttofind').focus();
+      });
+    } else {
       self.initFindReplace();
     }
   };
@@ -453,10 +463,9 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
     if (self.matches && self.matches.length > 0) {
       self.totalmatch = self.matches.length;
-      let currentCursorPosition = self.getCurrentCursorPosition();
       let found = false;
       for (let i = 0; i < self.matches.length; i++) {
-        if (currentCursorPosition <= self.matches[i].endIndex) {
+        if (self.lastcursorposition <= self.matches[i].endIndex) {
           self.currentmatch = (i+1);
           self.selectMatch(self.matches[i].startIndex, self.matches[i].endIndex);
           found = true;
