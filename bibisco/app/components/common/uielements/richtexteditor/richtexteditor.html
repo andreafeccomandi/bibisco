@@ -124,26 +124,26 @@
       
       <div class="form-group">
         <div class="input-group">
-          <input type="text" class="form-control input-sm" maxlength="30"
-            id="richtexteditortexttofind"
-            ng-model="$ctrl.texttofind" placeholder="Find">
-          </input>
-          <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
           <span class="input-group-btn">
             <button class="btn btn-default btn-sm">
               <strong>Aa</strong>
             </button>
-            <button class="btn btn-default btn-sm" 
-            ng-click="$ctrl.find()" >
-              <i class="fa fa-search" aria-hidden="true"></i></button>
+          </span>
+          <input type="text" class="form-control input-sm" maxlength="30"
+            id="richtexteditortexttofind"
+            ng-change="$ctrl.find()" 
+            ng-model="$ctrl.texttofind" placeholder="Find">
+          </input>
+          <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
+          <span class="input-group-btn">
             <button class="btn btn-default btn-sm" 
               ng-disabled="$ctrl.totalmatch == 0"
               ng-click="$ctrl.previousMatch()">
-              <i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+              <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
             <button class="btn btn-default btn-sm" 
               ng-disabled="$ctrl.totalmatch == 0"
               ng-click="$ctrl.nextMatch()">
-              <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
           </span>
         </div>
       </div>

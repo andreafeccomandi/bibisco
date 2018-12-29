@@ -230,12 +230,12 @@ h6, label, th, td, p {
 }
 
 .richtexteditor-find-replace-toolbar input {
-	width: 273px !important;
+	width: 285px !important;
 }
 
 .richtexteditor-find-counter {
 	position: absolute; 
-	right: 135px; 
+	right: 75px; 
 	top: 6px; 
 	z-index: 100; 
 	color: #888; 

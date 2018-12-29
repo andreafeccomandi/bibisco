@@ -452,7 +452,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
     if (self.showfindreplacetoolbar) {
       $timeout(function () {
-        document.getElementById('richtexteditortexttofind').focus();
+        try {
+          document.getElementById('richtexteditortexttofind').focus();
+        } catch (error) {
+          console.log(error);
+        }
       });
     } else {
       self.initFindReplace();
@@ -460,25 +464,16 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.find = function () {
-    self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
-    if (self.matches && self.matches.length > 0) {
-      self.totalmatch = self.matches.length;
-      let found = false;
-      for (let i = 0; i < self.matches.length; i++) {
-        if (self.lastcursorposition <= self.matches[i].endIndex) {
-          self.currentmatch = (i+1);
-          self.selectMatch(self.matches[i].startIndex, self.matches[i].endIndex);
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        self.selectMatch(self.matches[0].startIndex, self.matches[0].endIndex);
-      }        
-    } else {
-      self.totalmatch = 0;
-      self.currentmatch = 0;
-    }
+    self.matches = null;
+    self.totalmatch = 0;
+    self.currentmatch = 0;
+
+    if (self.texttofind) {
+      self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
+      if (self.matches && self.matches.length > 0) {
+        self.totalmatch = self.matches.length;
+      } 
+    } 
   }; 
 
   self.previousMatch = function() {
@@ -489,7 +484,24 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.moveToMatch('next');
   };
 
-  self.moveToMatch = function(direction) {
+  self.calculateFirstMatch = function(direction) {
+    if (self.matches && self.matches.length > 0) {
+      let found = false;
+      for (let i = 0; i < self.matches.length; i++) {
+        if (self.lastcursorposition <= self.matches[i].endIndex) {
+          self.currentmatch = (i + 1);
+          self.selectMatch(self.matches[i].startIndex, self.matches[i].endIndex);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        self.currentmatch = 1;
+      }
+    } 
+  };
+
+  self.calculateNextMatch = function (direction) {
     if (direction === 'previous') {
       self.currentmatch = self.currentmatch - 1;
     } else {
@@ -500,7 +512,16 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     } else if (self.currentmatch === (self.totalmatch + 1)) {
       self.currentmatch = 1;
     }
+  };
 
+  self.moveToMatch = function(direction) {
+    
+    if (self.currentmatch) {
+      self.calculateNextMatch(direction);
+    } else {
+      self.calculateFirstMatch(direction);
+    }
+    
     self.selectMatch(self.matches[self.currentmatch-1].startIndex, 
       self.matches[self.currentmatch-1].endIndex);
   };
