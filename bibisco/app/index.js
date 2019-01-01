@@ -17,6 +17,9 @@ const electron = require('electron');
 const app = electron.app;
 const ipc = require('electron').ipcMain;
 
+// enable armony_regexp_lookbehind
+app.commandLine.appendSwitch('js-flags', '--harmony_regexp_lookbehind');
+
 // prevent window being garbage collected
 let mainWindow;
 
