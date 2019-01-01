@@ -60,6 +60,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.orderedlistactive = false;
     self.unorderedlistactive = false;
     self.showfindreplacetoolbar = false;
+    self.casesensitiveactive = false;
+    self.wholewordactive = false;
 
     // init find & replace text
     self.initFindReplace();
@@ -93,6 +95,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.matches = null;
     self.totalmatch = 0;
     self.currentmatch = 0;
+    self.casesensitiveactive = false;
+    self.wholewordactive = false;
   };
 
   $scope.$on('$locationChangeStart', function(event) {
@@ -448,7 +452,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }
   };
 
-  self.toggleFindReplaceToolbar = function () {
+  self.toggleFindReplaceToolbar = function() {
     self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
     if (self.showfindreplacetoolbar) {
       $timeout(function () {
@@ -461,6 +465,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     } else {
       self.initFindReplace();
     }
+  };
+
+  self.toggleCaseSensitive = function() {
+    self.casesensitiveactive = !self.casesensitiveactive;
+  };
+
+  self.toggleWholeWord = function () {
+    self.wholewordactive = !self.wholewordactive;
   };
 
   self.find = function () {

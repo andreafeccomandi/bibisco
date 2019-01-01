@@ -199,6 +199,10 @@ h6, label, th, td, p {
 	margin-bottom: 10px;
 }
 
+.richtexteditor-toolbar button{
+	width: 31px;
+}
+
 .richtexteditor-toolbar-active-button {
 	color: #2D6987;
 }
@@ -230,7 +234,15 @@ h6, label, th, td, p {
 }
 
 .richtexteditor-find-replace-toolbar input {
-	width: 285px !important;
+	width: 281px !important;
+}
+
+#richtexteditorcasesensitiveicon {
+	margin-left: -3px;
+}
+
+#richtexteditorwholewordicon {
+	margin-left: -5px;
 }
 
 .richtexteditor-find-counter {

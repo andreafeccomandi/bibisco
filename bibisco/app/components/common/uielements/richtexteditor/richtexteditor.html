@@ -112,9 +112,9 @@
     </button>
   </div>
   <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.toggleFindReplaceToolbar()" ng-class="{ 'btn-info': $ctrl.showfindreplacetoolbar, 'btn-unselected': !$ctrl.showfindreplacetoolbar }"
+    <button class="btn btn-default btn-sm" ng-click="$ctrl.fullscreen()"
       uib-tooltip="{{'tag.bibiscoRichTextEditor.dialog.richTextEditorFind.title' | translate}}">
-      <i class="fa fa-search" aria-hidden="true"></i>
+      <i class="fa fa-arrows-alt" aria-hidden="true"></i>
     </button>
   </div>
   <div class="btn-group">
@@ -131,8 +131,15 @@
       <div class="form-group">
         <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-default btn-sm">
+            <button class="btn btn-default btn-sm"
+              ng-click="$ctrl.toggleCaseSensitive()"
+              ng-class="{ 'btn-info': $ctrl.casesensitiveactive, 'btn-unselected': !$ctrl.casesensitiveactive }">
               <strong id="richtexteditorcasesensitiveicon">Aa</strong>
+            </button>
+            <button class="btn btn-default btn-sm"
+              ng-click="$ctrl.toggleWholeWord()"
+              ng-class="{ 'btn-info': $ctrl.wholewordactive, 'btn-unselected': !$ctrl.wholewordactive }">
+              <strong id="richtexteditorwholewordicon">|ab|</strong>
             </button>
           </span>
           <input type="text" class="form-control input-sm" maxlength="30"
