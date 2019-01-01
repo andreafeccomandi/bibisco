@@ -452,16 +452,20 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }
   };
 
+  self.focusOnText2Find = function() {
+    $timeout(function () {
+      try {
+        document.getElementById('richtexteditortexttofind').focus();
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
   self.toggleFindReplaceToolbar = function() {
     self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
     if (self.showfindreplacetoolbar) {
-      $timeout(function () {
-        try {
-          document.getElementById('richtexteditortexttofind').focus();
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      self.focusOnText2Find();
     } else {
       self.initFindReplace();
     }
@@ -469,10 +473,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.toggleCaseSensitive = function() {
     self.casesensitiveactive = !self.casesensitiveactive;
+    self.find();
+    self.focusOnText2Find();
   };
 
   self.toggleWholeWord = function () {
     self.wholewordactive = !self.wholewordactive;
+    self.find();
+    self.focusOnText2Find();
   };
 
   self.find = function () {
@@ -481,7 +489,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.currentmatch = 0;
 
     if (self.texttofind) {
-      self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù');
+      self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù',
+        self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;
       } 
