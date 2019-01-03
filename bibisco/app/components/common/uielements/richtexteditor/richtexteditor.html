@@ -165,8 +165,16 @@
           <input type="text" class="form-control input-sm" maxlength="30"
             ng-model="$ctrl.texttoreplace" placeholder="Replace">
           <span class="input-group-btn">
-            <button class="btn btn-default btn-sm"><i class="fa fa-reply" aria-hidden="true"></i></button>
-            <button class="btn btn-default btn-sm"><i class="fa fa-reply-all" aria-hidden="true"></i></button>
+            <button class="btn btn-default btn-sm"
+              ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
+              ng-click="$ctrl.replaceNext()"
+              ><i class="fa fa-reply" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default btn-sm"
+              ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
+              ng-click="$ctrl.replaceAll()">
+              <i class="fa fa-reply-all" aria-hidden="true"></i>
+            </button>
           </span>
         </div>
       </div>

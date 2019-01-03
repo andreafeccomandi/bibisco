@@ -627,6 +627,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     return result;
   };
 
+  self.replaceNext = function() {
+    alert('Replace next: ' + self.texttoreplace);
+  }; 
+
+  self.replaceAll = function () {
+    alert('Replace all: ' + self.texttoreplace);
+  }; 
+
   self.getCurrentCursorPosition = function() {
 
     let caretOffset = 0;
