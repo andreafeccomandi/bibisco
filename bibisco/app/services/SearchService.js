@@ -37,6 +37,8 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
       } else {
         regexp = text2search;
       }
+
+      //dom.innerHTML = dom.innerHTML.replace(/&nbsp;/g, ' ');
       
       // findandreplacedomtext(dom, {
       //   find: regexp,

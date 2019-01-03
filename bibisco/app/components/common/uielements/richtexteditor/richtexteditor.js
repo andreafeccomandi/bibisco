@@ -74,6 +74,9 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     // init content
     if (self.content === '') {
       self.content = '<p><br></p>';
+    } else {
+      // replace &nbsp; with spaces
+      self.content = self.content.replace(/&nbsp;/g, ' ');
     }
     
     // set <p> as default paragraph separator
@@ -443,7 +446,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
         sanitizedText = SanitizeHtmlService.sanitize(text);
       } else {
         sanitizedText = $event.clipboardData.getData('text/plain');
-		  sanitizedText = sanitizedText.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
+        sanitizedText = sanitizedText.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
       }
       $event.preventDefault();
       $timeout(function() {
@@ -481,6 +484,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.wholewordactive = !self.wholewordactive;
     self.find();
     self.focusOnText2Find();
+  };
+
+  self.texttofindChange = function() {
+    self.content = self.content.replace(/&nbsp;/g, ' ');
+    self.find();
   };
 
   self.find = function () {
@@ -661,8 +669,17 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     });
   };
 
+  self.setCurrentCursorPosition = function (chars) {   
+    $timeout(function () {
+      self.selectMatch(chars, chars);
+    }, 0);
+  };
+
   self.contentChanged = function() {
-    self.countWordsAndCharacters();
+    self.countWordsAndCharacters(); 
+    if (self.texttofind) {
+      self.find();
+    }
     $rootScope.dirty = true;
   };
 

@@ -131,20 +131,20 @@
       <div class="form-group">
         <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-default btn-sm"
+            <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
               ng-click="$ctrl.toggleCaseSensitive()"
-              ng-class="{ 'btn-info': $ctrl.casesensitiveactive, 'btn-unselected': !$ctrl.casesensitiveactive }">
+              ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
               <strong id="richtexteditorcasesensitiveicon">Aa</strong>
             </button>
-            <button class="btn btn-default btn-sm"
+            <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
               ng-click="$ctrl.toggleWholeWord()"
-              ng-class="{ 'btn-info': $ctrl.wholewordactive, 'btn-unselected': !$ctrl.wholewordactive }">
+              ng-class="{ 'active': $ctrl.wholewordactive == true }">
               <strong id="richtexteditorwholewordicon">|ab|</strong>
             </button>
           </span>
           <input type="text" class="form-control input-sm" maxlength="30"
             id="richtexteditortexttofind"
-            ng-change="$ctrl.find()" 
+            ng-change="$ctrl.texttofindChange()" 
             ng-model="$ctrl.texttofind" placeholder="Find">
           </input>
           <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
