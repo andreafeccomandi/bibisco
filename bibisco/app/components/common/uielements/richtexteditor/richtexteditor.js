@@ -493,15 +493,16 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.find = function () {
     self.matches = null;
-    self.totalmatch = 0;
-    self.currentmatch = 0;
 
     if (self.texttofind) {
-      self.matches = SearchService.search(self.richtexteditor, self.texttofind, 'alù',
+      self.matches = SearchService.search(self.richtexteditor, self.texttofind,
         self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;
-      } 
+      } else {
+        self.totalmatch = 0;
+      }
+      self.currentmatch = 0;
     } 
   }; 
 
@@ -544,13 +545,15 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.moveToMatch = function(direction) {
-    
+    if (!self.matches || self.matches.length === 0)  {
+      return;
+    }
     if (self.currentmatch) {
       self.calculateNextMatch(direction);
     } else {
       self.calculateFirstMatch(direction);
     }
-    
+
     self.selectMatch(self.matches[self.currentmatch-1].startIndex, 
       self.matches[self.currentmatch-1].endIndex);
   };
@@ -628,11 +631,26 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.replaceNext = function() {
-    alert('Replace next: ' + self.texttoreplace);
+    if (self.currentmatch > 0) {
+      SearchService.replace(self.richtexteditor, self.texttofind,
+        self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
+        self.currentmatch);
+      self.content = self.richtexteditor.innerHTML;
+      self.contentChanged();
+      self.focus();
+      $timeout(function() {
+        self.nextMatch();
+      }, 0);
+    } else {
+      self.nextMatch();
+    }
   }; 
 
   self.replaceAll = function () {
-    alert('Replace all: ' + self.texttoreplace);
+    SearchService.replace(self.richtexteditor, self.texttofind,
+      self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
+    self.content = self.richtexteditor.innerHTML;
+    self.contentChanged();
   }; 
 
   self.getCurrentCursorPosition = function() {
@@ -681,6 +699,10 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     $timeout(function () {
       self.selectMatch(chars, chars);
     }, 0);
+  };
+
+  self.clickoneditor = function() {
+    self.currentmatch = 0;
   };
 
   self.contentChanged = function() {

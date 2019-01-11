@@ -16,21 +16,46 @@
 angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
   'use strict';
 
-  var findandreplacedomtext = require('findandreplacedomtext');
+  var findandreplacedomtext = require('./custom_node_modules/findandreplacedomtext');
   const extraAsciiCharacters = '\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00f8-\\u00ff\\u0100-\\u017f\\u0180-\\u024f\\u0370-\\u0373\\u0376-\\u0376\\u037b-\\u037d\\u0388-\\u03ff\\u0400-\\u04FF\\u4E00-\\u9FFF\\u3400-\\u4dbf\\uf900-\\ufaff\\u3040-\\u309f\\uac00-\\ud7af\\u0400-\\u04FF\\u00E4\\u00C4\\u00E5\\u00C5\\u00F6\\u00D6';
   const findWholeWordPrefix = '((?<![\\w' + extraAsciiCharacters + '])|(?:^))(';
   const findWholeWordSuffix = ')(?![\\w' + extraAsciiCharacters + '])';
 
   return {
-    search: function (dom, text2search, text2replace, casesensitive, wholeword) {
+    search: function (dom, text2search, casesensitive, wholeword) {
 
-      // nella regexp aggiungere i per ricerche case insensitive
-      // nella regexp aggiungere g per sostituire tutte le occorrenze
+      let matches = findandreplacedomtext(dom, {
+        preset: 'prose',
+        find: new RegExp(this.calculateRegexp(text2search, wholeword), 
+          this.calculateMode(casesensitive))
+      }).search();
+
+      return matches;
+    },
+
+    replace: function (dom, text2search, text2replace, casesensitive, wholeword, 
+      occurrence) {
+
+      let matches = findandreplacedomtext(dom, {
+        preset: 'prose',
+        find: new RegExp(this.calculateRegexp(text2search, wholeword), 
+          this.calculateMode(casesensitive)),
+        replace: text2replace,
+        filterOccurrence: occurrence
+      }).search();
+
+      return matches;
+    },
+
+    calculateMode: function (casesensitive) {
       let mode = 'g';
       if (!casesensitive) {
         mode = mode + 'i';
       }
+      return mode;
+    },
 
+    calculateRegexp: function (text2search, wholeword) {
       let regexp;
       if (wholeword) {
         regexp = findWholeWordPrefix + text2search + findWholeWordSuffix;
@@ -38,18 +63,7 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
         regexp = text2search;
       }
 
-      //dom.innerHTML = dom.innerHTML.replace(/&nbsp;/g, ' ');
-      
-      // findandreplacedomtext(dom, {
-      //   find: regexp,
-      //   replace: text2replace
-      // });
-      let matches = findandreplacedomtext(dom, {
-        preset: 'prose',
-        find: new RegExp(regexp, mode)
-      }).search();
-
-      return matches;
+      return regexp;
     },
 
     getIndicesOf: function(searchStr, str, caseSensitive) {
@@ -68,5 +82,5 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
       }
       return indices;
     }
-  };;
+  };
 });

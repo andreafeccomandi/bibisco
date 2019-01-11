@@ -192,6 +192,7 @@
     class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
     id="richtexteditor"
     ng-blur="$ctrl.blur()"
+    ng-click="$ctrl.clickoneditor()"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)">
