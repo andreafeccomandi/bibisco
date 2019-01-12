@@ -93,12 +93,15 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.initFindReplace = function() {
+    self.casesensitiveactive = false;
+    self.contentafterreplace = null;
+    self.contentbeforereplace = null;
+    self.currentmatch = 0;
+    self.justreplaced = false;
+    self.matches = null;
     self.texttofind = null;
     self.texttoreplace = null;
-    self.matches = null;
     self.totalmatch = 0;
-    self.currentmatch = 0;
-    self.casesensitiveactive = false;
     self.wholewordactive = false;
   };
 
@@ -179,9 +182,18 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   hotkeys.bindTo($scope)
     .add({
+      combo: ['ctrl+Z', 'command+z'],
+      description: 'undo',
+      callback: function (event) {
+        event.preventDefault();
+        self.undo();
+      }
+    })
+    .add({
       combo: ['ctrl+Y', 'command+y'],
       description: 'redo',
-      callback: function() {
+      callback: function(event) {
+        event.preventDefault();
         self.redo();
       }
     })
@@ -306,16 +318,24 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.undo = function() {
-    $document[0].execCommand('undo');
+    if (self.justreplaced) {
+      self.content = self.contentbeforereplace;
+    } else {
+      $document[0].execCommand('undo');
+      self.focus();
+    }
     $rootScope.dirty = true;
-    self.focus();
     self.countWordsAndCharacters();
   };
 
   self.redo = function() {
-    $document[0].execCommand('redo');
+    if (self.justreplaced) {
+      self.content = self.contentafterreplace;
+    } else {
+      $document[0].execCommand('redo');
+      self.focus();
+    }
     $rootScope.dirty = true;
-    self.focus();
     self.countWordsAndCharacters();
   };
 
@@ -632,11 +652,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.replaceNext = function() {
     if (self.currentmatch > 0) {
+      self.contentbeforereplace = self.content;
       SearchService.replace(self.richtexteditor, self.texttofind,
         self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
         self.currentmatch);
       self.content = self.richtexteditor.innerHTML;
+      self.contentafterreplace = self.content;
       self.contentChanged();
+      self.justreplaced = true;
       self.focus();
       $timeout(function() {
         self.nextMatch();
@@ -647,10 +670,13 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   }; 
 
   self.replaceAll = function () {
+    self.contentbeforereplace = self.content;
     SearchService.replace(self.richtexteditor, self.texttofind,
       self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
     self.content = self.richtexteditor.innerHTML;
+    self.contentafterreplace = self.content;
     self.contentChanged();
+    self.justreplaced = true;
   }; 
 
   self.getCurrentCursorPosition = function() {
@@ -711,6 +737,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       self.find();
     }
     $rootScope.dirty = true;
+    self.justreplaced = false;
   };
 
   self.countWordsAndCharacters = function() {
