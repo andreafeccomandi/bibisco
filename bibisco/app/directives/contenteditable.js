@@ -19,20 +19,30 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
     require: '?ngModel',
     scope: {},
     link: function(scope, element, attrs, ctrl) {
+
+      scope.setViewValue = function() {
+        var phase = scope.$root.$$phase;
+        if (phase === '$apply' || phase === '$digest') {
+          console.log('SAFEAPPLY!!');
+          ctrl.$setViewValue(element.html());
+        } else {
+          console.log('APPLY!!');
+          scope.$apply(function () {
+            ctrl.$setViewValue(element.html());
+          });
+        }
+      };
+
       // view -> model (when div gets blur update the view value of the model)
       element.bind('keyup', function() {
         if (!element.html() || element.html() === '') {
           document.execCommand('insertHTML', false,
             '<p><br></p>'); // This is necessary to start editing inside a <p>
         }
-        scope.$apply(function() {
-          ctrl.$setViewValue(element.html());
-        });
+        scope.setViewValue();
       });
       element.bind('blur', function() {
-        scope.$apply(function() {
-          ctrl.$setViewValue(element.html());
-        });
+        scope.setViewValue();
       });
 
       // model -> view
