@@ -27,8 +27,9 @@ angular.
 
 
 function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
-  $uibModal, $window, hotkeys, ContextService, PopupBoxesService, SanitizeHtmlService,
-  SearchService, RichTextEditorPreferencesService, WordCharacterCountService) {
+  $uibModal, $window, hotkeys, Chronicle, ContextService, PopupBoxesService, 
+  SanitizeHtmlService, SearchService, RichTextEditorPreferencesService, 
+  WordCharacterCountService) {
 
   var self = this;
   self.$onInit = function() {
@@ -78,6 +79,9 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       // replace &nbsp; with spaces
       self.content = self.content.replace(/&nbsp;/g, ' ');
     }
+
+    // record changes on self.content
+    self.chronicle = Chronicle.record('content', this, true);
     
     // set <p> as default paragraph separator
     $document[0].execCommand('defaultParagraphSeparator', false, 'p');
@@ -94,10 +98,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.initFindReplace = function() {
     self.casesensitiveactive = false;
-    self.contentafterreplace = null;
-    self.contentbeforereplace = null;
     self.currentmatch = 0;
-    self.justreplaced = false;
     self.matches = null;
     self.texttofind = null;
     self.texttoreplace = null;
@@ -318,23 +319,13 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.undo = function() {
-    if (self.justreplaced) {
-      self.content = self.contentbeforereplace;
-    } else {
-      $document[0].execCommand('undo');
-      self.focus();
-    }
+    self.chronicle.undo();
     $rootScope.dirty = true;
     self.countWordsAndCharacters();
   };
 
   self.redo = function() {
-    if (self.justreplaced) {
-      self.content = self.contentafterreplace;
-    } else {
-      $document[0].execCommand('redo');
-      self.focus();
-    }
+    self.chronicle.redo();
     $rootScope.dirty = true;
     self.countWordsAndCharacters();
   };
@@ -652,14 +643,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.replaceNext = function() {
     if (self.currentmatch > 0) {
-      self.contentbeforereplace = self.content;
       SearchService.replace(self.richtexteditor, self.texttofind,
         self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
         self.currentmatch);
       self.content = self.richtexteditor.innerHTML;
-      self.contentafterreplace = self.content;
       self.contentChanged();
-      self.justreplaced = true;
       self.focus();
       $timeout(function() {
         self.nextMatch();
@@ -670,13 +658,10 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   }; 
 
   self.replaceAll = function () {
-    self.contentbeforereplace = self.content;
     SearchService.replace(self.richtexteditor, self.texttofind,
       self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
     self.content = self.richtexteditor.innerHTML;
-    self.contentafterreplace = self.content;
     self.contentChanged();
-    self.justreplaced = true;
   }; 
 
   self.getCurrentCursorPosition = function() {
@@ -737,7 +722,6 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       self.find();
     }
     $rootScope.dirty = true;
-    self.justreplaced = false;
   };
 
   self.countWordsAndCharacters = function() {

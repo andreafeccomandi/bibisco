@@ -17,6 +17,7 @@
 angular.module('bibiscoApp', ['ngRoute',
   'cfp.hotkeys',
   'chart.js',
+  'Chronicle',
   'focus-if',
   'mwl.confirm',
   'ngSanitize',
