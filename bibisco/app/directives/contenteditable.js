@@ -23,10 +23,8 @@ angular.module('bibiscoApp').directive('contenteditable', function() {
       scope.setViewValue = function() {
         var phase = scope.$root.$$phase;
         if (phase === '$apply' || phase === '$digest') {
-          console.log('SAFEAPPLY!!');
           ctrl.$setViewValue(element.html());
         } else {
-          console.log('APPLY!!');
           scope.$apply(function () {
             ctrl.$setViewValue(element.html());
           });
