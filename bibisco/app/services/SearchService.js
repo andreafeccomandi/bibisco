@@ -57,10 +57,11 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
 
     calculateRegexp: function (text2search, wholeword) {
       let regexp;
+      let text2searchEscaped = text2search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
       if (wholeword) {
-        regexp = findWholeWordPrefix + text2search + findWholeWordSuffix;
+        regexp = findWholeWordPrefix + text2searchEscaped + findWholeWordSuffix;
       } else {
-        regexp = text2search;
+        regexp = text2searchEscaped;
       }
 
       return regexp;
