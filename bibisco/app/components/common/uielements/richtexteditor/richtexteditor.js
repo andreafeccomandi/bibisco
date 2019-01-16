@@ -721,6 +721,8 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.opensettings = function() {
+
+    self.currentmatch = 0;
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: 'static',
