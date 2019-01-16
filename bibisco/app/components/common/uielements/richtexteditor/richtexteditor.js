@@ -199,9 +199,26 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       }
     })
     .add({
-      combo: ['command+u'],
+      combo: ['ctrl+B', 'command+b'],
+      description: 'bold',
+      callback: function () {
+        event.preventDefault();
+        self.bold();
+      }
+    })
+    .add({
+      combo: ['ctrl+I', 'command+i'],
+      description: 'italic',
+      callback: function () {
+        event.preventDefault();
+        self.italic();
+      }
+    })
+    .add({
+      combo: ['ctrl+U', 'command+u'],
       description: 'underline',
       callback: function() {
+        event.preventDefault();
         self.underline();
       }
     })
@@ -360,28 +377,36 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     });
   };
 
-  self.bold = function() {
-    $document[0].execCommand('bold');
+  self.manageFormat = function () {
     $rootScope.dirty = true;
     self.checkselectionstate();
+
+    if (self.currentmatch) {
+      self.updateContentFromDom();
+      $timeout(function () {
+        self.moveToCurrentMatch();
+      }, 0);
+    } 
+  };
+
+  self.bold = function () {
+    $document[0].execCommand('bold');
+    self.manageFormat();
   };
 
   self.italic = function() {
     $document[0].execCommand('italic');
-    $rootScope.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.underline = function() {
     $document[0].execCommand('underline');
-    $rootScope.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.strikethrough = function() {
     $document[0].execCommand('strikeThrough');
-    $rootScope.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.highlight = function() {
@@ -391,60 +416,58 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     } else {
       $document[0].execCommand('hiliteColor', false, 'rgb(255, 255, 0)');
     }
-    $rootScope.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.leftguillemet = function() {
     $document[0].execCommand('insertText', false, '«');
-    $rootScope.checkselectionstate();
+    self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.rightguillemet = function() {
     $document[0].execCommand('insertText', false, '»');
     self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.emdash = function() {
     $document[0].execCommand('insertText', false, '—');
     self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.orderedlist = function() {
     $document[0].execCommand('insertOrderedList');
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.unorderedlist = function() {
     $document[0].execCommand('insertUnorderedList');
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.aligncenter = function() {
     $document[0].execCommand('justifyCenter');
-    self.checkselectionstate();
-    $rootScope.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
-    self.checkselectionstate();
-    $rootScope.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
-    self.checkselectionstate();
-    $rootScope.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
-    self.checkselectionstate();
-    $rootScope.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
@@ -518,11 +541,15 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   }; 
 
   self.previousMatch = function() {
-    self.moveToMatch('previous');
+    self.moveToNextMatch('previous');
   };
 
-  self.nextMatch = function () {
-    self.moveToMatch('next');
+  self.nextMatch = function() {
+    self.moveToNextMatch('next');
+  };
+
+  self.clearCurrentMatch = function () {
+    self.currentmatch = 0;
   };
 
   self.calculateFirstMatch = function(direction) {
@@ -555,7 +582,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }
   };
 
-  self.moveToMatch = function(direction) {
+  self.moveToNextMatch = function(direction) {
     if (!self.matches || self.matches.length === 0)  {
       return;
     }
@@ -565,8 +592,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       self.calculateFirstMatch(direction);
     }
 
-    self.selectMatch(self.matches[self.currentmatch-1].startIndex, 
-      self.matches[self.currentmatch-1].endIndex);
+    self.moveToCurrentMatch();
+  };
+
+  self.moveToCurrentMatch = function() {
+    self.selectMatch(self.matches[self.currentmatch - 1].startIndex,
+      self.matches[self.currentmatch - 1].endIndex);
+
+    self.checkselectionstate();
   };
 
   self.selectMatch = function (start, end) {
@@ -642,25 +675,30 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.replaceNext = function() {
-    if (self.currentmatch > 0) {
+    if (self.currentmatch) {
       SearchService.replace(self.richtexteditor, self.texttofind,
         self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
         self.currentmatch);
-      self.content = self.richtexteditor.innerHTML;
+      self.updateContentFromDom();
       self.contentChanged();
       self.focus();
-      $timeout(function() {
+      $timeout(function () {
         self.nextMatch();
       }, 0);
+      
     } else {
       self.nextMatch();
     }
   }; 
 
+  self.updateContentFromDom = function() {
+    self.content = self.richtexteditor.innerHTML;
+  };
+
   self.replaceAll = function () {
     SearchService.replace(self.richtexteditor, self.texttofind,
       self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
-    self.content = self.richtexteditor.innerHTML;
+    self.updateContentFromDom();
     self.contentChanged();
   }; 
 
@@ -704,12 +742,6 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
       $rootScope.$emit('CLOSE_POPUP_BOX');
 
     });
-  };
-
-  self.setCurrentCursorPosition = function (chars) {   
-    $timeout(function () {
-      self.selectMatch(chars, chars);
-    }, 0);
   };
 
   self.clickoneditor = function() {
