@@ -94,6 +94,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     self.richtexteditor = document.getElementById('richtexteditor');
     self.lastcursorposition = 0;
     self.focus();
+
+    // clear current match on project explorer selection
+    $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
+      self.currentmatch = 0;
+    });
   };
 
   self.initFindReplace = function() {
@@ -159,6 +164,11 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   self.blur = function() {
     self.disablestylebuttons();
     self.lastcursorposition = self.getCurrentCursorPosition();
+    $timeout(function(){
+      if (self.currentmatch && !self.isTextSelected()) {
+        self.currentmatch = 0;
+      }
+    },0);
   };
 
   self.focus = function() {
@@ -337,14 +347,16 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.undo = function() {
     self.chronicle.undo();
-    $rootScope.dirty = true;
-    self.countWordsAndCharacters();
+    $timeout(function () { 
+      self.contentChanged(); 
+    }, 0);
   };
 
   self.redo = function() {
     self.chronicle.redo();
-    $rootScope.dirty = true;
-    self.countWordsAndCharacters();
+    $timeout(function () { 
+      self.contentChanged(); 
+    }, 0);
   };
 
   self.print = function() {
@@ -718,6 +730,20 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
     }
 
     return caretOffset;
+  };
+
+  self.isTextSelected = function() {
+
+    let result = false;
+    try {
+      let selection = window.getSelection();
+      if (selection) {
+        result = selection.type !== 'None';
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   };
 
   self.opensettings = function() {

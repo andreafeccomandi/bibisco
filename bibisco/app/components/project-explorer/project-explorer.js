@@ -19,7 +19,7 @@ angular.
     controller: ProjectExplorerController
   });
 
-function ProjectExplorerController($translate, ArchitectureService, ChapterService, 
+function ProjectExplorerController($rootScope, $translate, ArchitectureService, ChapterService, 
   ObjectService, LocationService, MainCharacterService, SecondaryCharacterService,
   StrandService) {
   
@@ -206,6 +206,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.selectItem = function() {
     self.selectedItem.selectfunction(self.selectedItem.id);
+    $rootScope.$emit('PROJECT_EXPLORER_SELECTED_ITEM');
   };
 
   self.showPremise = function() {
