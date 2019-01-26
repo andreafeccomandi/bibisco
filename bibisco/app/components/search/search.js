@@ -29,6 +29,6 @@ function SearchController($rootScope, SearchService) {
       item: 'search'
     });
 
-    self.results = 5;   
+    self.results = null;   
   };
 }
