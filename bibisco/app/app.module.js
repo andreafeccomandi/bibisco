@@ -17,6 +17,7 @@
 angular.module('bibiscoApp', ['ngRoute',
   'cfp.hotkeys',
   'chart.js',
+  'Chronicle',
   'focus-if',
   'mwl.confirm',
   'ngSanitize',
@@ -210,6 +211,9 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/projecthome', {
         template: '<projecthome></projecthome>'
+      }).
+      when('/search', {
+        template: '<search></search>'
       }).
       when('/secondarycharacters/new', {
         template: '<secondarycharactertitle></secondarycharactertitle>'

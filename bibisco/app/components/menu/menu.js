@@ -122,11 +122,11 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
   };
 
   self.selectItem = function(item) {
-    if (item === 'timeline' && !SupporterEditionChecker.check()) {
+    if ((item === 'timeline' || item === 'search') && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     }
     else {
-      if (item === 'timeline') {
+      if ((item === 'timeline' || item === 'search')) {
         $injector.get('IntegrityService').ok();
       }
       $location.path('/' + item);
@@ -142,6 +142,7 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
     self.objectsActive = false;
     self.chaptersActive = false;
     self.timelineActive = false;
+    self.searchActive = false;
     self.exportActive = false;
     self.analysisActive = false;
     self.settingsActive = false;

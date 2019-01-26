@@ -44,7 +44,6 @@
     "export-linux-ce": "npm run set-environment-ce && npm run package-linux && npm run zip-linux-ce && npm run finalize-export-linux",
     "export-linux-se": "npm run set-environment-se && npm run package-linux && npm run zip-linux-se && npm run finalize-export-linux",
     "export-linux": "npm run prepare-export-linux && npm run export-linux-ce && npm run export-linux-se"
-    
   },
   "files": [
     "index.js",
