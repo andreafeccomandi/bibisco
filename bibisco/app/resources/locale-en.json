@@ -141,9 +141,9 @@
   "jsp.welcome.step2.label.3": "Idea",
   "jsp.welcome.step2.p.3": "store the directory on Google Drive or Dropbox. This provides a back-up and allows you to work on the project from several computers.",
   "jsp.welcome.a.accept": "Accept License Terms",
-  "jsp.welcome.a.next": "next",
-  "jsp.welcome.a.previous": "previous",
-  "jsp.welcome.a.finish": "finish",
+  "common_next": "next",
+  "common_previous": "previous",
+  "common_finish": "finish",
   "jsp.start.h1": "Ready, set, go!",
   "jsp.start.button.createFirstProject": "create the first project",
   "jsp.start.button.createProject": "create a new project",
@@ -786,5 +786,12 @@
   "theme": "Theme",
   "theme_classic": "classic",
   "theme_dark": "dark",
-  "timeline": "timeline"
+  "timeline": "timeline",
+  "find_replace": "find/replace",
+  "common_find": "Find",
+  "common_replace": "Replace",
+  "common_replaceone": "replace",
+  "common_replaceall": "replace all",
+  "common_case_sensitive": "case sensitive",
+  "common_whole_word": "whole word"
 }

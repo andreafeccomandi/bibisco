@@ -61,9 +61,9 @@
       </div>
       <div class="row top15"></div>
       <div class="row">
-        <button ng-show="$ctrl.step==1" ng-click="$ctrl.next()" type="button" class="btn btn-lg btn-primary">{{"jsp.welcome.a.next" | translate}}</button>
-        <button ng-show="$ctrl.step==2 && !$ctrl.previousProjectsDirectory" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"jsp.welcome.a.previous" | translate}}</button>
-        <button ng-show="$ctrl.step==2" type="submit" class="btn btn-lg btn-primary">{{"jsp.welcome.a.finish" | translate}}</button>
+        <button ng-show="$ctrl.step==1" ng-click="$ctrl.next()" type="button" class="btn btn-lg btn-primary">{{"common_next" | translate}}</button>
+        <button ng-show="$ctrl.step==2 && !$ctrl.previousProjectsDirectory" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"common_previous" | translate}}</button>
+        <button ng-show="$ctrl.step==2" type="submit" class="btn btn-lg btn-primary">{{"common_finish" | translate}}</button>
       </div>
     </form>
   </div>
