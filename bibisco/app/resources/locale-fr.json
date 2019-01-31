@@ -747,5 +747,15 @@
   "theme": "Thème",
   "theme_classic": "classique",
   "theme_dark": "foncé",
-  "timeline": "chronologie"
+  "timeline": "chronologie",
+  "find_replace": "rechercher/remplacer",
+  "common_find": "Rechercher",
+  "common_replace": "Remplacer",
+  "common_replaceone": "remplacer",
+  "common_replaceall": "remplacer toutes les occurrences",
+  "common_case_sensitive": "respecte la casse",
+  "common_whole_word": "mot complet",
+  "replace_all_confirm": "Etes-vous sûr de vouloir remplacer toutes les occurrences de '{{text2replace}}' par '{{replacement}}' ?",
+  "full_screen_mode": "mode plein écran",
+  "exit_full_screen_mode": "appuyez sur ESC pour quitter le mode plein écran"
 }

@@ -726,5 +726,15 @@
     "theme": "Tema",
     "theme_classic": "klasik",
     "theme_dark": "koyu",
-    "timeline": "zaman çizelgesi"
+    "timeline": "zaman çizelgesi",
+    "find_replace": "bul/değiştir",
+    "common_find": "Bul",
+    "common_replace": "Değiştir",
+    "common_replaceone": "değiştir",
+    "common_replaceall": "tümünü değiştir",
+    "common_case_sensitive": "büyük/küçük harfe duyarlı",
+    "common_whole_word": "sözcüğün tamamını eşleştir",
+    "replace_all_confirm": "'{{text2replace}}' öğesinin, geçtiği her yerde '{{replacement}}' ile değiştirilmesini istediğinizden emin misiniz?",
+    "full_screen_mode": "tam ekran modu",
+    "exit_full_screen_mode": "tam ekran modundan çıkmak için ESC tuşuna basın"
 }

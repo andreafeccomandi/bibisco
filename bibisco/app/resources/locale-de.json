@@ -740,5 +740,15 @@
   "theme": "Design",
   "theme_classic": "klassisches",
   "theme_dark": "dunkles",
-  "timeline": "Zeitskala"
+  "timeline": "Zeitskala",
+  "find_replace": "Suchen/Ersetzen",
+  "common_find": "Suchen",
+  "common_replace": "Ersetzen",
+  "common_replaceone": "Ersetzen",
+  "common_replaceall": "Alle ersetzen",
+  "common_case_sensitive": "Groß-/Kleinschreibung beachten",
+  "common_whole_word": "Ganzes Wort",
+  "replace_all_confirm": "Möchten Sie wirklich alle '{{text2replace}}' mit '{{replacement}}' ersetzen?",
+  "full_screen_mode": "Vollbildmodus",
+  "exit_full_screen_mode": "Drücken Sie ESC, um die Vollbildansicht zu beenden"
 }

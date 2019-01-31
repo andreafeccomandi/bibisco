@@ -739,5 +739,15 @@
   "theme": "Tema",
   "theme_classic": "clássico",
   "theme_dark": "escuro",
-  "timeline": "linha do tempo"
+  "timeline": "linha do tempo",
+  "find_replace": "localizar/substituir",
+  "common_find": "Localizar",
+  "common_replace": "Substituir",
+  "common_replaceone": "substituir",
+  "common_replaceall": "substituir tudo",
+  "common_case_sensitive": "diferenciar maiúsculas de minúsculas",
+  "common_whole_word": "palavra inteira",
+  "replace_all_confirm": "Confirma que deseja substituir todas as expressões de '{{text2replace}}' pelo texto '{{replacement}}'?",
+  "full_screen_mode": "modo de tela inteira",
+  "exit_full_screen_mode": "Pressione Enter para sair da tela inteira"
 }

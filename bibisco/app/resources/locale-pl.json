@@ -739,7 +739,17 @@
   "theme": "Motyw",
   "theme_classic": "klasyczny",
   "theme_dark": "ciemny",
-  "timeline": "oś czasu"
+  "timeline": "oś czasu",
+  "find_replace": "znajdź/zamień",
+  "common_find": "Znajdź",
+  "common_replace": "Zamień",
+  "common_replaceone": "zamień",
+  "common_replaceall": "zamień wszystkie",
+  "common_case_sensitive": "uwzględniający wielkość liter",
+  "common_whole_word": "całe słowa",
+  "replace_all_confirm": "Czy na pewno zamienić wszystkie wystąpienia '{{text2replace}}' na '{{replacement}}'?",
+  "full_screen_mode": "tryb pełnoekranowy",
+  "exit_full_screen_mode": "naciśnij klawisz ESC, aby zamknąć tryb pełnoekranowy"
 }
 
 

@@ -28,8 +28,8 @@ angular.
 
 function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
   $uibModal, $window, hotkeys, Chronicle, ContextService, PopupBoxesService, 
-  SanitizeHtmlService, SearchService, RichTextEditorPreferencesService, 
-  WordCharacterCountService) {
+  SanitizeHtmlService, SearchService, SupporterEditionChecker, 
+  RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
   self.$onInit = function() {
@@ -512,11 +512,28 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.toggleFindReplaceToolbar = function() {
-    self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
-    if (self.showfindreplacetoolbar) {
-      self.focusOnText2Find();
+    self.supporterEditionFilterAction(function() {
+      self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
+      if (self.showfindreplacetoolbar) {
+        self.focusOnText2Find();
+      } else {
+        self.initFindReplace();
+      }
+    });
+  };
+
+  self.fullscreen = function () {
+    self.supporterEditionFilterAction(function () {
+      alert('Full screen!');
+    });
+  };
+
+  self.supporterEditionFilterAction = function (action) {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
     } else {
-      self.initFindReplace();
+      $injector.get('IntegrityService').ok();
+      action();
     }
   };
 
@@ -538,6 +555,7 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
   };
 
   self.find = function () {
+    
     self.matches = null;
 
     if (self.texttofind) {

@@ -747,5 +747,15 @@
   "theme": "Tema",
   "theme_classic": "clásico",
   "theme_dark": "oscuro",
-  "timeline": "escala de tiempo"
+  "timeline": "escala de tiempo",
+  "find_replace": "buscar/reemplazar",
+  "common_find": "Buscar",
+  "common_replace": "Reemplazar",
+  "common_replaceone": "reemplazar",
+  "common_replaceall": "reemplazar todo",
+  "common_case_sensitive": "distinguir mayúsculas de minúsculas",
+  "common_whole_word": "palabra completa",
+  "replace_all_confirm": "¿Confirma que desea reemplazar todas las apariciones de '{{text2replace}}' por el texto '{{replacement}}'?",
+  "full_screen_mode": "modo de pantalla completa",
+  "exit_full_screen_mode": "presione ESC para salir del modo de pantalla completa"
 }

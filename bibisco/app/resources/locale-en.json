@@ -793,5 +793,8 @@
   "common_replaceone": "replace",
   "common_replaceall": "replace all",
   "common_case_sensitive": "case sensitive",
-  "common_whole_word": "whole word"
+  "common_whole_word": "whole word",
+  "replace_all_confirm": "Are you sure you want to replace all occurrences of '{{text2replace}}' with '{{replacement}}'?",
+  "full_screen_mode": "full screen mode",
+  "exit_full_screen_mode": "press ESC to exit full screen mode"
 }

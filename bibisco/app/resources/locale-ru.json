@@ -789,5 +789,15 @@
   "theme": "Тема",
   "theme_classic": "Классическая",
   "theme_dark": "Тёмная",
-  "timeline": "Временная шкала"
+  "timeline": "Временная шкала",
+  "find_replace": "найти/заменить",
+  "common_find": "Найти",
+  "common_replace": "Заменить",
+  "common_replaceone": "заменить",
+  "common_replaceall": "заменить все",
+  "common_case_sensitive": "Учитывать регистр",
+  "common_whole_word": "Слово целиком",
+  "replace_all_confirm": "Действительно заменить все вхождения '{{text2replace}}' на '{{replacement}}'?",
+  "full_screen_mode": "полноэкранный режим",
+  "exit_full_screen_mode": "нажмите клавишу ESC для выхода из полноэкранного режима"
 }

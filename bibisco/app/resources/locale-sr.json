@@ -715,5 +715,15 @@
     "theme": "Tema",
     "theme_classic": "klasični",
     "theme_dark": "tamna",
-    "timeline": "vremenska osa"
+    "timeline": "vremenska osa",
+    "find_replace": "pronađi/zameni",
+    "common_find": "Pronađi",
+    "common_replace": "Zameni",
+    "common_replaceone": "zameni",
+    "common_replaceall": "zameni sve",
+    "common_case_sensitive": "razlikuj mala i velika slova",
+    "common_whole_word": "podudaranje cele reči",
+    "replace_all_confirm": "Želite li stvarno da zamenite '{{text2replace}}' sa '{{replacement}}' na svim mestima na kojima se pojavljuje?",
+    "full_screen_mode": "režim celog ekrana",
+    "exit_full_screen_mode": "Pritisnite taster ESC da biste izašli iz režima celog ekrana"
 }
