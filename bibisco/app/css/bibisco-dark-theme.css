@@ -86,3 +86,14 @@ table, .table {
 	box-shadow: inset -1px -1px 0px rgba(255, 255, 255, 0.35), inset 1px 1px 0px rgba(255, 255, 255, 0.35);
     -webkit-box-shadow: inset -1px -1px 0px rgba(255, 255, 255, 0.35), inset 1px 1px 0px rgba(255, 255, 255, 0.35);
 }
+
+.fullscreen {
+  background-color: black;
+  border-color: black !important;
+}
+
+.exitfullscreenmessage {
+	background: #333;
+	opacity: 0.8;
+	color: lightgrey;
+}

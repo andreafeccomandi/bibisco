@@ -26,15 +26,18 @@ angular.
   });
 
 
-function RichTextEditorController($document, $location, $rootScope, $scope, $timeout, 
-  $uibModal, $window, hotkeys, Chronicle, ContextService, PopupBoxesService, 
-  SanitizeHtmlService, SearchService, SupporterEditionChecker, 
+function RichTextEditorController($document, $injector, $location, $rootScope, 
+  $scope, $timeout, $uibModal, $window, hotkeys, Chronicle, ContextService, 
+  PopupBoxesService, SanitizeHtmlService, SearchService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
+  var electron = require('electron');
+
   self.$onInit = function() {
     self.contenteditable = true;
     self.checkExitActive = true;
+    self.exitfullscreenmessage = false;
 
     // init OS
     if (ContextService.getOs() === 'darwin') {
@@ -524,7 +527,14 @@ function RichTextEditorController($document, $location, $rootScope, $scope, $tim
 
   self.fullscreen = function () {
     self.supporterEditionFilterAction(function () {
-      alert('Full screen!');
+      var window = electron.remote.getCurrentWindow();
+      window.setFullScreen(true);
+      $rootScope.fullscreen = true;
+      self.exitfullscreenmessage = true;
+      $timeout(function () {
+        self.exitfullscreenmessage = false;
+        self.focus();
+      }, 2500);
     });
   };
 

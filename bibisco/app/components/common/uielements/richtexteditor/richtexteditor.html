@@ -189,9 +189,10 @@
   </form>
   </div>
 </div>
-
 <div id="richtexteditorcontainer" 
-  ng-class="{ 'richtexteditor-contenteditable-container-findreplace': $ctrl.showfindreplacetoolbar, 'richtexteditor-contenteditable-container-nofindreplace': !$ctrl.showfindreplacetoolbar }" 
+  ng-class="{ 'richtexteditor-contenteditable-container-findreplace': $ctrl.showfindreplacetoolbar, 
+  'richtexteditor-contenteditable-container-nofindreplace': !$ctrl.showfindreplacetoolbar,
+  'fullscreen': $root.fullscreen }" 
   class="richtexteditor-contenteditable-container">
   <div contenteditable="{{$ctrl.contenteditable}}" 
     ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
@@ -204,4 +205,8 @@
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)">
   </div>
+  
+</div>
+<div ng-if="$ctrl.exitfullscreenmessage" class="exitfullscreenmessage">
+  <h1>{{'exit_full_screen_mode' | translate}}</h1>
 </div>

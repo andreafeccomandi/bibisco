@@ -24,7 +24,8 @@ angular.
 function ButtonBackController($rootScope, $scope, $window, hotkeys) {
 
   var self = this;
-
+  var electron = require('electron');
+  
   self.$onInit = function() {
 
     // hotkey
@@ -53,6 +54,12 @@ function ButtonBackController($rootScope, $scope, $window, hotkeys) {
   });
 
   self.back = function() {
-    $window.history.back();
+    if ($rootScope.fullscreen) {
+      var window = electron.remote.getCurrentWindow();
+      window.setFullScreen(false);
+      $rootScope.fullscreen = false;
+    } else {
+      $window.history.back();
+    }
   };
 }
