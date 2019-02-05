@@ -10,6 +10,30 @@
 <div class="search-container">
   <div class="container">
       <div class="row">
+        <div class="col-sm-9 col-sm-offset-1">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_case_sensitive' | translate}}"
+                  ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
+                  <strong id="richtexteditorcasesensitiveicon">Aa</strong>
+                </button>
+                <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_whole_word' | translate}}"
+                  ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $ctrl.wholewordactive == true }">
+                  <strong id="richtexteditorwholewordicon">|ab|</strong>
+                </button>
+              </span>
+              <input type="text" class="form-control" maxlength="50" id="richtexteditortexttofind" ng-change="$ctrl.texttofindChange()"
+                ng-model="$ctrl.texttofind" placeholder="{{'common_find' | translate}}">
+              </input>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-1 pull-left">
+          <button class="btn btn-primary search-inline-button">Find</button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-sm-12">
           <h4>{{"Results " | translate}}</h4>
           <table class="table table-hover">

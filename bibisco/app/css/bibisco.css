@@ -921,11 +921,15 @@ h3 {
 /* SEARCH */
 
 .search-container {
-	top: 190px;
+	top: 150px;
 	position: absolute;
 	overflow-y: auto;
 	height: calc(100% - 200px);
 	width: 100%;
+}
+
+.search-inline-button {
+	margin-left: -25px;
 }
 
 /* TIMELINE */
