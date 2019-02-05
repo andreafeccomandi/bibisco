@@ -534,7 +534,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
       $timeout(function () {
         self.exitfullscreenmessage = false;
         self.focus();
-      }, 2500);
+      }, 2000);
     });
   };
 
@@ -654,7 +654,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
         selection.addRange(range);
         let rangeTop = self.getRangeTop(range);
         self.richtexteditorcontainer.scrollTop = 
-          self.richtexteditorcontainer.scrollTop + rangeTop - 300;
+          self.richtexteditorcontainer.scrollTop + rangeTop - 450;
       }
     }
   };
