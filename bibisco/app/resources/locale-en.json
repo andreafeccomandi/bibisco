@@ -796,5 +796,13 @@
   "common_whole_word": "whole word",
   "replace_all_confirm": "Are you sure you want to replace all occurrences of '{{text2replace}}' with '{{replacement}}'?",
   "full_screen_mode": "full screen mode",
-  "exit_full_screen_mode": "press ESC to exit full screen mode"
+  "exit_full_screen_mode": "press ESC to exit full screen mode",
+  "common_scenes_low": "scenes",
+  "search_button": "search",
+  "search_title": "Search",
+  "search_menu": "search",
+  "search_whole_project": "search in the whole project",
+  "search_only_scenes": "search only in the scenes",
+  "text_to_search": "Text to search",
+  "search_results": "results"
 }

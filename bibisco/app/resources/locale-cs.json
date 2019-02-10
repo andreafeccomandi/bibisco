@@ -749,5 +749,13 @@
   "common_whole_word": "celá slova",
   "replace_all_confirm": "Chcete opravdu nahradit všechny výskyty '{{text2replace}}' za '{{replacement}}'?",
   "full_screen_mode": "režim zobrazení na celé obrazovce",
-  "exit_full_screen_mode": "stisknutím klávesy ESC můžete ukončit režim celé obrazovky"
+  "exit_full_screen_mode": "stisknutím klávesy ESC můžete ukončit režim celé obrazovky",
+  "common_scenes_low": "scény",
+  "search_button": "hledání",
+  "search_title": "Hledat",
+  "search_menu": "hledat",
+  "search_whole_project": "hledání v celém projektu",
+  "search_only_scenes": "hledání pouze ve scénách",
+  "text_to_search": "Text, který chcete hledat",
+  "search_results": "výsledky"
 }

@@ -23,6 +23,10 @@ function SearchController($rootScope, SearchService) {
 
   var self = this;
   self.$onInit = function() {
+
+    self.casesensitiveactive = false;
+    self.wholewordactive = false;
+    self.onlyscenes = false;
     
     // show menu item
     $rootScope.$emit('SHOW_PAGE', {
@@ -30,5 +34,21 @@ function SearchController($rootScope, SearchService) {
     });
 
     self.results = null;   
+  };
+
+  self.toggleCaseSensitive = function () {
+    self.casesensitiveactive = !self.casesensitiveactive;
+  };
+
+  self.toggleWholeWord = function () {
+    self.wholewordactive = !self.wholewordactive;
+  };
+
+  self.searchOnlyScenes = function () {
+    self.onlyscenes = true;
+  };
+
+  self.searchAll = function () {
+    self.onlyscenes = false;
   };
 }

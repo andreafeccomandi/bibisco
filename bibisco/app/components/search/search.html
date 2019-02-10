@@ -1,7 +1,7 @@
 <div class="detail-header">
   <div class="container">
     <div class="row">
-      <pageheader headertitle="Search" buttonshow="false">
+      <pageheader headertitle="{{'search_title' | translate}}" buttonshow="false">
       </pageheader>
     </div>
   </div>
@@ -16,34 +16,92 @@
               <span class="input-group-btn">
                 <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_case_sensitive' | translate}}"
                   ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
-                  <strong id="richtexteditorcasesensitiveicon">Aa</strong>
+                  <strong id="searchcasesensitiveicon">Aa</strong>
                 </button>
                 <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_whole_word' | translate}}"
                   ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $ctrl.wholewordactive == true }">
-                  <strong id="richtexteditorwholewordicon">|ab|</strong>
+                  <strong id="searchwholewordicon">|ab|</strong>
                 </button>
               </span>
-              <input type="text" class="form-control" maxlength="50" id="richtexteditortexttofind" ng-change="$ctrl.texttofindChange()"
-                ng-model="$ctrl.texttofind" placeholder="{{'common_find' | translate}}">
+              <input type="text" class="form-control" maxlength="50" id="searchtext" 
+                placeholder="{{'text_to_search' | translate}}"
+                ng-model="$ctrl.texttosearch">
               </input>
+              <span class="input-group-btn">
+                <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
+                  ng-click="$ctrl.searchOnlyScenes()" ng-class="{ 'active': $ctrl.onlyscenes == true }">
+                  <strong id="searchonlyscenes">{{'common_scenes_low' | translate}}</strong>
+                </button>
+                <button class="btn btn-default" uib-tooltip="{{'search_whole_project' | translate}}"
+                  ng-click="$ctrl.searchAll()" ng-class="{ 'active': $ctrl.onlyscenes == false }">
+                  <strong id="searchall">{{'jsp.menu.project' | translate}}</strong>
+                </button>
+              </span>
             </div>
           </div>
         </div>
         <div class="col-sm-1 pull-left">
-          <button class="btn btn-primary search-inline-button">Find</button>
+          <button class="btn btn-primary search-inline-button">{{'search_button' | translate}}</button>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <h4>{{"Results " | translate}}</h4>
+          <h4 class="search-results-title"><b>27</b> {{'search_results' | translate}}</h4>
           <table class="table table-hover">
             <thead>
               <tr>
-                <th colspan="3"></th>
+                <th class="col-sm-1"></th>
+                <th class="col-sm-10"></th>
+                <th class="col-sm-1"></th>
               </tr>
             </thead>
             <tbody>
-              Search results.
+              <tr>
+                <td rowspan="3" class="text-right"><span class="label label-primary bibiscoBadge">CHAPTER</span></td>
+                <td>#1 I Begin Life On My Own Account, And Don’t Like It</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><a><i>Reason</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">11</span></td>
+              </tr>
+              <tr>
+                <td><a><i>Scene #2: </i>In Which the Plot, Behaving in Much Manner Of a Soup to which Corn Starch Has been Added, Begins, at Last, to Thickene</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">4</span></td>
+              </tr>
+              <tr>
+                <td rowspan="2" class="text-right"><span class="label label-primary bibiscoBadge">CHAPTER</span></td>
+                <td>#7 In which we Begin Not to Understand</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><a><i>Reason</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">11</span></td>
+              </tr>
+              <tr>
+                <td rowspan="2" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
+                <td>Emma Woodhouse</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><a><i>Physical Feature</i>: #5 how is his/her neck?</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">14</span></td>
+              </tr>
+              <tr>
+                <td class="text-right"><span class="label label-default bibiscoBadge">LOCATION</span></td>
+                <td><a>House of John Winnington (Chicago, Illinois, USA)</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">4</span></td>
+              </tr>
+              <tr>
+                <td class="text-right"><span class="label label-default bibiscoBadge">OBJECT</span></td>
+                <td><a>Treasure map</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">12</span></td>
+              </tr>
+              <tr>
+                <td class="text-right"><span class="label label-default bibiscoBadge">ARCHITECTURE</span></td>
+                <td><a><i>Premise</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">12</span></td>
+              </tr>
             </tbody>
           </table>
         </div>

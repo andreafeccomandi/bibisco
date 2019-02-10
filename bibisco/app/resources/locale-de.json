@@ -750,5 +750,13 @@
   "common_whole_word": "Ganzes Wort",
   "replace_all_confirm": "Möchten Sie wirklich alle '{{text2replace}}' mit '{{replacement}}' ersetzen?",
   "full_screen_mode": "Vollbildmodus",
-  "exit_full_screen_mode": "Drücken Sie ESC, um die Vollbildansicht zu beenden"
+  "exit_full_screen_mode": "Drücken Sie ESC, um die Vollbildansicht zu beenden",
+  "common_scenes_low": "Szenen",
+  "search_button": "Suchen",
+  "search_title": "Suche",
+  "search_menu": "Suche",
+  "search_whole_project": "Suchen im gesamten Projekt",
+  "search_only_scenes": "Suchen nur in den Szenen",
+  "text_to_search": "Zu durchsuchender Text",
+  "search_results": "Ergebnisse"
 }

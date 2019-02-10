@@ -799,5 +799,13 @@
   "common_whole_word": "Слово целиком",
   "replace_all_confirm": "Действительно заменить все вхождения '{{text2replace}}' на '{{replacement}}'?",
   "full_screen_mode": "полноэкранный режим",
-  "exit_full_screen_mode": "нажмите клавишу ESC для выхода из полноэкранного режима"
+  "exit_full_screen_mode": "нажмите клавишу ESC для выхода из полноэкранного режима",
+  "common_scenes_low": "сцены",
+  "search_button": "поиск",
+  "search_title": "Поиск",
+  "search_menu": "Поиск",
+  "search_whole_project": "поиск по всему проекту",
+  "search_only_scenes": "поиск только между сценами",
+  "text_to_search": "Текст для поиска",
+  "search_results": "результатах"
 }

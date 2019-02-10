@@ -765,5 +765,13 @@
   "common_whole_word": "parola intera",
   "replace_all_confirm": "Sei sicuro di volere sostituire tutte le occorrenze di '{{text2replace}}' con '{{replacement}}'?",
   "full_screen_mode": "modalità schermo intero",
-  "exit_full_screen_mode": "premi ESC per uscire dalla modalità a schermo intero"
+  "exit_full_screen_mode": "premi ESC per uscire dalla modalità a schermo intero",
+  "common_scenes_low": "scene",
+  "search_button": "cerca",
+  "search_title": "Ricerca",
+  "search_menu": "ricerca",
+  "search_whole_project": "cerca in tutto il progetto",
+  "search_only_scenes": "cerca solo tra le scene",
+  "text_to_search": "Testo da cercare",
+  "search_results": "risultati"
 }

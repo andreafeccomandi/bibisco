@@ -725,5 +725,13 @@
     "common_whole_word": "podudaranje cele reči",
     "replace_all_confirm": "Želite li stvarno da zamenite '{{text2replace}}' sa '{{replacement}}' na svim mestima na kojima se pojavljuje?",
     "full_screen_mode": "režim celog ekrana",
-    "exit_full_screen_mode": "Pritisnite taster ESC da biste izašli iz režima celog ekrana"
+    "exit_full_screen_mode": "Pritisnite taster ESC da biste izašli iz režima celog ekrana",
+    "common_scenes_low": "scene",
+    "search_button": "pretraži",
+    "search_title": "Pretraga",
+    "search_menu": "pretraga",
+    "search_vhole_project": "pretraži u celom projektu",
+    "search_onli_scenes": "pretraži samo scene",
+    "tekt_to_search": "Tekst za pretragu",
+    "search_results": "rezultati"
 }

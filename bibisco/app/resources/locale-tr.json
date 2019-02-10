@@ -736,5 +736,13 @@
     "common_whole_word": "sözcüğün tamamını eşleştir",
     "replace_all_confirm": "'{{text2replace}}' öğesinin, geçtiği her yerde '{{replacement}}' ile değiştirilmesini istediğinizden emin misiniz?",
     "full_screen_mode": "tam ekran modu",
-    "exit_full_screen_mode": "tam ekran modundan çıkmak için ESC tuşuna basın"
+    "exit_full_screen_mode": "tam ekran modundan çıkmak için ESC tuşuna basın",
+    "common_scenes_low": "sahneler",
+    "search_button": "ara",
+    "search_title": "Arama",
+    "search_menu": "arama",
+    "search_whole_project": "tüm projede ara",
+    "search_only_scenes": "sadece sahnelerde ara",
+    "text_to_search": "Aranacak metin",
+    "search_results": "sonuçlar"
 }

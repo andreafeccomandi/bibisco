@@ -929,7 +929,16 @@ h3 {
 }
 
 .search-inline-button {
-	margin-left: -25px;
+	margin-left: -15px;
+}
+
+.search-results-title {
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+
+.search-results-occurrences {
+	font-size: 90% !important;
 }
 
 /* TIMELINE */

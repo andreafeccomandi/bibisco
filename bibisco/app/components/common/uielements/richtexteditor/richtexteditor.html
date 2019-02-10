@@ -168,7 +168,7 @@
         <div class="input-group">
           <input type="text" class="form-control input-sm" maxlength="50"
             ng-click="$ctrl.clearCurrentMatch()"
-            ng-model="$ctrl.texttoreplace" placeholder="Replace">
+            ng-model="$ctrl.texttoreplace" placeholder="{{'common_replace' | translate}}">
           <span class="input-group-btn">
             <button class="btn btn-default btn-sm"
               ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
