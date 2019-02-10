@@ -920,16 +920,22 @@ h3 {
 
 /* SEARCH */
 
-.search-container {
+.search-form-container {
 	top: 150px;
 	position: absolute;
-	overflow-y: auto;
-	height: calc(100% - 200px);
 	width: 100%;
 }
 
 .search-inline-button {
 	margin-left: -15px;
+}
+
+.search-results-container {
+	top: 240px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 260px);
+	width: 100%;
 }
 
 .search-results-title {
