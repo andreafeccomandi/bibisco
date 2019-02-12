@@ -24,16 +24,16 @@ function SearchController($rootScope, SearchService) {
   var self = this;
   self.$onInit = function() {
 
+    self.text2search = null;
     self.casesensitiveactive = false;
     self.wholewordactive = false;
     self.onlyscenes = false;
+    self.results = null;   
     
     // show menu item
     $rootScope.$emit('SHOW_PAGE', {
       item: 'search'
     });
-
-    self.results = null;   
   };
 
   self.toggleCaseSensitive = function () {
@@ -44,11 +44,17 @@ function SearchController($rootScope, SearchService) {
     self.wholewordactive = !self.wholewordactive;
   };
 
-  self.searchOnlyScenes = function () {
+  self.toggleSearchOnlyScenes = function () {
     self.onlyscenes = true;
   };
 
-  self.searchAll = function () {
+  self.toggleSearchAll = function () {
     self.onlyscenes = false;
+  };
+
+  self.search = function() {
+    self.results = SearchService.search(self.text2search, 
+      self.casesensitiveactive, self.wholewordactive, self.onlyscenes);
+    alert(JSON.stringify(self.results));
   };
 }

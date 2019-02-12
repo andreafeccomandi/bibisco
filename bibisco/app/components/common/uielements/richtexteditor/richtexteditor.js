@@ -569,7 +569,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     self.matches = null;
 
     if (self.texttofind) {
-      self.matches = SearchService.search(self.richtexteditor, self.texttofind,
+      self.matches = SearchService.find(self.richtexteditor, self.texttofind,
         self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;

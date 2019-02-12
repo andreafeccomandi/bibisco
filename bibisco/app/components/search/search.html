@@ -25,15 +25,15 @@
               </span>
               <input type="text" class="form-control" maxlength="50" id="searchtext" 
                 placeholder="{{'text_to_search' | translate}}"
-                ng-model="$ctrl.texttosearch">
+                ng-model="$ctrl.text2search">
               </input>
               <span class="input-group-btn">
                 <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
-                  ng-click="$ctrl.searchOnlyScenes()" ng-class="{ 'active': $ctrl.onlyscenes == true }">
+                  ng-click="$ctrl.toggleSearchOnlyScenes()" ng-class="{ 'active': $ctrl.onlyscenes == true }">
                   <strong id="searchonlyscenes">{{'common_scenes_low' | translate}}</strong>
                 </button>
                 <button class="btn btn-default" uib-tooltip="{{'search_whole_project' | translate}}"
-                  ng-click="$ctrl.searchAll()" ng-class="{ 'active': $ctrl.onlyscenes == false }">
+                  ng-click="$ctrl.toggleSearchAll()" ng-class="{ 'active': $ctrl.onlyscenes == false }">
                   <strong id="searchall">{{'jsp.menu.project' | translate}}</strong>
                 </button>
               </span>
@@ -41,17 +41,18 @@
           </div>
         </div>
         <div class="col-sm-1 pull-left">
-          <button class="btn btn-primary search-inline-button">{{'search_button' | translate}}</button>
+          <button class="btn btn-primary search-inline-button"
+          ng-click="$ctrl.search()">{{'search_button' | translate}}</button>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <h4 class="search-results-title"><b>27</b> {{'search_results' | translate}}</h4>
+          <h4 class="search-results-title"><b>{{$ctrl.results.occurrences}}</b> {{'search_results' | translate}}</h4>
         </div>
       </div>  
     </div>
   </div>
-  
+
   <div class="search-results-container">
     <div class="container">
       <div class="row">
@@ -64,7 +65,28 @@
                 <th class="col-sm-1"></th>
               </tr>
             </thead>
-            <tbody>
+
+            <tbody ng-repeat="chapter in $ctrl.results.chapters track by $index">
+              <tr>
+                <td rowspan="{{chapter.elements}}" class="text-right"><span class="label label-primary bibiscoBadge">CHAPTER</span></td>
+                <td>{{chapter.description}}</td>
+                <td></td>
+              </tr>
+              <tr ng-repeat="scene in chapter.scenes track by $index">
+                <td><i>{{'jsp.analysisCharacterScene.th.scene' | translate}} #{{scene.position}}: </i><a>{{scene.title}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{scene.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="chapter.reason">
+                <td><a><i>{{'common_chapter_reason' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{chapter.reason.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="chapter.notes">
+                <td><a><i>{{'common_chapter_notes' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{chapter.notes.occurrences}}</span></td>
+              </tr>
+            </tbody>
+            <!--
+            <div>
               <tr>
                 <td rowspan="3" class="text-right"><span class="label label-primary bibiscoBadge">CHAPTER</span></td>
                 <td>#1 I Begin Life On My Own Account, And Don’t Like It</td>
@@ -78,6 +100,8 @@
                 <td><a><i>Scene #2: </i>In Which the Plot, Behaving in Much Manner Of a Soup to which Corn Starch Has been Added, Begins, at Last, to Thickene</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">4</span></td>
               </tr>
+            </div>
+            <div>
               <tr>
                 <td rowspan="2" class="text-right"><span class="label label-primary bibiscoBadge">CHAPTER</span></td>
                 <td>#7 In which we Begin Not to Understand</td>
@@ -87,6 +111,7 @@
                 <td><a><i>Reason</i></a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">11</span></td>
               </tr>
+            </div>
               <tr>
                 <td rowspan="2" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
                 <td>Emma Woodhouse</td>
@@ -159,7 +184,7 @@
                 <td><a><i>Premise</i></a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">12</span></td>
               </tr>
-            </tbody>
+              -->
           </table>
           </div>
         </div>
