@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('SearchService', function(
-  ArchitectureService, ChapterService) {
+  ArchitectureService, ChapterService, LocationService, ObjectService) {
   'use strict';
 
   var findandreplacedomtext = require('./custom_node_modules/findandreplacedomtext');
@@ -34,6 +34,8 @@ angular.module('bibiscoApp').service('SearchService', function(
       this.searchInChapters(results, text2search, casesensitive, wholeword, onlyscenes);
       if (!onlyscenes) {
         this.searchInArchitecture(results, text2search, casesensitive, wholeword);
+        this.searchInLocations(results, text2search, casesensitive, wholeword);
+        this.searchInObjects(results, text2search, casesensitive, wholeword);
       }
       
       return results;
@@ -109,7 +111,7 @@ angular.module('bibiscoApp').service('SearchService', function(
       results.architecture.premise = null;
       let premise = ArchitectureService.getPremise();
       let matches = this.find(new DOMParser().parseFromString(premise.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
+        text2search, casesensitive, wholeword);
       if (matches && matches.length>0) {
         results.occurrences += matches.length;
         results.architecture.premise = matches.length;
@@ -118,7 +120,7 @@ angular.module('bibiscoApp').service('SearchService', function(
       results.architecture.fabula = null;
       let fabula = ArchitectureService.getFabula();
       matches = this.find(new DOMParser().parseFromString(fabula.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
+        text2search, casesensitive, wholeword);
       if (matches && matches.length>0) {
         results.occurrences += matches.length;
         results.architecture.fabula = matches.length;
@@ -127,7 +129,7 @@ angular.module('bibiscoApp').service('SearchService', function(
       results.architecture.setting = null;
       let setting = ArchitectureService.getSetting();
       matches = this.find(new DOMParser().parseFromString(setting.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
+        text2search, casesensitive, wholeword);
       if (matches && matches.length>0) {
         results.occurrences += matches.length;
         results.architecture.setting = matches.length;
@@ -136,10 +138,46 @@ angular.module('bibiscoApp').service('SearchService', function(
       results.architecture.globalnotes = null;
       let globalnotes = ArchitectureService.getGlobalNotes();
       matches = this.find(new DOMParser().parseFromString(globalnotes.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
+        text2search, casesensitive, wholeword);
       if (matches && matches.length>0) {
         results.occurrences += matches.length;
         results.architecture.globalnotes = matches.length;
+      }
+    },
+
+    searchInLocations: function (results, text2search, casesensitive, wholeword) {
+
+      results.locations = [];
+
+      let locations = LocationService.getLocations();
+      for (let i = 0; i < locations.length; i++) {
+        let dom = new DOMParser().parseFromString(locations[i].description, 'text/html');
+        let matches = this.find(dom, text2search, casesensitive, wholeword);
+        if (matches && matches.length > 0) {
+          results.occurrences += matches.length;
+          results.locations.push({
+            description: LocationService.calculateLocationName(locations[i]),
+            occurrences: matches.length
+          });
+        }
+      }
+    },
+
+    searchInObjects: function (results, text2search, casesensitive, wholeword) {
+
+      results.objects = [];
+
+      let objects = ObjectService.getObjects();
+      for (let i = 0; i < objects.length; i++) {
+        let dom = new DOMParser().parseFromString(objects[i].description, 'text/html');
+        let matches = this.find(dom, text2search, casesensitive, wholeword);
+        if (matches && matches.length > 0) {
+          results.occurrences += matches.length;
+          results.objects.push({
+            name: objects[i].name,
+            occurrences: matches.length
+          });
+        }
       }
     },
 

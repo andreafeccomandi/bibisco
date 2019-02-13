@@ -107,6 +107,22 @@
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes}}</span></td>
               </tr>
             </tbody>
+            <tbody ng-repeat="location in $ctrl.results.locations track by $index">
+                <tr>
+                  <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'jsp.scene.location.title' | translate}}</span></td>
+                  <td><a>{{location.description}}</a></td>
+                  <td class="text-right"><span class="label label-info search-results-occurrences">{{location.occurrences}}</span></td>
+                </tr>
+            </tbody>
+            <tbody ng-repeat="object in $ctrl.results.objects track by $index">
+              <tr>
+                <td class="text-right"><span
+                    class="label label-default bibiscoBadge text-uppercase">{{'object' | translate}}</span></td>
+                <td><a>{{object.name}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{object.occurrences}}</span>
+                </td>
+              </tr>
+            </tbody>
             <!--
               <tr>
                 <td rowspan="2" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
@@ -116,25 +132,6 @@
               <tr>
                 <td><a><i>Physical Feature</i>: #5 how is his/her neck?</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">14</span></td>
-              </tr>
-              <tr>
-                <td class="text-right"><span class="label label-default bibiscoBadge">LOCATION</span></td>
-                <td><a>House of John Winnington (Chicago, Illinois, USA)</a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">4</span></td>
-              </tr>
-              <tr>
-                <td rowspan="2" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
-                <td>Emma Woodhouse</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><a><i>Physical Feature</i>: #5 how is his/her neck?</a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">14</span></td>
-              </tr>
-              <tr>
-                <td class="text-right"><span class="label label-default bibiscoBadge">OBJECT</span></td>
-                <td><a>Treasure map</a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">12</span></td>
               </tr>
               -->
           </table>
