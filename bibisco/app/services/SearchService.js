@@ -13,7 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
+angular.module('bibiscoApp').service('SearchService', function(
+  ArchitectureService, ChapterService) {
   'use strict';
 
   var findandreplacedomtext = require('./custom_node_modules/findandreplacedomtext');
@@ -26,12 +27,14 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
     search: function (text2search, casesensitive, wholeword, onlyscenes) {
       let results = {};
       results.occurrences = 0;
-      results.architecture = [];
       results.characters = [];
       results.locations = [];
       results.objects = [];
 
       this.searchInChapters(results, text2search, casesensitive, wholeword, onlyscenes);
+      if (!onlyscenes) {
+        this.searchInArchitecture(results, text2search, casesensitive, wholeword);
+      }
       
       return results;
     },
@@ -97,6 +100,46 @@ angular.module('bibiscoApp').service('SearchService', function(ChapterService) {
         if (chapterResult.elements > 1) {
           results.chapters.push(chapterResult);
         }
+      }
+    },
+
+    searchInArchitecture: function (results, text2search, casesensitive, wholeword) {
+      
+      results.architecture = {};
+      results.architecture.premise = null;
+      let premise = ArchitectureService.getPremise();
+      let matches = this.find(new DOMParser().parseFromString(premise.text, 'text/html'), 
+            text2search, casesensitive, wholeword);
+      if (matches && matches.length>0) {
+        results.occurrences += matches.length;
+        results.architecture.premise = matches.length;
+      }
+
+      results.architecture.fabula = null;
+      let fabula = ArchitectureService.getFabula();
+      matches = this.find(new DOMParser().parseFromString(fabula.text, 'text/html'), 
+            text2search, casesensitive, wholeword);
+      if (matches && matches.length>0) {
+        results.occurrences += matches.length;
+        results.architecture.fabula = matches.length;
+      }
+
+      results.architecture.setting = null;
+      let setting = ArchitectureService.getSetting();
+      matches = this.find(new DOMParser().parseFromString(setting.text, 'text/html'), 
+            text2search, casesensitive, wholeword);
+      if (matches && matches.length>0) {
+        results.occurrences += matches.length;
+        results.architecture.setting = matches.length;
+      }
+
+      results.architecture.globalnotes = null;
+      let globalnotes = ArchitectureService.getGlobalNotes();
+      matches = this.find(new DOMParser().parseFromString(globalnotes.text, 'text/html'), 
+            text2search, casesensitive, wholeword);
+      if (matches && matches.length>0) {
+        results.occurrences += matches.length;
+        results.architecture.globalnotes = matches.length;
       }
     },
 
