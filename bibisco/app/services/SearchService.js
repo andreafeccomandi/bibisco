@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('SearchService', function(
-  ArchitectureService, ChapterService, LocationService, ObjectService) {
+  ArchitectureService, ChapterService, LocationService, MainCharacterService,
+  ObjectService, SecondaryCharacterService) {
   'use strict';
 
   var findandreplacedomtext = require('./custom_node_modules/findandreplacedomtext');
@@ -27,13 +28,12 @@ angular.module('bibiscoApp').service('SearchService', function(
     search: function (text2search, casesensitive, wholeword, onlyscenes) {
       let results = {};
       results.occurrences = 0;
-      results.characters = [];
-      results.locations = [];
-      results.objects = [];
 
       this.searchInChapters(results, text2search, casesensitive, wholeword, onlyscenes);
       if (!onlyscenes) {
         this.searchInArchitecture(results, text2search, casesensitive, wholeword);
+        //this.searchInMainCharacters(results, text2search, casesensitive, wholeword);
+        this.searchInSecondaryCharacters(results, text2search, casesensitive, wholeword);
         this.searchInLocations(results, text2search, casesensitive, wholeword);
         this.searchInObjects(results, text2search, casesensitive, wholeword);
       }
@@ -142,6 +142,42 @@ angular.module('bibiscoApp').service('SearchService', function(
       if (matches && matches.length>0) {
         results.occurrences += matches.length;
         results.architecture.globalnotes = matches.length;
+      }
+    },
+
+    searchInMainCharacters: function (results, text2search, casesensitive, wholeword) {
+
+      results.maincharacters = [];
+
+      let maincharacters = MainCharacterService.getMainCharacters();
+      for (let i = 0; i < maincharacters.length; i++) {
+        let dom = new DOMParser().parseFromString(locations[i].description, 'text/html');
+        let matches = this.find(dom, text2search, casesensitive, wholeword);
+        if (matches && matches.length > 0) {
+          results.occurrences += matches.length;
+          results.locations.push({
+            description: LocationService.calculateLocationName(locations[i]),
+            occurrences: matches.length
+          });
+        }
+      }
+    },
+
+    searchInSecondaryCharacters: function (results, text2search, casesensitive, wholeword) {
+
+      results.secondarycharacters = [];
+
+      let secondarycharacters = SecondaryCharacterService.getSecondaryCharacters();
+      for (let i = 0; i < secondarycharacters.length; i++) {
+        let dom = new DOMParser().parseFromString(secondarycharacters[i].description, 'text/html');
+        let matches = this.find(dom, text2search, casesensitive, wholeword);
+        if (matches && matches.length > 0) {
+          results.occurrences += matches.length;
+          results.secondarycharacters.push({
+            name: secondarycharacters[i].name,
+            occurrences: matches.length
+          });
+        }
       }
     },
 

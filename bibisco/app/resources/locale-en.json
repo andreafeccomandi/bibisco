@@ -804,5 +804,6 @@
   "search_whole_project": "search in the whole project",
   "search_only_scenes": "search only in the scenes",
   "text_to_search": "Text to search",
-  "search_results": "results"
+  "search_results": "results",
+  "common_character": "Character"
 }

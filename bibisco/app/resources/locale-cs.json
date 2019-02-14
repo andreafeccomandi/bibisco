@@ -757,5 +757,6 @@
   "search_whole_project": "hledání v celém projektu",
   "search_only_scenes": "hledání pouze ve scénách",
   "text_to_search": "Text, který chcete hledat",
-  "search_results": "výsledky"
+  "search_results": "výsledky",
+  "common_character": "Postava"
 }

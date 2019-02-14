@@ -107,6 +107,15 @@
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes}}</span></td>
               </tr>
             </tbody>
+            <tbody ng-repeat="secondarycharacter in $ctrl.results.secondarycharacters track by $index">
+              <tr>
+                <td class="text-right"><span
+                    class="label label-default bibiscoBadge text-uppercase">{{'common_character' | translate}}</span></td>
+                <td><a>{{secondarycharacter.name}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{secondarycharacter.occurrences}}</span>
+                </td>
+              </tr>
+            </tbody>
             <tbody ng-repeat="location in $ctrl.results.locations track by $index">
                 <tr>
                   <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'jsp.scene.location.title' | translate}}</span></td>

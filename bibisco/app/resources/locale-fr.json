@@ -765,5 +765,6 @@
   "search_whole_project": "rechercher dans l'ensemble du projet",
   "search_only_scenes": "rechercher uniquement dans les scènes",
   "text_to_search": "Texte à rechercher",
-  "search_results": "résultats"
+  "search_results": "résultats",
+  "common_character": "Personnage"
 }

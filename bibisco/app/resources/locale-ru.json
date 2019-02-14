@@ -807,5 +807,6 @@
   "search_whole_project": "поиск по всему проекту",
   "search_only_scenes": "поиск только между сценами",
   "text_to_search": "Текст для поиска",
-  "search_results": "результатах"
+  "search_results": "результатах",
+  "common_character": "Персонаж"
 }

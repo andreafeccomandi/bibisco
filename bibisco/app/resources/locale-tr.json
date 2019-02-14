@@ -744,5 +744,6 @@
     "search_whole_project": "tüm projede ara",
     "search_only_scenes": "sadece sahnelerde ara",
     "text_to_search": "Aranacak metin",
-    "search_results": "sonuçlar"
+    "search_results": "sonuçlar",
+    "common_character": "Karakter"
 }
