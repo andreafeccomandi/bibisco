@@ -69,43 +69,37 @@ angular.module('bibiscoApp').service('SearchService', function(
         // scenes
         let scenes = ChapterService.getScenes(chapter.$loki);
         for (let j = 0; j < scenes.length; j++) {
-          let dom = new DOMParser().parseFromString(scenes[j].revisions[scenes[j].revision].text, 'text/html');
-          let matches = this.find(dom, text2search, casesensitive, wholeword);
-          if (matches && matches.length>0) {
-            results.occurrences += matches.length;
-            chapterResult.elements += 1;
-            chapterResult.scenes.push({
-              title: scenes[j].title,
-              position: scenes[j].position,
-              occurrences: matches.length
+          this.searchInText(scenes[j].revisions[scenes[j].revision].text, text2search, casesensitive,
+            wholeword, results, function (occurrences) {
+              chapterResult.elements += 1;
+              chapterResult.scenes.push({
+                title: scenes[j].title,
+                position: scenes[j].position,
+                occurrences: occurrences
+              });
             });
-          }
         }
 
         //reason
         if (!onlyscenes) {
-          let matches = this.find(new DOMParser().parseFromString(chapter.reason.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
-          if (matches && matches.length>0) {
-            results.occurrences += matches.length;
-            chapterResult.elements += 1;
-            chapterResult.reason = {
-              occurrences: matches.length
-            };
-          }
+          this.searchInText(chapter.reason.text, text2search, casesensitive,
+            wholeword, results, function (occurrences) {
+              chapterResult.elements += 1;
+              chapterResult.reason = {
+                occurrences: occurrences
+              };
+            });
         }
 
         // notes
         if (!onlyscenes) {
-          let matches = this.find(new DOMParser().parseFromString(chapter.notes.text, 'text/html'), 
-            text2search, casesensitive, wholeword);
-          if (matches && matches.length>0) {
-            results.occurrences += matches.length;
-            chapterResult.elements += 1;
-            chapterResult.notes = {
-              occurrences: matches.length
-            };
-          }
+          this.searchInText(chapter.notes.text, text2search, casesensitive,
+            wholeword, results, function (occurrences) {
+              chapterResult.elements += 1;
+              chapterResult.notes = {
+                occurrences: occurrences
+              };
+            });
         }
 
         if (chapterResult.elements > 1) {
@@ -117,41 +111,30 @@ angular.module('bibiscoApp').service('SearchService', function(
     searchInArchitecture: function (results, text2search, casesensitive, wholeword) {
       
       results.architecture = {};
+
       results.architecture.premise = null;
-      let premise = ArchitectureService.getPremise();
-      let matches = this.find(new DOMParser().parseFromString(premise.text, 'text/html'), 
-        text2search, casesensitive, wholeword);
-      if (matches && matches.length>0) {
-        results.occurrences += matches.length;
-        results.architecture.premise = matches.length;
-      }
+      this.searchInText(ArchitectureService.getPremise().text, text2search, casesensitive,
+        wholeword, results, function (occurrences) {
+          results.architecture.premise = occurrences;
+        });
 
       results.architecture.fabula = null;
-      let fabula = ArchitectureService.getFabula();
-      matches = this.find(new DOMParser().parseFromString(fabula.text, 'text/html'), 
-        text2search, casesensitive, wholeword);
-      if (matches && matches.length>0) {
-        results.occurrences += matches.length;
-        results.architecture.fabula = matches.length;
-      }
+      this.searchInText(ArchitectureService.getFabula().text, text2search, casesensitive,
+        wholeword, results, function (occurrences) {
+          results.architecture.fabula = occurrences;
+        });
 
       results.architecture.setting = null;
-      let setting = ArchitectureService.getSetting();
-      matches = this.find(new DOMParser().parseFromString(setting.text, 'text/html'), 
-        text2search, casesensitive, wholeword);
-      if (matches && matches.length>0) {
-        results.occurrences += matches.length;
-        results.architecture.setting = matches.length;
-      }
+      this.searchInText(ArchitectureService.getSetting().text, text2search, casesensitive,
+        wholeword, results, function (occurrences) {
+          results.architecture.setting = occurrences;
+        });
 
       results.architecture.globalnotes = null;
-      let globalnotes = ArchitectureService.getGlobalNotes();
-      matches = this.find(new DOMParser().parseFromString(globalnotes.text, 'text/html'), 
-        text2search, casesensitive, wholeword);
-      if (matches && matches.length>0) {
-        results.occurrences += matches.length;
-        results.architecture.globalnotes = matches.length;
-      }
+      this.searchInText(ArchitectureService.getGlobalNotes().text, text2search, casesensitive,
+        wholeword, results, function (occurrences) {
+          results.architecture.globalnotes = occurrences;
+        });
     },
 
     searchInMainCharacters: function (results, text2search, casesensitive, wholeword) {
@@ -259,36 +242,30 @@ angular.module('bibiscoApp').service('SearchService', function(
     searchInSecondaryCharacters: function (results, text2search, casesensitive, wholeword) {
 
       results.secondarycharacters = [];
-
       let secondarycharacters = SecondaryCharacterService.getSecondaryCharacters();
       for (let i = 0; i < secondarycharacters.length; i++) {
-        let dom = new DOMParser().parseFromString(secondarycharacters[i].description, 'text/html');
-        let matches = this.find(dom, text2search, casesensitive, wholeword);
-        if (matches && matches.length > 0) {
-          results.occurrences += matches.length;
-          results.secondarycharacters.push({
-            name: secondarycharacters[i].name,
-            occurrences: matches.length
+        this.searchInText(secondarycharacters[i].description, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            results.secondarycharacters.push({
+              name: secondarycharacters[i].name,
+              occurrences: occurrences
+            });
           });
-        }
       }
     },
 
     searchInLocations: function (results, text2search, casesensitive, wholeword) {
 
       results.locations = [];
-
       let locations = LocationService.getLocations();
       for (let i = 0; i < locations.length; i++) {
-        let dom = new DOMParser().parseFromString(locations[i].description, 'text/html');
-        let matches = this.find(dom, text2search, casesensitive, wholeword);
-        if (matches && matches.length > 0) {
-          results.occurrences += matches.length;
-          results.locations.push({
-            description: LocationService.calculateLocationName(locations[i]),
-            occurrences: matches.length
+        this.searchInText(locations[i].description, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            results.locations.push({
+              description: LocationService.calculateLocationName(locations[i]),
+              occurrences: occurrences
+            });
           });
-        }
       }
     },
 
@@ -298,15 +275,13 @@ angular.module('bibiscoApp').service('SearchService', function(
 
       let objects = ObjectService.getObjects();
       for (let i = 0; i < objects.length; i++) {
-        let dom = new DOMParser().parseFromString(objects[i].description, 'text/html');
-        let matches = this.find(dom, text2search, casesensitive, wholeword);
-        if (matches && matches.length > 0) {
-          results.occurrences += matches.length;
-          results.objects.push({
-            name: objects[i].name,
-            occurrences: matches.length
+        this.searchInText(objects[i].description, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            results.objects.push({
+              name: objects[i].name,
+              occurrences: occurrences
+            });
           });
-        }
       }
     },
 

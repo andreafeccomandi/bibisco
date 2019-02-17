@@ -55,6 +55,5 @@ function SearchController($rootScope, SearchService) {
   self.search = function() {
     self.results = SearchService.search(self.text2search, 
       self.casesensitiveactive, self.wholewordactive, self.onlyscenes);
-    alert(JSON.stringify(self.results));
   };
 }
