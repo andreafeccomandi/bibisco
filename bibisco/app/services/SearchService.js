@@ -25,6 +25,15 @@ angular.module('bibiscoApp').service('SearchService', function(
 
   return {
 
+    searchInText: function (text, text2search, casesensitive, wholeword, results, callback) {
+      let dom = new DOMParser().parseFromString(text, 'text/html');
+      let matches = this.find(dom, text2search, casesensitive, wholeword);
+      if (matches && matches.length > 0) {
+        results.occurrences += matches.length;
+        callback(matches.length);
+      }
+    },
+
     search: function (text2search, casesensitive, wholeword, onlyscenes) {
       let results = {};
       results.occurrences = 0;
@@ -32,7 +41,7 @@ angular.module('bibiscoApp').service('SearchService', function(
       this.searchInChapters(results, text2search, casesensitive, wholeword, onlyscenes);
       if (!onlyscenes) {
         this.searchInArchitecture(results, text2search, casesensitive, wholeword);
-        //this.searchInMainCharacters(results, text2search, casesensitive, wholeword);
+        this.searchInMainCharacters(results, text2search, casesensitive, wholeword);
         this.searchInSecondaryCharacters(results, text2search, casesensitive, wholeword);
         this.searchInLocations(results, text2search, casesensitive, wholeword);
         this.searchInObjects(results, text2search, casesensitive, wholeword);
@@ -151,14 +160,98 @@ angular.module('bibiscoApp').service('SearchService', function(
 
       let maincharacters = MainCharacterService.getMainCharacters();
       for (let i = 0; i < maincharacters.length; i++) {
-        let dom = new DOMParser().parseFromString(locations[i].description, 'text/html');
-        let matches = this.find(dom, text2search, casesensitive, wholeword);
-        if (matches && matches.length > 0) {
-          results.occurrences += matches.length;
-          results.locations.push({
-            description: LocationService.calculateLocationName(locations[i]),
-            occurrences: matches.length
+        let maincharacterResult = null;
+        maincharacterResult = {};
+        maincharacterResult.name = maincharacters[i].name;
+        maincharacterResult.elements = 1;
+       
+        // personaldata
+        maincharacterResult.personaldata = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].personaldata,
+          maincharacterResult, maincharacterResult.personaldata,
+          text2search, casesensitive, wholeword);
+
+        // physionomy
+        maincharacterResult.physionomy = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].physionomy,
+          maincharacterResult, maincharacterResult.physionomy,
+          text2search, casesensitive, wholeword);
+
+        // behaviors
+        maincharacterResult.behaviors = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].behaviors,
+          maincharacterResult, maincharacterResult.behaviors,
+          text2search, casesensitive, wholeword);
+
+        // psychology
+        maincharacterResult.psychology = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].psychology,
+          maincharacterResult, maincharacterResult.psychology,
+          text2search, casesensitive, wholeword);
+        
+        // ideas
+        maincharacterResult.ideas = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].ideas,
+          maincharacterResult, maincharacterResult.ideas,
+          text2search, casesensitive, wholeword);
+        
+        // sociology
+        maincharacterResult.sociology = {};
+        this.searchInMainCharacterQuestions(results, maincharacters[i].sociology,
+          maincharacterResult, maincharacterResult.sociology,
+          text2search, casesensitive, wholeword);
+        
+        // lifebeforestorybeginning
+        maincharacterResult.lifebeforestorybeginning = null;
+        this.searchInText(maincharacters[i].lifebeforestorybeginning.text, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            maincharacterResult.elements += 1;
+            maincharacterResult.lifebeforestorybeginning = occurrences;
           });
+
+        // conflict
+        maincharacterResult.conflict = null;
+        this.searchInText(maincharacters[i].conflict.text, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            maincharacterResult.elements += 1;
+            maincharacterResult.conflict = occurrences;
+          });
+
+        // evolutionduringthestory
+        maincharacterResult.evolutionduringthestory = null;
+        this.searchInText(maincharacters[i].evolutionduringthestory.text, text2search, casesensitive,
+          wholeword, results, function (occurrences) {
+            maincharacterResult.elements += 1;
+            maincharacterResult.evolutionduringthestory = occurrences;
+          });
+
+        if (maincharacterResult.elements > 1) {
+          results.maincharacters.push(maincharacterResult);
+        }
+      }
+    },
+
+    searchInMainCharacterQuestions: function (results, questionset, maincharacterResult, 
+      maincharacterResultQuestionSet, text2search, casesensitive, wholeword) {
+      if (questionset.freetextenabled) {
+        maincharacterResultQuestionSet.freetextenabled = true;
+        this.searchInText(questionset.freetext, text2search, casesensitive, 
+          wholeword, results, function (occurrences) {
+            maincharacterResult.elements += 1;
+            maincharacterResultQuestionSet.freetext = occurrences;
+          });
+      } else {
+        maincharacterResultQuestionSet.freetextenabled = false;
+        maincharacterResultQuestionSet.questions = [];
+        for (let j = 0; j < questionset.questions.length; j++) {
+          this.searchInText(questionset.questions[j].text, text2search, casesensitive, 
+            wholeword, results, function (occurrences) {
+              maincharacterResult.elements += 1;
+              maincharacterResultQuestionSet.questions.push({
+                position: j,
+                occurrences: occurrences
+              });
+            });
         }
       }
     },

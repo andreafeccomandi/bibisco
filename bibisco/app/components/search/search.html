@@ -107,6 +107,87 @@
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes}}</span></td>
               </tr>
             </tbody>
+            <tbody ng-repeat="maincharacter in $ctrl.results.maincharacters track by $index">            
+              <tr>
+                <td rowspan="{{maincharacter.elements}}" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
+                <td>{{maincharacter.name}}</td>
+                <td></td>
+              </tr>
+              <tr ng-if="!maincharacter.personaldata.freetextenabled" ng-repeat="question in maincharacter.personaldata.questions track by $index">
+                <td><a><i>{{'common_personaldata' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_personaldata_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.personaldata.freetextenabled && maincharacter.personaldata.freetext">
+                <td><a><i>{{'common_personaldata' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.personaldata.freetext}}</span></td>
+              </tr>
+              <tr ng-if="!maincharacter.physionomy.freetextenabled" ng-repeat="question in maincharacter.physionomy.questions track by $index">
+                <td><a><i>{{'common_physionomy' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_physionomy_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.physionomy.freetextenabled && maincharacter.physionomy.freetext">
+                <td><a><i>{{'common_physionomy' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.physionomy.freetext}}</span></td>
+              </tr>
+              <tr ng-if="!maincharacter.behaviors.freetextenabled"
+                ng-repeat="question in maincharacter.behaviors.questions track by $index">
+                <td><a><i>{{'common_behaviors' | translate}} #{{question.position + 1}}:
+                    </i>{{'characterInfo_question_behaviors_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.behaviors.freetextenabled && maincharacter.behaviors.freetext">
+                <td><a><i>{{'common_behaviors' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.behaviors.freetext}}</span></td>
+              </tr>
+              <tr ng-if="!maincharacter.psychology.freetextenabled"
+                ng-repeat="question in maincharacter.psychology.questions track by $index">
+                <td><a><i>{{'common_psychology' | translate}} #{{question.position + 1}}:
+                    </i>{{'characterInfo_question_psychology_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.psychology.freetextenabled && maincharacter.psychology.freetext">
+                <td><a><i>{{'common_psychology' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.psychology.freetext}}</span></td>
+              </tr>
+              <tr ng-if="!maincharacter.ideas.freetextenabled"
+                ng-repeat="question in maincharacter.ideas.questions track by $index">
+                <td><a><i>{{'common_ideas' | translate}} #{{question.position + 1}}:
+                    </i>{{'characterInfo_question_ideas_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.ideas.freetextenabled && maincharacter.ideas.freetext">
+                <td><a><i>{{'common_ideas' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.ideas.freetext}}</span></td>
+              </tr>
+              <tr ng-if="!maincharacter.sociology.freetextenabled" ng-repeat="question in maincharacter.sociology.questions track by $index">
+                <td><a><i>{{'common_sociology' | translate}} #{{question.position + 1}}:
+                    </i>{{'characterInfo_question_sociology_' + question.position | translate}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.sociology.freetextenabled && maincharacter.sociology.freetext">
+                <td><a><i>{{'common_sociology' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.sociology.freetext}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.lifebeforestorybeginning">
+                <td><a><i>{{'common_characters_lifebeforestorybeginning' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.lifebeforestorybeginning}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.conflict">
+                <td><a><i>{{'common_characters_conflict' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.conflict}}</span></td>
+              </tr>
+              <tr ng-if="maincharacter.evolutionduringthestory">
+                <td><a><i>{{'common_characters_evolutionduringthestory' | translate}}</i></a></td>
+                <td class="text-right"><span
+                    class="label label-info search-results-occurrences">{{maincharacter.evolutionduringthestory}}</span></td>
+              </tr>
+            </tbody>
             <tbody ng-repeat="secondarycharacter in $ctrl.results.secondarycharacters track by $index">
               <tr>
                 <td class="text-right"><span
@@ -132,17 +213,6 @@
                 </td>
               </tr>
             </tbody>
-            <!--
-              <tr>
-                <td rowspan="2" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
-                <td>Emma Woodhouse</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><a><i>Physical Feature</i>: #5 how is his/her neck?</a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">14</span></td>
-              </tr>
-              -->
           </table>
           </div>
         </div>
