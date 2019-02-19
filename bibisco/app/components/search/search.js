@@ -19,7 +19,7 @@ angular.
     controller: SearchController
   });
 
-function SearchController($location, $rootScope, SearchService) {
+function SearchController($location, $rootScope, $scope, hotkeys, SearchService) {
 
   var self = this;
   self.$onInit = function() {
@@ -34,6 +34,20 @@ function SearchController($location, $rootScope, SearchService) {
     $rootScope.$emit('SHOW_PAGE', {
       item: 'search'
     });
+
+    // hotkey
+    hotkeys.bindTo($scope).
+      add({
+        combo: ['enter', 'enter'],
+        description: 'enter',
+        allowIn: ['INPUT'],
+        callback: function ($event) {
+          if (self.text2search) {
+            $event.preventDefault();
+            self.search();
+          }
+        }
+      });
   };
 
   self.toggleCaseSensitive = function () {

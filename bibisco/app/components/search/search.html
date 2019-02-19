@@ -42,6 +42,7 @@
         </div>
         <div class="col-sm-1 pull-left">
           <button class="btn btn-primary search-inline-button"
+          ng-disabled="!$ctrl.text2search"
           ng-click="$ctrl.search()">{{'search_button' | translate}}</button>
         </div>
       </div>
