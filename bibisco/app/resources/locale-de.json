@@ -753,6 +753,7 @@
   "exit_full_screen_mode": "Drücken Sie ESC, um die Vollbildansicht zu beenden",
   "common_scenes_low": "Szenen",
   "search_button": "Suchen",
+  "search_button_tooltip": "Suchen (ENTER)",
   "search_title": "Suche",
   "search_menu": "Suche",
   "search_whole_project": "Suchen im gesamten Projekt",

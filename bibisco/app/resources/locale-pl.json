@@ -752,6 +752,7 @@
   "exit_full_screen_mode": "naciśnij klawisz ESC, aby zamknąć tryb pełnoekranowy",
   "common_scenes_low": "sceny",
   "search_button": "szukaj",
+  "search_button_tooltip": "szukaj (ENTER)",
   "search_title": "Szukanie",
   "search_menu": "szukanie",
   "search_whole_project": "szukaj w całym projekcie",

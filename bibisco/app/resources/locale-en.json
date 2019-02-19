@@ -799,6 +799,7 @@
   "exit_full_screen_mode": "press ESC to exit full screen mode",
   "common_scenes_low": "scenes",
   "search_button": "search",
+  "search_button_tooltip": "search (ENTER)",
   "search_title": "Search",
   "search_menu": "search",
   "search_whole_project": "search in the whole project",

@@ -779,6 +779,7 @@
   "exit_full_screen_mode": "prima Esc para sair do modo de ecrã inteiro",
   "common_scenes_low": "cenas",
   "search_button": "pesquisar",
+  "search_button_tooltip": "pesquisar (ENTER)",
   "search_title": "Pesquisa",
   "search_menu": "pesquisa",
   "search_whole_project": "pesquisar em todo o projeto",

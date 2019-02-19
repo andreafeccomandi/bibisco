@@ -728,6 +728,7 @@
     "exit_full_screen_mode": "Pritisnite taster ESC da biste izašli iz režima celog ekrana",
     "common_scenes_low": "scene",
     "search_button": "pretraži",
+    "search_button_tooltip": "pretraži (ENTER)",
     "search_title": "Pretraga",
     "search_menu": "pretraga",
     "search_vhole_project": "pretraži u celom projektu",

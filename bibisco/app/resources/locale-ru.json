@@ -802,6 +802,7 @@
   "exit_full_screen_mode": "нажмите клавишу ESC для выхода из полноэкранного режима",
   "common_scenes_low": "сцены",
   "search_button": "поиск",
+  "search_button_tooltip": "поиск (ENTER)",
   "search_title": "Поиск",
   "search_menu": "Поиск",
   "search_whole_project": "поиск по всему проекту",

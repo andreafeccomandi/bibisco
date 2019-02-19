@@ -752,6 +752,7 @@
   "exit_full_screen_mode": "stisknutím klávesy ESC můžete ukončit režim celé obrazovky",
   "common_scenes_low": "scény",
   "search_button": "hledání",
+  "search_button_tooltip": "hledání (ENTER)",
   "search_title": "Hledat",
   "search_menu": "hledat",
   "search_whole_project": "hledání v celém projektu",

@@ -739,6 +739,7 @@
     "exit_full_screen_mode": "tam ekran modundan çıkmak için ESC tuşuna basın",
     "common_scenes_low": "sahneler",
     "search_button": "ara",
+    "search_button_tooltip": "ara (ENTER)",
     "search_title": "Arama",
     "search_menu": "arama",
     "search_whole_project": "tüm projede ara",

@@ -760,6 +760,7 @@
   "exit_full_screen_mode": "presione ESC para salir del modo de pantalla completa",
   "common_scenes_low": "escenas",
   "search_button": "buscar",
+  "search_button_tooltip": "buscar (ENTER)",
   "search_title": "Búsqueda",
   "search_menu": "búsqueda",
   "search_whole_project": "buscar en todo el proyecto",

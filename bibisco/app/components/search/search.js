@@ -24,7 +24,6 @@ function SearchController($location, $rootScope, $scope, hotkeys, SearchService)
   var self = this;
   self.$onInit = function() {
 
-    self.text2search = null;
     self.casesensitiveactive = false;
     self.wholewordactive = false;
     self.onlyscenes = false;
@@ -42,12 +41,17 @@ function SearchController($location, $rootScope, $scope, hotkeys, SearchService)
         description: 'enter',
         allowIn: ['INPUT'],
         callback: function ($event) {
-          if (self.text2search) {
+          if ($rootScope.text2search) {
             $event.preventDefault();
             self.search();
           }
         }
       });
+
+    // search
+    if ($rootScope.text2search) {
+      self.search();
+    }
   };
 
   self.toggleCaseSensitive = function () {
@@ -67,7 +71,7 @@ function SearchController($location, $rootScope, $scope, hotkeys, SearchService)
   };
 
   self.search = function() {
-    self.results = SearchService.search(self.text2search, 
+    self.results = SearchService.search($rootScope.text2search, 
       self.casesensitiveactive, self.wholewordactive, self.onlyscenes);
   };
 

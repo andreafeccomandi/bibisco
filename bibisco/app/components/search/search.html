@@ -25,7 +25,7 @@
               </span>
               <input type="text" class="form-control" maxlength="50" id="searchtext" 
                 placeholder="{{'text_to_search' | translate}}"
-                ng-model="$ctrl.text2search">
+                ng-model="$root.text2search">
               </input>
               <span class="input-group-btn">
                 <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
@@ -42,7 +42,8 @@
         </div>
         <div class="col-sm-1 pull-left">
           <button class="btn btn-primary search-inline-button"
-          ng-disabled="!$ctrl.text2search"
+          ng-disabled="!$root.text2search"
+          uib-tooltip="{{'search_button_tooltip' | translate}}"
           ng-click="$ctrl.search()">{{'search_button' | translate}}</button>
         </div>
       </div>
