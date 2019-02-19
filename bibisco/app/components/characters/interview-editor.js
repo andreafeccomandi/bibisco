@@ -34,7 +34,6 @@ function InterviewEditorController(MainCharacterService, RichTextEditorPreferenc
   var self = this;
 
   self.$onInit = function() {
-    self.questionselected = 0;
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
   };

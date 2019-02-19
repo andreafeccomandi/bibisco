@@ -75,6 +75,7 @@ angular.module('bibiscoApp').service('SearchService', function(
               chapterResult.scenes.push({
                 title: scenes[j].title,
                 position: scenes[j].position,
+                path: '/chapters/' + chapters[i].$loki + '/scenes/' + scenes[j].$loki + '/edit',
                 occurrences: occurrences
               });
             });
@@ -86,7 +87,8 @@ angular.module('bibiscoApp').service('SearchService', function(
             wholeword, results, function (occurrences) {
               chapterResult.elements += 1;
               chapterResult.reason = {
-                occurrences: occurrences
+                occurrences: occurrences,
+                path: '/chapters/' + chapters[i].$loki + '/chapterinfos/reason/edit'
               };
             });
         }
@@ -97,7 +99,8 @@ angular.module('bibiscoApp').service('SearchService', function(
             wholeword, results, function (occurrences) {
               chapterResult.elements += 1;
               chapterResult.notes = {
-                occurrences: occurrences
+                occurrences: occurrences,
+                path: '/chapters/' + chapters[i].$loki + '/chapterinfos/notes/edit'
               };
             });
         }
@@ -115,25 +118,37 @@ angular.module('bibiscoApp').service('SearchService', function(
       results.architecture.premise = null;
       this.searchInText(ArchitectureService.getPremise().text, text2search, casesensitive,
         wholeword, results, function (occurrences) {
-          results.architecture.premise = occurrences;
+          results.architecture.premise = {
+            occurrences: occurrences,
+            path: '/architectureitems/premise/edit'
+          };
         });
 
       results.architecture.fabula = null;
       this.searchInText(ArchitectureService.getFabula().text, text2search, casesensitive,
         wholeword, results, function (occurrences) {
-          results.architecture.fabula = occurrences;
+          results.architecture.fabula = {
+            occurrences: occurrences,
+            path: '/architectureitems/fabula/edit'
+          };
         });
 
       results.architecture.setting = null;
       this.searchInText(ArchitectureService.getSetting().text, text2search, casesensitive,
         wholeword, results, function (occurrences) {
-          results.architecture.setting = occurrences;
+          results.architecture.setting = {
+            occurrences: occurrences,
+            path: '/architectureitems/setting/edit'
+          };
         });
 
       results.architecture.globalnotes = null;
       this.searchInText(ArchitectureService.getGlobalNotes().text, text2search, casesensitive,
         wholeword, results, function (occurrences) {
-          results.architecture.globalnotes = occurrences;
+          results.architecture.globalnotes = {
+            occurrences: occurrences,
+            path: '/architectureitems/globalnotes/edit'
+          };
         });
     },
 
@@ -147,49 +162,46 @@ angular.module('bibiscoApp').service('SearchService', function(
         maincharacterResult = {};
         maincharacterResult.name = maincharacters[i].name;
         maincharacterResult.elements = 1;
-       
+
         // personaldata
         maincharacterResult.personaldata = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].personaldata,
-          maincharacterResult, maincharacterResult.personaldata,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i], 
+          'personaldata', maincharacterResult, text2search, casesensitive, wholeword);
 
         // physionomy
         maincharacterResult.physionomy = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].physionomy,
-          maincharacterResult, maincharacterResult.physionomy,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i],
+          'physionomy', maincharacterResult, text2search, casesensitive, wholeword);
 
         // behaviors
         maincharacterResult.behaviors = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].behaviors,
-          maincharacterResult, maincharacterResult.behaviors,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i],
+          'behaviors', maincharacterResult, text2search, casesensitive, wholeword);
 
         // psychology
         maincharacterResult.psychology = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].psychology,
-          maincharacterResult, maincharacterResult.psychology,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i],
+          'psychology', maincharacterResult, text2search, casesensitive, wholeword);
         
         // ideas
         maincharacterResult.ideas = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].ideas,
-          maincharacterResult, maincharacterResult.ideas,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i],
+          'ideas', maincharacterResult, text2search, casesensitive, wholeword);
         
         // sociology
         maincharacterResult.sociology = {};
-        this.searchInMainCharacterQuestions(results, maincharacters[i].sociology,
-          maincharacterResult, maincharacterResult.sociology,
-          text2search, casesensitive, wholeword);
+        this.searchInMainCharacterQuestions(results, maincharacters[i],
+          'sociology', maincharacterResult, text2search, casesensitive, wholeword);
         
         // lifebeforestorybeginning
         maincharacterResult.lifebeforestorybeginning = null;
         this.searchInText(maincharacters[i].lifebeforestorybeginning.text, text2search, casesensitive,
           wholeword, results, function (occurrences) {
             maincharacterResult.elements += 1;
-            maincharacterResult.lifebeforestorybeginning = occurrences;
+            maincharacterResult.lifebeforestorybeginning = {
+              occurrences: occurrences,
+              path: '/maincharacters/' + maincharacters[i].$loki + '/infowithoutquestion/lifebeforestorybeginning/edit'
+            };    
           });
 
         // conflict
@@ -197,7 +209,10 @@ angular.module('bibiscoApp').service('SearchService', function(
         this.searchInText(maincharacters[i].conflict.text, text2search, casesensitive,
           wholeword, results, function (occurrences) {
             maincharacterResult.elements += 1;
-            maincharacterResult.conflict = occurrences;
+            maincharacterResult.conflict = {
+              occurrences: occurrences,
+              path: '/maincharacters/' + maincharacters[i].$loki + '/infowithoutquestion/conflict/edit'
+            };    
           });
 
         // evolutionduringthestory
@@ -205,7 +220,10 @@ angular.module('bibiscoApp').service('SearchService', function(
         this.searchInText(maincharacters[i].evolutionduringthestory.text, text2search, casesensitive,
           wholeword, results, function (occurrences) {
             maincharacterResult.elements += 1;
-            maincharacterResult.evolutionduringthestory = occurrences;
+            maincharacterResult.evolutionduringthestory = {
+              occurrences: occurrences,
+              path: '/maincharacters/' + maincharacters[i].$loki + '/infowithoutquestion/evolutionduringthestory/edit'
+            };    
           });
 
         if (maincharacterResult.elements > 1) {
@@ -214,25 +232,32 @@ angular.module('bibiscoApp').service('SearchService', function(
       }
     },
 
-    searchInMainCharacterQuestions: function (results, questionset, maincharacterResult, 
-      maincharacterResultQuestionSet, text2search, casesensitive, wholeword) {
-      if (questionset.freetextenabled) {
-        maincharacterResultQuestionSet.freetextenabled = true;
-        this.searchInText(questionset.freetext, text2search, casesensitive, 
+    searchInMainCharacterQuestions: function (results, maincharacter, info, 
+      maincharacterResult, text2search, casesensitive, wholeword) {
+      
+      if (maincharacter[info].freetextenabled) {
+        maincharacterResult[info].freetextenabled = true;
+        this.searchInText(maincharacter[info].freetext, text2search, casesensitive, 
           wholeword, results, function (occurrences) {
             maincharacterResult.elements += 1;
-            maincharacterResultQuestionSet.freetext = occurrences;
+            maincharacterResult[info].freetext = {
+              occurrences: occurrences,
+              path: '/maincharacters/' + maincharacter.$loki + '/infowithquestion/' +
+                info + '/edit' 
+            };    
           });
       } else {
-        maincharacterResultQuestionSet.freetextenabled = false;
-        maincharacterResultQuestionSet.questions = [];
-        for (let j = 0; j < questionset.questions.length; j++) {
-          this.searchInText(questionset.questions[j].text, text2search, casesensitive, 
+        maincharacterResult[info].freetextenabled = false;
+        maincharacterResult[info].questions = [];
+        for (let j = 0; j < maincharacter[info].questions.length; j++) {
+          this.searchInText(maincharacter[info].questions[j].text, text2search, casesensitive, 
             wholeword, results, function (occurrences) {
               maincharacterResult.elements += 1;
-              maincharacterResultQuestionSet.questions.push({
+              maincharacterResult[info].questions.push({
                 position: j,
-                occurrences: occurrences
+                occurrences: occurrences,
+                path: '/maincharacters/' + maincharacter.$loki +'/infowithquestion/' + 
+                  info + '/edit/question/' + j
               });
             });
         }
@@ -248,7 +273,8 @@ angular.module('bibiscoApp').service('SearchService', function(
           wholeword, results, function (occurrences) {
             results.secondarycharacters.push({
               name: secondarycharacters[i].name,
-              occurrences: occurrences
+              occurrences: occurrences,
+              path: '/secondarycharacters/' + secondarycharacters[i].$loki + '/edit'
             });
           });
       }
@@ -263,7 +289,8 @@ angular.module('bibiscoApp').service('SearchService', function(
           wholeword, results, function (occurrences) {
             results.locations.push({
               description: LocationService.calculateLocationName(locations[i]),
-              occurrences: occurrences
+              occurrences: occurrences,
+              path: '/locations/' + locations[i].$loki + '/edit'
             });
           });
       }
@@ -279,7 +306,8 @@ angular.module('bibiscoApp').service('SearchService', function(
           wholeword, results, function (occurrences) {
             results.objects.push({
               name: objects[i].name,
-              occurrences: occurrences
+              occurrences: occurrences,
+              path: '/objects/' + objects[i].$loki + '/edit'
             });
           });
       }

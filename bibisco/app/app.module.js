@@ -171,6 +171,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id/infowithquestion/:info/:mode', {
         template: '<maincharacterinfowithquestion></maincharacterinfowithquestion>'
       }).
+      when('/maincharacters/:id/infowithquestion/:info/edit/question/:question', {
+        template: '<maincharacterinfowithquestion></maincharacterinfowithquestion>'
+      }).
       when('/maincharacters/:id/images', {
         template: '<maincharacterimages></maincharacterimages>'
       }).

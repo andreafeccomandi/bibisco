@@ -31,7 +31,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
     self.mode = $routeParams.mode;
-    self.editmode = (self.mode === 'edit');
+    self.editmode = (self.mode !== 'view');
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -52,7 +52,12 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.autosaveenabled;
     self.content;
     $rootScope.dirty = false;
-    self.questionselected;
+    
+    if ($routeParams.question) {
+      self.questionselected = parseInt($routeParams.question);
+    } else {
+      self.questionselected = 0;
+    }
     self.showprojectexplorer = false;
     self.characters;
     self.words;

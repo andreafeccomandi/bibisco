@@ -73,38 +73,39 @@
                 <td></td>
               </tr>
               <tr ng-repeat="scene in chapter.scenes track by $index">
-                <td><i>{{'jsp.analysisCharacterScene.th.scene' | translate}} #{{scene.position}}: </i><a>{{scene.title}}</a></td>
+                <td><i>{{'jsp.analysisCharacterScene.th.scene' | translate}} #{{scene.position}}: </i>
+                  <a ng-click="$ctrl.gotoElement(scene.path)">{{scene.title}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{scene.occurrences}}</span></td>
               </tr>
               <tr ng-if="chapter.reason">
-                <td><a><i>{{'common_chapter_reason' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(chapter.reason.path)"><i>{{'common_chapter_reason' | translate}}</i></a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{chapter.reason.occurrences}}</span></td>
               </tr>
               <tr ng-if="chapter.notes">
-                <td><a><i>{{'common_chapter_notes' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(chapter.notes.path)"><i>{{'common_chapter_notes' | translate}}</i></a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{chapter.notes.occurrences}}</span></td>
               </tr>
             </tbody>
             <tbody>
               <tr ng-if="$ctrl.results.architecture.premise">
                 <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_architecture' | translate}}</span></td>
-                <td><a><i>{{'common_premise' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.premise}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement($ctrl.results.architecture.premise.path)"><i>{{'common_premise' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.premise.occurrences}}</span></td>
               </tr>
               <tr ng-if="$ctrl.results.architecture.fabula">
                 <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_architecture' | translate}}</span></td>
-                <td><a><i>{{'common_fabula' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.fabula}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement($ctrl.results.architecture.fabula.path)"><i>{{'common_fabula' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.fabula.occurrences}}</span></td>
               </tr>
               <tr ng-if="$ctrl.results.architecture.setting">
                 <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_architecture' | translate}}</span></td>
-                <td><a><i>{{'common_setting' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.setting}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement($ctrl.results.architecture.setting.path)"><i>{{'common_setting' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.setting.occurrences}}</span></td>
               </tr>
               <tr ng-if="$ctrl.results.architecture.globalnotes">
                 <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_architecture' | translate}}</span></td>
-                <td><a><i>{{'common_notes_title' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement($ctrl.results.architecture.globalnotes.path)"><i>{{'common_notes_title' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes.occurrences}}</span></td>
               </tr>
             </tbody>
             <tbody ng-repeat="maincharacter in $ctrl.results.maincharacters track by $index">            
@@ -114,85 +115,85 @@
                 <td></td>
               </tr>
               <tr ng-if="!maincharacter.personaldata.freetextenabled" ng-repeat="question in maincharacter.personaldata.questions track by $index">
-                <td><a><i>{{'common_personaldata' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_personaldata_' + question.position | translate}}</a></td>
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_personaldata' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_personaldata_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.personaldata.freetextenabled && maincharacter.personaldata.freetext">
-                <td><a><i>{{'common_personaldata' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.personaldata.freetext}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.personaldata.freetext.path)"><i>{{'common_personaldata' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.personaldata.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="!maincharacter.physionomy.freetextenabled" ng-repeat="question in maincharacter.physionomy.questions track by $index">
-                <td><a><i>{{'common_physionomy' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_physionomy_' + question.position | translate}}</a></td>
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_physionomy' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_physionomy_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.physionomy.freetextenabled && maincharacter.physionomy.freetext">
-                <td><a><i>{{'common_physionomy' | translate}}</i></a></td>
-                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.physionomy.freetext}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.physionomy.freetext.path)"><i>{{'common_physionomy' | translate}}</i></a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{maincharacter.physionomy.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="!maincharacter.behaviors.freetextenabled"
                 ng-repeat="question in maincharacter.behaviors.questions track by $index">
-                <td><a><i>{{'common_behaviors' | translate}} #{{question.position + 1}}:
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_behaviors' | translate}} #{{question.position + 1}}:
                     </i>{{'characterInfo_question_behaviors_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.behaviors.freetextenabled && maincharacter.behaviors.freetext">
-                <td><a><i>{{'common_behaviors' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.behaviors.freetext.path)"><i>{{'common_behaviors' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.behaviors.freetext}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.behaviors.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="!maincharacter.psychology.freetextenabled"
                 ng-repeat="question in maincharacter.psychology.questions track by $index">
-                <td><a><i>{{'common_psychology' | translate}} #{{question.position + 1}}:
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_psychology' | translate}} #{{question.position + 1}}:
                     </i>{{'characterInfo_question_psychology_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.psychology.freetextenabled && maincharacter.psychology.freetext">
-                <td><a><i>{{'common_psychology' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.psychology.freetext.path)"><i>{{'common_psychology' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.psychology.freetext}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.psychology.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="!maincharacter.ideas.freetextenabled"
                 ng-repeat="question in maincharacter.ideas.questions track by $index">
-                <td><a><i>{{'common_ideas' | translate}} #{{question.position + 1}}:
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_ideas' | translate}} #{{question.position + 1}}:
                     </i>{{'characterInfo_question_ideas_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.ideas.freetextenabled && maincharacter.ideas.freetext">
-                <td><a><i>{{'common_ideas' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.ideas.freetext.path)"><i>{{'common_ideas' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.ideas.freetext}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.ideas.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="!maincharacter.sociology.freetextenabled" ng-repeat="question in maincharacter.sociology.questions track by $index">
-                <td><a><i>{{'common_sociology' | translate}} #{{question.position + 1}}:
+                <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_sociology' | translate}} #{{question.position + 1}}:
                     </i>{{'characterInfo_question_sociology_' + question.position | translate}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{question.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.sociology.freetextenabled && maincharacter.sociology.freetext">
-                <td><a><i>{{'common_sociology' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.sociology.freetext.path)"><i>{{'common_sociology' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.sociology.freetext}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.sociology.freetext.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.lifebeforestorybeginning">
-                <td><a><i>{{'common_characters_lifebeforestorybeginning' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.lifebeforestorybeginning.path)"><i>{{'common_characters_lifebeforestorybeginning' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.lifebeforestorybeginning}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.lifebeforestorybeginning.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.conflict">
-                <td><a><i>{{'common_characters_conflict' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.conflict.path)"><i>{{'common_characters_conflict' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.conflict}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.conflict.occurrences}}</span></td>
               </tr>
               <tr ng-if="maincharacter.evolutionduringthestory">
-                <td><a><i>{{'common_characters_evolutionduringthestory' | translate}}</i></a></td>
+                <td><a ng-click="$ctrl.gotoElement(maincharacter.evolutionduringthestory.path)"><i>{{'common_characters_evolutionduringthestory' | translate}}</i></a></td>
                 <td class="text-right"><span
-                    class="label label-info search-results-occurrences">{{maincharacter.evolutionduringthestory}}</span></td>
+                    class="label label-info search-results-occurrences">{{maincharacter.evolutionduringthestory.occurrences}}</span></td>
               </tr>
             </tbody>
             <tbody ng-repeat="secondarycharacter in $ctrl.results.secondarycharacters track by $index">
               <tr>
                 <td class="text-right"><span
                     class="label label-default bibiscoBadge text-uppercase">{{'common_character' | translate}}</span></td>
-                <td><a>{{secondarycharacter.name}}</a></td>
+                <td><a ng-click="$ctrl.gotoElement(secondarycharacter.path)">{{secondarycharacter.name}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{secondarycharacter.occurrences}}</span>
                 </td>
               </tr>
@@ -200,7 +201,7 @@
             <tbody ng-repeat="location in $ctrl.results.locations track by $index">
                 <tr>
                   <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'jsp.scene.location.title' | translate}}</span></td>
-                  <td><a>{{location.description}}</a></td>
+                  <td><a ng-click="$ctrl.gotoElement(location.path)">{{location.description}}</a></td>
                   <td class="text-right"><span class="label label-info search-results-occurrences">{{location.occurrences}}</span></td>
                 </tr>
             </tbody>
@@ -208,7 +209,7 @@
               <tr>
                 <td class="text-right"><span
                     class="label label-default bibiscoBadge text-uppercase">{{'object' | translate}}</span></td>
-                <td><a>{{object.name}}</a></td>
+                <td><a ng-click="$ctrl.gotoElement(object.path)">{{object.name}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{object.occurrences}}</span>
                 </td>
               </tr>

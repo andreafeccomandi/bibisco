@@ -19,7 +19,7 @@ angular.
     controller: SearchController
   });
 
-function SearchController($rootScope, SearchService) {
+function SearchController($location, $rootScope, SearchService) {
 
   var self = this;
   self.$onInit = function() {
@@ -56,4 +56,8 @@ function SearchController($rootScope, SearchService) {
     self.results = SearchService.search(self.text2search, 
       self.casesensitiveactive, self.wholewordactive, self.onlyscenes);
   };
+
+  self.gotoElement = function (path) {
+    $location.path(path);
+  };  
 }

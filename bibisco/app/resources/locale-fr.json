@@ -163,7 +163,7 @@
   "jsp.architecture.thumbnail.premise.description": "Décrivez le roman entier en une seule phrase. Conflit et résolution.",
   "jsp.architecture.thumbnail.fabula.title": "Plan",
   "jsp.architecture.thumbnail.fabula.description": "Séquence des événements triés selon leur ordre logique et chronologique.",
-  "jsp.architecture.thumbnail.setting.title": "Contexte",
+  "jsp.architecture.thumbnail.setting.title": "Environnement",
   "jsp.architecture.thumbnail.setting.description": "Description du contexte (géographique, temporel, social) dans lequel lʼhistoire se déroule.",
   "jsp.architecture.strands.h2": "Fils narratifs",
   "jsp.architecture.strands.h2.small": "fils narratifs, chacun dʼentre eux est relié au développement dʼun conflit spécifique",
