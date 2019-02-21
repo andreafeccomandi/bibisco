@@ -1159,35 +1159,7 @@ h3 {
 	margin-top: 5px;
 }
 
-.fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
-  z-index: 2000;
-  height: 100% !important;
-  padding-left: 23%; 
-  padding-right: 23%;
-  padding-top: 2%;
-  padding-bottom: 2%;
-}
 
-.exitfullscreenmessage {
-	position: fixed;
-	top: 100px;
-	left: 200px;
-	width: calc(100% - 400px);
-	height: 100px;
-	z-index: 2001;
-	text-align: center;
-	border-radius: 15px;
-}
-
-.exitfullscreenmessage h1 {
-	margin-top: 35px;
-}
 
 @media (max-width: 767px) {
     ul.timeline:before {

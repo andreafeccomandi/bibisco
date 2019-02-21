@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $rootScope, $routeParams, 
+function ObjectDetailController($location, $rootScope, $routeParams,
   ChapterService, ObjectService, UtilService) {
 
   var self = this;
 
-  self.$onInit = function() {
+  self.$onInit = function () {
 
     self.object = self.getObject($routeParams.id);
     self.mode = $routeParams.mode;
@@ -37,7 +37,7 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     self.breadcrumbitems.push({
       label: self.object.name
     });
-  
+
     self.deleteforbidden = self.isDeleteForbidden();
 
     $rootScope.$emit('REGISTER_FOCUS', {
@@ -46,16 +46,16 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     });
   };
 
-  self.changeStatus = function(status) {
+  self.changeStatus = function (status) {
     self.object.status = status;
     ObjectService.update(self.object);
   };
 
-  self.changeTitle = function() {
+  self.changeTitle = function () {
     $location.path('/objects/' + self.object.$loki + '/title');
   };
 
-  self.delete = function() {
+  self.delete = function () {
     ObjectService.remove(self.object
       .$loki);
     $location.path('/objects');
@@ -65,15 +65,15 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     $location.path('/objects/ ' + self.object.$loki + '/edit');
   };
 
-  self.getObject = function(id) {
+  self.getObject = function (id) {
     return ObjectService.getObject(id);
   };
 
-  self.savefunction = function() {
+  self.savefunction = function () {
     ObjectService.update(self.object);
   };
 
-  self.showimagesfunction = function() {
+  self.showimagesfunction = function () {
     $location.path('/objects/' + self.object.$loki + '/images');
   };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -122,11 +122,12 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
   };
 
   self.selectItem = function(item) {
-    if ((item === 'timeline' || item === 'search') && !SupporterEditionChecker.check()) {
+    if ((item === 'timeline' || item === 'search' || item === 'objects') 
+      && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     }
     else {
-      if ((item === 'timeline' || item === 'search')) {
+      if ((item === 'timeline' || item === 'search') || item === 'objects') {
         $injector.get('IntegrityService').ok();
       }
       $location.path('/' + item);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $rootScope, $routeParams, $scope,
+function SceneTagsController($injector, $location, $rootScope, $routeParams, $scope,
   $timeout, $window, ChapterService, hotkeys, LocationService, MainCharacterService, 
-  ObjectService, PopupBoxesService, SecondaryCharacterService, 
-  StrandService, UtilService) {
+  PopupBoxesService, SecondaryCharacterService, 
+  StrandService, SupporterEditionChecker, UtilService) {
 
   var self = this;
 
@@ -256,23 +256,28 @@ function SceneTagsController($location, $rootScope, $routeParams, $scope,
 
   self.initObjects = function () {
 
-    // objects
-    let objects = ObjectService.getObjects();
     self.objects = [];
-    for (let i = 0; i < objects.length; i++) {
-      let isselected = UtilService.array.contains(self.workingscenerevision.sceneobjects,
-        objects[i].$loki);
-      self.objects.push({
-        id: objects[i].$loki,
-        name: objects[i].name,
-        selected: isselected
+
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+
+      // objects
+      let objects = $injector.get('ObjectService').getObjects();
+      for (let i = 0; i < objects.length; i++) {
+        let isselected = UtilService.array.contains(self.workingscenerevision.sceneobjects,
+          objects[i].$loki);
+        self.objects.push({
+          id: objects[i].$loki,
+          name: objects[i].name,
+          selected: isselected
+        });
+      }
+  
+      // sort by name
+      self.objects.sort(function (a, b) {
+        return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
       });
     }
-
-    // sort by name
-    self.objects.sort(function (a, b) {
-      return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-    });
   };
 
   self.initStrands = function() {

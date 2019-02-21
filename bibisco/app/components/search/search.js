@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,11 @@ angular.
     controller: SearchController
   });
 
-function SearchController($location, $rootScope, $scope, hotkeys, SearchService) {
+function SearchController($injector, $location, $rootScope, $scope, hotkeys) {
 
   var self = this;
+  var SearchService = $injector.get('SearchService');
+  
   self.$onInit = function() {
 
     self.casesensitiveactive = false;

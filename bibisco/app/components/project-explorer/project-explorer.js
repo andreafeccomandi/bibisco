@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ angular.
     controller: ProjectExplorerController
   });
 
-function ProjectExplorerController($rootScope, $translate, ArchitectureService, ChapterService, 
-  ObjectService, LocationService, MainCharacterService, SecondaryCharacterService,
-  StrandService) {
+function ProjectExplorerController($injector, $rootScope, $translate, ArchitectureService, 
+  ChapterService, LocationService, MainCharacterService, SecondaryCharacterService,
+  SupporterEditionChecker, StrandService) {
   
   var self = this;
+  var ObjectService = null;
 
   self.$onInit = function () {
 
@@ -171,16 +172,17 @@ function ProjectExplorerController($rootScope, $translate, ArchitectureService, 
   self.getObjectsFamily = function () {
 
     let objectsfamily = [];
-    let family = self.translations.objects;
-
-    let objects = ObjectService.getObjects();
-    for (let i = 0; i < objects.length; i++) {
-      objectsfamily.push({
-        id: objects[i].$loki,
-        name: objects[i].name,
-        family: family,
-        selectfunction: self.showObject
-      });
+    if (SupporterEditionChecker.check()) {
+      let family = self.translations.objects;
+      let objects = self.getObjectService().getObjects();
+      for (let i = 0; i < objects.length; i++) {
+        objectsfamily.push({
+          id: objects[i].$loki,
+          name: objects[i].name,
+          family: family,
+          selectfunction: self.showObject
+        });
+      }
     }
 
     return objectsfamily;
@@ -270,17 +272,28 @@ function ProjectExplorerController($rootScope, $translate, ArchitectureService, 
   };
 
   self.showObject = function (id) {
-    let object = ObjectService.getObject(id);
-    self.sectiontitle = object.name;
-    self.text = object.description;
-    self.images = object.images;
-    self.type = 'simpletext';
-    self.path = '/objects/' + id + '/edit';
+    if (SupporterEditionChecker.check()) {
+      let object = self.getObjectService().getObject(id);
+      self.sectiontitle = object.name;
+      self.text = object.description;
+      self.images = object.images;
+      self.type = 'simpletext';
+      self.path = '/objects/' + id + '/edit';
+    }
   };
 
   self.showChapter = function(id) {
     self.chapter = ChapterService.getChapter(id);
     self.scenes = ChapterService.getScenes(id);
     self.type = 'chapter';
+  };
+
+  self.getObjectService = function () {
+    if (!ObjectService) {
+      $injector.get('IntegrityService').ok();
+      ObjectService = $injector.get('ObjectService');
+    }
+
+    return ObjectService;
   };
 }

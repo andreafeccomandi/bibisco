@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: TimelineController
   });
 
-function TimelineController($rootScope, TimelineService) {
+function TimelineController($injector, $rootScope) {
 
   var self = this;
   self.$onInit = function() {
@@ -29,7 +29,7 @@ function TimelineController($rootScope, TimelineService) {
       item: 'timeline'
     });
 
+    let TimelineService = $injector.get('TimelineService');
     self.timeline = TimelineService.getTimeline();   
-    
   };
 }

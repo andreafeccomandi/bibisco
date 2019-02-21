@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,12 @@ angular.
 
 function RichTextEditorController($document, $injector, $location, $rootScope, 
   $scope, $timeout, $uibModal, $window, hotkeys, Chronicle, ContextService, 
-  PopupBoxesService, SanitizeHtmlService, SearchService, SupporterEditionChecker, 
+  PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
   var electron = require('electron');
+  var SearchService = null;
 
   self.$onInit = function() {
     self.contenteditable = true;
@@ -569,7 +570,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     self.matches = null;
 
     if (self.texttofind) {
-      self.matches = SearchService.find(self.richtexteditor, self.texttofind,
+      self.matches = self.getSearchService().find(self.richtexteditor, self.texttofind,
         self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;
@@ -716,7 +717,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
 
   self.replaceNext = function() {
     if (self.currentmatch) {
-      SearchService.replace(self.richtexteditor, self.texttofind,
+      self.getSearchService().replace(self.richtexteditor, self.texttofind,
         self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
         self.currentmatch);
       self.updateContentFromDom();
@@ -736,7 +737,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   };
 
   self.replaceAll = function () {
-    SearchService.replace(self.richtexteditor, self.texttofind,
+    self.getSearchService().replace(self.richtexteditor, self.texttofind,
       self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
     self.updateContentFromDom();
     self.contentChanged();
@@ -816,5 +817,14 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     let result = WordCharacterCountService.count(self.content);
     self.words = result.words;
     self.characters = result.characters;
+  };
+
+  self.getSearchService = function() {
+    if (!SearchService) {
+      $injector.get('IntegrityService').ok();
+      SearchService = $injector.get('SearchService');
+    }
+
+    return SearchService;
   };
 }
