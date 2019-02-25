@@ -1,9 +1,18 @@
-<div ng-if="!$ctrl.info.freetextenabled" 
-    ng-repeat="question in $ctrl.info.questions track by $index"
-    class="bibiscoNotSelectableText">
-    <b><i>({{$index+1}}/{{$ctrl.info.questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index  | translate}}</i></b>
-    <div ng-bind-html="question.text | trusted" class="project-explorer-text"></div>
+<div ng-if="!$ctrl.info.freetextenabled">
+    <h5>{{$ctrl.label | translate}}</h5>
+    <div ng-repeat="question in $ctrl.info.questions track by $index"
+        class="bibiscoNotSelectableText">
+        <a ng-click="$ctrl.gotoElement('/maincharacters/' + $ctrl.characterid +'/infowithquestion/' + $ctrl.type +'/edit/question/' + $index)"><b>
+            <i>({{$index+1}}/{{$ctrl.info.questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index  | translate}}</i>
+        </b></a>
+        <div ng-bind-html="question.text | trusted" class="project-explorer-text"></div>
+    </div>
 </div>
-<div ng-if="$ctrl.info.freetextenabled" 
-    ng-bind-html="$ctrl.info.freetext | trusted"
-    class="project-explorer-text"></div>
+
+<div ng-if="$ctrl.info.freetextenabled">
+    <h5>
+        <a ng-click="$ctrl.gotoElement('/maincharacters/' + $ctrl.characterid +'/infowithquestion/' + $ctrl.type +'/edit')">
+        {{$ctrl.label | translate}}</a></h5>
+    <div ng-bind-html="$ctrl.info.freetext | trusted"
+        class="project-explorer-text"></div>
+</div>

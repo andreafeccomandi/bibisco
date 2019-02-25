@@ -18,9 +18,17 @@ angular.
     templateUrl: 'components/project-explorer/project-explorer-maincharacter-info.html',
     controller: ProjectExplorerMainCharacterInfoController,
     bindings: {
+      characterid: '<',
       info: '<',
+      label: '@',
       type: '<'
     }
   });
 
-function ProjectExplorerMainCharacterInfoController() {}
+function ProjectExplorerMainCharacterInfoController($location) {
+  
+  var self = this;
+  self.gotoElement = function (path) {
+    $location.path(path);
+  }; 
+}
