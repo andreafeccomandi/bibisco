@@ -62,7 +62,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     });
 
     self.editmode = false;
-    self.showprojectexplorer = true;
 
     // focus element
     CardUtilService.focusElementInPath($routeParams.params);
