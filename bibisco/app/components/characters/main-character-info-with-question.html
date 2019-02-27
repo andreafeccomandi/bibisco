@@ -13,7 +13,7 @@
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
-  showprojectexplorer="$ctrl.showprojectexplorer"
+  showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
 </interview>
@@ -25,7 +25,7 @@
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
-  showprojectexplorer="$ctrl.showprojectexplorer"
+  showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
 </freetext>
@@ -42,7 +42,7 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="true"></projectexplorerbutton>
+        <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
         <interviewswitch ng-if="$ctrl.editmode"
           freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
         </interviewswitch>
@@ -60,7 +60,7 @@
           editfunction="$ctrl.edit()"
           editmode="$ctrl.editmode"
           savefunction="$ctrl.save()"
-          showprojectexplorer="$ctrl.showprojectexplorer"
+          showprojectexplorer="$root.showprojectexplorer"
           words="$ctrl.words">
         </editsavebackbuttonbar>
       </span>

@@ -58,7 +58,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     } else {
       self.questionselected = 0;
     }
-    self.showprojectexplorer = false;
+
     self.characters;
     self.words;
   };

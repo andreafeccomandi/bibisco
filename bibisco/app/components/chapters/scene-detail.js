@@ -41,7 +41,6 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.autosaveenabled;
     $rootScope.dirty = false;
     self.editmode = (self.mode === 'edit');
-    self.showprojectexplorer = false;
 
     // breadcrumbs
     self.breadcrumbitems = [];

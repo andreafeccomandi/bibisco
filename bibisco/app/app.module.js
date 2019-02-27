@@ -47,10 +47,19 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.dirty = false;
   $rootScope.fullscreen = false;
   $rootScope.previousPath = null;
+  $rootScope.actualPath = null;
+  $rootScope.showprojectexplorer = false;
   $rootScope.text2search = null;
+  $rootScope.projectExplorerCache = new Map();
   
   $rootScope.$on('$locationChangeSuccess', 
     function (event, newUrl, oldUrl) {
+      $rootScope.actualPath = newUrl.split('!')[1];
+      if ($rootScope.projectExplorerCache.get($rootScope.actualPath)) {
+        $rootScope.showprojectexplorer = true;
+      } else {
+        $rootScope.showprojectexplorer = false;
+      }
       if (oldUrl) {
         $rootScope.previousPath = oldUrl.split('!')[1];
       }
