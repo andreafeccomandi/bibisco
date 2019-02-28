@@ -35,13 +35,14 @@ function ButtonBackController($rootScope, $scope, $window, hotkeys) {
         description: 'back',
         allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
         callback: function ($event) {
-          if (!self.confirmdialogopen) {
+          if (!self.confirmdialogopen && !self.buttondisabled) {
             $event.preventDefault();
             self.back();
           }
         }
       });
-
+    
+    self.buttondisabled = false;
     self.confirmdialogopen = false;
   };
 
@@ -58,7 +59,8 @@ function ButtonBackController($rootScope, $scope, $window, hotkeys) {
       var window = electron.remote.getCurrentWindow();
       window.setFullScreen(false);
       $rootScope.fullscreen = false;
-    } else {
+    } else if (!self.buttondisabled) {
+      self.buttondisabled = true;
       $window.history.back();
     }
   };
