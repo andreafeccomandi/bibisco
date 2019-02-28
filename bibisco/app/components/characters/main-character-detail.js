@@ -50,9 +50,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     self.actionitems.push({
       label: 'jsp.common.button.delete',
       itemfunction: function () {
-        PopupBoxesService.confirm(self.delete, 'jsp.characters.delete.confirm');
-      },
-      itemfunction: function () {
         if (self.deleteforbidden) {
           PopupBoxesService.alert('jsp.characters.delete.ko');
         } else {
@@ -62,7 +59,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     });
 
     self.editmode = false;
-    self.showprojectexplorer = true;
 
     // focus element
     CardUtilService.focusElementInPath($routeParams.params);

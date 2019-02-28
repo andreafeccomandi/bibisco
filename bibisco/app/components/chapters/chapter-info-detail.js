@@ -51,8 +51,6 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     self.breadcrumbitems.push({
       label: self.title
     });
-
-    self.showprojectexplorer = true;
   };
 
   self.changeStatus = function(status) {

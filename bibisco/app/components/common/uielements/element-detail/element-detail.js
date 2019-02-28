@@ -56,7 +56,6 @@ function ElementDetailController($rootScope, PopupBoxesService) {
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
-    self.showprojectexplorer = false;
     
     // action items
     self.actionitems = [];

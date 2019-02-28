@@ -40,10 +40,12 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
     self.deleteforbidden = self.isDeleteForbidden();
 
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'characters',
-      element: 'secondarycharacters_' + self.secondarycharacter.$loki
-    });
+    if (self.mode === 'view') {
+      $rootScope.$emit('REGISTER_FOCUS', {
+        page: 'characters',
+        element: 'secondarycharacters_' + self.secondarycharacter.$loki
+      });
+    }
   };
 
   self.changeStatus = function(status) {

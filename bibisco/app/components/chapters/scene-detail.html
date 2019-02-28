@@ -12,7 +12,7 @@
   content="$ctrl.content" 
   editfunction="$ctrl.edit()"
   editmode="$ctrl.editmode"
-  showprojectexplorer="$ctrl.showprojectexplorer" 
+  showprojectexplorer="$root.showprojectexplorer" 
   words="$ctrl.scenerevision.words">
 </detailcontent>
 
@@ -29,7 +29,7 @@
     <div class="row">
       <span class="pull-left">
         <projectexplorerbutton 
-          showprojectexplorer="$ctrl.showprojectexplorer" 
+          showprojectexplorer="$root.showprojectexplorer" 
           visible="$ctrl.editmode || $ctrl.scenerevision.words > 0">
         </projectexplorerbutton>
         <button ng-if="!$ctrl.editmode" 

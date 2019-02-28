@@ -19,9 +19,9 @@ angular.
     controller: ProjectExplorerController
   });
 
-function ProjectExplorerController($injector, $rootScope, $translate, ArchitectureService, 
-  ChapterService, LocationService, MainCharacterService, SecondaryCharacterService,
-  SupporterEditionChecker, StrandService) {
+function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $translate, 
+  ArchitectureService, ChapterService, LocationService, MainCharacterService, 
+  SecondaryCharacterService, SupporterEditionChecker, StrandService) {
   
   var self = this;
   var ObjectService = null;
@@ -75,6 +75,17 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
 
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
+    
+    let cacheElement = $rootScope.projectExplorerCache.get($rootScope.actualPath);
+    if (cacheElement) {
+      for (let i = 0; i < self.items.length; i++) {
+        if (self.items[i].itemid === cacheElement) {
+          self.selectedItem = self.items[i];
+          self.selectItem();
+          break;
+        }
+      }
+    }
   };
 
   self.getArchitectureFamily = function() {
@@ -82,30 +93,35 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
     let family = self.translations.common_architecture;
 
     architecturefamily.push({
+      itemid: 'architecture_premise',
       id: 'premise', 
       name: self.translations.common_premise, 
       family: family,
       selectfunction: self.showPremise
     });
     architecturefamily.push({
+      itemid: 'architecture_fabula',
       id: 'fabula',
       name: self.translations.common_fabula,
       family: family,
       selectfunction: self.showFabula
     });
     architecturefamily.push({
+      itemid: 'architecture_setting',
       id: 'setting',
       name: self.translations.common_setting,
       family: family,
       selectfunction: self.showSetting
     }); 
     architecturefamily.push({
+      itemid: 'architecture_globalnotes',
       id: 'globalnotes',
       name: self.translations.common_notes_title,
       family: family,
       selectfunction: self.showGlobalNotes
     });
     architecturefamily.push({
+      itemid: 'architecture_strands',
       id: 'strands',
       name: self.translations.common_strands,
       family: family,
@@ -124,6 +140,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
     let mainCharacters = MainCharacterService.getMainCharacters();
     for (let i = 0; i < mainCharacters.length; i++) {
       charactersfamily.push({
+        itemid: 'maincharacter_' + mainCharacters[i].$loki,
         id: mainCharacters[i].$loki,
         name: mainCharacters[i].name,
         family: family,
@@ -135,6 +152,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
     let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
     for (let i = 0; i < secondaryCharacters.length; i++) {
       charactersfamily.push({
+        itemid: 'secondarycharacter_' + secondaryCharacters[i].$loki,
         id: secondaryCharacters[i].$loki,
         name: secondaryCharacters[i].name,
         family: family,
@@ -159,6 +177,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
     for (let i = 0; i < locations.length; i++) {
       let name = LocationService.calculateLocationName(locations[i]);
       locationsfamily.push({
+        itemid: 'location_' + locations[i].$loki,
         id: locations[i].$loki,
         name: name,
         family: family,
@@ -177,6 +196,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
       let objects = self.getObjectService().getObjects();
       for (let i = 0; i < objects.length; i++) {
         objectsfamily.push({
+          itemid: 'object_' + objects[i].$loki,
           id: objects[i].$loki,
           name: objects[i].name,
           family: family,
@@ -196,6 +216,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
     let chapters = ChapterService.getChapters();
     for (let i = 0; i < chapters.length; i++) {
       chaptersfamily.push({
+        itemid: 'chapter_' + chapters[i].$loki,
         id: chapters[i].$loki,
         name: '#' + chapters[i].position + ' ' + chapters[i].title,
         family: family,
@@ -209,6 +230,7 @@ function ProjectExplorerController($injector, $rootScope, $translate, Architectu
   self.selectItem = function() {
     self.selectedItem.selectfunction(self.selectedItem.id);
     $rootScope.$emit('PROJECT_EXPLORER_SELECTED_ITEM');
+    $rootScope.projectExplorerCache.set($rootScope.actualPath, self.selectedItem.itemid);
   };
 
   self.showPremise = function() {

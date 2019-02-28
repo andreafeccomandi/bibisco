@@ -23,12 +23,18 @@ angular.
     }
   });
 
-function ProjectExplorerButtonController($scope, hotkeys) {
+function ProjectExplorerButtonController($rootScope, $scope, hotkeys) {
 
   var self = this;
 
   self.toggleProjectExplorer = function () {
-    self.showprojectexplorer = !self.showprojectexplorer;
+    $rootScope.showprojectexplorer = !$rootScope.showprojectexplorer;
+
+    if ($rootScope.showprojectexplorer) {
+      $rootScope.projectExplorerCache.set($rootScope.actualPath , null);
+    } else {
+      $rootScope.projectExplorerCache.delete($rootScope.actualPath);
+    }
   };
 
   hotkeys.bindTo($scope)
