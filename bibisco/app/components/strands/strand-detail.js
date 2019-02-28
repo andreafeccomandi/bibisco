@@ -38,10 +38,12 @@ function StrandDetailController($location, $rootScope, $routeParams,
       label: self.strand.name
     });
 
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'architecture',
-      element: 'strands_' + self.strand.$loki
-    });
+    if (self.mode === 'view') {
+      $rootScope.$emit('REGISTER_FOCUS', {
+        page: 'architecture',
+        element: 'strands_' + self.strand.$loki
+      });
+    }
 
     self.deleteforbidden = self.isDeleteForbidden();
   };

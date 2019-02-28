@@ -39,11 +39,13 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
-
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'objects',
-      element: 'objects_' + self.object.$loki
-    });
+    
+    if (self.mode === 'view') {
+      $rootScope.$emit('REGISTER_FOCUS', {
+        page: 'objects',
+        element: 'objects_' + self.object.$loki
+      });
+    }
   };
 
   self.changeStatus = function (status) {

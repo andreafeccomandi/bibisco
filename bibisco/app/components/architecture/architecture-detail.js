@@ -38,10 +38,12 @@ function ArchitectureDetailController($location, $rootScope, $routeParams,
       label: self.architectureitem.title
     });
 
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'architecture',
-      element: 'architecture_' + $routeParams.id
-    });
+    if (self.mode === 'view') {
+      $rootScope.$emit('REGISTER_FOCUS', {
+        page: 'architecture',
+        element: 'architecture_' + $routeParams.id
+      });
+    }
   };
 
   self.changeStatus = function(status) {

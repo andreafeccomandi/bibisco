@@ -41,10 +41,12 @@ function LocationDetailController($location, $rootScope, $routeParams,
   
     self.deleteforbidden = self.isDeleteForbidden();
 
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'locations',
-      element: 'locations_' + self.location.$loki
-    });
+    if (self.mode === 'view') {
+      $rootScope.$emit('REGISTER_FOCUS', {
+        page: 'locations',
+        element: 'locations_' + self.location.$loki
+      });
+    }
   };
 
   self.changeStatus = function(status) {
