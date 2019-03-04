@@ -26,7 +26,8 @@ function ItemImagesController($location, $routeParams, ObjectService) {
   self.$onInit = function() {
     
     let object = ObjectService.getObject($routeParams.id);
-    
+    self.backpath = '/objects/' + object.$loki + '/view';
+
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
@@ -34,7 +35,7 @@ function ItemImagesController($location, $routeParams, ObjectService) {
     });
     self.breadcrumbitems.push({
       label: object.name,
-      href: '/objects/' + object.$loki + '/view'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'

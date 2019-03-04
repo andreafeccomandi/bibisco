@@ -32,6 +32,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
     $rootScope.$emit('SHOW_PAGE', {
       item: 'settings'
     });
+    self.backpath = '/start';
 
     self.theme = BibiscoPropertiesService.getProperty(
       'theme');
@@ -83,7 +84,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
   self.save = function(isValid, isDirty) {
     
     if (!isDirty) {
-      $location.path('/start');
+      $location.path(self.backpath);
     } else if (isValid) {
       self.checkExitActive = false;
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
@@ -104,7 +105,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
           + ' - projects directory=' + self.selectedProjectsDirectory
         );
 
-        $location.path('/start');
+        $location.path(self.backpath);
       } else {
         self.forbiddenDirectory = true;
       }

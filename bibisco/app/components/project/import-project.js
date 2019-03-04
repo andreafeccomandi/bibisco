@@ -46,6 +46,7 @@ function ImportProjectController($location, $rootScope, $scope, $timeout, $windo
       });
 
     self.checkExitActive = true;
+    self.backpath = '/start';
   };
 
 

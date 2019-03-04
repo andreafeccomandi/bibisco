@@ -28,11 +28,12 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
     self.mode = $routeParams.mode;
+    let backpath = '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
@@ -41,10 +42,7 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     self.deleteforbidden = self.isDeleteForbidden();
 
     if (self.mode === 'view') {
-      $rootScope.$emit('REGISTER_FOCUS', {
-        page: 'characters',
-        element: 'secondarycharacters_' + self.secondarycharacter.$loki
-      });
+      self.backpath = backpath;
     }
   };
 

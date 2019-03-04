@@ -31,11 +31,12 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     self.maincharacter = self.getMainCharacter($routeParams.id.split('?')[0]);
     self.deleteforbidden = self.isDeleteForbidden();
+    self.backpath = '/characters/params/focus=maincharacters_' + self.maincharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -62,11 +63,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     // focus element
     CardUtilService.focusElementInPath($routeParams.params);
-
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'characters',
-      element: 'maincharacters_' + self.maincharacter.$loki
-    });
   };
 
   self.changeStatus = function(status) {

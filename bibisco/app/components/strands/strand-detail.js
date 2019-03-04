@@ -28,21 +28,19 @@ function StrandDetailController($location, $rootScope, $routeParams,
 
     self.strand = self.getStrand($routeParams.id);
     self.mode = $routeParams.mode;
+    let backpath = '/architecture/params/focus=strands_' + self.strand.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/architecture/params/focus=strands_' + self.strand.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.strand.name
     });
 
     if (self.mode === 'view') {
-      $rootScope.$emit('REGISTER_FOCUS', {
-        page: 'architecture',
-        element: 'strands_' + self.strand.$loki
-      });
+      self.backpath = backpath;
     }
 
     self.deleteforbidden = self.isDeleteForbidden();

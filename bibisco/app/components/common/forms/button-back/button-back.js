@@ -18,10 +18,11 @@ angular.
     templateUrl: 'components/common/forms/button-back/button-back.html',
     controller: ButtonBackController,
     bindings: {
+      fixedpath: '<'
     }
   });
 
-function ButtonBackController($rootScope, $scope, $window, hotkeys) {
+function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
 
   var self = this;
   var electron = require('electron');
@@ -61,7 +62,11 @@ function ButtonBackController($rootScope, $scope, $window, hotkeys) {
       $rootScope.fullscreen = false;
     } else if (!self.buttondisabled) {
       self.buttondisabled = true;
-      $window.history.back();
+      if (self.fixedpath) {
+        $location.path(self.fixedpath);
+      } else {
+        $window.history.back();
+      }
     }
   };
 }

@@ -28,11 +28,12 @@ function ObjectDetailController($location, $rootScope, $routeParams,
 
     self.object = self.getObject($routeParams.id);
     self.mode = $routeParams.mode;
+    let backpath = '/objects/params/focus=objects_' + self.object.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/objects/params/focus=objects_' + self.object.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.object.name
@@ -41,10 +42,7 @@ function ObjectDetailController($location, $rootScope, $routeParams,
     self.deleteforbidden = self.isDeleteForbidden();
     
     if (self.mode === 'view') {
-      $rootScope.$emit('REGISTER_FOCUS', {
-        page: 'objects',
-        element: 'objects_' + self.object.$loki
-      });
+      self.backpath = backpath;
     }
   };
 

@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function TipsController($rootScope, $window) {
+function TipsController($location, $rootScope, $window) {
   
   var self = this;
 
@@ -43,6 +43,6 @@ function TipsController($rootScope, $window) {
   };
 
   self.back = function() {
-    $window.history.back();
+    $location.path('/projecthome');
   };
 }

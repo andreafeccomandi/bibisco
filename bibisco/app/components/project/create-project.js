@@ -58,6 +58,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout, $windo
     };
 
     self.checkExitActive = true;
+    self.backpath = '/start';
   };
 
   $scope.$on('$locationChangeStart', function (event) {

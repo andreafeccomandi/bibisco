@@ -29,6 +29,7 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
     self.chapterid = $routeParams.chapterid;
     self.sourceChapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
+    self.backpath = '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view';
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -43,7 +44,7 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
 
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: self.backpath
     });
 
     self.breadcrumbitems.push({

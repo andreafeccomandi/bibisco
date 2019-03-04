@@ -28,6 +28,7 @@ function LocationImagesController($location, $rootScope, $routeParams,
     
     let location = LocationService.getLocation($routeParams.id);
     let locationName = LocationService.calculateLocationName(location);
+    self.backpath = '/locations/ ' + location.$loki + '/view';
     
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -36,7 +37,7 @@ function LocationImagesController($location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: locationName,
-      href: '/locations/ ' + location.$loki + '/view'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'

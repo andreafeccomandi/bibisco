@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function InfoController($uibModal, $window, BibiscoPropertiesService) {
+function InfoController($location, $uibModal, $window, BibiscoPropertiesService) {
 
   var self = this;
   const { shell } = require('electron');
@@ -58,6 +58,6 @@ function InfoController($uibModal, $window, BibiscoPropertiesService) {
   };
 
   self.back = function () {
-    $window.history.back();
+    $location.path('/start');
   };
 }

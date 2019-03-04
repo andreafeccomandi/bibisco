@@ -26,6 +26,7 @@ function ExportToFormat($location, $routeParams,
   var self = this;
 
   self.$onInit = function() {
+
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
     if ($routeParams.format === 'pdf') {
@@ -35,11 +36,11 @@ function ExportToFormat($location, $routeParams,
     } else if ($routeParams.format === 'archive') {
       self.pageheadertitle = 'jsp.export.title.archive';
     }
-  
+    self.backpath = '/export';
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: '/export'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -69,7 +70,7 @@ function ExportToFormat($location, $routeParams,
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path('/export');
+      $location.path(self.backpath);
     }, 0);
   },
 

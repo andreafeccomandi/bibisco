@@ -32,6 +32,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.type = $routeParams.info;
     self.mode = $routeParams.mode;
     self.editmode = (self.mode !== 'view');
+    let backpath = '/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -40,7 +41,7 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: 'common_' + $routeParams.info
@@ -57,6 +58,10 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
       self.questionselected = parseInt($routeParams.question);
     } else {
       self.questionselected = 0;
+    }
+
+    if (self.mode === 'view') {
+      self.backpath = backpath;
     }
 
     self.characters;

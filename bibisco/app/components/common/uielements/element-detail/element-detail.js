@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/element-detail/element-detail.html',
     controller: ElementDetailController,
     bindings: {
+      backpath: '<',
       breadcrumbitems: '<',
       changetitleenabled: '<',
       changetitlefunction: '&',

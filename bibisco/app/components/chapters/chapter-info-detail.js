@@ -27,6 +27,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.mode = $routeParams.mode;
+    let backpath = '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type;
 
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
@@ -46,11 +47,15 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.title
     });
+
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.changeStatus = function(status) {

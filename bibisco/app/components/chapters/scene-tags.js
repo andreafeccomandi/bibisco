@@ -30,6 +30,7 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
+    self.backpath = '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view';
   
     // init breadcrumbs
     self.breadcrumbitems = [];
@@ -44,7 +45,7 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'

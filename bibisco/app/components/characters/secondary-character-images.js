@@ -27,6 +27,7 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
   self.$onInit = function() {
     
     let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter($routeParams.id);
+    self.backpath = '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view';
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -35,7 +36,7 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
-      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'
