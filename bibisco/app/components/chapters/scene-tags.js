@@ -19,8 +19,8 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($injector, $location, $rootScope, $routeParams, $scope,
-  $timeout, $window, ChapterService, hotkeys, LocationService, MainCharacterService, 
+function SceneTagsController($injector, $rootScope, $routeParams, $scope,
+  ChapterService, hotkeys, LocationService, MainCharacterService, 
   PopupBoxesService, SecondaryCharacterService, 
   StrandService, SupporterEditionChecker, UtilService) {
 
@@ -100,7 +100,9 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
       });
 
     $rootScope.dirty = false;
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.initPointOfViews = function() {
@@ -315,25 +317,6 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
   });
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $rootScope.dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
   });
 }

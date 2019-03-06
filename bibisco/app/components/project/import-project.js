@@ -19,7 +19,7 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, $timeout, $window, 
+function ImportProjectController($location, $rootScope, $scope, $timeout, 
   $translate, ContextMenuService, hotkeys, PopupBoxesService, ProjectService) {
 
   // hide menu
@@ -45,7 +45,9 @@ function ImportProjectController($location, $rootScope, $scope, $timeout, $windo
         }
       });
 
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
     self.backpath = '/start';
   };
 
@@ -71,7 +73,9 @@ function ImportProjectController($location, $rootScope, $scope, $timeout, $windo
       return;
     }
 
-    self.checkExitActive = false;
+    self.checkExit = {
+      active: false
+    };
     ProjectService.importProjectArchiveFile(self.fileToImport, function(
       result) {
 
@@ -115,25 +119,6 @@ function ImportProjectController($location, $rootScope, $scope, $timeout, $windo
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && self.fileToImport) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, self.fileToImport, self.checkExit);
   });
 }

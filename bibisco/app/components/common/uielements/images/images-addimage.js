@@ -24,8 +24,7 @@ angular.
     }
   });
 
-function ImagesAddImageController($location, $rootScope, $scope, $timeout, 
-  $window, PopupBoxesService) {
+function ImagesAddImageController($location, $rootScope, $scope, PopupBoxesService) {
 
   var self = this;
 
@@ -36,7 +35,9 @@ function ImagesAddImageController($location, $rootScope, $scope, $timeout,
 
     self.imagename;
     self.imagepath;
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.save = function(isValid) {
@@ -45,31 +46,14 @@ function ImagesAddImageController($location, $rootScope, $scope, $timeout,
         name: self.imagename, 
         path: self.imagepath
       });
-      self.checkExitActive = false;
+      self.checkExit = {
+        active: false
+      };
       $location.path(self.exitpath);
     }
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $scope.imagesAddImageForm.$dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $scope.imagesAddImageForm.$dirty, self.checkExit);
   });
 }

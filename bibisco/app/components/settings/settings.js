@@ -46,7 +46,9 @@ function SettingsController($injector, $location, $rootScope, $scope,
       currentProjectsDirectory.length - 32);
 
     self.forbiddenDirectory = false;
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.selectDarkTheme = function() {
@@ -86,7 +88,9 @@ function SettingsController($injector, $location, $rootScope, $scope,
     if (!isDirty) {
       $location.path(self.backpath);
     } else if (isValid) {
-      self.checkExitActive = false;
+      self.checkExit = {
+        active: false
+      };
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -123,25 +127,6 @@ function SettingsController($injector, $location, $rootScope, $scope,
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $scope.settingsForm.$dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $scope.settingsForm.$dirty, self.checkExit);
   });
 }

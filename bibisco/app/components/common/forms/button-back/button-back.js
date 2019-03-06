@@ -55,6 +55,10 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
     self.confirmdialogopen = false;
   });
 
+  $rootScope.$on('LOCATION_CHANGE_DENIED', function () {
+    self.buttondisabled = false;
+  });
+
   self.back = function() {
     if ($rootScope.fullscreen) {
       var window = electron.remote.getCurrentWindow();
