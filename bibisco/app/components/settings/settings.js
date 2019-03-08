@@ -32,6 +32,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
     $rootScope.$emit('SHOW_PAGE', {
       item: 'settings'
     });
+    self.backpath = '/start';
 
     self.theme = BibiscoPropertiesService.getProperty(
       'theme');
@@ -45,7 +46,9 @@ function SettingsController($injector, $location, $rootScope, $scope,
       currentProjectsDirectory.length - 32);
 
     self.forbiddenDirectory = false;
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.selectDarkTheme = function() {
@@ -83,9 +86,11 @@ function SettingsController($injector, $location, $rootScope, $scope,
   self.save = function(isValid, isDirty) {
     
     if (!isDirty) {
-      $location.path('/start');
+      $location.path(self.backpath);
     } else if (isValid) {
-      self.checkExitActive = false;
+      self.checkExit = {
+        active: false
+      };
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -104,7 +109,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
           + ' - projects directory=' + self.selectedProjectsDirectory
         );
 
-        $location.path('/start');
+        $location.path(self.backpath);
       } else {
         self.forbiddenDirectory = true;
       }
@@ -122,25 +127,6 @@ function SettingsController($injector, $location, $rootScope, $scope,
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $scope.settingsForm.$dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $scope.settingsForm.$dirty, self.checkExit);
   });
 }

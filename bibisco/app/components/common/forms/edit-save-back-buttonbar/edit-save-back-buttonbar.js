@@ -19,6 +19,7 @@ angular.
     controller: EditSaveBackButtonbarController,
     bindings: {
       autosaveenabled: '=',
+      backpath: '<',
       editbuttonvisible: '<',
       editfunction: '&',
       editmode: '<',

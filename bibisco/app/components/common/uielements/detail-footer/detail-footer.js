@@ -20,6 +20,7 @@ angular.
     bindings: {
       actionitems: '<',
       autosaveenabled: '<',
+      backpath: '<',
       characters: '<',
       hideprojectexplorerbutton: '<',
       imagesenabled: '<',

@@ -29,11 +29,12 @@ function LocationDetailController($location, $rootScope, $routeParams,
     self.location = self.getLocation($routeParams.id);
     self.mode = $routeParams.mode;
     self.name = LocationService.calculateLocationName(self.location);
+    let backpath = '/locations/params/focus=locations_' + self.location.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/locations/params/focus=locations_' + self.location.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.name
@@ -42,10 +43,7 @@ function LocationDetailController($location, $rootScope, $routeParams,
     self.deleteforbidden = self.isDeleteForbidden();
 
     if (self.mode === 'view') {
-      $rootScope.$emit('REGISTER_FOCUS', {
-        page: 'locations',
-        element: 'locations_' + self.location.$loki
-      });
+      self.backpath = backpath;
     }
   };
 

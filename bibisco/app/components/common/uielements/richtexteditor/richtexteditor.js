@@ -37,7 +37,9 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
 
   self.$onInit = function() {
     self.contenteditable = true;
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
     self.exitfullscreenmessage = false;
 
     // init OS
@@ -116,29 +118,12 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   };
 
   $scope.$on('$locationChangeStart', function(event) {
-    
-    if (self.checkExitActive && $rootScope.dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
+    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit,
+      function() {
         self.characters = self.savedcharacters;
         self.content = self.savedcontent;
         self.words = self.savedwords;
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function() {
-        self.checkExitActive = true;
       });
-    }
   });
 
   $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {

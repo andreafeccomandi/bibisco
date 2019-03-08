@@ -13,7 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, $uibModal) {
+angular.module('bibiscoApp').service('PopupBoxesService', function ($location, 
+  $rootScope, $timeout, $uibModal, $window) {
   'use strict';
 
   return {
@@ -63,6 +64,32 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($rootScope, 
         }
         $rootScope.$emit('CLOSE_POPUP_BOX');
       });
+    },
+
+    locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction) {
+      if (checkExit.active && formDirty) {
+        event.preventDefault();
+        let wannaGoPath = $location.path();
+        checkExit.active = false;
+
+        this.confirm(function () {
+          if (confirmFunction) {
+            confirmFunction();
+          }
+          $timeout(function () {
+            if (wannaGoPath === $rootScope.previousPath) {
+              $window.history.back();
+            } else {
+              $location.path(wannaGoPath);
+            }
+          }, 0);
+        },
+        'js.common.message.confirmExitWithoutSave',
+        function () {
+          checkExit.active = true;
+          $rootScope.$emit('LOCATION_CHANGE_DENIED');
+        });
+      }
     }
   };
 });

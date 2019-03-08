@@ -30,12 +30,13 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     self.chapter = ChapterService.getChapter($routeParams.id.split('?')[0]);
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
+    self.backpath = 'chapters/params/focus=chapters_' + self.chapter.$loki;
 
     // breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: 'chapters/params/focus=chapters_' + self.chapter.$loki
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -62,11 +63,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     // hotkeys
     self.hotkeys = ['ctrl+n', 'command+n'];
-
-    $rootScope.$emit('REGISTER_FOCUS', {
-      page: 'chapters',
-      element: 'chapters_' + self.chapter.$loki
-    });
   };
 
   self.getScenesCardGridItems = function(chapterid) {

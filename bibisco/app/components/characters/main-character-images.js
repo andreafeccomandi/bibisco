@@ -27,6 +27,7 @@ function MainCharacterImagesController($location, $routeParams,
   self.$onInit = function() {
     
     let mainCharacter = MainCharacterService.getMainCharacter($routeParams.id);
+    self.backpath = '/maincharacters/' + mainCharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -35,7 +36,7 @@ function MainCharacterImagesController($location, $routeParams,
     });
     self.breadcrumbitems.push({
       label: mainCharacter.name,
-      href: '/maincharacters/' + mainCharacter.$loki
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'

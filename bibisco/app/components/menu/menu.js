@@ -32,9 +32,6 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
     // menu items status
     self.disableAllItems();
 
-    // focus element map
-    self.focuselementmap = [];
-
     // ADD ELEMENT IMAGE
     $rootScope.$on('ADD_ELEMENT_IMAGE', function () {
       self.visible = true;
@@ -106,14 +103,6 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
       eval('self.' + args.item + 'Active = true');
       self.collapsed = true;
       self.visible = true;
-      if (self.focuselementmap[args.item]) {
-        CardUtilService.focus(self.focuselementmap[args.item]);
-      }
-    });
-
-    // REGISTER_FOCUS
-    $rootScope.$on('REGISTER_FOCUS', function (event, args) {
-      self.focuselementmap[args.page] = args.element;
     });
   };
 

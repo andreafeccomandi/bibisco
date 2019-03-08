@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationTitleController($location, $rootScope, $routeParams, $scope,
-  $timeout, $window, LocationService, PopupBoxesService) {
+  LocationService, PopupBoxesService) {
 
   var self = this;
 
@@ -84,7 +84,9 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
     self.usedstates = LocationService.getUsedStates();
     self.usedcities = LocationService.getUsedCities();
 
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.save = function(isValid) {
@@ -109,31 +111,14 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
         });
       }
       
-      self.checkExitActive = false;
+      self.checkExit = {
+        active: false
+      };
       $location.path(self.exitpath);
     }
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $scope.locationTitleForm.$dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $scope.locationTitleForm.$dirty, self.checkExit);
   });
 }

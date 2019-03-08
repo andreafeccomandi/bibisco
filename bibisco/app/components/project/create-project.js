@@ -19,7 +19,7 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, $scope, $timeout, $window, 
+function CreateProjectController($location, $rootScope, $scope, $timeout, 
   ContextMenuService, LocaleService, PopupBoxesService, ProjectService) {
 
   // hide menu
@@ -57,30 +57,14 @@ function CreateProjectController($location, $rootScope, $scope, $timeout, $windo
       'tr': 'Türkçe'
     };
 
-    self.checkExitActive = true;
+    self.checkExit = {
+      active: true
+    };
+    self.backpath = '/start';
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-
-    if (self.checkExitActive && $scope.createProjectForm.$dirty) {
-      event.preventDefault();
-      let wannaGoPath = $location.path();
-      self.checkExitActive = false;
-
-      PopupBoxesService.confirm(function () {
-        $timeout(function () {
-          if (wannaGoPath === $rootScope.previousPath) {
-            $window.history.back();
-          } else {
-            $location.path(wannaGoPath);
-          }
-        }, 0);
-      },
-      'js.common.message.confirmExitWithoutSave',
-      function () {
-        self.checkExitActive = true;
-      });
-    }
+    PopupBoxesService.locationChangeConfirm(event, $scope.createProjectForm.$dirty, self.checkExit);
   });
 
   self.save = function(isValid) {
@@ -89,15 +73,15 @@ function CreateProjectController($location, $rootScope, $scope, $timeout, $windo
         $timeout(function () {
           ProjectService.create(self.projectName, self.projectLanguage);
           ContextMenuService.create();
-          self.checkExitActive = false;
+          self.checkExit = {
+            active: false
+          };
           $location.path('/projecthome');
         }, 0);
       },
       'jsp.createProject.save.confirm',
       function () {
-
       });
-
     }
   };
 }

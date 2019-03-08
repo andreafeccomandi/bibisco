@@ -36,11 +36,15 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
     self.deleteforbidden = false; //TODO
+    let backpath = '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki;
 
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
     self.editmode = (self.mode === 'edit');
+    if (!self.editmode) {
+      self.backpath = backpath;
+    }
 
     // breadcrumbs
     self.breadcrumbitems = [];
@@ -50,7 +54,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.scene.title

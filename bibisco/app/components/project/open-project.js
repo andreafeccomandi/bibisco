@@ -57,6 +57,6 @@ function OpenProjectController($location, $rootScope, $timeout, $translate,
   };
 
   self.back = function() {
-    $window.history.back();
+    $location.path('/start');
   };
 }

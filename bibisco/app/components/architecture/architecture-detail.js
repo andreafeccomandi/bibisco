@@ -27,22 +27,20 @@ function ArchitectureDetailController($location, $rootScope, $routeParams,
   self.$onInit = function() {
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
-    self.mode = $routeParams.mode;
+    self.mode = $routeParams.mode; 
+    let backpath = '/architecture/params/focus=architecture_' + $routeParams.id;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/architecture/params/focus=architecture_' + $routeParams.id
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
 
     if (self.mode === 'view') {
-      $rootScope.$emit('REGISTER_FOCUS', {
-        page: 'architecture',
-        element: 'architecture_' + $routeParams.id
-      });
+      self.backpath = backpath;
     }
   };
 

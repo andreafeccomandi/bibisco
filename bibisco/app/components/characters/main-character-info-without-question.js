@@ -31,6 +31,7 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
     self.mode = $routeParams.mode;
+    let backpath = '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -39,7 +40,7 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -47,6 +48,10 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
     self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info + '.title';
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
+
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.edit = function () {
