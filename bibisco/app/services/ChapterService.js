@@ -285,7 +285,43 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
           }
         });
 
-      return chapterscenes.data();
+      let scenes = chapterscenes.data();
+      let check = this.checkScenesPositions(scenes);
+      if (!check) {
+        this.fixScenesPositions(scenes); 
+      }
+
+      return scenes;
+    },
+
+    checkScenesPositions: function (scenes) {
+      let result = true;
+      if (scenes && scenes.length>0) {
+        for (let i = 0; i < scenes.length; i++) {
+          if (scenes[i].position !== (i+1)) {
+            result = false;
+            break;
+          }
+        }
+      }
+      return result;
+    },
+
+    fixScenesPositions: function (scenes) {
+      if (scenes && scenes.length > 0) {
+        let chapterid = scenes[0].chapterid;
+        for (let i = 0; i < scenes.length; i++) {
+
+          // update scene position
+          scenes[i].position = (i + 1);
+        }
+
+        // save database
+        ProjectDbConnectionService.saveDatabase();
+
+        LoggerService.info('Fixed scenes position for chapter with id=' + chapterid
+        );
+      }
     },
 
     insertScene: function(scene) {
