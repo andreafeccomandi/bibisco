@@ -33,8 +33,45 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       } else {
         LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
       }
+      let data = dynamicView.data();
+      let check = this.checkCollectionPositions(data);
+      if (!check) {
+        this.fixCollectionPositions(data, collection.name, filter);
+      }
 
       return dynamicView;
+    },
+
+    checkCollectionPositions: function (data) {
+      let result = true;
+      if (data && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].position !== (i + 1)) {
+            result = false;
+            break;
+          }
+        }
+      }
+      return result;
+    },
+
+    fixCollectionPositions: function (data, collectionName, filter) {
+      if (data && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          // update scene position
+          data[i].position = (i + 1);
+        }
+
+        // save database
+        ProjectDbConnectionService.saveDatabase();
+
+        if (filter) {
+          LoggerService.info('Fixed collection ' + collectionName + ' ' +
+            JSON.stringify(filter));
+        } else {
+          LoggerService.info('Fixed collection ' + collectionName);
+        }
+      }
     },
 
     insert: function(collection, element, filter) {
