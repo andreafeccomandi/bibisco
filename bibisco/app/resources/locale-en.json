@@ -806,5 +806,8 @@
   "search_only_scenes": "search only in the scenes",
   "text_to_search": "Text to search",
   "search_results": "results",
-  "common_character": "Character"
+  "common_character": "Character",
+  "supporter_edition_take_a_look_button": "take a look!",
+  "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=en#screenshots",
+  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=en#download"
 }

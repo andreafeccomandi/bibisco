@@ -775,5 +775,8 @@
   "search_only_scenes": "cerca solo tra le scene",
   "text_to_search": "Testo da cercare",
   "search_results": "risultati",
-  "common_character": "Personaggio"
+  "common_character": "Personaggio",
+  "supporter_edition_take_a_look_button": "dai un'occhiata!",
+  "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=it#screenshots",
+  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=it#download"
 }

@@ -24,9 +24,11 @@ angular.
     },
   });
 
-function SupporterEditionPopupController() {
+function SupporterEditionPopupController($translate) {
    
   var self = this;
+  const { shell } = require('electron');
+
   self.$onInit = function () {
     
   };
@@ -41,5 +43,10 @@ function SupporterEditionPopupController() {
     self.dismiss({
       $value: 'cancel'
     });
+  };
+
+  self.takeALook = function () {
+    let url = $translate.instant('supporter_edition_take_a_look_button_url'); 
+    shell.openExternal(url);
   };
 }
