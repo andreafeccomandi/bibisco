@@ -760,5 +760,7 @@
   "text_to_search": "Texto para pesquisar",
   "search_results": "resultados",
   "common_character": "Personagem",
-  "supporter_edition_take_a_look_button": "dê uma olhada!"
+  "supporter_edition_take_a_look_button": "dê uma olhada!",
+  "back_button_tooltip": "voltar (ESC)",
+  "back_button_tooltip_mac": "voltar (ESC)"
 }

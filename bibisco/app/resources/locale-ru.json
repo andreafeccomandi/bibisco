@@ -810,5 +810,7 @@
   "text_to_search": "Текст для поиска",
   "search_results": "результатах",
   "common_character": "Персонаж",
-  "supporter_edition_take_a_look_button": "взгляни!"
+  "supporter_edition_take_a_look_button": "взгляни!",
+  "back_button_tooltip": "Назад (ESC)",
+  "back_button_tooltip_mac": "Назад (ESC)"
 }                                   

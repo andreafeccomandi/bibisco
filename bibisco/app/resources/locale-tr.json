@@ -747,5 +747,7 @@
     "text_to_search": "Aranacak metin",
     "search_results": "sonuçlar",
     "common_character": "Karakter",
-    "supporter_edition_take_a_look_button": "bir göz atın!"
+    "supporter_edition_take_a_look_button": "bir göz atın!",
+    "back_button_tooltip": "geri (ESC)",
+    "back_button_tooltip_mac": "geri (ESC)"
 }

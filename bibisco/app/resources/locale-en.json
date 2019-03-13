@@ -50,8 +50,6 @@
   "js.common.message.confirmExitWithoutSave": "There are unsaved changes. Do you want to exit without saving?",
   "jsp.common.button.close": "close",
   "jsp.common.button.back": "back",
-  "buttonback.button.tooltip": "back (ESC)",
-  "buttonback.button.tooltip_mac": "back (ESC)",
   "jsp.common.button.edit": "edit",
   "edit_tooltip": "edit (CTRL+E)",
   "edit_tooltip_mac": "edit (CMD+E)",
@@ -809,5 +807,7 @@
   "common_character": "Character",
   "supporter_edition_take_a_look_button": "take a look!",
   "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=en#screenshots",
-  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=en#download"
+  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=en#download",
+  "back_button_tooltip": "back (ESC)",
+  "back_button_tooltip_mac": "back (ESC)"
 }

@@ -760,5 +760,7 @@
   "text_to_search": "Text, který chcete hledat",
   "search_results": "výsledky",
   "common_character": "Postava",
-  "supporter_edition_take_a_look_button": "podívejte se!"
+  "supporter_edition_take_a_look_button": "podívejte se!",
+  "back_button_tooltip": "zpět (ESC)",
+  "back_button_tooltip_mac": "zpět (ESC)"
 }

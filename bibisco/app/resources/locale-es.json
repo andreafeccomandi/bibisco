@@ -768,5 +768,7 @@
   "text_to_search": "Texto a buscar",
   "search_results": "resultados",
   "common_character": "Personaje",
-  "supporter_edition_take_a_look_button": "¡eche un vistazo!"
+  "supporter_edition_take_a_look_button": "¡eche un vistazo!",
+  "back_button_tooltip": "retroceder (ESC)",
+  "back_button_tooltip_mac": "retroceder (ESC)"
 }

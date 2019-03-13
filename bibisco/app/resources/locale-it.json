@@ -778,5 +778,7 @@
   "common_character": "Personaggio",
   "supporter_edition_take_a_look_button": "dai un'occhiata!",
   "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=it#screenshots",
-  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=it#download"
+  "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=it#download",
+  "back_button_tooltip": "indietro (ESC)",
+  "back_button_tooltip_mac": "indietro (ESC)"
 }

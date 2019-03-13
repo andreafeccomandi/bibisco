@@ -787,5 +787,7 @@
   "text_to_search": "Texto para pesquisar",
   "search_results": "resultados",
   "common_character": "Personagem",
-  "supporter_edition_take_a_look_button": "venha ver!"
+  "supporter_edition_take_a_look_button": "Venha ver!",
+  "back_button_tooltip": "Anterior (ESC)",
+  "back_button_tooltip_mac": "Anterior (ESC)"
 }

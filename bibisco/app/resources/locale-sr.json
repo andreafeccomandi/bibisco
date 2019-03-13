@@ -736,5 +736,7 @@
     "tekt_to_search": "Tekst za pretragu",
     "search_results": "rezultati",
     "common_character": "Lik",
-    "supporter_edition_take_a_look_button": "pogledajte!"
+    "supporter_edition_take_a_look_button": "pogledajte!",
+    "back_button_tooltip": "nazad (ESC)",
+    "back_button_tooltip_mac": "nazad (ESC)"
 }

@@ -761,5 +761,7 @@
   "text_to_search": "Zu durchsuchender Text",
   "search_results": "Ergebnisse",
   "common_character": "Charakter",
-  "supporter_edition_take_a_look_button": "Schau mal rein!"
+  "supporter_edition_take_a_look_button": "Schau mal rein!",
+  "back_button_tooltip": "Zurück (ESC)",
+  "back_button_tooltip_mac": "Zurück (ESC)"
 }
