@@ -811,8 +811,8 @@
   "full_screen_mode": "полноэкранный режим",
   "exit_full_screen_mode": "нажмите клавишу ESC для выхода из полноэкранного режима",
   "common_scenes_low": "сцены",
-  "search_button": "поиск",
-  "search_button_tooltip": "поиск (ENTER)",
+  "search_button": "Поиск",
+  "search_button_tooltip": "Поиск (ENTER)",
   "search_title": "Поиск",
   "search_menu": "Поиск",
   "search_whole_project": "поиск по всему проекту",
@@ -820,7 +820,7 @@
   "text_to_search": "Текст для поиска",
   "search_results": "результатах",
   "common_character": "Персонаж",
-  "supporter_edition_take_a_look_button": "взгляни!",
+  "supporter_edition_take_a_look_button": "Взгляни!",
   "back_button_tooltip": "Назад (ESC)",
   "back_button_tooltip_mac": "Назад (ESC)"
 }                                   
