@@ -629,7 +629,7 @@ h3 {
 
 /* REVISION SELECT */
 .revision-select {
-	width: 200px;
+	width: 240px;
 }
 
 /* TAGS */
@@ -1159,6 +1159,11 @@ h3 {
 	margin-top: 5px;
 }
 
+.dropdown-menu {
+	float: right;
+	left: auto;
+	right: 0;
+}
 
 
 @media (max-width: 767px) {
