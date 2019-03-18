@@ -29,7 +29,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
   self.$onInit = function () {
 
     // show menu item
-    $rootScope.$emit('SHOW_PAGE', {
+    $rootScope.$emit('SHOW_SETTINGS', {
       item: 'settings'
     });
     self.backpath = '/start';

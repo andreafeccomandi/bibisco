@@ -875,9 +875,10 @@ h3 {
  }
 
 @media (max-width: 1200px) {
-.nav>li>a {
-	padding-left: 10px;
-	padding-right: 10px;
+	.nav>li>a {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 }
 
 @media (max-width: 1023px) {
@@ -1320,5 +1321,9 @@ h3 {
 
 	.detail-content-no-header-subtitle {
 		height: calc(100% - 280px);
+	}
+
+	.richtexteditor-settings-sample {
+		display: none;
 	}
 }
