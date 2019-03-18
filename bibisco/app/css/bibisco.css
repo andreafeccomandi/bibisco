@@ -1214,12 +1214,14 @@ h3 {
 	}
 }
 
-@media (max-height: 768px) {
-
+@media (max-height: 750px) {
 	.jumbotron {
 		padding-top: 5px;
     	padding-bottom: 10px;
 	}
+}
+
+@media (max-height: 710px) {
 
 	.bibiscoEmptyListBox {
 		margin-top: 65px;
