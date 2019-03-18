@@ -1208,33 +1208,111 @@ h3 {
 	}
 }
 
-
-
-/* Medium devices (desktops, 992px and up) */
-@media (max-width: 992px) {
-	.card {
-		height: 130px;
-	}
-
-	.card-heading-title {
-		max-width: 155px;
-		height: 60px;
+@media (max-width: 1999px) {
+	.richtexteditor-find-replace-toolbar input {
+		width: 216px !important;
 	}
 }
 
-/* Small devices (tablets, 768px and up) */
-@media (max-width: 768px) {
-	.card {
-		height: 115px;
+@media (max-height: 750px) {
+	.jumbotron {
+		padding-top: 5px;
+    	padding-bottom: 10px;
+	}
+}
+
+@media (max-height: 710px) {
+
+	.bibiscoEmptyListBox {
+		margin-top: 65px;
 	}
 
-	.card-heading-title {
-		max-width: 220px;
-		height: 45px;
+	.card-grid-header-half-top {
+		top: 60px;
 	}
 
-	.page-header {
-		padding-bottom: 50px;
-		margin-bottom: 20px;
+	.card-grid-header-half-bottom {
+		top: 290px;
+	}
+
+	.card-grid-header-half-bottom-detail {
+		top: 290px;
+	}
+
+	.card-grid-emptyitems-with-header-subtitle-half-top {
+		top: 110px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-top {
+		top: 110px;
+	}
+
+	.card-grid-emptyitems-with-header-subtitle-half-bottom {
+		top: 340px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-bottom {
+		top: 445px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-bottom-detail {
+		top: 300px;
+	}
+
+	.card-grid-items-with-header-subtitle-half-top {
+		height: 100px;
+		top: 185px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-top {
+		height: 140px;
+		top: 145px;
+	}
+
+	.card-grid-items-with-header-subtitle-half-bottom {
+		height: calc(100% - 435px);
+		top: 410px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-bottom {
+		height: calc(100% - 460px);
+		top: 370px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-bottom-detail {
+		height: calc(100% - 460px);
+		top: 370px;
+	}
+
+	.intervieweditor-hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	.questionbuttonbar .btn-lg {
+		padding: 6px 12px;
+    	font-size: 14px;
+    	line-height: 1.42857143;
+    	border-radius: 4px;
+	}
+
+	.character-questions-richtexteditor-container {
+		height: calc(100% - 110px);
+	}
+
+	.richtexteditor-contenteditable-container-nofindreplace {
+		height: calc(100% - 80px);
+	}
+
+	.richtexteditor-contenteditable-container-findreplace {
+		height: calc(100% - 120px);
+	}
+
+	.detail-content-with-header-subtitle {
+		height: calc(100% - 325px);
+	}
+
+	.detail-content-no-header-subtitle {
+		height: calc(100% - 280px);
 	}
 }
