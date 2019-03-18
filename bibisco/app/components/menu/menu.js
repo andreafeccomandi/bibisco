@@ -84,6 +84,11 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
       self.visible = false;
     });
 
+    // SHOW SETTINGS
+    $rootScope.$on('SHOW_SETTINGS', function () {
+      self.visible = false;
+    });
+
     // SHOW TIPS
     $rootScope.$on('SHOW_TIPS', function () {
       self.visible = true;
