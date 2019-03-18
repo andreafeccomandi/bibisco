@@ -28,9 +28,6 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
     // menu status
     self.collapsed = true;
     self.visible = false;
-  
-    // menu items status
-    self.disableAllItems();
 
     // ADD ELEMENT IMAGE
     $rootScope.$on('ADD_ELEMENT_IMAGE', function () {
@@ -99,8 +96,6 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
 
     // SHOW PROJECT
     $rootScope.$on('SHOW_PAGE', function (event, args) {
-      self.disableAllItems();
-      eval('self.' + args.item + 'Active = true');
       self.collapsed = true;
       self.visible = true;
     });
@@ -122,19 +117,5 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
       $location.path('/' + item);
       self.collapsed = true;
     }
-  };
-
-  self.disableAllItems = function() {
-    self.projecthomeActive = false;
-    self.architectureActive = false;
-    self.charactersActive = false;
-    self.locationsActive = false;
-    self.objectsActive = false;
-    self.chaptersActive = false;
-    self.timelineActive = false;
-    self.searchActive = false;
-    self.exportActive = false;
-    self.analysisActive = false;
-    self.settingsActive = false;
   };
 }
