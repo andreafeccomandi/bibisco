@@ -310,7 +310,7 @@ h3 {
 }
 
 .page-header-truncate-title {
-  width: calc(100% - 300px);
+  width: calc(100% - 310px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
