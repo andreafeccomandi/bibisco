@@ -29,6 +29,9 @@ function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectio
 
   self.$onInit = function () {
     self.buttonvisible = BibiscoPropertiesService.getProperty(self.tipcode) === 'true';
+    if (self.buttonvisible) {
+      self.showTip();
+    }
   };
 
   self.showTip = function () {
