@@ -1172,6 +1172,10 @@ h3 {
 	right: 0;
 }
 
+.modal-contextualtip {
+    width: 400px;
+}
+
 
 @media (max-width: 767px) {
     ul.timeline:before {

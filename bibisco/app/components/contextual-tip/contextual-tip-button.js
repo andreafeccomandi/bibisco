@@ -44,7 +44,7 @@ function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectio
           return self.tipcode;
         }
       },
-      size: 'sm'
+      size: 'contextualtip'
     });
 
     $rootScope.$emit('OPEN_POPUP_BOX');
