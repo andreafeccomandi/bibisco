@@ -758,6 +758,7 @@
   "theme_classic": "classique",
   "theme_dark": "foncé",
   "timeline": "chronologie",
+  "timeline_title": "Chronologie",
   "find_replace": "rechercher/remplacer",
   "common_find": "Rechercher",
   "common_replace": "Remplacer",

@@ -777,6 +777,7 @@
   "theme_classic": "clássico",
   "theme_dark": "escuro",
   "timeline": "linha cronológica",
+  "timeline_title": "Linha cronológica",
   "find_replace": "localizar/substituir",
   "common_find": "Localizar",
   "common_replace": "Substituir",

@@ -750,6 +750,7 @@
   "theme_classic": "clássico",
   "theme_dark": "escuro",
   "timeline": "linha do tempo",
+  "timeline_title": "Linha do tempo",
   "find_replace": "localizar/substituir",
   "common_find": "Localizar",
   "common_replace": "Substituir",

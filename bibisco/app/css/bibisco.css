@@ -170,6 +170,10 @@ h6, label, th, td, p {
     margin-left: 5px;
 }
 
+.social-media-button-youtube {
+    margin-left: 5px;
+}
+
 /* SUPPORTER EDITION MESSAGE */
 .supporter-edition-popup p.heart  {
 	color: red;
@@ -306,7 +310,7 @@ h3 {
 }
 
 .page-header-truncate-title {
-  width: calc(100% - 300px);
+  width: calc(100% - 310px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1170,6 +1174,10 @@ h3 {
 	float: right;
 	left: auto;
 	right: 0;
+}
+
+.modal-contextualtip {
+    width: 400px;
 }
 
 
