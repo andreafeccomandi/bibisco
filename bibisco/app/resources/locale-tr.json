@@ -737,6 +737,7 @@
     "theme_classic": "klasik",
     "theme_dark": "koyu",
     "timeline": "zaman çizelgesi",
+    "timeline_title": "Zaman çizelgesi",
     "find_replace": "bul/değiştir",
     "common_find": "Bul",
     "common_replace": "Değiştir",

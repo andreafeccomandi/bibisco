@@ -766,6 +766,7 @@
   "theme_classic": "classico",
   "theme_dark": "scuro",
   "timeline": "timeline",
+  "timeline_title": "Timeline",
   "find_replace": "trova/sostituisci",
   "common_find": "Trova",
   "common_replace": "Sostituisci",

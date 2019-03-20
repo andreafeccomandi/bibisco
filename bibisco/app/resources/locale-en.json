@@ -785,6 +785,7 @@
   "theme_classic": "classic",
   "theme_dark": "dark",
   "timeline": "timeline",
+  "timeline_title": "Timeline",
   "find_replace": "find/replace",
   "common_find": "Find",
   "common_replace": "Replace",

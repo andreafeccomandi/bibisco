@@ -726,6 +726,7 @@
     "theme_classic": "klasični",
     "theme_dark": "tamna",
     "timeline": "vremenska osa",
+    "timeline_title": "Vremenska osa",
     "find_replace": "pronađi/zameni",
     "common_find": "Pronađi",
     "common_replace": "Zameni",

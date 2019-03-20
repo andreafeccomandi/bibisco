@@ -758,6 +758,7 @@
   "theme_classic": "clásico",
   "theme_dark": "oscuro",
   "timeline": "escala de tiempo",
+  "timeline_title": "Escala de tiempo",
   "find_replace": "buscar/reemplazar",
   "common_find": "Buscar",
   "common_replace": "Reemplazar",

@@ -750,6 +750,7 @@
   "theme_classic": "klasyczny",
   "theme_dark": "ciemny",
   "timeline": "oś czasu",
+  "timeline_title": "Oś czasu",
   "find_replace": "znajdź/zamień",
   "common_find": "Znajdź",
   "common_replace": "Zamień",
