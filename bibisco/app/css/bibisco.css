@@ -1160,9 +1160,13 @@ h3 {
     color: inherit;
 }
 
+.timeline-heading > p {
+	margin-bottom: 5px;
+}
+
 .timeline-body > p,
 .timeline-body > ul {
-	margin-bottom: 0;
+	margin-bottom: -5px;
 	text-align: justify;
 }
 

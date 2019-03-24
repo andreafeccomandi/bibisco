@@ -10,7 +10,8 @@
         <div class="timeline-heading">
             <p><a ng-click="$ctrl.showScene()"><b>{{$ctrl.element.title}}</b></a></p>
         </div>
-        <div class="timeline-body top10">
+        <div class="timeline-body">
+            <p><i>{{'jsp.analysisCharacterScene.th.chapter'| translate}}</i>: #{{$ctrl.element.chapterposition}} {{$ctrl.element.chaptertitle}}</p>
             <p><i>{{'common_characters' | translate}}</i>: {{$ctrl.element.characters}}</p>
             <p><i>{{'jsp.analysisCharacterScene.th.location' | translate}}</i>: {{$ctrl.element.locationname}}</p>
         </div>
