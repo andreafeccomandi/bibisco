@@ -31,20 +31,19 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     
     self.mode = $routeParams.mode;
+    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
     self.deleteforbidden = false; //TODO
-    let backpath = '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki;
+    self.chapterpath = '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki;
 
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
     self.editmode = (self.mode === 'edit');
-    if (!self.editmode) {
-      self.backpath = backpath;
-    }
+    self.calculateBackPath();
 
     // breadcrumbs
     self.breadcrumbitems = [];
@@ -54,7 +53,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: backpath
+      href: self.chapterpath
     });
     self.breadcrumbitems.push({
       label: self.scene.title
@@ -81,6 +80,17 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.content = self.scenerevision.text;
   };
 
+  self.calculateBackPath = function() {
+    if (self.editmode && self.fromtimeline) {
+      self.backpath = '/timeline/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+        .$loki + '/view';
+    } else if (!self.editmode && !self.fromtimeline) {
+      self.backpath = self.chapterpath;
+    } else if (!self.editmode && self.fromtimeline) {
+      self.backpath = '/timeline';
+    }
+  };
+
   self.changerevision = function(action, revision) {
     if (action === 'new-from-actual') {
       self.scene = ChapterService.insertSceneRevisionFromActual($routeParams.sceneid);
@@ -103,20 +113,28 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     ChapterService.updateScene(self.scene);
   };
 
+  self.getRootPath = function () {
+    if (self.fromtimeline) {
+      return '/timeline';
+    } else { 
+      return '';
+    }
+  };
+
   self.changetitle = function() {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+    $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/title');
   };
 
   self.edit = function () {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+    $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/edit');
   };
 
   self.moveSceneToAnotherChapter = function() {
     if (SupporterEditionChecker.check()) {
       $injector.get('IntegrityService').ok();
-      $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
         .$loki + '/move');
     } else {
       SupporterEditionChecker.showSupporterMessage();
@@ -126,7 +144,11 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
   self.delete = function() {
     ChapterService.removeScene(self.scene.$loki);
-    $location.path('/chapters/' + self.chapter.$loki);
+    if (self.fromtimeline) {
+      $location.path('/timeline/');
+    } else {
+      $location.path('/chapters/' + self.chapter.$loki);
+    }
   };
 
   self.save = function() {
@@ -136,7 +158,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   };
 
   self.tags = function() {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+    $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
       .$loki + '/tags');
   };
 

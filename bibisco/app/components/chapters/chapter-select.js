@@ -30,6 +30,10 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
     self.sourceChapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.backpath = '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view';
+    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+    if (self.fromtimeline) {
+      self.backpath = '/timeline' + self.backpath;
+    }
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({

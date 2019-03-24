@@ -19,7 +19,7 @@ angular.
     controller: SceneTitleController
   });
 
-function SceneTitleController($location, $routeParams, ChapterService) {
+function SceneTitleController($rootScope, $routeParams, ChapterService) {
 
   var self = this;
 
@@ -40,17 +40,21 @@ function SceneTitleController($location, $routeParams, ChapterService) {
 
     if ($routeParams.sceneid !== undefined) {
       let scene = ChapterService.getScene($routeParams.sceneid);
+      self.exitpath = '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view';
+      self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+      if (self.fromtimeline) {
+        self.exitpath = '/timeline' + self.exitpath;
+      } 
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
         label: scene.title,
-        href: '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view'
+        href: self.exitpath
       });
       self.breadcrumbItems.push({
         label: 'jsp.scene.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view';
       self.title = scene.title;
       self.pageheadertitle = 'jsp.scene.dialog.title.updateTitle';
 

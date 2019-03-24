@@ -31,7 +31,11 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.backpath = '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view';
-  
+    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+    if (self.fromtimeline) {
+      self.backpath = '/timeline' + self.backpath;
+    } 
+
     // init breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({

@@ -31,6 +31,6 @@ function TimelineElementController($location) {
   };
 
   self.showScene = function() {
-    $location.path('/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid + '/view');
+    $location.path('/timeline/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid + '/view');
   };
 }

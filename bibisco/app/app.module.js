@@ -108,13 +108,25 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/chapters/:chapterid/scenes/:sceneid/move', {
         template: '<chapterselect></chapterselect>'
       }).
+      when('/timeline/chapters/:chapterid/scenes/:sceneid/move', {
+        template: '<chapterselect></chapterselect>'
+      }).
       when('/chapters/:chapterid/scenes/:sceneid/tags', {
+        template: '<scenetags></scenetags>'
+      }).
+      when('/timeline/chapters/:chapterid/scenes/:sceneid/tags', {
         template: '<scenetags></scenetags>'
       }).
       when('/chapters/:chapterid/scenes/:sceneid/title', {
         template: '<scenetitle></scenetitle>'
       }).
+      when('/timeline/chapters/:chapterid/scenes/:sceneid/title', {
+        template: '<scenetitle></scenetitle>'
+      }).
       when('/chapters/:chapterid/scenes/:sceneid/:mode', {
+        template: '<scenedetail></scenedetail>'
+      }).
+      when('/timeline/chapters/:chapterid/scenes/:sceneid/:mode', {
         template: '<scenedetail></scenedetail>'
       }).
       when('/characters', {
