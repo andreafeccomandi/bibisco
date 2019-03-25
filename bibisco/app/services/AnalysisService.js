@@ -67,15 +67,19 @@ angular.module('bibiscoApp').service('AnalysisService', function ($translate,
 
     getChaptersLength: function() {
       let words = [];
+      let characters = [];
       let total = 0;
+      let totalcharacters = 0;
       if (chapters && chapters.length > 0) {
         for (let i = 0; i < chapters.length; i++) {
           words.push(chapters[i].words);
+          characters.push(chapters[i].characters);
           total += chapters[i].words;
+          totalcharacters += chapters[i].characters;
         }
       }
 
-      return {total: total, words: words};
+      return { total: total, totalcharacters: totalcharacters, words: words, characters: characters};
     },
 
     getCharacterChapterDistribution: function() {
