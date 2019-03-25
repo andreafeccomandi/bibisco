@@ -13,16 +13,17 @@
  *
  */
 
-angular.module('bibiscoApp').service('ExportService', function (
+angular.module('bibiscoApp').service('ExportService', function ($injector,
   $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, 
   DocxExporterService, FileSystemService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
-  UtilService) {
+  SupporterEditionChecker, UtilService) {
   'use strict';
 
   const { shell } = require('electron');
   let dateFormat = require('dateformat');
   let translations;
+  let ObjectService = null;
 
   const behaviors_questions_count = 12;
   const ideas_questions_count = 18;
@@ -108,6 +109,10 @@ angular.module('bibiscoApp').service('ExportService', function (
       html += this.createMainCharacters();
       html += this.createSecondaryCharacters();
       html += this.createLocations();
+      if (SupporterEditionChecker.check()) {
+        $injector.get('IntegrityService').ok();
+        html += this.createObjects();
+      }
       html += this.createChaptersForProject();
       
       return html;
@@ -252,6 +257,19 @@ angular.module('bibiscoApp').service('ExportService', function (
       return html;
     },
 
+    createObjects: function () {
+      let html = '';
+      let objects = this.getObjectService().getObjects();
+      if (objects && objects.length > 0) {
+        html += this.createTag('h1', translations.objects);
+        for (let i = 0; i < objects.length; i++) {
+          html += this.createTag('h2', objects[i].name);
+          html += objects[i].description;
+        }
+      }
+      return html;
+    },
+
     createChaptersForProject: function () {
       let html = '';
       let chapters = ChapterService.getChapters();
@@ -325,7 +343,8 @@ angular.module('bibiscoApp').service('ExportService', function (
         'common_setting',
         'common_sociology',
         'common_strands',
-        'export_project_subtitle'];
+        'export_project_subtitle',
+        'objects'];
 
       translationkeys.push.apply(translationkeys, 
         this.addInfoQuestionsTranslationKeys('behaviors', behaviors_questions_count));
@@ -349,6 +368,15 @@ angular.module('bibiscoApp').service('ExportService', function (
         infoQuestionsTranslationKeys.push('characterInfo_question_' + info + '_' + i);
       }
       return infoQuestionsTranslationKeys;
-    } 
+    },
+
+    getObjectService: function () {
+      if (!ObjectService) {
+        $injector.get('IntegrityService').ok();
+        ObjectService = $injector.get('ObjectService');
+      }
+
+      return ObjectService;
+    }
   };
 });

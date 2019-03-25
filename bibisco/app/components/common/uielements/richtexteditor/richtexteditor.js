@@ -514,7 +514,12 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   self.fullscreen = function () {
     self.supporterEditionFilterAction(function () {
       var window = electron.remote.getCurrentWindow();
-      window.setFullScreen(true);
+      if (window.isFullScreen()) {
+        $rootScope.previouslyFullscreen = true;
+      } else {
+        window.setFullScreen(true);
+        $rootScope.previouslyFullscreen = false;
+      }
       $rootScope.fullscreen = true;
       self.exitfullscreenmessage = true;
       $timeout(function () {
