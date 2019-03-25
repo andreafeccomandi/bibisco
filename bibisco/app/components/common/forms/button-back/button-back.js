@@ -62,8 +62,10 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
   self.back = function() {
     if ($rootScope.fullscreen) {
       var window = electron.remote.getCurrentWindow();
-      window.setFullScreen(false);
       $rootScope.fullscreen = false;
+      if (!$rootScope.previouslyFullscreen) {
+        window.setFullScreen(false);
+      }
     } else if (!self.buttondisabled) {
       self.buttondisabled = true;
       if (self.fixedpath) {

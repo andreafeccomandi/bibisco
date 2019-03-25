@@ -46,6 +46,7 @@ angular.module('bibiscoApp', ['ngRoute',
   // global variables
   $rootScope.dirty = false;
   $rootScope.fullscreen = false;
+  $rootScope.previouslyFullscreen = false;
   $rootScope.previousPath = null;
   $rootScope.actualPath = null;
   $rootScope.showprojectexplorer = false;
