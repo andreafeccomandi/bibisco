@@ -113,13 +113,16 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       family: family,
       selectfunction: self.showSetting
     }); 
-    architecturefamily.push({
-      itemid: 'architecture_globalnotes',
-      id: 'globalnotes',
-      name: self.translations.common_notes_title,
-      family: family,
-      selectfunction: self.showGlobalNotes
-    });
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      architecturefamily.push({
+        itemid: 'architecture_globalnotes',
+        id: 'globalnotes',
+        name: self.translations.common_notes_title,
+        family: family,
+        selectfunction: self.showGlobalNotes
+      });
+    }
     architecturefamily.push({
       itemid: 'architecture_strands',
       id: 'strands',
@@ -258,11 +261,13 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
   };
 
   self.showGlobalNotes = function () {
-    self.sectiontitle = 'common_notes_title';
-    self.text = ArchitectureService.getGlobalNotes().text;
-    self.images = null;
-    self.type = 'simpletext';
-    self.path = '/architectureitems/globalnotes/edit';
+    if (SupporterEditionChecker.check()) {
+      self.sectiontitle = 'common_notes_title';
+      self.text = ArchitectureService.getGlobalNotes().text;
+      self.images = null;
+      self.type = 'simpletext';
+      self.path = '/architectureitems/globalnotes/edit';
+    }
   };
 
   self.showStrands = function () {
