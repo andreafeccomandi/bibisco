@@ -139,6 +139,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/createproject', {
         template: '<createproject></createproject>'
       }).
+      when('/createsequel', {
+        template: '<createsequel></createsequel>'
+      }).
       when('/error', {
         template: '<error></error>'
       }).

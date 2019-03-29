@@ -810,5 +810,9 @@
   "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=en#screenshots",
   "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=en#download",
   "back_button_tooltip": "back (ESC)",
-  "back_button_tooltip_mac": "back (ESC)"
+  "back_button_tooltip_mac": "back (ESC)",
+  "create_sequel_button": "create sequel",
+  "create_sequel_title": "Create sequel",
+  "choose_project": "Choose project",
+  "sequel_tooltip": "Create a sequel of a novel, importing characters, locations, objects."
 }
