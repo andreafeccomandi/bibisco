@@ -749,5 +749,9 @@
     "common_character": "Lik",
     "supporter_edition_take_a_look_button": "pogledajte!",
     "back_button_tooltip": "nazad (ESC)",
-    "back_button_tooltip_mac": "nazad (ESC)"
+    "back_button_tooltip_mac": "nazad (ESC)",
+    "create_sequel_button": "napravite nastavak",
+    "create_sequel_title": "Napravite nastavak",
+    "choose_project": "Originalni projekat",
+    "sequel_tooltip": "Napravite nastavak romana, uvozeći likove, lokacije, objekte."
 }

@@ -823,5 +823,9 @@
   "common_character": "Персонаж",
   "supporter_edition_take_a_look_button": "Взгляни!",
   "back_button_tooltip": "Назад (ESC)",
-  "back_button_tooltip_mac": "Назад (ESC)"
+  "back_button_tooltip_mac": "Назад (ESC)",
+  "create_sequel_button": "создать продолжение",
+  "create_sequel_title": "Cоздать продолжение",
+  "choose_project": "Оригинальный проект",
+  "sequel_tooltip": "Создать продолжение романа, путем импорта символов, местоположения, объектов."
 }                                   

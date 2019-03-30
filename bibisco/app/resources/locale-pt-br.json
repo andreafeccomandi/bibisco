@@ -307,7 +307,6 @@
   "jsp.characters.a.createMainCharacter": "criar personagem principal",
   "maincharacter_create_tooltip": "criar personagem principal (CTRL+N)",
   "maincharacter_create_tooltip_mac": "criar personagem principal (CMD+N)",
-  
   "jsp.characters.dialog.title.createMainCharacter": "Criar personagem principal",
   "common_secondary_characters": "Personagens secundários",
   "jsp.characters.h1.small.secondary": "eles não possuem conflitos, mas são úteis para o desenvolvimento da história",
@@ -773,5 +772,9 @@
   "common_character": "Personagem",
   "supporter_edition_take_a_look_button": "dê uma olhada!",
   "back_button_tooltip": "voltar (ESC)",
-  "back_button_tooltip_mac": "voltar (ESC)"
+  "back_button_tooltip_mac": "voltar (ESC)",
+  "create_sequel_button": "criar uma sequela",
+  "create_sequel_title": "Criar uma sequela",
+  "choose_project": "Projeto original",
+  "sequel_tooltip": "Criar uma sequela de um romance, importando personagens, locais, objetos."
 }

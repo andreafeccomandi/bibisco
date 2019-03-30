@@ -773,5 +773,9 @@
   "common_character": "Bohater",
   "supporter_edition_take_a_look_button": "spójrz!",
   "back_button_tooltip": "wstecz (ESC)",
-  "back_button_tooltip_mac": "wstecz (ESC)"
+  "back_button_tooltip_mac": "wstecz (ESC)",
+  "create_sequel_button": "utwórz sequel",
+  "create_sequel_title": "Utwórz sequel",
+  "choose_project": "Oryginalny projekt",
+  "sequel_tooltip": "Utwórz sequel powieści, importując postacie, lokalizacje, obiekty."
 }

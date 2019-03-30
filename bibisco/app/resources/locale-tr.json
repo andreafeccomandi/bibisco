@@ -760,5 +760,9 @@
     "common_character": "Karakter",
     "supporter_edition_take_a_look_button": "bir göz atın!",
     "back_button_tooltip": "geri (ESC)",
-    "back_button_tooltip_mac": "geri (ESC)"
+    "back_button_tooltip_mac": "geri (ESC)",
+    "create_sequel_button": "bir devam oluşturun",
+    "create_sequel_title": "Bir devam oluşturun",
+    "choose_project": "Orijinal proje",
+    "sequel_tooltip": "İçe aktararak romanın devamı olarak yaratma karakterler, konumlar, nesneler."
 }

@@ -813,6 +813,6 @@
   "back_button_tooltip_mac": "back (ESC)",
   "create_sequel_button": "create sequel",
   "create_sequel_title": "Create sequel",
-  "choose_project": "Choose project",
-  "sequel_tooltip": "Create a sequel of a novel, importing characters, locations, objects."
+  "choose_project": "Original project",
+  "sequel_tooltip": "Create a sequel of a novel, by importing characters, locations, objects."
 }
