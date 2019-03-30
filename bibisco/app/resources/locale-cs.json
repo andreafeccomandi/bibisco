@@ -773,5 +773,9 @@
   "common_character": "Postava",
   "supporter_edition_take_a_look_button": "podívejte se!",
   "back_button_tooltip": "zpět (ESC)",
-  "back_button_tooltip_mac": "zpět (ESC)"
+  "back_button_tooltip_mac": "zpět (ESC)",
+  "create_sequel_button": "vytvořit pokračování",
+  "create_sequel_title": "Vytvořit pokračování",
+  "choose_project": "Původní projekt",
+  "sequel_tooltip": "Vytvořte pokračování románu, importem postavy, lokace, objekty."
 }

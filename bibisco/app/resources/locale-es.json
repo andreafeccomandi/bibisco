@@ -781,5 +781,9 @@
   "common_character": "Personaje",
   "supporter_edition_take_a_look_button": "¡eche un vistazo!",
   "back_button_tooltip": "retroceder (ESC)",
-  "back_button_tooltip_mac": "retroceder (ESC)"
+  "back_button_tooltip_mac": "retroceder (ESC)",
+  "create_sequel_button": "crear secuela",
+  "create_sequel_title": "Crear secuela",
+  "choose_project": "Proyecto original",
+  "sequel_tooltip": "Crea una secuela de una novela importando personajes, lugares, objetos."
 }

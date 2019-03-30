@@ -781,5 +781,9 @@
   "common_character": "Personnage",
   "supporter_edition_take_a_look_button": "jetez un coup d’œil !",
   "back_button_tooltip": "retour (ESC)",
-  "back_button_tooltip_mac": "retour (ESC)"
+  "back_button_tooltip_mac": "retour (ESC)",
+  "create_sequel_button": "crée suite",
+  "create_sequel_title": "Crée suite",
+  "choose_project": "Projet original",
+  "sequel_tooltip": "Créer une suite d'un roman en important des personnages, des lieux, des objets."
 }

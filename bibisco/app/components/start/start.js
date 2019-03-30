@@ -19,10 +19,8 @@ angular.
     controller: StartController
   });
 
-function StartController($location, $rootScope, LoggerService,
-  ProjectService) {
+function StartController($location, $rootScope, ProjectService, SupporterEditionChecker) {
   
-
   // hide menu
   $rootScope.$emit('SHOW_START');
 
@@ -50,5 +48,13 @@ function StartController($location, $rootScope, LoggerService,
 
   self.info = function () {
     $location.path('/info');
+  };
+
+  self.createSequel = function() {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $location.path('/createsequel');
+    }
   };
 }

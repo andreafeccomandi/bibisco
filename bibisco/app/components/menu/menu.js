@@ -19,7 +19,7 @@ angular.
     controller: MenuController
   });
 
-function MenuController($injector, $location, $rootScope, CardUtilService, 
+function MenuController($injector, $location, $rootScope, 
   SupporterEditionChecker) {
 
   var self = this;
@@ -51,6 +51,11 @@ function MenuController($injector, $location, $rootScope, CardUtilService,
 
     // SHOW CREATE PROJECT EVENT
     $rootScope.$on('SHOW_CREATE_PROJECT', function () {
+      self.visible = false;
+    });
+
+    // SHOW CREATE SEQUEL
+    $rootScope.$on('SHOW_CREATE_SEQUEL', function () {
       self.visible = false;
     });
 
