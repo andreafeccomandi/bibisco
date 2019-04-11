@@ -280,6 +280,7 @@ function RichTextEditorController($document, $injector, $rootScope,
     .add({
       combo: ['ctrl+f', 'command+f'],
       description: 'find',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.toggleFindReplaceToolbar();
       }
