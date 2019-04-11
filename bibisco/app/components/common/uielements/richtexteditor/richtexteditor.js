@@ -26,8 +26,8 @@ angular.
   });
 
 
-function RichTextEditorController($document, $injector, $location, $rootScope, 
-  $scope, $timeout, $uibModal, $window, hotkeys, Chronicle, ContextService, 
+function RichTextEditorController($document, $injector, $rootScope, 
+  $scope, $timeout, $uibModal, hotkeys, Chronicle, ContextService, 
   PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
@@ -101,10 +101,31 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     self.lastcursorposition = 0;
     self.focus();
 
+    // manage search on open
+    self.manageSearchOnOpen();
+
     // clear current match on project explorer selection
     $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
       self.currentmatch = 0;
     });
+
+    // notify 
+    $rootScope.$emit('OPEN_RICH_TEXT_EDITOR');
+  };
+
+  self.manageSearchOnOpen = function () {
+    if ($rootScope.richtexteditorSearchActiveOnOpen) {
+      self.showfindreplacetoolbar = true;
+      self.texttofind = $rootScope.text2search;
+      self.casesensitiveactive = $rootScope.searchCasesensitiveactive;
+      self.wholewordactive = $rootScope.searchWholewordactive;
+      self.executeFind(new DOMParser().parseFromString(self.content, 'text/html'));
+      if (self.matches) {
+        $timeout(function(){
+          self.nextMatch();
+        }, 0);
+      }
+    }
   };
 
   self.initFindReplace = function() {
@@ -556,11 +577,15 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   };
 
   self.find = function () {
-    
+    self.executeFind(self.richtexteditor);
+  }; 
+
+  self.executeFind = function (dom) {
+
     self.matches = null;
 
     if (self.texttofind) {
-      self.matches = self.getSearchService().find(self.richtexteditor, self.texttofind,
+      self.matches = self.getSearchService().find(dom, self.texttofind,
         self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;
@@ -568,7 +593,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
         self.totalmatch = 0;
       }
       self.currentmatch = 0;
-    } 
+    }
   }; 
 
   self.previousMatch = function() {
