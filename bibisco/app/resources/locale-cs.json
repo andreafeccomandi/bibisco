@@ -777,5 +777,8 @@
   "create_sequel_button": "vytvořit pokračování",
   "create_sequel_title": "Vytvořit pokračování",
   "choose_project": "Původní projekt",
-  "sequel_tooltip": "Vytvořte pokračování románu, importem postavy, lokace, objekty."
+  "sequel_tooltip": "Vytvořte pokračování románu, importem postavy, lokace, objekty.",
+  "next_match_tooltip": "další (ALT+šipka dolů)",
+  "previous_match_tooltip": "předchozí (ALT+šipka nahoru)"
+
 }

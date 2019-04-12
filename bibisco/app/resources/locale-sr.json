@@ -753,5 +753,7 @@
     "create_sequel_button": "napravite nastavak",
     "create_sequel_title": "Napravite nastavak",
     "choose_project": "Originalni projekat",
-    "sequel_tooltip": "Napravite nastavak romana, uvozeći likove, lokacije, objekte."
+    "sequel_tooltip": "Napravite nastavak romana, uvozeći likove, lokacije, objekte.",
+    "next_match_tooltip": "sledeće (ALT+strelica nadole)",
+    "previous_match_tooltip": "prethodno (ALT+strelica nagore)"
 }

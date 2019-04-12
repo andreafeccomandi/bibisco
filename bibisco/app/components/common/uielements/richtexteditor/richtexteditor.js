@@ -284,6 +284,22 @@ function RichTextEditorController($document, $injector, $rootScope,
       callback: function () {
         self.toggleFindReplaceToolbar();
       }
+    })
+    .add({
+      combo: ['alt+down', 'alt+down'],
+      description: 'selectnextmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.nextMatch();
+      }
+    })
+    .add({
+      combo: ['alt+up', 'alt+up'],
+      description: 'selectpreviousmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.previousMatch();
+      }
     });
 
   self.checkselectionstate = function() {
@@ -660,20 +676,21 @@ function RichTextEditorController($document, $injector, $rootScope,
   };
 
   self.selectMatch = function (start, end) {
-    
-    if (end-start>0) {
-      let selection = window.getSelection();
-      let range = self.createRange(self.richtexteditor, { 
-        start: start, end: end
-      });
-      if (range) {
-        selection.removeAllRanges();
-        selection.addRange(range);
-        let rangeTop = self.getRangeTop(range);
-        self.richtexteditorcontainer.scrollTop = 
-          self.richtexteditorcontainer.scrollTop + rangeTop - 450;
+    $timeout(function () {
+      if (end-start>0) {
+        let selection = window.getSelection();
+        let range = self.createRange(self.richtexteditor, { 
+          start: start, end: end
+        });
+        if (range) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+          let rangeTop = self.getRangeTop(range);
+          self.richtexteditorcontainer.scrollTop = 
+            self.richtexteditorcontainer.scrollTop + rangeTop - 450;
+        }
       }
-    }
+    }, 0);
   };
 
   self.createRange = function (node, chars, range) {

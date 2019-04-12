@@ -785,5 +785,7 @@
   "create_sequel_button": "crée suite",
   "create_sequel_title": "Crée suite",
   "choose_project": "Projet original",
-  "sequel_tooltip": "Créer une suite d'un roman en important des personnages, des lieux, des objets."
+  "sequel_tooltip": "Créer une suite d'un roman en important des personnages, des lieux, des objets.",
+  "next_match_tooltip": "suivant (ALT+flèche bas)",
+  "previous_match_tooltip": "précédent (ALT+flèche haut)"
 }

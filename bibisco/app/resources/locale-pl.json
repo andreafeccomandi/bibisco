@@ -777,5 +777,7 @@
   "create_sequel_button": "utwórz sequel",
   "create_sequel_title": "Utwórz sequel",
   "choose_project": "Oryginalny projekt",
-  "sequel_tooltip": "Utwórz sequel powieści, importując postacie, lokalizacje, obiekty."
+  "sequel_tooltip": "Utwórz sequel powieści, importując postacie, lokalizacje, obiekty.",
+  "next_match_tooltip": "dalej (ALT+strzałka w dół)",
+  "previous_match_tooltip": "wstecz (ALT+strzałka w górę)"
 }

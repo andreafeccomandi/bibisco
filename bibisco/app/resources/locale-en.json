@@ -814,5 +814,7 @@
   "create_sequel_button": "create sequel",
   "create_sequel_title": "Create sequel",
   "choose_project": "Original project",
-  "sequel_tooltip": "Create a sequel of a novel, by importing characters, locations, objects."
+  "sequel_tooltip": "Create a sequel of a novel, by importing characters, locations, objects.",
+  "next_match_tooltip" : "next (ALT+down arrow)",
+  "previous_match_tooltip": "previous (ALT+up arrow)"
 }
