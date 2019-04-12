@@ -764,5 +764,7 @@
     "create_sequel_button": "devamını oluştur",
     "create_sequel_title": "Devamını oluştur",
     "choose_project": "Orijinal proje",
-    "sequel_tooltip": "Karakterleri, konumları, nesneleri içe aktararak romanın devamını oluşturun."
+    "sequel_tooltip": "Karakterleri, konumları, nesneleri içe aktararak romanın devamını oluşturun.",
+    "next_match_tooltip": "sonraki (ALT+aşağı ok)",
+    "previous_match_tooltip": "önceki (ALT+yukarı ok)"
 }

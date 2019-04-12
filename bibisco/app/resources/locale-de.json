@@ -778,5 +778,7 @@
   "create_sequel_button": "Fortsetzung anlegen",
   "create_sequel_title": "Fortsetzung anlegen",
   "choose_project": "Ursprüngliches Projekt",
-  "sequel_tooltip": "Anlegen Sie eine Folge eines Romans, indem Sie Zeichen, Orte und Objekte importieren."
+  "sequel_tooltip": "Anlegen Sie eine Folge eines Romans, indem Sie Zeichen, Orte und Objekte importieren.",
+  "next_match_tooltip": "Weiter (ALT+NACH-OBEN-TASTE)",
+  "previous_match_tooltip": "Zurück (ALT+NACH-UNTEN-TASTE)"
 }
