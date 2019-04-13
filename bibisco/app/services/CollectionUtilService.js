@@ -56,9 +56,12 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
     },
 
     fixCollectionPositions: function (data, collectionName, filter) {
+
+      LoggerService.info('Fixing collection ' + collectionName + ' ' +
+        JSON.stringify(filter) + '... ');
       if (data && data.length > 0) {
         for (let i = 0; i < data.length; i++) {
-          // update scene position
+          // update position
           data[i].position = (i + 1);
         }
 
@@ -67,9 +70,9 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
         if (filter) {
           LoggerService.info('Fixed collection ' + collectionName + ' ' +
-            JSON.stringify(filter));
+            JSON.stringify(filter) + '!');
         } else {
-          LoggerService.info('Fixed collection ' + collectionName);
+          LoggerService.info('Fixed collection ' + collectionName + '!');
         }
       }
     },
