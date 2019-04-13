@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function InfoController($location, $uibModal, $window, BibiscoPropertiesService) {
+function InfoController($location, $rootScope, $uibModal, BibiscoPropertiesService) {
 
   var self = this;
   const { shell } = require('electron');
@@ -54,7 +54,13 @@ function InfoController($location, $uibModal, $window, BibiscoPropertiesService)
       size: 'lg'
     });
 
-    modalInstance.result.then(function () {}, function () {});
+    $rootScope.$emit('OPEN_POPUP_BOX');
+
+    modalInstance.result.then(function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    });
   };
 
   self.back = function () {
