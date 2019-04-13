@@ -166,6 +166,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     .add({
       combo: ['ctrl+t', 'command+t'],
       description: 'tags',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.tags();
       }
