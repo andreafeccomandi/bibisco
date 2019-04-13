@@ -144,7 +144,7 @@
               <strong id="richtexteditorwholewordicon">|ab|</strong>
             </button>
           </span>
-          <input type="text" class="form-control input-sm" maxlength="50"
+          <input type="text" class="form-control input-sm" maxlength="30"
             id="richtexteditortexttofind"
             ng-change="$ctrl.texttofindChange()" 
             ng-model="$ctrl.texttofind" placeholder="{{'common_find' | translate}}">
@@ -166,7 +166,7 @@
       </div>
       <div class="form-group">
         <div class="input-group">
-          <input type="text" class="form-control input-sm" maxlength="50"
+          <input type="text" class="form-control input-sm" maxlength="30"
             ng-click="$ctrl.clearCurrentMatch()"
             ng-model="$ctrl.texttoreplace" placeholder="{{'common_replace' | translate}}">
           <span class="input-group-btn">
