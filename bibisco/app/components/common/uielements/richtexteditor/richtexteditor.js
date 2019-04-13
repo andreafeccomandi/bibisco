@@ -278,7 +278,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+f', 'command+f'],
+      combo: ['ctrl+F', 'command+f'],
       description: 'find',
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
@@ -299,6 +299,14 @@ function RichTextEditorController($document, $injector, $rootScope,
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.previousMatch();
+      }
+    })
+    .add({
+      combo: ['ctrl+D', 'command+d'],
+      description: 'fullscreen',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.fullscreen();
       }
     });
 
