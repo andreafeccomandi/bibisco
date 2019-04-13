@@ -98,6 +98,7 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
       .add({
         combo: ['ctrl+s', 'command+s'],
         description: 'save',
+        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
         callback: function () {
           self.save();
         }
