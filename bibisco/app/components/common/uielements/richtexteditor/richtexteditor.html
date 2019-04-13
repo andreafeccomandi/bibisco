@@ -107,7 +107,7 @@
   <div class="btn-group">
     <button class="btn btn-default btn-sm" ng-click="$ctrl.toggleFindReplaceToolbar()" 
       ng-class="{ 'btn-info': $ctrl.showfindreplacetoolbar, 'btn-unselected': !$ctrl.showfindreplacetoolbar }" 
-      uib-tooltip="{{'find_replace' | translate}}">
+      uib-tooltip="{{'find_replace'+$ctrl.os | translate}}">
       <i class="fa fa-search" aria-hidden="true"></i>
     </button>
   </div>
