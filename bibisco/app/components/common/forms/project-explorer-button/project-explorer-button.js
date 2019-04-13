@@ -41,6 +41,7 @@ function ProjectExplorerButtonController($rootScope, $scope, hotkeys) {
     .add({
       combo: ['ctrl+g', 'command+g'],
       description: 'projectexplorer',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.toggleProjectExplorer();
       }
