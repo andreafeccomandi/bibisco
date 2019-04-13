@@ -227,6 +227,14 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
+      combo: ['ctrl+P', 'command+p'],
+      description: 'print',
+      callback: function () {
+        event.preventDefault();
+        self.print();
+      }
+    })
+    .add({
       combo: ['ctrl+I', 'command+i'],
       description: 'italic',
       callback: function () {
