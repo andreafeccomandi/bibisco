@@ -58,10 +58,7 @@ function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
           callback: function ($event) {
             if (!self.confirmdialogopen) {
               $event.preventDefault();
-              setTimeout(function () {
-                document.getElementById(self.buttonid).focus();
-                document.getElementById(self.buttonid).click();
-              }, 0);
+              self.buttonfunction();
             }
           }
         });
