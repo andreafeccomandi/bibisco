@@ -559,19 +559,21 @@ function RichTextEditorController($document, $injector, $rootScope,
 
   self.fullscreen = function () {
     self.supporterEditionFilterAction(function () {
-      var window = electron.remote.getCurrentWindow();
-      if (window.isFullScreen()) {
-        $rootScope.previouslyFullscreen = true;
-      } else {
-        window.setFullScreen(true);
-        $rootScope.previouslyFullscreen = false;
-      }
       $rootScope.fullscreen = true;
-      self.exitfullscreenmessage = true;
       $timeout(function () {
-        self.exitfullscreenmessage = false;
+        var window = electron.remote.getCurrentWindow();
+        if (window.isFullScreen()) {
+          $rootScope.previouslyFullscreen = true;
+        } else {
+          window.setFullScreen(true);
+          $rootScope.previouslyFullscreen = false;
+        }
+        self.exitfullscreenmessage = true;
         self.focus();
-      }, 2000);
+        $timeout(function () {
+          self.exitfullscreenmessage = false;
+        }, 2000);
+      },0);
     });
   };
 
