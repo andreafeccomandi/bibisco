@@ -203,7 +203,7 @@ function RichTextEditorController($document, $injector, $rootScope,
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+Z', 'command+z'],
+      combo: ['ctrl+z', 'command+z'],
       description: 'undo',
       callback: function (event) {
         event.preventDefault();
@@ -211,7 +211,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+Y', 'command+y'],
+      combo: ['ctrl+y', 'command+y'],
       description: 'redo',
       callback: function(event) {
         event.preventDefault();
@@ -219,7 +219,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+B', 'command+b'],
+      combo: ['ctrl+b', 'command+b'],
       description: 'bold',
       callback: function () {
         event.preventDefault();
@@ -227,7 +227,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+P', 'command+p'],
+      combo: ['ctrl+p', 'command+p'],
       description: 'print',
       callback: function () {
         event.preventDefault();
@@ -235,7 +235,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+I', 'command+i'],
+      combo: ['ctrl+i', 'command+i'],
       description: 'italic',
       callback: function () {
         event.preventDefault();
@@ -243,7 +243,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+U', 'command+u'],
+      combo: ['ctrl+u', 'command+u'],
       description: 'underline',
       callback: function() {
         event.preventDefault();
@@ -286,10 +286,11 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+F', 'command+f'],
+      combo: ['ctrl+f', 'command+f'],
       description: 'find',
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
+        event.preventDefault();
         self.toggleFindReplaceToolbar();
       }
     })
@@ -310,7 +311,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+D', 'command+d'],
+      combo: ['ctrl+d', 'command+d'],
       description: 'fullscreen',
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
