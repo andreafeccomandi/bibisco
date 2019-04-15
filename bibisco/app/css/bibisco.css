@@ -1227,9 +1227,9 @@ h3 {
 	}
 }
 
-@media (max-width: 1999px) {
+@media (max-width: 1199px) {
 	.richtexteditor-find-replace-toolbar input {
-		width: 216px !important;
+		width: 214px !important;
 	}
 }
 

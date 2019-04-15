@@ -752,7 +752,8 @@
   "theme_dark": "dunkles",
   "timeline": "Zeitskala",
   "timeline_title": "Zeitskala",
-  "find_replace": "Suchen/Ersetzen",
+  "find_replace": "Suchen/Ersetzen (CTRL+F)",
+  "find_replace_mac": "Suchen/Ersetzen (CMD+F)",
   "common_find": "Suchen",
   "common_replace": "Ersetzen",
   "common_replaceone": "Ersetzen",
@@ -760,7 +761,8 @@
   "common_case_sensitive": "Groß-/Kleinschreibung beachten",
   "common_whole_word": "Ganzes Wort",
   "replace_all_confirm": "Möchten Sie wirklich alle '{{text2replace}}' mit '{{replacement}}' ersetzen?",
-  "full_screen_mode": "Vollbildmodus",
+  "full_screen_mode": "Vollbildmodus (CTRL+D)",
+  "full_screen_mode_mac": "Vollbildmodus (CMD+D)",
   "exit_full_screen_mode": "Drücken Sie ESC, um die Vollbildansicht zu beenden",
   "common_scenes_low": "Szenen",
   "search_button": "Suchen",
@@ -774,5 +776,11 @@
   "common_character": "Charakter",
   "supporter_edition_take_a_look_button": "Schau mal rein!",
   "back_button_tooltip": "Zurück (ESC)",
-  "back_button_tooltip_mac": "Zurück (ESC)"
+  "back_button_tooltip_mac": "Zurück (ESC)",
+  "create_sequel_button": "Fortsetzung anlegen",
+  "create_sequel_title": "Fortsetzung anlegen",
+  "choose_project": "Ursprüngliches Projekt",
+  "sequel_tooltip": "Anlegen Sie eine Folge eines Romans, indem Sie Zeichen, Orte und Objekte importieren.",
+  "next_match_tooltip": "Weiter (ALT+NACH-OBEN-TASTE)",
+  "previous_match_tooltip": "Zurück (ALT+NACH-UNTEN-TASTE)"
 }

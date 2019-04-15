@@ -801,7 +801,8 @@
   "theme_dark": "Тёмная",
   "timeline": "Временная шкала",
   "timeline_title": "Временная шкала",
-  "find_replace": "Найти/Заменить",
+  "find_replace": "Найти/Заменить (CTRL+F)",
+  "find_replace_mac": "Найти/Заменить (CMD+F)",
   "common_find": "Найти",
   "common_replace": "Заменить",
   "common_replaceone": "Заменить",
@@ -809,7 +810,8 @@
   "common_case_sensitive": "Учитывать регистр",
   "common_whole_word": "Слово целиком",
   "replace_all_confirm": "Уверены, что хотите заменить все '{{text2replace}}' на '{{replacement}}'?",
-  "full_screen_mode": "Полноэкранный режим",
+  "full_screen_mode": "Полноэкранный режим (CTRL+D)",
+  "full_screen_mode_mac": "Полноэкранный режим (CMD+D)",
   "exit_full_screen_mode": "Нажмите ESC для выхода из полноэкранного режима",
   "common_scenes_low": "сцены",
   "search_button": "Поиск",
@@ -823,5 +825,11 @@
   "common_character": "Персонаж",
   "supporter_edition_take_a_look_button": "Обзор возможностей",
   "back_button_tooltip": "Назад (ESC)",
-  "back_button_tooltip_mac": "Назад (ESC)"
+  "back_button_tooltip_mac": "Назад (ESC)",
+  "create_sequel_button": "создать продолжение",
+  "create_sequel_title": "Cоздать продолжение",
+  "choose_project": "Оригинальный проект",
+  "sequel_tooltip": "Создать продолжение романа, путем импорта символов, местоположения, объектов.",
+  "next_match_tooltip": "Далее (ALT+стрелка вниз)",
+  "previous_match_tooltip": "Назад (ALT+стрелка вверх)"
 }                                   

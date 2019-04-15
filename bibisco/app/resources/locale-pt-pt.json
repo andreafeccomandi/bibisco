@@ -778,7 +778,8 @@
   "theme_dark": "escuro",
   "timeline": "linha cronológica",
   "timeline_title": "Linha cronológica",
-  "find_replace": "localizar/substituir",
+  "find_replace": "localizar/substituir (CTRL+F)",
+  "find_replace_mac": "localizar/substituir (CMD+F)",
   "common_find": "Localizar",
   "common_replace": "Substituir",
   "common_replaceone": "substituir",
@@ -786,7 +787,8 @@
   "common_case_sensitive": "sensível a maiúsculas/minúsculas",
   "common_whole_word": "palavra inteira",
   "replace_all_confirm": "Confirma que deseja substituir todas as expressões de '{{text2replace}}' pelo texto '{{replacement}}'?",
-  "full_screen_mode": "modo de ecrã inteiro",
+  "full_screen_mode": "modo de ecrã inteiro (CTRL+D)",
+  "full_screen_mode_mac": "modo de ecrã inteiro (CMD+D)",
   "exit_full_screen_mode": "prima Esc para sair do modo de ecrã inteiro",
   "common_scenes_low": "cenas",
   "search_button": "Pesquisar",
@@ -800,5 +802,11 @@
   "common_character": "Personagem",
   "supporter_edition_take_a_look_button": "Venha ver!",
   "back_button_tooltip": "Anterior (ESC)",
-  "back_button_tooltip_mac": "Anterior (ESC)"
+  "back_button_tooltip_mac": "Anterior (ESC)",
+  "create_sequel_button": "Criar uma sequela",
+  "create_sequel_title": "Criar uma sequela",
+  "choose_project": "Projeto original",
+  "sequel_tooltip": "Criar uma sequela de um romance, importando personagens, locais, objectos.",
+  "next_match_tooltip": "Seguinte (ALT+seta para baixo)",
+  "previous_match_tooltip": "Anterior (ALT+seta para cima)"
 }

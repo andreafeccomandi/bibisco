@@ -40,6 +40,10 @@ angular.module('bibiscoApp', ['ngRoute',
     $scope.theme = 'dark';
   });
 
+  $rootScope.$on('OPEN_RICH_TEXT_EDITOR', function () {
+    $rootScope.richtexteditorSearchActiveOnOpen = false;
+  });
+
   let ContextService = $injector.get('ContextService');
   $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
 
@@ -49,8 +53,12 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.previouslyFullscreen = false;
   $rootScope.previousPath = null;
   $rootScope.actualPath = null;
-  $rootScope.showprojectexplorer = false;
+  $rootScope.richtexteditorSearchActiveOnOpen = false;
+  $rootScope.searchCasesensitiveactive = false;
+  $rootScope.searchOnlyscenes = false;
+  $rootScope.searchWholewordactive = false;
   $rootScope.text2search = null;
+  $rootScope.showprojectexplorer = false;
   $rootScope.projectExplorerCache = new Map();
   
   $rootScope.$on('$locationChangeSuccess', 
@@ -138,6 +146,9 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/createproject', {
         template: '<createproject></createproject>'
+      }).
+      when('/createsequel', {
+        template: '<createsequel></createsequel>'
       }).
       when('/error', {
         template: '<error></error>'

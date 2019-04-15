@@ -727,7 +727,8 @@
     "theme_dark": "tamna",
     "timeline": "vremenska osa",
     "timeline_title": "Vremenska osa",
-    "find_replace": "pronađi/zameni",
+    "find_replace": "pronađi/zameni (CTRL+F)",
+    "find_replace_mac": "pronađi/zameni (CMD+F)",
     "common_find": "Pronađi",
     "common_replace": "Zameni",
     "common_replaceone": "zameni",
@@ -735,7 +736,8 @@
     "common_case_sensitive": "razlikuj mala i velika slova",
     "common_whole_word": "podudaranje cele reči",
     "replace_all_confirm": "Želite li stvarno da zamenite '{{text2replace}}' sa '{{replacement}}' na svim mestima na kojima se pojavljuje?",
-    "full_screen_mode": "režim celog ekrana",
+    "full_screen_mode": "režim celog ekrana (CTRL+D)",
+    "full_screen_mode_mac": "režim celog ekrana (CMD+D)",
     "exit_full_screen_mode": "Pritisnite taster ESC da biste izašli iz režima celog ekrana",
     "common_scenes_low": "scene",
     "search_button": "pretraži",
@@ -749,5 +751,11 @@
     "common_character": "Lik",
     "supporter_edition_take_a_look_button": "pogledajte!",
     "back_button_tooltip": "nazad (ESC)",
-    "back_button_tooltip_mac": "nazad (ESC)"
+    "back_button_tooltip_mac": "nazad (ESC)",
+    "create_sequel_button": "napravite nastavak",
+    "create_sequel_title": "Napravite nastavak",
+    "choose_project": "Originalni projekat",
+    "sequel_tooltip": "Napravite nastavak romana, uvozeći likove, lokacije, objekte.",
+    "next_match_tooltip": "sledeće (ALT+strelica nadole)",
+    "previous_match_tooltip": "prethodno (ALT+strelica nagore)"
 }

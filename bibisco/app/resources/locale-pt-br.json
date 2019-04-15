@@ -307,7 +307,6 @@
   "jsp.characters.a.createMainCharacter": "criar personagem principal",
   "maincharacter_create_tooltip": "criar personagem principal (CTRL+N)",
   "maincharacter_create_tooltip_mac": "criar personagem principal (CMD+N)",
-  
   "jsp.characters.dialog.title.createMainCharacter": "Criar personagem principal",
   "common_secondary_characters": "Personagens secundários",
   "jsp.characters.h1.small.secondary": "eles não possuem conflitos, mas são úteis para o desenvolvimento da história",
@@ -751,7 +750,8 @@
   "theme_dark": "escuro",
   "timeline": "linha do tempo",
   "timeline_title": "Linha do tempo",
-  "find_replace": "localizar/substituir",
+  "find_replace": "localizar/substituir (CTRL+F)",
+  "find_replace_mac": "localizar/substituir (CMD+F)",
   "common_find": "Localizar",
   "common_replace": "Substituir",
   "common_replaceone": "substituir",
@@ -759,7 +759,8 @@
   "common_case_sensitive": "diferenciar maiúsculas de minúsculas",
   "common_whole_word": "palavra inteira",
   "replace_all_confirm": "Confirma que deseja substituir todas as expressões de '{{text2replace}}' pelo texto '{{replacement}}'?",
-  "full_screen_mode": "modo de tela inteira",
+  "full_screen_mode": "modo de tela inteira (CTRL+D)",
+  "full_screen_mode_mac": "modo de tela inteira (CMD+D)",
   "exit_full_screen_mode": "Pressione Enter para sair da tela inteira",
   "common_scenes_low": "cenas",
   "search_button": "pesquisar",
@@ -773,5 +774,11 @@
   "common_character": "Personagem",
   "supporter_edition_take_a_look_button": "dê uma olhada!",
   "back_button_tooltip": "voltar (ESC)",
-  "back_button_tooltip_mac": "voltar (ESC)"
+  "back_button_tooltip_mac": "voltar (ESC)",
+  "create_sequel_button": "criar uma sequela",
+  "create_sequel_title": "Criar uma sequela",
+  "choose_project": "Projeto original",
+  "sequel_tooltip": "Criar uma sequela de um romance, importando personagens, locais, objetos.",
+  "next_match_tooltip": "próximo (ALT+seta para baixo)",
+  "previous_match_tooltip": "anterior (ALT+seta para cima)"
 }

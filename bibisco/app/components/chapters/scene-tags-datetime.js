@@ -77,6 +77,8 @@ function SceneTagsDatetimeController($rootScope, $scope, DatetimeService, Locale
     } else {
       self.scenetime = self.scenetimecustom;
     }
+
+    $rootScope.dirty = true;
   };
 
   self.changeScenetimeCustom = function() {

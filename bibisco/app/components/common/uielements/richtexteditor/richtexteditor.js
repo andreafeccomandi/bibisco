@@ -26,8 +26,8 @@ angular.
   });
 
 
-function RichTextEditorController($document, $injector, $location, $rootScope, 
-  $scope, $timeout, $uibModal, $window, hotkeys, Chronicle, ContextService, 
+function RichTextEditorController($document, $injector, $rootScope, 
+  $scope, $timeout, $uibModal, hotkeys, Chronicle, ContextService, 
   PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
@@ -101,10 +101,31 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     self.lastcursorposition = 0;
     self.focus();
 
+    // manage search on open
+    self.manageSearchOnOpen();
+
     // clear current match on project explorer selection
     $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
       self.currentmatch = 0;
     });
+
+    // notify 
+    $rootScope.$emit('OPEN_RICH_TEXT_EDITOR');
+  };
+
+  self.manageSearchOnOpen = function () {
+    if ($rootScope.richtexteditorSearchActiveOnOpen) {
+      self.showfindreplacetoolbar = true;
+      self.texttofind = $rootScope.text2search;
+      self.casesensitiveactive = $rootScope.searchCasesensitiveactive;
+      self.wholewordactive = $rootScope.searchWholewordactive;
+      self.executeFind(new DOMParser().parseFromString(self.content, 'text/html'));
+      if (self.matches) {
+        $timeout(function(){
+          self.nextMatch();
+        }, 0);
+      }
+    }
   };
 
   self.initFindReplace = function() {
@@ -182,7 +203,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+Z', 'command+z'],
+      combo: ['ctrl+z', 'command+z'],
       description: 'undo',
       callback: function (event) {
         event.preventDefault();
@@ -190,7 +211,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+Y', 'command+y'],
+      combo: ['ctrl+y', 'command+y'],
       description: 'redo',
       callback: function(event) {
         event.preventDefault();
@@ -198,7 +219,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+B', 'command+b'],
+      combo: ['ctrl+b', 'command+b'],
       description: 'bold',
       callback: function () {
         event.preventDefault();
@@ -206,7 +227,15 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+I', 'command+i'],
+      combo: ['ctrl+p', 'command+p'],
+      description: 'print',
+      callback: function () {
+        event.preventDefault();
+        self.print();
+      }
+    })
+    .add({
+      combo: ['ctrl+i', 'command+i'],
       description: 'italic',
       callback: function () {
         event.preventDefault();
@@ -214,7 +243,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+U', 'command+u'],
+      combo: ['ctrl+u', 'command+u'],
       description: 'underline',
       callback: function() {
         event.preventDefault();
@@ -259,8 +288,34 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
     .add({
       combo: ['ctrl+f', 'command+f'],
       description: 'find',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
+        event.preventDefault();
         self.toggleFindReplaceToolbar();
+      }
+    })
+    .add({
+      combo: ['alt+down', 'alt+down'],
+      description: 'selectnextmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.nextMatch();
+      }
+    })
+    .add({
+      combo: ['alt+up', 'alt+up'],
+      description: 'selectpreviousmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.previousMatch();
+      }
+    })
+    .add({
+      combo: ['ctrl+d', 'command+d'],
+      description: 'fullscreen',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.fullscreen();
       }
     });
 
@@ -513,19 +568,21 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
 
   self.fullscreen = function () {
     self.supporterEditionFilterAction(function () {
-      var window = electron.remote.getCurrentWindow();
-      if (window.isFullScreen()) {
-        $rootScope.previouslyFullscreen = true;
-      } else {
-        window.setFullScreen(true);
-        $rootScope.previouslyFullscreen = false;
-      }
       $rootScope.fullscreen = true;
-      self.exitfullscreenmessage = true;
       $timeout(function () {
-        self.exitfullscreenmessage = false;
+        var window = electron.remote.getCurrentWindow();
+        if (window.isFullScreen()) {
+          $rootScope.previouslyFullscreen = true;
+        } else {
+          window.setFullScreen(true);
+          $rootScope.previouslyFullscreen = false;
+        }
+        self.exitfullscreenmessage = true;
         self.focus();
-      }, 2000);
+        $timeout(function () {
+          self.exitfullscreenmessage = false;
+        }, 2000);
+      },0);
     });
   };
 
@@ -556,11 +613,15 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   };
 
   self.find = function () {
-    
+    self.executeFind(self.richtexteditor);
+  }; 
+
+  self.executeFind = function (dom) {
+
     self.matches = null;
 
     if (self.texttofind) {
-      self.matches = self.getSearchService().find(self.richtexteditor, self.texttofind,
+      self.matches = self.getSearchService().find(dom, self.texttofind,
         self.casesensitiveactive, self.wholewordactive);
       if (self.matches && self.matches.length > 0) {
         self.totalmatch = self.matches.length;
@@ -568,7 +629,7 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
         self.totalmatch = 0;
       }
       self.currentmatch = 0;
-    } 
+    }
   }; 
 
   self.previousMatch = function() {
@@ -634,20 +695,21 @@ function RichTextEditorController($document, $injector, $location, $rootScope,
   };
 
   self.selectMatch = function (start, end) {
-    
-    if (end-start>0) {
-      let selection = window.getSelection();
-      let range = self.createRange(self.richtexteditor, { 
-        start: start, end: end
-      });
-      if (range) {
-        selection.removeAllRanges();
-        selection.addRange(range);
-        let rangeTop = self.getRangeTop(range);
-        self.richtexteditorcontainer.scrollTop = 
-          self.richtexteditorcontainer.scrollTop + rangeTop - 450;
+    $timeout(function () {
+      if (end-start>0) {
+        let selection = window.getSelection();
+        let range = self.createRange(self.richtexteditor, { 
+          start: start, end: end
+        });
+        if (range) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+          let rangeTop = self.getRangeTop(range);
+          self.richtexteditorcontainer.scrollTop = 
+            self.richtexteditorcontainer.scrollTop + rangeTop - 450;
+        }
       }
-    }
+    }, 0);
   };
 
   self.createRange = function (node, chars, range) {

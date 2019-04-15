@@ -26,9 +26,6 @@ function SearchController($injector, $location, $rootScope, $scope, hotkeys) {
   
   self.$onInit = function() {
 
-    self.casesensitiveactive = false;
-    self.wholewordactive = false;
-    self.onlyscenes = false;
     self.results = null;   
     
     // show menu item
@@ -51,33 +48,39 @@ function SearchController($injector, $location, $rootScope, $scope, hotkeys) {
       });
 
     // search
-    if ($rootScope.text2search) {
-      self.search();
-    }
+    self.search();
   };
 
   self.toggleCaseSensitive = function () {
-    self.casesensitiveactive = !self.casesensitiveactive;
+    $rootScope.searchCasesensitiveactive = !$rootScope.searchCasesensitiveactive;
+    self.search();
   };
 
   self.toggleWholeWord = function () {
-    self.wholewordactive = !self.wholewordactive;
+    $rootScope.searchWholewordactive = !$rootScope.searchWholewordactive;
+    self.search();
   };
 
   self.toggleSearchOnlyScenes = function () {
-    self.onlyscenes = true;
+    $rootScope.searchOnlyscenes = true;
+    self.search();
   };
 
   self.toggleSearchAll = function () {
-    self.onlyscenes = false;
+    $rootScope.searchOnlyscenes = false;
+    self.search();
   };
 
   self.search = function() {
-    self.results = SearchService.search($rootScope.text2search, 
-      self.casesensitiveactive, self.wholewordactive, self.onlyscenes);
+    if ($rootScope.text2search) {
+      self.results = SearchService.search($rootScope.text2search, 
+        $rootScope.searchCasesensitiveactive, $rootScope.searchWholewordactive, 
+        $rootScope.searchOnlyscenes);
+    }
   };
 
   self.gotoElement = function (path) {
+    $rootScope.richtexteditorSearchActiveOnOpen = true;
     $location.path(path);
   };  
 }

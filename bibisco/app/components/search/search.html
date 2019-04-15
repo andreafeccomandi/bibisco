@@ -15,11 +15,11 @@
             <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_case_sensitive' | translate}}"
-                  ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
+                  ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $root.searchCasesensitiveactive == true }">
                   <strong id="searchcasesensitiveicon">Aa</strong>
                 </button>
                 <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_whole_word' | translate}}"
-                  ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $ctrl.wholewordactive == true }">
+                  ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $root.searchWholewordactive == true }">
                   <strong id="searchwholewordicon">|ab|</strong>
                 </button>
               </span>
@@ -29,11 +29,11 @@
               </input>
               <span class="input-group-btn">
                 <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
-                  ng-click="$ctrl.toggleSearchOnlyScenes()" ng-class="{ 'active': $ctrl.onlyscenes == true }">
+                  ng-click="$ctrl.toggleSearchOnlyScenes()" ng-class="{ 'active': $root.searchOnlyscenes == true }">
                   <strong id="searchonlyscenes">{{'common_scenes_low' | translate}}</strong>
                 </button>
                 <button class="btn btn-default" uib-tooltip="{{'search_whole_project' | translate}}"
-                  ng-click="$ctrl.toggleSearchAll()" ng-class="{ 'active': $ctrl.onlyscenes == false }">
+                  ng-click="$ctrl.toggleSearchAll()" ng-class="{ 'active': $root.searchOnlyscenes == false }">
                   <strong id="searchall">{{'jsp.menu.project' | translate}}</strong>
                 </button>
               </span>
@@ -108,6 +108,15 @@
                 <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_architecture' | translate}}</span></td>
                 <td><a ng-click="$ctrl.gotoElement($ctrl.results.architecture.globalnotes.path)"><i>{{'common_notes_title' | translate}}</i></a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{$ctrl.results.architecture.globalnotes.occurrences}}</span></td>
+              </tr>
+            </tbody>
+            <tbody ng-repeat="strand in $ctrl.results.strands track by $index">
+              <tr>
+                <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'strand' | translate}}</span>
+                </td>
+                <td><a ng-click="$ctrl.gotoElement(strand.path)">{{strand.name}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{strand.occurrences}}</span>
+                </td>
               </tr>
             </tbody>
             <tbody ng-repeat="maincharacter in $ctrl.results.maincharacters track by $index">            

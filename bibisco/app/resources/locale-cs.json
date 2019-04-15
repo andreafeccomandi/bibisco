@@ -751,7 +751,8 @@
   "theme_dark": "tmavý",
   "timeline": "časová osa",
   "timeline_title": "Časová osa",
-  "find_replace": "najít/nahradit",
+  "find_replace": "najít/nahradit (CTRL+F)",
+  "find_replace_mac": "najít/nahradit (CMD+F)",
   "common_find": "Najít",
   "common_replace": "Nahradit",
   "common_replaceone": "nahradit",
@@ -759,7 +760,8 @@
   "common_case_sensitive": "rozlišování velkých a malých písmen",
   "common_whole_word": "celá slova",
   "replace_all_confirm": "Chcete opravdu nahradit všechny výskyty '{{text2replace}}' za '{{replacement}}'?",
-  "full_screen_mode": "režim zobrazení na celé obrazovce",
+  "full_screen_mode": "režim zobrazení na celé obrazovce (CTRL+D)",
+  "full_screen_mode_mac": "režim zobrazení na celé obrazovce (CMD+D)",
   "exit_full_screen_mode": "stisknutím klávesy ESC můžete ukončit režim celé obrazovky",
   "common_scenes_low": "scény",
   "search_button": "hledání",
@@ -773,5 +775,12 @@
   "common_character": "Postava",
   "supporter_edition_take_a_look_button": "podívejte se!",
   "back_button_tooltip": "zpět (ESC)",
-  "back_button_tooltip_mac": "zpět (ESC)"
+  "back_button_tooltip_mac": "zpět (ESC)",
+  "create_sequel_button": "vytvořit pokračování",
+  "create_sequel_title": "Vytvořit pokračování",
+  "choose_project": "Původní projekt",
+  "sequel_tooltip": "Vytvořte pokračování románu, importem postavy, lokace, objekty.",
+  "next_match_tooltip": "další (ALT+šipka dolů)",
+  "previous_match_tooltip": "předchozí (ALT+šipka nahoru)"
+
 }

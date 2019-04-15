@@ -759,7 +759,8 @@
   "theme_dark": "foncé",
   "timeline": "chronologie",
   "timeline_title": "Chronologie",
-  "find_replace": "rechercher/remplacer",
+  "find_replace": "rechercher/remplacer (CTRL+F)",
+  "find_replace_mac": "rechercher/remplacer (CMD+F)",
   "common_find": "Rechercher",
   "common_replace": "Remplacer",
   "common_replaceone": "remplacer",
@@ -767,7 +768,8 @@
   "common_case_sensitive": "respecte la casse",
   "common_whole_word": "mot complet",
   "replace_all_confirm": "Etes-vous sûr de vouloir remplacer toutes les occurrences de '{{text2replace}}' par '{{replacement}}' ?",
-  "full_screen_mode": "mode plein écran",
+  "full_screen_mode": "mode plein écran (CTRL+D)",
+  "full_screen_mode_mac": "mode plein écran (CMD+D)",
   "exit_full_screen_mode": "appuyez sur ESC pour quitter le mode plein écran",
   "common_scenes_low": "scènes",
   "search_button": "rechercher",
@@ -781,5 +783,11 @@
   "common_character": "Personnage",
   "supporter_edition_take_a_look_button": "jetez un coup d’œil !",
   "back_button_tooltip": "retour (ESC)",
-  "back_button_tooltip_mac": "retour (ESC)"
+  "back_button_tooltip_mac": "retour (ESC)",
+  "create_sequel_button": "crée suite",
+  "create_sequel_title": "Crée suite",
+  "choose_project": "Projet original",
+  "sequel_tooltip": "Créer une suite d'un roman en important des personnages, des lieux, des objets.",
+  "next_match_tooltip": "suivant (ALT+flèche bas)",
+  "previous_match_tooltip": "précédent (ALT+flèche haut)"
 }

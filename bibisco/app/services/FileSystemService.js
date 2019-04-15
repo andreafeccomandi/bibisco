@@ -40,6 +40,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     concatPath: function(a, b) {
       return path.join(a, b);
     },
+    copyDirectory: function (sourceDirectoryPath, targetDirectoryPath) {
+      fs.copySync(sourceDirectoryPath, targetDirectoryPath);
+    },
     copyFileToDirectory: function(filePath, directoryPath) {
       let filename = path.basename(filePath);
       fs.copySync(filePath, path.join(directoryPath, filename));

@@ -759,7 +759,8 @@
   "theme_dark": "oscuro",
   "timeline": "escala de tiempo",
   "timeline_title": "Escala de tiempo",
-  "find_replace": "buscar/reemplazar",
+  "find_replace": "buscar/reemplazar (CTRL+F)",
+  "find_replace_mac": "buscar/reemplazar (CMD+F)",
   "common_find": "Buscar",
   "common_replace": "Reemplazar",
   "common_replaceone": "reemplazar",
@@ -767,7 +768,8 @@
   "common_case_sensitive": "distinguir mayúsculas de minúsculas",
   "common_whole_word": "palabra completa",
   "replace_all_confirm": "¿Confirma que desea reemplazar todas las apariciones de '{{text2replace}}' por el texto '{{replacement}}'?",
-  "full_screen_mode": "modo de pantalla completa",
+  "full_screen_mode": "modo de pantalla completa (CTRL+D)",
+  "full_screen_mode_mac": "modo de pantalla completa (CMD+D)",
   "exit_full_screen_mode": "presione ESC para salir del modo de pantalla completa",
   "common_scenes_low": "escenas",
   "search_button": "buscar",
@@ -781,5 +783,11 @@
   "common_character": "Personaje",
   "supporter_edition_take_a_look_button": "¡eche un vistazo!",
   "back_button_tooltip": "retroceder (ESC)",
-  "back_button_tooltip_mac": "retroceder (ESC)"
+  "back_button_tooltip_mac": "retroceder (ESC)",
+  "create_sequel_button": "crear secuela",
+  "create_sequel_title": "Crear secuela",
+  "choose_project": "Proyecto original",
+  "sequel_tooltip": "Crea una secuela de una novela importando personajes, lugares, objetos.",
+  "next_match_tooltip": "siguiente (ALT+flecha abajo)",
+  "previous_match_tooltip": "anterior (ALT+flecha arriba)"
 }

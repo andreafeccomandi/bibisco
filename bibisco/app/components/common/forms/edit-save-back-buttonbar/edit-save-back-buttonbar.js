@@ -63,6 +63,7 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     .add({
       combo: ['ctrl+s', 'command+s'],
       description: 'save',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.executeSave();
       }
@@ -70,6 +71,7 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     .add({
       combo: ['ctrl+e', 'command+e'],
       description: 'edit',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.enableeditmode();
       }

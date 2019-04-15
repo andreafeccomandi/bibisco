@@ -767,7 +767,8 @@
   "theme_dark": "scuro",
   "timeline": "timeline",
   "timeline_title": "Timeline",
-  "find_replace": "trova/sostituisci",
+  "find_replace": "trova/sostituisci (CTRL+F)",
+  "find_replace_mac": "trova/sostituisci (CMD+F)",
   "common_find": "Trova",
   "common_replace": "Sostituisci",
   "common_replaceone": "sostituisci",
@@ -775,7 +776,8 @@
   "common_case_sensitive": "maiuscole/minuscole",
   "common_whole_word": "parola intera",
   "replace_all_confirm": "Sei sicuro di volere sostituire tutte le occorrenze di '{{text2replace}}' con '{{replacement}}'?",
-  "full_screen_mode": "modalità schermo intero",
+  "full_screen_mode": "modalità schermo intero (CTRL+D)",
+  "full_screen_mode_mac": "modalità schermo intero (CMD+D)",
   "exit_full_screen_mode": "premi ESC per uscire dalla modalità a schermo intero",
   "common_scenes_low": "scene",
   "search_button": "cerca",
@@ -791,5 +793,11 @@
   "supporter_edition_take_a_look_button_url": "http://www.bibisco.com/?lang=it#screenshots",
   "supporter_edition_get_it_button_url": "http://www.bibisco.com/?lang=it#download",
   "back_button_tooltip": "indietro (ESC)",
-  "back_button_tooltip_mac": "indietro (ESC)"
+  "back_button_tooltip_mac": "indietro (ESC)",
+  "create_sequel_button": "crea sequel",
+  "create_sequel_title": "Crea sequel",
+  "choose_project": "Progetto originale",
+  "sequel_tooltip": "Crea il sequel di un romanzo, importando personaggi, luoghi, oggetti.",
+  "next_match_tooltip": "avanti (ALT+freccia giù)",
+  "previous_match_tooltip": "indietro (ALT+freccia su)"
 }

@@ -158,8 +158,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       html += ArchitectureService.getSetting().text;
 
       // global notes
-      html += this.createTag('h2', translations.common_notes_title);
-      html += ArchitectureService.getGlobalNotes().text;
+      if (SupporterEditionChecker.check()) {
+        html += this.createTag('h2', translations.common_notes_title);
+        html += ArchitectureService.getGlobalNotes().text;
+      }
 
       // strands
       let strands = StrandService.getStrands();
