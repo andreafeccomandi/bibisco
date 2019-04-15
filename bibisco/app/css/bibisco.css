@@ -885,7 +885,7 @@ h3 {
 	}
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1000px) {
 	.navbar {
 		border-radius: 0px;
 	}
