@@ -826,10 +826,10 @@
   "supporter_edition_take_a_look_button": "Обзор возможностей",
   "back_button_tooltip": "Назад (ESC)",
   "back_button_tooltip_mac": "Назад (ESC)",
-  "create_sequel_button": "создать продолжение",
-  "create_sequel_title": "Cоздать продолжение",
+  "create_sequel_button": "Создать сиквел",
+  "create_sequel_title": "Cоздать сиквел",
   "choose_project": "Оригинальный проект",
-  "sequel_tooltip": "Создать продолжение романа, путем импорта символов, местоположения, объектов.",
+  "sequel_tooltip": "Создать продолжение романа, путем импорта персонажей, локаций и объектов.",
   "next_match_tooltip": "Далее (ALT+стрелка вниз)",
   "previous_match_tooltip": "Назад (ALT+стрелка вверх)"
 }                                   
