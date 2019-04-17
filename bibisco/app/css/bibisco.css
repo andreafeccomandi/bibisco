@@ -364,7 +364,7 @@ h3 {
 
 .card:focus {
 	outline: none;
-	border: 2px solid #ccc;
+	border: 2px solid #bbb;
 	border-radius: 4px;
 }
 
