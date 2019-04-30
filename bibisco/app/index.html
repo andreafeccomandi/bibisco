@@ -4,24 +4,25 @@
 <head>
   <meta charset="utf-8">
   <title>bibisco</title>
-  <script src="node_modules/angular/angular.min.js"></script>
-  <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
-  <script src="node_modules/angular-bootstrap-confirm/dist/angular-bootstrap-confirm.min.js"></script>
-  <script src="node_modules/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
-  <script src="node_modules/angular-hotkeys/build/hotkeys.min.js"></script>
-  <script src="node_modules/angular-messages/angular-messages.min.js"></script>
-  <script src="node_modules/angular-route/angular-route.min.js"></script>
-  <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
-  <script src="node_modules/angular-translate/dist/angular-translate.min.js"></script>
-  <script src="node_modules/angular-translate/dist/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-  <script src="node_modules/ng-focus-if/focusIf.min.js"></script>
-  <script src="node_modules/ui-select/dist/select.min.js"></script>
-  <script src="node_modules/validator/validator.min.js"></script>
-  <script src="node_modules/moment/min/moment.min.js"></script>
-  <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
-  <script src="node_modules/chart.js/dist/Chart.min.js"></script>
-  <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
-  <script src="node_modules/pdfmake/build/pdfmake.min.js"></script>
+  <script src="lib/angular.min.js"></script>
+  <script src="lib/ui-bootstrap.js"></script>
+  <script src="lib/angular-bootstrap-confirm.min.js"></script>
+  <script src="lib/tmhDynamicLocale.min.js"></script>
+  <script src="lib/hotkeys.min.js"></script>
+  <script src="lib/angular-messages.min.js"></script>
+  <script src="lib/angular-route.min.js"></script>
+  <script src="lib/angular-sanitize.min.js"></script>
+  <script src="lib/angular-translate.min.js"></script>
+  <script src="lib/angular-translate-loader-static-files.min.js"></script>
+  <script src="lib/focusIf.min.js"></script>
+  <script src="lib/select.min.js"></script>
+  <script src="lib/validator.min.js"></script>
+  <script src="lib/moment.min.js"></script>
+  <script src="lib/moment-with-locales.min.js"></script>
+  <script src="lib/Chart.min.js"></script>
+  <script src="lib/angular-chart.min.js"></script>
+  <script src="lib/pdfmake.min.js"></script>
+  <script src="lib/chronicle.js"></script>
   <script src="app.module.js"></script>
   <script src="adapters/pdfmake/vfs_fonts.js"></script>
   <script src="components/analysis/analysis.js"></script>
@@ -62,6 +63,7 @@
   <script src="components/characters/secondary-character-detail.js"></script>
   <script src="components/characters/secondary-character-images.js"></script>
   <script src="components/characters/secondary-character-title.js"></script>
+  <script src="components/common/forms/button-back/button-back.js"></script>
   <script src="components/common/forms/button-group-field/button-group-field.js"></script>
   <script src="components/common/forms/button-with-alert/button-with-alert.js"></script>
   <script src="components/common/forms/button-with-confirm/button-with-confirm.js"></script>
@@ -126,9 +128,9 @@
   <script src="components/objects/object-title.js"></script>
   <script src="components/objects/objects.js"></script>
   <script src="components/project/create-project.js"></script>
+  <script src="components/project/create-sequel.js"></script>
   <script src="components/project/import-project.js"></script>
   <script src="components/project/open-project.js"></script>
-  <script src="components/project/project.js"></script>
   <script src="components/project-explorer/project-explorer.js"></script>
   <script src="components/project-explorer/project-explorer-chapter.js"></script>
   <script src="components/project-explorer/project-explorer-images.js"></script>
@@ -140,6 +142,7 @@
   <script src="components/project-home/project-title.js"></script>
   <script src="components/project-home/tip.js"></script>
   <script src="components/project-home/tips.js"></script>
+  <script src="components/search/search.js"></script>
   <script src="components/settings/settings.js"></script>
   <script src="components/start/start.js"></script>
   <script src="components/strands/strand-detail.js"></script>
@@ -156,6 +159,7 @@
   <script src="services/ArchitectureService.js"></script>
   <script src="services/BibiscoDbConnectionService.js"></script>
   <script src="services/BibiscoPropertiesService.js"></script>
+  <script src="services/CardUtilService.js"></script>
   <script src="services/ChapterService.js"></script>
   <script src="services/CollectionUtilService.js"></script>
   <script src="services/ContextMenuService.js"></script>
@@ -165,8 +169,6 @@
   <script src="services/ExportService.js"></script>
   <script src="services/FileSystemService.js"></script>
   <script src="services/ImageService.js"></script>
-  <script src="services/IntegrityService.js"></script>
-  <script src="services/ObjectService.js"></script>
   <script src="services/LocaleService.js"></script>
   <script src="services/LocationService.js"></script>
   <script src="services/LoggerService.js"></script>
@@ -181,14 +183,13 @@
   <script src="services/SecondaryCharacterService.js"></script>
   <script src="services/StrandService.js"></script>
   <script src="services/SupporterEditionChecker.js"></script>
-  <script src="services/TimelineService.js"></script>
   <script src="services/UtilService.js"></script>
   <script src="services/UuidService.js"></script>
   <script src="services/WordCharacterCountService.js"></script>
   
   <link rel="stylesheet" ng-href="css/bootstrap-{{theme}}-theme.css" /> 
-  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="node_modules/ui-select/dist/select.min.css" />
+  <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="lib/select.min.css" />
   <link rel="stylesheet" href="directives/datetimepicker/datetimepicker.css"/>
   <link rel="stylesheet" href="css/bibisco.css" />
   <link rel="stylesheet" ng-href="css/bibisco-{{theme}}-theme.css" />

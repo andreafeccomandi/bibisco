@@ -10,7 +10,7 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="!$ctrl.hideprojectexplorerbutton && ($ctrl.editmode || $ctrl.words > 0)"></projectexplorerbutton>
+        <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="!$ctrl.hideprojectexplorerbutton && ($ctrl.editmode || $ctrl.words > 0)"></projectexplorerbutton>
         <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{$ctrl.showimageslabel}}" visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
       </span>
       <span class="pull-right">
@@ -21,17 +21,11 @@
         </dropdownmenu>
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled"
-          backfunction="$ctrl.backfunction()" 
-          characters="$ctrl.characters"
-          content="$ctrl.content"
-          dirty="$ctrl.dirty" editbuttonvisible="$ctrl.words > 0"
+          backpath="$ctrl.backpath"
+          editbuttonvisible="$ctrl.words > 0"
           editmode="$ctrl.editmode" 
-          savedcharacters="$ctrl.savedcharacters"
-          savedcontent="$ctrl.savedcontent"
-          savedwords="$ctrl.savedwords"
-          savefunction="$ctrl.savefunction()"
-          showprojectexplorer="$ctrl.showprojectexplorer"
-          words="$ctrl.words">
+          editfunction="$ctrl.editfunction()"
+          savefunction="$ctrl.savefunction()">
         </editsavebackbuttonbar>
       </span>
     </div>

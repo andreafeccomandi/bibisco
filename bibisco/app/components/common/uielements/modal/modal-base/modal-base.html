@@ -1,15 +1,23 @@
 <modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
   <div class="modal-body" id="modal-body">
-      <p>
-        {{$ctrl.message | translate}}
-      </p>
+      <p ng-bind-html="$ctrl.message | trusted"></p>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
     <button ng-if="$ctrl.mode == 'confirm'" class="btn btn-danger" type="button"
-      ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
+      id="modalBaseConfirmButton"
+      ng-click="$ctrl.ok()"
+      uib-tooltip="{{'js.bibisco.confirm.ok.tooltip'+$root.os | translate}}"
+      tooltip-placement="bottom"
+      >{{"js.bibisco.confirm.ok" | translate}}</button>
     <button ng-if="$ctrl.mode == 'confirm'" class="btn btn-default" type="button"
-      ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
+      ng-click="$ctrl.cancel()"
+      uib-tooltip="{{'js.bibisco.confirm.cancel.tooltip'+$root.os | translate}}"
+      tooltip-placement="bottom"
+      >{{"js.bibisco.confirm.cancel" | translate}}</button>
     <button ng-if="$ctrl.mode == 'alert'" class="btn btn-primary" type="button"
-      ng-click="$ctrl.cancel()">{{"js.bibisco.alert.ok" | translate}}</button>
+      ng-click="$ctrl.cancel()"
+      uib-tooltip="{{'js.bibisco.alert.ok.tooltip'+$root.os | translate}}"
+      tooltip-placement="bottom"
+      >{{"js.bibisco.alert.ok" | translate}}</button>
   </div>
 </modal-component>

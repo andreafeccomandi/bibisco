@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     concatPath: function(a, b) {
       return path.join(a, b);
+    },
+    copyDirectory: function (sourceDirectoryPath, targetDirectoryPath) {
+      fs.copySync(sourceDirectoryPath, targetDirectoryPath);
     },
     copyFileToDirectory: function(filePath, directoryPath) {
       let filename = path.basename(filePath);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,15 @@ angular.
   });
 
 
-function ContextualTipButtonController($uibModal, BibiscoDbConnectionService, 
+function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectionService, 
   BibiscoPropertiesService) {
   var self = this;
 
   self.$onInit = function () {
     self.buttonvisible = BibiscoPropertiesService.getProperty(self.tipcode) === 'true';
+    if (self.buttonvisible) {
+      self.showTip();
+    }
   };
 
   self.showTip = function () {
@@ -41,14 +44,18 @@ function ContextualTipButtonController($uibModal, BibiscoDbConnectionService,
           return self.tipcode;
         }
       },
-      size: 'sm'
+      size: 'contextualtip'
     });
+
+    $rootScope.$emit('OPEN_POPUP_BOX');
 
     modalInstance.result.then(function () {
       BibiscoPropertiesService.setProperty(self.tipcode, 'false');
       BibiscoDbConnectionService.saveDatabase();
       self.buttonvisible = false;
+      $rootScope.$emit('CLOSE_POPUP_BOX');
     }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
     });
   };
 }

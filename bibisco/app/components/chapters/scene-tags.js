@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,33 +19,45 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($location, $routeParams, $scope, $translate,
-  ChapterService, DatetimeService, ObjectService, LocaleService, LocationService,
-  MainCharacterService, SecondaryCharacterService, StrandService, UtilService) {
+function SceneTagsController($injector, $rootScope, $routeParams, $scope,
+  ChapterService, hotkeys, LocationService, MainCharacterService, 
+  PopupBoxesService, SecondaryCharacterService, 
+  StrandService, SupporterEditionChecker, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
-    self.scenerevision = self.scene.revisions[self.scene.revision];
+    self.backpath = '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view';
+    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+    if (self.fromtimeline) {
+      self.backpath = '/timeline' + self.backpath;
+    } 
 
+    // init breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_chapters'
+      label: 'common_chapters',
+      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     
     self.breadcrumbitems.push({
-      label: '#' + chapter.position + ' ' + chapter.title
+      label: '#' + self.chapter.position + ' ' + self.chapter.title,
+      href: '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
     self.breadcrumbitems.push({
-      label: self.scene.title
+      label: self.scene.title,
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
     });
 
+    // init working scene revision
+    self.workingscenerevision = JSON.parse(JSON.stringify(self.scene.revisions[self.scene.revision]));
+    
     // init point of views
     self.initPointOfViews();
 
@@ -59,29 +71,43 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     self.initObjects();
 
     // init date time
-	if (ChapterService.getLastScenetime() !== '') {
+    if (ChapterService.getLastScenetime() !== '') {
 	  self.lastscenetime = new Date(ChapterService.getLastScenetime());
-	} else {
+    } else {
 	   self.lastscenetime = new Date();
-	}
-	// check if is valid gregorian date
-	if (self.scenerevision.timegregorian) {
-	  let testDate = new Date(self.scenerevision.time);
+    }
+    // check if is valid gregorian date
+    if (self.workingscenerevision.timegregorian) {
+	  let testDate = new Date(self.workingscenerevision.time);
 	  if (isNaN(testDate.getTime())) {
-		self.scenerevision.time = null;
+        self.workingscenerevision.time = null;
 	  }
-	}
-	self.scenetime = self.scenerevision.time;
+    }
+    self.scenetime = self.workingscenerevision.time;
 
     // init narrative strands
     self.initStrands();
 
+    // init title
     self.title = self.scene.title;
     self.pageheadertitle =
       'jsp.scene.dialog.title.updateTitle';
 
-    self.dirty = false;
+    // init save hotkey
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+s', 'command+s'],
+        description: 'save',
+        allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+        callback: function () {
+          self.save();
+        }
+      });
 
+    $rootScope.dirty = false;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.initPointOfViews = function() {
@@ -91,75 +117,69 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
 
     self.povs.push({
       id: '1stOnMajor',
-      selected: (self.scenerevision.povid === '1stOnMajor')
+      selected: (self.workingscenerevision.povid === '1stOnMajor')
     });
     self.povs.push({
       id: '1stOnMinor',
-      selected: (self.scenerevision.povid === '1stOnMinor')
+      selected: (self.workingscenerevision.povid === '1stOnMinor')
     });
     self.povs.push({
       id: '3rdLimited',
-      selected: (self.scenerevision.povid === '3rdLimited')
+      selected: (self.workingscenerevision.povid === '3rdLimited')
     });
     self.povs.push({
       id: '3rdOmniscient',
-      selected: (self.scenerevision.povid === '3rdOmniscient')
+      selected: (self.workingscenerevision.povid === '3rdOmniscient')
     });
     self.povs.push({
       id: '3rdObjective',
-      selected: (self.scenerevision.povid === '3rdObjective')
+      selected: (self.workingscenerevision.povid === '3rdObjective')
     });
     self.povs.push({
       id: '2nd',
-      selected: (self.scenerevision.povid === '2nd')
+      selected: (self.workingscenerevision.povid === '2nd')
     });
 
-    if (self.scenerevision.povid === '1stOnMajor' || self.scenerevision.povid ===
-      '1stOnMinor' || self.scenerevision.povid === '3rdLimited') {
+    if (self.workingscenerevision.povid === '1stOnMajor' || self.workingscenerevision.povid ===
+      '1stOnMinor' || self.workingscenerevision.povid === '3rdLimited') {
       self.showpovcharacter = true;
       self.initPovCharacters();
     } else {
       self.showpovcharacter = false;
-      self.scenerevision.povcharacterid = null;
+      self.workingscenerevision.povcharacterid = null;
     }
   };
 
   self.togglePov = function(id) {
-    self.scenerevision.povid = id;
+    self.workingscenerevision.povid = id;
     self.initPointOfViews();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.togglePovCharacter = function(id) {
-    self.scenerevision.povcharacterid = id;
+    self.workingscenerevision.povcharacterid = id;
     self.initPovCharacters();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleSceneCharacter = function(id) {
-    let scenecharacters = self.scenerevision.scenecharacters;
-    self.toggleTagElement(scenecharacters, id);
-    self.scenerevision.scenecharacters = scenecharacters;
+    self.toggleTagElement(self.workingscenerevision.scenecharacters, id);
     self.initSceneCharacters();
   };
 
   self.toggleLocation = function(id) {
-    self.scenerevision.locationid = id;
+    self.workingscenerevision.locationid = id;
     self.initLocations();
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.toggleObject = function(id) {
-    let objects = self.scenerevision.sceneobjects;
-    self.toggleTagElement(objects, id);
-    self.scenerevision.sceneobjects = objects;
+    self.toggleTagElement(self.workingscenerevision.sceneobjects, id);
     self.initObjects();
   };
 
   self.toggleStrand = function(id) {
-    let scenestrands = self.scenerevision.scenestrands;
-    self.toggleTagElement(scenestrands, id);
-    self.scenerevision.scenestrands = scenestrands;
+    self.toggleTagElement(self.workingscenerevision.scenestrands, id);
     self.initStrands();
   };
 
@@ -171,18 +191,18 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
     } else {
       arr.push(id);
     }
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.initPovCharacters = function() {
     self.povcharacters = self.initCharacters(function(id) {
-      return self.scenerevision.povcharacterid === id;
+      return self.workingscenerevision.povcharacterid === id;
     });
   };
 
   self.initSceneCharacters = function() {
     self.scenecharacters = self.initCharacters(function(id) {
-      return UtilService.array.contains(self.scenerevision.scenecharacters, id);
+      return UtilService.array.contains(self.workingscenerevision.scenecharacters, id);
     });
   };
 
@@ -232,7 +252,7 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
       self.locations.push({
         id: locations[i].$loki,
         name: name,
-        selected: (self.scenerevision.locationid === locations[i].$loki)
+        selected: (self.workingscenerevision.locationid === locations[i].$loki)
       });
     }
 
@@ -244,32 +264,38 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
 
   self.initObjects = function () {
 
-    // objects
-    let objects = ObjectService.getObjects();
     self.objects = [];
-    for (let i = 0; i < objects.length; i++) {
-      let isselected = UtilService.array.contains(self.scenerevision.sceneobjects,
-        objects[i].$loki);
-      self.objects.push({
-        id: objects[i].$loki,
-        name: objects[i].name,
-        selected: isselected
+
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+
+      // objects
+      let objects = $injector.get('ObjectService').getObjects();
+      for (let i = 0; i < objects.length; i++) {
+        let isselected = UtilService.array.contains(self.workingscenerevision.sceneobjects,
+          objects[i].$loki);
+        self.objects.push({
+          id: objects[i].$loki,
+          name: objects[i].name,
+          selected: isselected
+        });
+      }
+  
+      // sort by name
+      self.objects.sort(function (a, b) {
+        return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
       });
     }
-
-    // sort by name
-    self.objects.sort(function (a, b) {
-      return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-    });
   };
 
   self.initStrands = function() {
 
     // strands
     let strands = StrandService.getStrands();
+    
     self.strands = [];
     for (let i = 0; i < strands.length; i++) {
-      let isselected = UtilService.array.contains(self.scenerevision.scenestrands,
+      let isselected = UtilService.array.contains(self.workingscenerevision.scenestrands,
         strands[i].$loki);
       self.strands.push({
         id: strands[i].$loki,
@@ -285,17 +311,17 @@ function SceneTagsController($location, $routeParams, $scope, $translate,
   };
 
   self.save = function() {
-    self.scene.revisions[self.scene.revision] = self.scenerevision;
+    self.scene.revisions[self.scene.revision] = JSON.parse(JSON.stringify(self.workingscenerevision));
     ChapterService.updateScene(self.scene);
-    self.dirty = false;
-  };
 
-  self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid + '/scenes/' +
-      $routeParams.sceneid);
+    $rootScope.dirty = false;
   };
 
   $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
-    self.scenerevision.time = data;
+    self.workingscenerevision.time = data;
+  });
+
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
   });
 }

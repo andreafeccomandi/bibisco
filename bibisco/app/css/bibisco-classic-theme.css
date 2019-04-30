@@ -8,3 +8,14 @@
 	box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
 }
+
+.fullscreen {
+  background-color: white;
+  border-color: white !important;
+}
+
+.exitfullscreenmessage {
+	background: black;
+	opacity: 0.8;
+	color: lightgrey;
+}

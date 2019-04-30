@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,21 +19,23 @@ angular.
     controller: ItemImagesController
   });
 
-function ItemImagesController($location, $rootScope, $routeParams,
-  ObjectService) {
+function ItemImagesController($location, $routeParams, ObjectService) {
 
   var self = this;
 
   self.$onInit = function() {
     
     let object = ObjectService.getObject($routeParams.id);
-    
+    self.backpath = '/objects/' + object.$loki + '/view';
+
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'objects'
+      label: 'objects',
+      href: '/objects/params/focus=objects_' + object.$loki
     });
     self.breadcrumbitems.push({
-      label: object.name
+      label: object.name,
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -51,9 +53,5 @@ function ItemImagesController($location, $rootScope, $routeParams,
 
   self.insert = function() {
     $location.path('/objects/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/objects/' + $routeParams.id);
   };
 }

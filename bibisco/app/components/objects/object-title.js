@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: ItemTitleController
   });
 
-function ItemTitleController($location, $routeParams, ObjectService) {
+function ItemTitleController($routeParams, ObjectService) {
 
   var self = this;
 
@@ -27,33 +27,40 @@ function ItemTitleController($location, $routeParams, ObjectService) {
 
     // common bradcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'objects'
-    });
 
     if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject(
-        $routeParams.id);
+      let object = ObjectService.getObject($routeParams.id);
+
+      self.breadcrumbItems.push({
+        label: 'objects',
+        href: '/objects/params/focus=objects_' + object.$loki
+      });
 
       // edit breadcrumb objects
       self.breadcrumbItems.push({
-        label: object.name
+        label: object.name,
+        href: '/objects/' + object.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'object_change_name_title'
       });
 
-      self.exitpath = '/objects/' + $routeParams.id;
+      self.exitpath = '/objects/' + object.$loki + '/view';
       self.name = object.name;
-      self.pageheadertitle =
-        'object_change_name_title';
+      self.pageheadertitle = 'object_change_name_title';
+      
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'objects',
+        href: '/objects'
+      });
 
       // create breadcrumb objects
       self.breadcrumbItems.push({
         label: 'object_create_title'
       });
-      self.exitpath = '/project/objects';
+      self.exitpath = '/objects';
       self.name = null;
       self.pageheadertitle =
         'object_create_title';

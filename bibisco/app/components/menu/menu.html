@@ -14,15 +14,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" uib-collapse="$ctrl.collapsed" ng-show="$ctrl.visible">
       <ul class="nav navbar-nav" ng-show="$ctrl.visible">
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.projecthomeActive}"><a ng-click="$ctrl.selectItem('projecthome')">{{ 'jsp.menu.project' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.architectureActive}"><a ng-click="$ctrl.selectItem('architecture')">{{ 'jsp.menu.architecture' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.charactersActive}"><a ng-click="$ctrl.selectItem('characters')">{{ 'jsp.menu.characters' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.locationsActive}"><a ng-click="$ctrl.selectItem('locations')">{{ 'jsp.menu.locations' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.objectsActive}"><a ng-click="$ctrl.selectItem('objects')">{{ 'jsp.menu.objects' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.chaptersActive}"><a ng-click="$ctrl.selectItem('chapters')">{{ 'jsp.menu.chapters' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.timelineActive}"><a ng-click="$ctrl.selectItem('timeline')">{{ 'timeline' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.analysisActive}"><a ng-click="$ctrl.selectItem('analysis')">{{ 'jsp.menu.analysis' | translate}}</a></li>
-        <li ng-class="{'disabled': $ctrl.disabled, 'active': !$ctrl.disabled && $ctrl.exportActive}"><a ng-click="$ctrl.selectItem('export')">{{ 'jsp.menu.export' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('projecthome')">{{ 'jsp.menu.project' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('architecture')">{{ 'jsp.menu.architecture' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('characters')">{{ 'jsp.menu.characters' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('locations')">{{ 'jsp.menu.locations' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('objects')">{{ 'jsp.menu.objects' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('chapters')">{{ 'jsp.menu.chapters' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('search')">{{ 'search_menu' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('timeline')">{{ 'timeline' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('analysis')">{{ 'jsp.menu.analysis' | translate}}</a></li>
+        <li><a ng-click="$ctrl.selectItem('export')">{{ 'jsp.menu.export' | translate}}</a></li>
       </ul>
     </div>
     <!-- /.navbar-collapse -->

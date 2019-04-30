@@ -26,7 +26,7 @@ to remove empty href attributes from directive templates and as a result styling
 is not applied correctly. The remedy is simple, just add the following styling
 to your application:
 */
-.nav, .pagination, .carousel, .panel-title a {
+.nav, .pagination, .carousel, .panel-title, a {
 	cursor: pointer;
 }
 
@@ -143,6 +143,16 @@ h6, label, th, td, p {
 	margin-bottom: 25px;
 }
 
+.project-explorer-text p {
+	-webkit-touch-callout: text !important;
+	-webkit-user-select: text !important;
+	-khtml-user-select: text !important;
+	-moz-user-select: text !important;
+	-ms-user-select: text !important;
+	user-select: text !important;
+	-o-user-select: text !important;
+}
+
 .social-media-button {
     margin-top: 5px;
     text-align: center;
@@ -157,6 +167,10 @@ h6, label, th, td, p {
 }
 
 .social-media-button-twitter {
+    margin-left: 5px;
+}
+
+.social-media-button-youtube {
     margin-left: 5px;
 }
 
@@ -189,6 +203,10 @@ h6, label, th, td, p {
 	margin-bottom: 10px;
 }
 
+.richtexteditor-toolbar button{
+	width: 31px;
+}
+
 .richtexteditor-toolbar-active-button {
 	color: #2D6987;
 }
@@ -207,9 +225,37 @@ h6, label, th, td, p {
 	border-radius: 5px;
 	border-color: #2D6987;
 	border-style: solid;
-	height: calc(100% - 40px);
 	overflow-y: auto;
 	width: 100%;
+}
+
+.richtexteditor-contenteditable-container-nofindreplace {
+	height: calc(100% - 40px);
+}
+
+.richtexteditor-contenteditable-container-findreplace {
+	height: calc(100% - 80px);
+}
+
+.richtexteditor-find-replace-toolbar input {
+	width: 281px !important;
+}
+
+#richtexteditorcasesensitiveicon {
+	margin-left: -3px;
+}
+
+#richtexteditorwholewordicon {
+	margin-left: -5px;
+}
+
+.richtexteditor-find-counter {
+	position: absolute; 
+	right: 75px; 
+	top: 6px; 
+	z-index: 100; 
+	color: #888; 
+	font-size: 13px;
 }
 
 /* IMAGES VIEWER */
@@ -218,8 +264,11 @@ h6, label, th, td, p {
 }
 
 @media (max-width: 1199px) {
-	.richtexteditor-contenteditable-container {
+	.richtexteditor-contenteditable-container-nofindreplace {
 		height: calc(100% - 70px);
+	}
+	.richtexteditor-contenteditable-container-findreplace {
+		height: calc(100% - 140px);
 	}
 }
 
@@ -261,7 +310,7 @@ h3 {
 }
 
 .page-header-truncate-title {
-  width: calc(100% - 300px);
+  width: calc(100% - 310px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -311,6 +360,12 @@ h3 {
 .card-hover {
 	background-color: #f5f5f5;
 	border: 1px solid #ddd;
+}
+
+.card:focus {
+	outline: none;
+	border: 2px solid #bbb;
+	border-radius: 4px;
 }
 
 .card-heading {
@@ -578,7 +633,7 @@ h3 {
 
 /* REVISION SELECT */
 .revision-select {
-	width: 200px;
+	width: 240px;
 }
 
 /* TAGS */
@@ -824,6 +879,13 @@ h3 {
  }
 
 @media (max-width: 1200px) {
+	.nav>li>a {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+@media (max-width: 1000px) {
 	.navbar {
 		border-radius: 0px;
 	}
@@ -867,7 +929,34 @@ h3 {
     }
 }
 
+/* SEARCH */
 
+.search-form-container {
+	top: 150px;
+	position: absolute;
+	width: 100%;
+}
+
+.search-inline-button {
+	margin-left: -15px;
+}
+
+.search-results-container {
+	top: 240px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 260px);
+	width: 100%;
+}
+
+.search-results-title {
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+
+.search-results-occurrences {
+	font-size: 90% !important;
+}
 
 /* TIMELINE */
 
@@ -1071,15 +1160,30 @@ h3 {
     color: inherit;
 }
 
+.timeline-heading > p {
+	margin-bottom: 5px;
+}
+
 .timeline-body > p,
 .timeline-body > ul {
-	margin-bottom: 0;
+	margin-bottom: -5px;
 	text-align: justify;
 }
 
 .timeline-body > p + p {
 	margin-top: 5px;
 }
+
+.dropdown-menu {
+	float: right;
+	left: auto;
+	right: 0;
+}
+
+.modal-contextualtip {
+    width: 400px;
+}
+
 
 @media (max-width: 767px) {
     ul.timeline:before {
@@ -1108,48 +1212,130 @@ h3 {
         float: right;
     }
 
-        .timeline-element > li > .timeline-panel:before {
-            border-left-width: 0;
-            border-right-width: 15px;
-            left: -15px;
-            right: auto;
-        }
-
-        .timeline-element > li > .timeline-panel:after {
-            border-left-width: 0;
-            border-right-width: 14px;
-            left: -14px;
-            right: auto;
-        }
-}
-
-
-
-/* Medium devices (desktops, 992px and up) */
-@media (max-width: 992px) {
-	.card {
-		height: 130px;
+	.timeline-element > li > .timeline-panel:before {
+		border-left-width: 0;
+		border-right-width: 15px;
+		left: -15px;
+		right: auto;
 	}
 
-	.card-heading-title {
-		max-width: 155px;
-		height: 60px;
+	.timeline-element > li > .timeline-panel:after {
+		border-left-width: 0;
+		border-right-width: 14px;
+		left: -14px;
+		right: auto;
 	}
 }
 
-/* Small devices (tablets, 768px and up) */
-@media (max-width: 768px) {
-	.card {
-		height: 115px;
+@media (max-width: 1199px) {
+	.richtexteditor-find-replace-toolbar input {
+		width: 214px !important;
+	}
+}
+
+@media (max-height: 750px) {
+	.jumbotron {
+		padding-top: 5px;
+    	padding-bottom: 10px;
+	}
+}
+
+@media (max-height: 710px) {
+
+	.bibiscoEmptyListBox {
+		margin-top: 65px;
 	}
 
-	.card-heading-title {
-		max-width: 220px;
-		height: 45px;
+	.card-grid-header-half-top {
+		top: 60px;
 	}
 
-	.page-header {
-		padding-bottom: 50px;
-		margin-bottom: 20px;
+	.card-grid-header-half-bottom {
+		top: 290px;
+	}
+
+	.card-grid-header-half-bottom-detail {
+		top: 290px;
+	}
+
+	.card-grid-emptyitems-with-header-subtitle-half-top {
+		top: 110px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-top {
+		top: 110px;
+	}
+
+	.card-grid-emptyitems-with-header-subtitle-half-bottom {
+		top: 340px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-bottom {
+		top: 445px;
+	}
+
+	.card-grid-emptyitems-no-header-subtitle-half-bottom-detail {
+		top: 300px;
+	}
+
+	.card-grid-items-with-header-subtitle-half-top {
+		height: 100px;
+		top: 185px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-top {
+		height: 140px;
+		top: 145px;
+	}
+
+	.card-grid-items-with-header-subtitle-half-bottom {
+		height: calc(100% - 435px);
+		top: 410px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-bottom {
+		height: calc(100% - 460px);
+		top: 370px;
+	}
+
+	.card-grid-items-no-header-subtitle-half-bottom-detail {
+		height: calc(100% - 460px);
+		top: 370px;
+	}
+
+	.intervieweditor-hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	.questionbuttonbar .btn-lg {
+		padding: 6px 12px;
+    	font-size: 14px;
+    	line-height: 1.42857143;
+    	border-radius: 4px;
+	}
+
+	.character-questions-richtexteditor-container {
+		height: calc(100% - 110px);
+	}
+
+	.richtexteditor-contenteditable-container-nofindreplace {
+		height: calc(100% - 80px);
+	}
+
+	.richtexteditor-contenteditable-container-findreplace {
+		height: calc(100% - 120px);
+	}
+
+	.detail-content-with-header-subtitle {
+		height: calc(100% - 325px);
+	}
+
+	.detail-content-no-header-subtitle {
+		height: calc(100% - 280px);
+	}
+
+	.richtexteditor-settings-sample {
+		display: none;
 	}
 }

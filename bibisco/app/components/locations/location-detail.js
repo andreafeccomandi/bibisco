@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,30 +19,32 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, ChapterService, 
-  LocationService) {
+function LocationDetailController($location, $rootScope, $routeParams, 
+  ChapterService, LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     self.location = self.getLocation($routeParams.id);
+    self.mode = $routeParams.mode;
     self.name = LocationService.calculateLocationName(self.location);
+    let backpath = '/locations/params/focus=locations_' + self.location.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/project/locations'
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
-  };
 
-  self.back = function() {
-    $location.path('/project/locations');
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.changeStatus = function(status) {
@@ -57,7 +59,11 @@ function LocationDetailController($location, $routeParams, ChapterService,
   self.delete = function() {
     LocationService.remove(self.location
       .$loki);
-    $location.path('/project/locations');
+    $location.path('/locations');
+  };
+
+  self.edit = function () {
+    $location.path('/locations/ ' + self.location.$loki + '/edit');
   };
 
   self.getLocation = function(id) {

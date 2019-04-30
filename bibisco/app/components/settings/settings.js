@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,20 @@ angular.
   });
 
 function SettingsController($injector, $location, $rootScope, $scope,
-  $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
-  LocaleService, LoggerService, ProjectService, SupporterEditionChecker) {
+  $timeout, $window, BibiscoDbConnectionService, BibiscoPropertiesService,
+  LocaleService, LoggerService, PopupBoxesService, 
+  ProjectService, SupporterEditionChecker) {
   
   var self = this;
 
   self.$onInit = function () {
+
+    // show menu item
+    $rootScope.$emit('SHOW_SETTINGS', {
+      item: 'settings'
+    });
+    self.backpath = '/start';
+
     self.theme = BibiscoPropertiesService.getProperty(
       'theme');
     self.selectedLanguage = LocaleService.getCurrentLocale();
@@ -38,6 +46,9 @@ function SettingsController($injector, $location, $rootScope, $scope,
       currentProjectsDirectory.length - 32);
 
     self.forbiddenDirectory = false;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.selectDarkTheme = function() {
@@ -75,9 +86,11 @@ function SettingsController($injector, $location, $rootScope, $scope,
   self.save = function(isValid, isDirty) {
     
     if (!isDirty) {
-      $location.path('/start');
+      $location.path(self.backpath);
     } else if (isValid) {
-
+      self.checkExit = {
+        active: false
+      };
       var projectsDirectory = ProjectService.createProjectsDirectory(self.selectedProjectsDirectory);
       if (projectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -96,7 +109,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
           + ' - projects directory=' + self.selectedProjectsDirectory
         );
 
-        $location.path('/start');
+        $location.path(self.backpath);
       } else {
         self.forbiddenDirectory = true;
       }
@@ -110,8 +123,10 @@ function SettingsController($injector, $location, $rootScope, $scope,
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }
-    $location.path('/start');
+    $window.history.back();
   };
 
-  
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, $scope.settingsForm.$dirty, self.checkExit);
+  });
 }

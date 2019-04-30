@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,12 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
+      buttonhotkey: '<',
       buttonlabel: '@',
       buttonfunction: '&',
       buttonshow: '<',
       buttonstyle: '@', 
+      buttontooltip: '@',
       characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
@@ -38,12 +40,37 @@ angular.
   });
 
 
-function PageHeaderController() {
+function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
   var self = this;
 
   self.$onInit = function () {
+    self.buttonid = UuidService.generateUuid();
+    
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
     }
+
+    if (self.buttonhotkey) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: self.buttonhotkey,
+          description: self.buttonlabel,
+          callback: function ($event) {
+            if (!self.confirmdialogopen) {
+              $event.preventDefault();
+              self.buttonfunction();
+            }
+          }
+        });
+    }
+    self.confirmdialogopen = false;
   };
+
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
+    self.confirmdialogopen = true;
+  });
+
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
+    self.confirmdialogopen = false;
+  });
 }

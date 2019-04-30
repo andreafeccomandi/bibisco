@@ -1,4 +1,5 @@
-<detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="true"
+<detailheader 
+breadcrumbitems="$ctrl.breadcrumbitems" 
   headertitle="jsp.scene.title.tags">
 </detailheader>
 
@@ -113,10 +114,10 @@
       </div>
     </div>
     <div class="row">
-      <scenetagsdatetime dirty="$ctrl.dirty"
+      <scenetagsdatetime
         lastscenetime="$ctrl.lastscenetime"
         scenetime="$ctrl.scenetime"
-        scenetimegregorian="$ctrl.scenerevision.timegregorian">
+        scenetimegregorian="$ctrl.workingscenerevision.timegregorian">
       </scenetagsdatetime>
     </div>
 
@@ -149,14 +150,15 @@
     </div>
     <div class="row">
       <span class="pull-right">
-        <button type="button" class="btn btn-primary" ng-disabled="!$ctrl.dirty"
+        <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
+          uib-tooltip="{{'save_tooltip'+$root.os | translate}}"
           ng-click="$ctrl.save()">
           <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
-      <span>{{"jsp.common.button.save" | translate}}</span>
-      </button>
-      <buttonwithconfirm enableconfirm="$ctrl.dirty" buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" buttonstyle="btn-default" confirmmessage="js.common.message.confirmExitWithoutSave">
-      </buttonwithconfirm>
+          <span>{{"jsp.common.button.save" | translate}}</span>
+        </button>
+      <buttonback fixedpath="$ctrl.backpath"></buttonback>
       </span>
+
     </div>
   </div>
 </div>

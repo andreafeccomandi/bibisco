@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: SecondaryCharacterDetailController
   });
 
-function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
+function SecondaryCharacterDetailController($location, $rootScope, $routeParams, 
   ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
@@ -27,21 +27,23 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   self.$onInit = function() {
 
     self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
+    self.mode = $routeParams.mode;
+    let backpath = '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
-  };
 
-  self.back = function() {
-    $location.path('/project/characters');
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.changeStatus = function(status) {
@@ -57,7 +59,11 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   self.delete = function() {
     SecondaryCharacterService.remove(self.secondarycharacter
       .$loki);
-    $location.path('/project/characters');
+    $location.path('/characters');
+  };
+
+  self.edit = function () {
+    $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/edit');
   };
 
   self.getSecondaryCharacter = function(id) {

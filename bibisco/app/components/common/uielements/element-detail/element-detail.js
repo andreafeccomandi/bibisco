@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/element-detail/element-detail.html',
     controller: ElementDetailController,
     bindings: {
-      backfunction: '&',
+      backpath: '<',
       breadcrumbitems: '<',
       changetitleenabled: '<',
       changetitlefunction: '&',
@@ -31,6 +31,8 @@ angular.
       deleteforbiddenmessage: '@',
       deletefunction: '&',
       disableemptymessage: '<',
+      editmode: '<',
+      editfunction: '&',
       eventname: '@',
       headertitle: '@',
       headersubtitle: '@',
@@ -46,7 +48,7 @@ angular.
     }
   });
 
-function ElementDetailController($interval, $rootScope, PopupBoxesService) {
+function ElementDetailController($rootScope, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -54,9 +56,7 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
     
     // common element detail flags
     self.autosaveenabled;
-    self.dirty = false;
-    self.editmode = false;
-    self.showprojectexplorer = false;
+    $rootScope.dirty = false;
     
     // action items
     self.actionitems = [];
@@ -78,10 +78,5 @@ function ElementDetailController($interval, $rootScope, PopupBoxesService) {
         }
       });
     }
-
-    // saved content
-    self.savedcontent = self.content;
-    self.savedcharacters = self.characters;
-    self.savedwords = self.words;
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ angular.
     controller: ProjectExplorerController
   });
 
-function ProjectExplorerController($translate, ArchitectureService, ChapterService, 
-  ObjectService, LocationService, MainCharacterService, SecondaryCharacterService,
-  StrandService) {
+function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $translate, 
+  ArchitectureService, ChapterService, LocationService, MainCharacterService, 
+  SecondaryCharacterService, SupporterEditionChecker, StrandService) {
   
   var self = this;
+  var ObjectService = null;
 
   self.$onInit = function () {
 
@@ -74,6 +75,17 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
+    
+    let cacheElement = $rootScope.projectExplorerCache.get($rootScope.actualPath);
+    if (cacheElement) {
+      for (let i = 0; i < self.items.length; i++) {
+        if (self.items[i].itemid === cacheElement) {
+          self.selectedItem = self.items[i];
+          self.selectItem();
+          break;
+        }
+      }
+    }
   };
 
   self.getArchitectureFamily = function() {
@@ -81,30 +93,38 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     let family = self.translations.common_architecture;
 
     architecturefamily.push({
+      itemid: 'architecture_premise',
       id: 'premise', 
       name: self.translations.common_premise, 
       family: family,
       selectfunction: self.showPremise
     });
     architecturefamily.push({
+      itemid: 'architecture_fabula',
       id: 'fabula',
       name: self.translations.common_fabula,
       family: family,
       selectfunction: self.showFabula
     });
     architecturefamily.push({
+      itemid: 'architecture_setting',
       id: 'setting',
       name: self.translations.common_setting,
       family: family,
       selectfunction: self.showSetting
     }); 
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      architecturefamily.push({
+        itemid: 'architecture_globalnotes',
+        id: 'globalnotes',
+        name: self.translations.common_notes_title,
+        family: family,
+        selectfunction: self.showGlobalNotes
+      });
+    }
     architecturefamily.push({
-      id: 'globalnotes',
-      name: self.translations.common_notes_title,
-      family: family,
-      selectfunction: self.showGlobalNotes
-    });
-    architecturefamily.push({
+      itemid: 'architecture_strands',
       id: 'strands',
       name: self.translations.common_strands,
       family: family,
@@ -123,6 +143,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     let mainCharacters = MainCharacterService.getMainCharacters();
     for (let i = 0; i < mainCharacters.length; i++) {
       charactersfamily.push({
+        itemid: 'maincharacter_' + mainCharacters[i].$loki,
         id: mainCharacters[i].$loki,
         name: mainCharacters[i].name,
         family: family,
@@ -134,6 +155,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
     for (let i = 0; i < secondaryCharacters.length; i++) {
       charactersfamily.push({
+        itemid: 'secondarycharacter_' + secondaryCharacters[i].$loki,
         id: secondaryCharacters[i].$loki,
         name: secondaryCharacters[i].name,
         family: family,
@@ -158,6 +180,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     for (let i = 0; i < locations.length; i++) {
       let name = LocationService.calculateLocationName(locations[i]);
       locationsfamily.push({
+        itemid: 'location_' + locations[i].$loki,
         id: locations[i].$loki,
         name: name,
         family: family,
@@ -171,16 +194,18 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
   self.getObjectsFamily = function () {
 
     let objectsfamily = [];
-    let family = self.translations.objects;
-
-    let objects = ObjectService.getObjects();
-    for (let i = 0; i < objects.length; i++) {
-      objectsfamily.push({
-        id: objects[i].$loki,
-        name: objects[i].name,
-        family: family,
-        selectfunction: self.showObject
-      });
+    if (SupporterEditionChecker.check()) {
+      let family = self.translations.objects;
+      let objects = self.getObjectService().getObjects();
+      for (let i = 0; i < objects.length; i++) {
+        objectsfamily.push({
+          itemid: 'object_' + objects[i].$loki,
+          id: objects[i].$loki,
+          name: objects[i].name,
+          family: family,
+          selectfunction: self.showObject
+        });
+      }
     }
 
     return objectsfamily;
@@ -194,6 +219,7 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
     let chapters = ChapterService.getChapters();
     for (let i = 0; i < chapters.length; i++) {
       chaptersfamily.push({
+        itemid: 'chapter_' + chapters[i].$loki,
         id: chapters[i].$loki,
         name: '#' + chapters[i].position + ' ' + chapters[i].title,
         family: family,
@@ -206,30 +232,42 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.selectItem = function() {
     self.selectedItem.selectfunction(self.selectedItem.id);
+    $rootScope.$emit('PROJECT_EXPLORER_SELECTED_ITEM');
+    $rootScope.projectExplorerCache.set($rootScope.actualPath, self.selectedItem.itemid);
   };
 
   self.showPremise = function() {
+    self.sectiontitle = 'jsp.architecture.thumbnail.premise.title';
     self.text = ArchitectureService.getPremise().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/premise/edit';
   };
 
   self.showFabula = function () {
+    self.sectiontitle = 'jsp.architecture.thumbnail.fabula.title';   
     self.text = ArchitectureService.getFabula().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/fabula/edit';
   };
 
   self.showSetting = function () {
+    self.sectiontitle = 'jsp.architecture.thumbnail.setting.title';
     self.text = ArchitectureService.getSetting().text;
     self.images = null;
     self.type = 'simpletext';
+    self.path = '/architectureitems/setting/edit';
   };
 
   self.showGlobalNotes = function () {
-    self.text = ArchitectureService.getGlobalNotes().text;
-    self.images = null;
-    self.type = 'simpletext';
+    if (SupporterEditionChecker.check()) {
+      self.sectiontitle = 'common_notes_title';
+      self.text = ArchitectureService.getGlobalNotes().text;
+      self.images = null;
+      self.type = 'simpletext';
+      self.path = '/architectureitems/globalnotes/edit';
+    }
   };
 
   self.showStrands = function () {
@@ -244,28 +282,45 @@ function ProjectExplorerController($translate, ArchitectureService, ChapterServi
 
   self.showSecondaryCharacter = function(id) {
     let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(id);
+    self.sectiontitle = secondarycharacter.name;
     self.text = secondarycharacter.description;
     self.images = secondarycharacter.images;
     self.type = 'simpletext';
+    self.path = '/secondarycharacters/'+id+'/edit';
   };
 
   self.showLocation = function(id) {
     let location = LocationService.getLocation(id);
+    self.sectiontitle = LocationService.calculateLocationName(location);
     self.text = location.description;
     self.images = location.images;
     self.type = 'simpletext';
+    self.path = '/locations/' + id + '/edit';
   };
 
   self.showObject = function (id) {
-    let object = ObjectService.getObject(id);
-    self.text = object.description;
-    self.images = object.images;
-    self.type = 'simpletext';
+    if (SupporterEditionChecker.check()) {
+      let object = self.getObjectService().getObject(id);
+      self.sectiontitle = object.name;
+      self.text = object.description;
+      self.images = object.images;
+      self.type = 'simpletext';
+      self.path = '/objects/' + id + '/edit';
+    }
   };
 
   self.showChapter = function(id) {
     self.chapter = ChapterService.getChapter(id);
     self.scenes = ChapterService.getScenes(id);
     self.type = 'chapter';
+  };
+
+  self.getObjectService = function () {
+    if (!ObjectService) {
+      $injector.get('IntegrityService').ok();
+      ObjectService = $injector.get('ObjectService');
+    }
+
+    return ObjectService;
   };
 }

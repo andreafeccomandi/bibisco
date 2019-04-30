@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,15 +30,17 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
+    self.mode = $routeParams.mode;
+    let backpath = '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -46,10 +48,14 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
     self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info + '.title';
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
+
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
+  self.edit = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/edit');
   };
 
   self.save = function () {

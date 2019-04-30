@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,13 @@ angular.
     controller: ExportToFormat
   });
 
-function ExportToFormat($location, $routeParams, 
-  $rootScope, $scope, $timeout, ExportService, FileSystemService) {
+function ExportToFormat($location, $routeParams, $rootScope, $scope, $timeout, 
+  ExportService, FileSystemService, PopupBoxesService) {
 
   var self = this;
 
   self.$onInit = function() {
+
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
     if ($routeParams.format === 'pdf') {
@@ -34,11 +35,11 @@ function ExportToFormat($location, $routeParams,
     } else if ($routeParams.format === 'archive') {
       self.pageheadertitle = 'jsp.export.title.archive';
     }
-  
+    self.backpath = '/export';
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: '/project/export'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -46,10 +47,17 @@ function ExportToFormat($location, $routeParams,
 
     self.saving = false;
     self.exportpath;
+
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.export = function(isValid) {
     if (isValid && !self.forbiddenDirectory) {
+      self.checkExit = {
+        active: false
+      };
       self.saving = true;
       $timeout(function () {
         if ($routeParams.format === 'pdf') {
@@ -65,7 +73,7 @@ function ExportToFormat($location, $routeParams,
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path('/project/export');
+      $location.path(self.backpath);
     }, 0);
   },
 
@@ -80,7 +88,7 @@ function ExportToFormat($location, $routeParams,
     $scope.$apply();
   };
 
-  self.back = function() {
-    $location.path('/project/export');
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, self.exportpath, self.checkExit);
+  });
 }

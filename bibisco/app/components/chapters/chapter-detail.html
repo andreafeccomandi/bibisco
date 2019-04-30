@@ -11,7 +11,7 @@
         <card cardid="'reason'" cardtitle="jsp.chapter.thumbnail.reason.title"
           dimension="normal"
           dndenabled="false"
-          family="chapterreason"
+          family="chapterinfo"
           selectfunction="$ctrl.selectChapterInfo(id)"
           text="jsp.chapter.thumbnail.reason.description"
           status="$ctrl.chapter.reason.status"></card>
@@ -20,7 +20,7 @@
         <card cardid="'notes'" cardtitle="common_notes_title"
           dimension="normal"
           dndenabled="false"
-          family="chapternote"
+          family="chapterinfo"
           selectfunction="$ctrl.selectChapterInfo(id)"
           text="common_notes_description"></card>
       </div>
@@ -38,9 +38,12 @@
     emptylisttext="jsp.chapter.bibiscoEmptyThumbnailListBox.text"
     emptylistbuttonlabel="jsp.chapter.a.createFirstScene"
     emptylistbuttonfunction="$ctrl.createScene()"
+    emptylistbuttontooltip="{{'scene_firstcreate_tooltip'+$root.os}}"
     items="$ctrl.scenescardgriditems"
+    pageheaderbuttonhotkey="$ctrl.hotkeys"
     pageheaderbuttonlabel="jsp.chapter.a.createScene"
     pageheaderbuttonfunction="$ctrl.createScene()"
+    pageheaderbuttontooltip="{{'scene_create_tooltip'+$root.os}}"
     pageheadertitle="jsp.chapter.scene.h2"
     pageheadertipcode="scenesdndTip"
     selectfunction="$ctrl.selectScene(id)"
@@ -67,11 +70,7 @@
         <dropdownmenu buttonlabel="jsp.common.button.more" 
           items="$ctrl.actionitems" open="up" visible="true">
         </dropdownmenu>
-        <buttonwithconfirm enableconfirm="false" 
-          buttonlabel="jsp.common.button.back" 
-          buttonfunction="$ctrl.back()" buttonstyle="btn-default"
-          confirmmessage="js.common.message.confirmExitWithoutSave">
-        </buttonwithconfirm>
+        <buttonback fixedpath="$ctrl.backpath"></buttonback>
       </span>
     </div>
   </div>

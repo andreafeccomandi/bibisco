@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ angular.
   });
 
 function MainCharacterDetailController($location, $rootScope, $routeParams,
-  ChapterService, MainCharacterService, PopupBoxesService, UtilService) {
+  CardUtilService, ChapterService, MainCharacterService, PopupBoxesService, 
+  UtilService) {
 
   var self = this;
 
@@ -28,13 +29,14 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.maincharacter = self.getMainCharacter($routeParams.id);
+    self.maincharacter = self.getMainCharacter($routeParams.id.split('?')[0]);
     self.deleteforbidden = self.isDeleteForbidden();
+    self.backpath = '/characters/params/focus=maincharacters_' + self.maincharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -49,9 +51,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     self.actionitems.push({
       label: 'jsp.common.button.delete',
       itemfunction: function () {
-        PopupBoxesService.confirm(self.delete, 'jsp.characters.delete.confirm');
-      },
-      itemfunction: function () {
         if (self.deleteforbidden) {
           PopupBoxesService.alert('jsp.characters.delete.ko');
         } else {
@@ -61,11 +60,9 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     });
 
     self.editmode = false;
-    self.showprojectexplorer = true;
-  };
 
-  self.back = function() {
-    $location.path('/project/characters');
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
   };
 
   self.changeStatus = function(status) {
@@ -79,7 +76,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.delete = function() {
     MainCharacterService.remove(self.maincharacter.$loki);
-    $location.path('/project/characters');
+    $location.path('/characters');
   };
 
   self.getMainCharacter = function(id) {
@@ -92,12 +89,12 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.showInfoWithQuestion = function(id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithquestion/' + id);
+      '/infowithquestion/' + id + '/view');
   };
 
   self.showInfoWithoutQuestion = function (id) {
     $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithoutquestion/' + id);
+      '/infowithoutquestion/' + id + '/view');
   };
 
   self.isDeleteForbidden = function () {

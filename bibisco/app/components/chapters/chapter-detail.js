@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope,
-  ChapterService, PopupBoxesService) {
+  ChapterService,CardUtilService, hotkeys, PopupBoxesService) {
 
   var self = this;
 
@@ -28,14 +28,15 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.chapter = ChapterService.getChapter($routeParams.id);
+    self.chapter = ChapterService.getChapter($routeParams.id.split('?')[0]);
     self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
+    self.backpath = 'chapters/params/focus=chapters_' + self.chapter.$loki;
 
     // breadcrumbs
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters'
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -56,7 +57,12 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
-    self.showprojectexplorer = false;
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -80,10 +86,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     return items;
   };
 
-  self.back = function() {
-    $location.path('/project/chapters');
-  };
-
   self.changeTitle = function() {
     $location.path('/chapters/' + self.chapter.$loki + '/title');
   };
@@ -99,16 +101,24 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
   };
 
   self.selectChapterInfo = function(type) {
-    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type);
+    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type + '/view');
   };
 
   self.selectScene = function(id) {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id);
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id + '/view');
   };
 
   self.delete = function() {
     ChapterService.remove(self.chapter.$loki);
-    $location.path('/project/chapters');
+    $location.path('/chapters');
   };
 
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+n', 'command+n'],
+      description: 'newscene',
+      callback: function () {
+        self.createScene();
+      }
+    });
 }

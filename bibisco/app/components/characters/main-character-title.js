@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,37 +27,43 @@ function MainCharacterTitleController($location, $routeParams,
 
     // common breadcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'common_characters'
-    });
 
     if ($routeParams.id !== undefined) {
-      let maincharacter = MainCharacterService.getMainCharacter(
-        $routeParams.id);
+      let maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
+
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/characters/params/focus=maincharacters_' + maincharacter.$loki
+      });
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: maincharacter.name
+        label: maincharacter.name,
+        href: '/maincharacters/' + maincharacter.$loki
       });
       self.breadcrumbItems.push({
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/maincharacters/' + $routeParams.id;
+      self.exitpath = '/maincharacters/' + maincharacter.$loki;
       self.name = maincharacter.name;
-      self.pageheadertitle =
-        'jsp.character.dialog.title.updateTitle';
+      self.pageheadertitle = 'jsp.character.dialog.title.updateTitle';
+
     } else {
+
+      self.breadcrumbItems.push({
+        label: 'common_characters',
+        href: '/characters'
+      });
 
       // create breadcrumb items
       self.breadcrumbItems.push({
         label: 'jsp.characters.dialog.title.createMainCharacter'
       });
 
-      self.exitpath = '/project/characters';
+      self.exitpath = '/characters';
       self.name = null;
-      self.pageheadertitle =
-        'jsp.characters.dialog.title.createMainCharacter';
+      self.pageheadertitle = 'jsp.characters.dialog.title.createMainCharacter';
     }
   };
 

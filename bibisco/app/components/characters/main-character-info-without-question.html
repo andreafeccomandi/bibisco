@@ -1,9 +1,12 @@
-<elementdetail backfunction="$ctrl.back()" 
+<elementdetail
+  backpath="$ctrl.backpath"
   breadcrumbitems="$ctrl.breadcrumbitems" 
   characters="$ctrl.maincharacter[$ctrl.type].characters"
   changetitleenabled="false" 
   content="$ctrl.maincharacter[$ctrl.type].text"
   deleteenabled="false"
+  editmode="$ctrl.mode === 'edit'"
+  editfunction="$ctrl.edit()"
   eventname="SHOW_ELEMENT_DETAIL" 
   headersubtitle="{{$ctrl.headersubtitle}}"
   headertitle="{{$ctrl.headertitle}}" 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,13 @@ angular.
       emptylisttext: '@',
       emptylistbuttonlabel: '@',
       emptylistbuttonfunction: '&',
+      emptylistbuttontooltip: '@',
       family: '@',
       items: '<',
-      pageheaderbuttonlabel: '@',
       pageheaderbuttonfunction: '&',
+      pageheaderbuttonhotkey: '<',
+      pageheaderbuttonlabel: '@',
+      pageheaderbuttontooltip: '@',
       pageheadertitle: '@',
       pageheadersubtitle: '@',
       pageheadertipcode: '@',

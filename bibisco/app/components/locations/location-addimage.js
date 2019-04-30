@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,16 @@ function LocationAddImageController($routeParams, LocationService) {
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_locations'
+      label: 'common_locations',
+      href: '/locations/params/focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
-      label: locationName
+      label: locationName,
+      href: '/locations/ ' + location.$loki + '/view'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images'
+      label: 'jsp.projectFromScene.select.location.images',
+      href: '/locations/ ' + location.$loki + '/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'

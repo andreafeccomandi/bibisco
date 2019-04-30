@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
   self.$onInit = function() {
 
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.mode = $routeParams.mode;
+    let backpath = '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type;
 
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
@@ -41,26 +43,28 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/project/chapters'
+      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: '#' + self.chapter.position + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.title
     });
 
-    self.showprojectexplorer = true;
-  };
-
-  self.back = function() {
-    $location.path('/chapters/' + $routeParams.chapterid);
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.changeStatus = function(status) {
     self.chapterinfo.status = status;
     ChapterService.update(self.chapter);
+  };
+
+  self.edit = function () {
+    $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/edit');
   };
 
   self.savefunction = function() {

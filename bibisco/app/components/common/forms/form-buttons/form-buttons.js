@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ angular.
     templateUrl: 'components/common/forms/form-buttons/form-buttons.html',
     controller: FormButtonsController,
     bindings: {
-      backfunction: '&',
+      backpath: '<',
       form: '<',
       offsetcols: '@',
       saving: '<',
@@ -31,13 +31,7 @@ function FormButtonsController() {
 
   var self = this;
 
-  self.backWithoutConfirm = function(isDirty) {
-    if (!isDirty) {
-      self.backfunction();
-    }
-  };
-
-  self.backWithConfirm = function() {
-    self.backfunction();
+  self.$onInit = function () {
+    
   };
 }

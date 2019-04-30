@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,69 +21,171 @@ angular.
       autosaveenabled: '=',
       characters: '=',
       content: '=',
-      dirty: '=',
       words: '='
     }
   });
 
 
-function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibModal,
-  hotkeys, ContextService, LocaleService, LoggerService, SanitizeHtmlService,
+function RichTextEditorController($document, $injector, $rootScope, 
+  $scope, $timeout, $uibModal, hotkeys, Chronicle, ContextService, 
+  PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
   var self = this;
-  self.$onInit = function() {
+  var electron = require('electron');
+  var SearchService = null;
 
+  self.$onInit = function() {
+    self.contenteditable = true;
+    self.checkExit = {
+      active: true
+    };
+    self.exitfullscreenmessage = false;
+
+    // init OS
+    if (ContextService.getOs() === 'darwin') {
+      self.os = '_mac';
+    } else {
+      self.os = '';
+    }
+
+    // init styles and spell check
+    self.fontclass = RichTextEditorPreferencesService.getFontClass();
+    self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+    self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
+
+    // init editor button states
+    self.boldactive = false;
+    self.italicactive = false;
+    self.underlineactive = false;
+    self.strikethroughactive = false;
+    self.highlightactive = false;
+    self.aligncenteractive = false;
+    self.alignleftactive = false;
+    self.alignrightactive = false;
+    self.justifyactive = false;
+    self.orderedlistactive = false;
+    self.unorderedlistactive = false;
+    self.showfindreplacetoolbar = false;
+    self.casesensitiveactive = false;
+    self.wholewordactive = false;
+
+    // init find & replace text
+    self.initFindReplace();
+
+    // saved content
+    self.savedcontent = self.content;
+    self.savedcharacters = self.characters;
+    self.savedwords = self.words;
+
+    // init content
     if (self.content === '') {
       self.content = '<p><br></p>';
+    } else {
+      // replace &nbsp; with spaces
+      self.content = self.content.replace(/&nbsp;/g, ' ');
     }
-    self.previouscontent = self.content;
 
-    self.countWordsAndCharacters();
+    // record changes on self.content
+    self.chronicle = Chronicle.record('content', this, true);
     
     // set <p> as default paragraph separator
     $document[0].execCommand('defaultParagraphSeparator', false, 'p');
-    
+
+    // init words and characters
+    self.countWordsAndCharacters();
+
+    // focus on editor
+    self.richtexteditorcontainer = document.getElementById('richtexteditorcontainer');
     self.richtexteditor = document.getElementById('richtexteditor');
+    self.lastcursorposition = 0;
     self.focus();
+
+    // manage search on open
+    self.manageSearchOnOpen();
+
+    // clear current match on project explorer selection
+    $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
+      self.currentmatch = 0;
+    });
+
+    // notify 
+    $rootScope.$emit('OPEN_RICH_TEXT_EDITOR');
   };
+
+  self.manageSearchOnOpen = function () {
+    if ($rootScope.richtexteditorSearchActiveOnOpen) {
+      self.showfindreplacetoolbar = true;
+      self.texttofind = $rootScope.text2search;
+      self.casesensitiveactive = $rootScope.searchCasesensitiveactive;
+      self.wholewordactive = $rootScope.searchWholewordactive;
+      self.executeFind(new DOMParser().parseFromString(self.content, 'text/html'));
+      if (self.matches) {
+        $timeout(function(){
+          self.nextMatch();
+        }, 0);
+      }
+    }
+  };
+
+  self.initFindReplace = function() {
+    self.casesensitiveactive = false;
+    self.currentmatch = 0;
+    self.matches = null;
+    self.texttofind = null;
+    self.texttoreplace = null;
+    self.totalmatch = 0;
+    self.wholewordactive = false;
+  };
+
+  $scope.$on('$locationChangeStart', function(event) {
+    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit,
+      function() {
+        self.characters = self.savedcharacters;
+        self.content = self.savedcontent;
+        self.words = self.savedwords;
+      });
+  });
 
   $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {
     self.focus();
   });
 
   $rootScope.$on('REPLACE_MISSPELLING', function () {
-    self.dirty = true;
+    $rootScope.dirty = true;
     $scope.$apply();
   });
+
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
+    self.contenteditable = false;
+  });
+
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
+    self.contenteditable = true;
+    self.focus();
+  });
+
+  $rootScope.$on('CONTENT_SAVED', function () {
+    self.savedcontent = self.content;
+    self.savedcharacters = self.characters;
+    self.savedwords = self.words;
+  });
+
+  self.blur = function() {
+    self.disablestylebuttons();
+    self.lastcursorposition = self.getCurrentCursorPosition();
+    $timeout(function(){
+      if (self.currentmatch && !self.isTextSelected()) {
+        self.currentmatch = 0;
+      }
+    },0);
+  };
 
   self.focus = function() {
     setTimeout(function () {
       self.richtexteditor.focus();
     }, 0);
   };
-
-  if (ContextService.getOs() === 'darwin') {
-    self.os = '_mac';
-  } else {
-    self.os = '';
-  }
-
-  self.fontclass = RichTextEditorPreferencesService.getFontClass();
-  self.indentclass = RichTextEditorPreferencesService.getIndentClass();
-  self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
-
-  self.boldactive = false;
-  self.italicactive = false;
-  self.underlineactive = false;
-  self.strikethroughactive = false;
-  self.highlightactive = false;
-  self.aligncenteractive = false;
-  self.alignleftactive = false;
-  self.alignrightactive = false;
-  self.justifyactive = false;
-  self.orderedlistactive = false;
-  self.unorderedlistactive = false;
 
   self.disablestylebuttons = function() {
     self.boldactive = false;
@@ -101,16 +203,50 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+Y', 'command+y'],
+      combo: ['ctrl+z', 'command+z'],
+      description: 'undo',
+      callback: function (event) {
+        event.preventDefault();
+        self.undo();
+      }
+    })
+    .add({
+      combo: ['ctrl+y', 'command+y'],
       description: 'redo',
-      callback: function() {
+      callback: function(event) {
+        event.preventDefault();
         self.redo();
       }
     })
     .add({
-      combo: ['command+u'],
+      combo: ['ctrl+b', 'command+b'],
+      description: 'bold',
+      callback: function () {
+        event.preventDefault();
+        self.bold();
+      }
+    })
+    .add({
+      combo: ['ctrl+p', 'command+p'],
+      description: 'print',
+      callback: function () {
+        event.preventDefault();
+        self.print();
+      }
+    })
+    .add({
+      combo: ['ctrl+i', 'command+i'],
+      description: 'italic',
+      callback: function () {
+        event.preventDefault();
+        self.italic();
+      }
+    })
+    .add({
+      combo: ['ctrl+u', 'command+u'],
       description: 'underline',
       callback: function() {
+        event.preventDefault();
         self.underline();
       }
     })
@@ -147,6 +283,39 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
       description: 'highlight',
       callback: function() {
         self.highlight();
+      }
+    })
+    .add({
+      combo: ['ctrl+f', 'command+f'],
+      description: 'find',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        event.preventDefault();
+        self.toggleFindReplaceToolbar();
+      }
+    })
+    .add({
+      combo: ['alt+down', 'alt+down'],
+      description: 'selectnextmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.nextMatch();
+      }
+    })
+    .add({
+      combo: ['alt+up', 'alt+up'],
+      description: 'selectpreviousmatch',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.previousMatch();
+      }
+    })
+    .add({
+      combo: ['ctrl+d', 'command+d'],
+      description: 'fullscreen',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.fullscreen();
       }
     });
 
@@ -221,17 +390,17 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
   };
 
   self.undo = function() {
-    $document[0].execCommand('undo');
-    self.dirty = true;
-    self.focus();
-    self.countWordsAndCharacters();
+    self.chronicle.undo();
+    $timeout(function () { 
+      self.contentChanged(); 
+    }, 0);
   };
 
   self.redo = function() {
-    $document[0].execCommand('redo');
-    self.dirty = true;
-    self.focus();
-    self.countWordsAndCharacters();
+    self.chronicle.redo();
+    $timeout(function () { 
+      self.contentChanged(); 
+    }, 0);
   };
 
   self.print = function() {
@@ -249,43 +418,51 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
 
   self.copy = function() {
     $document[0].execCommand('copy');
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.cut = function() {
     $document[0].execCommand('cut');
-    self.dirty = true;
+    $rootScope.dirty = true;
   };
 
   self.paste = function() {
     $timeout(function() {
       $document[0].execCommand('paste');
-      self.dirty = true;
+      $rootScope.dirty = true;
     });
   };
 
-  self.bold = function() {
-    $document[0].execCommand('bold');
-    self.dirty = true;
+  self.manageFormat = function () {
+    $rootScope.dirty = true;
     self.checkselectionstate();
+
+    if (self.currentmatch) {
+      self.updateContentFromDom();
+      $timeout(function () {
+        self.moveToCurrentMatch();
+      }, 0);
+    } 
+  };
+
+  self.bold = function () {
+    $document[0].execCommand('bold');
+    self.manageFormat();
   };
 
   self.italic = function() {
     $document[0].execCommand('italic');
-    self.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.underline = function() {
     $document[0].execCommand('underline');
-    self.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.strikethrough = function() {
     $document[0].execCommand('strikeThrough');
-    self.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.highlight = function() {
@@ -295,60 +472,58 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     } else {
       $document[0].execCommand('hiliteColor', false, 'rgb(255, 255, 0)');
     }
-    self.dirty = true;
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.leftguillemet = function() {
     $document[0].execCommand('insertText', false, '«');
     self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.rightguillemet = function() {
     $document[0].execCommand('insertText', false, '»');
     self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.emdash = function() {
     $document[0].execCommand('insertText', false, '—');
     self.checkselectionstate();
+    self.contentChanged();
   };
 
   self.orderedlist = function() {
     $document[0].execCommand('insertOrderedList');
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.unorderedlist = function() {
     $document[0].execCommand('insertUnorderedList');
-    self.checkselectionstate();
+    self.manageFormat();
   };
 
   self.aligncenter = function() {
     $document[0].execCommand('justifyCenter');
-    self.checkselectionstate();
-    self.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.alignleft = function() {
     $document[0].execCommand('justifyLeft');
-    self.checkselectionstate();
-    self.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.alignright = function() {
     $document[0].execCommand('justifyRight');
-    self.checkselectionstate();
-    self.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
   self.justify = function() {
     $document[0].execCommand('justifyFull');
-    self.checkselectionstate();
-    self.dirty = true;
+    self.manageFormat();
     self.focus();
   };
 
@@ -361,7 +536,7 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
         sanitizedText = SanitizeHtmlService.sanitize(text);
       } else {
         sanitizedText = $event.clipboardData.getData('text/plain');
-		  sanitizedText = sanitizedText.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
+        sanitizedText = sanitizedText.replace(/(?:\r\n|\r|\n)/g, '</p><p>');
       }
       $event.preventDefault();
       $timeout(function() {
@@ -370,13 +545,299 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
     }
   };
 
+  self.focusOnText2Find = function() {
+    $timeout(function () {
+      try {
+        document.getElementById('richtexteditortexttofind').focus();
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  self.toggleFindReplaceToolbar = function() {
+    self.supporterEditionFilterAction(function() {
+      self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
+      if (self.showfindreplacetoolbar) {
+        self.focusOnText2Find();
+      } else {
+        self.initFindReplace();
+      }
+    });
+  };
+
+  self.fullscreen = function () {
+    self.supporterEditionFilterAction(function () {
+      $rootScope.fullscreen = true;
+      $timeout(function () {
+        var window = electron.remote.getCurrentWindow();
+        if (window.isFullScreen()) {
+          $rootScope.previouslyFullscreen = true;
+        } else {
+          window.setFullScreen(true);
+          $rootScope.previouslyFullscreen = false;
+        }
+        self.exitfullscreenmessage = true;
+        self.focus();
+        $timeout(function () {
+          self.exitfullscreenmessage = false;
+        }, 2000);
+      },0);
+    });
+  };
+
+  self.supporterEditionFilterAction = function (action) {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $injector.get('IntegrityService').ok();
+      action();
+    }
+  };
+
+  self.toggleCaseSensitive = function() {
+    self.casesensitiveactive = !self.casesensitiveactive;
+    self.find();
+    self.focusOnText2Find();
+  };
+
+  self.toggleWholeWord = function () {
+    self.wholewordactive = !self.wholewordactive;
+    self.find();
+    self.focusOnText2Find();
+  };
+
+  self.texttofindChange = function() {
+    self.content = self.content.replace(/&nbsp;/g, ' ');
+    self.find();
+  };
+
+  self.find = function () {
+    self.executeFind(self.richtexteditor);
+  }; 
+
+  self.executeFind = function (dom) {
+
+    self.matches = null;
+
+    if (self.texttofind) {
+      self.matches = self.getSearchService().find(dom, self.texttofind,
+        self.casesensitiveactive, self.wholewordactive);
+      if (self.matches && self.matches.length > 0) {
+        self.totalmatch = self.matches.length;
+      } else {
+        self.totalmatch = 0;
+      }
+      self.currentmatch = 0;
+    }
+  }; 
+
+  self.previousMatch = function() {
+    self.moveToNextMatch('previous');
+  };
+
+  self.nextMatch = function() {
+    self.moveToNextMatch('next');
+  };
+
+  self.clearCurrentMatch = function () {
+    self.currentmatch = 0;
+  };
+
+  self.calculateFirstMatch = function(direction) {
+    if (self.matches && self.matches.length > 0) {
+      let found = false;
+      for (let i = 0; i < self.matches.length; i++) {
+        if (self.lastcursorposition <= self.matches[i].endIndex) {
+          self.currentmatch = (i + 1);
+          self.selectMatch(self.matches[i].startIndex, self.matches[i].endIndex);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        self.currentmatch = 1;
+      }
+    } 
+  };
+
+  self.calculateNextMatch = function (direction) {
+    if (direction === 'previous') {
+      self.currentmatch = self.currentmatch - 1;
+    } else {
+      self.currentmatch = self.currentmatch + 1;
+    }
+    if (self.currentmatch === 0) {
+      self.currentmatch = self.totalmatch;
+    } else if (self.currentmatch === (self.totalmatch + 1)) {
+      self.currentmatch = 1;
+    }
+  };
+
+  self.moveToNextMatch = function(direction) {
+    if (!self.matches || self.matches.length === 0)  {
+      return;
+    }
+    if (self.currentmatch) {
+      self.calculateNextMatch(direction);
+    } else {
+      self.calculateFirstMatch(direction);
+    }
+
+    self.moveToCurrentMatch();
+  };
+
+  self.moveToCurrentMatch = function() {
+    self.selectMatch(self.matches[self.currentmatch - 1].startIndex,
+      self.matches[self.currentmatch - 1].endIndex);
+
+    self.checkselectionstate();
+  };
+
+  self.selectMatch = function (start, end) {
+    $timeout(function () {
+      if (end-start>0) {
+        let selection = window.getSelection();
+        let range = self.createRange(self.richtexteditor, { 
+          start: start, end: end
+        });
+        if (range) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+          let rangeTop = self.getRangeTop(range);
+          self.richtexteditorcontainer.scrollTop = 
+            self.richtexteditorcontainer.scrollTop + rangeTop - 450;
+        }
+      }
+    }, 0);
+  };
+
+  self.createRange = function (node, chars, range) {
+    if (!range) {
+      range = document.createRange();
+    }
+
+    if (chars.end === 0) {
+      range.setEnd(node, chars.end);
+
+    } else if (node && chars.end > 0) {
+      if (node.nodeType === Node.TEXT_NODE) {
+
+        // manage start
+        if (chars.start > -1 && chars.start < node.textContent.length) {
+          range.selectNode(node);
+          range.setStart(node, chars.start);
+          chars.start = -1;
+        } else {
+          chars.start -= node.textContent.length;
+        }
+
+        // manage end
+        if (node.textContent.length < chars.end) {
+          chars.end -= node.textContent.length;
+        } else {
+          range.setEnd(node, chars.end);
+          chars.end = 0;
+        }
+
+      } else {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          range = self.createRange(node.childNodes[i], chars, range);
+          if (chars.end === 0) {
+            break;
+          }
+        }
+      }
+    }
+
+    return range;
+  };
+  
+  self.getRangeTop = function(range) {
+    let result = 0;
+    
+    if (range) {
+      let rects = range.getClientRects();
+      if (rects.length > 0) {
+        rect = rects[0];
+        result = rect.top;
+      }
+    } 
+
+    return result;
+  };
+
+  self.replaceNext = function() {
+    if (self.currentmatch) {
+      self.getSearchService().replace(self.richtexteditor, self.texttofind,
+        self.texttoreplace, self.casesensitiveactive, self.wholewordactive,
+        self.currentmatch);
+      self.updateContentFromDom();
+      self.contentChanged();
+      self.focus();
+      $timeout(function () {
+        self.nextMatch();
+      }, 0);
+      
+    } else {
+      self.nextMatch();
+    }
+  }; 
+
+  self.updateContentFromDom = function() {
+    self.content = self.richtexteditor.innerHTML;
+  };
+
+  self.replaceAll = function () {
+    self.getSearchService().replace(self.richtexteditor, self.texttofind,
+      self.texttoreplace, self.casesensitiveactive, self.wholewordactive);
+    self.updateContentFromDom();
+    self.contentChanged();
+  }; 
+
+  self.getCurrentCursorPosition = function() {
+
+    let caretOffset = 0;
+    try {
+      if (window.getSelection()) {
+        let range = window.getSelection().getRangeAt(0);
+        let preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(self.richtexteditor);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return caretOffset;
+  };
+
+  self.isTextSelected = function() {
+
+    let result = false;
+    try {
+      let selection = window.getSelection();
+      if (selection) {
+        result = selection.type !== 'None';
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
+  };
+
   self.opensettings = function() {
+
+    self.currentmatch = 0;
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: 'static',
       component: 'richtexteditorsettings',
       size: 'richtexteditorsettings'
     });
+
+    $rootScope.$emit('OPEN_POPUP_BOX');
 
     modalInstance.result.then(function() {
       // save
@@ -385,18 +846,37 @@ function RichTextEditorController($document, $rootScope, $scope, $timeout, $uibM
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
 
-    }, function() {});
+    });
+  };
+
+  self.clickoneditor = function() {
+    self.currentmatch = 0;
   };
 
   self.contentChanged = function() {
-    self.countWordsAndCharacters();
-    self.dirty = true;
+    self.countWordsAndCharacters(); 
+    if (self.texttofind) {
+      self.find();
+    }
+    $rootScope.dirty = true;
   };
 
   self.countWordsAndCharacters = function() {
     let result = WordCharacterCountService.count(self.content);
     self.words = result.words;
     self.characters = result.characters;
+  };
+
+  self.getSearchService = function() {
+    if (!SearchService) {
+      $injector.get('IntegrityService').ok();
+      SearchService = $injector.get('SearchService');
+    }
+
+    return SearchService;
   };
 }

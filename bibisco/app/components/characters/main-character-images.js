@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,16 @@ function MainCharacterImagesController($location, $routeParams,
   self.$onInit = function() {
     
     let mainCharacter = MainCharacterService.getMainCharacter($routeParams.id);
+    self.backpath = '/maincharacters/' + mainCharacter.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_characters'
+      label: 'common_characters',
+      href: '/characters/params/focus=maincharacters_' + mainCharacter.$loki
     });
     self.breadcrumbitems.push({
-      label: mainCharacter.name
+      label: mainCharacter.name,
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'
@@ -51,9 +54,5 @@ function MainCharacterImagesController($location, $routeParams,
 
   self.insert = function() {
     $location.path('/maincharacters/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
   };
 }

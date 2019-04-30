@@ -22,7 +22,9 @@
           visible="$ctrl.dropdownitems && $ctrl.dropdownitems.length > 0">
         </dropdownmenu>
         <button ng-if="$ctrl.buttonshow" type="button" class="btn btn-{{$ctrl.buttonstyle}}"
-          ng-click="$ctrl.buttonfunction()">{{$ctrl.buttonlabel | translate}}</button>
+          ng-click="$ctrl.buttonfunction()" id="{{$ctrl.buttonid}}"
+          uib-tooltip="{{$ctrl.buttontooltip | translate}}">
+          {{$ctrl.buttonlabel | translate}}</button>
       </span>
   </h1>
 </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,57 @@ angular.
       buttonlabel: '@',
       buttonstyle: '@',
       confirmmessage: '@',
-      enableconfirm: '<'
+      enableconfirm: '<',
+      hotkey: '@'
     }
   });
 
 
-function ButtonWithConfirmController(LoggerService, PopupBoxesService) {
+function ButtonWithConfirmController($scope, hotkeys, PopupBoxesService) {
 
   
-
   var self = this;
 
-  self.click = function() {
+  self.$onInit = function () {
+    self.popupopen = false;
+    if (self.hotkey) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: [self.hotkey, self.hotkey],
+          description: self.hotkey,
+          allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+          callback: function ($event) {
+            if (!self.popupopen) {
+              $event.preventDefault();
+              setTimeout(function () { 
+                document.getElementById('confirmButton').focus();
+                document.getElementById('confirmButton').click();
+              }, 0);
+            }
+          }
+        });
+    }
+  };
+
+  self.click = function () {
+    self.executeAction();
+  };
+
+  self.executeAction = function() {
     if (self.enableconfirm) {
-      PopupBoxesService.confirm(self.buttonfunction, self.confirmmessage);
+      self.popupopen = true;
+      PopupBoxesService.confirm(self.confirmokfunction, self.confirmmessage, self.confirmcancelfunction);
     } else {
       self.buttonfunction();
     }
   };
 
-  
+  self.confirmokfunction = function () {
+    self.buttonfunction();
+    self.popupopen = false;
+  };
+
+  self.confirmcancelfunction = function() {
+    self.popupopen = false;
+  };
 }

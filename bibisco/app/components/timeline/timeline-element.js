@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,6 @@ function TimelineElementController($location) {
   };
 
   self.showScene = function() {
-    $location.path('/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid);
+    $location.path('/timeline/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid + '/view');
   };
 }

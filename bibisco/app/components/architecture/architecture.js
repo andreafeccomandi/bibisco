@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,26 @@ angular.
     }
   });
 
-function ArchitectureController($injector, $location, $rootScope, $scope,
-  ArchitectureService, StrandService, SupporterEditionChecker) {
+function ArchitectureController($injector, $location, $rootScope, $routeParams, $scope,
+  ArchitectureService, CardUtilService, StrandService, SupporterEditionChecker) {
 
   var self = this;
 
   self.$onInit = function() {
+
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'architecture'
+    });
+
     self.architecturecardgriditems = self.getArchitectureCardGridItems();
     self.strandcardgriditems = self.getStrandCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n','command+n'];
   };
 
   self.getArchitectureCardGridItems = function() {
@@ -83,9 +95,9 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
       SupporterEditionChecker.showSupporterMessage();
     } else if (id === 'globalnotes' && SupporterEditionChecker.check()) {
       $injector.get('IntegrityService').ok();
-      $location.path('/architectureitems/' + id);
+      $location.path('/architectureitems/' + id + '/view');
     } else {
-      $location.path('/architectureitems/' + id);
+      $location.path('/architectureitems/' + id + '/view');
     }
   };
 
@@ -111,7 +123,7 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
   };
 
   self.strandSelect = function(id) {
-    $location.path('/strands/' + id);
+    $location.path('/strands/' + id + '/view');
   };
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {

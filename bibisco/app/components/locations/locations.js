@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,25 @@ angular.
     }
   });
 
-function LocationsController($location, $scope, LocationService) {
+function LocationsController($location, $rootScope, $routeParams, $scope,
+  CardUtilService, LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'locations'
+    });
+    
     self.cardgriditems = this.getCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
 
   self.locationsPresent = function() {
@@ -64,7 +77,7 @@ function LocationsController($location, $scope, LocationService) {
   };
 
   self.select = function(id) {
-    $location.path('/locations/' + id);
+    $location.path('/locations/' + id + '/view');
   };
 
   self.locationDescription = function(nation, state, city) {

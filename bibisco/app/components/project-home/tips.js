@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function TipsController($location, $rootScope) {
+function TipsController($location, $rootScope, $window) {
   
   var self = this;
 
@@ -33,15 +33,16 @@ function TipsController($location, $rootScope) {
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'jsp.menu.project',
-      href: '/project/projecthome'
+      href: '/projecthome'
     });
     self.breadcrumbitems.push({
       label: 'jsp.project.dialog.title.suggestions'
     });
 
+    self.hotkeys = ['esc'];
   };
 
   self.back = function() {
-    $location.path('/project/projecthome');
+    $location.path('/projecthome');
   };
 }

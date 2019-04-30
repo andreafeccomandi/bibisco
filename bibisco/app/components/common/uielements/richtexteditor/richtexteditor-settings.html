@@ -23,13 +23,17 @@
   </div>
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1 bibiscoNotSelectableText">
-      <div class="well bibiscoRichTextEditor-bodyClass-{{$ctrl.font}}{{$ctrl.fontsize}} bibiscoRichTextEditor-bodyClass-indent-{{$ctrl.indent}}">
+      <div class="well richtexteditor-settings-sample bibiscoRichTextEditor-bodyClass-{{$ctrl.font}}{{$ctrl.fontsize}} bibiscoRichTextEditor-bodyClass-indent-{{$ctrl.indent}}">
         {{'jsp.richTextEditorSettings.sampletext' | translate}}
       </div>
     </div>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
-    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
-    <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
+    <button class="btn btn-primary" type="button" 
+      uib-tooltip="{{'js.bibisco.confirm.ok.tooltip'+$root.os | translate}}"
+      ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
+    <button class="btn btn-default" type="button" 
+      uib-tooltip="{{'js.bibisco.confirm.cancel.tooltip'+$root.os | translate}}"
+      ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
   </div>
 </modal-component>

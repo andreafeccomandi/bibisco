@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,16 @@ angular.
     }
   });
 
-function ExportController($location) {
+function ExportController($location, $rootScope) {
   var self = this;
+
+  self.$onInit = function () {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'export'
+    });
+  };
 
   self.exportPdf = function() {
     $location.path('/exporttoformat/pdf');

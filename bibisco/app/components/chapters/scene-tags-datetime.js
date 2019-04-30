@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@ angular.
     templateUrl: 'components/chapters/scene-tags-datetime.html',
     controller: SceneTagsDatetimeController,
     bindings: {
-      dirty: '=',
       lastscenetime: '<',
       scenetime: '<',
       scenetimegregorian: '='
     }
   });
 
-function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleService) {
+function SceneTagsDatetimeController($rootScope, $scope, DatetimeService, LocaleService) {
 
   var self = this;
 
@@ -54,7 +53,7 @@ function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleS
     self.scenetime = newDate;
     self.scenetimeshowed = newDate;
     self.scenetimeCalendarOpen = false;
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.scenetimeselected = true;
     $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };
@@ -78,10 +77,12 @@ function SceneTagsDatetimeController($location, $scope, DatetimeService, LocaleS
     } else {
       self.scenetime = self.scenetimecustom;
     }
+
+    $rootScope.dirty = true;
   };
 
   self.changeScenetimeCustom = function() {
-    self.dirty = true;
+    $rootScope.dirty = true;
     self.scenetime = self.scenetimecustom;
     $scope.$emit('SCENE_TIME_SELECTED',  self.scenetime);
   };

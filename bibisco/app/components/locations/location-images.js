@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,16 @@ function LocationImagesController($location, $rootScope, $routeParams,
     
     let location = LocationService.getLocation($routeParams.id);
     let locationName = LocationService.calculateLocationName(location);
+    self.backpath = '/locations/ ' + location.$loki + '/view';
     
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_locations'
+      label: 'common_locations',
+      href: '/locations/params/focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
-      label: locationName
+      label: locationName,
+      href: self.backpath
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -52,9 +55,5 @@ function LocationImagesController($location, $rootScope, $routeParams,
 
   self.insert = function() {
     $location.path('/locations/' + $routeParams.id + '/images/new');
-  };
-
-  self.back = function() {
-    $location.path('/locations/' + $routeParams.id);
   };
 }

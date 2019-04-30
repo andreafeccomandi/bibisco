@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,16 @@ function SecondaryCharacterAddImageController($routeParams, SecondaryCharacterSe
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_characters'
+      label: 'common_characters',
+      href: '/characters/params/focus=secondarycharacters_' + secondaryCharacter.$loki
     });
     self.breadcrumbitems.push({
-      label: secondaryCharacter.name
+      label: secondaryCharacter.name,
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
     });
     self.breadcrumbitems.push({
-      label: 'common_characters_images'
+      label: 'common_characters_images',
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'

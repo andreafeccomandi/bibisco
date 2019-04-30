@@ -10,11 +10,10 @@
   autosaveenabled="$ctrl.autosaveenabled"
   characters="$ctrl.characters"
   content="$ctrl.content"
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
   questionselected="$ctrl.questionselected"
-  showprojectexplorer="$ctrl.showprojectexplorer"
+  showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
 </interview>
@@ -23,32 +22,28 @@
   autosaveenabled="$ctrl.autosaveenabled"
   characters="$ctrl.characters"
   content="$ctrl.content" 
-  dirty="$ctrl.dirty"
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
-  savedcharacters="$ctrl.savedcharacters"
-  savedcontent="$ctrl.savedcontent"
-  savedwords="$ctrl.savedwords"
-  showprojectexplorer="$ctrl.showprojectexplorer"
+  showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">
 </freetext>
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <detailfootertop autosaveenabled="$ctrl.autosaveenabled" 
+    <detailfootertop 
+      autosaveenabled="$ctrl.autosaveenabled" 
       characters="$ctrl.characters"
-      editmode="$ctrl.editmode" 
+      editmode="$ctrl.editmode"
       lastsave="$ctrl.maincharacter.lastsave" 
       words="$ctrl.words"
       wordscharactersenabled="true">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$ctrl.showprojectexplorer" visible="true"></projectexplorerbutton>
+        <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
         <interviewswitch ng-if="$ctrl.editmode"
-          dirty="$ctrl.dirty"
           freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
         </interviewswitch>
       </span>
@@ -58,18 +53,15 @@
           open="up"
           visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
-        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" 
-          backfunction="$ctrl.back()" 
+        <editsavebackbuttonbar 
+          autosaveenabled="$ctrl.autosaveenabled" 
+          backpath="$ctrl.backpath"
           characters="$ctrl.characters"
-          content="$ctrl.content"
-          dirty="$ctrl.dirty" 
           editbuttonvisible="true" 
-          editmode="$ctrl.editmode" 
-          savedcharacters="$ctrl.savedcharacters" 
-          savedcontent="$ctrl.savedcontent" 
-          savedwords="$ctrl.savedwords"
+          editfunction="$ctrl.edit()"
+          editmode="$ctrl.editmode"
           savefunction="$ctrl.save()"
-          showprojectexplorer="$ctrl.showprojectexplorer"
+          showprojectexplorer="$root.showprojectexplorer"
           words="$ctrl.words">
         </editsavebackbuttonbar>
       </span>

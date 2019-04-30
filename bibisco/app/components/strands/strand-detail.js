@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,29 +19,31 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, ChapterService, 
-  StrandService, UtilService) {
+function StrandDetailController($location, $rootScope, $routeParams, 
+  ChapterService, StrandService, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     self.strand = self.getStrand($routeParams.id);
+    self.mode = $routeParams.mode;
+    let backpath = '/architecture/params/focus=strands_' + self.strand.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture'
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.strand.name
     });
 
-    self.deleteforbidden = self.isDeleteForbidden();
-  };
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
 
-  self.back = function() {
-    $location.path('/project/architecture');
+    self.deleteforbidden = self.isDeleteForbidden();
   };
 
   self.changeStatus = function(status) {
@@ -56,7 +58,11 @@ function StrandDetailController($location, $routeParams, ChapterService,
   self.delete = function() {
     StrandService.remove(self.strand
       .$loki);
-    $location.path('/project/architecture');
+    $location.path('/architecture');
+  };
+
+  self.edit = function () {
+    $location.path('/strands/ ' + self.strand.$loki + '/edit');
   };
 
   self.getStrand = function(id) {

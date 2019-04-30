@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,18 @@ angular.
     bindings: {
       actionitems: '<',
       autosaveenabled: '<',
-      backfunction: '&',
-      characters: '=',
-      content: '=',
-      dirty: '=',
+      backpath: '<',
+      characters: '<',
       hideprojectexplorerbutton: '<',
       imagesenabled: '<',
-      editmode: '=',
+      editmode: '<',
+      editfunction: '&',
       lastsave: '<',
-      savedcharacters: '=',
-      savedcontent: '=',
-      savedwords: '=',
       savefunction: '&',
       showimagesfunction: '&',
       showimageslabel: '@',
       showprojectexplorer: '=',
-      words: '=',
+      words: '<',
       wordscharactersenabled: '<'
     }
   });

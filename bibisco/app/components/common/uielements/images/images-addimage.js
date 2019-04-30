@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ angular.
     }
   });
 
-function ImagesAddImageController($location, $rootScope) {
+function ImagesAddImageController($location, $rootScope, $scope, PopupBoxesService) {
 
   var self = this;
 
@@ -35,6 +35,9 @@ function ImagesAddImageController($location, $rootScope) {
 
     self.imagename;
     self.imagepath;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.save = function(isValid) {
@@ -43,11 +46,14 @@ function ImagesAddImageController($location, $rootScope) {
         name: self.imagename, 
         path: self.imagepath
       });
+      self.checkExit = {
+        active: false
+      };
       $location.path(self.exitpath);
     }
   };
 
-  self.back = function() {
-    $location.path(self.exitpath);
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, $scope.imagesAddImageForm.$dirty, self.checkExit);
+  });
 }

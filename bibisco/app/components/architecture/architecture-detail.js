@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: ArchitectureDetailController
   });
 
-function ArchitectureDetailController($location, $routeParams,
+function ArchitectureDetailController($location, $rootScope, $routeParams, 
   ArchitectureService) {
 
   var self = this;
@@ -27,24 +27,30 @@ function ArchitectureDetailController($location, $routeParams,
   self.$onInit = function() {
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
+    self.mode = $routeParams.mode; 
+    let backpath = '/architecture/params/focus=architecture_' + $routeParams.id;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/project/architecture'
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
-  };
 
-  self.back = function() {
-    $location.path('/project/architecture');
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
   self.changeStatus = function(status) {
     self.architectureitem.status = status;
     ArchitectureService.update(self.architectureitem);
+  };
+
+  self.edit = function () {
+    $location.path('/architectureitems/' + $routeParams.id + '/edit');
   };
 
   self.getArchitectureItem = function(id) {

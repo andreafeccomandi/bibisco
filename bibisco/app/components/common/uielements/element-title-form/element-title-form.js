@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,15 @@ angular.
     }
   });
 
-function ElementTitleFormController($location, $rootScope) {
+function ElementTitleFormController($location, $rootScope, $scope, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
     self.title = self.titlevalue;
+    self.checkExit = {
+      active: true
+    };
   };
 
   self.save = function(isValid) {
@@ -43,11 +46,14 @@ function ElementTitleFormController($location, $rootScope) {
       self.savefunction({
         title: self.title
       });
+      self.checkExit = {
+        active: false
+      };
       $location.path(self.exitpath);
     }
   };
 
-  self.back = function() {
-    $location.path(self.exitpath);
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, $scope.elementTitleForm.$dirty, self.checkExit);
+  });
 }

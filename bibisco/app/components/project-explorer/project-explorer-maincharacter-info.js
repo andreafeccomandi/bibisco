@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,17 @@ angular.
     templateUrl: 'components/project-explorer/project-explorer-maincharacter-info.html',
     controller: ProjectExplorerMainCharacterInfoController,
     bindings: {
+      characterid: '<',
       info: '<',
+      label: '@',
       type: '<'
     }
   });
 
-function ProjectExplorerMainCharacterInfoController() {}
+function ProjectExplorerMainCharacterInfoController($location) {
+  
+  var self = this;
+  self.gotoElement = function (path) {
+    $location.path(path);
+  }; 
+}

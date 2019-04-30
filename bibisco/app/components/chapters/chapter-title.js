@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,34 +26,39 @@ function ChapterTitleController($location, $routeParams, ChapterService) {
 
     // common breadcrumb root
     self.breadcrumbItems = [];
-    self.breadcrumbItems.push({
-      label: 'common_chapters'
-    });
 
     if ($routeParams.id !== undefined) {
-      let chapter = ChapterService.getChapter(
-        $routeParams.id);
+      let chapter = ChapterService.getChapter($routeParams.id);
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
-        label: '#' + chapter.position + ' ' + chapter.title
+        label: 'common_chapters',
+        href: '/chapters/params/focus=chapters_' + chapter.$loki
+      });
+      self.breadcrumbItems.push({
+        label: '#' + chapter.position + ' ' + chapter.title,
+        href: '/chapters/' + chapter.$loki
       });
       self.breadcrumbItems.push({
         label: 'jsp.chapter.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/chapters/' + $routeParams.id;
+      self.exitpath = '/chapters/' + chapter.$loki;
       self.title = chapter.title;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.updateTitle';
     } else {
+      self.breadcrumbItems.push({
+        label: 'common_chapters',
+        href: '/chapters'
+      });
 
       // create breadcrumb items
       self.breadcrumbItems.push({
         label: 'jsp.chapters.dialog.title.createChapter'
       });
 
-      self.exitpath = '/project/chapters';
+      self.exitpath = '/chapters';
       self.name = null;
       self.pageheadertitle =
         'jsp.chapters.dialog.title.createChapter';

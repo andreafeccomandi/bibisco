@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ angular.
     },
   });
 
-function RichtexteditorSettingsController(BibiscoDbConnectionService,
-  BibiscoPropertiesService, LoggerService, RichTextEditorPreferencesService) {
+function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
+  BibiscoPropertiesService, hotkeys, RichTextEditorPreferencesService) {
 
   var self = this;
   self.font;
@@ -83,6 +83,16 @@ function RichtexteditorSettingsController(BibiscoDbConnectionService,
       label: 'jsp.common.button.disabled',
       value: 'false'
     }];
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['enter', 'enter'],
+        description: 'enter',
+        callback: function ($event) {
+          $event.preventDefault();
+          self.ok();
+        }
+      });
   };
 
   self.ok = function() {

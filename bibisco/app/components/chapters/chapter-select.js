@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: ChapterSelectController
   });
 
-function ChapterSelectController($location, $rootScope, $routeParams, ChapterService) {
+function ChapterSelectController($location, $rootScope, $routeParams, $scope, 
+  ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -28,18 +29,28 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
     self.chapterid = $routeParams.chapterid;
     self.sourceChapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
+    self.backpath = '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view';
+    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+    if (self.fromtimeline) {
+      self.backpath = '/timeline' + self.backpath;
+    }
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'common_chapters'
+      label: 'common_chapters',
+      href: '/chapters/params/focus=chapters_' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({
-      label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title
+      label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title,
+      href: '/chapters/' + self.sourceChapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
+
     self.breadcrumbitems.push({
-      label: self.scene.title
+      label: self.scene.title,
+      href: self.backpath
     });
+
     self.breadcrumbitems.push({
       label: 'jsp.scene.button.moveSceneToAnotherChapter.title'
     });
@@ -57,6 +68,14 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         self.selectedItem = chapterItem;
       }
     }
+
+    self.checkExit = {
+      active: true
+    };
+  };
+
+  self.selectChapter = function() {
+
   };
 
   self.save = function(isValid) {
@@ -65,11 +84,13 @@ function ChapterSelectController($location, $rootScope, $routeParams, ChapterSer
         ChapterService.moveSceneToAnotherChapter(self.scene.$loki, self.selectedItem.key);
       } 
       $location.path('/chapters/' + self.selectedItem.key);
+      self.checkExit = {
+        active: false
+      };
     }
   };
 
-  self.back = function() {
-    $location.path('/chapters/' + self.chapterid + 
-      '/scenes/' + $routeParams.sceneid);
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, $scope.chapterSelectForm.$dirty, self.checkExit);
+  });
 }

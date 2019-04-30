@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 const electron = require('electron');
 const app = electron.app;
 const ipc = require('electron').ipcMain;
+
+// enable armony_regexp_lookbehind
+app.commandLine.appendSwitch('js-flags', '--harmony_regexp_lookbehind');
 
 // prevent window being garbage collected
 let mainWindow;
@@ -128,9 +131,9 @@ function createMainWindow() {
   }
   const win = new electron.BrowserWindow({
     width: 1024,
-    height: 768,
+    height: 620,
     minWidth: 1024,
-    minHeight: 768,
+    minHeight: 620,
     icon: icon,
     show: false
   });

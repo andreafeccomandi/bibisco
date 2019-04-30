@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,58 +16,64 @@ angular.
   module('bibiscoApp').
   component('itemdetail', {
     templateUrl: 'components/objects/object-detail.html',
-    controller: ItemDetailController
+    controller: ObjectDetailController
   });
 
-function ItemDetailController($location, $routeParams, ChapterService, 
-  ObjectService, UtilService) {
+function ObjectDetailController($location, $rootScope, $routeParams,
+  ChapterService, ObjectService, UtilService) {
 
   var self = this;
 
-  self.$onInit = function() {
+  self.$onInit = function () {
 
     self.object = self.getObject($routeParams.id);
+    self.mode = $routeParams.mode;
+    let backpath = '/objects/params/focus=objects_' + self.object.$loki;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/project/objects'
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: self.object.name
     });
-  
+
     self.deleteforbidden = self.isDeleteForbidden();
+    
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
   };
 
-  self.back = function() {
-    $location.path('/project/objects');
-  };
-
-  self.changeStatus = function(status) {
+  self.changeStatus = function (status) {
     self.object.status = status;
     ObjectService.update(self.object);
   };
 
-  self.changeTitle = function() {
+  self.changeTitle = function () {
     $location.path('/objects/' + self.object.$loki + '/title');
   };
 
-  self.delete = function() {
+  self.delete = function () {
     ObjectService.remove(self.object
       .$loki);
-    $location.path('/project/objects');
+    $location.path('/objects');
   };
 
-  self.getObject = function(id) {
+  self.edit = function () {
+    $location.path('/objects/ ' + self.object.$loki + '/edit');
+  };
+
+  self.getObject = function (id) {
     return ObjectService.getObject(id);
   };
 
-  self.savefunction = function() {
+  self.savefunction = function () {
     ObjectService.update(self.object);
   };
 
-  self.showimagesfunction = function() {
+  self.showimagesfunction = function () {
     $location.path('/objects/' + self.object.$loki + '/images');
   };
 

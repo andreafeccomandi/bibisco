@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
+angular.module('bibiscoApp').service('PopupBoxesService', function ($location, 
+  $rootScope, $timeout, $uibModal, $window) {
   'use strict';
 
   return {
@@ -30,10 +31,13 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         size: 'sm'
       });
 
+      $rootScope.$emit('OPEN_POPUP_BOX');
+
       modalInstance.result.then(function() {
         // ok: unreachable code: we're in alert!
       }, function() {
         // cancel
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       });
     },
     confirm: function(confirmFunction, confirmMessage, cancelFunction) {
@@ -49,13 +53,43 @@ angular.module('bibiscoApp').service('PopupBoxesService', function($uibModal) {
         size: 'sm'
       });
 
+      $rootScope.$emit('OPEN_POPUP_BOX');
+
       modalInstance.result.then(function() {
         confirmFunction();
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       }, function() {
         if (cancelFunction) {
           cancelFunction();
         }
+        $rootScope.$emit('CLOSE_POPUP_BOX');
       });
+    },
+
+    locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction) {
+      if (checkExit.active && formDirty) {
+        event.preventDefault();
+        let wannaGoPath = $location.path();
+        checkExit.active = false;
+
+        this.confirm(function () {
+          if (confirmFunction) {
+            confirmFunction();
+          }
+          $timeout(function () {
+            if (wannaGoPath === $rootScope.previousPath) {
+              $window.history.back();
+            } else {
+              $location.path(wannaGoPath);
+            }
+          }, 0);
+        },
+        'js.common.message.confirmExitWithoutSave',
+        function () {
+          checkExit.active = true;
+          $rootScope.$emit('LOCATION_CHANGE_DENIED');
+        });
+      }
     }
   };
 });

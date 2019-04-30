@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,27 @@ angular.
     }
   });
 
-function CharactersController($location, $scope, MainCharacterService,
-  SecondaryCharacterService) {
+function CharactersController($location, $rootScope, $routeParams, $scope, 
+  CardUtilService, MainCharacterService, SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
+    
+    // show menu item
+    $rootScope.$emit('SHOW_PAGE', {
+      item: 'characters'
+    });
+    
     self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
     self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
+
+    // focus element
+    CardUtilService.focusElementInPath($routeParams.params);
+
+    // hotkeys
+    self.maincharacterhotkeys = ['ctrl+n', 'command+n'];
+    self.secondarycharacterhotkeys = ['ctrl+shift+n', 'command+shift+n'];
   };
 
   self.createMainCharacter = function() {
@@ -76,7 +89,7 @@ function CharactersController($location, $scope, MainCharacterService,
   };
 
   self.secondaryCharacterSelect = function(id) {
-    $location.path('/secondarycharacters/' + id);
+    $location.path('/secondarycharacters/' + id + '/view');
   };
 
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {

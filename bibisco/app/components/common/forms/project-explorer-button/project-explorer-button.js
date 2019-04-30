@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,28 @@ angular.
     }
   });
 
-function ProjectExplorerButtonController() {
+function ProjectExplorerButtonController($rootScope, $scope, hotkeys) {
 
   var self = this;
 
   self.toggleProjectExplorer = function () {
-    self.showprojectexplorer = !self.showprojectexplorer;
+    $rootScope.showprojectexplorer = !$rootScope.showprojectexplorer;
+
+    if ($rootScope.showprojectexplorer) {
+      $rootScope.projectExplorerCache.set($rootScope.actualPath , null);
+    } else {
+      $rootScope.projectExplorerCache.delete($rootScope.actualPath);
+    }
   };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+g', 'command+g'],
+      description: 'projectexplorer',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.toggleProjectExplorer();
+      }
+    });
 
 }

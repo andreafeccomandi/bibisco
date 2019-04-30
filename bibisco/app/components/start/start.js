@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,8 @@ angular.
     controller: StartController
   });
 
-function StartController($location, $rootScope, LoggerService,
-  ProjectService) {
+function StartController($location, $rootScope, ProjectService, SupporterEditionChecker) {
   
-
   // hide menu
   $rootScope.$emit('SHOW_START');
 
@@ -50,5 +48,13 @@ function StartController($location, $rootScope, LoggerService,
 
   self.info = function () {
     $location.path('/info');
+  };
+
+  self.createSequel = function() {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $location.path('/createsequel');
+    }
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ angular.
     controller: ImportProjectController
   });
 
-function ImportProjectController($location, $rootScope, $scope, ContextMenuService, 
-  ProjectService) {
+function ImportProjectController($location, $rootScope, $scope, $timeout, 
+  $translate, ContextMenuService, hotkeys, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -28,17 +28,33 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
   var self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
-  self.alreadyPresent = false;
-  self.openConfirm = false;
   self.projectName;
   self.projectId;
+
+  self.$onInit = function () {
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['esc', 'esc'],
+        description: 'esc',
+        callback: function ($event) {
+          $event.preventDefault();
+          setTimeout(function () {
+            document.getElementById('importProjectBackButton').focus();
+            document.getElementById('importProjectBackButton').click();
+          }, 0);
+        }
+      });
+
+    self.checkExit = {
+      active: true
+    };
+    self.backpath = '/start';
+  };
 
 
   self.selectFileToImport = function(file) {
     self.fileToImport = file;
     self.invalidArchive = false;
-    self.alreadyPresent = false;
-    self.openConfirm = false;
     self.projectName = null;
     self.projectId = null;
     $scope.$apply();
@@ -48,15 +64,18 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
         ContextMenuService.create();
-        $location.path('/project/projecthome');
+        $location.path('/projecthome');
       });
   };
 
   self.save = function(isValid) {
-    if (!isValid || self.invalidArchive || self.alreadyPresent) {
+    if (!isValid || self.invalidArchive) {
       return;
     }
 
+    self.checkExit = {
+      active: false
+    };
     ProjectService.importProjectArchiveFile(self.fileToImport, function(
       result) {
 
@@ -65,20 +84,32 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
         ProjectService.import(result.projectId, result.projectName,
           function() {
             ContextMenuService.create();
-            $location.path('/project/projecthome');
+            $location.path('/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });
+
+      // is valid archive and the project is present in bibisco installation
       } else if (result.isValidArchive && result.isAlreadyPresent) {
-        self.invalidArchive = false;
-        self.alreadyPresent = true;
-        self.openConfirm = true;
+        self.invalidArchive = false;        
+        $scope.$apply();
+
         self.projectName = result.projectName;
         self.projectId = result.projectId;
-        $scope.$apply();
+        let message = $translate.instant('jsp.closeImportProject.importAlreadyPresent.confirm', { projectName: self.projectName });
+        PopupBoxesService.confirm(function () {
+          $timeout(function () {
+            self.confirmImportExistingProject();
+          }, 0);
+        },
+        message,
+        function () {
+          self.projectName = null;
+          self.projectId = null;
+        });
+
+      // is not valid archive
       } else {
         self.invalidArchive = true;
-        self.alreadyPresent = false;
-        self.openConfirm = false;
         self.projectName = null;
         self.projectId = null;
         $scope.$apply();
@@ -87,7 +118,7 @@ function ImportProjectController($location, $rootScope, $scope, ContextMenuServi
     });
   };
 
-  self.back = function() {
-    $location.path('/start');
-  };
+  $scope.$on('$locationChangeStart', function (event) {
+    PopupBoxesService.locationChangeConfirm(event, self.fileToImport, self.checkExit);
+  });
 }

@@ -1,6 +1,8 @@
 <div ng-if="$ctrl.strands" ng-repeat="strand in $ctrl.strands track by $index">
-    <h5>{{strand.name}}</h5>
-    <projectexplorersimpletext text="strand.description">
+    <projectexplorersimpletext 
+        text="strand.description"
+        path="/strands/{{strand.$loki}}/edit"
+        sectiontitle="strand.name">
     </projectexplorersimpletext>
 </div>
 <div ng-if="!$ctrl.strands">

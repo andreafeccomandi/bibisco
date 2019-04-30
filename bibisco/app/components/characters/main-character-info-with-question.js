@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2018 Andrea Feccomandi
+ * Copyright (C) 2014-2019 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,15 +30,18 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
+    self.mode = $routeParams.mode;
+    self.editmode = (self.mode !== 'view');
+    let backpath = '/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/project/characters'
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id
+      href: backpath
     });
     self.breadcrumbitems.push({
       label: 'common_' + $routeParams.info
@@ -49,18 +52,24 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.autosaveenabled;
     self.content;
-    self.dirty = false;
-    self.editmode = false;
-    self.questionselected;
-    self.savedcontent;
-    self.showprojectexplorer = false;
+    $rootScope.dirty = false;
+    
+    if ($routeParams.question) {
+      self.questionselected = parseInt($routeParams.question);
+    } else {
+      self.questionselected = 0;
+    }
+
+    if (self.mode === 'view') {
+      self.backpath = backpath;
+    }
 
     self.characters;
     self.words;
   };
 
-  self.back = function() {
-    $location.path('/maincharacters/' + $routeParams.id);
+  self.edit = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/edit');
   };
 
   self.save = function () {

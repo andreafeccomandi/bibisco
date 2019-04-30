@@ -2,7 +2,9 @@
   <div class="row">
     <pageheader headertitle="{{$ctrl.project().name}}"
      buttonlabel="jsp.common.button.back" buttonfunction="$ctrl.back()" 
-     buttonshow="true" buttonstyle="default"
+     buttonshow="true" buttonstyle="default" 
+     buttonhotkey="$ctrl.hotkeys"
+     buttontooltip="{{'back_button_tooltip'+$root.os}}"
      dropdownopen="down"
      dropdownitems="$ctrl.actionitems">
     </pageheader>
