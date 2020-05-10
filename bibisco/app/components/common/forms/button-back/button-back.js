@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/forms/button-back/button-back.html',
     controller: ButtonBackController,
     bindings: {
+      disabled: '<',
       fixedpath: '<'
     }
   });
@@ -36,14 +37,14 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
         description: 'back',
         allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
         callback: function ($event) {
-          if (!self.confirmdialogopen && !self.buttondisabled) {
+          if (!self.confirmdialogopen && !self.buttonpaused) {
             $event.preventDefault();
             self.back();
           }
         }
       });
     
-    self.buttondisabled = false;
+    self.buttonpaused = false;
     self.confirmdialogopen = false;
   };
 
@@ -56,18 +57,22 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
   });
 
   $rootScope.$on('LOCATION_CHANGE_DENIED', function () {
-    self.buttondisabled = false;
+    self.buttonpaused = false;
   });
 
   self.back = function() {
+    if (self.disabled) {
+      return;
+    }
+
     if ($rootScope.fullscreen) {
       var window = electron.remote.getCurrentWindow();
       $rootScope.fullscreen = false;
       if (!$rootScope.previouslyFullscreen) {
         window.setFullScreen(false);
       }
-    } else if (!self.buttondisabled) {
-      self.buttondisabled = true;
+    } else if (!self.buttonpaused) {
+      self.buttonpaused = true;
       if (self.fixedpath) {
         $location.path(self.fixedpath);
       } else {

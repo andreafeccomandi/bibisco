@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -123,10 +123,9 @@ function SettingsController($injector, $location, $rootScope, $scope,
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }
-    $window.history.back();
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $scope.settingsForm.$dirty, self.checkExit);
+    PopupBoxesService.locationChangeConfirm(event, $scope.settingsForm.$dirty, self.checkExit, self.back);
   });
 }

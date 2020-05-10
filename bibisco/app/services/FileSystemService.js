@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     isDirectory: function(path) {
       return fs.lstatSync(path).isDirectory();
     },
+    readFile: function(path) {
+      return fs.readFileSync(path);
+    },
     rename: function(oldPath, newPath) {
       fs.renameSync(oldPath, newPath);
     },
@@ -97,6 +100,12 @@ angular.module('bibiscoApp').service('FileSystemService', function(
         zippedFilePath: zippedFilePath,
         destinationFolder: destinationFolder,
         callbackId: callbackId
+      });
+    },
+    writeBase64DataToFile: function(dataURL, filePath) {
+      const base64Data = dataURL.replace(/^data:image\/png;base64,/, '');
+      fs.writeFile(filePath, base64Data, 'base64', function (err) {
+        console.log(err);
       });
     },
     writeFileSync: function(path, buffer) {

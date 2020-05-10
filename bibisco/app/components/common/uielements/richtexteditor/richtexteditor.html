@@ -85,22 +85,22 @@
   <div class="btn-group" data-toggle="buttons-checkbox">
     <button class="btn btn-default btn-sm" ng-click="$ctrl.alignleft()"
       ng-class="{ 'active': $ctrl.alignleftactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyleft' | translate}}">
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyleft'+$ctrl.os | translate}}">
       <i class="fa fa-align-left" aria-hidden="true"></i>
     </button>
     <button class="btn btn-default btn-sm" ng-click="$ctrl.aligncenter()"
       ng-class="{ 'active': $ctrl.aligncenteractive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifycenter' | translate}}">
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifycenter'+$ctrl.os | translate}}">
       <i class="fa fa-align-center" aria-hidden="true"></i>
     </button>
     <button class="btn btn-default btn-sm" ng-click="$ctrl.alignright()"
       ng-class="{ 'active': $ctrl.alignrightactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyright' | translate}}">
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyright'+$ctrl.os | translate}}">
       <i class="fa fa-align-right" aria-hidden="true"></i>
     </button>
     <button class="btn btn-default btn-sm" ng-click="$ctrl.justify()"
       ng-class="{ 'active': $ctrl.justifyactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyblock' | translate}}">
+      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyblock'+$ctrl.os | translate}}">
       <i class="fa fa-align-justify" aria-hidden="true"></i>
     </button>
   </div>
@@ -119,7 +119,7 @@
   </div>
   <div class="btn-group">
     <button class="btn btn-default btn-sm" ng-click="$ctrl.opensettings()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.dialog.richTextEditorSettings.title' | translate}}">
+      uib-tooltip="{{'jsp.start.button.settings' | translate}}">
       <i class="fa fa-cog" aria-hidden="true"></i>
     </button>
   </div>

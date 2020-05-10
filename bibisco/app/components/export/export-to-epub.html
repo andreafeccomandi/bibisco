@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  </div>
+  <div class="row">
+    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+    </pageheader>
+  </div>
+</div>
+
+<div class="export-container">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <form name="exportToEpubForm" class="form-horizontal" ng-submit="$ctrl.export(exportToEpubForm.$valid)" novalidate>
+        <textinputfield field="exportToEpubForm.author" model="$ctrl.author"
+          name="author" autofocus required="true" label="common_author" labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="exportToEpubForm.publisher" model="$ctrl.publisher"
+          name="publisher" required="false" label="epub_publisher" labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="exportToEpubForm.copyright" model="$ctrl.copyright"
+          name="copyright" required="false" label="epub_copyright" labelcols="3" inputcols="8"
+          placeholder="epub_copyright_placeholder">
+        </textinputfield>
+        <textinputfield field="exportToEpubForm.rights" model="$ctrl.rights"
+          name="rights" required="false" label="epub_rights" labelcols="3" inputcols="8"
+          placeholder="epub_rights_placeholder">
+        </textinputfield>
+        <textinputfield field="exportToEpubForm.isbn" model="$ctrl.isbn"
+          name="isbn" required="false" label="epub_isbn" labelcols="3" inputcols="8">
+        </textinputfield>
+        <textinputfield field="exportToEpubForm.website" model="$ctrl.website"
+          name="website" required="false" label="epub_website" labelcols="3" inputcols="8">
+        </textinputfield>
+        <div class="form-group">
+          <label class="col-sm-3 control-label control-label" for="coverimage">{{'epub_cover_image' | translate}}</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <input name="coverimage" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.coverImage"
+                placeholder="{{'epub_cover_image_placeholder' | translate}}"/>
+              <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="$ctrl.selectCoverImage()">{{'jsp.common.button.select' | translate}}</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" 
+            for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
+          <div class="col-sm-8">
+            <directoryselect model='$ctrl.exportpath' 
+              field='exportToEpubForm.exportpath' 
+              name='exportpath' 
+              placeholder='jsp.export.dialog.exportProjectDirectory.label'
+              onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+              forbiddendirectory='$ctrl.forbiddenDirectory' required>
+            </directoryselect>
+          </div>
+        </div>
+
+        <formbuttons backpath="$ctrl.backpath" form="exportToEpubForm" 
+          saving="$ctrl.saving" offsetcols="3" sizecols="8">
+        </formbuttons>
+    </div>
+    </form>
+  </div>
+</div>
+</div>

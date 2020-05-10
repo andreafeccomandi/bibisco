@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ function ProjectExplorerMainCharacterController($location) {
   var self = this;
 
   self.$onInit = function () {
-    self.images = self.maincharacter.images;
   };
 
   self.gotoElement = function (path) {

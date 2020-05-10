@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ angular.
       autosaveenabled: '=',
       characters: '=',
       content: '=',
+      todaywords: '=?',
+      totalwords: '=?',
       words: '='
     }
   });
@@ -78,8 +80,14 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.savedcharacters = self.characters;
     self.savedwords = self.words;
 
+    // today and total offset
+    if (!self.todaywords) {self.todaywords = 0;};
+    if (!self.totalwords) {self.totalwords = 0;};
+    self.todayOffset = self.todaywords - self.words;
+    self.totalOffset = self.totalwords - self.words;
+
     // init content
-    if (self.content === '') {
+    if (!self.content || self.content === '') {
       self.content = '<p><br></p>';
     } else {
       // replace &nbsp; with spaces
@@ -316,6 +324,38 @@ function RichTextEditorController($document, $injector, $rootScope,
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.fullscreen();
+      }
+    }).
+    add({
+      combo: ['ctrl+shift+l', 'command+shift+l'],
+      description: 'alignleft',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.alignleft();
+      }
+    }).
+    add({
+      combo: ['ctrl+shift+r', 'command+shift+r'],
+      description: 'alignright',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.alignright();
+      }
+    }).
+    add({
+      combo: ['ctrl+shift+c', 'command+shift+c'],
+      description: 'aligncenter',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.aligncenter();
+      }
+    }).
+    add({
+      combo: ['ctrl+shift+j', 'command+shift+j'],
+      description: 'justify',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.justify();
       }
     });
 
@@ -834,6 +874,11 @@ function RichTextEditorController($document, $injector, $rootScope,
       animation: true,
       backdrop: 'static',
       component: 'richtexteditorsettings',
+      resolve: {
+        context: function () {
+          return 'richtexteditor';
+        }
+      },
       size: 'richtexteditorsettings'
     });
 
@@ -869,6 +914,9 @@ function RichTextEditorController($document, $injector, $rootScope,
     let result = WordCharacterCountService.count(self.content);
     self.words = result.words;
     self.characters = result.characters;
+    self.todaywords = self.words + self.todayOffset;
+    self.totalwords = self.words + self.totalOffset;
+
   };
 
   self.getSearchService = function() {

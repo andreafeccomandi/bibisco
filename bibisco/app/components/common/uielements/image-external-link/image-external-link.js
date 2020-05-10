@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/image-external-link/image-external-link.html',
     controller: ImageExternalLinkController,
     bindings: {
+      dimension: '@',
       src: '@',
       url: '@'
     },

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -73,6 +73,10 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
   };
 
   self.save = function () {
+
+    if (self.mode === 'view') {
+      return;
+    }
 
     if (self.maincharacter[self.type].freetextenabled === true) {
       self.maincharacter[self.type].freetext = self.content;

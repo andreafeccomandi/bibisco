@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -72,9 +72,12 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           if (name === 'exporttitle') {
             currentText = [];
             boldActive = true;
+          } else if (name === 'exportauthor') {
+            currentText = [];
+            boldActive = false;
           } else if (name === 'exportsubtitle') {
             currentText = [];
-            boldActive = true;
+            boldActive = false;
           } else if (name === 'h1') {
             h1counter += 1;
             currentText = [];
@@ -158,6 +161,14 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
               text: currentText,
               alignment: 'center',
               margin: exportitleMargins
+            });
+            currentText = [];
+            boldActive = false;
+          } else if (name === 'exportauthor') {
+            content.push({
+              text: currentText,
+              alignment: 'center',
+              margin: paragraphMargins
             });
             currentText = [];
             boldActive = false;

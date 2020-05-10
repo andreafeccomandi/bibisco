@@ -1,0 +1,105 @@
+<div class="main-section-header">
+    <div class="container">
+        <div class="row">
+            <pageheader ng-show="!$ctrl.editMode" headertitle="{{'relations_title'| translate}}" 
+                buttonlabel="{{'jsp.common.button.edit' | translate}}"
+                buttonfunction="$ctrl.edit()" buttonshow="!$ctrl.editMode && !$ctrl.emptyRelations" 
+                buttonstyle="primary" buttontooltip="{{'edit_tooltip'+$root.os | translate}}"
+                button2label="{{'common_export_button' | translate}}"
+                button2function="$ctrl.export()" button2show="!$ctrl.editMode && !$ctrl.emptyRelations" 
+                button2style="default" 
+                tipcode="relationsTip" tipenabled="$ctrl.editMode" tipmodalstyle="relationstip"
+                dropdownopen="down" dropdownitems="$ctrl.actionitems">
+            </pageheader>
+
+            <div ng-show="$ctrl.editMode" class="col-sm-12 page-header">
+                <h1><span class="pull-left page-header-truncate-title">
+                     {{'relations_title'| translate}}
+                    </span>
+                    <span class="pull-right page-header-buttonbar">
+                        <editsavebackbuttonbar autosaveenabled="$ctrl.autosaveenabled" backpath="$ctrl.backpath" backdisabled="!$ctrl.editMode"
+                            editbuttonvisible="!$ctrl.editMode" editmode="$ctrl.editMode" editfunction="$ctrl.edit()"
+                            savefunction="$ctrl.save()">
+                        </editsavebackbuttonbar>
+                    </span>
+                </h1>
+              </div>
+        </div>
+    </div>
+</div>
+
+<div ng-show="!$ctrl.editMode && $ctrl.emptyRelations">
+    <div class="container">
+        <div class="card-grid-emptyitems card-grid-emptyitems-no-header-subtitle-full">    
+            <div class="container">
+                <jumbotronbutton text="{{'relations_emptylist' | translate}}"
+                    buttonlabel="{{'relations_create_first' | translate}}"
+                    buttonfunction="$ctrl.edit()"
+                    buttontooltip="{{'relations_firstcreate_tooltip'+$root.os | translate}}"></jumbotronbutton>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mynetwork" class="relations-container" ng-show="!ctrl.emptyRelations"></div>
+
+<div ng-show="$ctrl.editMode || (!$ctrl.editMode && !$ctrl.emptyRelations)" 
+    class="bibiscoNotSelectableText relations-navigationbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+                <span class="pull-left">
+                    <span ng-if="$ctrl.editMode && $ctrl.autosaveenabled == true" class="label label-primary"
+                      uib-tooltip="{{'tag.bibiscoRichTextEditor.autosave.enabled' | translate}}"
+                      tooltip-placement="right">AUTO</span>
+                    <span ng-if="$ctrl.editMode && $ctrl.autosaveenabled == false" class="label label-default"
+                      uib-tooltip="{{'tag.bibiscoRichTextEditor.autosave.disabled' | translate}}"
+                      tooltip-placement="right">AUTO</span>
+                    <span class="label label-primary" 
+                        uib-tooltip="{{'tag.bibiscoRichTextEditor.span.lastsave' | translate}}">
+                        <i class="fa fa-save" aria-hidden="true"></i> {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}
+                    </span>  
+                </span>
+                <span class="pull-right">
+                    <button type="button" class="btn relations-navigation-button invisible">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.moveUp()">
+                        <i class="fa fa-arrow-circle-up"></i></button>
+                    <button type="button" class="btn relations-navigation-button invisible">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button invisible">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button invisible">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.fit()">
+                        <i class="fa fa-crosshairs"></i></button>
+                    <button type="button" class="btn relations-navigation-button" 
+                        ng-if="$ctrl.editMode" ng-click="$ctrl.help()">
+                        <i class="fa fa-question-circle"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">   
+                <span class="pull-right">
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.moveLeft()">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.moveDown()">
+                        <i class="fa fa-arrow-circle-down"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.moveRight()">
+                        <i class="fa fa-arrow-circle-right"></i></button>
+                    <button type="button" class="btn relations-navigation-button invisible">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.zoomIn()">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                    <button type="button" class="btn relations-navigation-button" ng-click="$ctrl.zoomOut()">
+                        <i class="fa fa-plus-circle"></i></button>
+                    <button type="button" class="btn relations-navigation-button" 
+                        ng-if="$ctrl.editMode" ng-click="$ctrl.opensettings()">
+                        <i class="fa fa-cog"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

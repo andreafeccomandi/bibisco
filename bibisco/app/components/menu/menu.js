@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,11 @@ function MenuController($injector, $location, $rootScope,
       self.visible = true;
     });
 
+    // SHOW ELEMENT AUTHOR
+    $rootScope.$on('SHOW_ELEMENT_AUTHOR', function () {
+      self.visible = true;
+    });
+
     // SHOW OPEN PROJECT EVENT
     $rootScope.$on('SHOW_OPEN_PROJECT', function () {
       self.visible = false;
@@ -116,12 +121,12 @@ function MenuController($injector, $location, $rootScope,
   };
 
   self.selectItem = function(item) {
-    if ((item === 'timeline' || item === 'search' || item === 'objects') 
+    if ((item === 'timeline' || item === 'search' || item === 'objects' || item === 'relations/view') 
       && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     }
     else {
-      if ((item === 'timeline' || item === 'search') || item === 'objects') {
+      if ((item === 'timeline' || item === 'search') || item === 'objects' || item === 'relations/view') {
         $injector.get('IntegrityService').ok();
       }
       $location.path('/' + item);

@@ -14,6 +14,12 @@
           labelcols="3" inputcols="8">
         </textinputfield>
 
+        <textinputfield field="createProjectForm.projectAuthor"
+          model="$ctrl.projectAuthor" name="projectAuthor"
+          label="common_author" maxlength="100"
+          labelcols="3" inputcols="8">
+        </textinputfield>
+
         <div class="form-group">
           <label class="col-sm-3 control-label" for="bibiscoCreateProjectSelectLanguage">{{"jsp.createProject.form.label.language" | translate}}</label>
           <div class="col-sm-8" ng-class="{ 'has-error': createProjectForm.$submitted && createProjectForm.projectLanguage.$invalid }">

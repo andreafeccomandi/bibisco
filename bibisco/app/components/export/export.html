@@ -1,17 +1,26 @@
+<div class="main-section-header">
 <div class="container">
   <div class="row">
     <pageheader headertitle="jsp.export.h1">
     </pageheader>
   </div>
+</div>
+<div class="container">
   <div class="row">
-    <div class="col-sm-9 col-sm-offset-1">
-    <div class="jumbotron top50">
+    <div class="col-sm-10 col-sm-offset-1">
+    <div class="jumbotron top50 bibiscoNotSelectableText">
         <button ng-click="$ctrl.exportPdf()" 
           type="button" 
           class="btn btn-primary">{{"jsp.export.a.pdf" | translate}}</button>
         <button ng-click="$ctrl.exportWord()" 
           type="button" 
           class="btn btn-default">{{"jsp.export.a.word" | translate}}</button>
+        <button ng-click="$ctrl.exportTxt()" 
+          type="button" 
+          class="btn btn-default">{{"jsp.export.a.txt" | translate}}</button>
+        <button ng-click="$ctrl.exportEPub()" 
+          type="button" 
+          class="btn btn-default">{{"jsp.export.a.epub" | translate}}</button>
         <button ng-click="$ctrl.exportArchive()" 
           type="button" 
           class="btn btn-default"
@@ -22,5 +31,5 @@
       </div>
     </div>
 </div>
-
+</div>
 

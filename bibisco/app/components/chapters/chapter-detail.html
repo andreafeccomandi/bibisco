@@ -53,18 +53,22 @@
 
 <div class="detail-footer bibiscoNotSelectableText">
   <div class="container">
-    <div class="row detail-footer-top">
+    <!-- <div class="row detail-footer-top">
       <span class="pull-left">
         <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.chapter.lastsave} }}</span>
       </span>
       <span class="pull-right">
-        <span class="label label-info">{{"common_words" | translate}}: {{$ctrl.chapter.words}}</span>
-        <span class="label label-info">{{"jsp.common.span.characters" | translate}}: {{$ctrl.chapter.characters}}</span>
+        <span class="label label-info">{{"common_words" | translate}}: {{($ctrl.chapter.words | number: 0)}}</span>
+        <span class="label label-info">{{"jsp.common.span.characters" | translate}}: {{($ctrl.chapter.characters | number: 0)}}</span>
       </span>
-    </div>
-    <div class="row">
-      <hr />
-    </div>
+    </div> -->
+    <detailfootertop 
+      characters="$ctrl.chapter.characters" 
+      editmode="true", 
+      lastsave="$ctrl.chapter.lastsave" 
+      words="$ctrl.chapter.words",
+      wordscharactersenabled="true">
+    </detailfootertop>
     <div class="row">
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" 

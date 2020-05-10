@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  */
 angular.
   module('bibiscoApp').
-  component('tip', {
-    templateUrl: 'components/project-home/tip.html',
-    controller: TipController,
+  component('relationshelp', {
+    templateUrl: 'components/relations/relations-help.html',
+    controller: RelationsHelpController,
     bindings: {
-      even: '<',
-      icon: '@',
-      paragraphs: '<',
-      type: '@'
-    }
+      close: '&',
+      dismiss: '&',
+      resolve: '<'
+    },
   });
 
-function TipController($translate) {
+function RelationsHelpController() {
   var self = this;
 
   self.$onInit = function () {
-    self.paragraphshtml = [];
-    for (let i = 1; i <= self.paragraphs; i++) {
-      self.paragraphshtml.push($translate.instant('jsp.suggestions.'+self.type+'.p'+i));
-    }
+  };
+
+  self.cancel = function () {
+    self.dismiss({
+      $value: 'cancel'
+    });
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
   $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, 
   DocxExporterService, FileSystemService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
-  SupporterEditionChecker, UtilService) {
+  SupporterEditionChecker, TxtExporterService, UtilService) {
   'use strict';
 
   const { shell } = require('electron');
@@ -41,6 +41,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     exportWord: function (exportpath, callback) {
       this.export(exportpath, DocxExporterService, callback);
     },
+    
+    exportTxt: function (exportpath, callback) {
+      this.export(exportpath, TxtExporterService, callback);
+    },
 
     exportArchive: function (exportpath, callback) {
       let archivefilepath = this.calculateExportFilePath(exportpath, 'archive', new Date());
@@ -58,7 +62,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     },
 
     export: function (exportpath, exporter, callback) {
-  
+
       // load translations
       this.loadTranslations();
 
@@ -103,6 +107,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     createProjectHtml: function () {
       let html = '';
 
+      html += this.createAuthor();
       html += this.createTitle();
       html += this.createProjectSubtitle();
       html += this.createArchitecture();
@@ -121,6 +126,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     createNovelHtml: function() {
       let html = '';
 
+      html += this.createAuthor();
       html += this.createTitle();
       html += this.createNovelSubtitle();
       html += this.createChaptersForNovel();
@@ -130,6 +136,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     createTitle: function() {
       return this.createTag('exporttitle', ProjectService.getProjectInfo().name);
+    },
+
+    createAuthor: function() {
+      return this.createTag('exportauthor', ProjectService.getProjectInfo().author);
     },
 
     createNovelSubtitle: function () {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,25 @@ angular.
       buttonshow: '<',
       buttonstyle: '@', 
       buttontooltip: '@',
+      button2hotkey: '<',
+      button2label: '@',
+      button2function: '&',
+      button2show: '<',
+      buttons2tyle: '@', 
+      button2tooltip: '@',
       characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
       headertitle: '@',
       headersubtitle: '@',
+      showwordsgoalcounter: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       taskstatusreadonly: '<',
       taskstatusshow: '<',
       tipcode: '@',
       tipenabled: '<',
+      tipmodalstyle: '@?',
       words: '<'
     }
   });
@@ -45,9 +53,13 @@ function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
 
   self.$onInit = function () {
     self.buttonid = UuidService.generateUuid();
+    self.button2id = UuidService.generateUuid();
     
     if (!self.buttonstyle) {
       self.buttonstyle = 'primary';
+    }
+    if (!self.button2style) {
+      self.button2style = 'default';
     }
 
     if (self.buttonhotkey) {
@@ -63,6 +75,22 @@ function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
           }
         });
     }
+
+    if (self.button2hotkey) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: self.button2hotkey,
+          description: self.button2label,
+          callback: function ($event) {
+            if (!self.confirmdialogopen) {
+              $event.preventDefault();
+              self.button2function();
+            }
+          }
+        });
+    }
+
+
     self.confirmdialogopen = false;
   };
 

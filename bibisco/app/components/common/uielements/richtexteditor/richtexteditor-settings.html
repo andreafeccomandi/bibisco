@@ -7,21 +7,21 @@
       <div class="col-sm-12">
         <form name="richTextEditorSettingsForm" ng-submit="$ctrl.save(elementTitleForm.$valid)"
           class="form-horizontal" novalidate>
-          <buttongroupfield group="$ctrl.fontgroup" label="jsp.richTextEditorSettings.font"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.fontgroup" label="jsp.richTextEditorSettings.font"
             model="$ctrl.font" labelcols="4" inputcols="7"></buttongroupfield>
-          <buttongroupfield group="$ctrl.fontsizegroup" label="jsp.richTextEditorSettings.fontSize"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.fontsizegroup" label="jsp.richTextEditorSettings.fontSize"
             model="$ctrl.fontsize" labelcols="4" inputcols="7"></buttongroupfield>
-          <buttongroupfield group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
             model="$ctrl.indent" labelcols="4" inputcols="7"></buttongroupfield>
-          <buttongroupfield group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
             model="$ctrl.spellcheck" labelcols="4" inputcols="7"></buttongroupfield>
-          <buttongroupfield group="$ctrl.autosavegroup" label="jsp.richTextEditorSettings.autoSave"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'relations'" group="$ctrl.autosavegroup" label="jsp.richTextEditorSettings.autoSave"
             model="$ctrl.autosave" labelcols="4" inputcols="7"></buttongroupfield>
       </div>
       </form>
     </div>
   </div>
-  <div class="row">
+  <div  ng-if="$ctrl.context == 'richtexteditor'" class="row">
     <div class="col-sm-10 col-sm-offset-1 bibiscoNotSelectableText">
       <div class="well richtexteditor-settings-sample bibiscoRichTextEditor-bodyClass-{{$ctrl.font}}{{$ctrl.fontsize}} bibiscoRichTextEditor-bodyClass-indent-{{$ctrl.indent}}">
         {{'jsp.richTextEditorSettings.sampletext' | translate}}
@@ -30,10 +30,10 @@
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
     <button class="btn btn-primary" type="button" 
-      uib-tooltip="{{'js.bibisco.confirm.ok.tooltip'+$root.os | translate}}"
-      ng-click="$ctrl.ok()">{{"js.bibisco.confirm.ok" | translate}}</button>
+      uib-tooltip="{{'jsp.common.button.save.tooltip'+$root.os | translate}}"
+      ng-click="$ctrl.ok()">{{"jsp.common.button.save" | translate}}</button>
     <button class="btn btn-default" type="button" 
-      uib-tooltip="{{'js.bibisco.confirm.cancel.tooltip'+$root.os | translate}}"
-      ng-click="$ctrl.cancel()">{{"js.bibisco.confirm.cancel" | translate}}</button>
+      uib-tooltip="{{'back_button_tooltip'+$root.os | translate}}"
+      ng-click="$ctrl.cancel()">{{"jsp.common.button.back" | translate}}</button>
   </div>
 </modal-component>

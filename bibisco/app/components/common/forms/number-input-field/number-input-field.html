@@ -1,0 +1,24 @@
+<div class="form-group">
+  <label class="col-sm-{{$ctrl.labelcols}} control-label" for="{{$ctrl.label}}">{{$ctrl.label | translate}}</label>
+  <div class="col-sm-{{$ctrl.inputcols}}" ng-class="{ 'has-error': $ctrl.hasError() }">
+    <div ng-class="{ 'input-group' : $ctrl.btnenabled }">
+      <input class="form-control" type="text" name="{{$ctrl.name}}" number
+        spellcheck="false" ng-pattern="/^[0-9]{1,12}$/"
+        ng-model="$ctrl.model" id="{{$ctrl.label}}"
+        ng-required="{{$ctrl.required != null && $ctrl.required != 'false'}}"
+        ng-attr-minlength="{{$ctrl.minlength}}"
+        ng-attr-maxlength="{{$ctrl.maxlength}}"
+        ng-attr-placeholder="{{$ctrl.placeholder | translate}}"
+        focus-if="{{$ctrl.autofocus != null}}">
+        <span ng-if="$ctrl.btnenabled" class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="$ctrl.btnfunction()"
+            uib-tooltip="{{$ctrl.btntooltip | translate}}">{{$ctrl.btnlabel | translate}}</button>
+        </span>
+    </div>
+  </div>
+  <div class="col-sm-{{$ctrl.inputcols}} col-sm-offset-{{$ctrl.labelcols}}">
+    <validationmessages field="$ctrl.field"></validationmessages>
+  </div>
+</div>
+
+

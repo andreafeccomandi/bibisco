@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ angular.module('bibiscoApp').service('WordCharacterCountService', function() {
         ignoreImage: true,
         ignoreHref: true
       });
-     
+      text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       let characters = text.replace(/\n/g, '').trim().length;
       let words = 0;
       let matches = text.match(wordregex);
@@ -38,6 +38,6 @@ angular.module('bibiscoApp').service('WordCharacterCountService', function() {
         characters: characters,
         words: words
       };
-    }
+    },
   };
 });

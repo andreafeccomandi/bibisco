@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       'common_characters_ideas',
       'common_characters_lifebeforestorybeginning',
       'common_characters_personaldata',
-      'common_characters_physionomy',
+      'common_physionomy',
       'common_characters_psychology',
       'common_characters_sociology',
       'common_empty_section',

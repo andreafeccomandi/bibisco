@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,39 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
   'use strict';
 
   return {
+
+    getDynamicView: function (collection,
+      dynamicViewName, filter) {
+      let dynamicView = collection.getDynamicView(dynamicViewName);
+      if (!dynamicView) {
+        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
+        dynamicView = collection.addDynamicView(dynamicViewName);
+        if (filter) {
+          dynamicView.applyFind(filter);
+        }
+      } else {
+        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
+      }
+
+      return dynamicView.data();
+    },
+
+    getDynamicViewSortedByField: function(collection,
+      dynamicViewName, field, filter) {
+      let dynamicView = collection.getDynamicView(dynamicViewName);
+      if (!dynamicView) {
+        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
+        dynamicView = collection.addDynamicView(dynamicViewName);
+        if (filter) {
+          dynamicView.applyFind(filter);
+        }
+        dynamicView.applySimpleSort(field);
+      } else {
+        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
+      }
+
+      return dynamicView;
+    },
 
     getDynamicViewSortedByPosition: function(collection,
       dynamicViewName, filter) {

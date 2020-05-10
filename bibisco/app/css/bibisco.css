@@ -101,7 +101,6 @@ h6, label, th, td, p {
 .detail-header {
 	position: fixed;
 	height: 150px;
-	top: 70;
 	width: 100%;
 }
 
@@ -154,24 +153,10 @@ h6, label, th, td, p {
 }
 
 .social-media-button {
-    margin-top: 5px;
-    text-align: center;
-}
-
-.social-media-button img {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: center;
 	cursor: pointer;
-}
-
-.social-media-button-facebook {
-    margin-left: 2px;
-}
-
-.social-media-button-twitter {
-    margin-left: 5px;
-}
-
-.social-media-button-youtube {
-    margin-left: 5px;
 }
 
 /* SUPPORTER EDITION MESSAGE */
@@ -326,11 +311,22 @@ h3 {
     margin-top: 2px;
 }
 
+.page-header-buttonbar {
+	height: 35px;
+}
+
 .page-subheader-truncate-title {
   width: calc(100% - 50px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.main-section-header {
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	top: 60px;
 }
 
 /* DRAG AND DROP */
@@ -420,6 +416,7 @@ h3 {
 
 .card-grid-emptyitems {
 	position: absolute;
+	z-index: 1000;
 }
 
 .card-grid-emptyitems-with-header-subtitle-full {
@@ -575,6 +572,10 @@ h3 {
 	padding: 15px 15px;
 }
 
+.navbar-brand {
+    padding: 5px 5px;
+}
+
 /* MODAL DIALOG */
 .modal-dialog {
   margin: 150px auto;
@@ -622,6 +623,10 @@ h3 {
 	left: 0px;
 	height: calc(100% - 150px);
     top: 145px;
+}
+
+.info p {
+	margin: 0 0 8px;
 }
 
 /* LICENSE */
@@ -722,6 +727,14 @@ h3 {
 }
 
 /* PROJECT HOME */
+.project-home-container {
+	top: 150px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 200px);
+	width: 100%;
+}
+
 .project-motivational h1 {
 	margin-top: 0px;
 }
@@ -730,6 +743,52 @@ h3 {
 	margin-top: 30px;
 	margin-bottom: 0px;
 }
+
+.project-stats-table table tr td {
+	vertical-align: middle;
+}
+
+.project-stats-table table tr td span {
+	vertical-align: middle;
+}
+
+.project-stats-table tr:first-child td {
+	border-top: 0px;
+}
+
+.project-stats-item {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.project-stats-number {
+	font-size: 30px; 
+	font-weight: bold; 
+	margin-left: 10px;
+}
+
+.project-stats-detail-number {
+	font-weight: bold; 
+}
+
+.project-stats-progress {
+	height: 10px;
+    margin-bottom: 0px;
+	width: 100px;
+}
+
+.words-written-container {
+	top: 190px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 200px);
+	width: 100%;
+}
+
+.words-written-history div.analysiscanvasbarcontainer {
+	height: 250px;
+}
+  
 
 /* CHARACTER INFO */
 
@@ -876,7 +935,19 @@ h3 {
 
  .image-external-link {
 	 cursor: pointer;
+	 margin-left: 4px;
+	 margin-right: 4px;
  }
+
+
+ /* EXPORT */
+.export-container {
+	top: 190px;
+	position: absolute;
+	overflow-y: auto;
+	height: calc(100% - 200px);
+	width: 100%;
+}
 
 @media (max-width: 1200px) {
 	.nav>li>a {
@@ -928,6 +999,68 @@ h3 {
         overflow: hidden!important;
     }
 }
+
+/* RELATIONS */
+
+.relations-container {
+	top: 125px;
+    position: absolute;
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - 235px);
+}
+
+.relations-editcommandbar {
+	top: 140px;
+	position: absolute;
+	width: 100%;
+}
+
+.relations-navigationbar {
+    position: fixed;
+    bottom: 25px;
+    width: 100%;
+}
+
+.relations-navigationbar hr {
+	margin-top: 0px; 
+	margin-bottom: 5px;
+}
+
+.relations-navigation-button {
+    border-color: transparent;
+    font-size: 26px;
+    background-color: transparent;
+    padding: 0px 3px;
+    color: #777;
+}
+
+.relations-navigation-button:active, 
+.relations-navigation-button:focus,
+.relations-navigation-button:hover {
+	box-shadow: none;
+	color: #777;
+}
+
+.relations-tip-container {
+	text-align: left;
+}
+
+.relations-delete-item-button {
+	margin-right: 35px;
+}
+
+.vis-network {
+	outline-style: none !important;
+}
+
+.input-xs {
+	height: 30px;
+	padding: 2px 5px;
+	font-size: 12px;
+	line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+	border-radius: 3px;
+  }
 
 /* SEARCH */
 
@@ -1183,6 +1316,11 @@ h3 {
 .modal-contextualtip {
     width: 400px;
 }
+
+.modal-relationstip {
+	width: 600px;
+}
+
 
 
 @media (max-width: 767px) {

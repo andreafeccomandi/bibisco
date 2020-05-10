@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,9 @@ ipc.on('logger-info', function (event, arg) {
 ipc.on('logger-error', function (event, arg) {
   logger.error(arg);
 });
+
+// electron version
+logger.info('*** Electron version: ' + process.versions.electron);
 
 // add debug features like hotkeys for triggering dev tools and reload
 if (isDev) {

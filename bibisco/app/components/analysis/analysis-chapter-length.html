@@ -1,6 +1,6 @@
 <div class="panel panel-default analysis-chapter-length">
   <div class="panel-heading">
-    <h3 class="panel-title">{{'jsp.analysis.thumbnail.analysisWordCountChapters.title' | translate}} ({{'common_total' | translate}}: <b>{{$ctrl.total}}</b> {{'common_words' | translate}}, <b>{{$ctrl.totalcharacters}}</b> {{'jsp.common.span.characters' | translate}})</h3>
+    <h3 class="panel-title">{{'jsp.analysis.thumbnail.analysisWordCountChapters.title' | translate}} ({{'common_total' | translate}}: <b>{{($ctrl.total  | number: 0)}}</b> {{'common_words' | translate}}, <b>{{($ctrl.totalcharacters | number: 0)}}</b> {{'jsp.common.span.characters' | translate}})</h3>
   </div>
   <div class="panel-body">
     <div ng-if="$ctrl.data.length > 0" 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  *
  */
 
-angular.module('bibiscoApp').service('ProjectService', function(
-  BibiscoDbConnectionService, BibiscoPropertiesService,
-  CollectionUtilService, ContextService, FileSystemService, LoggerService,
+angular.module('bibiscoApp').service('ProjectService', function($injector,
+  BibiscoDbConnectionService, BibiscoPropertiesService, CollectionUtilService, 
+  ContextService, FileSystemService, LoggerService,
   UtilService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
@@ -36,7 +36,79 @@ angular.module('bibiscoApp').service('ProjectService', function(
       BibiscoDbConnectionService.saveDatabase();
     },
 
-    create: function(name, language) {
+    needToUpdate: function(projectversion, actualversion) {
+
+      let needToUpdate = false;
+      projectversion = projectversion.split('.');
+      actualversion = actualversion.split('.');
+
+      for(let i=0;i<3;i++){  
+        if(Number(projectversion[i])<Number(actualversion[i])){
+          needToUpdate=true;
+          break;
+        } else if(Number(projectversion[i])>Number(actualversion[i])){
+          break;
+        }
+      }
+      return needToUpdate;
+    },
+
+    checkProjectDbVersion: function() {
+
+      let projectInfo = this.getProjectInfo();
+      let projectversion = projectInfo.bibiscoVersion.split('-')[0];
+      let actualversion = BibiscoPropertiesService.getProperty('version').split('-')[0];
+      let needToUpdate = this.needToUpdate(projectversion, actualversion);
+  
+      LoggerService.info('*** Project ' + projectInfo.name + ' version: ' + projectInfo.bibiscoVersion + 
+        ' - Is it necessary to update the project DB? '+ needToUpdate);
+
+      if (needToUpdate) {
+      
+        let projectdb = ProjectDbConnectionService.getProjectDb();
+
+        // VERSION 2.2
+  
+        // relationsnode
+        if (!projectdb.getCollection('relationsnodes')) { 
+          projectdb.addCollection('relationsnodes');
+          LoggerService.info('Added collection relationsnodes');
+        }
+  
+        // relationsedge
+        if (!projectdb.getCollection('relationsedges')) {
+          projectdb.addCollection('relationsedges');
+          LoggerService.info('Added collection relationsedges');
+        }
+  
+        // wordswrittenperday
+        if (!projectdb.getCollection('wordswrittenperday')) {
+          projectdb.addCollection('wordswrittenperday');
+          LoggerService.info('Added collection wordswrittenperday');
+        }
+  
+        // clear location dynamic view for nations, states, cities
+        let locationCollection = projectdb.getCollection('locations');
+        for (let i = 0; i < 2; i++) { // do it twice because removeDynamicView function expects to remove only one dynamic view a time
+          locationCollection.removeDynamicView('nations');
+          locationCollection.removeDynamicView('states');
+          locationCollection.removeDynamicView('cities');
+        }
+        LoggerService.info('Removed dynamicViews nations, states, cities');
+
+        // update project version
+        projectInfo.bibiscoVersion = actualversion;
+        CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
+          .getCollection('project'), projectInfo);
+        LoggerService.info('Updated project version to ' + actualversion);
+
+        // save project database
+        ProjectDbConnectionService.saveDatabase();
+      }
+
+    },
+
+    create: function(name, language, author) {
       LoggerService.debug('Start ProjectService.create...');
 
       let projectId = UuidService.generateUuid();
@@ -48,8 +120,9 @@ angular.module('bibiscoApp').service('ProjectService', function(
         id: projectId,
         name: name,
         language: language,
+        author: author,
         bibiscoVersion: BibiscoPropertiesService.getProperty(
-          'version'),
+          'version').split('-')[0],
         lastScenetimeTag: ''
       });
 
@@ -77,6 +150,9 @@ angular.module('bibiscoApp').service('ProjectService', function(
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');
       projectdb.addCollection('objects');
+      projectdb.addCollection('relationsnodes');
+      projectdb.addCollection('relationsedges');
+      projectdb.addCollection('wordswrittenperday');
 
       // save project database
       ProjectDbConnectionService.saveDatabase();
@@ -138,7 +214,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
     },
     import: function(projectId, projectName, callback) {
 
-      LoggerService.debug('Start ProjectService.import');
+      LoggerService.debug('Start ProjectService.import ' + projectName);
 
       // move project to projects directory
       this.moveImportedProjectToProjectsDirectory(projectId);
@@ -147,7 +223,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       this.addProjectToBibiscoDb(projectId, projectName);
 
       // load project
-      ProjectDbConnectionService.load(projectId);
+      this.load(projectId);
 
       // callback
       callback();
@@ -163,7 +239,7 @@ angular.module('bibiscoApp').service('ProjectService', function(
       this.moveImportedProjectToProjectsDirectory(projectId);
 
       // load project
-      ProjectDbConnectionService.load(projectId);
+      this.load(projectId);
 
       // callback
       callback();
@@ -214,6 +290,13 @@ angular.module('bibiscoApp').service('ProjectService', function(
     exportProject: function (projectId, exportPath, callback) {
       let projectPath = ProjectDbConnectionService.calculateProjectPath(projectId);
       FileSystemService.zipFolder(projectPath, exportPath + '.bibisco2', callback);
+    },
+
+    load: function (id) {
+      ProjectDbConnectionService.load(id);
+      this.checkProjectDbVersion();
+      return ProjectDbConnectionService.getProjectDb().getCollection(
+        'project').get(1);
     },
 
     syncProjectDirectoryWithBibiscoDb: function() {
@@ -348,6 +431,40 @@ angular.module('bibiscoApp').service('ProjectService', function(
         .getCollection('project'), projectInfo);
     },
 
+    updateLastRelationsSaveWithoutCommit: function(time) {
+      let projectInfo = this.getProjectInfo();
+      projectInfo.lastRelationsSave = time;
+      CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
+    updateGoals: function(goals) {
+      let projectInfo = this.getProjectInfo();
+
+      projectInfo.wordsGoal = goals.wordsGoal;
+      projectInfo.wordsPerDayGoal = goals.wordsPerDayGoal;
+      projectInfo.deadline = goals.deadline;
+
+      LoggerService.info('Update project goals');
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
+    updateEpubMetadata: function(epubMetadata) {
+      let projectInfo = this.getProjectInfo();
+
+      projectInfo.author = epubMetadata.author;
+      projectInfo.publisher = epubMetadata.publisher;
+      projectInfo.copyright = epubMetadata.copyright;
+      projectInfo.rights = epubMetadata.rights;
+      projectInfo.isbn = epubMetadata.isbn;
+      projectInfo.website = epubMetadata.website;
+
+      LoggerService.info('Update epub metadata');
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
     updateProjectName: function (name) {
       let projectInfo = this.getProjectInfo();
       projectInfo.name = name;
@@ -367,6 +484,87 @@ angular.module('bibiscoApp').service('ProjectService', function(
       BibiscoDbConnectionService.saveDatabase();
     },
 
+    updateProjectAuthor: function (author) {
+      let projectInfo = this.getProjectInfo();
+      projectInfo.author = author;
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
+    selectCoverImage: function (filename) {
+      let projectInfo = this.getProjectInfo();
+      projectInfo.coverImage = filename;
+
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
+    getSelectedCoverImageName: function () {
+      
+      let selectedCoverImageName = null;
+      let projectInfo = this.getProjectInfo();
+      if (projectInfo.coverImage) {
+        let images = projectInfo.coverImages;
+        for (let i = 0; i < images.length; i++) {
+          if (images[i].filename === projectInfo.coverImage) {
+            selectedCoverImageName = images[i].name;
+            break;
+          }
+        }
+      }
+      return selectedCoverImageName;
+    },
+
+    addCoverImage: function (name, path) {
+      let ImageService = $injector.get('ImageService');
+      let filename = ImageService.addImageToProject(path);
+      LoggerService.info('Added cover image file: ' + filename);
+
+      let projectInfo = this.getProjectInfo();
+      let images = projectInfo.coverImages;
+      if (!images) {
+        images = [];
+      }
+      images.push({
+        name: name,
+        filename: filename
+      });
+
+      projectInfo.coverImages = images;
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+    },
+
+    deleteCoverImage: function (filename) {
+      let ImageService = $injector.get('ImageService');
+      // delete image file
+      ImageService.deleteImage(filename);
+      LoggerService.info('Deleted cover image file: ' + filename);
+
+      // delete reference
+      let projectInfo = this.getProjectInfo();
+      let images = projectInfo.coverImages;
+      let imageToRemovePosition;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i].filename === filename) {
+          imageToRemovePosition = i;
+          break;
+        }
+      }
+      images.splice(imageToRemovePosition, 1);
+      projectInfo.coverImages = images;
+
+      // clear selected cover image if it's the deleted image
+      if (projectInfo.coverImage === filename) {
+        projectInfo.coverImage = null;
+      }
+
+
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+
+      return projectInfo.coverImages;
+    },
   };
 });
 

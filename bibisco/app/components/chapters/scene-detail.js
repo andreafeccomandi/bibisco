@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,21 +23,30 @@ angular.
   });
 
 function SceneDetailController($injector, $location, $rootScope, $routeParams,
-  $scope, ChapterService, hotkeys, PopupBoxesService, SupporterEditionChecker) {
+  $scope, ChapterService, hotkeys, PopupBoxesService, ProjectService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
 
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     
+    self.isSupporterEdition = self.checkSupporterEdition();
     self.mode = $routeParams.mode;
     self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
+    
     self.chapter = ChapterService.getChapter($routeParams.chapterid);
     self.scene = ChapterService.getScene($routeParams.sceneid);
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
     self.deleteforbidden = false; //TODO
     self.chapterpath = '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki;
+
+    self.todaywords = ChapterService.getWordsWrittenLast30Days()[29].words;
+    self.totalwords = ChapterService.getTotalWordsAndCharacters().words;
+    let projectInfo = ProjectService.getProjectInfo();
+
+    self.isSupporterEdition ? self.wordsGoal = projectInfo.wordsGoal : null;
+    self.isSupporterEdition ? self.wordsPerDayGoal = projectInfo.wordsPerDayGoal : null;
 
     // common element detail flags
     self.autosaveenabled;
@@ -132,12 +141,21 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   };
 
   self.moveSceneToAnotherChapter = function() {
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
+    if (self.isSupporterEdition) {
       $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
         .$loki + '/move');
     } else {
       SupporterEditionChecker.showSupporterMessage();
+    }
+    
+  };
+
+  self.checkSupporterEdition = function() {
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      return true;
+    } else {
+      return false;
     }
     
   };

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@ angular.
     controller: OpenProjectController
   });
 
-function OpenProjectController($location, $rootScope, $timeout, $translate, 
-  $window, ContextMenuService, LoggerService, PopupBoxesService, 
-  ProjectDbConnectionService, ProjectService) {
+function OpenProjectController($location, $rootScope, $timeout, $translate, ChapterService,
+  ContextMenuService, LoggerService, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_OPEN_PROJECT');
@@ -37,9 +36,10 @@ function OpenProjectController($location, $rootScope, $timeout, $translate,
   };
 
   self.open = function(id) {
-    ProjectDbConnectionService.load(id);
+    ProjectService.load(id);
     $location.path('/projecthome');
     ContextMenuService.create();
+    ChapterService.checkWordsWrittenInit();
     LoggerService.info('Open project ' + id);
   };
 

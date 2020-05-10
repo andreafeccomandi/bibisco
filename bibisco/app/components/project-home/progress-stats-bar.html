@@ -1,0 +1,17 @@
+<div class="progress project-stats-progress" ng-if="$ctrl.total > 0">
+  <div class="progress-bar progress-bar-success" ng-style="{ 'width': '{{$ctrl.completedPerc}}%' }">
+  </div>
+  <div class="progress-bar progress-bar-warning " ng-style="{ 'width': '{{$ctrl.tocompletePerc}}%' }">
+  </div>
+  <div class="progress-bar progress-bar-danger" ng-style="{ 'width': '{{$ctrl.todoPerc}}%' }">
+  </div>
+</div>
+<div>
+    <span ng-if="$ctrl.completed > 0" class="project-stats-detail-number">{{$ctrl.completed}}({{$ctrl.completedPerc}}%)</span> 
+    <span ng-if="$ctrl.completed > 0"> {{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}</span><span ng-if="$ctrl.completed > 0 && ($ctrl.tocomplete > 0 || $ctrl.todo > 0)">, </span>
+    <span ng-if="$ctrl.tocomplete > 0" class="project-stats-detail-number">{{$ctrl.tocomplete}}({{$ctrl.tocompletePerc}}%)</span>
+    <span ng-if="$ctrl.tocomplete > 0"> {{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}</span>
+    <span ng-if="$ctrl.tocomplete > 0 && $ctrl.todo > 0">, </span>
+    <span ng-if="$ctrl.todo > 0" class="project-stats-detail-number">{{$ctrl.todo}}({{$ctrl.todoPerc}}%)</span>
+    <span ng-if="$ctrl.todo > 0"> {{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}</span>
+</div>

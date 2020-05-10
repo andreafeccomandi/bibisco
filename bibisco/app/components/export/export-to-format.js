@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function ExportToFormat($location, $routeParams, $rootScope, $scope, $timeout, 
-  ExportService, FileSystemService, PopupBoxesService) {
+  ExportService, FileSystemService, PopupBoxesService, ProjectService) {
 
   var self = this;
 
@@ -28,12 +28,19 @@ function ExportToFormat($location, $routeParams, $rootScope, $scope, $timeout,
 
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
+    self.exportAuthor;
     if ($routeParams.format === 'pdf') {
       self.pageheadertitle = 'jsp.export.title.pdf';
+      self.exportAuthor = true;
     } else if ($routeParams.format === 'docx') {
       self.pageheadertitle = 'jsp.export.title.word';
+      self.exportAuthor = true;
+    } else if ($routeParams.format === 'txt') {
+      self.pageheadertitle = 'jsp.export.title.txt';
+      self.exportAuthor = true;
     } else if ($routeParams.format === 'archive') {
       self.pageheadertitle = 'jsp.export.title.archive';
+      self.exportAuthor = false;
     }
     self.backpath = '/export';
     self.breadcrumbitems = [];
@@ -47,6 +54,9 @@ function ExportToFormat($location, $routeParams, $rootScope, $scope, $timeout,
 
     self.saving = false;
     self.exportpath;
+    if (self.exportAuthor) {
+      self.author = ProjectService.getProjectInfo().author;
+    }
 
     self.checkExit = {
       active: true
@@ -60,10 +70,15 @@ function ExportToFormat($location, $routeParams, $rootScope, $scope, $timeout,
       };
       self.saving = true;
       $timeout(function () {
+        if (self.exportAuthor) {
+          ProjectService.updateProjectAuthor(self.author);
+        }
         if ($routeParams.format === 'pdf') {
           ExportService.exportPdf(self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'docx') {
           ExportService.exportWord(self.exportpath, self.exportCallback);
+        } else if ($routeParams.format === 'txt') {
+          ExportService.exportTxt(self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'archive') {
           ExportService.exportArchive(self.exportpath, self.exportCallback);
         }

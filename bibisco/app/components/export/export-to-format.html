@@ -8,24 +8,26 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <form name="exportSelectDirectoryForm" 
-        ng-submit="$ctrl.export(exportSelectDirectoryForm.$valid)" 
-         novalidate>
-        
-        <div class="form-group">
-          <label class="col-sm-offset-1 col-sm-8 control-label" 
-            for="exportpath">{{'jsp.export.dialog.exportProjectDirectory.label' | translate}}</label>
-          <div class="col-sm-offset-1 col-sm-8">
+      <form name="exportToFormatForm" class="form-horizontal"
+        ng-submit="$ctrl.export(exportToFormatForm.$valid)" novalidate>
+          <textinputfield ng-if="$ctrl.exportAuthor" field="exportToFormatForm.author" model="$ctrl.author"
+            name="author" autofocus required="true" label="Author" labelcols="3" inputcols="8">
+          </textinputfield>
+         <div class="form-group">
+          <label class="col-sm-3 control-label" 
+            for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
+          <div class="col-sm-8">
             <directoryselect model='$ctrl.exportpath' 
-              field='exportSelectDirectoryForm.exportpath' 
+              field='exportToFormatForm.exportpath' 
               name='exportpath' 
+              placeholder='jsp.export.dialog.exportProjectDirectory.label'
               onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
               forbiddendirectory='$ctrl.forbiddenDirectory' required>
             </directoryselect>
           </div>
         </div>
 
-        <formbuttons backpath="$ctrl.backpath" form="exportSelectDirectoryForm" 
+        <formbuttons backpath="$ctrl.backpath" form="exportToFormatForm" 
           saving="$ctrl.saving" offsetcols="1" sizecols="8">
         </formbuttons>
     </div>

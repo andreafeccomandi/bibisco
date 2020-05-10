@@ -1,7 +1,7 @@
 <div class="form-group">
   <label class="col-sm-{{$ctrl.labelcols}} control-label" for="{{$ctrl.label}}">{{$ctrl.label | translate}}</label>
   <div class="col-sm-{{$ctrl.inputcols}}" ng-class="{ 'has-error': $ctrl.hasError() }">
-    <input class="form-control" type="text" name="{{$ctrl.name}}"
+    <input class="form-control" type="text" name="{{$ctrl.name}}" id="{{$ctrl.textinputfieldid}}"
       spellcheck="false"
       ng-model="$ctrl.model" id="{{$ctrl.label}}"
       ng-required="{{$ctrl.required != null && $ctrl.required != 'false'}}"

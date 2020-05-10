@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: RichtexteditorSettingsController,
     bindings: {
       close: '&',
-      dismiss: '&'
+      dismiss: '&',
+      resolve: '='
     },
   });
 
@@ -31,6 +32,7 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
   self.fontgroup;
 
   self.$onInit = function() {
+    self.context = self.resolve.context;
     self.font = BibiscoPropertiesService.getProperty('font');
     self.fontgroup = [{
       label: 'jsp.richTextEditorSettings.font.courier',

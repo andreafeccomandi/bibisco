@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 angular.
   module('bibiscoApp').
   component('tips', {
-    templateUrl: 'components/project-home/tips.html',
+    templateUrl: 'components/project-home/tips/tips.html',
     controller: TipsController,
     bindings: {
 
@@ -32,7 +32,7 @@ function TipsController($location, $rootScope, $window) {
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'jsp.menu.project',
+      label: 'common_project',
       href: '/projecthome'
     });
     self.breadcrumbitems.push({

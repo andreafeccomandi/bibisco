@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
 
   let fontSize = 24; // font size, measured in half-points
 
-  let exportitlespacing = { before: 5000, after: 200, line: 350 };
+  let exportitlespacing = { before: 5500, after: 200, line: 350 };
   let h1marginspacing = { after: 400, before: 0, line: 350 };
   let h2marginspacing1st = { after: 250, before: 0, line: 350 };
   let h2marginspacing = { after: 250, before: 250, line: 350 };
@@ -62,10 +62,15 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentParagraph.spacing(exportitlespacing);
             boldActive = true;
 
+          } else if (name === 'exportauthor') {
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.center();
+            boldActive = false;
+
           } else if (name === 'exportsubtitle') {
             currentParagraph = new docx.Paragraph();
             currentParagraph.center();
-            boldActive = true;
+            boldActive = false;
 
           } else if (name === 'h1') {
             h1counter += 1;
@@ -178,7 +183,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
 
         onclosetag: function (name) {
 
-          if (name === 'exporttitle' || name === 'exportsubtitle') {
+          if (name === 'exporttitle' || name === 'exportauthor' || name === 'exportsubtitle') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             boldActive = false;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/contextual-tip/contextual-tip-button.html',
     controller: ContextualTipButtonController,
     bindings: {
+      modalstyle: '@?',
       tipcode: '@'
     }
   });
@@ -28,6 +29,10 @@ function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectio
   var self = this;
 
   self.$onInit = function () {
+    self.style = self.modalstyle;
+    if (!self.style) {
+      self.style = 'contextualtip';
+    }
     self.buttonvisible = BibiscoPropertiesService.getProperty(self.tipcode) === 'true';
     if (self.buttonvisible) {
       self.showTip();
@@ -44,7 +49,7 @@ function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectio
           return self.tipcode;
         }
       },
-      size: 'contextualtip'
+      size: self.style
     });
 
     $rootScope.$emit('OPEN_POPUP_BOX');

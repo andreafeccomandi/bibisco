@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ angular.module('bibiscoApp').service('LocationService', function(
           name = name + ' (';
         }
         name = name + location.city;
+        useComma = true;
       }
 
       if (useComma) {
@@ -94,8 +95,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       return location;
     },
     getCities: function() {
-      return this.getCollection().addDynamicView('cities').applySimpleSort(
-        'city');
+      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'cities', 'city');
     },
     getCollection: function() {
       return ProjectDbConnectionService.getProjectDb().getCollection(
@@ -118,13 +118,11 @@ angular.module('bibiscoApp').service('LocationService', function(
     getLocations: function() {
       return this.getDynamicView().data();
     },
-    getNations: function() {
-      return this.getCollection().addDynamicView('nations').applySimpleSort(
-        'nation');
+    getNations: function() {      
+      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'nations', 'nation');
     },
     getStates: function() {
-      return this.getCollection().addDynamicView('states').applySimpleSort(
-        'state');
+      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'states', 'state');
     },
     getUsedCities: function() {
       let usedcities = [];

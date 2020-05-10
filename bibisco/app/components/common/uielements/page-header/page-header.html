@@ -5,6 +5,7 @@
         <wordscharacterscounter ng-if="$ctrl.words != null" 
           words="$ctrl.words" characters="$ctrl.characters">
         </wordscharacterscounter>
+        <wordsgoalcounter ng-if="$ctrl.showwordsgoalcounter"></wordsgoalcounter>
         </small>
       </span>
       <span ng-if="$ctrl.taskstatus" class="pull-right page-header-taskstatus-selector">
@@ -13,8 +14,8 @@
           readonly="$ctrl.taskstatusreadonly" 
           changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
       </span>
-      <span ng-if="$ctrl.buttonshow || $ctrl.dropdownitems || $ctrl.tipenabled" class="pull-right">
-        <contextualtipbutton ng-if="$ctrl.tipenabled" 
+      <span class="pull-right page-header-buttonbar">
+        <contextualtipbutton ng-if="$ctrl.tipenabled" modalstyle="{{$ctrl.tipmodalstyle}}"
           tipcode="{{$ctrl.tipcode}}"></contextualtipbutton>
         <dropdownmenu buttonlabel="jsp.common.button.more" 
           items="$ctrl.dropdownitems" 
@@ -25,6 +26,10 @@
           ng-click="$ctrl.buttonfunction()" id="{{$ctrl.buttonid}}"
           uib-tooltip="{{$ctrl.buttontooltip | translate}}">
           {{$ctrl.buttonlabel | translate}}</button>
+        <button ng-if="$ctrl.button2show" type="button" class="btn btn-{{$ctrl.button2style}}"
+          ng-click="$ctrl.button2function()" id="{{$ctrl.button2id}}"
+          uib-tooltip="{{$ctrl.button2tooltip | translate}}">
+          {{$ctrl.button2label | translate}}</button>
       </span>
   </h1>
 </div>

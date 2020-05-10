@@ -1,0 +1,15 @@
+<div class="panel panel-default words-written-history">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'goals_words_written_last_30_days' | translate}} ({{'common_total' | translate}}: <b>{{($ctrl.wordsTotal | number: 0)}}</b> {{'common_words' | translate}}, {{'common_average' | translate}}: <b>{{($ctrl.wordsAverage | number: 0)}}</b>)</h3>
+  </div>
+  <div class="panel-body">
+    <div class="analysiscanvasbarcontainer">
+      <canvas class="chart chart-line" 
+        chart-data="$ctrl.data"
+        chart-labels="$ctrl.labels" chart-series="$ctrl.series" 
+        chart-options="$ctrl.options"
+        chart-dataset-override="$ctrl.datasetoverride">
+      </canvas>
+    </div>
+  </div>
+</div>

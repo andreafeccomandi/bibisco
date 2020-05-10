@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,151 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
         words: words
       };
     },
+
+    checkWordsWrittenInit: function() {
+      let totalWords = this.getTotalWordsAndCharacters().words;
+      let collection = this.getWordswrittenperdayCollection();
+
+      // collection is empty and totalWords > 0: switch to bibisco version 2.2 from previous
+      if (collection.count() === 0 && totalWords>0) {
+        collection.insert({
+          day: 0,
+          words: totalWords
+        });
+        ProjectDbConnectionService.saveDatabase();
+        LoggerService.info('Initialized wordswrittenperday collection with ' + totalWords + ' words.');
+      }
+
+      // total words is greater than tracked words: insert or update untrackedWords element
+      // how is it possible? working at the project using bibisco version 2.2 and previous (maybe from different PC/Mac)
+      else {
+        let trackedWords = 0;
+        for (let index = 0; index < collection.count(); index++) {
+          trackedWords += collection.get(index+1).words;
+        }
+        if (!(totalWords===trackedWords)) {
+          let untrackedWords = totalWords - trackedWords;
+          let results = collection.find({'day': { '$eq' : 0 }});
+          if (results && results.length === 1) {
+            let untrackedWordsElement = results[0];
+            untrackedWordsElement.words += untrackedWords;
+            collection.update(untrackedWordsElement);
+          } else {
+            collection.insert({
+              day: 0,
+              words: totalWords
+            });
+          }
+          ProjectDbConnectionService.saveDatabase();
+          LoggerService.info('Found ' + untrackedWords + ' untracked words.');
+        }
+      }
+    },
+
+    getWordsWrittenLast30Days : function() {
+      
+      let last30days = [];
+      let collection = this.getWordswrittenperdayCollection();
+
+      let now = moment();
+      for (let index = 29; index >= 0; index--) {
+        let day = Number(now.clone().subtract(index, 'days').format('YYYYMMDD'));
+        let element = collection.findOne({'day': { '$eq' : day }});
+        if (!element) {
+          element = {
+            day: day,
+            words: 0
+          };
+        }
+        last30days.push(element);
+      }
+
+      return last30days;
+    },
+
+    getWordsWrittenMonthAvg : function() {
+      
+      let monthAvg = [];
+      let wordswrittenperday = this.getWordswrittenperdayDynamicView();
+
+      let firstWritingDay = null;
+      if (wordswrittenperday.length > 0 && wordswrittenperday[0].day > 0) {
+        firstWritingDay = wordswrittenperday[0].day;
+      } else if (wordswrittenperday.length > 1 && wordswrittenperday[1].day > 0) {
+        firstWritingDay = wordswrittenperday[1].day;
+      }
+        
+      if (firstWritingDay) {
+      
+        let wordswrittenMonthMap = new Map();
+        let wordswrittenMonthAvgMap = new Map();
+        
+        // Calculate month total words
+        for (let index = 0; index < wordswrittenperday.length; index++) {
+          let element = wordswrittenperday[index];
+          if (element.day === 0) {
+            continue;
+          }
+          let year_month = moment(String(element.day)).format('YYYY-MM');
+          let mapElementWords =  wordswrittenMonthMap.get(year_month);
+          let words = mapElementWords ? mapElementWords + element.words : element.words;
+          wordswrittenMonthMap.set(year_month, words);
+        }
+
+        // Calculate month average words
+        let now = moment();
+        let current_month = now.format('YYYY-MM');
+        let days_total_current_month = Number(now.format('D'));
+        wordswrittenMonthMap.forEach(function(value, key) {
+          let avg = 0;
+          // this month
+          if (key === current_month) {
+            avg = Math.round(value / days_total_current_month + Number.EPSILON);
+          } 
+          // previous months
+          else {
+            avg = Math.round(value / moment(key, 'YYYY-MM').daysInMonth() + Number.EPSILON);
+          }
+          wordswrittenMonthAvgMap.set(key, avg);
+        });
+
+        // From map to array 
+        let index = moment(String(moment(String(firstWritingDay)).format('YYYYMM')+'01'));
+        let nextMonth = moment(String(moment().format('YYYYMM')+'01')).add(1, 'months');
+        do {
+          let year_month = index.format('YYYY-MM');
+          monthAvg.push({
+            day: index.format('YYYYMMDD'),
+            words: wordswrittenMonthAvgMap.get(year_month) || 0
+          });
+          index.add(1, 'months');
+        } while (nextMonth.isAfter(index));
+        
+      }
+
+      return monthAvg;
+    }, 
+    
+    getWordsWrittenDayOfWeek : function() {
+      
+      let dayOfWeek = [];
+      let wordswrittenperday = this.getWordswrittenperdayDynamicView();
+
+      // init day of week
+      for (let index = 0; index < 7; index++) {
+        dayOfWeek[index] = 0;
+      }
+
+      wordswrittenperday.forEach(element => {
+        if (element.day > 0) {
+          let day = moment(String(element.day)).day();
+          dayOfWeek[day] += element.words;
+        }
+      });
+
+      return dayOfWeek;
+    },
+
     getCollection: function () {
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'chapters');
@@ -51,6 +196,13 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
     getSceneCollection: function () {
       return ProjectDbConnectionService.getProjectDb().getCollection('scenes');
+    },
+    getWordswrittenperdayCollection: function () {
+      return ProjectDbConnectionService.getProjectDb().getCollection('wordswrittenperday');
+    },
+    getWordswrittenperdayDynamicView: function () {
+      return CollectionUtilService.getDynamicViewSortedByField(
+        this.getWordswrittenperdayCollection(), 'all_wordswrittenperday', 'day').data();
     },
     getAllScenes: function () {
       let collection = ProjectDbConnectionService.getProjectDb().getCollection('scenes');
@@ -66,6 +218,9 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
 
       return dynamicView.data();
+    },
+    getAllScenesCount: function () {
+      return ProjectDbConnectionService.getProjectDb().getCollection('scenes').count();
     },
     insert: function (chapter) {
 
@@ -113,7 +268,6 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
     update: function (chapter) {
       this.updateChapterStatusWordsCharactersWithoutCommit(chapter.$loki);
-
       CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
 
       // save database
@@ -173,6 +327,35 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
 
       CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
+
+      this.updateWordsWrittenTodayWithoutCommit();
+    },
+
+    updateWordsWrittenTodayWithoutCommit: function() {
+      let today = Number(moment().format('YYYYMMDD'));
+      let totalWords = this.getTotalWordsAndCharacters().words;
+      let wordswrittenperdayCollection = this.getWordswrittenperdayCollection();
+
+      // calculate words written before today
+      let wordsWrittenBeforeToday = 0;
+      wordswrittenperdayCollection.find({'day': { '$lt' : today }}).forEach(day => {
+        wordsWrittenBeforeToday += day.words;
+      });
+
+      // calculate words written today
+      let wordsWrittenToday = totalWords - wordsWrittenBeforeToday;
+
+      // insert or update today record
+      let todayWordsElement = wordswrittenperdayCollection.findOne({'day': { '$eq' : today }});
+      if (todayWordsElement) {
+        todayWordsElement.words = wordsWrittenToday;
+        wordswrittenperdayCollection.update(todayWordsElement);
+      } else {
+        wordswrittenperdayCollection.insert({
+          day: today,
+          words: wordsWrittenToday
+        });
+      }
     },
 
     changeSceneRevision: function (id, revision) {

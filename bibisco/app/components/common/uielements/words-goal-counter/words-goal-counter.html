@@ -1,0 +1,5 @@
+<span uib-tooltip="{{'goals_total_words_goal' | translate}} (% {{'of the goal' | translate}})"
+    ng-class="{ 'label-success' : $ctrl.wordsGoalPerc >= 100,
+                'label-warning' : $ctrl.wordsGoalPerc > 74 && $ctrl.wordsGoalPerc < 100,
+                'label-danger' : $ctrl.wordsGoalPerc < 75}"
+    class="label bibiscoBadge"><i class="fa fa-bullseye"></i> {{($ctrl.wordsGoal | number: 0)}} ({{($ctrl.wordsGoalPerc | number: 0)}}%)</span>

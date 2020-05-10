@@ -67,6 +67,8 @@
   <script src="components/common/forms/button-group-field/button-group-field.js"></script>
   <script src="components/common/forms/button-with-alert/button-with-alert.js"></script>
   <script src="components/common/forms/button-with-confirm/button-with-confirm.js"></script>
+  <script src="components/common/forms/directory-input-field/directory-input-field.js"></script>
+  <script src="components/common/forms/directory-select/directory-select.js"></script>
   <script src="components/common/forms/dropdown-menu/dropdown-menu.js"></script>
   <script src="components/common/forms/edit-save-back-buttonbar/edit-save-back-buttonbar.js"></script>
   <script src="components/common/forms/file-input-field/file-input-field.js"></script>
@@ -75,8 +77,7 @@
   <script src="components/common/forms/images-button/images-button.js"></script>
   <script src="components/common/forms/language-input-field/language-input-field.js"></script>
   <script src="components/common/forms/language-select/language-select.js"></script>
-  <script src="components/common/forms/directory-input-field/directory-input-field.js"></script>
-  <script src="components/common/forms/directory-select/directory-select.js"></script>
+  <script src="components/common/forms/number-input-field/number-input-field.js"></script>
   <script src="components/common/forms/project-explorer-button/project-explorer-button.js"></script>
   <script src="components/common/forms/revision-select/revision-select.js"></script>
   <script src="components/common/forms/text-input-field/text-input-field.js"></script>
@@ -105,6 +106,7 @@
   <script src="components/common/uielements/task-status/task-status.js"></script>
   <script src="components/common/uielements/task-status/task-status-selector.js"></script>
   <script src="components/common/uielements/words-characters-counter/words-characters-counter.js"></script>
+  <script src="components/common/uielements/words-goal-counter/words-goal-counter.js"></script>
   <script src="components/contextual-tip/contextual-tip.js"></script>
   <script src="components/contextual-tip/contextual-tip-button.js"></script>
   <script src="components/error/error.js"></script>
@@ -138,10 +140,12 @@
   <script src="components/project-explorer/project-explorer-maincharacter-info.js"></script>
   <script src="components/project-explorer/project-explorer-simple-text.js"></script>
   <script src="components/project-explorer/project-explorer-strands.js"></script>
+  <script src="components/project-home/progress-stats-bar.js"></script>
+  <script src="components/project-home/project-author.js"></script>
   <script src="components/project-home/project-home.js"></script>
   <script src="components/project-home/project-title.js"></script>
-  <script src="components/project-home/tip.js"></script>
-  <script src="components/project-home/tips.js"></script>
+  <script src="components/project-home/tips/tip.js"></script>
+  <script src="components/project-home/tips/tips.js"></script>
   <script src="components/search/search.js"></script>
   <script src="components/settings/settings.js"></script>
   <script src="components/start/start.js"></script>
@@ -155,6 +159,7 @@
   <script src="directives/contenteditable.js"></script>
   <script src="directives/datetimepicker/datetimepicker.js"></script>
   <script src="directives/datetimepicker/datetimepicker.templates.js"></script>
+  <script src="directives/number.js"></script>
   <script src="services/AnalysisService.js"></script>
   <script src="services/ArchitectureService.js"></script>
   <script src="services/BibiscoDbConnectionService.js"></script>
@@ -183,6 +188,7 @@
   <script src="services/SecondaryCharacterService.js"></script>
   <script src="services/StrandService.js"></script>
   <script src="services/SupporterEditionChecker.js"></script>
+  <script src="services/TxtExporterService.js"></script>
   <script src="services/UtilService.js"></script>
   <script src="services/UuidService.js"></script>
   <script src="services/WordCharacterCountService.js"></script>
@@ -195,7 +201,7 @@
   <link rel="stylesheet" ng-href="css/bibisco-{{theme}}-theme.css" />
 </head>
 
-<body>
+<body ng-keydown="keydown($event)" ng-keyup="keyup($event)" tabindex="0">
   <menu></menu>
   <div ng-view></div>
 </body>

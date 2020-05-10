@@ -1,0 +1,9 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
+  <div class="modal-body" id="modal-body" 
+    ng-include="'components/contextual-tip/tips/relationsTip.html'">
+  </div>
+  <div class="modal-footer bibiscoNotSelectableText">
+    <button class="btn btn-default" type="button" 
+      ng-click="$ctrl.cancel()">{{"jsp.common.button.close" | translate}}</button>
+  </div>
+</modal-component>

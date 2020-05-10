@@ -19,3 +19,12 @@
 	opacity: 0.8;
 	color: lightgrey;
 }
+
+.btn-unselected {
+    background-color: #dddddd !important;
+	border-color: #dddddd !important;
+}
+
+.input-group-addon > a {
+	color: #555;
+}

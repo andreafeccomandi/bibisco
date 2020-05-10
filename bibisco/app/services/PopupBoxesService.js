@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
       });
     },
 
-    locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction) {
+    locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction, denyFunction) {
       if (checkExit.active && formDirty) {
         event.preventDefault();
         let wannaGoPath = $location.path();
@@ -87,6 +87,9 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
         'js.common.message.confirmExitWithoutSave',
         function () {
           checkExit.active = true;
+          if (denyFunction) {
+            denyFunction();
+          }
           $rootScope.$emit('LOCATION_CHANGE_DENIED');
         });
       }

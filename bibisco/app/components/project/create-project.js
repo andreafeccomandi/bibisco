@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
 
   self.$onInit = function () {
     self.projectName = null;
+    self.projectAuthor = null;
     self.projectLanguage = LocaleService.getCurrentLocale();
     self.projectLocales = {
       'ca-es': 'Català',
@@ -71,7 +72,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
     if (isValid) {
       PopupBoxesService.confirm(function () {
         $timeout(function () {
-          ProjectService.create(self.projectName, self.projectLanguage);
+          ProjectService.create(self.projectName, self.projectLanguage, self.projectAuthor);
           ContextMenuService.create();
           self.checkExit = {
             active: false

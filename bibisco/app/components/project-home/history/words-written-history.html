@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+      <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+    </div>
+  <div class="row">
+    <pageheader headertitle="goals_history" buttonlabel="jsp.common.button.back"
+    buttonfunction="$ctrl.back()" buttonshow="true" buttonstyle="default" buttonhotkey="$ctrl.hotkeys"
+    buttontooltip="{{'back_button_tooltip'+$root.os}}" tipcode="wordswrittenhistoryTip" tipenabled="true">
+    </pageheader>
+  </div>
+</div>
+ 
+<div class="words-written-container">
+  <fullpageloader ng-if="$ctrl.loading"></fullpageloader>
+  <div ng-if="!$ctrl.loading" class="container">
+    <div class="row">
+      <div class="col-sm-12">
+          <last30dayswrittenwords wordsperdaygoal="$ctrl.wordsperdaygoal"></last30dayswrittenwords>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+          <monthlyaveragewrittenwords wordsperdaygoal="$ctrl.wordsperdaygoal"></monthlyaveragewrittenwords>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <dayofweekwrittenwords></dayofweekwrittenwords>
+        </div>
+    </div>
+</div>
+
+

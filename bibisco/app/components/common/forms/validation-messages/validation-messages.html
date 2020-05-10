@@ -1,6 +1,7 @@
-<div ng-messages="$ctrl.getError()" ng-if="$ctrl.showError()">
+<div ng-messages="$ctrl.getError()" ng-if="$ctrl.showError()" class="text-left">
   <p class="text-danger bibiscoNotSelectableText" ng-message="required">{{"validation.required" | translate}}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="minlength">{{"validation.minlength" | translate:{ minlength: $ctrl.getMinLength() } }}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="maxlength">{{"validation.maxlength" | translate:{ maxlength: $ctrl.getMaxLength() } }}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="email">{{"validation.email" | translate}}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="pattern">{{"validation.number" | translate}}</p>
 </div>

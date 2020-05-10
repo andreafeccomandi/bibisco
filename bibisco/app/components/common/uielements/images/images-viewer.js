@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,17 @@ angular.
       breadcrumbitems: '<',
       deletefunction: '&',
       images: '<',
+      insertbuttonstyle: '@',
       insertfunction: '&',
       lastsave: '<',
-      pageheadertitle: '@'
+      pageheadertitle: '@',
+      pageheadercustomtitle: '<',
+      selectfunction: '&',
+      showselectbutton: '<'
     }
   });
 
-function ImagesViewerController($rootScope, $scope, hotkeys, ImageService) {
+function ImagesViewerController($rootScope, $translate, ImageService) {
 
   var self = this;
 
@@ -36,6 +40,20 @@ function ImagesViewerController($rootScope, $scope, hotkeys, ImageService) {
 
     // hide menu
     $rootScope.$emit('SHOW_ELEMENT_IMAGES');
+
+    if (!self.insertbuttonstyle) {
+      self.insertbuttonstyle = 'primary';
+    }
+
+    self.title;
+    if (self.pageheadercustomtitle) {
+      self.title = $translate.instant(self.pageheadertitle);
+    } else {
+      self.title = $translate.instant('jsp.carouselImage.dialog.title') + ' ' + self.pageheadertitle;
+    }
+
+    // hotkeys
+    self.hotkeys = ['ctrl+n', 'command+n'];
   };
 
   self.fullpath = function(filename) {

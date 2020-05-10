@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'es': 'Español',
         'fr': 'Français',
         'it': 'Italiano',
+        'nl': 'Nederlands',
         'pl': 'Polski',
         'pt-br': 'Português (Brasil)',
         'pt-pt': 'Português (Portugal)',
@@ -90,6 +91,8 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'fr';
   } else if (preferredLanguage.startsWith('it')) {
     preferredLocale = 'it';
+  } else if (preferredLanguage.startsWith('nl')) {
+    preferredLocale = 'nl';
   } else if (preferredLanguage.startsWith('pl')) {
     preferredLocale = 'pl';
   } else if (preferredLanguage.startsWith('ru')) {

@@ -13,6 +13,8 @@
   editfunction="$ctrl.edit()"
   editmode="$ctrl.editmode"
   showprojectexplorer="$root.showprojectexplorer" 
+  todaywords="$ctrl.todaywords"
+  totalwords="$ctrl.totalwords"
   words="$ctrl.scenerevision.words">
 </detailcontent>
 
@@ -21,10 +23,14 @@
     <detailfootertop 
       autosaveenabled="$ctrl.autosaveenabled" 
       characters="$ctrl.scenerevision.characters" 
-      editmode="$ctrl.editmode" 
+      editmode="$ctrl.editmode", 
       lastsave="$ctrl.scene.lastsave" 
-      words="$ctrl.scenerevision.words" 
-      wordscharactersenabled="true">
+      todaywords="$ctrl.todaywords"
+      totalwords="$ctrl.totalwords"
+      words="$ctrl.scenerevision.words",
+      wordscharactersenabled="true". 
+      wordsgoal="$ctrl.wordsGoal",
+      wordsperdaygoal="$ctrl.wordsPerDayGoal">
     </detailfootertop>
     <div class="row">
       <span class="pull-left">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ angular.
     }
   });
 
-function ChaptersController($location, $routeParams, $rootScope, $scope, 
-  CardUtilService, ChapterService, hotkeys) {
+function ChaptersController($injector, $location, $routeParams, $rootScope, $scope, 
+  CardUtilService, ChapterService, ProjectService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
@@ -38,6 +38,15 @@ function ChaptersController($location, $routeParams, $rootScope, $scope,
     let totalWordsAndCharacters = ChapterService.getTotalWordsAndCharacters();
     self.pageheadercharacters = totalWordsAndCharacters.characters;
     self.pageheaderwords = totalWordsAndCharacters.words;
+
+    // supporters check
+    let supporterEdition = false;
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      supporterEdition = true;
+    } 
+    let wordsGoal = ProjectService.getProjectInfo().wordsGoal;
+    self.showwordsgoalcounter = supporterEdition && wordsGoal;
 
     // focus element
     CardUtilService.focusElementInPath($routeParams.params);

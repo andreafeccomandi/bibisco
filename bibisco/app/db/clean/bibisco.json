@@ -56,7 +56,7 @@
         },
         {
           "name": "version",
-          "value": "2.1.0-CE",
+          "value": "2.2.0-CE",
           "meta": {
             "revision": 0,
             "created": 1487541445279,
@@ -213,6 +213,36 @@
             "version": 0
           },
           "$loki": 21
+        },
+        {
+          "name": "relationsTip",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 22
+        },
+        {
+          "name": "wordswrittenhistoryTip",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 23
+        },
+        {
+          "name": "backupTip",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 24
         }
       ],
       "idIndex": [

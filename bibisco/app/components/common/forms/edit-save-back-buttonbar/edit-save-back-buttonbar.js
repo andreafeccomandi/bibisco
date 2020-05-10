@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: EditSaveBackButtonbarController,
     bindings: {
       autosaveenabled: '=',
+      backdisabled: '<',
       backpath: '<',
       editbuttonvisible: '<',
       editfunction: '&',
@@ -78,9 +79,11 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     });
 
   self.executeSave = function() {
-    self.savefunction();
-    self.saving = false;
-    $rootScope.dirty = false;
-    $rootScope.$emit('CONTENT_SAVED');
+    if (self.editmode && $rootScope.dirty) {
+      self.savefunction();
+      self.saving = false;
+      $rootScope.dirty = false;
+      $rootScope.$emit('CONTENT_SAVED');
+    } 
   };
 }

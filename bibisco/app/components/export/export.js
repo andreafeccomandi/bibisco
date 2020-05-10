@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ExportController($location, $rootScope) {
+function ExportController($injector, $location, $rootScope, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function () {
@@ -41,7 +41,24 @@ function ExportController($location, $rootScope) {
     $location.path('/exporttoformat/docx');
   };
 
+  self.exportTxt = function () {
+    $location.path('/exporttoformat/txt');
+  };
+
+  self.exportEPub = function () {
+    self.supporterEditionFilterAction('/exporttoepub');
+  };
+
   self.exportArchive = function () {
     $location.path('/exporttoformat/archive');
+  };
+
+  self.supporterEditionFilterAction = function(path) {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $injector.get('IntegrityService').ok();
+      $location.path(path);
+    }
   };
 }

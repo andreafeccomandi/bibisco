@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2019 Andrea Feccomandi
+ * Copyright (C) 2014-2020 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,10 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.text2search = null;
   $rootScope.showprojectexplorer = false;
   $rootScope.projectExplorerCache = new Map();
+  $rootScope.keyUpFunction = null;
+  $rootScope.keyDownFunction = null;
   
+  // location change success
   $rootScope.$on('$locationChangeSuccess', 
     function (event, newUrl, oldUrl) {
       $rootScope.actualPath = newUrl.split('!')[1];
@@ -73,6 +76,20 @@ angular.module('bibiscoApp', ['ngRoute',
         $rootScope.previousPath = oldUrl.split('!')[1];
       }
     });
+
+  // keydown
+  $scope.keydown = function(event) {
+    if ($rootScope.keyDownFunction) {
+      $rootScope.keyDownFunction(event);
+    }
+  };
+
+  // keyup
+  $scope.keyup = function(event) {
+    if ($rootScope.keyUpFunction) {
+      $rootScope.keyUpFunction(event);
+    }
+  };
   
 }).config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
@@ -155,6 +172,15 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/export', {
         template: '<export></export>'
+      }).
+      when('/exporttoepub', {
+        template: '<exporttoepub></exporttoepub>'
+      }).
+      when('/exporttoepub/images', {
+        template: '<exporttoepubimages></exporttoepubimages>'
+      }).
+      when('/exporttoepub/images/new', {
+        template: '<exporttoepubaddimage></exporttoepubaddimage>'
       }).
       when('/exporttoformat/:format', {
         template: '<exporttoformat></exporttoformat>'
@@ -246,11 +272,26 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/tips', {
         template: '<tips></tips>'
       }).
+      when('/project/goals', {
+        template: '<goals></goals>'
+      }).
+      when('/project/author', {
+        template: '<projectauthor></projectauthor>'
+      }).
       when('/project/title', {
         template: '<projecttitle></projecttitle>'
       }).
+      when('/project/history', {
+        template: '<wordswrittenhistory></wordswrittenhistory>'
+      }).
       when('/projecthome', {
         template: '<projecthome></projecthome>'
+      }).
+      when('/relations/export', {
+        template: '<relationexport></relationexport>'
+      }).
+      when('/relations/:mode', {
+        template: '<relations></relations>'
       }).
       when('/search', {
         template: '<search></search>'
@@ -302,7 +343,7 @@ angular.module('bibiscoApp', ['ngRoute',
         suffix: '.json' // suffix, currently- extension of the translations
       })
       .registerAvailableLanguageKeys(['cs', 'de', 'en', 'en-us',
-        'es', 'fr', 'it', 'pl', 'pt-br', 'pt-pt', 'ru', 'sr', 'tr'
+        'es', 'fr', 'it', 'nl', 'pl', 'pt-br', 'pt-pt', 'ru', 'sr', 'tr'
       ], {
         'cs': 'cs',
         'de': 'de',
@@ -315,6 +356,7 @@ angular.module('bibiscoApp', ['ngRoute',
         'es': 'es',
         'fr': 'fr',
         'it': 'it',
+        'nl': 'nl',
         'pl': 'pl',
         'pt-br': 'pt-br',
         'pt_BR': 'pt-br',

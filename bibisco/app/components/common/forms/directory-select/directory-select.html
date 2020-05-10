@@ -1,5 +1,6 @@
 <div class="input-group" ng-class="{ 'has-error': $ctrl.hasError() }">
   <input name="{{$ctrl.name}}" class="form-control" type="text" readonly="readonly"
+    ng-attr-placeholder="{{$ctrl.placeholder | translate}}"
     ng-model="$ctrl.model" required/>
   <span class="input-group-btn">
       <button class="btn btn-default" type="button"
