@@ -6,7 +6,7 @@ bibisco is a personal project, made with love.
 
 We love books and we want to help writers to write beautiful novels.
 
-With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf or docx, and write with a fully featured text editor.
+With bibisco you can organize chapters and scenes, manage revisions, export novels in pdf or docx, and write with a fully featured text editor.
 
 You can create a novel structure, define premise, fabula, narrative strands and settings: geographic, temporal and social context.
 
@@ -27,7 +27,7 @@ bibisco doesn't need to be installed. After download:
 ### Mac OS X
 
 1. open downloaded dmg file
-2. follow the istructions
+2. follow the instructions
 3. write your novel
 
 
