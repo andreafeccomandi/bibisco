@@ -75,7 +75,7 @@
     "yazl": "^2.4.2"
   },
   "devDependencies": {
-    "angular": "^1.7.9",
+    "angular": "^1.8.0",
     "angular-bootstrap-confirm": "^2.5.0",
     "angular-chart.js": "^1.1.1",
     "angular-dynamic-locale": "^0.1.37",
