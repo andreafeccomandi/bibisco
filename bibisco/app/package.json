@@ -86,7 +86,7 @@
     "angular-sanitize": "^1.7.9",
     "angular-translate": "^2.18.2",
     "angular-ui-bootstrap": "^2.5.0",
-    "bestzip": "^2.1.5",
+    "bestzip": "^2.1.7",
     "bootstrap": "^3.4.1",
     "create-dmg": "^5.1.0",
     "devtron": "^1.1.0",
