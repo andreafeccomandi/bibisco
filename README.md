@@ -1,6 +1,6 @@
 ## What is bibisco?
 
-bibisco is an open source application for writing novels.
+bibisco is an open source application for **writing novels**.
 
 bibisco is a personal project, made with love. 
 
@@ -14,9 +14,9 @@ And, most of all, with bibisco you can **know everything about your characters**
 
 bibisco has 2 versions: **Community Edition** and **Supporters Edition**; this is the repository of **bibisco Community Edition**.
 
-## Installation
+## Official website and blog
 
-Take a look at [bibisco documentation](https://docs.bibisco.com/how-to-install-bibisco).
+You can find all information regarding bibisco **novel writing software** from the [official website](https://bibisco.com) and from [official blog](https://bibisco.com/blog).
 
 
 ## Support
