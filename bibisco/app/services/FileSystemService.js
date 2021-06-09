@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,10 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       }
       return result;
     },
+    cleanDirectory: function(directoryPath) {
+      this.deleteDirectory(directoryPath);
+      this.createDirectory(directoryPath);
+    },
     concatPath: function(a, b) {
       return path.join(a, b);
     },
@@ -68,7 +72,12 @@ angular.module('bibiscoApp').service('FileSystemService', function(
       fs.removeSync(path);
     },
     deleteFile: function(path) {
-      fs.unlinkSync(path);
+      try {
+        fs.unlinkSync(path);
+        LoggerService.info('Deleted file: ' + path);
+      } catch (err) {
+        LoggerService.error('Error deleting file: ' + path + ' - ' + err);
+      }
     },
     dirname: function (filepath) {
       return path.dirname(filepath);
@@ -84,6 +93,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
     },
     getFilesInDirectoryRecursively: function(path, filter) {
       return walkSync(path, filter);
+    },
+    getPathSeparator: function() {
+      return path.sep;
     },
     isDirectory: function(path) {
       return fs.lstatSync(path).isDirectory();

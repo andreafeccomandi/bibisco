@@ -3,51 +3,83 @@
     <pageheader headertitle="jsp.settings.h1">
     </pageheader>
   </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="settingsForm" class="form-horizontal"
-        ng-submit="$ctrl.save(settingsForm.$valid, settingsForm.$dirty)"
-        novalidate>
 
-        <div class="form-group">
-          <label class="col-sm-3 control-label">{{'theme' | translate}}</label>
-          <div class="col-sm-8">
-            <div class="btn-group">
-              <button type="button" class="btn btn-default" ng-click="$ctrl.selectClassicTheme()" 
-                ng-class="{ 'active' : $ctrl.theme === 'classic' }">
-                {{'theme_classic' | translate}}
-              </button>
-              <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkTheme()" 
-                ng-class="{ 'active' : $ctrl.theme === 'dark' }">
-                {{'theme_dark' | translate}}
-              </button>
+  <div class="settings">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <form name="settingsForm" class="form-horizontal"
+            ng-submit="$ctrl.save(settingsForm.$valid, settingsForm.$dirty)"
+            novalidate>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">{{'theme' | translate}}</label>
+              <div class="col-sm-8">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default" ng-click="$ctrl.selectClassicTheme()" 
+                    ng-class="{ 'active' : $ctrl.theme === 'classic' }">
+                    {{'theme_classic' | translate}}
+                  </button>
+                  <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkTheme()" 
+                    ng-class="{ 'active' : $ctrl.theme === 'dark' }">
+                    {{'theme_dark' | translate}}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+
+            <languageinputfield applyonchange="false"
+              onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"
+              label="jsp.language.form.selectLanguage.label"
+              labelcols="3" inputcols="8">
+            </languageinputfield>
+
+            <directoryinputfield
+              field="settingsForm.projectsDirectory"
+              model="$ctrl.selectedProjectsDirectory" name="projectsDirectory"
+              label="jsp.changeProjectsDirectory.label"
+              labelcols="3" inputcols="8"
+              onselectdirectory="$ctrl.selectProjectsDirectory(directory)"
+              forbiddenDirectory="$ctrl.forbiddenDirectory">
+            </directoryinputfield>
+            <div class="col-sm-8 col-sm-offset-3 settings-note">
+              <p><span class="label label-info">{{"important_note" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
+            </div>
+
+            <directoryinputfield
+              field="settingsForm.backupDirectory"
+              model="$ctrl.selectedBackupDirectory" name="backupDirectory"
+              label="automatic_backup_directory"
+              labelcols="3" inputcols="8"
+              onselectdirectory="$ctrl.selectBackupDirectory(directory)"
+              forbiddenDirectory="$ctrl.forbiddenBackupDirectory"
+              customerrormessage="$ctrl.backupDirectoryCustomErrorMessage">
+            </directoryinputfield>
+
+            <buttongroupfield group="$ctrl.autoBackupOnExitGroup" 
+              label="auto_backup_onexit" form="settingsForm"
+              model="$ctrl.autoBackupOnExit" labelcols="3" inputcols="7"></buttongroupfield>
+
+            <buttongroupfield group="$ctrl.autoBackupFrequencyGroup" 
+              label="auto_backup_frequency" form="settingsForm"
+              model="$ctrl.autoBackupFrequency" labelcols="3" inputcols="7"></buttongroupfield>
+
+            <numberinputfield field="settingsForm.maxBackupNumber" 
+              model="$ctrl.maxBackupNumber" name="maxBackupNumber" 
+              label="max_backup_number" min="1" max="20" maxlength="2" required
+              labelcols="3" inputcols="1">
+            </numberinputfield>
+            <div class="col-sm-8 col-sm-offset-3 settings-note">
+              <p><span class="label label-info">{{"important_note" | translate}}</span>&nbsp;&nbsp;{{"max_backup_number_note" | translate}}</p>
+            </div>
+
+
+            <formbuttons backpath="$ctrl.backpath" form="settingsForm" offsetcols="3" sizecols="8">
+            </formbuttons>
+
+          </form>
         </div>
-
-        <languageinputfield applyonchange="false"
-          onselectlanguage="$ctrl.selectLanguage(selectedLanguage)"
-          label="jsp.language.form.selectLanguage.label"
-          labelcols="3" inputcols="8">
-        </languageinputfield>
-
-        <directoryinputfield
-          field="settingsForm.projectsDirectory"
-          model="$ctrl.selectedProjectsDirectory" name="projectsDirectory"
-          label="jsp.changeProjectsDirectory.label"
-          labelcols="3" inputcols="8"
-          onselectdirectory="$ctrl.selectProjectsDirectory(directory)"
-          forbiddenDirectory="$ctrl.forbiddenDirectory">
-        </directoryinputfield>
-
-        <div class="col-sm-8 col-sm-offset-3">
-          <p><span class="label label-info">{{"jsp.changeProjectsDirectory.p.label.1" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
-        </div>
-
-        <formbuttons backpath="$ctrl.backpath" form="settingsForm" offsetcols="3" sizecols="8">
-        </formbuttons>
-
-      </form>
-    </div>
+      </div>
   </div>
+</div>
 </div>

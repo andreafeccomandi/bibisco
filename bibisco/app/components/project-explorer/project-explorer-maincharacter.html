@@ -66,6 +66,7 @@
     sectiontitle="'common_characters_evolutionduringthestory'">
 </projectexplorersimpletext>
 
-<hr>
-<projectexplorerimages images="$ctrl.maincharacter.images">
-</projectexplorerimages>
+<hr ng-if="$ctrl.maincharacter.images && $ctrl.maincharacter.images.length>0">
+<projectexplorerimages images="$ctrl.maincharacter.images"></projectexplorerimages>
+<hr ng-if="$ctrl.timeline && $ctrl.timeline.length>0">
+<projectexplorerevents timeline="$ctrl.timeline"></projectexplorerevents>

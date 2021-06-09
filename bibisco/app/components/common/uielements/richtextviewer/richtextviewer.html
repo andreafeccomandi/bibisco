@@ -2,4 +2,12 @@
 <div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} bibiscoNotSelectableText" 
     ng-bind-html="$ctrl.content | trusted">
 </div>
-</div>
+
+<siblingelementsnavigator
+  previouselementlabel="{{$ctrl.previouselementlabel}}"
+  previouselementlink="$ctrl.previouselementlink"
+  previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+  nextelementlabel="{{$ctrl.nextelementlabel}}"
+  nextelementlink="$ctrl.nextelementlink"
+  nextelementtooltip="{{$ctrl.nextelementtooltip}}">
+</siblingelementsnavigator>

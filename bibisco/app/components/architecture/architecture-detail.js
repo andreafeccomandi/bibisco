@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: ArchitectureDetailController
   });
 
-function ArchitectureDetailController($location, $rootScope, $routeParams, 
+function ArchitectureDetailController($location, $routeParams, 
   ArchitectureService) {
 
   var self = this;
@@ -42,6 +42,9 @@ function ArchitectureDetailController($location, $rootScope, $routeParams,
     if (self.mode === 'view') {
       self.backpath = backpath;
     }
+
+    // Events enabled only for setting
+    self.eventsenabled = ($routeParams.id === 'setting') ? true : false;
   };
 
   self.changeStatus = function(status) {
@@ -82,5 +85,9 @@ function ArchitectureDetailController($location, $rootScope, $routeParams,
 
   self.savefunction = function() {
     ArchitectureService.update(self.architectureitem);
+  };
+
+  self.showeventsfunction = function() {
+    $location.path('/architectureitems/' + $routeParams.id + '/events');
   };
 }

@@ -33,38 +33,56 @@
       </div>
     </div>
   </div>
-  <div ng-show="$ctrl.step==1 || $ctrl.step==2" class="jumbotron top50">
-    <form name="welcomeForm" ng-submit="$ctrl.finish(welcomeForm.$valid)" novalidate>
+  <div ng-show="$ctrl.step==1 || $ctrl.step==2 || $ctrl.step==3" class="welcome-form">
+    <div class="container">
+    <div class="jumbotron top30">
+    <form name="welcomeForm" ng-submit="$ctrl.saveFunction(welcomeForm.$valid)" novalidate>
       <div class="row">
-        <h1 ng-show="!$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
-        <div ng-show="$ctrl.step==1">
-          <p class="bibiscoNotSelectableText">{{"jsp.welcome.step1.p.1" | translate}}</p>
+        <h1 ng-show="!$ctrl.repairmode" class="bibiscoNotSelectableText">{{"jsp.welcome.h1" | translate}}</h1>
+        <div ng-show="$ctrl.step==1" class="welcomeWizardLanguage">
+          <p class="bibiscoNotSelectableText welcomeWizardLabel">{{"jsp.welcome.step1.p.1" | translate}}</p>
           <div>
             <languageselect applyOnChange="true"></languageselect>
           </div>
         </div>
-        <div ng-show="$ctrl.step==2">
-          <p ng-show="$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">
+        <div ng-if="$ctrl.step==2 && !($ctrl.repairmode && !$ctrl.repairingProjectsDirectory)" class="welcomeWizardProjectDirectory">
+          <p ng-show="$ctrl.repairingProjectsDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">
             {{"jsp.welcome.step2.p.missing.projectsdirectory.1" | translate}}&nbsp;[&nbsp;<b><i>{{$ctrl.previousProjectsDirectory}}</i></b>&nbsp;]{{"jsp.welcome.step2.p.missing.projectsdirectory.2" | translate}}</p>
-          <p ng-show="!$ctrl.previousProjectsDirectory" class="bibiscoNotSelectableText">{{"jsp.welcome.step2.p.1" | translate}}</p>
-          <directoryselect model='$ctrl.selectedProjectsDirectory'
-          field='welcomeForm.projectsDirectory' name='projectsDirectory'
-          onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
-          forbiddendirectory='$ctrl.forbiddenDirectory'>
+          <p ng-show="!$ctrl.repairingProjectsDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">{{"jsp.welcome.step2.p.1" | translate}}</p>
+          <directoryselect model="$ctrl.selectedProjectsDirectory"
+            field="welcomeForm.projectsDirectory" name="projectsDirectory"
+            onselectdirectory="$ctrl.selectProjectsDirectory(directory)"
+            forbiddendirectory="$ctrl.forbiddenDirectory"
+            customerrormessage="$ctrl.projectsDirectoryCustomErrorMessage">
           </directoryselect>
-
-          <div class="bibiscoWelcomeWizardNotes">
+          <div class="welcomeWizardNotes">
             <p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
             <p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>
           </div>
         </div>
+        <div ng-if="$ctrl.step==2 && !($ctrl.repairmode && !$ctrl.repairingBackupDirectory)" class="welcomeWizardBackupDirectory">
+          <p ng-show="$ctrl.repairingBackupDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">
+            {{"missing_backup_directory" | translate}}&nbsp;[&nbsp;<b><i>{{$ctrl.previousBackupDirectory}}</i></b>&nbsp;]{{"jsp.welcome.step2.p.missing.projectsdirectory.2" | translate}}</p>
+          <p ng-show="!$ctrl.repairingBackupDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">{{"jsp.welcome.step3.p.1" | translate}}</p>
+          <directoryselect model="$ctrl.selectedBackupDirectory"
+            field="welcomeForm.backupDirectory" name="backupDirectory"
+            onselectdirectory="$ctrl.selectBackupDirectory(directory)"
+            forbiddendirectory="$ctrl.forbiddenBackupDirectory"
+            customerrormessage="$ctrl.backupDirectoryCustomErrorMessage">
+          </directoryselect>
+        </div>
+        <div ng-show="$ctrl.step==3">
+          <loadingbar message="installing_dictionary" onepercentmilliseconds="250" start="$ctrl.step==3"></loadingbar>
+        </div>
       </div>
-      <div class="row top15"></div>
+      <div class="row welcomeWizardButtons"></div>
       <div class="row">
         <button ng-show="$ctrl.step==1" ng-click="$ctrl.next()" type="button" class="btn btn-lg btn-primary">{{"common_next" | translate}}</button>
-        <button ng-show="$ctrl.step==2 && !$ctrl.previousProjectsDirectory" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"common_previous" | translate}}</button>
+        <button ng-show="$ctrl.step==2 && !$ctrl.repairmode" ng-click="$ctrl.back()" type="button" class="btn btn-lg btn-default">{{"common_previous" | translate}}</button>
         <button ng-show="$ctrl.step==2" type="submit" class="btn btn-lg btn-primary">{{"common_finish" | translate}}</button>
       </div>
     </form>
+    </div>
+    </div>
   </div>
 </div>

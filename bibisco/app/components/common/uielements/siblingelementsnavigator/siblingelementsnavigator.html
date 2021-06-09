@@ -1,0 +1,16 @@
+<div ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink" class="row top30">
+    <div class="col-sm-6">
+      <span class="pull-right">
+        <a ng-if="$ctrl.previouselementlink" 
+          uib-tooltip="{{$ctrl.previouselementtooltip | translate}}"
+          ng-click="$ctrl.gotopreviouslement()">&xlarr; {{$ctrl.previouselementlabel | translate}}</a>
+      </span>
+    </div>
+    <div class="col-sm-6">
+      <span class="pull-left">
+        <a ng-if="$ctrl.nextelementlink" 
+          uib-tooltip="{{$ctrl.nextelementtooltip | translate}}"
+          ng-click="$ctrl.gotonextlement()">{{$ctrl.nextelementlabel | translate}} &xrarr;</a>
+      </span>
+    </div>
+  </div>

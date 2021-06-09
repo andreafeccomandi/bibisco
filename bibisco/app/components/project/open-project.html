@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="project in $ctrl.getProjects() track by $index">
+          <tr ng-repeat="project in $ctrl.projects track by $index">
             <td class="col-sm-8">{{ project.name }}</td>
             <td class="col-sm-2 text-right">
               <button ng-click="$ctrl.open(project.id)" class="btn btn-sm btn-primary">{{"jsp.selectProject.button.open" | translate}}</button>

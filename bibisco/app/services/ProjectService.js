@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,27 @@
  *
  */
 
-angular.module('bibiscoApp').service('ProjectService', function($injector,
-  BibiscoDbConnectionService, BibiscoPropertiesService, CollectionUtilService, 
+angular.module('bibiscoApp').service('ProjectService', function($injector, $interval,
+  BibiscoDbConnectionService, BackupService, BibiscoPropertiesService, CollectionUtilService, 
   ContextService, FileSystemService, LoggerService,
   UtilService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
 
+  const SOMETHING_CHANGED = 1000; // I consider 1 second to cover the time between updating the collection backups and updating the last save
+  const NEVER = -1; 
+  const THIRTY_SECONDS = 30000; // 30 seconds = 30000 ms
+  const ONE_MINUTE = 60000; // 1 minute = 60000 ms
+  const TWO_MINUTES = 120000; // 2 minutes = 120000 ms
+  const FIVE_MINUTES = 300000; // 5 minutes = 300000 ms
+  const FIFTEEN_MINUTES = 900000; // 15 minutes = 900000 ms
+  const THIRTY_MINUTES = 1800000; // 30 minutes = 1800000 ms
+  const ONE_HOUR = 3600000; // 1 hour = 3600000 ms
+  const TWO_HOURS = 7200000; // 2 hours = 7200000 ms
+  const FOUR_HOURS = 14400000; // 4 hours = 14400000 ms
+
   let dateFormat = require('dateformat');
+  let autobackupfunctionpromise;
 
   return {
 
@@ -96,6 +109,38 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
         }
         LoggerService.info('Removed dynamicViews nations, states, cities');
 
+        // VERSION 2.3
+
+        // backups
+        if (!projectdb.getCollection('backups')) { 
+          projectdb.addCollection('backups');
+          LoggerService.info('Added collection backups');
+        }
+        
+        // notes
+        if (!projectdb.getCollection('notes')) { 
+          projectdb.addCollection('notes');
+          LoggerService.info('Added collection notes');
+        }
+
+        // parts
+        if (!projectdb.getCollection('parts')) { 
+          projectdb.addCollection('parts');
+          LoggerService.info('Added collection parts');
+        }
+
+        // clear all dynamic views sorted by position
+        projectdb.getCollection('chapters').removeDynamicView('all_chapters');
+        projectdb.getCollection('locations').removeDynamicView('all_locations');
+        projectdb.getCollection('maincharacters').removeDynamicView('all_maincharacters');
+        projectdb.getCollection('objects').removeDynamicView('all_objects');
+        projectdb.getCollection('scenes').removeDynamicView('all_scenes');
+        projectdb.getCollection('secondarycharacters').removeDynamicView('all_secondarycharacters');
+        projectdb.getCollection('strands').removeDynamicView('all_strands');
+
+        LoggerService.info('Removed dynamicViews all_chapters, all_locations, all_maincharacters, ' + 
+          'all_notes, all_objects, all_parts, all_scenes, all_secondarycharacters. all_strands');
+
         // update project version
         projectInfo.bibiscoVersion = actualversion;
         CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
@@ -106,6 +151,11 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
         ProjectDbConnectionService.saveDatabase();
       }
 
+    },
+
+    checkCollectionsIntegrity: function() {
+      let projectdb = ProjectDbConnectionService.getProjectDb();
+      CollectionUtilService.fixCollectionIntegrity(projectdb.getCollection('wordswrittenperday'));
     },
 
     create: function(name, language, author) {
@@ -149,16 +199,22 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
       projectdb.addCollection('maincharacters');
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');
+      projectdb.addCollection('notes');
       projectdb.addCollection('objects');
+      projectdb.addCollection('parts');
       projectdb.addCollection('relationsnodes');
       projectdb.addCollection('relationsedges');
       projectdb.addCollection('wordswrittenperday');
-
+      projectdb.addCollection('backups');
+      
       // save project database
       ProjectDbConnectionService.saveDatabase();
 
       // add project to bibisco db
       this.addProjectToBibiscoDb(projectId, name);
+
+      // start auto backup
+      this.startAutoBackup();
 
       LoggerService.debug('End ProjectService.create...');
     },
@@ -204,13 +260,33 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
         'projects').count();
     },
     getProjectInfo: function() {
-      return ProjectDbConnectionService.getProjectDb().getCollection(
-        'project').get(1);
+      return ProjectDbConnectionService.getProjectDb() ? ProjectDbConnectionService.getProjectDb().getCollection(
+        'project').get(1) : null;
     },
     getProjects: function() {
-      return BibiscoDbConnectionService.getBibiscoDb().getCollection(
-        'projects').addDynamicView(
-        'all_projects').applySimpleSort('name').data();
+     
+      let collection = BibiscoDbConnectionService.getBibiscoDb().getCollection('projects');
+      let dynamicView = collection.getDynamicView('all_projects');
+      
+      // check if dynamicView exists
+      if (!dynamicView) {
+        dynamicView = collection.addDynamicView('all_projects').applySortCriteria(['name']);
+        LoggerService.debug('Created all_projects dynamicView');
+      } 
+      
+      // check if sortCriteria is set
+      else if (dynamicView && !dynamicView.sortCriteria) {
+        collection.removeDynamicView('all_projects');
+        dynamicView = collection.addDynamicView('all_projects').applySortCriteria(['name']);
+        LoggerService.debug('Created all_projects dynamicView');
+      }
+      
+      // dynamicView exists and sortCriteria is ok
+      else {
+        LoggerService.debug('Loaded all_projects dynamicView');
+      }
+
+      return dynamicView.data();
     },
     import: function(projectId, projectName, callback) {
 
@@ -226,7 +302,7 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
       this.load(projectId);
 
       // callback
-      callback();
+      callback(this.getProjectInfo());
 
       LoggerService.debug('End ProjectService.import');
     },
@@ -242,7 +318,7 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
       this.load(projectId);
 
       // callback
-      callback();
+      callback(this.getProjectInfo());
 
       LoggerService.debug('End ProjectService.importExistingProject');
     },
@@ -295,28 +371,77 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
     load: function (id) {
       ProjectDbConnectionService.load(id);
       this.checkProjectDbVersion();
-      return ProjectDbConnectionService.getProjectDb().getCollection(
+      this.checkCollectionsIntegrity();
+      let result = ProjectDbConnectionService.getProjectDb().getCollection(
         'project').get(1);
+      this.startAutoBackup();
+      return result;
+    },
+
+    close: function() {
+      let autoBackupOnExit = BibiscoPropertiesService.getProperty('autoBackupOnExit') === 'true';
+      LoggerService.info('ProjectService: close project - Auto backup on exit: ' + autoBackupOnExit);
+      
+      // destroy actual autobackup function promise if exists
+      $interval.cancel(autobackupfunctionpromise);
+
+      // execute backup on close
+      if (autoBackupOnExit && this.itsTimeToBackup(SOMETHING_CHANGED)) {
+        this.executeBackup(function() {
+          // close project
+          ProjectDbConnectionService.close();
+        });
+      } else {
+        // close project
+        ProjectDbConnectionService.close();
+      }
+    },
+
+    startAutoBackup: function() {
+      LoggerService.debug('Start startAutoBackup');
+
+      // destroy actual autobackup function promise if exists
+      if (autobackupfunctionpromise) {
+        $interval.cancel(autobackupfunctionpromise);
+      }
+      
+      let self = this;
+      autobackupfunctionpromise = $interval(function () {
+        let autoBackupFrequency = BibiscoPropertiesService.getProperty('autoBackupFrequency');  
+        let delta;
+        switch(autoBackupFrequency) {
+        case 'NEVER':
+          delta = NEVER;
+          break;
+        case 'THIRTY_MINUTES':
+          delta = THIRTY_MINUTES;
+          break;
+        case 'ONE_HOUR':
+          delta = ONE_HOUR;
+          break;
+        case 'TWO_HOURS':
+          delta = TWO_HOURS;
+          break;
+        case 'FOUR_HOURS':
+          delta = FOUR_HOURS;
+          break;
+        }
+        LoggerService.debug('Auto backup function - frequency=' + autoBackupFrequency + ' delta=' + delta);
+        if (delta !== NEVER && self.itsTimeToBackup(delta)) {
+          self.executeBackup();
+        }
+      }, FIVE_MINUTES);
     },
 
     syncProjectDirectoryWithBibiscoDb: function() {
       LoggerService.info('Start syncProjectDirectoryWithBibiscoDb');
 
-      let projectsDirectory = BibiscoPropertiesService.getProperty(
-        'projectsDirectory');
-      let backupPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
-        'projectsDirectory'), 'backup');
-
-      // create backup directory if not exists
-      if (!FileSystemService.exists(backupPath)) {
-        FileSystemService.createDirectory(backupPath);
-      }
+      let projectsDirectory = BibiscoPropertiesService.getProperty('projectsDirectory');
 
       // cycle projects in project directories
       let projectsInProjectDirectories = [];
       let projectsInProjectDirectoriesMap = new Map();
-      let filesInProjectDirectories = FileSystemService.getFilesInDirectory(
-        projectsDirectory);
+      let filesInProjectDirectories = FileSystemService.getFilesInDirectory(projectsDirectory);
       if (filesInProjectDirectories && filesInProjectDirectories.length >
         0) {
         for (let i = 0; i < filesInProjectDirectories.length; i++) {
@@ -334,12 +459,6 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
             projectsInProjectDirectoriesMap.set(projectInfo.id,
               projectInfo.name);
             LoggerService.info(projectDirectoryName + ' is valid.');
-            
-            // delete previous backup
-            this.deletePreviousBackup(projectInfo.id, backupPath);  
-
-            // execute backup
-            this.executeBackup(projectInfo.id, projectInfo.name, backupPath);
             
           } catch (err) {
             LoggerService.info(projectDirectoryName + ' is not valid: ' +
@@ -384,43 +503,90 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
       LoggerService.info('End syncProjectDirectoryWithBibiscoDb');
     },
 
-    getProjectBackupPath: function (projectId) {
-      let projectPath = FileSystemService.concatPath(BibiscoPropertiesService.getProperty(
-        'projectsDirectory'), projectId);
-      return FileSystemService.concatPath(projectPath, 'backup');
+    itsTimeToBackup: function(delta) {
+      let result = false;
+      let difference = null;
+
+      // last save
+      let lastsave = this.getProjectInfo().lastsave;
+      let lastsavedate = lastsave ? new Date(lastsave) : null;
+
+      // last backup
+      let lastbackup = BackupService.getLastBackup();
+      let lastbackupdate = lastbackup ? new Date(lastbackup.timestamp) : null;
+
+      if (lastsavedate && !lastbackupdate) {
+        result = true;
+      }
+      // calculate difference
+      else if (lastsavedate && lastbackupdate) {
+        difference = lastsavedate.getTime() - lastbackupdate.getTime();
+        if (difference > delta) { 
+          result = true;
+        }
+      }
+      LoggerService.debug('Last save: '+ lastsavedate + '; last backup: ' 
+        + lastbackupdate+'; difference: ' + difference + '; delta: ' + delta + '; it\'s time to backup ? ' + result);
+
+      return result;
     },
 
-    deletePreviousBackup: function (projectId, backupPath) {
-      let filesInBackupDirectory = FileSystemService.getFilesInDirectory(backupPath);
-      if (filesInBackupDirectory && filesInBackupDirectory.length > 0) {
-        for (let i = 0; i < filesInBackupDirectory.length; i++) {
-          let filename = FileSystemService.concatPath(backupPath, filesInBackupDirectory[i]);
-          if (UtilService.string.contains(filename, projectId)) {
-            try {
-              FileSystemService.deleteFile(filename);
-              LoggerService.info('Delete previous backup: ' + filename + ' done');
-            } catch (err) {
-              LoggerService.error('Delete previous backup: ' + filename + ' failed: ' + err);
-            }
-            
+    executeBackupIfSomethingChanged: function (callback) {
+
+      try {
+        if (this.itsTimeToBackup(SOMETHING_CHANGED)) {
+          this.executeBackup(callback);
+        } else {
+          if (callback) {
+            callback();
           }
+        }
+      } catch (error) {
+        LoggerService.error(error);
+        if (callback) {
+          callback();
         }
       }
     },
 
-    executeBackup: function (projectId, projectName, backupPath) {
+    executeBackup: function (callback) {
     
-      let timestampFormatted = dateFormat(new Date(), 'yyyy_mm_dd_HH_MM_ss');
-      let name = UtilService.string.slugify(projectName, '_');
-      let filename = name + '_' + projectId + '_' + timestampFormatted;
+      let projectInfo = this.getProjectInfo();
+      let backupPath = BibiscoPropertiesService.getProperty('backupDirectory');
+      LoggerService.debug('Start executing backup for project ' + projectInfo.name + ' to directory ' + backupPath + ' ...');
+      let timestamp = new Date();
+      let timestampFormatted = dateFormat(timestamp, 'yyyy_mm_dd_HH_MM_ss');
+      let name = UtilService.string.slugify(projectInfo.name, '_');
+      let filename = name + '_' + projectInfo.id + '_' + timestampFormatted;
       let completeBackupFilename = FileSystemService.concatPath(backupPath, filename);
+      let maxBackupNumber = Number(BibiscoPropertiesService.getProperty('maxBackupNumber'));
 
-      try {
-        this.exportProject(projectId, completeBackupFilename, function(){
-          LoggerService.info(projectId + ' backup done.');
-        });
-      } catch (err) {
-        LoggerService.error(projectId + ' backup failed: ' + err);
+      if (maxBackupNumber===0) {
+        LoggerService.debug('Max backup number set to zero. Exit.');
+        if (callback) {
+          callback();
+        }
+      } else {
+        try {
+          this.exportProject(projectInfo.id, completeBackupFilename, function(){
+            BackupService.insert({
+              filename: filename + '.bibisco2',
+              timestamp: timestamp
+            });
+            LoggerService.info(projectInfo.id + ' backup done.');
+            let backupToDelete = BackupService.getBackupsCount() - maxBackupNumber; 
+            if (backupToDelete>0) {
+              for (let i = 0; i < backupToDelete; i++) {
+                BackupService.removeOldestBackup();
+              }
+            }
+            if (callback) {
+              callback();
+            }
+          });
+        } catch (err) {
+          LoggerService.error(projectInfo.id + ' backup failed: ' + err);
+        }
       }
     },
 
@@ -559,11 +725,26 @@ angular.module('bibiscoApp').service('ProjectService', function($injector,
         projectInfo.coverImage = null;
       }
 
-
       CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
 
       return projectInfo.coverImages;
+    },
+
+    addWordToProjectDictionary: function (word) {
+      
+      let projectInfo = this.getProjectInfo();
+      let projectdictionary = projectInfo.projectdictionary;
+      if (!projectdictionary) {
+        projectdictionary = [];
+      }
+      projectdictionary.push(word);
+      
+      projectInfo.projectdictionary = projectdictionary;
+      CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
+        .getCollection('project'), projectInfo);
+
+      LoggerService.info('Added word to project dictionary: ' + word);
     },
   };
 });

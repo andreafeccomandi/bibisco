@@ -1,5 +1,5 @@
 <modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
-  <div class="modal-body" id="modal-body">
+  <div class="modal-body" id="modal-body" ng-class="{ 'project-explorer-text': $ctrl.selectableText }">
       <p ng-bind-html="$ctrl.message | trusted"></p>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">

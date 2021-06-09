@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,7 @@ angular.
   });
 
 
-function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectionService, 
-  BibiscoPropertiesService) {
+function ContextualTipButtonController(BibiscoPropertiesService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function () {
@@ -40,27 +39,6 @@ function ContextualTipButtonController($rootScope, $uibModal, BibiscoDbConnectio
   };
 
   self.showTip = function () {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'contextualtip',
-      resolve: {
-        tipcode: function () {
-          return self.tipcode;
-        }
-      },
-      size: self.style
-    });
-
-    $rootScope.$emit('OPEN_POPUP_BOX');
-
-    modalInstance.result.then(function () {
-      BibiscoPropertiesService.setProperty(self.tipcode, 'false');
-      BibiscoDbConnectionService.saveDatabase();
-      self.buttonvisible = false;
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-    }, function () {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-    });
+    PopupBoxesService.showTip(self.tipcode, self.style, function() {self.buttonvisible = false;});
   };
 }

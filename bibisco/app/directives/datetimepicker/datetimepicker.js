@@ -627,6 +627,10 @@
         previous: 'predošlá',
         next: 'ďalšia'
       },
+      'sl': {
+        previous: 'prejšnji',
+        next: 'naslednji'
+      },
       'sv': {
         previous: 'föregående',
         next: 'nästa'

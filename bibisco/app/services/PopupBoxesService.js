@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,17 @@
  */
 
 angular.module('bibiscoApp').service('PopupBoxesService', function ($location, 
-  $rootScope, $timeout, $uibModal, $window) {
+  $rootScope, $timeout, $uibModal, $window, BibiscoPropertiesService, BibiscoDbConnectionService) {
   'use strict';
 
   return {
-    alert: function(alertMessage) {
+    alert: function(alertMessage, size) {
+      this.executeAlert(alertMessage, size, false);
+    },
+    alertWithSelectableText: function(alertMessage, size) {
+      this.executeAlert(alertMessage, size, true);
+    },
+    executeAlert: function(alertMessage, size, selectableText) {
       var modalInstance = $uibModal.open({
         animation: true,
         backdrop: 'static',
@@ -26,9 +32,12 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
         resolve: {
           message: function() {
             return alertMessage;
+          },
+          selectableText: function() {
+            return selectableText;
           }
         },
-        size: 'sm'
+        size: size ? size : 'sm'
       });
 
       $rootScope.$emit('OPEN_POPUP_BOX');
@@ -40,6 +49,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
         $rootScope.$emit('CLOSE_POPUP_BOX');
       });
     },
+
     confirm: function(confirmFunction, confirmMessage, cancelFunction) {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -93,6 +103,40 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
           $rootScope.$emit('LOCATION_CHANGE_DENIED');
         });
       }
+    },
+
+    showTip: function (tipcode, style, confirmFunction) {
+
+      let modalstyle = style;
+      if (!modalstyle) {
+        modalstyle = 'contextualtip';
+      }
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        backdrop: 'static',
+        component: 'contextualtip',
+        resolve: {
+          tipcode: function () {
+            return tipcode;
+          }
+        },
+        size: modalstyle
+      });
+  
+      $rootScope.$emit('OPEN_POPUP_BOX');
+  
+      modalInstance.result.then(function () {
+        BibiscoPropertiesService.setProperty(tipcode, 'false');
+        BibiscoDbConnectionService.saveDatabase();
+        self.buttonvisible = false;
+        if (confirmFunction) {
+          confirmFunction();
+        }
+        $rootScope.$emit('CLOSE_POPUP_BOX');
+      }, function () {
+        $rootScope.$emit('CLOSE_POPUP_BOX');
+      });
     }
   };
 });

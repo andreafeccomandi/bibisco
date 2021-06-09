@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.character.dialog.title.updateTitle'
       });
 
+      self.profileimageenabled = true;
+      self.profileimage = maincharacter.profileimage;
       self.exitpath = '/maincharacters/' + maincharacter.$loki;
       self.name = maincharacter.name;
       self.pageheadertitle = 'jsp.character.dialog.title.updateTitle';
@@ -61,6 +63,7 @@ function MainCharacterTitleController($location, $routeParams,
         label: 'jsp.characters.dialog.title.createMainCharacter'
       });
 
+      self.profileimageenabled = false;
       self.exitpath = '/characters';
       self.name = null;
       self.pageheadertitle = 'jsp.characters.dialog.title.createMainCharacter';

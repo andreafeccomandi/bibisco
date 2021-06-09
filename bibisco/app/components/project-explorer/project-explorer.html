@@ -13,6 +13,7 @@
     <div>
       <projectexplorersimpletext ng-if="$ctrl.type == 'simpletext'" 
         sectiontitle="$ctrl.sectiontitle"
+        timeline="$ctrl.timeline"
         images="$ctrl.images"
         path="{{$ctrl.path}}"
         text="$ctrl.text">
@@ -23,7 +24,7 @@
         chapter="$ctrl.chapter" scenes="$ctrl.scenes">
       </projectexplorerchapter>
       <projectexplorermaincharacter ng-if="$ctrl.type == 'maincharacter'"
-        maincharacter="$ctrl.maincharacter">
+        maincharacter="$ctrl.maincharacter" timeline="$ctrl.timeline">
       </projectexplorermaincharacter>
     </div>
   </div>

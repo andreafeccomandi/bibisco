@@ -55,11 +55,11 @@
           "$loki": 5
         },
         {
-          "name": "version",
-          "value": "2.2.0-CE",
+          "name": "backupDirectory",
+          "value": "",
           "meta": {
             "revision": 0,
-            "created": 1487541445279,
+            "created": 1487541445287,
             "version": 0
           },
           "$loki": 6
@@ -175,16 +175,6 @@
           "$loki": 17
         },
         {
-          "name": "firstAccess",
-          "value": true,
-          "meta": {
-            "revision": 0,
-            "created": 1487541445288,
-            "version": 0
-          },
-          "$loki": 18
-        },
-        {
           "name": "analysisTip",
           "value": "true",
           "meta": {
@@ -192,7 +182,7 @@
             "created": 1487541445286,
             "version": 0
           },
-          "$loki": 19
+          "$loki": 18
         },
         {
           "name": "theme",
@@ -202,17 +192,7 @@
             "created": 1487541445286,
             "version": 0
           },
-          "$loki": 20
-        },
-        {
-          "name": "signers",
-          "value": [],
-          "meta": {
-            "revision": 0,
-            "created": 1487541445286,
-            "version": 0
-          },
-          "$loki": 21
+          "$loki": 19
         },
         {
           "name": "relationsTip",
@@ -222,7 +202,7 @@
             "created": 1487541445286,
             "version": 0
           },
-          "$loki": 22
+          "$loki": 20
         },
         {
           "name": "wordswrittenhistoryTip",
@@ -232,7 +212,7 @@
             "created": 1487541445286,
             "version": 0
           },
-          "$loki": 23
+          "$loki": 21
         },
         {
           "name": "backupTip",
@@ -242,7 +222,47 @@
             "created": 1487541445286,
             "version": 0
           },
+          "$loki": 22
+        },
+        {
+          "name": "addProfileImageTip",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 23
+        },
+        {
+          "name": "maxBackupNumber",
+          "value": "10",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
           "$loki": 24
+        },
+        {
+          "name": "autoBackupOnExit",
+          "value": "true",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 25
+        },
+        {
+          "name": "autoBackupFrequency",
+          "value": "TWO_HOURS",
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 26
         }
       ],
       "idIndex": [
@@ -266,7 +286,12 @@
         18,
         19,
         20,
-        21
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
       ],
       "binaryIndices": {},
       "constraints": null,
@@ -285,7 +310,7 @@
       "disableChangesApi": true,
       "autoupdate": false,
       "ttl": null,
-      "maxId": 18,
+      "maxId": 26,
       "DynamicViews": [],
       "events": {
         "insert": [

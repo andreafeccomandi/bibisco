@@ -18,14 +18,15 @@
         <div class="col-sm-offset-1 col-sm-10" ng-repeat="image in $ctrl.images track by $index">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">{{image.name}}</h3>
+              <h3 class="panel-title">{{image.name}} <span ng-if="$ctrl.selectedimage === image.filename" class="label label-info bibiscoBadge">{{$ctrl.selectedimagebadgelabel | translate}}</span>
+              </h3>
             </div>
             <img class="img-responsive center-block image-viewer-image" 
               src="{{$ctrl.fullpath(image.filename)}}" />
             <div class="panel-footer text-right">
-              <button class="btn-primary btn-xs" 
-                ng-click="$ctrl.selectfunction({filename: image.filename})"
-                ng-if="$ctrl.showselectbutton">{{'images_viewer_select_button' | translate}}</button>
+              <button class="btn btn-primary btn-xs" 
+                ng-click="$ctrl.executeselectfunction({filename: image.filename})"
+                ng-if="$ctrl.showselectbutton && $ctrl.selectedimage !== image.filename">{{$ctrl.selectbuttonlabel | translate}}</button>
               <buttonwithconfirm enableconfirm="true" 
                 buttonlabel="jsp.carouselImage.a.deleteCurrentImage" 
                 buttonfunction="$ctrl.deletefunction({filename: image.filename})"

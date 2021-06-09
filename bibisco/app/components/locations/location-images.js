@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ function LocationImagesController($location, $rootScope, $routeParams,
     });
 
     self.images = location.images;
+    self.selectedimage = location.profileimage;
     self.lastsave = location.lastsave;
     self.pageheadertitle = locationName;
   };
@@ -51,9 +52,16 @@ function LocationImagesController($location, $rootScope, $routeParams,
   self.delete = function(filename) {
     let location = LocationService.deleteImage($routeParams.id, filename);
     self.images = location.images;
+    self.selectedimage = location.profileimage;
   };
 
   self.insert = function() {
     $location.path('/locations/' + $routeParams.id + '/images/new');
   };
+
+  self.select = function(filename) {
+    LocationService.setProfileImage($routeParams.id, filename);
+    self.selectedimage = filename;
+  };
 }
+

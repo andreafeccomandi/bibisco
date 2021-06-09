@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,20 @@ angular.
     templateUrl: 'components/timeline/timeline-element.html',
     controller: TimelineElementController,
     bindings: {
+      deletefunction: '&',
       index: '<',
-      element: '<'
+      editfunction: '&',
+      element: '<',
+      mode: '@'
     }
   });
 
-function TimelineElementController($location) {
-  var self = this;
+function TimelineElementController($location, LocaleService) {
+  let self = this;
 
   self.$onInit = function () {
-
+    moment.locale(LocaleService.getCurrentLocale());
+    self.dayofweek = moment(self.element.time).format('dddd');
   };
 
   self.showScene = function() {

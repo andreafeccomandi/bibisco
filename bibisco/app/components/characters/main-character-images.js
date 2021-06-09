@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ function MainCharacterImagesController($location, $routeParams,
     });
 
     self.images = mainCharacter.images;
+    self.selectedimage = mainCharacter.profileimage;
     self.lastsave = mainCharacter.lastsave;
     self.pageheadertitle = mainCharacter.name;
   };
@@ -50,9 +51,15 @@ function MainCharacterImagesController($location, $routeParams,
   self.delete = function(filename) {
     let mainCharacter = MainCharacterService.deleteImage($routeParams.id, filename);
     self.images = mainCharacter.images;
+    self.selectedimage = mainCharacter.profileimage;
   };
 
   self.insert = function() {
     $location.path('/maincharacters/' + $routeParams.id + '/images/new');
+  };
+
+  self.select = function(filename) {
+    MainCharacterService.setProfileImage($routeParams.id, filename);
+    self.selectedimage = filename;
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,13 @@ angular.
       analysistitle: '@',
       chart: '@',
       chapterscount: '<',
+      chapterspositions: '<',
       items: '<',
       noitemsmessage: '@'
     }
   });
 
-function ItemsChaptersDistributionController(UtilService) {
+function ItemsChaptersDistributionController(ChapterService, UtilService) {
 
   var self = this;
 
@@ -35,8 +36,8 @@ function ItemsChaptersDistributionController(UtilService) {
     self.tablewidth = self.chapterscount*20+350;
     
     self.chapters = [];
-    for (let i = 1; i <= self.chapterscount; i++) {
-      self.chapters.push(i);
+    for (let i = 0; i < self.chapterspositions.length; i++) {
+      self.chapters.push(ChapterService.getChapterPositionDescription(self.chapterspositions[i]));
     }
 
     self.labels = [];

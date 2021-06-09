@@ -9,7 +9,13 @@
       <div class="col-sm-8 full-height" 
         ng-class="{'col-sm-offset-2': !$root.showprojectexplorer}">
         <richtextviewer ng-if="!$ctrl.editmode && $ctrl.words > 0"
-          content="$ctrl.content">
+          content="$ctrl.content"
+          previouselementlabel="{{$ctrl.previouselementlabel}}"
+          previouselementlink="$ctrl.previouselementlink"
+          previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+          nextelementlabel="{{$ctrl.nextelementlabel}}"
+          nextelementlink="$ctrl.nextelementlink"
+          nextelementtooltip="{{$ctrl.nextelementtooltip}}">
         </richtextviewer>
         <richtexteditor ng-if="$ctrl.editmode"
           autosaveenabled="$ctrl.autosaveenabled"

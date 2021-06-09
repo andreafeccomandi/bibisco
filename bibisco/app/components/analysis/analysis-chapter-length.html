@@ -15,3 +15,21 @@
     </i></p>
   </div>
 </div>
+
+<div class="panel panel-default analysis-chapter-length" ng-if="$ctrl.partsenabled">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'analysis_word_count_parts_title' | translate}} ({{'common_total' | translate}}: <b>{{($ctrl.total  | number: 0)}}</b> {{'common_words' | translate}}, <b>{{($ctrl.totalcharacters | number: 0)}}</b> {{'jsp.common.span.characters' | translate}})</h3>
+  </div>
+  <div class="panel-body">
+    <div ng-if="$ctrl.data.length > 0" 
+        class="analysiscanvasbarcontainer">
+      <canvas  class="chart chart-bar" 
+        chart-data="$ctrl.partsdata" 
+        chart-labels="$ctrl.partslabels" 
+        chart-options="$ctrl.partsoptions"></canvas>
+    </div>
+    <p ng-if="$ctrl.data.length == 0"><i>
+        {{'jsp.analysisItemsChapters.em.noChapters' | translate}}
+    </i></p>
+  </div>
+</div>

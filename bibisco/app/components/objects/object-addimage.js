@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,17 @@ angular.
     controller: ItemAddImageController
   });
 
-function ItemAddImageController($routeParams, ObjectService) {
+function ItemAddImageController($location, $routeParams, 
+  BibiscoPropertiesService, ObjectService, PopupBoxesService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     let object = ObjectService.getObject($routeParams.id);
+
+    // addprofile mode
+    self.addprofile = $location.path().includes('addprofile');
 
     // breadcrumb
     self.breadcrumbitems = [];
@@ -37,18 +41,37 @@ function ItemAddImageController($routeParams, ObjectService) {
       label: object.name,
       href: '/objects/' + object.$loki + '/view'
     });
-    self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images',
-      href: '/objects/' + object.$loki + '/images'
-    });
-    self.breadcrumbitems.push({
-      label: 'jsp.addImageForm.dialog.title'
-    });
 
-    self.exitpath = '/objects/' + object.$loki + '/images';
+    if (self.addprofile) {
+      self.breadcrumbitems.push({
+        label: 'add_profile_image_title'
+      });
+  
+      self.exitpath = '/objects/ ' + object.$loki + '/view';
+      self.customtitle = 'add_profile_image_title';
+    }
+    else {
+      self.breadcrumbitems.push({
+        label: 'jsp.projectFromScene.select.location.images',
+        href: '/objects/' + object.$loki + '/images'
+      });
+      self.breadcrumbitems.push({
+        label: 'jsp.addImageForm.dialog.title'
+      });
+  
+      self.exitpath = '/objects/' + object.$loki + '/images';
+      self.customtitle = null;
+    }
+
   };
 
   self.save = function(name, path) {
-    ObjectService.addImage($routeParams.id, name, path);
+    let filename = ObjectService.addImage($routeParams.id, name, path);
+    if (self.addprofile) {
+      ObjectService.setProfileImage($routeParams.id, filename);
+      if (BibiscoPropertiesService.getProperty('addProfileImageTip') === 'true') {
+        PopupBoxesService.showTip('addProfileImageTip');
+      }
+    }
   };
 }

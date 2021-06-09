@@ -9,4 +9,7 @@
   </span>
 </div>
 <validationmessages field="$ctrl.field"></validationmessages>
-<p class="text-danger" ng-show="$ctrl.forbiddendirectory">{{"jsp.common.message.forbidden.directory" | translate}}</p>
+<p class="text-danger" ng-show="$ctrl.forbiddendirectory || $ctrl.customerrormessage" style="margin-bottom: 0px;">
+  <span ng-if="$ctrl.forbiddendirectory">{{"jsp.common.message.forbidden.directory" | translate}}</span>
+  <span ng-if="$ctrl.customerrormessage">{{$ctrl.customerrormessage | translate}}</span>
+</p>

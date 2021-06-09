@@ -1,19 +1,27 @@
 <div class="main-section-header">
   <div class="container">
     <div class="row">
-      <pageheader headertitle="{{$ctrl.project().name}}" 
+      <pageheader ng-show="$ctrl.loadingDictionary" headertitle="{{$ctrl.project().name}}"></pageheader>
+      <pageheader ng-show="!$ctrl.loadingDictionary" headertitle="{{$ctrl.project().name}}" 
         buttonlabel="goals_button"
         buttonfunction="$ctrl.goals()" buttonshow="!$ctrl.showMotivational" buttonstyle="primary"
         button2label="jsp.common.button.back"
         button2function="$ctrl.back()" button2show="true" button2style="default" button2hotkey="$ctrl.hotkeys"
         button2tooltip="{{'back_button_tooltip'+$root.os}}"
-        tipcode="backupTip" tipenabled="!$ctrl.showMotivational" 
+        tipcode="backupTip" tipenabled="!$ctrl.showMotivational && !$ctrl.loadingDictionary" 
         dropdownopen="down" dropdownitems="$ctrl.actionitems">
       </pageheader>
     </div>
   </div>
 </div>
-<div class="project-home-container">
+
+<!-- LOADING DICTIONARY -->
+<div class="container top200" ng-show="$ctrl.loadingDictionary">
+  <loadingbar message="loading_dictionary" onepercentmilliseconds="300" start="$ctrl.loadingDictionary"></loadingbar>
+</div>
+
+<!-- PROJECT HOME -->
+<div class="project-home-container" ng-show="!$ctrl.loadingDictionary">
   <div class="container">
     <div class="row" ng-if="$ctrl.showMotivational">
       <div class="col-sm-9 col-sm-offset-1">

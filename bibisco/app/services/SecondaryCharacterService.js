@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('SecondaryCharacterService', function(
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, UuidService
 ) {
   'use strict';
 
@@ -32,6 +32,7 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       });
       secondarycharacter.images = images;
       CollectionUtilService.update(this.getCollection(), secondarycharacter);
+      return filename;
     },
     deleteImage: function (id, filename) {
 
@@ -52,6 +53,12 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       }
       images.splice(imageToRemovePosition, 1);
       secondarycharacter.images = images;
+
+      // delete profile image reference
+      if (secondarycharacter.profileimage === filename) {
+        secondarycharacter.profileimage = null;
+      }
+
       CollectionUtilService.update(this.getCollection(), secondarycharacter);
 
       return secondarycharacter;
@@ -68,7 +75,7 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       return this.getCollection().get(id);
     },
     getSecondaryCharactersCount: function() {
-      return this.getCollection().count();
+      return this.getDynamicView().count();
     },
     getSecondaryCharacters: function() {
       return this.getDynamicView().data();
@@ -84,6 +91,14 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
     },
     remove: function(id) {
       CollectionUtilService.remove(this.getCollection(), id);
+    },
+    setProfileImage: function (id, filename) {
+      LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
+        + id + ' in secondarycharacters');
+
+      let secondarycharacter = this.getSecondaryCharacter(id);
+      secondarycharacter.profileimage = filename;
+      CollectionUtilService.update(this.getCollection(), secondarycharacter);
     },
     update: function(secondarycharacter) {
       CollectionUtilService.update(this.getCollection(), secondarycharacter);

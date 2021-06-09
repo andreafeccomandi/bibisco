@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,9 @@ function ExportToEpubImagesController($location, $routeParams,
       label: 'epub_cover_images'
     });
 
-    self.images = ProjectService.getProjectInfo().coverImages;
+    let projectInfo = ProjectService.getProjectInfo();
+    self.images = projectInfo.coverImages;
+    self.selectedimage  = projectInfo.coverImage;
   };
 
   self.delete = function(filename) {
@@ -55,6 +57,7 @@ function ExportToEpubImagesController($location, $routeParams,
 
   self.select = function(filename) {
     self.images = ProjectService.selectCoverImage(filename);
+    self.selectedimage  = filename;
     $location.path(self.backpath);
   };
 }

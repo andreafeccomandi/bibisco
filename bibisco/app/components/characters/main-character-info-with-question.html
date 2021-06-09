@@ -2,6 +2,10 @@
   editmode="$ctrl.editmode"
   headertitle="{{$ctrl.headertitle}}"
   headersubtitle="{{$ctrl.headersubtitle}}"
+  image="{{$ctrl.maincharacter.profileimage}}"
+  imageaddenabled="false"
+  imageenabled="true"
+  noimageicon="user"
   taskstatus="$ctrl.maincharacter[$ctrl.type].status"
   taskstatuschangefunction="$ctrl.changestatus(status)">
 </detailheader>
@@ -12,6 +16,10 @@
   content="$ctrl.content"
   editmode="$ctrl.editmode"
   maincharacter="$ctrl.maincharacter"
+  nextelementlabel="{{$ctrl.nextelementlabel}}"
+  nextelementlink="$ctrl.nextelementlink"
+  previouselementlabel="{{$ctrl.previouselementlabel}}"
+  previouselementlink="$ctrl.previouselementlink"
   questionselected="$ctrl.questionselected"
   showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
@@ -26,6 +34,10 @@
   editmode="$ctrl.editmode" 
   headersubtitle="$ctrl.headersubtitle" 
   maincharacter="$ctrl.maincharacter"
+  nextelementlabel="{{$ctrl.nextelementlabel}}"
+  nextelementlink="$ctrl.nextelementlink"
+  previouselementlabel="{{$ctrl.previouselementlabel}}"
+  previouselementlink="$ctrl.previouselementlink"
   showprojectexplorer="$root.showprojectexplorer"
   type="$ctrl.type"
   words="$ctrl.words">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
     let premise = ArchitectureService.getPremise();
     items.push({
       id: 'premise',
+      noimageicon: 'compass',
       position: 1,
       status: premise.status,
       text: 'jsp.architecture.thumbnail.premise.description',
@@ -61,6 +62,7 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
     let fabula = ArchitectureService.getFabula();
     items.push({
       id: 'fabula',
+      noimageicon: 'clock-o',
       position: 2,
       status: fabula.status,
       text: 'jsp.architecture.thumbnail.fabula.description',
@@ -71,6 +73,7 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
     let setting = ArchitectureService.getSetting();
     items.push({
       id: 'setting',
+      noimageicon: 'globe',
       position: 3,
       status: setting.status,
       text: 'jsp.architecture.thumbnail.setting.description',
@@ -81,6 +84,7 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
     let globalnotes = ArchitectureService.getGlobalNotes();
     items.push({
       id: 'globalnotes',
+      noimageicon: 'thumb-tack',
       position: 4,
       status: globalnotes.status,
       text: 'common_notes_description',
@@ -109,6 +113,7 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
       for (let i = 0; i < strands.length; i++) {
         items.push({
           id: strands[i].$loki,
+          noimageicon: 'code-fork',
           position: strands[i].position,
           status: strands[i].status,
           title: strands[i].name

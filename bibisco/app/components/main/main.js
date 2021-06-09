@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+/* 
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,41 +31,44 @@ function MainController($injector, $location, $timeout) {
     let LoggerService = $injector.get('LoggerService');
     let ProjectService = $injector.get('ProjectService');
 
-    let firstAccess = BibiscoPropertiesService.getProperty('firstAccess');
-    let actualUser = os.userInfo().username;
-    let signers = BibiscoPropertiesService.getProperty('signers');
-    let actualUserInSigners = false;
-    signers.forEach(element => {
-      if (actualUser === element) {
-        actualUserInSigners = true;
-      }
-    });
- 
-    let projectsDirectory = BibiscoPropertiesService.getProperty(
-      'projectsDirectory');
+    let currentVersionInitialized = BibiscoPropertiesService.isCurrentVersionInitialized();
+    let projectsDirectory = BibiscoPropertiesService.getProperty('projectsDirectory');
     let projectsDirectoryExists = false;
+    let backupDirectory = BibiscoPropertiesService.getProperty('backupDirectory');
+    let backupDirectoryExists = false;
   
     // Log installation information
     LoggerService.info('*** Application path: ' + ContextService.getAppPath());
     LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
       'version'));
-    LoggerService.info('*** First access: ' + firstAccess);
-    LoggerService.info('*** Actual user: ' + actualUser);
-    LoggerService.info('*** Signers: ' + signers);
+    LoggerService.info('*** Current version initialized: ' + currentVersionInitialized);
+    LoggerService.info('*** Actual user: ' + os.userInfo().username);
     LoggerService.info('*** Locale: ' + LocaleService.getCurrentLocale());
     LoggerService.info('*** OS: ' + ContextService.getOs());
     LoggerService.info('*** Projects directory: ' + projectsDirectory);
+    LoggerService.info('*** Backup directory: ' + backupDirectory);
   
-    if (!firstAccess && actualUserInSigners) {
+    if (currentVersionInitialized) {
       // check if projects directory still exists
       projectsDirectoryExists = FileSystemService.exists(projectsDirectory);
-      LoggerService.info('*** Projects directory exists: ' +
-        projectsDirectoryExists);
+      LoggerService.info('*** Projects directory exists: ' + projectsDirectoryExists);
       if (!projectsDirectoryExists) {
         LoggerService.error(
           '*** Projects directory NOT EXISTS, so I clean bibisco db: restart from welcome page!'
         );
       }
+      // check if backup directory still exists
+      backupDirectoryExists = FileSystemService.exists(backupDirectory);
+      LoggerService.info('*** Backup directory exists: ' + backupDirectoryExists);
+      if (!backupDirectoryExists) {
+        LoggerService.error(
+          '*** Backup directory NOT EXISTS: restart from welcome page!'
+        );
+      }
+    } else {
+      // if current version is not initialized delete previous dictionaries if exist
+      FileSystemService.cleanDirectory(ContextService.getDictionaryDirectoryPath());
+      LoggerService.info('*** Dictionaries directory cleaned!');
     }
   
     // sync bibisco db with projects directory
@@ -73,8 +76,8 @@ function MainController($injector, $location, $timeout) {
       ProjectService.syncProjectDirectoryWithBibiscoDb();
     }
   
-    // Routing based on first access, actual user in signers, projects directory exists
-    if (firstAccess || !actualUserInSigners || !projectsDirectoryExists) {
+    // Routing based on current version initialized, projects directory and backup directory exist
+    if (!currentVersionInitialized || !projectsDirectoryExists || !backupDirectoryExists) {
       $location.path('/welcome');
     } else {
       $location.path('/start');

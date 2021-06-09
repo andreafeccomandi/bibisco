@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@ angular.
     controller: SecondaryCharacterImagesController
   });
 
-function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
-  SecondaryCharacterService) {
+function SecondaryCharacterImagesController($location, $routeParams, SecondaryCharacterService) {
 
   var self = this;
 
@@ -43,6 +42,7 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
     });
 
     self.images = secondaryCharacter.images;
+    self.selectedimage = secondaryCharacter.profileimage;
     self.lastsave = secondaryCharacter.lastsave;
     self.pageheadertitle = secondaryCharacter.name;
   };
@@ -50,9 +50,15 @@ function SecondaryCharacterImagesController($location, $rootScope, $routeParams,
   self.delete = function(filename) {
     let secondaryCharacter = SecondaryCharacterService.deleteImage($routeParams.id, filename);
     self.images = secondaryCharacter.images;
+    self.selectedimage = secondaryCharacter.profileimage;
   };
 
   self.insert = function() {
     $location.path('/secondarycharacters/' + $routeParams.id + '/images/new');
+  };
+
+  self.select = function(filename) {
+    SecondaryCharacterService.setProfileImage($routeParams.id, filename);
+    self.selectedimage = filename;
   };
 }

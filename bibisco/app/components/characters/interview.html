@@ -8,6 +8,12 @@
         <interviewviewer ng-if="!$ctrl.editmode"
           characters="$ctrl.characters"
           maincharacter="$ctrl.maincharacter" 
+          previouselementlabel="{{$ctrl.previouselementlabel}}"
+          previouselementlink="$ctrl.previouselementlink"
+          previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+          nextelementlabel="{{$ctrl.nextelementlabel}}"
+          nextelementlink="$ctrl.nextelementlink"
+          nextelementtooltip="{{$ctrl.nextelementtooltip}}"
           type="$ctrl.type"
           words="$ctrl.words"></interviewviewer>
         <intervieweditor ng-if="$ctrl.editmode" 

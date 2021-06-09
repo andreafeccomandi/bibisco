@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ angular.module('bibiscoApp').service('StrandService', function(
       return this.getCollection().get(id);
     },
     getStrandsCount: function() {
-      return this.getCollection().count();
+      return this.getDynamicView().count();
     },
     getStrands: function() {
       return this.getDynamicView().data();

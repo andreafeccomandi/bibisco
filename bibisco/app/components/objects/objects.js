@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,8 @@ function ObjectsController($injector, $location, $rootScope, $routeParams, $scop
       for (let i = 0; i < objects.length; i++) {
         cardgriditems.push({
           id: objects[i].$loki,
+          image: objects[i].profileimage, 
+          noimageicon: 'magic',
           position: objects[i].position,
           status: objects[i].status,
           title: objects[i].name

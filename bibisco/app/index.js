@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,18 @@
 'use strict';
 const electron = require('electron');
 const app = electron.app;
-const ipc = require('electron').ipcMain;
-
-// enable armony_regexp_lookbehind
-app.commandLine.appendSwitch('js-flags', '--harmony_regexp_lookbehind');
+const ipc = electron.ipcMain;
+const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
+const SpellChecker = require('simple-spellchecker');
+const fs = require('fs-extra');
+const path = require('path');
 
 // prevent window being garbage collected
 let mainWindow;
+
+// closing semaphore
+let closing = false;
 
 // development or production?
 const isDev = require('electron-is-dev');
@@ -38,6 +43,12 @@ ipc.on('logger-error', function (event, arg) {
   logger.error(arg);
 });
 
+// init temp directory
+initTempDirectory();
+
+// init bibisco dictionaries directory
+initBibiscoDictionariesDirectory();
+
 // electron version
 logger.info('*** Electron version: ' + process.versions.electron);
 
@@ -48,6 +59,7 @@ if (isDev) {
 } else {
   logger.debug('Running in production -  global path:' + __dirname);
 }
+logger.debug('User home preferences: '+app.getPath('userData'));
 
 // zipper/unzipper
 var zip;
@@ -62,34 +74,121 @@ ipc.on('unzip', function (event, arg) {
   });
 });
 
+// context info
 ipc.on('getcontextinfo', function (event) {
   let contextInfo = {
     os: process.platform,
-    appPath: __dirname
+    appPath: __dirname,
+    userDataPath: app.getPath('userData')
   };
   event.returnValue = contextInfo;
 });
+
+// dictionary
+let myDictionary = null;
+let myDictionaryLanguage = null;
+let myDictionaryProject = null;
+
+// load dictionary
+ipc.on('loadDictionary', function(event, language) {
+
+  // check if dictionary is already loaded
+  if (myDictionaryLanguage && myDictionaryLanguage === language) {
+    logger.info('Dictionary ' + language + ' already loaded.');
+    mainWindow.webContents.send('DICTIONARY_LOADED', language);
+    return;
+  }
+
+  // check if dictionary is not unpacked
+  if (!isDictionaryUnpacked(language)) {
+    unpackDictionary(language, function() {
+      loadDictionary(language);
+    });
+    
+    return;
+  }
+
+  // load dictionary
+  loadDictionary(language);
+});
+
+// set dictionary
+ipc.on('loadProjectDictionary', function(event, projectDictionary, projectId) {
+  loadProjectDictionary(projectDictionary, projectId);
+});
+
+// consult the dictionary
+ipc.on('isMisspelled', function(event, word) {
+  var result = null;
+  if(myDictionary !== null && word !== null) {
+    word = word.replace(/’/g, '\''); 
+    result = myDictionary.isMisspelled(word);
+    if (result) {
+      result = !isNumeric(word);
+    }
+  }
+  event.returnValue = result;
+});
+
+// unpack the dictionary.
+ipc.on('unpackAndLoadDictionary', function(event, language) {
+  unpackDictionary(language, function() {
+    loadDictionary(language);
+  });
+});
+
+// context menu string table
+let contextMenuStringTable = null;
+
+// set context menu string table
+ipc.on('setContextMenuStringTable', function(event, stringTable) {
+  contextMenuStringTable = stringTable;
+});
+
+ipc.on('closeApp', function(event) {
+  logger.info('bibisco is closing...');
+  closing = true;
+  app.quit();
+});
+
+ipc.on('isFullScreenEnabled', function (event) {
+  event.returnValue = mainWindow.isFullScreen();
+});
+
+ipc.on('enableFullScreen', function(event) {
+  mainWindow.setFullScreen(true);
+});
+
+ipc.on('exitFullScreen', function(event) {
+  mainWindow.setFullScreen(false);
+});
+
 
 // add dialog
 const {
   dialog
 } = require('electron');
+const { unzip } = require('zlib');
+const { Logger } = require('winston');
+
 ipc.on('selectdirectory', function (event, arg) {
   dialog.showOpenDialog({
     properties: ['openDirectory', 'createDirectory']
-  },
-  function (filenames) {
-    if (filenames) {
+  }).then(function (result) {
+    if (!result.canceled) {
       let params = [];
-      params.push({directory: filenames[0]});
+      params.push({directory: result.filePaths[0]});
       mainWindow.webContents.send('master-process-callback', 
         { 
           callbackId: arg.callbackId,
           params: params
         });
     }
+  }).catch(err => {
+    logger.error(err);
   });
 });
+
 ipc.on('selectfile', function (event, arg) {
   let filters;
   if (!arg.filefilter) {
@@ -103,11 +202,10 @@ ipc.on('selectfile', function (event, arg) {
   dialog.showOpenDialog({
     filters: filters,
     properties: ['openFile']
-  },
-  function (filenames) {
-    if (filenames) {
+  }).then(function (result) {
+    if (result.filePaths[0]) {
       let params = [];
-      params.push({ file: filenames[0] });
+      params.push({ file: result.filePaths[0] });
       mainWindow.webContents.send('master-process-callback',
         {
           callbackId: arg.callbackId,
@@ -117,11 +215,6 @@ ipc.on('selectfile', function (event, arg) {
   });
 });
 
-function onClosed() {
-  // dereference the window
-  // for multiple windows store them in an array
-  mainWindow = null;
-}
 
 function createMainWindow() {
   let icon = undefined;
@@ -137,9 +230,13 @@ function createMainWindow() {
     height: 620,
     minWidth: 1024,
     minHeight: 620,
-    icon: icon,
-    show: false
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      spellcheck: false
+    }
   });
+
   win.loadURL(`file://${__dirname}/index.html`, {
     'extraHeaders': 'pragma: no-cache\n'
   });
@@ -147,7 +244,93 @@ function createMainWindow() {
     win.show();
   });
   
-  win.on('closed', onClosed);
+  win.on('close', function(e) {
+    if (!closing) {
+      e.preventDefault();
+      mainWindow.webContents.send('APP_CLOSING');
+      logger.debug('The user wants to close bibisco...');
+    }
+  });
+
+  win.on('closed', function(e) {
+    // dereference the window
+    // for multiple windows store them in an array
+    mainWindow = null;
+  });
+
+  // context menu
+  win.webContents.on('context-menu', (event, menuInfo) => {
+
+    // show context menu only on content editable
+    if (menuInfo.isEditable && menuInfo.inputFieldType === 'none') {
+      const menu = new Menu();
+
+      // suggestions
+      if (menuInfo.misspelledWord) {
+        let isMisspelledWordFirstLetterUppercase = isFirstLetterUppercase(menuInfo.misspelledWord);
+        let suggestions = myDictionary.getSuggestions(menuInfo.misspelledWord);
+        if (suggestions && suggestions.length > 0) {
+          suggestions.forEach((suggestion) => {
+            suggestion = isMisspelledWordFirstLetterUppercase ? capitalizeFirstLetter(suggestion) : suggestion;
+            let item = new MenuItem({
+              label: suggestion,
+              click: function() {
+                win.webContents.replaceMisspelling(suggestion);
+                win.webContents.send('REPLACE_MISSPELLING');
+              } 
+            });
+            menu.append(item);
+          });
+
+          // separator
+          menu.append(new MenuItem({
+            type: 'separator'
+          }));
+        }
+      }
+
+      // add to dictionary
+      if (menuInfo.misspelledWord) {
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.addToDictionary : 'Add to dictionary',
+            click: function() {
+              let word = menuInfo.selectionText;
+              myDictionary.addRegex(new RegExp('^' + word + '$'));
+              win.webContents.send('ADD_WORD_TO_PROJECT_DICTIONARY', word);
+            }
+          })
+        );
+      }
+
+      // cut
+      menu.append(new MenuItem({
+        label: contextMenuStringTable ? contextMenuStringTable.cut : 'Cut',
+        accelerator: 'CommandOrControl+X',
+        enabled: menuInfo.editFlags.canCut,
+        click: () => win.webContents.cut()
+      }));
+
+      // copy
+      menu.append(new MenuItem({
+        label: contextMenuStringTable ? contextMenuStringTable.copy : 'Copy',
+        accelerator: 'CommandOrControl+C',
+        enabled: menuInfo.editFlags.canCopy,
+        click: () => win.webContents.copy()
+      }));
+
+      // paste
+      menu.append(new MenuItem({
+        label: contextMenuStringTable ? contextMenuStringTable.paste : 'Paste',
+        accelerator: 'CommandOrControl+V',
+        enabled: menuInfo.editFlags.canPaste,
+        click: () => win.webContents.paste()
+      }));
+
+      // show menu
+      menu.popup();
+    }
+  });
 
   return win;
 }
@@ -203,14 +386,21 @@ app.on('ready', function() {
     const electronMenu = electron.Menu;
     const applicationMenu = electronMenu.buildFromTemplate(menuTemplate);
     electronMenu.setApplicationMenu(applicationMenu);
+  } else {
+    mainWindow.removeMenu();
   }
 });
 
 function initLogger(isDev) {
+  let loggerDirectory = path.join(app.getPath('userData'), 'logs');
+  if (!fs.existsSync(loggerDirectory)) {
+    fs.mkdirSync(loggerDirectory);
+  }
+  let loggerFilePath = path.join(loggerDirectory, 'bibisco.log');
   const logger = require('winston');
   logger.level = (isDev ? 'debug' : 'info');
   logger.add(logger.transports.File, {
-    filename: __dirname + '/log/bibisco.log',
+    filename: loggerFilePath,
     json: false,
     maxsize: 1000000,
     maxFiles: 2,
@@ -231,6 +421,20 @@ function initLogger(isDev) {
   return logger;
 }
 
+function initTempDirectory() {
+  let tempDirectory = path.join(app.getPath('userData'), 'temp');
+  if (!fs.existsSync(tempDirectory)) {
+    fs.mkdirSync(tempDirectory);
+  }
+}
+
+function initBibiscoDictionariesDirectory() {
+  let bibiscoDictionariesDirectory = path.join(app.getPath('userData'), 'bibiscoDictionaries');
+  if (!fs.existsSync(bibiscoDictionariesDirectory)) {
+    fs.mkdirSync(bibiscoDictionariesDirectory);
+  }
+}
+
 function getZip() {
   if (!zip) {
     zip = initZip();
@@ -240,8 +444,6 @@ function getZip() {
 }
 
 function initZip() {
-  let fs = require('fs-extra');
-  let path = require('path');
   let yazl = require('yazl');
   let yauzl = require('yauzl');
   let walkSync = require('walk-sync');
@@ -325,3 +527,186 @@ function initZip() {
   };
 }
 
+function getDictionaryDirectory() {
+  return path.join(app.getPath('userData'), 'bibiscoDictionaries');
+}
+
+function loadDictionary(language) {
+  let start = Date.now();
+  SpellChecker.getDictionary(language, getDictionaryDirectory(), function(err, result) {
+    if(!err) {
+      myDictionary = result;
+      myDictionaryLanguage = language;
+      logger.info('Loaded ' + language + ' dictionary! in ' + ((Date.now() - start))/1000) + ' seconds';
+      mainWindow.webContents.send('DICTIONARY_LOADED', language);
+    } else {
+      logger.error('Error loading ' + language + ' dictionary: ' + err);
+    }
+  });
+}
+
+function loadProjectDictionary(projectDictionary, projectId) {
+ 
+  if (projectId === myDictionaryProject) {
+    logger.debug('Project ' + projectId + ' dictionary already loaded');
+  }
+
+  else if (myDictionary) {
+    myDictionary.clearRegexs();
+  
+    if (projectDictionary && projectDictionary.length>0) {
+      for (let index = 0; index < projectDictionary.length; index++) {
+        let word = projectDictionary[index];
+        myDictionary.addRegex(new RegExp('^' + word + '$'));
+      }
+    }
+    
+    myDictionaryProject = projectId;
+    logger.info('loaded project ' + projectId + ' dictionary: ' + (projectDictionary ? JSON.stringify(projectDictionary) : '[]'));
+  }
+
+  mainWindow.webContents.send('PROJECT_DICTIONARY_LOADED', projectId);
+}
+
+function isDictionaryUnpacked(language) {
+
+  let dicFilePath = path.join(getDictionaryDirectory(), language + '.dic');  
+  let result = fs.existsSync(dicFilePath);
+  logger.info('Is dictionary ' + language + ' unpacked? ' + result);
+  return result;
+}
+
+function unpackDictionary(language, callback) {
+    
+  // unzip dictionary file
+  unzipDictionaryFile(language, function() {
+         
+    // read bibidic
+    readBibidicFile(language, function(compressedWords) {
+
+      // decompress dictionary words
+      let decompressedWords = getDecompressedWords(compressedWords);
+
+      // write dic file
+      writeDicfile(language, decompressedWords, function() {
+
+        // delete bibidic file
+        deleteBibidicFile(language, function() {
+
+          if (callback) {
+            callback();
+          }
+        });
+      });
+    });
+  });
+}
+
+function unzipDictionaryFile(language , callback) {
+  let zippedFilePath = path.join(__dirname, path.join('dictionaries', language + '.zip'));
+  getZip().unzip(zippedFilePath, getDictionaryDirectory(), function() {
+    logger.info('Unzipped ' + zippedFilePath);
+    if (callback) {
+      callback();
+    }
+  });
+}
+
+function readBibidicFile(language, callback) {
+  let bibidicFilePath = path.join(getDictionaryDirectory(), language + '.bibidic');
+  let start = Date.now();
+  fs.readFile(bibidicFilePath, 'utf8', function(err,text) {
+    let compressedWords;
+    if (text) {
+      compressedWords = text.split('\n');
+    }
+    logger.info('Read ' + bibidicFilePath + ' ('+  compressedWords.length + ' words) in ' + ((Date.now() - start))/1000) + ' seconds';
+     
+    if (callback) {
+      callback(compressedWords);
+    }
+  });
+}
+
+function getDecompressedWords(compressedWords){
+  let start = Date.now();
+  let result;
+  const reg = /\d+/;
+  let prevWord = '';
+  result = compressedWords.map( word => {
+    if (word[0] === '|') {
+      return word.substr(1, word.length);
+    }
+
+    const result = word.match(reg);
+    let newWord = '';
+    if (result === null){
+      newWord = prevWord + word;
+    } else {
+      newWord = prevWord.substr(0, parseInt(result[0])) + word.substr(result[0].length);
+    }
+    prevWord = newWord;
+    
+    return newWord;
+  });
+  logger.info('Decompress ' + compressedWords.length + ' words in ' + ((Date.now() - start))/1000) + ' seconds';
+  return result;
+}
+
+function writeDicfile(language, decompressedWords, callback) {
+  let dicFilePath = path.join(getDictionaryDirectory(), language + '.dic');
+  let start = Date.now();
+  let newContent = '';  
+  let first = true;
+  for(let i=0; i<decompressedWords.length; i++) {          
+    if(decompressedWords[i] !== '' && decompressedWords[i] !== '\n') {
+      if(!first) newContent += '\n';
+      newContent += decompressedWords[i];
+      first = false;
+    }
+  }
+  
+  // Write dic file.
+  fs.writeFile(dicFilePath, newContent, 'utf8', function(err) {
+    if (err) {
+      logger.error(dicFilePath + ' could not be writted: ' + err);
+    } else {
+      logger.info('Written ' + dicFilePath + ' in ' + ((Date.now() - start))/1000) + ' seconds';
+      if (callback) {
+        callback();
+      }
+    }
+  });
+
+}
+
+function deleteBibidicFile(language, callback) {
+
+  let bibidicFilePath = path.join(getDictionaryDirectory(), language + '.bibidic');
+  fs.unlink(bibidicFilePath, function(err) {
+    if (err) {
+      logger.error(bibidicFilePath + ' could not be deleted: ' + err);
+    } else {
+      logger.info('Deleted ' + bibidicFilePath);
+      if (callback) {
+        callback();
+      }
+    }
+  });
+}
+
+function isFirstLetterUppercase(word) {
+  return word[0] === word[0].toUpperCase();
+}
+
+function capitalizeFirstLetter(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function isNumeric(word) {
+  if (typeof word !== 'string') return false; // we only process strings!  
+  word = word.replace(/,/g, '.'); // replace comma with period, for float in not US locale
+  word = word.replace(/:/g, '.'); // replace colon with period, for hours
+  return !isNaN(word) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         !isNaN(parseFloat(word)); // ...and ensure strings of whitespace fail
+}

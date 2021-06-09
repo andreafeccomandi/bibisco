@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.chapter = ChapterService.getChapter($routeParams.id.split('?')[0]);
-    self.title = '#' + self.chapter.position + ' ' + self.chapter.title;
+    self.title = ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title;        
     self.backpath = 'chapters/params/focus=chapters_' + self.chapter.$loki;
 
     // breadcrumbs
@@ -75,6 +75,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
         items.push({
           characters: scenes[i].characters,
           id: scenes[i].$loki,
+          noimageicon: 'bookmark-o',
           position: scenes[i].position,
           status: scenes[i].status,
           text: scenes[i].title,

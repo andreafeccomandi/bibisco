@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('MainCharacterService', function(
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, UuidService
 ) {
   'use strict';
 
@@ -32,6 +32,8 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       });
       maincharacter.images = images;
       CollectionUtilService.update(this.getCollection(), maincharacter);
+
+      return filename;
     },
     calculateStatus: function (maincharacter) {
       let result;
@@ -83,6 +85,12 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       }
       images.splice(imageToRemovePosition, 1);
       maincharacter.images = images;
+
+      // delete profile image reference
+      if (maincharacter.profileimage === filename) {
+        maincharacter.profileimage = null;
+      }
+
       CollectionUtilService.update(this.getCollection(), maincharacter);
 
       return maincharacter;
@@ -98,7 +106,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
       return this.getCollection().get(id);
     },
     getMainCharactersCount: function() {
-      return this.getCollection().count();
+      return this.getDynamicView().count();
     },
     getMainCharacters: function() {
       return this.getDynamicView().data();
@@ -198,6 +206,14 @@ angular.module('bibiscoApp').service('MainCharacterService', function(
     },
     remove: function(id) {
       CollectionUtilService.remove(this.getCollection(), id);
+    },
+    setProfileImage: function (id, filename) {
+      LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
+        + id + ' in maincharacters');
+
+      let maincharacter = this.getMainCharacter(id);
+      maincharacter.profileimage = filename;
+      CollectionUtilService.update(this.getCollection(), maincharacter);
     },
     update: function(maincharacter) {
       maincharacter.status = this.calculateStatus(maincharacter);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: DropdownmenuController,
     bindings: {
       buttonlabel: '@',
+      dimension: '@',
       items: '<',
       open: '@',
       visible: '<'
@@ -33,5 +34,10 @@ function DropdownmenuController() {
     if (self.open === 'up') {
       self.direction = 'dropup';
     } 
+
+    self.dimensionstyle = 'sm';
+    if (self.dimension) {
+      self.dimensionstyle = self.dimension;
+    }
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,39 @@ angular.
     }
   });
 
-function ProjectHomeController($injector, $location, $rootScope, ChapterService, ContextMenuService, 
-  LocationService, MainCharacterService, ProjectService, SecondaryCharacterService, StrandService,
-  SupporterEditionChecker) {
+function ProjectHomeController($injector, $location, $rootScope, $scope, $translate, ChapterService, 
+  DictionaryService, LocationService, MainCharacterService, PopupBoxesService, ProjectService, 
+  SecondaryCharacterService, StrandService, SupporterEditionChecker) {
   
-  var self = this;
+  let self = this;
+  self.loadingDictionary = false;
   let ObjectService = null;
 
-  self.$onInit = function () {
+  // dictionary loaded
+  const ipc = require('electron').ipcRenderer;
+
+  self.dictionaryLoadedListener = function(event) {
+    DictionaryService.loadProjectDictionary();
+  };
+  ipc.once('DICTIONARY_LOADED', self.dictionaryLoadedListener);
+  
+  self.projectDictionaryLoadedListener = function(event) {
+    self.loadingDictionary = false;
+    $scope.$apply();
 
     // show menu item
     $rootScope.$emit('SHOW_PAGE', {
       item: 'projecthome'
     });
+  };
+  ipc.once('PROJECT_DICTIONARY_LOADED', self.projectDictionaryLoadedListener);
+
+  self.$onDestroy = function () {
+    ipc.removeListener('DICTIONARY_LOADED', self.dictionaryLoadedListener);
+    ipc.removeListener('PROJECT_DICTIONARY_LOADED', self.projectDictionaryLoadedListener);
+  };
+
+  self.$onInit = function () {
 
     // action items
     self.actionitems = [];
@@ -48,11 +68,16 @@ function ProjectHomeController($injector, $location, $rootScope, ChapterService,
       itemfunction: function() {
         $location.path('/project/author');
       }
-    });
-    self.actionitems.push({
+    }, {
       label: 'jsp.project.button.bibiscoProjectSuggestions',
       itemfunction: function() {
         $location.path('/tips');
+      }
+    }, {
+      label: 'show_project_id',
+      itemfunction: function() {
+        let text = '<b>' + $translate.instant('project_id') + '</b>: '+ ProjectService.getProjectInfo().id;
+        PopupBoxesService.alertWithSelectableText(text, 'md');
       }
     });
 
@@ -115,6 +140,27 @@ function ProjectHomeController($injector, $location, $rootScope, ChapterService,
       self.calculateObjects();
     }
     self.calculateMotivational();
+    
+    // dictionary
+    let language = ProjectService.getProjectInfo().language;
+    let isDictionaryLoaded = DictionaryService.isDictionaryLoaded(language);
+    let isProjectDictionaryLoaded = DictionaryService.isProjectDictionaryLoaded();
+
+    if (!isDictionaryLoaded) {
+      // load dictionary
+      DictionaryService.loadDictionary(language);
+      self.loadingDictionary = true;
+    } else {
+      // show menu item
+      $rootScope.$emit('SHOW_PAGE', {
+        item: 'projecthome'
+      });
+    }
+
+    if (isDictionaryLoaded && !isProjectDictionaryLoaded) {
+      // load project dictionary
+      DictionaryService.loadProjectDictionary();
+    }
   };
 
   self.project = function() {
@@ -126,8 +172,8 @@ function ProjectHomeController($injector, $location, $rootScope, ChapterService,
   };
 
   self.back = function() {
+    ProjectService.close();
     $location.path('/start');
-    ContextMenuService.destroy();
   };
 
   self.goals = function() {
@@ -209,13 +255,13 @@ function ProjectHomeController($injector, $location, $rootScope, ChapterService,
   };
 
   self.calculateChapters = function() {
-    self.chapters = ChapterService.getChaptersCount();
+    self.chapters = ChapterService.getChaptersWithPrologueAndEpilogue().length;
     self.chaptersTodo = 0;
     self.chaptersTocomplete = 0;
     self.chaptersCompleted = 0;
 
     if (self.chapters > 0) {
-      let chapters = ChapterService.getChapters();
+      let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
       for (let i = 0; i < chapters.length; i++) {
         if (chapters[i].status === 'todo') {
           self.chaptersTodo += 1;

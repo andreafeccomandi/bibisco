@@ -12,6 +12,7 @@
       <span class="pull-left">
         <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="!$ctrl.hideprojectexplorerbutton && ($ctrl.editmode || $ctrl.words > 0)"></projectexplorerbutton>
         <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{$ctrl.showimageslabel}}" visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
+        <eventsbutton showeventsfunction="$ctrl.showeventsfunction()" showeventslabel="{{$ctrl.showeventslabel}}" visible="!$ctrl.editmode && $ctrl.eventsenabled"></eventsbutton>
       </span>
       <span class="pull-right">
         <dropdownmenu buttonlabel="jsp.common.button.more" 

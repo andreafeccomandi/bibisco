@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ angular.
     controller: CreateProjectController
   });
 
-function CreateProjectController($location, $rootScope, $scope, $timeout, 
-  ContextMenuService, LocaleService, PopupBoxesService, ProjectService) {
+function CreateProjectController($location, $rootScope, $scope, $timeout,
+  LocaleService, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_CREATE_PROJECT');
@@ -53,6 +53,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
       'pt-br': 'Português (Brasil)',
       'pt-pt': 'Português (Portugal)',
       'ru': 'Русский',
+      'sl': 'Slovenski jezik',
       'sr': 'Srpski',
       'sv': 'Svenska',
       'tr': 'Türkçe'
@@ -73,7 +74,7 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
       PopupBoxesService.confirm(function () {
         $timeout(function () {
           ProjectService.create(self.projectName, self.projectLanguage, self.projectAuthor);
-          ContextMenuService.create();
+
           self.checkExit = {
             active: false
           };

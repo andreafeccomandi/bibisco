@@ -1,0 +1,10 @@
+{
+  "dest": "/media/sf_ubuntu-20.04-export/release-builds",
+  "icon": "assets/icons/linux/bibisco-circle-hr.png",
+  "categories": [
+    "Utility"
+  ],
+  "lintianOverrides": [
+    "changelog-file-missing-in-native-package"
+  ]
+}

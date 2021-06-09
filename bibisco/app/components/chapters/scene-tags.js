@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
     });
     
     self.breadcrumbitems.push({
-      label: '#' + self.chapter.position + ' ' + self.chapter.title,
+      label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
       href: '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
     self.breadcrumbitems.push({
@@ -78,12 +78,11 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
     }
     // check if is valid gregorian date
     if (self.workingscenerevision.timegregorian) {
-	  let testDate = new Date(self.workingscenerevision.time);
-	  if (isNaN(testDate.getTime())) {
+      let testDate = new Date(self.workingscenerevision.time);
+      if (isNaN(testDate.getTime())) {
         self.workingscenerevision.time = null;
-	  }
+      }
     }
-    self.scenetime = self.workingscenerevision.time;
 
     // init narrative strands
     self.initStrands();
@@ -313,13 +312,8 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
   self.save = function() {
     self.scene.revisions[self.scene.revision] = JSON.parse(JSON.stringify(self.workingscenerevision));
     ChapterService.updateScene(self.scene);
-
     $rootScope.dirty = false;
   };
-
-  $scope.$on('SCENE_TIME_SELECTED', function (event, data) {
-    self.workingscenerevision.time = data;
-  });
 
   $scope.$on('$locationChangeStart', function (event) {
     PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);

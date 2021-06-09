@@ -1,5 +1,6 @@
+/* eslint-disable indent */
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,8 +15,8 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function ($injector,
-  $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, 
-  DocxExporterService, FileSystemService, LocationService, MainCharacterService, 
+  $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, DatetimeService,
+  DocxExporterService, FileSystemService, LocaleService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
   SupporterEditionChecker, TxtExporterService, UtilService) {
   'use strict';
@@ -24,6 +25,8 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
   let dateFormat = require('dateformat');
   let translations;
   let ObjectService = null;
+  let NoteService = null;
+  let TimelineService = null;
 
   const behaviors_questions_count = 12;
   const ideas_questions_count = 18;
@@ -34,16 +37,16 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
   
   return {
 
-    exportPdf: function (exportpath, callback) {
-      this.export(exportpath, PdfExporterService, callback);
+    exportPdf: function (exportfilter, exportpath, callback) {
+      this.export(exportfilter, exportpath, PdfExporterService, callback);
     },
 
-    exportWord: function (exportpath, callback) {
-      this.export(exportpath, DocxExporterService, callback);
+    exportWord: function (exportfilter, exportpath, callback) {
+      this.export(exportfilter, exportpath, DocxExporterService, callback);
     },
     
-    exportTxt: function (exportpath, callback) {
-      this.export(exportpath, TxtExporterService, callback);
+    exportTxt: function (exportfilter, exportpath, callback) {
+      this.export(exportfilter, exportpath, TxtExporterService, callback);
     },
 
     exportArchive: function (exportpath, callback) {
@@ -61,7 +64,11 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       return FileSystemService.concatPath(exportpath, filename);
     },
 
-    export: function (exportpath, exporter, callback) {
+    export: function (exportfilter, exportpath, exporter, callback) {
+
+
+      // init moment
+      this.initMoment();
 
       // load translations
       this.loadTranslations();
@@ -74,22 +81,153 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
       // export timestamp
       let timestamp = new Date();
-      
-      // novel
-      let novelfilepath = this.calculateExportFilePath(exportpath, 'novel', timestamp);
-      let novelhtml = this.createNovelHtml();
-      
-      // project
-      let projectfilepath = this.calculateExportFilePath(exportpath, 'project', timestamp);
-      let projecthtml = this.createProjectHtml();
 
-      exporter.export(novelfilepath, novelhtml, font, indent, 
-        function() {
-          exporter.export(projectfilepath, projecthtml, font, indent,
-            function () {
-              shell.showItemInFolder(exportpath);
-              callback();
-            }); 
+      // files to export
+      let files2export = [];
+      let hcountingactive = true;
+      let pagebreakonh1 = true;
+
+      // novel and project
+      if (exportfilter.id === 'novel_project') {
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
+          html: this.createNovelHtml()
+        });
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
+          html: this.createProjectHtml()
+        });
+      } 
+      // novel
+      else if (exportfilter.id === 'novel') {
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
+          html: this.createNovelHtml()
+        });
+      } 
+      // project
+      else if (exportfilter.id === 'project') {
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
+          html: this.createProjectHtml()
+        });
+      } 
+      // prologue
+      else if (exportfilter.type === 'prologue') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        let chapter = ChapterService.getChapter(exportfilter.id);
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
+          html: this.createChapter(chapter, 'prologue', false)
+        });
+      }
+      // epilogue
+      else if (exportfilter.type === 'epilogue') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        let chapter = ChapterService.getChapter(exportfilter.id);
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
+          html: this.createChapter(chapter, 'epilogue', false)
+        });
+      }
+      // chapter
+      else if (exportfilter.type === 'chapter') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        let chapter = ChapterService.getChapter(exportfilter.id);
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
+          html: this.createChapter(chapter, 'h1', true)
+        });
+      }
+      // architecture
+      else if (exportfilter.id === 'architecture') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'architecture', timestamp),
+          html: this.createArchitecture()
+        });
+      } 
+      // strands
+      else if (exportfilter.id === 'strands') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'strands', timestamp),
+          html: this.createStrands()
+        });
+      } 
+      // main character
+      else if (exportfilter.type === 'maincharacter') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'maincharacter', timestamp),
+          html: this.createMainCharacters(exportfilter.id)
+        });
+      }
+      // secondary character
+      else if (exportfilter.type === 'secondarycharacter') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'secondarycharacter', timestamp),
+          html: this.createSecondaryCharacters(exportfilter.id)
+        });
+      }
+      // location
+      else if (exportfilter.type === 'location') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'location', timestamp),
+          html: this.createLocations(exportfilter.id)
+        });
+      }
+      // object
+      else if (exportfilter.type === 'object') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'object', timestamp),
+          html: this.createObjects(exportfilter.id)
+        });
+      }
+      // note
+      else if (exportfilter.type === 'note') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'note', timestamp),
+          html: this.createNotes(exportfilter.id)
+        });
+      }
+      // timeline
+      else if (exportfilter.id === 'timeline') {
+        hcountingactive = false;
+        pagebreakonh1 = false;
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'timeline', timestamp),
+          html: this.createTimeline()
+        });
+      }
+
+
+      exporter.export(files2export[0].filepath, files2export[0].html, font, indent, hcountingactive, pagebreakonh1,
+        function() { 
+          if (files2export.length === 2) {
+            exporter.export(files2export[1].filepath, files2export[1].html, font, indent, hcountingactive, pagebreakonh1,
+              function () {
+                shell.showItemInFolder(exportpath);
+                callback();
+              }); 
+          } else {
+            shell.showItemInFolder(exportpath);
+            callback();
+          }          
         });
     },
 
@@ -105,20 +243,34 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     },
 
     createProjectHtml: function () {
+      
+      let supporterEdition = false;
+      if (SupporterEditionChecker.check()) {
+        $injector.get('IntegrityService').ok();
+        supporterEdition = true;
+      }
+      
       let html = '';
-
       html += this.createAuthor();
       html += this.createTitle();
       html += this.createProjectSubtitle();
       html += this.createArchitecture();
+      html += this.createStrands();
       html += this.createMainCharacters();
       html += this.createSecondaryCharacters();
       html += this.createLocations();
-      if (SupporterEditionChecker.check()) {
-        $injector.get('IntegrityService').ok();
+      if (supporterEdition) {
         html += this.createObjects();
+        html += this.createNotes();
       }
       html += this.createChaptersForProject();
+      if (supporterEdition) {
+        html += this.createTimeline();
+      }
+
+      // remove double white spaces
+      html = html.replace(/&nbsp;/g, ' ');
+      html = html.replace(/  +/g, ' ');
       
       return html;
     },
@@ -130,6 +282,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       html += this.createTitle();
       html += this.createNovelSubtitle();
       html += this.createChaptersForNovel();
+
+      // remove double white spaces
+      html = html.replace(/&nbsp;/g, ' ');
+      html = html.replace(/  +/g, ' ');
 
       return html;
     },
@@ -166,12 +322,19 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       // settings
       html += this.createTag('h2', translations.common_setting);
       html += ArchitectureService.getSetting().text;
+      html += this.createEvents('architecture', 'setting');
 
       // global notes
       if (SupporterEditionChecker.check()) {
         html += this.createTag('h2', translations.common_notes_title);
         html += ArchitectureService.getGlobalNotes().text;
       }
+    
+      return html;
+    },
+
+    createStrands: function () {
+      let html = '';
 
       // strands
       let strands = StrandService.getStrands();
@@ -186,14 +349,16 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       return html;
     },
 
-    createMainCharacters: function () {
+    createMainCharacters: function (filter) {
       let html = '';
 
       let mainCharacters = MainCharacterService.getMainCharacters();
       if (mainCharacters && mainCharacters.length > 0) {
         html += this.createTag('h1', translations.common_main_characters);
         for (let i = 0; i < mainCharacters.length; i++) {
-          html += this.createMainCharacter(mainCharacters[i]);          
+          if (!filter || (filter && mainCharacters[i].$loki === filter)) {
+            html += this.createMainCharacter(mainCharacters[i]);     
+          }     
         }
       }
 
@@ -213,6 +378,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'lifebeforestorybeginning');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'conflict');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'evolutionduringthestory');
+      html += this.createEvents('maincharacter', mainCharacter.$loki);
       return html;
     },
 
@@ -243,40 +409,64 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       return html; 
     },
 
-    createSecondaryCharacters: function() {
+    createSecondaryCharacters: function(filter) {
       let html = '';
       let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
       if (secondaryCharacters && secondaryCharacters.length > 0) {
         html += this.createTag('h1', translations.common_secondary_characters);
         for (let i = 0; i < secondaryCharacters.length; i++) {
-          html += this.createTag('h2', secondaryCharacters[i].name);
-          html += secondaryCharacters[i].description;
+          if (!filter || (filter && secondaryCharacters[i].$loki === filter)) {
+            html += this.createTag('h2', secondaryCharacters[i].name);
+            html += secondaryCharacters[i].description;
+            html += this.createEvents('secondarycharacter', secondaryCharacters[i].$loki);
+          }
         }
       }
       return html;
     },
 
-    createLocations: function() {
+    createLocations: function(filter) {
       let html = '';
       let locations = LocationService.getLocations();
       if (locations && locations.length > 0) {
         html += this.createTag('h1', translations.common_locations);
         for (let i = 0; i < locations.length; i++) {
-          html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
-          html += locations[i].description;
+          if (!filter || (filter && locations[i].$loki === filter)) {
+            html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
+            html += locations[i].description;
+            html += this.createEvents('location', locations[i].$loki);
+          }
         }
       }
       return html;
     },
 
-    createObjects: function () {
+    createObjects: function (filter) {
       let html = '';
       let objects = this.getObjectService().getObjects();
       if (objects && objects.length > 0) {
         html += this.createTag('h1', translations.objects);
         for (let i = 0; i < objects.length; i++) {
-          html += this.createTag('h2', objects[i].name);
-          html += objects[i].description;
+          if (!filter || (filter && objects[i].$loki === filter)) {
+            html += this.createTag('h2', objects[i].name);
+            html += objects[i].description;
+            html += this.createEvents('object', objects[i].$loki);
+          }
+        }
+      }
+      return html;
+    },
+
+    createNotes: function (filter) {
+      let html = '';
+      let notes = this.getNoteService().getNotes();
+      if (notes && notes.length > 0) {
+        html += this.createTag('h1', translations.common_notes_title);
+        for (let i = 0; i < notes.length; i++) {
+          if (!filter || (filter && notes[i].$loki === filter)) {
+            html += this.createTag('h2', notes[i].name);
+            html += notes[i].description;
+          }
         }
       }
       return html;
@@ -284,11 +474,12 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     createChaptersForProject: function () {
       let html = '';
-      let chapters = ChapterService.getChapters();
+
+      let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
       if (chapters && chapters.length > 0) {
         html += this.createTag('h1', translations.common_chapters);
         for (let i = 0; i < chapters.length; i++) {
-          html += this.createTag('h2', '#' + chapters[i].position + ' ' + chapters[i].title);
+          html += this.createTag('h2', ChapterService.getChapterPositionDescription(chapters[i].position) + ' ' + chapters[i].title);
           html += this.createTag('h3', translations.common_chapter_reason);
           html += chapters[i].reason.text;
           html += this.createTag('h3', translations.common_chapter_notes);
@@ -300,17 +491,166 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     createChaptersForNovel: function () {
       let html = '';
+      
+      // prologue
+      let prologue = ChapterService.getPrologue();
+      if (prologue) {
+        html += this.createChapter(prologue, 'prologue');
+      }
+      
+      // chapters and parts
       let chapters = ChapterService.getChapters();
+      let partsEnabled = ChapterService.getPartsCount()>0 ? true : false;
+      let parts = ChapterService.getParts();
+
+      let lastPart = -1;
+      let partLastChapterPosition = null;
       if (chapters && chapters.length > 0) {
         for (let i = 0; i < chapters.length; i++) {
-          html += this.createTag('h1', chapters[i].title);
-          let scenes = ChapterService.getScenes(chapters[i].$loki);
-          for (let j = 0; j < scenes.length; j++) {
-            html += scenes[j].revisions[scenes[j].revision].text;
-            html += this.createTag('p', '');
-          }
+          if (partsEnabled && (lastPart===-1 || chapters[i].position>partLastChapterPosition)) {
+            lastPart += 1;
+            partLastChapterPosition = ChapterService.getPartLastChapterPosition(parts[lastPart].$loki);
+            html += this.createTag('parttitle', parts[lastPart].title);
+          } 
+
+          html += this.createChapter(chapters[i]);
         }
       }
+
+      // epilogue
+      let epilogue = ChapterService.getEpilogue();
+      if (epilogue) {
+        html += this.createChapter(epilogue, 'epilogue');
+      }
+
+      return html;
+    },
+
+    createChapter: function(chapter, tag, positionintitle) {
+      let selectedtag = tag ? tag: 'h1';
+      let title = positionintitle ? ChapterService.getChapterPositionDescription(chapter.position) + ' ' + chapter.title : chapter.title;
+      let html = this.createTag(selectedtag, title);
+      let scenes = ChapterService.getScenes(chapter.$loki);
+      for (let j = 0; j < scenes.length; j++) {
+        html += scenes[j].revisions[scenes[j].revision].text;
+        html += this.createTag('p', '');
+      }
+
+      return html;
+    },
+
+    createEvents: function(type, id) {
+      let html = '';
+      if (SupporterEditionChecker.check()) {
+        let timelineHtml = '';
+        let timeline = this.getTimelineService().getTimeline({type: type, id: id});
+  
+        if (timeline && timeline.length > 0) {
+          html += this.createTag('h3', translations.common_events); 
+          for (let i = 0; i < timeline.length; i++) {
+            timelineHtml += this.createTag('li', 
+              this.createTag('b', this.createTimelineDatetime(timeline[i]))
+              + ' - ' 
+              + timeline[i].title
+            );  
+          }
+          html += this.createTag('ul', timelineHtml); 
+        }
+      }
+      return html;
+    },
+
+    createTimeline: function () {
+      let html = '';
+      let timelineHtml = '';
+      let timeline = this.getTimelineService().getTimeline();
+
+      if (timeline && timeline.length > 0) {
+        html += this.createTag('h1', translations.timeline_title); 
+        for (let i = 0; i < timeline.length; i++) {
+          timelineHtml += this.createTag('li', 
+            this.createTag('b', this.createTimelineDatetime(timeline[i]))
+            + ' - ' 
+            + this.createTimelineDescription(timeline[i])
+          );  
+        }
+        html += this.createTag('ul', timelineHtml); 
+      }
+      return html;
+    },
+
+    createTimelineDatetime: function(timelineElement) {
+      let html = '';
+      
+      if (timelineElement.time && timelineElement.timegregorian) {
+        html += moment(timelineElement.time).format('dddd') + ' ' +
+        moment(timelineElement.time).format(translations.date_format_export_timeline) +
+        DatetimeService.calculateYear(new Date(timelineElement.time)) + ' ' +
+        moment(timelineElement.time).format(translations.time_format_export_timeline);
+      } 
+      else if (timelineElement.time && !timelineElement.timegregorian) {
+        html += timelineElement.time;
+      }
+      else if (!timelineElement.time) {
+        html += translations.noinfoavailable;
+      }
+
+      return html;
+    },
+
+    createTimelineDescription: function(timelineElement) {
+
+      let html = '';
+      
+      html += timelineElement.title;
+      html += ' ';
+
+      html += '(';
+      if (timelineElement.type === 'scene') {
+        html += this.createTag('i', translations.common_chapter);
+        html += ': ';
+        html += ChapterService.getChapterPositionDescription(timelineElement.chapterposition);
+        if (timelineElement.chaptertitle) {
+          html += ' ' + timelineElement.chaptertitle;
+        }
+        if (timelineElement.characters) {
+          html += ', ';
+          html += this.createTag('i', translations.common_characters);
+          html += ': ' + timelineElement.characters;
+        }
+        if (timelineElement.locationname) {
+          html += ', ';
+          html += this.createTag('i', translations.common_location); 
+          html += ': ' + timelineElement.locationname;
+        }  
+        if (timelineElement.objects) {
+          html += ', ';
+          html += this.createTag('i', translations.objects);
+          html += ': ' + timelineElement.objects;
+        }
+      } 
+      
+      else if (timelineElement.type === 'architecture') {
+        html += this.createTag('i', translations.common_setting);
+      } 
+      
+      else if (timelineElement.type === 'maincharacter' || timelineElement.type === 'secondarycharacter') {
+        html += this.createTag('i', translations.common_character);
+        html += ': ' + timelineElement.description;
+      } 
+      
+      else if (timelineElement.type === 'location') {
+        html += this.createTag('i', translations.common_location);
+        html += ': ' + timelineElement.description;
+      } 
+      
+      else if (timelineElement.type === 'object') {
+        html += this.createTag('i', translations.object);
+        html += ': ' + timelineElement.description;
+      }
+
+      html += ')';
+
       return html;
     },
 
@@ -338,12 +678,17 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
         'common_behaviors',
         'common_chapter_notes',
         'common_chapter_reason',
+        'common_chapter',
         'common_chapters',
+        'common_character',
+        'common_characters',
         'common_characters_conflict',
         'common_characters_evolutionduringthestory',
         'common_characters_lifebeforestorybeginning',
+        'common_events',
         'common_fabula',
         'common_ideas',
+        'common_location',
         'common_notes_title',
         'common_locations',
         'common_main_characters',
@@ -356,7 +701,12 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
         'common_sociology',
         'common_strands',
         'export_project_subtitle',
-        'objects'];
+        'noinfoavailable',
+        'object',
+        'objects',
+        'date_format_export_timeline',
+        'time_format_export_timeline',
+        'timeline_title'];
 
       translationkeys.push.apply(translationkeys, 
         this.addInfoQuestionsTranslationKeys('behaviors', behaviors_questions_count));
@@ -384,11 +734,27 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     getObjectService: function () {
       if (!ObjectService) {
-        $injector.get('IntegrityService').ok();
         ObjectService = $injector.get('ObjectService');
       }
-
       return ObjectService;
+    },
+
+    getNoteService: function () {
+      if (!NoteService) {
+        NoteService = $injector.get('NoteService');
+      }
+      return NoteService;
+    },
+
+    getTimelineService: function () {
+      if (!TimelineService) {
+        TimelineService = $injector.get('TimelineService');
+      }
+      return TimelineService;
+    },
+
+    initMoment: function() {
+      moment.locale(LocaleService.getCurrentLocale());
     }
   };
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function ImportProjectController($location, $rootScope, $scope, $timeout, 
-  $translate, ContextMenuService, hotkeys, PopupBoxesService, ProjectService) {
+  $translate, hotkeys, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
@@ -63,7 +63,6 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
   self.confirmImportExistingProject = function() {
     ProjectService.importExistingProject(self.projectId, self.projectName,
       function() {
-        ContextMenuService.create();
         $location.path('/projecthome');
       });
   };
@@ -83,7 +82,6 @@ function ImportProjectController($location, $rootScope, $scope, $timeout,
       if (result.isValidArchive && !result.isAlreadyPresent) {
         ProjectService.import(result.projectId, result.projectName,
           function() {
-            ContextMenuService.create();
             $location.path('/projecthome');
             $scope.$apply(); // Why?!? http://stackoverflow.com/questions/11784656/angularjs-location-not-changing-the-path
           });

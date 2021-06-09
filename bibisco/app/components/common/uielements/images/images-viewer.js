@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,16 @@ angular.
       lastsave: '<',
       pageheadertitle: '@',
       pageheadercustomtitle: '<',
+      selectbuttonlabel: '@',
+      selectedimage: '<',
+      selectedimagebadgelabel: '@',
       selectfunction: '&',
       showselectbutton: '<'
     }
   });
 
-function ImagesViewerController($rootScope, $translate, ImageService) {
+function ImagesViewerController($injector, $rootScope, $translate, 
+  ImageService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -58,5 +62,14 @@ function ImagesViewerController($rootScope, $translate, ImageService) {
 
   self.fullpath = function(filename) {
     return ImageService.getImageFullPath(filename);
+  };
+
+  self.executeselectfunction = function (filename) {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $injector.get('IntegrityService').ok();
+      self.selectfunction(filename);
+    }
   };
 }

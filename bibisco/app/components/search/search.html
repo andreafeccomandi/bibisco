@@ -112,7 +112,7 @@
             </tbody>
             <tbody ng-repeat="strand in $ctrl.results.strands track by $index">
               <tr>
-                <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'strand' | translate}}</span>
+                <td class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_strand' | translate}}</span>
                 </td>
                 <td><a ng-click="$ctrl.gotoElement(strand.path)">{{strand.name}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{(strand.occurrences | number: 0)}}</span>
@@ -121,7 +121,7 @@
             </tbody>
             <tbody ng-repeat="maincharacter in $ctrl.results.maincharacters track by $index">            
               <tr>
-                <td rowspan="{{maincharacter.elements}}" class="text-right"><span class="label label-default bibiscoBadge">CHARACTER</span></td>
+                <td rowspan="{{maincharacter.elements}}" class="text-right"><span class="label label-default bibiscoBadge text-uppercase">{{'common_character' | translate}}</span></td>
                 <td>{{maincharacter.name}}</td>
                 <td></td>
               </tr>
@@ -222,6 +222,15 @@
                     class="label label-default bibiscoBadge text-uppercase">{{'object' | translate}}</span></td>
                 <td><a ng-click="$ctrl.gotoElement(object.path)">{{object.name}}</a></td>
                 <td class="text-right"><span class="label label-info search-results-occurrences">{{(object.occurrences | number: 0)}}</span>
+                </td>
+              </tr>
+            </tbody>
+            <tbody ng-repeat="note in $ctrl.results.notes track by $index">
+              <tr>
+                <td class="text-right"><span
+                    class="label label-default bibiscoBadge text-uppercase">{{'note' | translate}}</span></td>
+                <td><a ng-click="$ctrl.gotoElement(note.path)">{{note.name}}</a></td>
+                <td class="text-right"><span class="label label-info search-results-occurrences">{{(note.occurrences | number: 0)}}</span>
                 </td>
               </tr>
             </tbody>

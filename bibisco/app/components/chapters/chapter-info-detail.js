@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
       href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
-      label: '#' + self.chapter.position + ' ' + self.chapter.title,
+      label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
       href: backpath
     });
     self.breadcrumbitems.push({

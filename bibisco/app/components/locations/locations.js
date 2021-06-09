@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,8 @@ function LocationsController($location, $rootScope, $routeParams, $scope,
       for (let i = 0; i < locations.length; i++) {
         items.push({
           id: locations[i].$loki,
+          image: locations[i].profileimage, 
+          noimageicon: 'image',
           position: locations[i].position,
           status: locations[i].status,
           text: this.locationDescription(locations[i].nation,

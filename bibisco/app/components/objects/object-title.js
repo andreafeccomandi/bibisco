@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ function ItemTitleController($routeParams, ObjectService) {
         label: 'object_change_name_title'
       });
 
+      self.profileimageenabled = true;
+      self.profileimage = object.profileimage;
       self.exitpath = '/objects/' + object.$loki + '/view';
       self.name = object.name;
       self.pageheadertitle = 'object_change_name_title';
@@ -60,10 +62,11 @@ function ItemTitleController($routeParams, ObjectService) {
       self.breadcrumbItems.push({
         label: 'object_create_title'
       });
+
+      self.profileimageenabled = false;
       self.exitpath = '/objects';
       self.name = null;
-      self.pageheadertitle =
-        'object_create_title';
+      self.pageheadertitle = 'object_create_title';
     }
   };
 

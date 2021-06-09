@@ -114,11 +114,15 @@ breadcrumbitems="$ctrl.breadcrumbitems"
       </div>
     </div>
     <div class="row">
-      <scenetagsdatetime
-        lastscenetime="$ctrl.lastscenetime"
-        scenetime="$ctrl.scenetime"
-        scenetimegregorian="$ctrl.workingscenerevision.timegregorian">
-      </scenetagsdatetime>
+      <datetimeselect 
+          buttongroupcols="5"
+          inputcols="4"
+          lastdatetimeselected="$ctrl.lastscenetime"
+          offsetcols="1"
+          opencalendardirection="up"
+          time="$ctrl.workingscenerevision.time"
+          timegregorian="$ctrl.workingscenerevision.timegregorian">
+      </datetimeselect>
     </div>
 
     <!-- STRANDS -->

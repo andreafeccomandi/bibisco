@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ angular.module('bibiscoApp').service('DatetimeService', function (
   'use strict';
 
   return {
-    calculateSceneYear: function (datetime) {
+    calculateYear: function (datetime) {
       let result = null;
       if (datetime) {
         let year = datetime.getUTCFullYear();

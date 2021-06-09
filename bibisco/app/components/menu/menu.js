@@ -1,5 +1,6 @@
+
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,6 +32,11 @@ function MenuController($injector, $location, $rootScope,
 
     // ADD ELEMENT IMAGE
     $rootScope.$on('ADD_ELEMENT_IMAGE', function () {
+      self.visible = true;
+    });
+
+    // ADD ELEMENT EVENT
+    $rootScope.$on('ADD_ELEMENT_EVENT', function () {
       self.visible = true;
     });
 
@@ -79,6 +85,11 @@ function MenuController($injector, $location, $rootScope,
       self.visible = true;
     });
 
+    // SHOW ELEMENT EVENTS
+    $rootScope.$on('SHOW_ELEMENT_EVENTS', function () {
+      self.visible = true;
+    });
+
     // SHOW ELEMENT TITLE
     $rootScope.$on('SHOW_ELEMENT_TITLE', function () {
       self.visible = true;
@@ -121,12 +132,12 @@ function MenuController($injector, $location, $rootScope,
   };
 
   self.selectItem = function(item) {
-    if ((item === 'timeline' || item === 'search' || item === 'objects' || item === 'relations/view') 
+    if ((item === 'timeline' || item === 'search' || item === 'notes' || item === 'objects' || item === 'relations/view') 
       && !SupporterEditionChecker.check()) {
       SupporterEditionChecker.showSupporterMessage();
     }
     else {
-      if ((item === 'timeline' || item === 'search') || item === 'objects' || item === 'relations/view') {
+      if ((item === 'timeline' || item === 'search') || item === 'notes' || item === 'objects' || item === 'relations/view') {
         $injector.get('IntegrityService').ok();
       }
       $location.path('/' + item);

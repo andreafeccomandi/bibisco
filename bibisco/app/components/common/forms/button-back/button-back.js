@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ angular.
 
 function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
 
-  var self = this;
-  var electron = require('electron');
+  let self = this;
+  const ipc = require('electron').ipcRenderer;
   
   self.$onInit = function() {
 
@@ -66,10 +66,9 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
     }
 
     if ($rootScope.fullscreen) {
-      var window = electron.remote.getCurrentWindow();
       $rootScope.fullscreen = false;
       if (!$rootScope.previouslyFullscreen) {
-        window.setFullScreen(false);
+        ipc.send('exitFullScreen');
       }
     } else if (!self.buttonpaused) {
       self.buttonpaused = true;

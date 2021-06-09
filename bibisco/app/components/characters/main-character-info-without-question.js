@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,8 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
     if (self.mode === 'view') {
       self.backpath = backpath;
     }
+
+    self.calculatePreviousNextElements(self.type);
   };
 
   self.edit = function () {
@@ -65,5 +67,26 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
   self.changestatus = function(status) {
     self.maincharacter[self.type].status = status;
     MainCharacterService.update(self.maincharacter);
+  };
+
+  self.calculatePreviousNextElements = function (type) {
+    switch(type) {
+    case 'lifebeforestorybeginning':
+      self.nextelementlabel = 'jsp.character.thumbnail.conflict.title';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.previouselementlabel  = 'common_sociology';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/view';
+      break;
+    case 'conflict':
+      self.nextelementlabel = 'jsp.character.thumbnail.evolutionduringthestory.title';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/evolutionduringthestory/view';
+      self.previouselementlabel  = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      break;
+    case 'evolutionduringthestory':
+      self.previouselementlabel  = 'jsp.character.thumbnail.conflict.title';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      break;
+    }
   };
 }

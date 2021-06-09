@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoDbConnectionService', function (LoggerService) {
+angular.module('bibiscoApp').service('BibiscoDbConnectionService', function (ContextService, FileSystemService, LoggerService) {
   'use strict';
 
+  const {app} = require('electron');
   let path = require('path');
   let loki = require('lokijs');
   let LokiFsSyncAdapter = require('./adapters/lokijs/loki-fs-sync-adapter.js');
@@ -30,12 +31,19 @@ angular.module('bibiscoApp').service('BibiscoDbConnectionService', function (Log
       return bibiscodb;
     },
     initBibiscoDb: function() {
+      let bibiscodbpath = path.join(ContextService.getUserDataPath(), 'bibisco.json');
+      let bibiscoDbExists = FileSystemService.exists(bibiscodbpath);
+      if (bibiscoDbExists) {
+        LoggerService.debug('bibisco db exists at: ' + bibiscodbpath);
+      } else {
+        LoggerService.debug('Creating bibisco db at: ' + bibiscodbpath);
+        let cleanbibiscodbpath = path.join(__dirname, path.join('db', 'bibisco.json'));
+        FileSystemService.copyFileToDirectory(cleanbibiscodbpath, ContextService.getUserDataPath());
+      }
 
       return {
         // add function to load bibisco db
         load: function () {
-          let bibiscodbpath = path.join(__dirname, path.join('db', 'bibisco.json'));
-          LoggerService.debug('bibisco db path: ' + bibiscodbpath);
           var bibiscodb = new loki(bibiscodbpath, {
             adapter: new LokiFsSyncAdapter()
           });

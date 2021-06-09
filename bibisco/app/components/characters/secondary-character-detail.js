@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,11 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     }
   };
 
+
+  self.addprofileimage = function() {
+    $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/images/addprofile');
+  };
+
   self.changeStatus = function(status) {
     self.secondarycharacter.status = status;
     SecondaryCharacterService.update(self.secondarycharacter);
@@ -74,6 +79,10 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
     SecondaryCharacterService.update(self.secondarycharacter);
   };
 
+  self.showeventsfunction = function() {
+    $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/events');
+  };
+
   self.showimagesfunction = function() {
     $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/images');
   };
@@ -82,7 +91,7 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
 
     let deleteForbidden = false;
     let id = 's_' + self.secondarycharacter.$loki;
-    let chapters = ChapterService.getChapters();
+    let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
     for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
       let scenes = ChapterService.getScenes(chapters[i].$loki);
       for (let j = 0; j < scenes.length && !deleteForbidden; j++) {

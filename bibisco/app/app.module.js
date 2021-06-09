@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,12 @@ angular.module('bibiscoApp', ['ngRoute',
   'ui.select'
 ]).controller('indexController', function ($injector, $rootScope, $scope) {
 
-  let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService');
+  const ipc = require('electron').ipcRenderer;
+
+  let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService'); 
+  let LoggerService = $injector.get('LoggerService'); 
+  let ProjectService = $injector.get('ProjectService'); 
+
   $scope.theme = BibiscoPropertiesService.getProperty('theme');
 
   $rootScope.$on('SWITCH_CLASSIC_THEME', function () {
@@ -48,20 +53,21 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
 
   // global variables
+  $rootScope.actualPath = null;
   $rootScope.dirty = false;
   $rootScope.fullscreen = false;
+  $rootScope.keyDownFunction = null;
+  $rootScope.keyUpFunction = null;
+  $rootScope.partsExpansionStatus = [];
   $rootScope.previouslyFullscreen = false;
   $rootScope.previousPath = null;
-  $rootScope.actualPath = null;
+  $rootScope.projectExplorerCache = new Map();
   $rootScope.richtexteditorSearchActiveOnOpen = false;
   $rootScope.searchCasesensitiveactive = false;
   $rootScope.searchOnlyscenes = false;
   $rootScope.searchWholewordactive = false;
-  $rootScope.text2search = null;
   $rootScope.showprojectexplorer = false;
-  $rootScope.projectExplorerCache = new Map();
-  $rootScope.keyUpFunction = null;
-  $rootScope.keyDownFunction = null;
+  $rootScope.text2search = null;
   
   // location change success
   $rootScope.$on('$locationChangeSuccess', 
@@ -90,6 +96,23 @@ angular.module('bibiscoApp', ['ngRoute',
       $rootScope.keyUpFunction(event);
     }
   };
+
+  // closing application listenet
+  ipc.on('APP_CLOSING', (event) => {
+    let autoBackupOnExit = BibiscoPropertiesService.getProperty('autoBackupOnExit') === 'true';
+    let projectactive = ProjectService.getProjectInfo() ? true : false;
+    LoggerService.debug('Catched APP_CLOSING event! Auto backup on exit? ' + autoBackupOnExit + ' - Project active ? ' + projectactive);
+    
+    // if I am inside a project I make a backup
+    if (projectactive && autoBackupOnExit) {
+      ProjectService.executeBackupIfSomethingChanged(function() {
+        ipc.sendSync('closeApp');
+      });
+    } else {
+      ipc.sendSync('closeApp');
+    }
+
+  });
   
 }).config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
@@ -104,6 +127,15 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/architecture/params/:params', {
         template: '<architecture></architecture>'
       }).
+      when('/architectureitems/:id/events', {
+        template: '<architectureevents></architectureevents>'
+      }).
+      when('/architectureitems/:id/events/new', {
+        template: '<architectureevent></architectureevent>'
+      }).
+      when('/architectureitems/:id/events/:eventid', {
+        template: '<architectureevent></architectureevent>'
+      }).
       when('/architectureitems/:id/:mode', {
         template: '<architecturedetail></architecturedetail>'
       }).
@@ -114,6 +146,12 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<chapters></chapters>'
       }).
       when('/chapters/new', {
+        template: '<chaptertitle></chaptertitle>'
+      }).
+      when('/chapters/new/epilogue', {
+        template: '<chaptertitle></chaptertitle>'
+      }).
+      when('/chapters/new/prologue', {
         template: '<chaptertitle></chaptertitle>'
       }).
       when('/chapters/:id', {
@@ -200,11 +238,23 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/locations/params/:params', {
         template: '<locations></locations>'
       }).
+      when('/locations/:id/events', {
+        template: '<locationevents></locationevents>'
+      }).
+      when('/locations/:id/events/new', {
+        template: '<locationevent></locationevent>'
+      }).
+      when('/locations/:id/events/:eventid', {
+        template: '<locationevent></locationevent>'
+      }).
       when('/locations/new', {
         template: '<locationtitle></locationtitle>'
       }).
       when('/locations/:id/images', {
         template: '<locationimages></locationimages>'
+      }).
+      when('/locations/:id/images/addprofile', {
+        template: '<locationaddimage></locationaddimage>'
       }).
       when('/locations/:id/images/new', {
         template: '<locationaddimage></locationaddimage>'
@@ -227,6 +277,15 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id/params/:params', {
         template: '<maincharacterdetail></maincharacterdetail>'
       }).
+      when('/maincharacters/:id/events', {
+        template: '<maincharacterevents></maincharacterevents>'
+      }).
+      when('/maincharacters/:id/events/new', {
+        template: '<maincharacterevent></maincharacterevent>'
+      }).
+      when('/maincharacters/:id/events/:eventid', {
+        template: '<maincharacterevent></maincharacterevent>'
+      }).
       when('/maincharacters/:id/infowithoutquestion/:info/:mode', {
         template: '<maincharacterinfowithoutquestion></maincharacterinfowithoutquestion>'
       }).
@@ -239,11 +298,35 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id/images', {
         template: '<maincharacterimages></maincharacterimages>'
       }).
+      when('/maincharacters/:id/images/addprofile', {
+        template: '<maincharacteraddimage></maincharacteraddimage>'
+      }).
       when('/maincharacters/:id/images/new', {
         template: '<maincharacteraddimage></maincharacteraddimage>'
       }).
       when('/maincharacters/:id/title', {
         template: '<maincharactertitle></maincharactertitle>'
+      }).
+      when('/notes', {
+        template: '<notes></notes>'
+      }).
+      when('/notes/params/:params', {
+        template: '<notes></notes>'
+      }).
+      when('/notes/new', {
+        template: '<notetitle></notetitle>'
+      }).
+      when('/notes/:id/images', {
+        template: '<noteimages></noteimages>'
+      }).
+      when('/notes/:id/images/new', {
+        template: '<noteaddimage></noteaddimage>'
+      }).
+      when('/notes/:id/title', {
+        template: '<notetitle></notetitle>'
+      }).
+      when('/notes/:id/:mode', {
+        template: '<notedetail></notedetail>'
       }).
       when('/objects', {
         template: '<objects></objects>'
@@ -254,8 +337,20 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/objects/new', {
         template: '<itemtitle></itemtitle>'
       }).
+      when('/objects/:id/events', {
+        template: '<objectevents></objectevents>'
+      }).
+      when('/objects/:id/events/new', {
+        template: '<objectevent></objectevent>'
+      }).
+      when('/objects/:id/events/:eventid', {
+        template: '<objectevent></objectevent>'
+      }).
       when('/objects/:id/images', {
         template: '<itemimages></itemimages>'
+      }).
+      when('/objects/:id/images/addprofile', {
+        template: '<itemaddimage></itemaddimage>'
       }).
       when('/objects/:id/images/new', {
         template: '<itemaddimage></itemaddimage>'
@@ -268,6 +363,12 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/openproject', {
         template: '<openproject></openproject>'
+      }).
+      when('/parts/new', {
+        template: '<parttitle></parttitle>'
+      }).
+      when('/parts/:id', {
+        template: '<parttitle></parttitle>'
       }).
       when('/tips', {
         template: '<tips></tips>'
@@ -299,8 +400,20 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/secondarycharacters/new', {
         template: '<secondarycharactertitle></secondarycharactertitle>'
       }).
+      when('/secondarycharacters/:id/events', {
+        template: '<secondarycharacterevents></secondarycharacterevents>'
+      }).
+      when('/secondarycharacters/:id/events/new', {
+        template: '<secondarycharacterevent></secondarycharacterevent>'
+      }).
+      when('/secondarycharacters/:id/events/:eventid', {
+        template: '<secondarycharacterevent></secondarycharacterevent>'
+      }).
       when('/secondarycharacters/:id/images', {
         template: '<secondarycharacterimages></secondarycharacterimages>'
+      }).
+      when('/secondarycharacters/:id/images/addprofile', {
+        template: '<secondarycharacteraddimage></secondarycharacteraddimage>'
       }).
       when('/secondarycharacters/:id/images/new', {
         template: '<secondarycharacteraddimage></secondarycharacteraddimage>'
@@ -343,7 +456,7 @@ angular.module('bibiscoApp', ['ngRoute',
         suffix: '.json' // suffix, currently- extension of the translations
       })
       .registerAvailableLanguageKeys(['cs', 'de', 'en', 'en-us',
-        'es', 'fr', 'it', 'nl', 'pl', 'pt-br', 'pt-pt', 'ru', 'sr', 'tr'
+        'es', 'fr', 'it', 'nl', 'pl', 'pt-br', 'pt-pt', 'ru', 'sl', 'sr', 'tr'
       ], {
         'cs': 'cs',
         'de': 'de',
@@ -363,6 +476,7 @@ angular.module('bibiscoApp', ['ngRoute',
         'pt-pt': 'pt-pt',
         'pt_PT': 'pt-pt',
         'ru': 'ru',
+        'sl': 'sl',
         'sr': 'sr',
         'tr': 'tr',
         '*': 'en'

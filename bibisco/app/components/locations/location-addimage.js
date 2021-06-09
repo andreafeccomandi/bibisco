@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: LocationAddImageController
   });
 
-function LocationAddImageController($routeParams, LocationService) {
+function LocationAddImageController($location, $routeParams, 
+  BibiscoPropertiesService, LocationService, PopupBoxesService) {
 
   var self = this;
 
@@ -27,6 +28,9 @@ function LocationAddImageController($routeParams, LocationService) {
 
     let location = LocationService.getLocation($routeParams.id);
     let locationName = LocationService.calculateLocationName(location);
+
+    // addprofile mode
+    self.addprofile = $location.path().includes('addprofile');
 
     // breadcrumb
     self.breadcrumbitems = [];
@@ -38,18 +42,36 @@ function LocationAddImageController($routeParams, LocationService) {
       label: locationName,
       href: '/locations/ ' + location.$loki + '/view'
     });
-    self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images',
-      href: '/locations/ ' + location.$loki + '/images'
-    });
-    self.breadcrumbitems.push({
-      label: 'jsp.addImageForm.dialog.title'
-    });
 
-    self.exitpath = '/locations/' + $routeParams.id + '/images';
+    if (self.addprofile) {
+      self.breadcrumbitems.push({
+        label: 'add_profile_image_title'
+      });
+  
+      self.exitpath = '/locations/ ' + location.$loki + '/view';
+      self.customtitle = 'add_profile_image_title';
+    }
+    else {
+      self.breadcrumbitems.push({
+        label: 'jsp.projectFromScene.select.location.images',
+        href: '/locations/ ' + location.$loki + '/images'
+      });
+      self.breadcrumbitems.push({
+        label: 'jsp.addImageForm.dialog.title'
+      });
+  
+      self.exitpath = '/locations/' + $routeParams.id + '/images';
+      self.customtitle = null;
+    }
   };
 
   self.save = function(name, path) {
-    LocationService.addImage($routeParams.id, name, path);
+    let filename = LocationService.addImage($routeParams.id, name, path);
+    if (self.addprofile) {
+      LocationService.setProfileImage($routeParams.id, filename);
+      if (BibiscoPropertiesService.getProperty('addProfileImageTip') === 'true') {
+        PopupBoxesService.showTip('addProfileImageTip');
+      }
+    }
   };
 }

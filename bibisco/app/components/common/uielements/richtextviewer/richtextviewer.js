@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,48 @@ angular.
     templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
     controller: RichTextViewerController,
     bindings: {
-      content: '<'
+      content: '<',
+      nextelementlabel: '@',
+      nextelementlink: '<',
+      nextelementtooltip: '@?',
+      previouselementlabel: '@',
+      previouselementlink: '<',
+      previouselementtooltip: '@?',
     }
   });
 
 
-function RichTextViewerController(RichTextEditorPreferencesService) {
+function RichTextViewerController($injector, $location, RichTextEditorPreferencesService, SupporterEditionChecker) {
 
   var self = this;
   self.$onInit = function () {
+    self.isSupporterEdition = self.checkSupporterEdition();
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+  };
+
+  self.gotopreviouslement = function () {
+    if (self.isSupporterEdition) {
+      $location.path(self.previouselementlink);
+    } else {
+      SupporterEditionChecker.showSupporterMessage();
+    }
+  };
+
+  self.gotonextlement = function () {
+    if (self.isSupporterEdition) {
+      $location.path(self.nextelementlink);
+    } else {
+      SupporterEditionChecker.showSupporterMessage();
+    }
+  };
+
+  self.checkSupporterEdition = function() {
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      return true;
+    } else {
+      return false;
+    }
   };
 }

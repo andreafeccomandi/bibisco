@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@ angular.
     controller: CreateSequelController
   });
 
-function CreateSequelController($location, $rootScope, $scope,
-  ContextMenuService, LoggerService, PopupBoxesService, ProjectService, 
-  SequelService) {
+function CreateSequelController($location, $rootScope, $scope, LoggerService, 
+  PopupBoxesService, ProjectService, SequelService) {
 
   // hide menu
   $rootScope.$emit('SHOW_CREATE_SEQUEL');
@@ -38,7 +37,7 @@ function CreateSequelController($location, $rootScope, $scope,
     for (let i = 0; i < projects.length; i++) {
       let projectItem = {
         key: projects[i].id,
-        title: projects[i].name
+        title: projects[i].name,
       };
       self.selectItems.push(projectItem);
     }
@@ -55,13 +54,13 @@ function CreateSequelController($location, $rootScope, $scope,
 
   self.save = function(isValid) {
     if (isValid && !self.hasError()) {
-      let sequelProjectId = SequelService.createSequel(self.selectedItem.key, self.projectName);
-      ContextMenuService.create();
+      let sequelProjectInfo = SequelService.createSequel(self.selectedItem.key, self.projectName);
+            
       self.checkExit = {
         active: false
       };
 
-      LoggerService.info('Open project ' + sequelProjectId);
+      LoggerService.info('Open project ' + sequelProjectInfo.id);
       $location.path('/projecthome');
     }
   };

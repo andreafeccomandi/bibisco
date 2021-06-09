@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ function AnalysisCharacterDistributionController(AnalysisService) {
   self.$onInit = function () {
     let characterChapterDistribution = AnalysisService.getCharacterChapterDistribution();
     self.chapterscount = characterChapterDistribution.chapterscount;
+    self.chapterspositions = characterChapterDistribution.chapterspositions;
     self.items = characterChapterDistribution.items;
   };
 }

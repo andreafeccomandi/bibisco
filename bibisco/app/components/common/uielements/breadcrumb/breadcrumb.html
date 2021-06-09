@@ -1,4 +1,5 @@
-<ol class="breadcrumb bibiscoNotSelectableText">
+<ol class="breadcrumb bibiscoNotSelectableText" 
+  ng-class="{ 'breadcrumb-img-offset' : $ctrl.imgoffset}">
   <li ng-repeat="item in $ctrl.items track by $index" ng-class="{ 'active': $last }">
     <a ng-if="item.href && !$ctrl.linkdisabled" ng-click="$ctrl.followlink(item.href)">
       <span>{{item.label | translate}}</span>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
       href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
-      label: '#' + self.chapter.position + ' ' + self.chapter.title,
+      label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
       href: self.chapterpath
     });
     self.breadcrumbitems.push({
@@ -87,6 +87,23 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
     // saved content
     self.content = self.scenerevision.text;
+
+    let chapterscenes = ChapterService.getScenes($routeParams.chapterid);
+    
+    // previous scene
+    let previousposition = self.scene.position - 1;
+    if (previousposition > 0) {
+      self.previouselementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[previousposition-1].$loki+'/view';
+      self.previouselementtooltip='#' + previousposition + ' ' + chapterscenes[previousposition-1].title;
+    }
+
+    // next scene
+    let nextposition = self.scene.position + 1;
+    if (nextposition <= chapterscenes.length) {
+      self.nextelementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[nextposition-1].$loki+'/view';
+      self.nextelementtooltip='#' + nextposition + ' ' + chapterscenes[nextposition-1].title;
+    }
+
   };
 
   self.calculateBackPath = function() {

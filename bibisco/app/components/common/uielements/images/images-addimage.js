@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: ImagesAddImageController,
     bindings: {
       breadcrumbitems: '<',
+      customtitle: '@',
       exitpath: '<',
       savefunction: '&'
     }
@@ -38,6 +39,12 @@ function ImagesAddImageController($location, $rootScope, $scope, PopupBoxesServi
     self.checkExit = {
       active: true
     };
+
+    if (self.customtitle) {
+      self.title = self.customtitle;
+    } else {
+      self.title = 'jsp.addImageForm.dialog.title';
+    }
   };
 
   self.save = function(isValid) {

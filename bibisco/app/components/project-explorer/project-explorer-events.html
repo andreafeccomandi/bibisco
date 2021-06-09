@@ -1,0 +1,10 @@
+<div ng-if="$ctrl.timeline && $ctrl.timeline.length > 0" class="project-explorer-events">
+    <h5>{{'common_events' | translate}}</h5>
+    <ul>
+        <li ng-repeat="element in $ctrl.timeline track by $index">
+            <div ng-if="element.time && element.timegregorian"><i>{{$ctrl.getDayOfWeek(element.time)}} {{'date_format_scene_tags' | translate:{date:element.time} }}{{element.sceneyear}} {{'time_format_scene_tags'| translate:{date:element.time} }}</i></div>
+            <div ng-if="element.time && !element.timegregorian"><i>{{element.time}}</i> {{element.title}}</div>
+            <div>{{element.title}}</div>
+        </li>
+    </ul>
+</div>

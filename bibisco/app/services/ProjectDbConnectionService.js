@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
-  BibiscoPropertiesService, ContextService, FileSystemService,
-  LoggerService) {
+  BibiscoPropertiesService, FileSystemService, LoggerService) {
   'use strict';
   let fs = require('fs-extra');
   let loki = require('lokijs');
@@ -30,7 +29,14 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
         'projectsDirectory'), id);
     },
     close: function(callback) {
-      return projectdb.close(callback);
+      LoggerService.debug('ProjectDbConnectionService: close');
+      return projectdb.close(function() {
+        projectdb = null;
+        LoggerService.debug('projectdb set to null');
+        if (callback) {
+          callback();
+        }
+      });
     },
     create: function(id) {
       var projectPath = this.calculateProjectPath(id);
@@ -52,6 +58,13 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
       return this.getProjectDbConnection().load(dbName, dbPath);
     },
     saveDatabase: function(callback) {
+      LoggerService.debug('Saved database!');
+      let projectCollection = this.getProjectDb().getCollection('project');
+      if (projectCollection) {
+        let projectInfo = projectCollection.get(1);
+        projectInfo.lastsave = (new Date()).toJSON();
+        projectCollection.update(projectInfo);
+      }
       return projectdb.saveDatabase(callback);
     },
     getProjectDb: function() {
@@ -65,8 +78,8 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
         create: function (dbName, dbPath) {
           fs.mkdirSync(dbPath);
           fs.mkdirSync(dbPath + '/images');
-          var projectdbfilepath = dbPath + '/' + dbName + '.json';
-          var projectdb = new loki(projectdbfilepath, {
+          let projectdbfilepath = dbPath + '/' + dbName + '.json';
+          let projectdb = new loki(projectdbfilepath, {
             adapter: new LokiFsSyncAdapter()
           });
           projectdb.saveDatabase(function () {
@@ -78,8 +91,8 @@ angular.module('bibiscoApp').service('ProjectDbConnectionService', function(
 
         // add function to load project db
         load: function (dbName, dbPath) {
-          var projectdbfilepath = dbPath + '/' + dbName + '.json';
-          var projectdb = new loki(projectdbfilepath, {
+          let projectdbfilepath = dbPath + '/' + dbName + '.json';
+          let projectdb = new loki(projectdbfilepath, {
             adapter: new LokiFsSyncAdapter()
           });
           projectdb.loadDatabase({}, function () {

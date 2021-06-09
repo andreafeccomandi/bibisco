@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,8 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
     for (let i = 0; i < characters.length; i++) {
       items.push({
         id: characters[i].$loki,
+        image: characters[i].profileimage, 
+        noimageicon: 'user',
         position: characters[i].position,
         status: characters[i].status,
         title: characters[i].name

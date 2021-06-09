@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function OpenProjectController($location, $rootScope, $timeout, $translate, ChapterService,
-  ContextMenuService, LoggerService, PopupBoxesService, ProjectService) {
+  LoggerService, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_OPEN_PROJECT');
@@ -29,18 +29,23 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Chap
   self.$onInit = function () {
     self.confirmdialogopen = false;
     self.hotkeys = ['esc'];
-  };
-
-  self.getProjects = function() {
-    return ProjectService.getProjects();
+    self.projects = ProjectService.getProjects();
   };
 
   self.open = function(id) {
+
+    // load project
     ProjectService.load(id);
-    $location.path('/projecthome');
-    ContextMenuService.create();
+   
+    // check words written
     ChapterService.checkWordsWrittenInit();
     LoggerService.info('Open project ' + id);
+
+    // reset partsExpansionStatus
+    $rootScope.partsExpansionStatus = [];
+
+    // go to project home
+    $location.path('/projecthome');
   };
 
   self.delete = function (id, projectName) {
@@ -48,6 +53,7 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Chap
     PopupBoxesService.confirm(function () {
       $timeout(function () {
         ProjectService.delete(id);
+        self.projects = ProjectService.getProjects();
       }, 0);
     },
     message,

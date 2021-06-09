@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ angular.
       dndenabled: '<',
       dropfunction: '&',
       family: '@',
+      image: '@',
+      noimageicon: '@',
       selectfunction: '&',
       status: '<',
       text: '@',
@@ -33,4 +35,11 @@ angular.
   });
 
 
-function CardController() {}
+function CardController(FileSystemService, ImageService) {
+
+  let self = this;
+
+  self.$onInit = function () {
+    self.projectImagesDirectory = ImageService.getProjectImagesDirectoryPath() + FileSystemService.getPathSeparator();
+  };
+}

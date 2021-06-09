@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,9 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
         'jsp.locations.dialog.title.changeThumbnailTitle';
       self.exitpath = '/locations/' + location.$loki + '/view';
 
+      self.profileimageenabled = true;
+      self.profileimage = location.profileimage;
+
     } else {
 
       self.breadcrumbitems.push({
@@ -78,6 +81,8 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
 
       self.pageheadertitle = 'jsp.locations.dialog.title.createLocation';
       self.exitpath = '/locations';
+
+      self.profileimageenabled = false;
     }
 
     self.usednations = LocationService.getUsedNations();

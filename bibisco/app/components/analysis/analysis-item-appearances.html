@@ -1,0 +1,38 @@
+<div class="panel panel-default analysis-character-appearances">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$ctrl.title | translate}}</h3>
+  </div>
+  <div class="panel-body">
+    <div ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length > 0">
+      <div ng-repeat="item in $ctrl.items track by $index">
+        <h5>{{item.label}}</h5>
+        <table ng-if="item.appearances.length > 0" 
+            class="table table-responsive table-condensed table-striped table-bordered">
+          <tr>
+            <th>{{'jsp.analysisCharacterScene.th.dateTime' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.location' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.scene' | translate}}</th>
+            <th>{{'jsp.analysisCharacterScene.th.chapter' | translate}}</th>
+          </tr>
+          <tr  ng-repeat="appearance in item.appearances track by $index">
+            <td ng-if="appearance.time && appearance.timegregorian">{{'date_format_scene_tags' | translate:{date:appearance.time} }}{{$ctrl.calculateSceneYear(appearance.time)}} {{'time_format_scene_tags'| translate:{date:appearance.time} }}</td>
+            <td ng-if="appearance.time && !appearance.timegregorian">{{appearance.time}}</td>
+            <td ng-if="!appearance.time"></td>
+            <td>{{appearance.location}}</td>
+            <td>{{appearance.scenetitle}}</td>
+            <td>{{appearance.chaptertitle}}</td>
+          </tr>
+        </table>
+        <p ng-if="item.appearances.length == 0">
+          <i>{{'jsp.analysisCharacterScene.noInfoAvailable' | translate}}</i>
+        </p>
+      </div>
+    </div>
+    <p ng-if="$ctrl.chapterscount > 0 && $ctrl.items.length == 0">
+      <i>{{$ctrl.noitemsavailablelabel | translate}}</i>
+    </p>
+    <p ng-if="$ctrl.chapterscount == 0">
+      <i>{{'jsp.analysisItemsChapters.em.noChapters' | translate}}</i>
+    </p>
+  </div>
+</div>

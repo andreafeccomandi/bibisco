@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: AnalysisController
   });
 
-function AnalysisController($rootScope, $timeout, AnalysisService) {
+function AnalysisController($injector, $rootScope, $timeout, AnalysisService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -28,6 +28,14 @@ function AnalysisController($rootScope, $timeout, AnalysisService) {
     $rootScope.$emit('SHOW_PAGE', {
       item: 'analysis'
     });
+
+    // supporters check
+    self.supporterEdition = false;
+    if (SupporterEditionChecker.check()) {
+      $injector.get('IntegrityService').ok();
+      self.supporterEdition = true;
+    }
+
 
     self.loading = true;
     $timeout(function () {

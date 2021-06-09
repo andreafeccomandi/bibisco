@@ -1,9 +1,12 @@
 <div class="container">
   <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+    <breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
   </div>
   <div class="row">
-    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+    <pageheader headertitle="{{$ctrl.pageheadertitle}}"
+      noimageicon="image"
+      image="{{$ctrl.profileimage}}"
+      imageenabled="$ctrl.profileimageenabled">
     </pageheader>
   </div>
   <div class="row">

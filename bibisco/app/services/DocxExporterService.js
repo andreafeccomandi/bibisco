@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
   let fontSize = 24; // font size, measured in half-points
 
   let exportitlespacing = { before: 5500, after: 200, line: 350 };
+  let partitlespacing = { before: 5500, after: 200, line: 350 };
   let h1marginspacing = { after: 400, before: 0, line: 350 };
   let h2marginspacing1st = { after: 250, before: 0, line: 350 };
   let h2marginspacing = { after: 250, before: 250, line: 350 };
@@ -31,7 +32,7 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
   
   return {
   
-    export: function (path, html, font, indent, callback) {
+    export: function (path, html, font, indent, hcountingactive, pagebreakonh1, callback) {
 
       let currentParagraph = null;
       let boldActive = false;
@@ -72,36 +73,59 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             currentParagraph.center();
             boldActive = false;
 
+          } else if (name === 'parttitle') {
+            currentParagraph = new docx.Paragraph();
+            currentParagraph.pageBreak();
+            currentParagraph.center();
+            currentParagraph.spacing(partitlespacing);
+            boldActive = true;
+
+          } else if (name === 'prologue' || name === 'epilogue') {
+            currentParagraph = new docx.Paragraph();
+            if (pagebreakonh1) {
+              currentParagraph.pageBreak();
+            }
+            boldActive = true;
+            currentParagraph.spacing(h1marginspacing);
+
           } else if (name === 'h1') {
             h1counter += 1;
             currentParagraph = new docx.Paragraph();
-            currentParagraph.pageBreak();
+            if (pagebreakonh1) {
+              currentParagraph.pageBreak();
+            }
             boldActive = true;
-            let currentText = new docx.TextRun(h1counter + ' ');
-            currentText.size(fontSize);
-            currentText.font(font);
-            currentText.bold();
-            currentParagraph.addRun(currentText);
+            if (hcountingactive) {
+              let currentText = new docx.TextRun(h1counter + ' ');
+              currentText.size(fontSize);
+              currentText.font(font);
+              currentText.bold();
+              currentParagraph.addRun(currentText);
+            }
             currentParagraph.spacing(h1marginspacing);
 
           } else if (name === 'h2') {
             h2counter += 1;
             currentParagraph = new docx.Paragraph();
             italicsActive = true;
-            let currentText = new docx.TextRun(h1counter + '.' + h2counter + ' ');
-            currentText.size(fontSize);
-            currentText.font(font);
-            currentText.italic();
-            currentParagraph.addRun(currentText);
+            if (hcountingactive) {
+              let currentText = new docx.TextRun(h1counter + '.' + h2counter + ' ');
+              currentText.size(fontSize);
+              currentText.font(font);
+              currentText.italic();
+              currentParagraph.addRun(currentText);
+            } 
             currentParagraph.spacing(h2counter ===1 ? h2marginspacing1st : h2marginspacing);
 
           } else if (name === 'h3') {
             h3counter += 1;
             currentParagraph = new docx.Paragraph();
-            let currentText = new docx.TextRun(h1counter + '.' + h2counter + '.' + h3counter + ' ');
-            currentText.size(fontSize);
-            currentText.font(font);
-            currentParagraph.addRun(currentText);
+            if (hcountingactive) {
+              let currentText = new docx.TextRun(h1counter + '.' + h2counter + '.' + h3counter + ' ');
+              currentText.size(fontSize);
+              currentText.font(font);
+              currentParagraph.addRun(currentText);
+            }
             currentParagraph.spacing(h3counter === 1 ? h3marginspacing1st : h3marginspacing);
 
           } else if (name === 'question') {
@@ -183,7 +207,12 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
 
         onclosetag: function (name) {
 
-          if (name === 'exporttitle' || name === 'exportauthor' || name === 'exportsubtitle') {
+          if (name === 'exporttitle' || name === 'exportauthor' || name === 'exportsubtitle' || name === 'parttitle') {
+            doc.addParagraph(currentParagraph);
+            currentParagraph = null;
+            boldActive = false;
+
+          } else if (name === 'prologue' || name === 'epilogue') {
             doc.addParagraph(currentParagraph);
             currentParagraph = null;
             boldActive = false;

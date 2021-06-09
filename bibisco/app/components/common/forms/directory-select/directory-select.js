@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/forms/directory-select/directory-select.html',
     controller: DirectorySelectController,
     bindings: {
+      customerrormessage: '<?',
       model: '=',
       field: '<',
       name: '@',
@@ -33,7 +34,6 @@ function DirectorySelectController(MainProcessCallbackExecutorService) {
   const ipc = require('electron').ipcRenderer;
   var self = this;
 
-  self.projectsdirectory = null;
   self.opendirectorydialog = function() {
     let callbackId = MainProcessCallbackExecutorService.register(self.onselectdirectory);
     ipc.send('selectdirectory', {

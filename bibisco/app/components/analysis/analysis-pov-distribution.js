@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ function AnalysisPovDistributionController(AnalysisService) {
   self.$onInit = function () {
     let povChapterDistribution = AnalysisService.getPointOfViewChapterDistribution();
     self.chapterscount = povChapterDistribution.chapterscount;
+    self.chapterspositions = povChapterDistribution.chapterspositions;
     self.items = povChapterDistribution.items;
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/forms/button-group-field/button-group-field.html',
     controller: ButtonGroupField,
     bindings: {
+      form: '<',
       group: '<',
       inputcols: '@',
       label: '@',
@@ -33,5 +34,8 @@ function ButtonGroupField() {
 
   self.change = function(value) {
     self.model = value;
+    if (self.form) {
+      self.form.$setDirty();
+    }
   };
 }

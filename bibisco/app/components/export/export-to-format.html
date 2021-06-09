@@ -13,22 +13,37 @@
           <textinputfield ng-if="$ctrl.exportAuthor" field="exportToFormatForm.author" model="$ctrl.author"
             name="author" autofocus required="true" label="Author" labelcols="3" inputcols="8">
           </textinputfield>
-         <div class="form-group">
-          <label class="col-sm-3 control-label" 
+          <div ng-if="$ctrl.showExportFilter" class="form-group">
+            <label class="col-sm-3 control-label" 
+              for="exportpath">{{'export_filter' | translate}}</label>
+            <div class="col-sm-8">
+              <ui-select ng-model="$ctrl.exportFilter" on-select="$ctrl.selectItem($select.selected.id)">
+                <ui-select-match placeholder="{{'common_select_or_search' | translate}}...">
+                  <span class="project-explorer-select">{{$select.selected.name}}</span>
+                </ui-select-match>
+                <ui-select-choices group-by="'family'" 
+                  repeat="item in $ctrl.items | filter: $select.search">
+                  <span ng-bind-html="item.name | highlight: $select.search"></span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" 
             for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
-          <div class="col-sm-8">
-            <directoryselect model='$ctrl.exportpath' 
+            <div class="col-sm-8">
+              <directoryselect model='$ctrl.exportpath' 
               field='exportToFormatForm.exportpath' 
               name='exportpath' 
               placeholder='jsp.export.dialog.exportProjectDirectory.label'
               onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
               forbiddendirectory='$ctrl.forbiddenDirectory' required>
-            </directoryselect>
+              </directoryselect>
+            </div>
           </div>
-        </div>
 
         <formbuttons backpath="$ctrl.backpath" form="exportToFormatForm" 
-          saving="$ctrl.saving" offsetcols="1" sizecols="8">
+          saving="$ctrl.saving" offsetcols="3" sizecols="8">
         </formbuttons>
     </div>
     </form>

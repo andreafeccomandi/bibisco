@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -66,6 +66,8 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
 
     self.characters;
     self.words;
+
+    self.calculatePreviousNextElements(self.type);
   };
 
   self.edit = function () {
@@ -97,4 +99,44 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams,
     self.maincharacter[self.type].status = status;
     MainCharacterService.update(self.maincharacter);
   };
+
+  self.calculatePreviousNextElements = function (type) {
+    switch(type) {
+    case 'personaldata':
+      self.nextelementlabel = 'common_physionomy';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/view';
+      break;
+    case 'physionomy':
+      self.nextelementlabel = 'common_behaviors';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/view';
+      self.previouselementlabel  = 'common_personaldata';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/personaldata/view';
+      break;
+    case 'behaviors':
+      self.nextelementlabel = 'common_psychology';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/view';
+      self.previouselementlabel  = 'common_physionomy';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/view';
+      break;
+    case 'psychology':
+      self.nextelementlabel = 'common_ideas';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/view';
+      self.previouselementlabel  = 'common_behaviors';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/view';
+      break;
+    case 'ideas':
+      self.nextelementlabel = 'common_sociology';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/view';
+      self.previouselementlabel  = 'common_psychology';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/view';
+      break;
+    case 'sociology':
+      self.nextelementlabel = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      self.previouselementlabel  = 'common_ideas';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/view';
+      break;
+    }
+  };
+
 }

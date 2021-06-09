@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ function StrandDetailController($location, $rootScope, $routeParams,
 
     let deleteForbidden = false;
     let id = self.strand.$loki;
-    let chapters = ChapterService.getChapters();
+    let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
     for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
       let scenes = ChapterService.getScenes(chapters[i].$loki);
       for (let j = 0; j < scenes.length && !deleteForbidden; j++) {

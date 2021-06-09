@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,13 @@ angular.
     controller: AnalysisCharacterAppearancesController
   });
 
-function AnalysisCharacterAppearancesController(AnalysisService, DatetimeService) {
+function AnalysisCharacterAppearancesController(AnalysisService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {
     let charactersListOfAppearance = AnalysisService.getCharactersListOfAppearance();
     self.chapterscount = charactersListOfAppearance.chapterscount;
     self.items = charactersListOfAppearance.items;
-  };
-
-  self.calculateSceneYear = function (datetime) {
-    return DatetimeService.calculateSceneYear(datetime);
   };
 }

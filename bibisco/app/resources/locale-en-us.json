@@ -4,5 +4,7 @@
   "date_format_scene_tags": "{{date|date:'MM/dd/'}}",
   "date_format_moment": "MM/DD/YYYY",
   "year_bc_scene_tags": "B.C",
-  "time_format_scene_tags": "{{date|date:'h:mm a'}}"
+  "time_format_scene_tags": "{{date|date:'h:mm a'}}",
+  "date_format_export_timeline": "MM/DD/",
+  "time_format_export_timeline": "h:mm a"
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,19 @@ angular.
     bindings: {
       characters: '=',
       maincharacter: '<',
+      nextelementlabel: '@',
+      nextelementlink: '<',
+      nextelementtooltip: '@?',
+      previouselementlabel: '@',
+      previouselementlink: '<',
+      previouselementtooltip: '@?',
       type: '<',
       words: '='
     }
   });
 
 
-function InterviewViewerController(MainCharacterService, RichTextEditorPreferencesService) {
+function InterviewViewerController(RichTextEditorPreferencesService) {
 
   var self = this;
 

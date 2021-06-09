@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -83,6 +83,10 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     return MainCharacterService.getMainCharacter(id);
   };
 
+  self.showeventsfunction = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/events');
+  };
+
   self.showimagesfunction = function() {
     $location.path('/maincharacters/' + self.maincharacter.$loki + '/images');
   };
@@ -101,7 +105,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
     let deleteForbidden = false;
     let id = 'm_' + self.maincharacter.$loki;
-    let chapters = ChapterService.getChapters();
+    let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
     for (let i = 0; i < chapters.length && !deleteForbidden; i++) {
       let scenes = ChapterService.getScenes(chapters[i].$loki);
       for (let j = 0; j < scenes.length && !deleteForbidden; j++) {
@@ -116,5 +120,9 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     }
 
     return deleteForbidden;
+  };
+
+  self.addprofileimage = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images/addprofile');
   };
 }

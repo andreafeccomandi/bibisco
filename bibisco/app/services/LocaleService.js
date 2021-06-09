@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 angular.module('bibiscoApp').service('LocaleService', function($translate,
   $rootScope, tmhDynamicLocale, LoggerService, BibiscoPropertiesService) {
   'use strict';
+
+  const ipc = require('electron').ipcRenderer;
 
   // get preferredLanguage from bibiscodb
   var currentLocale = BibiscoPropertiesService.getProperty('locale');
@@ -35,7 +37,23 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
   // EVENTS
   // on successful applying translations by angular-translate
   $rootScope.$on('$translateChangeSuccess', function(event, data) {
-    document.documentElement.setAttribute('lang', data.language); // sets "lang" attribute to html
+    
+    // sets "lang" attribute to html
+    document.documentElement.setAttribute('lang', data.language); 
+
+    // context menu translations
+    let translations = $translate.instant([
+      'context_menu_add_dictionary',
+      'context_menu_copy',
+      'context_menu_cut',
+      'context_menu_paste'
+    ]);
+    ipc.send('setContextMenuStringTable', {
+      addToDictionary: translations.context_menu_add_dictionary,
+      cut: translations.context_menu_cut,
+      copy: translations.context_menu_copy,
+      paste: translations.context_menu_paste
+    });
   });
 
   return {
@@ -68,10 +86,11 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'pt-br': 'Português (Brasil)',
         'pt-pt': 'Português (Portugal)',
         'ru': 'Русский',
+        'sl': 'Slovenski jezik',
         'sr': 'Srpski',
         'tr': 'Türkçe'
       };
-    }
+    }     
   };
 });
 
@@ -97,6 +116,8 @@ function calculatePreferredLocale(preferredLanguage, LoggerService) {
     preferredLocale = 'pl';
   } else if (preferredLanguage.startsWith('ru')) {
     preferredLocale = 'ru';
+  }  else if (preferredLanguage.startsWith('sl')) {
+    preferredLocale = 'sl';
   } else if (preferredLanguage.startsWith('sr')) {
     preferredLocale = 'sr';
   } else if (preferredLanguage.startsWith('tr')) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('LocationService', function(
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, UuidService
 ) {
   'use strict';
 
@@ -32,6 +32,8 @@ angular.module('bibiscoApp').service('LocationService', function(
       });
       location.images = images;
       CollectionUtilService.update(this.getCollection(), location);
+
+      return filename;
     },
     calculateLocationName: function(location) {
 
@@ -90,6 +92,12 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
       images.splice(imageToRemovePosition, 1);
       location.images = images;
+
+      // delete profile image reference
+      if (location.profileimage === filename) {
+        location.profileimage = null;
+      }
+
       CollectionUtilService.update(this.getCollection(), location);
 
       return location;
@@ -113,7 +121,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
     },
     getLocationsCount: function() {
-      return this.getCollection().count();
+      return this.getDynamicView().count();
     },
     getLocations: function() {
       return this.getDynamicView().data();
@@ -186,6 +194,14 @@ angular.module('bibiscoApp').service('LocationService', function(
 
       // delete location
       CollectionUtilService.remove(this.getCollection(), id);
+    },
+    setProfileImage: function (id, filename) {
+      LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
+        + id + ' in locations');
+
+      let location = this.getLocation(id);
+      location.profileimage = filename;
+      CollectionUtilService.update(this.getCollection(), location);
     },
     update: function(location) {
       CollectionUtilService.update(this.getCollection(), location);

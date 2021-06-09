@@ -128,7 +128,7 @@
   class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
   <form class="form-inline">
       
-      <div class="form-group">
+      <div class="form-group" ng-keypress="$event.which === 13 && $ctrl.nextMatchByEnter($event)">
         <div class="input-group">
           <span class="input-group-btn">
             <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"

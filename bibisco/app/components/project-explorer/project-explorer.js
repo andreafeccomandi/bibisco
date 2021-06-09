@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,14 @@ angular.
     controller: ProjectExplorerController
   });
 
-function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $translate, 
+function ProjectExplorerController($injector, $rootScope, $translate, 
   ArchitectureService, ChapterService, LocationService, MainCharacterService, 
   SecondaryCharacterService, SupporterEditionChecker, StrandService) {
   
-  var self = this;
-  var ObjectService = null;
+  let self = this;
+  let ObjectService = null;
+  let NoteService = null;
+  let TimelineService = null;
 
   self.$onInit = function () {
 
@@ -72,6 +74,9 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
 
     // Objects
     self.items.push.apply(self.items, self.getObjectsFamily());
+
+    // Notes
+    self.items.push.apply(self.items, self.getNotesFamily());
 
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
@@ -165,7 +170,7 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
 
     // sort by name
     charactersfamily.sort(function (a, b) {
-      return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
     });
 
     return charactersfamily;
@@ -188,6 +193,11 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       });
     }
 
+    // sort by name
+    locationsfamily.sort(function (a, b) {
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
+    });
+
     return locationsfamily;
   };
 
@@ -208,7 +218,37 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       }
     }
 
+    // sort by name
+    objectsfamily.sort(function (a, b) {
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
+    });
+
     return objectsfamily;
+  };
+
+  self.getNotesFamily = function () {
+
+    let notesfamily = [];
+    if (SupporterEditionChecker.check()) {
+      let family = self.translations.common_notes_title;
+      let notes = self.getNoteService().getNotes();
+      for (let i = 0; i < notes.length; i++) {
+        notesfamily.push({
+          itemid: 'note_' + notes[i].$loki,
+          id: notes[i].$loki,
+          name: notes[i].name,
+          family: family,
+          selectfunction: self.showNote
+        });
+      }
+    }
+
+    // sort by name
+    notesfamily.sort(function (a, b) {
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
+    });
+
+    return notesfamily;
   };
 
   self.getChaptersFamily = function () {
@@ -216,12 +256,12 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     let chaptersfamily = [];
     let family = self.translations.common_chapters;
 
-    let chapters = ChapterService.getChapters();
+    let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
     for (let i = 0; i < chapters.length; i++) {
       chaptersfamily.push({
         itemid: 'chapter_' + chapters[i].$loki,
         id: chapters[i].$loki,
-        name: '#' + chapters[i].position + ' ' + chapters[i].title,
+        name: ChapterService.getChapterPositionDescription(chapters[i].position) + ' ' + chapters[i].title,
         family: family,
         selectfunction: self.showChapter
       });
@@ -240,6 +280,7 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     self.sectiontitle = 'jsp.architecture.thumbnail.premise.title';
     self.text = ArchitectureService.getPremise().text;
     self.images = null;
+    self.timeline = null;
     self.type = 'simpletext';
     self.path = '/architectureitems/premise/edit';
   };
@@ -248,6 +289,7 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     self.sectiontitle = 'jsp.architecture.thumbnail.fabula.title';   
     self.text = ArchitectureService.getFabula().text;
     self.images = null;
+    self.timeline = null;
     self.type = 'simpletext';
     self.path = '/architectureitems/fabula/edit';
   };
@@ -256,6 +298,11 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     self.sectiontitle = 'jsp.architecture.thumbnail.setting.title';
     self.text = ArchitectureService.getSetting().text;
     self.images = null;
+    if (SupporterEditionChecker.check()) {
+      self.timeline = self.getTimelineService().getTimeline({type: 'architecture', id: 'setting'});
+    } else {
+      self.timeline = null;
+    }
     self.type = 'simpletext';
     self.path = '/architectureitems/setting/edit';
   };
@@ -265,6 +312,7 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       self.sectiontitle = 'common_notes_title';
       self.text = ArchitectureService.getGlobalNotes().text;
       self.images = null;
+      self.timeline = null;
       self.type = 'simpletext';
       self.path = '/architectureitems/globalnotes/edit';
     }
@@ -277,6 +325,11 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
 
   self.showMainCharacter = function (id) {
     self.maincharacter = MainCharacterService.getMainCharacter(id);
+    if (SupporterEditionChecker.check()) {
+      self.timeline = self.getTimelineService().getTimeline({type: 'maincharacter', id: id});
+    } else {
+      self.timeline = null;
+    }
     self.type = 'maincharacter';
   };
 
@@ -285,6 +338,11 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     self.sectiontitle = secondarycharacter.name;
     self.text = secondarycharacter.description;
     self.images = secondarycharacter.images;
+    if (SupporterEditionChecker.check()) {
+      self.timeline = self.getTimelineService().getTimeline({type: 'secondarycharacter', id: id});
+    } else {
+      self.timeline = null;
+    }
     self.type = 'simpletext';
     self.path = '/secondarycharacters/'+id+'/edit';
   };
@@ -294,6 +352,11 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
     self.sectiontitle = LocationService.calculateLocationName(location);
     self.text = location.description;
     self.images = location.images;
+    if (SupporterEditionChecker.check()) {
+      self.timeline = self.getTimelineService().getTimeline({type: 'location', id: id});
+    } else {
+      self.timeline = null;
+    }
     self.type = 'simpletext';
     self.path = '/locations/' + id + '/edit';
   };
@@ -304,8 +367,20 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
       self.sectiontitle = object.name;
       self.text = object.description;
       self.images = object.images;
+      self.timeline = self.getTimelineService().getTimeline({type: 'object', id: id});
       self.type = 'simpletext';
       self.path = '/objects/' + id + '/edit';
+    }
+  };
+
+  self.showNote = function (id) {
+    if (SupporterEditionChecker.check()) {
+      let note = self.getNoteService().getNote(id);
+      self.sectiontitle = note.name;
+      self.text = note.description;
+      self.images = note.images;
+      self.type = 'simpletext';
+      self.path = '/notes/' + id + '/edit';
     }
   };
 
@@ -317,10 +392,25 @@ function ProjectExplorerController($injector, $rootScope, $scope, $timeout, $tra
 
   self.getObjectService = function () {
     if (!ObjectService) {
-      $injector.get('IntegrityService').ok();
       ObjectService = $injector.get('ObjectService');
     }
 
     return ObjectService;
+  };
+
+  self.getNoteService = function () {
+    if (!NoteService) {
+      NoteService = $injector.get('NoteService');
+    }
+
+    return NoteService;
+  };
+
+  self.getTimelineService = function () {
+    if (!TimelineService) {
+      TimelineService = $injector.get('TimelineService');
+    }
+
+    return TimelineService;
   };
 }

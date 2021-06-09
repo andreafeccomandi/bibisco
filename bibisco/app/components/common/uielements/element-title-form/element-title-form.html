@@ -1,8 +1,10 @@
 <div class="row">
-  <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+  <breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
 </div>
 <div class="row">
-  <pageheader headertitle="{{$ctrl.pageheadertitle}}">
+  <pageheader headertitle="{{$ctrl.pageheadertitle}}" image="{{$ctrl.profileimage}}" 
+  imageenabled="$ctrl.profileimageenabled" 
+  noimageicon="{{$ctrl.noprofileimageicon}}">
   </pageheader>
 </div>
 <div class="row top15">

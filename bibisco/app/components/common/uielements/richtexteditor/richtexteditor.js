@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ function RichTextEditorController($document, $injector, $rootScope,
   PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
   RichTextEditorPreferencesService, WordCharacterCountService) {
 
-  var self = this;
-  var electron = require('electron');
+  let self = this;
+  const ipc = require('electron').ipcRenderer;
   var SearchService = null;
 
   self.$onInit = function() {
@@ -117,8 +117,19 @@ function RichTextEditorController($document, $injector, $rootScope,
       self.currentmatch = 0;
     });
 
+    // register replace misspelling listener
+    self.replaceMisspellingListener = function(event){
+      $rootScope.dirty = true;
+      $scope.$apply();
+    };
+    ipc.on('REPLACE_MISSPELLING', self.replaceMisspellingListener);
+
     // notify 
     $rootScope.$emit('OPEN_RICH_TEXT_EDITOR');
+  };
+
+  self.$onDestroy = function () {
+    ipc.removeListener('REPLACE_MISSPELLING', self.replaceMisspellingListener);
   };
 
   self.manageSearchOnOpen = function () {
@@ -157,11 +168,6 @@ function RichTextEditorController($document, $injector, $rootScope,
 
   $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {
     self.focus();
-  });
-
-  $rootScope.$on('REPLACE_MISSPELLING', function () {
-    $rootScope.dirty = true;
-    $scope.$apply();
   });
 
   $rootScope.$on('OPEN_POPUP_BOX', function () {
@@ -319,7 +325,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+d', 'command+d'],
+      combo: ['ctrl+d', 'command+l'],
       description: 'fullscreen',
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
@@ -610,11 +616,12 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.supporterEditionFilterAction(function () {
       $rootScope.fullscreen = true;
       $timeout(function () {
-        var window = electron.remote.getCurrentWindow();
-        if (window.isFullScreen()) {
+        let isFullScreenEnabled = ipc.sendSync('isFullScreenEnabled');
+        console.log('isFullScreenEnabled='+isFullScreenEnabled);
+        if (isFullScreenEnabled) {
           $rootScope.previouslyFullscreen = true;
         } else {
-          window.setFullScreen(true);
+          ipc.send('enableFullScreen');
           $rootScope.previouslyFullscreen = false;
         }
         self.exitfullscreenmessage = true;
@@ -926,5 +933,10 @@ function RichTextEditorController($document, $injector, $rootScope,
     }
 
     return SearchService;
+  };
+
+  self.nextMatchByEnter = function(event) {
+    event.preventDefault();
+    self.nextMatch();
   };
 }

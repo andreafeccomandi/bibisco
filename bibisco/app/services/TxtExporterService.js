@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
 
   return {
 
-    export: function (path, html, font, indent, callback) {
+    export: function (path, html, font, indent, hcountingactive, pagebreakonh1, callback) {
 
       let content = '';
       
@@ -57,15 +57,25 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
             currentText = '';
           } else if (name === 'exportsubtitle') {
             currentText = '';
+          } else if (name === 'parttitle') {
+            currentText = '';
+          } else if (name === 'prologue' || name === 'epilogue') {
+            currentText += '';
           } else if (name === 'h1') {
-            h1counter += 1;            
-            currentText += h1counter+' ';
+            h1counter += 1;     
+            if (hcountingactive) {
+              currentText += h1counter+' ';
+            }     
           } else if (name === 'h2') {
             h2counter += 1;
-            currentText += h1counter + '.' + h2counter + ' ';
+            if (hcountingactive) {
+              currentText += h1counter + '.' + h2counter + ' ';
+            }
           } else if (name === 'h3') {
             h3counter += 1;
-            currentText += h1counter + '.' + h2counter + '.' + h3counter + ' ';
+            if (hcountingactive) {
+              currentText += h1counter + '.' + h2counter + '.' + h3counter + ' ';
+            }
           } else if (name === 'question') {
             currentText = '';
           } else if ( name === 'ol' ) {
@@ -96,16 +106,19 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
             } 
             content += '\n';
             currentText = '';
+          } else if (name === 'parttitle') {
+            content += currentText.toUpperCase() + '\n';
+            currentText = '';
+          } else if (name === 'prologue' || name === 'epilogue') {
+            content += currentText.toUpperCase() + '\n';
+            currentText = '';
           } else if (name === 'h1') {
             content += currentText.toUpperCase() + '\n';
             currentText = '';
             h2counter = 0;
           } else if (name === 'h2') {
             content += currentText.toUpperCase() + '\n';
-            
-            
             currentText = '';
-            
             h3counter = 0;
           } else if (name === 'h3') {
             content += currentText.toUpperCase() + '\n';
@@ -121,13 +134,10 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
           } else if (name === 'li') {
             
             if (listType === 'ol') {
-              if (listCounter === 0) {
-                firstLine = '\n';
-              }
               listCounter += 1;
-              content += firstLine + '  ' + listCounter + '. ' + currentText + '\n';
+              content += listCounter + '. ' + currentText + '\n';
             } else {
-              content += firstLine + '  -  ' + currentText + '\n';
+              content += '-  ' + currentText + '\n';
             }
             currentText = '';
             firstLine = '';
@@ -147,8 +157,8 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
         },
 
         onend: function() {
+          content = content.replace(/  +/g, ' ');
           wrappedContent = wrap(content, {width: wrapValue, indent: indent});
-          
           FileSystemService.writeFileSync(path + '.txt', wrappedContent);
           
           if (callback) {

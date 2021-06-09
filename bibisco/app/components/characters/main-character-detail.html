@@ -1,5 +1,10 @@
 <detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="false" 
   headertitle="{{$ctrl.maincharacter.name}}" 
+  image="{{$ctrl.maincharacter.profileimage}}"
+  imageaddenabled="true"
+  imageenabled="true"
+  imagefunction="$ctrl.addprofileimage()"
+  noimageicon="user"
   taskstatus="$ctrl.maincharacter.status" 
   taskstatusreadonly="true">
 </detailheader>
@@ -20,6 +25,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="id-card-o"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.personaldata.description"
           status="$ctrl.maincharacter.personaldata.status"></card>
@@ -28,6 +34,7 @@
         <card cardid="'physionomy'" cardtitle="common_physionomy"
           dimension="normal"
           dndenabled="false"
+          noimageicon="signing"
           family="maincharactersdetails"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.physionomy.description"
@@ -38,6 +45,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="comments-o"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.behaviors.description"
           status="$ctrl.maincharacter.behaviors.status"></card>
@@ -57,6 +65,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="cogs"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.psychology.description"
           status="$ctrl.maincharacter.psychology.status"></card>
@@ -66,6 +75,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="flag-o"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.ideas.description"
           status="$ctrl.maincharacter.ideas.status"></card>
@@ -75,6 +85,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="users"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.sociology.description"
           status="$ctrl.maincharacter.sociology.status"></card>
@@ -83,6 +94,7 @@
         <card cardid="'lifebeforestorybeginning'" cardtitle="jsp.character.thumbnail.lifebeforestorybeginning.title"
           dimension="normal"
           dndenabled="false"
+          noimageicon="history"
           family="maincharactersdetails"
           selectfunction="$ctrl.showInfoWithoutQuestion(id)"
           text="jsp.character.thumbnail.lifebeforestorybeginning.description"
@@ -100,6 +112,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="users"
           selectfunction="$ctrl.showInfoWithQuestion(id)"
           text="jsp.character.thumbnail.sociology.description"
           status="$ctrl.maincharacter.sociology.status"></card>
@@ -109,6 +122,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="history"
           selectfunction="$ctrl.showInfoWithoutQuestion(id)"
           text="jsp.character.thumbnail.lifebeforestorybeginning.description"
           status="$ctrl.maincharacter.lifebeforestorybeginning.status"></card>
@@ -125,6 +139,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="fire"
           selectfunction="$ctrl.showInfoWithoutQuestion(id)"
           text="jsp.character.thumbnail.conflict.description"
           status="$ctrl.maincharacter.conflict.status"></card>
@@ -134,6 +149,7 @@
           dimension="normal"
           dndenabled="false"
           family="maincharactersdetails"
+          noimageicon="refresh"
           selectfunction="$ctrl.showInfoWithoutQuestion(id)"
           text="jsp.character.thumbnail.evolutionduringthestory.description"
           status="$ctrl.maincharacter.evolutionduringthestory.status"></card>
@@ -147,7 +163,11 @@
   autosaveenabled="false" 
   backpath="$ctrl.backpath"
   editmode="false" 
+  eventname="SHOW_ELEMENT_DETAIL"
+  eventsenabled="true"
   imagesenabled="true" 
+  showeventsfunction="$ctrl.showeventsfunction()"
+  showeventslabel="{{'character_events_tooltip'+$root.os}}"
   showimagesfunction="$ctrl.showimagesfunction()" 
   showimageslabel="{{'character_images_tooltip'+$root.os}}"
   showprojectexplorer="false" 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
     });
 
     self.breadcrumbitems.push({
-      label: '#' + self.sourceChapter.position + ' ' + self.sourceChapter.title,
+      label: ChapterService.getChapterPositionDescription(self.sourceChapter.position) + ' ' + self.sourceChapter.title,
       href: '/chapters/' + self.sourceChapter.$loki + '/params/focus=scenes_' + self.scene.$loki
     });
 
@@ -55,13 +55,13 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
       label: 'jsp.scene.button.moveSceneToAnotherChapter.title'
     });
 
-    let chapters = ChapterService.getChapters();
+    let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
     self.selectedItem;
     self.selectItems = [];
     for (let i = 0; i < chapters.length; i++) {
       let chapterItem = {
         key: chapters[i].$loki,
-        title: '#' + chapters[i].position + ' ' + chapters[i].title
+        title: ChapterService.getChapterPositionDescription(chapters[i].position) + ' ' + chapters[i].title
       };
       self.selectItems.push(chapterItem);
       if (self.sourceChapter.$loki === chapters[i].$loki) {

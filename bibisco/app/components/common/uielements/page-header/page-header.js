@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,13 @@ angular.
       characters: '<',
       dropdownitems: '<',
       dropdownopen: '@',
+      image: '@',
+      imageaddenabled: '<',
+      imageenabled: '<',
+      imagefunction: '&',
       headertitle: '@',
       headersubtitle: '@',
+      noimageicon: '@',
       showwordsgoalcounter: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
@@ -48,10 +53,12 @@ angular.
   });
 
 
-function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
+function PageHeaderController($injector, $rootScope, $scope, hotkeys, 
+  BibiscoPropertiesService, ImageService, SupporterEditionChecker, UuidService) {
   var self = this;
 
   self.$onInit = function () {
+
     self.buttonid = UuidService.generateUuid();
     self.button2id = UuidService.generateUuid();
     
@@ -90,9 +97,23 @@ function PageHeaderController($rootScope, $scope, hotkeys, UuidService) {
         });
     }
 
+    if (self.image) {
+      self.fullpathimage = ImageService.getImageFullPath(self.image);
+    }
 
+    self.theme = BibiscoPropertiesService.getProperty('theme');
     self.confirmdialogopen = false;
   };
+
+  self.executeimagefunction = function () {
+    if (!SupporterEditionChecker.check()) {
+      SupporterEditionChecker.showSupporterMessage();
+    } else {
+      $injector.get('IntegrityService').ok();
+      self.imagefunction();
+    }
+  };
+
 
   $rootScope.$on('OPEN_POPUP_BOX', function () {
     self.confirmdialogopen = true;

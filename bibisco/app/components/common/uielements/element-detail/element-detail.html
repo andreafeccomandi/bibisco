@@ -3,6 +3,11 @@
   headersubtitle="{{$ctrl.headersubtitle}}"
   headertipcode="richTextEditorTip"
   headertipenabled="$ctrl.editmode"
+  image="{{$ctrl.profileimage}}"
+  imageaddenabled="!$ctrl.editmode"
+  imageenabled="$ctrl.profileimageenabled"
+  imagefunction="$ctrl.profileimagefunction()"
+  noimageicon="{{$ctrl.noprofileimageicon}}"
   taskstatus="$ctrl.taskstatus"
   taskstatuschangefunction="$ctrl.taskstatuschangefunction({status})">
 </detailheader>
@@ -14,6 +19,12 @@
   editfunction="$ctrl.editfunction()"
   editmode="$ctrl.editmode"
   headersubtitle="$ctrl.headersubtitle"
+  previouselementlabel="{{$ctrl.previouselementlabel}}"
+  previouselementlink="$ctrl.previouselementlink"
+  previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+  nextelementlabel="{{$ctrl.nextelementlabel}}"
+  nextelementlink="$ctrl.nextelementlink"
+  nextelementtooltip="{{$ctrl.nextelementtooltip}}"
   showprojectexplorer="$root.showprojectexplorer"
   words="$ctrl.words">
 </detailcontent>
@@ -24,9 +35,12 @@
   characters="$ctrl.characters"
   editfunction="$ctrl.editfunction()"
   editmode="$ctrl.editmode"
+  eventsenabled="$ctrl.eventsenabled"
   imagesenabled="$ctrl.imagesenabled"
   lastsave="$ctrl.lastsave"
   savefunction="$ctrl.savefunction()"
+  showeventsfunction="$ctrl.showeventsfunction()"
+  showeventslabel="{{$ctrl.showeventslabel}}"
   showimagesfunction="$ctrl.showimagesfunction()"
   showimageslabel="{{$ctrl.showimageslabel}}"
   showprojectexplorer="$root.showprojectexplorer"

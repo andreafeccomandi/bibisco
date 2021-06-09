@@ -11,18 +11,33 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
 	ng-attr-draggable="{{$ctrl.dndenabled}}" ng-attr-droppable="{{$ctrl.dndenabled}}"
   dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})" 
   family="{{$ctrl.family}}" tabindex="0">
-  <div class="row">
-    <div class="col-sm-12">
-      <span class="pull-left card-heading-title"><strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle  | translate}}</strong></span>
-      <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
-				<wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
-				<taskstatus status="$ctrl.status"></taskstatus></strong>
-			</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <p class="card-text">{{$ctrl.text | translate}}</p>
-    </div>
+
+  <div class="row" style="margin-top: 0px;">
+      <div class="card-left-section card-left-section-{{$ctrl.dimension}}">
+        
+        <span ng-if="$ctrl.image" class="pull-left card-heading-image">
+          <img src="{{$ctrl.projectImagesDirectory}}{{$ctrl.image}}" class="img-circle">
+        </span>
+            
+        <div ng-if="!$ctrl.image" class="card-no-profile-bg img-circle">
+          <i class="fa fa-{{$ctrl.noimageicon}} fa-inverse" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
+        </div>
+      
+      </div>
+
+      <div class="card-right-section">
+        <div>
+            <span class="pull-left card-heading-title card-heading-title-{{$ctrl.dimension}}">
+              <strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle  | translate}}</strong>
+            </span>
+            <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
+              <wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
+              <taskstatus status="$ctrl.status"></taskstatus></strong>
+            </span>
+        </div>
+        <div>
+          <p class="card-text card-text-{{$ctrl.dimension}}">{{$ctrl.text | translate}}</p>
+        </div>
+      </div>
   </div>
 </div>

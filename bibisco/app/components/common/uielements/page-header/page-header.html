@@ -1,5 +1,21 @@
 <div class="col-sm-12 page-header">
-  <h1><span class="pull-left page-header-truncate-title">
+  <h1>
+      <span ng-if="$ctrl.imageenabled && $ctrl.image" class="page-header-profile"> 
+        <img src="{{$ctrl.fullpathimage}}" class="img-rounded">
+      </span> 
+
+      <span ng-if="$ctrl.imageenabled && !$ctrl.image" class="page-header-no-profile">
+        <div class="page-header-no-profile-bg"></div>
+        <span class="page-header-no-profile-icon">
+          <i class="fa fa-{{$ctrl.noimageicon}}" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
+        </span>
+        <button class="btn btn-default btn-sm page-header-no-profile-button" 
+          ng-if="$ctrl.imageaddenabled"
+          ng-click="$ctrl.executeimagefunction()"
+          uib-tooltip="{{'add_profile_image_tooltip' | translate}}">+</button>
+      </span>
+
+      <span class="page-header-truncate-title" ng-class="{ 'page-header-truncate-title-img-offset' : $ctrl.imageenabled}">
         {{$ctrl.headertitle | translate}}
         <small>
         <wordscharacterscounter ng-if="$ctrl.words != null" 

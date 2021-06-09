@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2020 Andrea Feccomandi
+ * Copyright (C) 2014-2021 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,17 @@ angular.
     controller: SecondaryCharacterAddImageController
   });
 
-function SecondaryCharacterAddImageController($routeParams, SecondaryCharacterService) {
+function SecondaryCharacterAddImageController($location, $routeParams, 
+  BibiscoPropertiesService, PopupBoxesService, SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
     let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter($routeParams.id);
+
+    // addprofile mode
+    self.addprofile = $location.path().includes('addprofile');
 
     // breadcrumb
     self.breadcrumbitems = [];
@@ -37,18 +41,36 @@ function SecondaryCharacterAddImageController($routeParams, SecondaryCharacterSe
       label: secondaryCharacter.name,
       href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
     });
-    self.breadcrumbitems.push({
-      label: 'common_characters_images',
-      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/images'
-    });
-    self.breadcrumbitems.push({
-      label: 'jsp.addImageForm.dialog.title'
-    });
 
-    self.exitpath = '/secondarycharacters/' + $routeParams.id + '/images';
+    if (self.addprofile) {
+      self.breadcrumbitems.push({
+        label: 'add_profile_image_title'
+      });
+  
+      self.exitpath = '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view';
+      self.customtitle = 'add_profile_image_title';
+    }
+    else {
+      self.breadcrumbitems.push({
+        label: 'common_characters_images',
+        href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/images'
+      });
+      self.breadcrumbitems.push({
+        label: 'jsp.addImageForm.dialog.title'
+      });
+  
+      self.exitpath = '/secondarycharacters/' + $routeParams.id + '/images';
+      self.customtitle = null;
+    }
   };
 
   self.save = function(name, path) {
-    SecondaryCharacterService.addImage($routeParams.id, name, path);
+    let filename = SecondaryCharacterService.addImage($routeParams.id, name, path);
+    if (self.addprofile) {
+      SecondaryCharacterService.setProfileImage($routeParams.id, filename);
+      if (BibiscoPropertiesService.getProperty('addProfileImageTip') === 'true') {
+        PopupBoxesService.showTip('addProfileImageTip');
+      }
+    }
   };
 }

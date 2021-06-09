@@ -9,18 +9,20 @@
     <div class="row">
       <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
         <card cardid="'reason'" cardtitle="jsp.chapter.thumbnail.reason.title"
-          dimension="normal"
+          dimension="chapter"
           dndenabled="false"
           family="chapterinfo"
+          noimageicon="map-o"
           selectfunction="$ctrl.selectChapterInfo(id)"
           text="jsp.chapter.thumbnail.reason.description"
           status="$ctrl.chapter.reason.status"></card>
       </div>
       <div class="col-sm-4 col-md-4 col-lg-3">
         <card cardid="'notes'" cardtitle="common_notes_title"
-          dimension="normal"
+          dimension="chapter"
           dndenabled="false"
           family="chapterinfo"
+          noimageicon="thumb-tack"
           selectfunction="$ctrl.selectChapterInfo(id)"
           text="common_notes_description"></card>
       </div>
@@ -31,7 +33,7 @@
 <!-- SCENES -->
 <div class="container">
   <cardgrid
-    carddimension="normal"
+    carddimension="chapter"
     dndenabled="true"
     dropfunction="$ctrl.moveScene(draggedObjectId, destinationObjectId)"
     family="scenes"
