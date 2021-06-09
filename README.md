@@ -6,29 +6,17 @@ bibisco is a personal project, made with love.
 
 We love books and we want to help writers to write beautiful novels.
 
-With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf or docx, and write with a fully featured text editor.
+With bibisco you can organize chapters and scenes, manage revisions, export novel in pdf, docx, or txt and write with a fully featured text editor.
 
 You can create a novel structure, define premise, fabula, narrative strands and settings: geographic, temporal and social context.
 
 And, most of all, with bibisco you can **know everything about your characters**. Because your novel works only if its characters are believable, that is when you understand their human nature's complexity.
 
+bibisco has 2 versions: **Community Edition** and **Supporters Edition**; this is the repository of **bibisco Community Edition**.
+
 ## Installation
 
-Download bibisco from bibisco website www.bibisco.com
-
-### Windows and Linux
-
-bibisco doesn't need to be installed. After download:
-
-1. unzip downloaded file
-2. if your operating system is windows launch bibisco.exe; if your operating system is linux launch bibisco
-3. write your novel
-
-### Mac OS X
-
-1. open downloaded dmg file
-2. follow the istructions
-3. write your novel
+Take a look at [bibisco documentation](https://docs.bibisco.com/how-to-install-bibisco).
 
 
 ## Support
@@ -39,6 +27,7 @@ You can support bibisco in various ways:
 * translate bibisco in missing languages, write to info@bibisco.com to get more info.
 * star Github repository.
 * like [bibisco Facebook page](https://www.facebook.com/bibisco.official.page).
+* follow [bibisco Instagram profile](https://www.instagram.com/bibiscoapp/).
 * like [bibisco alternativeTo page](http://alternativeto.net/software/bibisco).
 * follow [bibisco Twitter account](https://twitter.com/bibiscotweet).
 
