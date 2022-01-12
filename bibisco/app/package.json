@@ -3,7 +3,7 @@
   "productName": "bibisco",
   "version": "2.3.1",
   "description": "writing novel application",
-  "license": "GPL v3",
+  "license": "GPL-3.0-or-later",
   "repository": "https://github.com/andreafeccomandi/bibisco",
   "author": {
     "name": "Andrea Feccomandi",
