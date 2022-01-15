@@ -100,7 +100,7 @@
     "ng-focus-if": "^1.0.7",
     "node-addon-api": "^3.0.2",
     "pdfmake": "^0.1.68",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "shx": "^0.3.2",
     "ui-select": "^0.19.6",
     "validator": "^7.0.0",
