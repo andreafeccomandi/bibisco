@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,29 @@ angular.
     controller: SecondaryCharacterEventsController
   });
 
-function SecondaryCharacterEventsController($location, $routeParams,
+function SecondaryCharacterEventsController($location, $routeParams, $window,
   SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
     
-    let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter($routeParams.id);
-    self.backpath = '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view';
-
     self.breadcrumbitems = [];
+    let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!secondaryCharacter) {
+      $window.history.back();
+      return;
+    }
+
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=secondarycharacters_' + secondaryCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
-      href: self.backpath
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'common_events'

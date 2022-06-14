@@ -1,31 +1,22 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
-  </div>
-  <div class="row">
-    <pageheader headertitle="{{$ctrl.title | translate}}">
-    </pageheader>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="imagesAddImageForm" ng-submit="$ctrl.save(imagesAddImageForm.$valid)" class="form-horizontal" novalidate>
-        <textinputfield field="imagesAddImageForm.imagename"
-          model="$ctrl.imagename" name="imagename" autofocus
-          maxlength="30" required
-          label="jsp.addImageForm.label.imageName"
-          labelcols="3" inputcols="8">
-        </textinputfield>
-        <fileinputfield field="imagesAddImageForm.imagepath" 
-          model="$ctrl.imagepath" name="imagepath" required
-          filefilter="['bmp','gif','jpg','jpeg','png']"
-          label="jsp.addImageForm.label.file" 
-          labelcols="3" inputcols="8">
-        </fileinputfield>
-        <formbuttons backpath="$ctrl.exitpath"
-        form="imagesAddImageForm" offsetcols="3" sizecols="8">
-        </formbuttons>
-    </div>
-    </form>
-  </div>
-</div>
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="{{$ctrl.title | translate}}">
+</pageheader>
+
+<div class="col-sm-12">
+  <form name="imagesAddImageForm" ng-submit="$ctrl.save(imagesAddImageForm.$valid)" class="form-horizontal" novalidate>
+    <textinputfield field="imagesAddImageForm.imagename"
+      model="$ctrl.imagename" name="imagename" autofocus
+      maxlength="30" required
+      label="jsp.addImageForm.label.imageName"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <fileinputfield field="imagesAddImageForm.imagepath" 
+      model="$ctrl.imagepath" name="imagepath" required
+      filefilter="['bmp','gif','jpg','jpeg','png']"
+      label="jsp.addImageForm.label.file" 
+      labelcols="3" inputcols="8">
+    </fileinputfield>
+    <formbuttons form="imagesAddImageForm">
+    </formbuttons>
+  </form>
 </div>

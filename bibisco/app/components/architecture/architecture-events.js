@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ function ArchitectureEventsController($location, $routeParams,
   self.$onInit = function() {
     
     let architectureitem = ArchitectureService.getArchitectureItem($routeParams.id);
-    self.backpath = '/architectureitems/' + $routeParams.id + '/view';
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -36,7 +35,7 @@ function ArchitectureEventsController($location, $routeParams,
     });
     self.breadcrumbitems.push({
       label: architectureitem.title,
-      href: self.backpath
+      href: '/architectureitems/' + $routeParams.id + '/view'
     });
     self.breadcrumbitems.push({
       label: 'common_events'

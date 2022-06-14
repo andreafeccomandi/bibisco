@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,36 +19,40 @@ angular.
     controller: NoteAddImageController
   });
 
-function NoteAddImageController($routeParams, NoteService) {
+function NoteAddImageController($routeParams, $window, NoteService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let note = NoteService.getNote($routeParams.id);
+    self.breadcrumbitems = [];
+    let note = NoteService.getNote(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!note) {
+      $window.history.back();
+      return;
+    }
 
     // breadcrumb
-    self.breadcrumbnotes = [];
-    self.breadcrumbnotes.push({
+    self.breadcrumbitems.push({
       label: 'notes',
       href: '/notes/params/focus=notes_' + note.$loki
     });
-    self.breadcrumbnotes.push({
+    self.breadcrumbitems.push({
       label: note.name,
       href: '/notes/' + note.$loki + '/view'
     });
-    self.breadcrumbnotes.push({
+    self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images',
       href: '/notes/' + note.$loki + '/images'
     });
-    self.breadcrumbnotes.push({
+    self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'
     });
-
-    self.exitpath = '/notes/' + note.$loki + '/images';
   };
 
   self.save = function(name, path) {
-    NoteService.addImage($routeParams.id, name, path);
+    NoteService.addImage(parseInt($routeParams.id), name, path);
   };
 }

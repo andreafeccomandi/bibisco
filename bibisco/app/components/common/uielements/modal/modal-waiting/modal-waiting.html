@@ -1,0 +1,12 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope">
+  <div class="modal-body modal-waiting-body" id="modal-body">
+      <p ng-bind-html="$ctrl.message | trusted"></p>
+  </div>
+  <div class="modal-waiting-spinner">
+    <span class="text-center text-info">
+        <h1>
+            <i class="fa fa-circle-o-notch fa-spin fa-5x"></i>
+        </h1>
+    </span>
+</div>
+</modal-component>

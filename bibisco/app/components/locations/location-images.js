@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,25 +19,31 @@ angular.
     controller: LocationImagesController
   });
 
-function LocationImagesController($location, $rootScope, $routeParams,
+function LocationImagesController($location, $rootScope, $routeParams, $window,
   LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
-    
-    let location = LocationService.getLocation($routeParams.id);
-    let locationName = LocationService.calculateLocationName(location);
-    self.backpath = '/locations/ ' + location.$loki + '/view';
-    
+
     self.breadcrumbitems = [];
+    let location = LocationService.getLocation(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!location) {
+      $window.history.back();
+      return;
+    }
+    
+    let locationName = LocationService.calculateLocationName(location);
+    
     self.breadcrumbitems.push({
       label: 'common_locations',
       href: '/locations/params/focus=locations_' + location.$loki
     });
     self.breadcrumbitems.push({
       label: locationName,
-      href: self.backpath
+      href: '/locations/ ' + location.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -50,7 +56,7 @@ function LocationImagesController($location, $rootScope, $routeParams,
   };
 
   self.delete = function(filename) {
-    let location = LocationService.deleteImage($routeParams.id, filename);
+    let location = LocationService.deleteImage(parseInt($routeParams.id), filename);
     self.images = location.images;
     self.selectedimage = location.profileimage;
   };
@@ -60,7 +66,7 @@ function LocationImagesController($location, $rootScope, $routeParams,
   };
 
   self.select = function(filename) {
-    LocationService.setProfileImage($routeParams.id, filename);
+    LocationService.setProfileImage(parseInt($routeParams.id), filename);
     self.selectedimage = filename;
   };
 }

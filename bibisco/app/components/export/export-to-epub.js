@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,21 +19,26 @@ angular.
     controller: ExportToEpub
   });
 
-function ExportToEpub($location, $rootScope, $scope, $timeout, 
-  EPubExporterService, FileSystemService, ProjectService) {
+function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibModal, BibiscoPropertiesService,
+  BibiscoDbConnectionService, EPubExporterService, ExportService, FileSystemService, ProjectService) {
 
   var self = this;
 
   self.$onInit = function() {
 
+    // load translations
+    self.translations = $translate.instant([
+      'common_chapter',
+      'chapter_title_format_chapter_label_number_suffix',
+    ]);
+
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
     self.pageheadertitle = 'jsp.export.title.epub';
     
-    self.backpath = '/export';
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: self.backpath
+      href: '/export'
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -50,6 +55,43 @@ function ExportToEpub($location, $rootScope, $scope, $timeout,
     self.website = projectInfo.website;
     self.coverImage = ProjectService.getSelectedCoverImageName();
 
+    self.chaptertitleformat = BibiscoPropertiesService.getProperty('chaptertitleformat');
+    self.chaptertitleexample = ExportService.calculateChapterTitleExample(self.chaptertitleformat);
+    self.chaptertitleformatgroup = [{
+      label: 'chapter_title_format_number_title',
+      value: 'numbertitle'
+    }, {
+      label: 'chapter_title_format_only_number',
+      value: 'number'
+    }, {
+      label: 'chapter_title_format_only_title',
+      value: 'title'
+    }, {
+      label: '"' + self.translations.common_chapter + '" ' + self.translations.chapter_title_format_chapter_label_number_suffix,
+      value: 'labelnumber'
+    }];
+
+    self.chaptertitleposition = BibiscoPropertiesService.getProperty('chaptertitleposition');
+    self.chaptertitlepositiongroup = [{
+      label: 'common_left',
+      value: 'left'
+    }, {
+      label: 'common_center',
+      value: 'center'
+    }];
+
+    self.sceneseparator = BibiscoPropertiesService.getProperty('sceneseparator');
+    self.sceneseparatorgroup = [{
+      label: 'blank_line',
+      value: 'blank_line'
+    }, {
+      label: 'three_asterisks',
+      value: 'three_asterisks'
+    }, {
+      label: 'three_dots',
+      value: 'three_dots'
+    }];
+
     self.checkExit = {
       active: true
     };
@@ -64,6 +106,13 @@ function ExportToEpub($location, $rootScope, $scope, $timeout,
       isbn: self.isbn,
       website: self.website
     });
+  };
+
+  self.updateCommonExportMetadata = function() {
+    BibiscoPropertiesService.setProperty('chaptertitleformat', self.chaptertitleformat);
+    BibiscoPropertiesService.setProperty('chaptertitleposition', self.chaptertitleposition);
+    BibiscoPropertiesService.setProperty('sceneseparator', self.sceneseparator);
+    BibiscoDbConnectionService.saveDatabase();
   };
 
   self.getCoverImageName = function() {
@@ -84,6 +133,7 @@ function ExportToEpub($location, $rootScope, $scope, $timeout,
       self.saving = true;
       $timeout(function () {
         self.updateEpubMetadata();
+        self.updateCommonExportMetadata();
         EPubExporterService.export(self.exportpath, self.exportCallback);
       }, 250);
     }
@@ -91,7 +141,7 @@ function ExportToEpub($location, $rootScope, $scope, $timeout,
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path(self.backpath);
+      $location.path('/export');
     }, 0);
   };
 
@@ -109,6 +159,33 @@ function ExportToEpub($location, $rootScope, $scope, $timeout,
     }
     
     $scope.$apply();
+  };
+
+  self.changechaptertitleformat = function(selected) {
+    self.chaptertitleexample = ExportService.calculateChapterTitleExample(selected);
+  };
+
+  self.showothersettings = function() {
+    let modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: 'static',
+      component: 'richtexteditorsettings',
+      resolve: {
+        context: function () {
+          return 'exporttoepub';
+        }
+      },
+      size: 'richtexteditorsettings'
+    });
+
+    $rootScope.$emit('OPEN_POPUP_BOX');
+
+    modalInstance.result.then(function() {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+
+    });
   };
 
   $scope.$on('$locationChangeStart', function (event) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,10 @@ function ProjectExplorerButtonController($rootScope, $scope, hotkeys) {
     } else {
       $rootScope.projectExplorerCache.delete($rootScope.actualPath);
     }
+
+    $rootScope.$emit('TOGGLE_PROJECT_EXPLORER', {
+      action: $rootScope.showprojectexplorer
+    });
   };
 
   hotkeys.bindTo($scope)

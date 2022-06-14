@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,6 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
     
     self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
     self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
-
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
 
     // hotkeys
     self.maincharacterhotkeys = ['ctrl+n', 'command+n'];

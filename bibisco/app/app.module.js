@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,31 @@ angular.module('bibiscoApp', ['ngRoute',
 
   const ipc = require('electron').ipcRenderer;
 
+  let BibiscoDbConnectionService = $injector.get('BibiscoDbConnectionService'); 
   let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService'); 
   let LoggerService = $injector.get('LoggerService'); 
   let ProjectService = $injector.get('ProjectService'); 
+  let SupporterEditionChecker = $injector.get('SupporterEditionChecker'); 
 
   $scope.theme = BibiscoPropertiesService.getProperty('theme');
+  if ($scope.theme === 'dark' && SupporterEditionChecker.isTrialExpired()) {
+    BibiscoPropertiesService.setProperty('theme', 'classic');
+    BibiscoDbConnectionService.saveDatabase();
+    $scope.theme = 'classic';
+  }
+  $scope.zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
+  if ($scope.zoomLevel === 100) {
+    Chart.defaults.global.defaultFontSize = 12;
+  } else if ($scope.zoomLevel === 115) {
+    Chart.defaults.global.defaultFontSize = 14;
+  } else if ($scope.zoomLevel === 130) {
+    Chart.defaults.global.defaultFontSize = 16;
+  }
+  let font = BibiscoPropertiesService.getProperty('font');
+  if (font!=='courier' && font!=='times' && font!=='arial' && SupporterEditionChecker.isTrialExpired()) {
+    BibiscoPropertiesService.setProperty('font', 'courier');
+    BibiscoDbConnectionService.saveDatabase();
+  }
 
   $rootScope.$on('SWITCH_CLASSIC_THEME', function () {
     $scope.theme = 'classic';
@@ -43,6 +63,17 @@ angular.module('bibiscoApp', ['ngRoute',
 
   $rootScope.$on('SWITCH_DARK_THEME', function () {
     $scope.theme = 'dark';
+  });
+
+  $rootScope.$on('CHANGE_ZOOM_LEVEL', function (event, args) {
+    $scope.zoomLevel = args.level;
+    if ($scope.zoomLevel === 100) {
+      Chart.defaults.global.defaultFontSize = 12;
+    } else if ($scope.zoomLevel === 115) {
+      Chart.defaults.global.defaultFontSize = 14;
+    } else if ($scope.zoomLevel === 130) {
+      Chart.defaults.global.defaultFontSize = 16;
+    }
   });
 
   $rootScope.$on('OPEN_RICH_TEXT_EDITOR', function () {
@@ -56,6 +87,7 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.actualPath = null;
   $rootScope.dirty = false;
   $rootScope.fullscreen = false;
+  $rootScope.trialmessageopen = false;
   $rootScope.keyDownFunction = null;
   $rootScope.keyUpFunction = null;
   $rootScope.partsExpansionStatus = [];
@@ -105,8 +137,11 @@ angular.module('bibiscoApp', ['ngRoute',
     
     // if I am inside a project I make a backup
     if (projectactive && autoBackupOnExit) {
-      ProjectService.executeBackupIfSomethingChanged(function() {
-        ipc.sendSync('closeApp');
+      ProjectService.executeBackupIfSomethingChanged({
+        showWaitingModal: true,
+        callback: function() {
+          ipc.sendSync('closeApp');
+        }
       });
     } else {
       ipc.sendSync('closeApp');
@@ -428,6 +463,9 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<settings></settings>'
       }).
       when('/start', {
+        template: '<start></start>'
+      }).
+      when('/exitproject', {
         template: '<start></start>'
       }).
       when('/strands/new', {

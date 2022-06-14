@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ angular.
     bindings: {
       breadcrumbitems: '<',
       eventid: '<',
-      exitpath: '<',
       id: '<',
       noprofileimageicon: '@',
       profileimage: '@',
@@ -29,7 +28,7 @@ angular.
     }
   });
 
-function EventsEventController($location, $rootScope, $scope, PopupBoxesService, ProjectService, TimelineService) {
+function EventsEventController($rootScope, $scope, $window, PopupBoxesService, ProjectService, TimelineService) {
 
   let self = this;
 
@@ -77,7 +76,7 @@ function EventsEventController($location, $rootScope, $scope, PopupBoxesService,
       self.checkExit = {
         active: false
       };
-      $location.path(self.exitpath);
+      $window.history.back();
     }
   };
 

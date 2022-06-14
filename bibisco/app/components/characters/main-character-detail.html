@@ -9,159 +9,117 @@
   taskstatusreadonly="true">
 </detailheader>
 
-<div class="detail-content-no-header-subtitle">
-  <div class="container full-height">
-    <div class="row">
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <h4 class="page-header">{{'jsp.character.h3.whois' | translate}}</h4>
-      </div>
-      <div class="col-sm-8 col-md-8 col-lg-6">
-        <h4 class="page-header">{{'jsp.character.h3.seems' | translate}}</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'personaldata'" cardtitle="common_personaldata"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="id-card-o"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.personaldata.description"
-          status="$ctrl.maincharacter.personaldata.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'physionomy'" cardtitle="common_physionomy"
-          dimension="normal"
-          dndenabled="false"
-          noimageicon="signing"
-          family="maincharactersdetails"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.physionomy.description"
-          status="$ctrl.maincharacter.physionomy.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'behaviors'" cardtitle="common_behaviors"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="comments-o"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.behaviors.description"
-          status="$ctrl.maincharacter.behaviors.status"></card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-8 col-md-8 col-lg-6">
-        <h4 class="page-header">{{'jsp.character.h3.think' | translate}}</h4>
-      </div>
-      <div class="hidden-sm hidden-md col-lg-6">
-        <h4 class="page-header">{{'jsp.character.h3.comesfrom' | translate}}</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'psychology'" cardtitle="common_psychology"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="cogs"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.psychology.description"
-          status="$ctrl.maincharacter.psychology.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'ideas'" cardtitle="common_ideas"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="flag-o"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.ideas.description"
-          status="$ctrl.maincharacter.ideas.status"></card>
-      </div>
-      <div class="hidden-sm hidden-md col-lg-3">
-        <card cardid="'sociology'" cardtitle="common_sociology"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="users"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.sociology.description"
-          status="$ctrl.maincharacter.sociology.status"></card>
-      </div>
-      <div class="hidden-sm hidden-md col-lg-3">
-        <card cardid="'lifebeforestorybeginning'" cardtitle="jsp.character.thumbnail.lifebeforestorybeginning.title"
-          dimension="normal"
-          dndenabled="false"
-          noimageicon="history"
-          family="maincharactersdetails"
-          selectfunction="$ctrl.showInfoWithoutQuestion(id)"
-          text="jsp.character.thumbnail.lifebeforestorybeginning.description"
-          status="$ctrl.maincharacter.lifebeforestorybeginning.status"></card>
-      </div>
-    </div>
-    <div class="row hidden-lg">
-      <div class="col-sm-8 col-md-8">
-        <h4 class="page-header">{{'jsp.character.h3.comesfrom' | translate}}</h4>
-      </div>
-    </div>
-    <div class="row hidden-lg">
-      <div class="col-sm-4 col-md-4">
-        <card cardid="'sociology'" cardtitle="common_sociology"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="users"
-          selectfunction="$ctrl.showInfoWithQuestion(id)"
-          text="jsp.character.thumbnail.sociology.description"
-          status="$ctrl.maincharacter.sociology.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4">
-        <card cardid="'lifebeforestorybeginning'" cardtitle="jsp.character.thumbnail.lifebeforestorybeginning.title"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="history"
-          selectfunction="$ctrl.showInfoWithoutQuestion(id)"
-          text="jsp.character.thumbnail.lifebeforestorybeginning.description"
-          status="$ctrl.maincharacter.lifebeforestorybeginning.status"></card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-8 col-md-8 col-lg-6">
-        <h4 class="page-header">{{'jsp.character.h3.go' | translate}}</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'conflict'" cardtitle="jsp.character.thumbnail.conflict.title"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="fire"
-          selectfunction="$ctrl.showInfoWithoutQuestion(id)"
-          text="jsp.character.thumbnail.conflict.description"
-          status="$ctrl.maincharacter.conflict.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'evolutionduringthestory'" cardtitle="jsp.character.thumbnail.evolutionduringthestory.title"
-          dimension="normal"
-          dndenabled="false"
-          family="maincharactersdetails"
-          noimageicon="refresh"
-          selectfunction="$ctrl.showInfoWithoutQuestion(id)"
-          text="jsp.character.thumbnail.evolutionduringthestory.description"
-          status="$ctrl.maincharacter.evolutionduringthestory.status"></card>
-      </div>
-    </div>
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-footer maincharacter-detail">
+  <div>
+    <blockquote>
+      <i>
+        <span class="page-header-subtitle bibiscoNotSelectableText">
+          {{'jsp.suggestions.characters.p1' | translate}} {{'jsp.suggestions.characters.p2' | translate}} 
+        </span>
+      </i>
+    </blockquote>
+  </div>
+  <div class="card-grid-items-box">
+      <card cardid="'personaldata'" cardtitle="common_personaldata"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="id-card-o"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.personaldata.description"
+        status="$ctrl.maincharacter.personaldata.status"></card>
+      <card cardid="'physionomy'" cardtitle="common_physionomy"
+        dimension="normal"
+        dndenabled="false"
+        noimageicon="signing"
+        family="maincharactersdetails"
+        hastext="true"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.physionomy.description"
+        status="$ctrl.maincharacter.physionomy.status"></card>
+      <card cardid="'behaviors'" cardtitle="common_behaviors"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="comments-o"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.behaviors.description"
+        status="$ctrl.maincharacter.behaviors.status"></card>
+      <card cardid="'psychology'" cardtitle="common_psychology"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="cogs"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.psychology.description"
+        status="$ctrl.maincharacter.psychology.status"></card>
+      <card cardid="'ideas'" cardtitle="common_ideas"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="flag-o"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.ideas.description"
+        status="$ctrl.maincharacter.ideas.status"></card>
+      <card cardid="'sociology'" cardtitle="common_sociology"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="users"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.sociology.description"
+        status="$ctrl.maincharacter.sociology.status"></card>
+      <card cardid="'lifebeforestorybeginning'" cardtitle="jsp.character.thumbnail.lifebeforestorybeginning.title"
+        dimension="normal"
+        dndenabled="false"
+        noimageicon="history"
+        family="maincharactersdetails"
+        hastext="true"
+        selectfunction="$ctrl.showInfoWithoutQuestion(id)"
+        text="jsp.character.thumbnail.lifebeforestorybeginning.description"
+        status="$ctrl.maincharacter.lifebeforestorybeginning.status"></card>
+  </div>
+
+  <div class="top25">
+    <blockquote>
+      <i>
+        <span class="page-header-subtitle bibiscoNotSelectableText">
+          {{'jsp.suggestions.conflict.p2' | translate}} {{'jsp.suggestions.conflict.p3' | translate}} 
+        </span>
+      </i>
+    </blockquote>
+  </div>
+
+  <div class="card-grid-items-box">
+    <card cardid="'conflict'" cardtitle="jsp.character.thumbnail.conflict.title"
+      dimension="normal"
+      dndenabled="false"
+      family="maincharactersdetails"
+      hastext="true"
+      noimageicon="fire"
+      selectfunction="$ctrl.showInfoWithoutQuestion(id)"
+      text="jsp.character.thumbnail.conflict.description"
+      status="$ctrl.maincharacter.conflict.status"></card>
+    <card cardid="'evolutionduringthestory'" cardtitle="jsp.character.thumbnail.evolutionduringthestory.title"
+      dimension="normal"
+      dndenabled="false"
+      family="maincharactersdetails"
+      hastext="true"
+      noimageicon="refresh"
+      selectfunction="$ctrl.showInfoWithoutQuestion(id)"
+      text="jsp.character.thumbnail.evolutionduringthestory.description"
+      status="$ctrl.maincharacter.evolutionduringthestory.status"></card>
   </div>
 </div>
-</div>
+
 <detailfooter 
   actionitems="$ctrl.actionitems"
   autosaveenabled="false" 
-  backpath="$ctrl.backpath"
   editmode="false" 
   eventname="SHOW_ELEMENT_DETAIL"
   eventsenabled="true"

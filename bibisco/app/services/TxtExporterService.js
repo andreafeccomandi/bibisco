@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
 
   return {
 
-    export: function (path, html, font, indent, hcountingactive, pagebreakonh1, callback) {
+    export: function (params, callback) {
 
       let content = '';
       
@@ -63,17 +63,17 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
             currentText += '';
           } else if (name === 'h1') {
             h1counter += 1;     
-            if (hcountingactive) {
+            if (params.exportconfig.hcountingactive) {
               currentText += h1counter+' ';
             }     
           } else if (name === 'h2') {
             h2counter += 1;
-            if (hcountingactive) {
+            if (params.exportconfig.hcountingactive) {
               currentText += h1counter + '.' + h2counter + ' ';
             }
           } else if (name === 'h3') {
             h3counter += 1;
-            if (hcountingactive) {
+            if (params.exportconfig.hcountingactive) {
               currentText += h1counter + '.' + h2counter + '.' + h3counter + ' ';
             }
           } else if (name === 'question') {
@@ -158,8 +158,8 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
 
         onend: function() {
           content = content.replace(/  +/g, ' ');
-          wrappedContent = wrap(content, {width: wrapValue, indent: indent});
-          FileSystemService.writeFileSync(path + '.txt', wrappedContent);
+          wrappedContent = wrap(content, {width: wrapValue, indent: params.exportconfig.indent});
+          FileSystemService.writeFileSync(params.filepath + '.txt', wrappedContent);
           
           if (callback) {
             callback();
@@ -169,7 +169,7 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
       
       
 
-      parser.write(html);
+      parser.write(params.html);
 
       parser.end();
     }

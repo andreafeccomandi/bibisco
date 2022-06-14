@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,10 @@ function RelationExportController($injector, $location, $rootScope, $scope, $tim
 
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
-    self.backpath = '/relations/view';
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'relations_title',
-      href: self.backpath
+      href: '/relations/view'
     });
     self.breadcrumbitems.push({
       label: 'common_export',
@@ -146,7 +145,7 @@ function RelationExportController($injector, $location, $rootScope, $scope, $tim
 
     // back to relations page
     $timeout(function () {
-      $location.path(self.backpath);
+      $location.path('/relations/view');
     }, 0);
   };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,35 +28,23 @@ angular.
   });
 
 
-function SiblingElementsNavigatorController($injector, $location, SupporterEditionChecker) {
+function SiblingElementsNavigatorController($location, SupporterEditionChecker) {
 
   var self = this;
   self.$onInit = function () {
-    self.isSupporterEdition = self.checkSupporterEdition();
   };
 
   self.gotopreviouslement = function () {
-    if (self.isSupporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       $location.path(self.previouselementlink);
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
+    });
   };
 
   self.gotonextlement = function () {
-    if (self.isSupporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       $location.path(self.nextelementlink);
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
+    });
   };
 
-  self.checkSupporterEdition = function() {
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      return true;
-    } else {
-      return false;
-    }
-  };
+
 }

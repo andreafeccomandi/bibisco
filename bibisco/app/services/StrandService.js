@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('StrandService', function(
+angular.module('bibiscoApp').service('StrandService', function($rootScope,
   CollectionUtilService, ProjectDbConnectionService
 ) {
   'use strict';
@@ -23,31 +23,46 @@ angular.module('bibiscoApp').service('StrandService', function(
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'strands');
     },
-    getDynamicView: function() {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_strands');
-    },
     getStrand: function(id) {
       return this.getCollection().get(id);
     },
     getStrandsCount: function() {
-      return this.getDynamicView().count();
+      return this.getStrands().length;
     },
     getStrands: function() {
-      return this.getDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
     insert: function(strand) {
       CollectionUtilService.insert(this.getCollection(), strand);
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: strand.$loki,
+        collection: 'strands'
+      });
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
-        this.getDynamicView());
+      CollectionUtilService.move(this.getCollection(), sourceId, targetId);
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sourceId,
+        collection: 'strands'
+      });
     },
     remove: function(id) {
       CollectionUtilService.remove(this.getCollection(), id);
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'strands'
+      });
     },
     update: function(strand) {
       CollectionUtilService.update(this.getCollection(), strand);
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: strand.$loki,
+        collection: 'strands'
+      });
     }
   };
 });

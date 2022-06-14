@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,15 @@ angular.
 
 
 function RichTextEditorController($document, $injector, $rootScope, 
-  $scope, $timeout, $uibModal, hotkeys, Chronicle, ContextService, 
+  $scope, $timeout, $uibModal, $window, hotkeys, BibiscoPropertiesService, Chronicle, ContextService, 
   PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
-  RichTextEditorPreferencesService, WordCharacterCountService) {
+  RichTextEditorPreferencesService, UuidService, WordCharacterCountService) {
 
   let self = this;
   const ipc = require('electron').ipcRenderer;
-  var SearchService = null;
+  const COMMENT_HEIGHT = 150;
+  const COMMENT_WIDTH = 250+3; // width + space between comment box and editor
+  let SearchService = null;
 
   self.$onInit = function() {
     self.contenteditable = true;
@@ -54,6 +56,8 @@ function RichTextEditorController($document, $injector, $rootScope,
     // init styles and spell check
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+    self.linespacingclass = RichTextEditorPreferencesService.getLinespacingClass();
+    self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
     self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
 
     // init editor button states
@@ -71,6 +75,19 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.showfindreplacetoolbar = false;
     self.casesensitiveactive = false;
     self.wholewordactive = false;
+
+    // init comment status
+    self.showComment = false;
+    self.commentPositionTop = null;
+    self.commentPositionLeft = null;
+    self.commentLineTop = null;
+    self.commentLineLeft = null;
+    self.commentLineWidth = null;
+    self.commentText = null;
+    self.activeCommentId = null;
+
+    // init commentLineTopOffset
+    self.commentLineTopOffset = self.calculateCommentLineTopOffset();
 
     // init find & replace text
     self.initFindReplace();
@@ -117,12 +134,32 @@ function RichTextEditorController($document, $injector, $rootScope,
       self.currentmatch = 0;
     });
 
+    // check selection state to update comment if shown
+    $rootScope.$on('TOGGLE_PROJECT_EXPLORER', function () {
+      $timeout(function(){
+        self.checkselectionstate();
+      }, 0);
+    });
+
+    // hide comment on project explorer selection
+    $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
+      self.showComment = false;
+      self.activeCommentId = null;
+    });
+
     // register replace misspelling listener
     self.replaceMisspellingListener = function(event){
       $rootScope.dirty = true;
       $scope.$apply();
     };
     ipc.on('REPLACE_MISSPELLING', self.replaceMisspellingListener);
+
+    angular.element(self.richtexteditor).bind('mousewheel', function(){
+      self.checkselectionstate();
+    });
+    angular.element($window).bind('resize', function () {
+      self.checkselectionstate();
+    });
 
     // notify 
     $rootScope.$emit('OPEN_RICH_TEXT_EDITOR');
@@ -398,6 +435,54 @@ function RichTextEditorController($document, $injector, $rootScope,
       self.highlightactive = false;
     }
 
+    if ($document[0].queryCommandValue('BackColor').toString() === 'rgb(241, 228, 189)') {
+      self.showComment = false;
+      self.activeCommentId = null;
+      
+      let node = angular.element(window.getSelection().anchorNode);
+      let commentId = null;
+      
+      // I cycle until I find a node that has a comment or until I get to the root node of the richtexteditor
+      // How is it possible that the selection is detected but I get to the root of the Richtexteditor? 
+      // It happens when I am deleting the node that contains the comment!
+      while (!commentId && !(node.prop('tagName') && node.prop('tagName').toLowerCase() === 'richtexteditor')) {
+        if (node.prop('tagName') && node.prop('tagName').toLowerCase() === 'span' && node.hasClass('comment-enabled')) {
+          commentId = node.attr('data-commentid');
+        } else {
+          node = node.parent();
+        }
+      }
+
+      if (commentId) {
+        let editorPosition = self.richtexteditorcontainer.getBoundingClientRect();
+        let spanComments = document.getElementsByClassName('comment-' + commentId);
+        for (let i = 0; i < spanComments.length; i++) {
+          const spanCommentPosition = spanComments[i].getBoundingClientRect();
+          if (spanCommentPosition.top > editorPosition.top && spanCommentPosition.top < editorPosition.bottom) {
+  
+            if (spanCommentPosition.top + COMMENT_HEIGHT > editorPosition.bottom) {
+              self.commentPositionTop = editorPosition.bottom - COMMENT_HEIGHT;
+            } else {
+              self.commentPositionTop = spanCommentPosition.top;
+            }
+            self.commentPositionLeft = editorPosition.left - COMMENT_WIDTH;
+            self.commentLineTop = spanCommentPosition.top + self.commentLineTopOffset;
+            self.commentLineLeft = editorPosition.left - 3;
+            self.commentLineWidth = spanCommentPosition.left-editorPosition.left;
+          
+            self.showComment = true;
+            self.activeCommentId = commentId;
+            self.commentText = angular.element(spanComments[i]).attr('data-comment');
+            break;
+          }
+        }
+      }
+    
+    } else {
+      self.showComment = false;
+      self.activeCommentId = null;
+    }
+
     if ($document[0].queryCommandState('justifyCenter')) {
       self.aligncenteractive = true;
     } else {
@@ -539,6 +624,62 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.contentChanged();
   };
 
+  self.comment = function() {
+
+    SupporterEditionChecker.filterAction(function() {
+      let id = UuidService.generateUuid();
+      $document[0].execCommand('hiliteColor', false, 'rgb(23, 4, 75)');
+  
+      let richtexteditor = angular.element($document[0].getElementById('richtexteditor'));
+      let commentSpans = richtexteditor.find('span');
+      let spanFound = false;
+      for (let i = 0; i < commentSpans.length; i++) {
+        const span = angular.element(commentSpans[i]);
+        if (span.css('background-color') === 'rgb(23, 4, 75)') {
+          spanFound = true;
+          span.removeAttr('style');
+          span.attr('class', 'comment-enabled ' + 'comment-'+id);
+          span.attr('data-commentid', id);
+          span.attr('data-comment', '');
+        }
+      }
+      if (!spanFound) {
+        PopupBoxesService.alert('comment_empty_text');
+      }
+      self.checkselectionstate();
+    });
+  };
+
+  self.commentChanged = function() {
+    let spanComments = document.getElementsByClassName('comment-' + self.activeCommentId);
+    for (let i = 0; i < spanComments.length; i++) {
+      angular.element(spanComments[i]).attr('data-comment', self.commentText);
+    }
+  };
+  
+  self.deleteComment = function(id) {
+    let spanComments = document.getElementsByClassName('comment-' + self.activeCommentId);
+    for (let i = 0; i < spanComments.length; i++) {
+      const span = angular.element(spanComments[i]);
+      span.replaceWith(span.html()); // remove wrapping element
+    }    
+    self.showComment = false;
+    self.activeCommentId = null;
+  };
+
+  self.calculateCommentLineTopOffset = function() {
+    let zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
+    let offset;
+    if (zoomLevel === 100) {
+      offset = 21;
+    } else if (zoomLevel === 115) {
+      offset = 23;
+    } else if (zoomLevel === 130) {
+      offset = 25;
+    }
+    return offset;
+  },
+
   self.orderedlist = function() {
     $document[0].execCommand('insertOrderedList');
     self.manageFormat();
@@ -602,7 +743,9 @@ function RichTextEditorController($document, $injector, $rootScope,
   };
 
   self.toggleFindReplaceToolbar = function() {
-    self.supporterEditionFilterAction(function() {
+    SupporterEditionChecker.filterAction(function() {
+      self.showComment = false;
+      self.activeCommentId = null;
       self.showfindreplacetoolbar = !self.showfindreplacetoolbar;
       if (self.showfindreplacetoolbar) {
         self.focusOnText2Find();
@@ -613,33 +756,32 @@ function RichTextEditorController($document, $injector, $rootScope,
   };
 
   self.fullscreen = function () {
-    self.supporterEditionFilterAction(function () {
-      $rootScope.fullscreen = true;
-      $timeout(function () {
-        let isFullScreenEnabled = ipc.sendSync('isFullScreenEnabled');
-        console.log('isFullScreenEnabled='+isFullScreenEnabled);
-        if (isFullScreenEnabled) {
-          $rootScope.previouslyFullscreen = true;
-        } else {
-          ipc.send('enableFullScreen');
-          $rootScope.previouslyFullscreen = false;
-        }
-        self.exitfullscreenmessage = true;
-        self.focus();
-        $timeout(function () {
-          self.exitfullscreenmessage = false;
-        }, 2000);
-      },0);
+    SupporterEditionChecker.filterAction(function() {
+      self.executeFullScreen();
     });
   };
 
-  self.supporterEditionFilterAction = function (action) {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
-      action();
-    }
+  self.executeFullScreen = function(callback) {
+    $rootScope.fullscreen = true;
+    $timeout(function () {
+      let isFullScreenEnabled = ipc.sendSync('isFullScreenEnabled');
+      if (isFullScreenEnabled) {
+        $rootScope.previouslyFullscreen = true;
+      } else {
+        ipc.send('enableFullScreen');
+        $rootScope.previouslyFullscreen = false;
+      }
+      self.exitfullscreenmessage = true;
+      self.focus();
+      $timeout(function () {
+        self.exitfullscreenmessage = false;
+      }, 2000);
+      if (callback) {
+        $timeout(function () {
+          callback();
+        }, 3000);
+      }
+    },0);
   };
 
   self.toggleCaseSensitive = function() {
@@ -895,6 +1037,8 @@ function RichTextEditorController($document, $injector, $rootScope,
       // save
       self.fontclass = RichTextEditorPreferencesService.getFontClass();
       self.indentclass = RichTextEditorPreferencesService.getIndentClass();
+      self.linespacingclass = RichTextEditorPreferencesService.getLinespacingClass();
+      self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
@@ -928,7 +1072,6 @@ function RichTextEditorController($document, $injector, $rootScope,
 
   self.getSearchService = function() {
     if (!SearchService) {
-      $injector.get('IntegrityService').ok();
       SearchService = $injector.get('SearchService');
     }
 

@@ -1,36 +1,52 @@
-<div class="container">
+<pageheader headertitle="jsp.architecture.h1"></pageheader>
 
-  <!-- ARCHITECTURE -->
-  <cardgrid
-    carddimension="normal"
-    dndenabled="false"
-    family="architecture"
-    items="$ctrl.architecturecardgriditems"
-    pageheadertitle="jsp.architecture.h1"
-    selectfunction="$ctrl.architectureItemSelect(id)"
-    type="half-top">
-  </cardgrid>
+<div class="scrollable-box-full-height-page-with-header">
 
-  <!-- STRANDS -->
-  <cardgrid
-    carddimension="small"
-    dndenabled="true"
-    dropfunction="$ctrl.strandMove(draggedObjectId, destinationObjectId)"
-    family="strands"
-    emptylisttext="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text"
-    emptylistbuttonlabel="jsp.strands.a.createFirstStrand"
-    emptylistbuttontooltip="{{'strand_firstcreate_tooltip'+$root.os}}"
-    emptylistbuttonfunction="$ctrl.createStrand()"
-    items="$ctrl.strandcardgriditems"
-    pageheaderbuttonhotkey="$ctrl.hotkeys"
-    pageheaderbuttonlabel="jsp.architecture.a.createStrand"
-    pageheaderbuttonfunction="$ctrl.createStrand()"
-    pageheaderbuttontooltip="{{'strand_create_tooltip'+$root.os}}"
-    pageheadertitle="jsp.architecture.strands.h2"
-    pageheadersubtitle="jsp.architecture.strands.h2.small" 
-    pageheadertipcode="strandsdndTip"
-    selectfunction="$ctrl.strandSelect(id)"
-    type="half-bottom">
-  </cardgrid>
+<!-- ARCHITECTURE -->
+<div ng-show="$ctrl.architecturecardgriditems" class="{{$ctrl.cardgriditemsboxcontainerclass}}">
+  <div class="card-grid-items-box">
+    <card ng-repeat="item in $ctrl.architecturecardgriditems track by $index"
+      cardid="item.id" cardtitle="{{item.title}}"
+      dimension="normal"
+      dndenabled="$ctrl.dndenabled"
+      dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
+      family="architecture"
+      hastext="true"
+      image="{{item.image}}"
+      noimageicon="{{item.noimageicon}}"
+      selectfunction="$ctrl.architectureItemSelect(id)"
+      text="{{item.text}}" words="item.words" characters="item.characters"
+      status="item.status">
+    </card>
+  </div>
+</div>
+
+<div class="top30"></div>
+  
+<!-- STRANDS -->
+<cardgrid
+  carddimension="small"
+  dndenabled="true"
+  dropfunction="$ctrl.strandMove(draggedObjectId, destinationObjectId)"
+  family="strands"
+  emptylisttext="jsp.architecture.bibiscoEmptyThumbnailListBoxStrands.text"
+  emptylistbuttonlabel="jsp.strands.a.createFirstStrand"
+  emptylistbuttontooltip="{{'strand_firstcreate_tooltip'+$root.os}}"
+  emptylistbuttonfunction="$ctrl.createStrand()"
+  items="$ctrl.strandcardgriditems"
+  pageheadertitle="jsp.architecture.strands.h2"
+  pageheadersubtitle="jsp.architecture.strands.h2.small" 
+  scrollable="false"
+  selectfunction="$ctrl.strandSelect(id)"
+  subheader="true"></cardgrid>
 
 </div>
+
+<pagefooter 
+  buttonlabel="jsp.architecture.a.createStrand" buttonshow="true"
+  buttonfunction="$ctrl.createStrand()" buttonstyle="primary"
+  buttonhotkey="$ctrl.hotkeys"
+  buttontooltip="{{'strand_create_tooltip'+$root.os}}"
+  tipcode="strandsdndTip" 
+  tipenabled="$ctrl.strandcardgriditems && $ctrl.strandcardgriditems.length > 1 ">
+</pageheader>

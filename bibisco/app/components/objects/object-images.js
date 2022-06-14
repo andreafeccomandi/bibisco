@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,28 @@ angular.
     controller: ItemImagesController
   });
 
-function ItemImagesController($location, $routeParams, ObjectService) {
+function ItemImagesController($location, $routeParams, $window, ObjectService) {
 
   var self = this;
 
   self.$onInit = function() {
     
-    let object = ObjectService.getObject($routeParams.id);
-    self.backpath = '/objects/' + object.$loki + '/view';
-
     self.breadcrumbitems = [];
+    let object = ObjectService.getObject(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!object) {
+      $window.history.back();
+      return;
+    }
+
     self.breadcrumbitems.push({
       label: 'objects',
       href: '/objects/params/focus=objects_' + object.$loki
     });
     self.breadcrumbitems.push({
       label: object.name,
-      href: self.backpath
+      href: '/objects/' + object.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -48,7 +53,7 @@ function ItemImagesController($location, $routeParams, ObjectService) {
   };
 
   self.delete = function(filename) {
-    let object = ObjectService.deleteImage($routeParams.id, filename);
+    let object = ObjectService.deleteImage(parseInt($routeParams.id), filename);
     self.images = object.images;
     self.selectedimage = object.profileimage;
   };
@@ -58,7 +63,7 @@ function ItemImagesController($location, $routeParams, ObjectService) {
   };
 
   self.select = function(filename) {
-    ObjectService.setProfileImage($routeParams.id, filename);
+    ObjectService.setProfileImage(parseInt($routeParams.id), filename);
     self.selectedimage = filename;
   };
 }

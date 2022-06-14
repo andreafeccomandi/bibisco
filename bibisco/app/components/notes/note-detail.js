@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,30 +19,31 @@ angular.
     controller: NoteDetailController
   });
 
-function NoteDetailController($location, $routeParams, NoteService) {
+function NoteDetailController($location, $routeParams, $window, NoteService) {
 
   var self = this;
 
   self.$onInit = function () {
 
-    self.note = self.getNote($routeParams.id);
-    self.mode = $routeParams.mode;
-    let backpath = '/notes/params/focus=notes_' + self.note.$loki;
-
     self.breadcrumbitems = [];
+    self.note = self.getNote(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.note) {
+      $window.history.back();
+      return;
+    }
+    
+    self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_notes_title',
-      href: backpath
+      href: '/notes/params/focus=notes_' + self.note.$loki
     });
     self.breadcrumbitems.push({
       label: self.note.name
     });
 
     self.deleteforbidden = false;
-    
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
   };
 
   self.changeStatus = function (status) {
@@ -55,9 +56,8 @@ function NoteDetailController($location, $routeParams, NoteService) {
   };
 
   self.delete = function () {
-    NoteService.remove(self.note
-      .$loki);
-    $location.path('/notes');
+    NoteService.remove(self.note.$loki);
+    $window.history.back();
   };
 
   self.edit = function () {

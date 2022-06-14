@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,5 @@ function ArchitectureEventController($routeParams, ArchitectureService) {
 
     self.id=$routeParams.id;
     self.eventid=$routeParams.eventid;
-    self.exitpath = '/architectureitems/' + $routeParams.id + '/events';
   };
 }

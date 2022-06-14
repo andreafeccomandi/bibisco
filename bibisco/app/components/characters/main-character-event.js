@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,18 +19,25 @@ angular.
     controller: MainCharacterEventController
   });
 
-function MainCharacterEventController($routeParams, MainCharacterService) {
+function MainCharacterEventController($routeParams, $window, MainCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.edit = $routeParams.eventid !== undefined ? true : false;
-    
-    let mainCharacter = MainCharacterService.getMainCharacter($routeParams.id);
-
-    // breadcrumb
     self.breadcrumbitems = [];
+
+    self.edit = $routeParams.eventid !== undefined ? true : false;
+
+    let mainCharacter = MainCharacterService.getMainCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!mainCharacter) {
+      $window.history.back();
+      return;
+    }
+    
+    // breadcrumb
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=maincharacters_' + mainCharacter.$loki
@@ -55,8 +62,7 @@ function MainCharacterEventController($routeParams, MainCharacterService) {
     }
 
     self.profileimage = mainCharacter.profileimage;
-    self.id=$routeParams.id;
+    self.id=parseInt($routeParams.id);
     self.eventid=$routeParams.eventid;
-    self.exitpath = '/maincharacters/' + $routeParams.id + '/events';
   };
 }

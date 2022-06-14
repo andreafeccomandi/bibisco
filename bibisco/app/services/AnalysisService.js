@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($injector, $tr
   StrandService, SupporterEditionChecker) {
   'use strict';
   
-  let supporterEdition;
   let ObjectService;
   let chapters;
   let chapter_scenes;
@@ -36,13 +35,6 @@ angular.module('bibiscoApp').service('AnalysisService', function ($injector, $tr
     // empty function, just to create the service while loading page
     // without eslint error
     init: function () {
-
-      // supporters check
-      supporterEdition = false;
-      if (SupporterEditionChecker.check()) {
-        $injector.get('IntegrityService').ok();
-        supporterEdition = true;
-      }
 
       // chapters and scenes
       chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
@@ -82,7 +74,7 @@ angular.module('bibiscoApp').service('AnalysisService', function ($injector, $tr
       locations = LocationService.getLocations();
       strands = StrandService.getStrands();
 
-      if (supporterEdition) {
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
         objects = this.getObjectService().getObjects();
       }
     },

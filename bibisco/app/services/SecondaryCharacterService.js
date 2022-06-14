@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('SecondaryCharacterService', function(
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, UuidService
-) {
+angular.module('bibiscoApp').service('SecondaryCharacterService', function($rootScope,
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService) {
   'use strict';
 
   return {
@@ -67,30 +66,41 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'secondarycharacters');
     },
-    getDynamicView: function() {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_secondarycharacters');
-    },
     getSecondaryCharacter: function(id) {
       return this.getCollection().get(id);
     },
     getSecondaryCharactersCount: function() {
-      return this.getDynamicView().count();
+      return this.getSecondaryCharacters().length;
     },
     getSecondaryCharacters: function() {
-      return this.getDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
     insert: function(secondarycharacter) {
       let images = [];
       secondarycharacter.images = images;
       CollectionUtilService.insert(this.getCollection(), secondarycharacter);
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: secondarycharacter.$loki,
+        collection: 'secondarycharacters'
+      });
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
-        this.getDynamicView());
+      CollectionUtilService.move(this.getCollection(), sourceId, targetId);
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sourceId,
+        collection: 'secondarycharacters'
+      });
     },
     remove: function(id) {
       CollectionUtilService.remove(this.getCollection(), id);
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'secondarycharacters'
+      });
     },
     setProfileImage: function (id, filename) {
       LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
@@ -102,6 +112,11 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function(
     },
     update: function(secondarycharacter) {
       CollectionUtilService.update(this.getCollection(), secondarycharacter);
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: secondarycharacter.$loki,
+        collection: 'secondarycharacters'
+      });
     }
   };
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 angular.module('bibiscoApp').service('UuidService', function() {
   'use strict';
 
-  var uuid = require('uuid/v4');
+  const { v4: uuidv4 } = require('uuid');
   return {
     generateUuid: function() {
-      return uuid();
+      return uuidv4();
     }
   };
 });

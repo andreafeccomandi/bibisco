@@ -1,13 +1,11 @@
-<div class="container">
-  <elementtitleform
-    breadcrumbitems="$ctrl.breadcrumbItems"
-    eventname="SHOW_ELEMENT_TITLE"
-    exitpath="{{$ctrl.exitpath}}"
-    pageheadertitle="{{$ctrl.pageheadertitle}}"
-    savefunction="$ctrl.save(title)"
-    titlelabel="jsp.architecture.strandTitle.form.title"
-    titlemandatory="true"
-    titlemaxlength="50"
-    titlevalue="{{$ctrl.name}}">
-  </elementtitleform>
-</div>
+<elementtitleform
+  breadcrumbitems="$ctrl.breadcrumbItems"
+  eventname="SHOW_ELEMENT_TITLE"
+  pageheadertitle="{{$ctrl.pageheadertitle}}"
+  savefunction="$ctrl.save(title)"
+  titlelabel="jsp.architecture.strandTitle.form.title"
+  titlemandatory="true"
+  titlemaxlength="50"
+  titlevalue="{{$ctrl.name}}">
+</elementtitleform>
+

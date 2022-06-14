@@ -1,20 +1,19 @@
-<div class="container">
-  <cardgrid
-    carddimension="small"
-    dndenabled="true"
-    dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
-    emptylisttext="note_emptylist"
-    emptylistbuttonlabel="note_create_first"
-    emptylistbuttonfunction="$ctrl.create()"
-    emptylistbuttontooltip="{{'note_firstcreate_tooltip'+$root.os}}"
-    family="notes"
-    items="$ctrl.cardgriditems"
-    pageheaderbuttonhotkey="$ctrl.hotkeys"
-    pageheaderbuttonlabel="note_create"
-    pageheaderbuttonfunction="$ctrl.create()"
-    pageheaderbuttontooltip="{{'note_create_tooltip'+$root.os}}"
-    pageheadersubtitle="common_notes_description"
-    pageheadertitle="common_notes_title"
-    selectfunction="$ctrl.select(id)"
-    type="full"></cardgrid>
-</div>
+<cardgrid
+  carddimension="small"
+  dndenabled="true"
+  dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+  emptylisttext="note_emptylist"
+  emptylistbuttonlabel="note_create_first"
+  emptylistbuttonfunction="$ctrl.create()"
+  emptylistbuttontooltip="{{'note_firstcreate_tooltip'+$root.os}}"
+  family="notes"
+  items="$ctrl.cardgriditems"
+  pageheaderbuttonhotkey="$ctrl.hotkeys"
+  pageheaderbuttonlabel="note_create"
+  pageheaderbuttonfunction="$ctrl.create()"
+  pageheaderbuttontooltip="{{'note_create_tooltip'+$root.os}}"
+  pageheadersubtitle="common_notes_description"
+  pageheadertitle="common_notes_title"
+  scrollable="true"
+  selectfunction="$ctrl.select(id)"></cardgrid>
+

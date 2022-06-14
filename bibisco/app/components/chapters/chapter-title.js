@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: ChapterTitleController
   });
 
-function ChapterTitleController($location, $rootScope, $scope, $routeParams, ChapterService, PopupBoxesService) {
+function ChapterTitleController($location, $rootScope, $scope, $routeParams, $window,
+  ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -34,7 +35,13 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, Cha
     self.breadcrumbItems = [];
 
     if ($routeParams.id !== undefined) {
-      let chapter = ChapterService.getChapter($routeParams.id);
+      let chapter = ChapterService.getChapter(parseInt($routeParams.id));
+      
+      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+      if (!chapter) {
+        $window.history.back();
+        return;
+      }
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
@@ -49,7 +56,6 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, Cha
         label: 'jsp.chapter.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/chapters/' + chapter.$loki;
       self.title = chapter.title;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.updateTitle';
@@ -96,7 +102,6 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, Cha
         self.selectedPart = self.selectItems[parts.length-1];
       }
 
-      self.exitpath = '/chapters';
       self.title = '';
       self.pageheadertitle = label;
     }
@@ -106,8 +111,7 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, Cha
     if (isValid) {
       
       if ($routeParams.id !== undefined) {
-        let chapter = ChapterService.getChapter(
-          $routeParams.id);
+        let chapter = ChapterService.getChapter(parseInt($routeParams.id));
         chapter.title = self.title;
         ChapterService.update(chapter);
       } else if (self.creatingChapter) {
@@ -128,7 +132,7 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, Cha
       self.checkExit = {
         active: false
       };
-      $location.path(self.exitpath);
+      $window.history.back();
     }
   };
 

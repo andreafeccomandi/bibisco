@@ -1,41 +1,32 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
-  </div>
-  <div class="row">
-    <pageheader headertitle="{{$ctrl.title | translate}}"
-       image="{{$ctrl.profileimage}}" 
-       imageenabled="$ctrl.profileimageenabled" 
-       noimageicon="{{$ctrl.noprofileimageicon}}">
-    </pageheader>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="eventsEventForm" ng-submit="$ctrl.save(eventsEventForm.$valid)" class="form-horizontal" novalidate>
-        <datetimeselect additionalclass="form-group"
-          buttongroupcols="5"
-          field="eventsEventForm.datetime"
-          inputcols="4"
-          label="events_add_event_datetime"
-          labelcols="3"
-          lastdatetimeselected="$ctrl.lastdatetimeselected"
-          name="datetime" 
-          opencalendardirection="down"
-          required
-          time="$ctrl.time"
-          timegregorian="$ctrl.timegregorian">
-        </datetimeselect>
-        <textinputfield field="eventsEventForm.event"
-          model="$ctrl.event" name="event" 
-          maxlength="200" required
-          label="events_add_event_event"
-          labelcols="3" inputcols="8">
-        </textinputfield>
-        <formbuttons backpath="$ctrl.exitpath"
-        form="eventsEventForm" offsetcols="3" sizecols="8">
-        </formbuttons>
-    </div>
-    </form>
-  </div>
-</div>
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
+<pageheader headertitle="{{$ctrl.title | translate}}"
+    image="{{$ctrl.profileimage}}" 
+    imageenabled="$ctrl.profileimageenabled" 
+    noimageicon="{{$ctrl.noprofileimageicon}}">
+</pageheader>
+
+<div class="col-sm-12">
+  <form name="eventsEventForm" ng-submit="$ctrl.save(eventsEventForm.$valid)" class="form-horizontal" novalidate>
+    <datetimeselect additionalclass="form-group"
+      buttongroupcols="5"
+      field="eventsEventForm.datetime"
+      inputcols="4"
+      label="events_add_event_datetime"
+      labelcols="3"
+      lastdatetimeselected="$ctrl.lastdatetimeselected"
+      name="datetime" 
+      opencalendardirection="down"
+      required
+      time="$ctrl.time"
+      timegregorian="$ctrl.timegregorian">
+    </datetimeselect>
+    <textinputfield field="eventsEventForm.event"
+      model="$ctrl.event" name="event" 
+      maxlength="200" required
+      label="events_add_event_event"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <formbuttons form="eventsEventForm">
+    </formbuttons>
+  </form>
 </div>

@@ -1,32 +1,11 @@
-<!--
-  *
-  *
-  * This template reuses the element-title-form component.
-  * The reused component was used to change the title (name)
-  * of the project. In order not to create a similar component
-  * just with different name, we reuse it.
-  *
-  * Please note: 
-  * - in the savefunction we MUST use $ctrl.save(title) even if we mean
-  *   to save the author;
-  * - titlevalue must the the actual author value.
-  * - titlemandatory is true just here. If users don't like to change,
-  *   let's go back. When creating the project, the author can be blank.
-  * TODO: Andrea, maybe in the future we could make the element-title-form
-  *       more flexible changing some names?
-  *
-  * TODO: remove this comment?
--->
-<div class="container">
-  <elementtitleform
-    breadcrumbitems="$ctrl.breadcrumbItems"
-    eventname="SHOW_ELEMENT_AUTHOR"
-    exitpath="/projecthome"
-    pageheadertitle="common_author"
-    savefunction="$ctrl.save(title)"
-    titlelabel="common_author"
-    titlemandatory="true"
-    titlemaxlength="100"
-    titlevalue="{{$ctrl.author}}">
-  </elementtitleform>
-</div>
+<elementtitleform
+  breadcrumbitems="$ctrl.breadcrumbItems"
+  eventname="SHOW_ELEMENT_AUTHOR"
+  pageheadertitle="common_author"
+  savefunction="$ctrl.save(title)"
+  titlelabel="common_author"
+  titlemandatory="true"
+  titlemaxlength="100"
+  titlevalue="{{$ctrl.author}}">
+</elementtitleform>
+

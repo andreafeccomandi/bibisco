@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,31 +19,32 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $rootScope, $routeParams,
+function ObjectDetailController($location, $routeParams, $window,
   ChapterService, ObjectService, UtilService) {
 
   var self = this;
 
   self.$onInit = function () {
 
-    self.object = self.getObject($routeParams.id);
-    self.mode = $routeParams.mode;
-    let backpath = '/objects/params/focus=objects_' + self.object.$loki;
-
     self.breadcrumbitems = [];
+    self.object = self.getObject(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.object) {
+      $window.history.back();
+      return;
+    }
+
+    self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'objects',
-      href: backpath
+      href: '/objects/params/focus=objects_' + self.object.$loki
     });
     self.breadcrumbitems.push({
       label: self.object.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
-    
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
   };
 
   self.changeStatus = function (status) {
@@ -56,9 +57,8 @@ function ObjectDetailController($location, $rootScope, $routeParams,
   };
 
   self.delete = function () {
-    ObjectService.remove(self.object
-      .$loki);
-    $location.path('/objects');
+    ObjectService.remove(self.object.$loki);
+    $window.history.back();
   };
 
   self.edit = function () {

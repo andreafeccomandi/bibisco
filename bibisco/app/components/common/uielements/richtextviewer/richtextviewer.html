@@ -1,13 +1,14 @@
 <div class="richtextviewer-container">
-<div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} bibiscoNotSelectableText" 
-    ng-bind-html="$ctrl.content | trusted">
-</div>
+  <div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} bibiscoNotSelectableText richtextviewer" 
+      ng-bind-html="$ctrl.content | trusted">
+  </div>
 
-<siblingelementsnavigator
-  previouselementlabel="{{$ctrl.previouselementlabel}}"
-  previouselementlink="$ctrl.previouselementlink"
-  previouselementtooltip="{{$ctrl.previouselementtooltip}}"
-  nextelementlabel="{{$ctrl.nextelementlabel}}"
-  nextelementlink="$ctrl.nextelementlink"
-  nextelementtooltip="{{$ctrl.nextelementtooltip}}">
-</siblingelementsnavigator>
+  <siblingelementsnavigator
+    previouselementlabel="{{$ctrl.previouselementlabel}}"
+    previouselementlink="$ctrl.previouselementlink"
+    previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+    nextelementlabel="{{$ctrl.nextelementlabel}}"
+    nextelementlink="$ctrl.nextelementlink"
+    nextelementtooltip="{{$ctrl.nextelementtooltip}}">
+  </siblingelementsnavigator>
+</div>

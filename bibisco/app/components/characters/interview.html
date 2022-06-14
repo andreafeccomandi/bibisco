@@ -1,30 +1,26 @@
-<div class="detail-content-with-header-subtitle">
-  <div class="container full-height">
-    <div class="row full-height">
-      <div ng-if="$root.showprojectexplorer" class="col-sm-4 full-height">
-        <projectexplorer></projectexplorer>
-      </div>
-      <div class="col-sm-8 full-height" ng-class="{'col-sm-offset-2': !$root.showprojectexplorer}">
-        <interviewviewer ng-if="!$ctrl.editmode"
-          characters="$ctrl.characters"
-          maincharacter="$ctrl.maincharacter" 
-          previouselementlabel="{{$ctrl.previouselementlabel}}"
-          previouselementlink="$ctrl.previouselementlink"
-          previouselementtooltip="{{$ctrl.previouselementtooltip}}"
-          nextelementlabel="{{$ctrl.nextelementlabel}}"
-          nextelementlink="$ctrl.nextelementlink"
-          nextelementtooltip="{{$ctrl.nextelementtooltip}}"
-          type="$ctrl.type"
-          words="$ctrl.words"></interviewviewer>
-        <intervieweditor ng-if="$ctrl.editmode" 
-          autosaveenabled="$ctrl.autosaveenabled"
-          characters="$ctrl.characters"
-          content="$ctrl.content"
-          maincharacter="$ctrl.maincharacter" 
-          questionselected="$ctrl.questionselected"
-          type="$ctrl.type"
-          words="$ctrl.words"></intervieweditor>
-      </div>
-    </div>
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer">
+  <div ng-if="$root.showprojectexplorer" class="detail-content-project-explorer full-height">
+    <projectexplorer></projectexplorer>
+  </div>
+  <div class="detail-content full-height" ng-class="{'detail-content-offset': !$root.showprojectexplorer}">
+    <interviewviewer ng-if="!$ctrl.editmode"
+      characters="$ctrl.characters"
+      maincharacter="$ctrl.maincharacter" 
+      previouselementlabel="{{$ctrl.previouselementlabel}}"
+      previouselementlink="$ctrl.previouselementlink"
+      previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+      nextelementlabel="{{$ctrl.nextelementlabel}}"
+      nextelementlink="$ctrl.nextelementlink"
+      nextelementtooltip="{{$ctrl.nextelementtooltip}}"
+      type="$ctrl.type"
+      words="$ctrl.words"></interviewviewer>
+    <intervieweditor ng-if="$ctrl.editmode" 
+      autosaveenabled="$ctrl.autosaveenabled"
+      characters="$ctrl.characters"
+      content="$ctrl.content"
+      maincharacter="$ctrl.maincharacter" 
+      questionselected="$ctrl.questionselected"
+      type="$ctrl.type"
+      words="$ctrl.words"></intervieweditor>
   </div>
 </div>

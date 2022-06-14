@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,29 @@ angular.
     controller: MainCharacterImagesController
   });
 
-function MainCharacterImagesController($location, $routeParams,
+function MainCharacterImagesController($location, $routeParams, $window,
   MainCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
-    
-    let mainCharacter = MainCharacterService.getMainCharacter($routeParams.id);
-    self.backpath = '/maincharacters/' + mainCharacter.$loki;
 
     self.breadcrumbitems = [];
+    let mainCharacter = MainCharacterService.getMainCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!mainCharacter) {
+      $window.history.back();
+      return;
+    }
+    
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=maincharacters_' + mainCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: mainCharacter.name,
-      href: self.backpath
+      href: '/maincharacters/' + mainCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'
@@ -49,7 +54,7 @@ function MainCharacterImagesController($location, $routeParams,
   };
 
   self.delete = function(filename) {
-    let mainCharacter = MainCharacterService.deleteImage($routeParams.id, filename);
+    let mainCharacter = MainCharacterService.deleteImage(parseInt($routeParams.id), filename);
     self.images = mainCharacter.images;
     self.selectedimage = mainCharacter.profileimage;
   };
@@ -59,7 +64,7 @@ function MainCharacterImagesController($location, $routeParams,
   };
 
   self.select = function(filename) {
-    MainCharacterService.setProfileImage($routeParams.id, filename);
+    MainCharacterService.setProfileImage(parseInt($routeParams.id), filename);
     self.selectedimage = filename;
   };
 }

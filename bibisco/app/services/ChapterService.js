@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilService,
+angular.module('bibiscoApp').service('ChapterService', function ($rootScope, CollectionUtilService,
   LoggerService, ProjectDbConnectionService, ProjectService) {
   'use strict';
 
@@ -33,10 +33,10 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
     },
     getChaptersCount: function () {
-      return this.getDynamicView().count();
+      return this.getChapters().length;
     },
     getChapters: function () {
-      return this.getDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
     getChaptersWithPrologueAndEpilogue: function () {
       let result = [];
@@ -149,7 +149,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     getWordsWrittenMonthAvg : function() {
       
       let monthAvg = [];
-      let wordswrittenperday = this.getWordswrittenperdayDynamicView();
+      let wordswrittenperday = this.getWordswrittenperday();
 
       let firstWritingDay = null;
       if (wordswrittenperday.length > 0 && wordswrittenperday[0].day > 0) {
@@ -212,7 +212,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     getWordsWrittenDayOfWeek : function() {
       
       let dayOfWeek = [];
-      let wordswrittenperday = this.getWordswrittenperdayDynamicView();
+      let wordswrittenperday = this.getWordswrittenperday();
 
       // init day of week
       for (let index = 0; index < 7; index++) {
@@ -233,28 +233,20 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'chapters');
     },
-    getDynamicView: function () {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_chapters');
-    },
     getScenesCollection: function () {
       return ProjectDbConnectionService.getProjectDb().getCollection('scenes');
     },
     getWordswrittenperdayCollection: function () {
       return ProjectDbConnectionService.getProjectDb().getCollection('wordswrittenperday');
     },
-    getWordswrittenperdayDynamicView: function () {
-      return CollectionUtilService.getDynamicViewSortedByField(
-        this.getWordswrittenperdayCollection(), 'all_wordswrittenperday', 'day').data();
+    getWordswrittenperday: function () {        
+      return CollectionUtilService.getDataSortedByField(this.getWordswrittenperdayCollection(), 'day');
     },
     getPartsCount: function () {
-      return this.getPartsDynamicView().count();
+      return this.getPartsCollection().count();
     },
     getPartsCollection: function () {
       return ProjectDbConnectionService.getProjectDb().getCollection('parts');
-    },
-    getPartsDynamicView: function () {
-      return CollectionUtilService.getDynamicViewSortedByPosition(this.getPartsCollection(), 'all_parts');
     },
     getPart: function (id) {
       return this.getPartsCollection().get(id);
@@ -273,7 +265,7 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       return result;
     },
     getParts: function () {
-      return this.getPartsDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getPartsCollection());
     },
     insertPart: function (part) {
       let chaptersincluded = 0;
@@ -282,9 +274,24 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       } 
       part.chaptersincluded = chaptersincluded;
       CollectionUtilService.insert(this.getPartsCollection(), part);
+      
+      // save database
+      ProjectDbConnectionService.saveDatabase();
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: part.$loki,
+        collection: 'parts'
+      });
     },
     updatePart: function (part) {
       CollectionUtilService.update(this.getPartsCollection(), part);
+
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: part.$loki,
+        collection: 'parts'
+      });
     },
     removePart: function (id) {
 
@@ -307,29 +314,18 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'parts'
+      });
     },
     getAllScenes: function () {
-      return this.getAllScenesDynamicView().data();
+      return CollectionUtilService.getData(this.getScenesCollection());
     },
     getAllScenesCount: function () {
-      return this.getAllScenesDynamicView().count();
-    },
-    getAllScenesDynamicView: function () {
-      let dynamicViewName = 'all_scenes';
-      let dynamicView = this.getScenesCollection().getDynamicView(dynamicViewName);
-      if (!dynamicView) {
-        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
-        dynamicView = this.getScenesCollection().addDynamicView(dynamicViewName);
-        // get only positions greater than zero; we use negative position for special records
-        dynamicView.applyFind({'position': {'$gt': 0}});
-
-        // save database
-        ProjectDbConnectionService.saveDatabase();
-      } else {
-        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
-      }
-
-      return dynamicView;
+      return this.getScenesCollection().count();
     },
     insert: function (chapter, partId) {
 
@@ -347,12 +343,17 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
         let chapterTargetId = this.getChapterByPosition(partLastChapterPosition).$loki;
         // a new chapter is always inserted in the last position
         let chapterSourceId  = this.getChapterByPosition(this.getChaptersCount()).$loki; 
-        CollectionUtilService.moveWithoutCommit(this.getCollection(), chapterSourceId, chapterTargetId,
-          this.getDynamicView());
+        CollectionUtilService.moveWithoutCommit(this.getCollection(), chapterSourceId, chapterTargetId);
       }
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: chapter.$loki,
+        collection: 'chapters'
+      });
     },
 
     insertPrologue: function (chapter) {
@@ -368,6 +369,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: chapter.$loki,
+        collection: 'chapters'
+      });
     },
 
     insertEpilogue: function (chapter) {
@@ -383,6 +390,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: chapter.$loki,
+        collection: 'chapters'
+      });
     },
 
     getPrologue: function() {
@@ -460,11 +473,16 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       }
 
       // move chapter
-      result =  CollectionUtilService.moveWithoutCommit(this.getCollection(), sourceId, targetId,
-        this.getDynamicView());
+      result =  CollectionUtilService.moveWithoutCommit(this.getCollection(), sourceId, targetId);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sourceId,
+        collection: 'chapters'
+      });
 
       return result;
     },
@@ -483,11 +501,16 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
         // update chapter position based on part
         let partLastChapterPosition = this.getPartLastChapterPosition(partId);
         let chapterTargetId = this.getChapterByPosition(partLastChapterPosition).$loki;
-        CollectionUtilService.moveWithoutCommit(this.getCollection(), chapterId, chapterTargetId,
-          this.getDynamicView());
+        CollectionUtilService.moveWithoutCommit(this.getCollection(), chapterId, chapterTargetId);
 
         // save database
         ProjectDbConnectionService.saveDatabase();
+
+        // emit move event
+        $rootScope.$emit('MOVE_ELEMENT', {
+          id: chapterId,
+          collection: 'chapters'
+        });
       }
     },
 
@@ -517,6 +540,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'chapters'
+      });
     },
 
     update: function (chapter) {
@@ -525,6 +554,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: chapter.$loki,
+        collection: 'chapters'
+      });
     },
 
     updateChapterStatusWordsCharactersWithoutCommit: function (id) {
@@ -708,16 +743,13 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
     },
 
     getScenesCount: function (chapterid) {
-      return this.getChapterScenesDynamicView(chapterid).count();
+      let scenes = this.getScenes(chapterid);
+      return scenes ? scenes.length : 0;
     },
 
     getScenes: function (chapterid) {
-      return this.getChapterScenesDynamicView(chapterid).data();
-    },
-
-    getChapterScenesDynamicView:  function (chapterid) {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getScenesCollection(), 'chapterscenes_' + chapterid, {
+      return CollectionUtilService.getDataSortedByPosition(
+        this.getScenesCollection(), {
           chapterid: {
             '$eq': chapterid
           }
@@ -744,6 +776,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: scene.$loki,
+        collection: 'scenes'
+      });
     },
 
 
@@ -787,19 +825,19 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
     moveScene: function (sourceId, targetId) {
       let chapterid = this.getScene(sourceId).chapterid;
-      let chapterscenes = CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getScenesCollection(), 'chapterscenes_' + chapterid, {
+      
+      CollectionUtilService.move(this.getScenesCollection(), sourceId,
+        targetId, {
           chapterid: {
             '$eq': chapterid
           }
         });
-      return CollectionUtilService.move(this.getScenesCollection(), sourceId,
-        targetId,
-        chapterscenes, {
-          chapterid: {
-            '$eq': chapterid
-          }
-        });
+
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sourceId,
+        collection: 'scenes'
+      });
     },
 
     removeSceneWithoutCommit: function (id) {
@@ -807,7 +845,10 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
       let scene = this.getScene(id);
 
       // remove scene
-      CollectionUtilService.removeWithoutCommit(this.getScenesCollection(), id);
+      CollectionUtilService.removeWithoutCommit(this.getScenesCollection(), id, 
+        { chapterid: {
+          '$eq': scene.chapterid
+        }});
 
       // update chapter status
       this.updateChapterStatusWordsCharactersWithoutCommit(scene.chapterid);
@@ -818,6 +859,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'scenes'
+      });
     },
 
     updateSceneWithoutCommit: function (scene) {
@@ -844,10 +891,22 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: scene.$loki,
+        collection: 'scenes'
+      });
     },
 
     updateSceneTitle: function (scene) {
       CollectionUtilService.update(this.getScenesCollection(), scene);
+
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: scene.$loki,
+        collection: 'scenes'
+      });
     },
 
     getLastScenetime: function () {
@@ -879,6 +938,12 @@ angular.module('bibiscoApp').service('ChapterService', function (CollectionUtilS
 
       // save database
       ProjectDbConnectionService.saveDatabase();
+
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sceneid,
+        collection: 'scenes'
+      });
     }
   };
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
     },
 
     locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction, denyFunction) {
-      if (checkExit.active && formDirty) {
+      if (checkExit && checkExit.active && formDirty) {
         event.preventDefault();
         let wannaGoPath = $location.path();
         checkExit.active = false;
@@ -137,6 +137,33 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
       }, function () {
         $rootScope.$emit('CLOSE_POPUP_BOX');
       });
-    }
+    },
+
+    waiting: function(waitingMessage, closeEvent, size) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        backdrop: 'static',
+        component: 'modalwaiting',
+        keyboard: false,
+        resolve: {
+          message: function() {
+            return waitingMessage;
+          },
+          closeEvent: function() {
+            return closeEvent;
+          }
+        },
+        size: size ? size : 'sm'
+      });
+
+      $rootScope.$emit('OPEN_POPUP_BOX');
+
+      modalInstance.result.then(function() {
+        // ok: unreachable code: we're in alert!
+      }, function() {
+        // cancel
+        $rootScope.$emit('CLOSE_POPUP_BOX');
+      });
+    },
   };
 });

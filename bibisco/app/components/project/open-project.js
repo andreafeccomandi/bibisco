@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Chap
   var self = this;
   self.$onInit = function () {
     self.confirmdialogopen = false;
-    self.hotkeys = ['esc'];
     self.projects = ProjectService.getProjects();
   };
 
@@ -60,9 +59,5 @@ function OpenProjectController($location, $rootScope, $timeout, $translate, Chap
     function () {
 
     });
-  };
-
-  self.back = function() {
-    $location.path('/start');
   };
 }

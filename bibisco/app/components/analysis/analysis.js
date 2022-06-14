@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,9 @@ function AnalysisController($injector, $rootScope, $timeout, AnalysisService, Su
       item: 'analysis'
     });
 
-    // supporters check
-    self.supporterEdition = false;
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      self.supporterEdition = true;
-    }
-
-
+    // supporters or trial check
+    self.showSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
+    
     self.loading = true;
     $timeout(function () {
       AnalysisService.init();

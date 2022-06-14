@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,23 @@ angular.
     controller: ChapterInfoDetailController
   });
 
-function ChapterInfoDetailController($location, $routeParams, ChapterService) {
+function ChapterInfoDetailController($location, $routeParams,  $window, ChapterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.breadcrumbitems = [];
+
+    self.chapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.chapter) {
+      $window.history.back();
+      return;
+    }
+
     self.mode = $routeParams.mode;
-    let backpath = '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type;
 
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
@@ -40,22 +48,18 @@ function ChapterInfoDetailController($location, $routeParams, ChapterService) {
       self.subtitle = 'common_notes_description';
     }
 
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
       href: '/chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
-      href: backpath
+      href: '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type
     });
     self.breadcrumbitems.push({
       label: self.title
     });
 
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
   };
 
   self.changeStatus = function(status) {

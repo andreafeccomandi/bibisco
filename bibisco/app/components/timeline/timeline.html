@@ -1,29 +1,16 @@
-<div class="main-section-header">
-  <div class="container">
-    <div class="row">
-      <pageheader headertitle="timeline_title" buttonshow="false"
-         tipcode="timelineTip" tipenabled="true">
-      </pageheader>
-    </div>
-  </div>
-</div>
+<pageheader headertitle="timeline_title"></pageheader>
+
 <div ng-show="$ctrl.timeline.length == 0">
-  <div class="container">
-  <div class="card-grid-emptyitems card-grid-emptyitems-no-header-subtitle-full">
-    <div class="container">
-      <jumbotronbutton text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" >
-      </jumbotronbutton>
-    </div>
-  </div>
-  </div>
+  <jumbotronbutton text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" >
+  </jumbotronbutton>
 </div>
-<div ng-show="$ctrl.timeline.length > 0" class="timeline-container timeline-container-scenes">
-  <div class="container">
-    <div class="row">
-      <ul class="timeline timeline-scenes">
-        <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
-          index="($index % 12)" element="timelineelement" mode="view"></timelineelement>
-      </ul>
-    </div>
-  </div>
+
+<div ng-show="$ctrl.timeline.length > 0" class="scrollable-box-full-height-page-with-header">
+  <ul class="timeline timeline-scenes">
+    <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
+      index="($index % 12)" element="timelineelement" mode="view"></timelineelement>
+  </ul>
 </div>
+
+<pagefooter tipcode="timelineTip" tipenabled="true">
+</pagefooter>

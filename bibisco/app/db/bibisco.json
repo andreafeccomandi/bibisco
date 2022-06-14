@@ -263,7 +263,67 @@
             "version": 0
           },
           "$loki": 26
-        }
+        },
+        {
+          "name": "zoomLevel",
+          "value": 100,
+          "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+          },
+          "$loki": 27
+        },
+        {
+          "name": "sceneseparator",
+          "value": "blank_line",
+          "meta": {
+              "revision": 0,
+              "created": 1487541445286,
+              "version": 0
+          },
+          "$loki": 28
+        },
+        {
+          "name": "linespacing",
+          "value": 14,
+          "meta": {
+              "revision": 0,
+              "created": 1487541445286,
+              "version": 0
+          },
+          "$loki": 29
+      },
+      {
+          "name": "paragraphspacing",
+          "value": "medium",
+          "meta": {
+              "revision": 0,
+              "created": 1487541445286,
+              "version": 0
+          },
+          "$loki": 30
+      },
+      {
+          "name": "chaptertitleformat",
+          "value": "numbertitle",
+          "meta": {
+              "revision": 0,
+              "created": 1487541445286,
+              "version": 0
+          },
+          "$loki": 31
+      },
+      {
+          "name": "chaptertitleposition",
+          "value": "left",
+          "meta": {
+              "revision": 0,
+              "created": 1487541445286,
+              "version": 0
+          },
+          "$loki": 32
+      }
       ],
       "idIndex": [
         1,
@@ -291,7 +351,13 @@
         23,
         24,
         25,
-        26
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
       ],
       "binaryIndices": {},
       "constraints": null,
@@ -310,7 +376,7 @@
       "disableChangesApi": true,
       "autoupdate": false,
       "ttl": null,
-      "maxId": 26,
+      "maxId": 32,
       "DynamicViews": [],
       "events": {
         "insert": [

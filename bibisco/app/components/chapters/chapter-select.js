@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,25 @@ angular.
     controller: ChapterSelectController
   });
 
-function ChapterSelectController($location, $rootScope, $routeParams, $scope, 
+function ChapterSelectController($location, $rootScope, $routeParams, $scope, $window,
   ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
-    $rootScope.$emit('MOVE_SCENE_SELECT_CHAPTER');
-    
-    self.chapterid = $routeParams.chapterid;
-    self.sourceChapter = ChapterService.getChapter($routeParams.chapterid);
-    self.scene = ChapterService.getScene($routeParams.sceneid);
-    self.backpath = '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view';
-    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
-    if (self.fromtimeline) {
-      self.backpath = '/timeline' + self.backpath;
-    }
 
     self.breadcrumbitems = [];
+    
+    self.chapterid = parseInt($routeParams.chapterid);
+    self.sourceChapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
+    self.scene = ChapterService.getScene(parseInt($routeParams.sceneid));
+
+    // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
+    if (!self.sourceChapter || !self.scene || self.chapterid !== self.scene.chapterid) {
+      $window.history.back();
+      return;
+    }
+
+    $rootScope.$emit('MOVE_SCENE_SELECT_CHAPTER');
     self.breadcrumbitems.push({
       label: 'common_chapters',
       href: '/chapters/params/focus=chapters_' + self.sourceChapter.$loki
@@ -48,7 +50,7 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope,
 
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: self.backpath
+      href: '/chapters/' + self.sourceChapter.$loki + '/scenes/' + self.scene.$loki + '/view'
     });
 
     self.breadcrumbitems.push({

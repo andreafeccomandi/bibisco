@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,32 +19,34 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $rootScope, $routeParams, 
+function LocationDetailController($location, $routeParams, $window,
   ChapterService, LocationService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.location = self.getLocation($routeParams.id);
+    self.breadcrumbitems = [];
+    self.location = self.getLocation(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.location) {
+      $window.history.back();
+      return;
+    }
+
     self.mode = $routeParams.mode;
     self.name = LocationService.calculateLocationName(self.location);
-    let backpath = '/locations/params/focus=locations_' + self.location.$loki;
-
-    self.breadcrumbitems = [];
+    
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: backpath
+      href: '/locations/params/focus=locations_' + self.location.$loki
     });
     self.breadcrumbitems.push({
       label: self.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
-
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
   };
 
   self.changeStatus = function(status) {
@@ -57,9 +59,8 @@ function LocationDetailController($location, $rootScope, $routeParams,
   };
 
   self.delete = function() {
-    LocationService.remove(self.location
-      .$loki);
-    $location.path('/locations');
+    LocationService.remove(self.location.$loki);
+    $window.history.back();
   };
 
   self.edit = function () {

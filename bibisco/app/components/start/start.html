@@ -1,19 +1,16 @@
-<div class="container">
-  <div class="jumbotron top50">
-    <div class="row">
-      <h1>{{"jsp.start.h1" | translate}}</h1>
-    </div>
-    <div class="row top30"></div>
-    <div class="row bibiscoNotSelectableText">
-      <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.openProject()" type="button" class="btn btn-primary">{{"jsp.start.button.openProject" | translate}}</button>
-      <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-default">{{"jsp.start.button.createProject" | translate}}</button>
-      <button ng-show="!$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-primary">{{"jsp.start.button.createFirstProject" | translate}}</button>
-      <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.createSequel()" 
-        uib-tooltip="{{'sequel_tooltip'| translate}}" tooltip-placement="bottom"
-        type="button" class="btn btn-default">{{"create_sequel_button" | translate}}</button>
-      <button ng-click="$ctrl.importProject()" type="button" class="btn btn-default">{{"jsp.start.button.importProject" | translate}}</button>
-      <button ng-click="$ctrl.settings()" type="button" class="btn btn-default">{{"jsp.start.button.settings" | translate}}</button>
-      <button ng-click="$ctrl.info()" type="button" class="btn btn-default">{{"jsp.menu.info" | translate}}</button>
-    </div>
+
+<div class="jumbotron top50">
+  <h1 class="start-title">{{"jsp.start.h1" | translate}}</h1>
+  <div class="bibiscoNotSelectableText jumbotron-buttonbox">
+    <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.openProject()" type="button" class="btn btn-primary">{{"jsp.start.button.openProject" | translate}}</button>
+    <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-default">{{"jsp.start.button.createProject" | translate}}</button>
+    <button ng-show="!$ctrl.projectsPresent()" ng-click="$ctrl.createProject()" type="button" class="btn btn-primary">{{"jsp.start.button.createFirstProject" | translate}}</button>
+    <button ng-show="$ctrl.projectsPresent()" ng-click="$ctrl.createSequel()" 
+      uib-tooltip="{{'sequel_tooltip'| translate}}" tooltip-placement="bottom"
+      type="button" class="btn btn-default">{{"create_sequel_button" | translate}}</button>
+    <button ng-click="$ctrl.importProject()" type="button" class="btn btn-default">{{"jsp.start.button.importProject" | translate}}</button>
+    <button ng-click="$ctrl.settings()" type="button" class="btn btn-default">{{"jsp.start.button.settings" | translate}}</button>
+    <button ng-click="$ctrl.info()" type="button" class="btn btn-default">{{"jsp.menu.info" | translate}}</button>
   </div>
 </div>
+

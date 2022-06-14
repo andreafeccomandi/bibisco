@@ -1,4 +1,4 @@
-<div class="col-sm-12 page-header">
+<div class="page-header" ng-class="{ 'page-subheader' : $ctrl.subheader}">
   <h1>
       <span ng-if="$ctrl.imageenabled && $ctrl.image" class="page-header-profile"> 
         <img src="{{$ctrl.fullpathimage}}" class="img-rounded">
@@ -15,45 +15,29 @@
           uib-tooltip="{{'add_profile_image_tooltip' | translate}}">+</button>
       </span>
 
-      <span class="page-header-truncate-title" ng-class="{ 'page-header-truncate-title-img-offset' : $ctrl.imageenabled}">
+      <span class="page-header-truncate-title" style="width: calc(100% - {{$ctrl.statusandbuttonsspace}}px)">
         {{$ctrl.headertitle | translate}}
-        <small>
-        <wordscharacterscounter ng-if="$ctrl.words != null" 
-          words="$ctrl.words" characters="$ctrl.characters">
-        </wordscharacterscounter>
-        <wordsgoalcounter ng-if="$ctrl.showwordsgoalcounter"></wordsgoalcounter>
-        </small>
-      </span>
-      <span ng-if="$ctrl.taskstatus" class="pull-right page-header-taskstatus-selector">
-        <taskstatusselector 
-          status="$ctrl.taskstatus" 
-          readonly="$ctrl.taskstatusreadonly" 
-          changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
       </span>
       <span class="pull-right page-header-buttonbar">
-        <contextualtipbutton ng-if="$ctrl.tipenabled" modalstyle="{{$ctrl.tipmodalstyle}}"
-          tipcode="{{$ctrl.tipcode}}"></contextualtipbutton>
-        <dropdownmenu buttonlabel="jsp.common.button.more" 
-          items="$ctrl.dropdownitems" 
-          open="{{$ctrl.dropdownopen}}"
-          visible="$ctrl.dropdownitems && $ctrl.dropdownitems.length > 0">
-        </dropdownmenu>
-        <button ng-if="$ctrl.buttonshow" type="button" class="btn btn-{{$ctrl.buttonstyle}}"
-          ng-click="$ctrl.buttonfunction()" id="{{$ctrl.buttonid}}"
-          uib-tooltip="{{$ctrl.buttontooltip | translate}}">
-          {{$ctrl.buttonlabel | translate}}</button>
-        <button ng-if="$ctrl.button2show" type="button" class="btn btn-{{$ctrl.button2style}}"
-          ng-click="$ctrl.button2function()" id="{{$ctrl.button2id}}"
-          uib-tooltip="{{$ctrl.button2tooltip | translate}}">
-          {{$ctrl.button2label | translate}}</button>
+        <small>
+          <taskstatusselector ng-if="$ctrl.taskstatus" 
+            status="$ctrl.taskstatus" 
+            readonly="$ctrl.taskstatusreadonly" 
+            changefunction="$ctrl.taskstatuschangefunction({status})"></taskstatusselector>
+          <wordscharacterscounter ng-if="$ctrl.words != null" 
+            words="$ctrl.words" characters="$ctrl.characters">
+          </wordscharacterscounter>
+          <wordsgoalcounter ng-if="$ctrl.showwordsgoalcounter"></wordsgoalcounter>
+        </small>
       </span>
   </h1>
 </div>
-<div class="row" ng-if="$ctrl.headersubtitle">
-  <div class="col-sm-12">
-    <blockquote>
-      <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
-      {{$ctrl.headersubtitle | translate}}</i>
-    </blockquote>
-  </div>
+<div ng-if="$ctrl.headersubtitle">
+  <blockquote>
+    <i>
+      <span class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+        {{$ctrl.headersubtitle | translate}}
+      </span>
+    </i>
+  </blockquote>
 </div>

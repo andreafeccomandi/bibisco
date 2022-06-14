@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: LocationEventController
   });
 
-function LocationEventController($routeParams, LocationService) {
+function LocationEventController($routeParams, $window, LocationService) {
 
   var self = this;
 
@@ -27,11 +27,18 @@ function LocationEventController($routeParams, LocationService) {
     
     self.edit = $routeParams.eventid !== undefined ? true : false;
       
-    let location = LocationService.getLocation($routeParams.id);
+    self.breadcrumbitems = [];
+    let location = LocationService.getLocation(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!location) {
+      $window.history.back();
+      return;
+    }
+
     let locationName = LocationService.calculateLocationName(location);
 
     // breadcrumb
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_locations',
       href: '/locations/params/focus=locations_' + location.$loki
@@ -56,8 +63,7 @@ function LocationEventController($routeParams, LocationService) {
     }
 
     self.profileimage = location.profileimage;
-    self.id=$routeParams.id;
+    self.id=parseInt($routeParams.id);
     self.eventid=$routeParams.eventid;
-    self.exitpath = '/locations/' + $routeParams.id + '/events';
   };
 }

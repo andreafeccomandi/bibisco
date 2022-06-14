@@ -124,6 +124,7 @@
     </button>
   </div>
 </div>
+
 <div ng-if="$ctrl.showfindreplacetoolbar"
   class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
   <form class="form-inline">
@@ -187,26 +188,44 @@
       </div>
     </div>
   </form>
-  </div>
 </div>
+
 <div id="richtexteditorcontainer" 
   ng-class="{ 'richtexteditor-contenteditable-container-findreplace': $ctrl.showfindreplacetoolbar, 
   'richtexteditor-contenteditable-container-nofindreplace': !$ctrl.showfindreplacetoolbar,
   'fullscreen': $root.fullscreen }" 
-  class="richtexteditor-contenteditable-container">
+  class="richtexteditor-contenteditable-container"
+  onload="">
   <div contenteditable="{{$ctrl.contenteditable}}" 
     ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
     spellcheck="{{$ctrl.spellcheckenabled}}"
-    class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} mousetrap"
+    class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} mousetrap"
     id="richtexteditor"
     ng-blur="$ctrl.blur()"
     ng-click="$ctrl.clickoneditor()"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
-    ng-paste="$ctrl.sanitizePaste($event)">
+    ng-paste="$ctrl.sanitizePaste($event)"
+    ng-scroll="$ctrl.scroll">
   </div>
-  
 </div>
+
 <div ng-if="$ctrl.exitfullscreenmessage" class="exitfullscreenmessage">
   <h1>{{'exit_full_screen_mode' | translate}}</h1>
+</div>
+
+<div class="comment-box" ng-if="$ctrl.showComment" 
+  style="top: {{$ctrl.commentPositionTop}}px; left: {{$ctrl.commentPositionLeft}}px;">
+  <i class="fa fa-comment text-primary"></i>
+  <div class="comment-box-body">
+    <textarea ng-model="$ctrl.commentText" ng-change="$ctrl.commentChanged()"
+      placeholder="{{'comment_placeholder' | translate}}"></textarea>
+  </div>
+  <div class="comment-box-footer bibiscoNotSelectableText">
+    <a ng-click="$ctrl.deleteComment()">{{'jsp.common.button.delete' | translate}}</a>
+  </div>
+</div>
+                                                                                                                                                                                                         
+<div ng-if="$ctrl.showComment" class="comment-box-connector" 
+  style="left:{{$ctrl.commentLineLeft}}px;top:{{$ctrl.commentLineTop}}px;width:{{$ctrl.commentLineWidth}}px;">
 </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: LocationTitleController
   });
 
-function LocationTitleController($location, $rootScope, $routeParams, $scope,
+function LocationTitleController($rootScope, $routeParams, $scope, $window,
   LocationService, PopupBoxesService) {
 
   var self = this;
@@ -33,7 +33,14 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
     self.breadcrumbitems = [];
 
     if ($routeParams.id !== undefined) {
-      let location = LocationService.getLocation($routeParams.id);
+      let location = LocationService.getLocation(parseInt($routeParams.id));
+  
+      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+      if (!location) {
+        $window.history.back();
+        return;
+      }
+
       let locationName = LocationService.calculateLocationName(location);
 
       self.breadcrumbitems.push({
@@ -55,9 +62,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
       self.city = location.city;
       self.location = location.location;
 
-      self.pageheadertitle =
-        'jsp.locations.dialog.title.changeThumbnailTitle';
-      self.exitpath = '/locations/' + location.$loki + '/view';
+      self.pageheadertitle = 'jsp.locations.dialog.title.changeThumbnailTitle';
 
       self.profileimageenabled = true;
       self.profileimage = location.profileimage;
@@ -80,7 +85,6 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
       self.location = null;
 
       self.pageheadertitle = 'jsp.locations.dialog.title.createLocation';
-      self.exitpath = '/locations';
 
       self.profileimageenabled = false;
     }
@@ -98,8 +102,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
     if (isValid) {
 
       if ($routeParams.id !== undefined) {
-        let location = LocationService.getLocation(
-          $routeParams.id);
+        let location = LocationService.getLocation(parseInt($routeParams.id));
         location.nation = self.nation;
         location.state = self.state;
         location.city = self.city;
@@ -119,7 +122,7 @@ function LocationTitleController($location, $rootScope, $routeParams, $scope,
       self.checkExit = {
         active: false
       };
-      $location.path(self.exitpath);
+      $window.history.back();
     }
   };
 

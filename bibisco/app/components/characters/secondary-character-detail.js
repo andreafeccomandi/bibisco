@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,31 +19,32 @@ angular.
     controller: SecondaryCharacterDetailController
   });
 
-function SecondaryCharacterDetailController($location, $rootScope, $routeParams, 
+function SecondaryCharacterDetailController($location, $routeParams, $window,
   ChapterService, SecondaryCharacterService, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.secondarycharacter = self.getSecondaryCharacter($routeParams.id);
-    self.mode = $routeParams.mode;
-    let backpath = '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki;
-
     self.breadcrumbitems = [];
+    self.secondarycharacter = self.getSecondaryCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.secondarycharacter) {
+      $window.history.back();
+      return;
+    }
+
+    self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: backpath
+      href: '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
-
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
   };
 
 
@@ -62,9 +63,8 @@ function SecondaryCharacterDetailController($location, $rootScope, $routeParams,
   };
 
   self.delete = function() {
-    SecondaryCharacterService.remove(self.secondarycharacter
-      .$loki);
-    $location.path('/characters');
+    SecondaryCharacterService.remove(self.secondarycharacter.$loki);
+    $window.history.back();
   };
 
   self.edit = function () {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,7 @@ angular.
     templateUrl: 'components/common/forms/button-back/button-back.html',
     controller: ButtonBackController,
     bindings: {
-      disabled: '<',
-      fixedpath: '<'
+      disabled: '<'
     }
   });
 
@@ -61,7 +60,7 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
   });
 
   self.back = function() {
-    if (self.disabled) {
+    if (self.disabled || $rootScope.trialmessageopen) {
       return;
     }
 
@@ -72,11 +71,7 @@ function ButtonBackController($location, $rootScope, $scope, $window, hotkeys) {
       }
     } else if (!self.buttonpaused) {
       self.buttonpaused = true;
-      if (self.fixedpath) {
-        $location.path(self.fixedpath);
-      } else {
-        $window.history.back();
-      }
+      $window.history.back();
     }
   };
 }

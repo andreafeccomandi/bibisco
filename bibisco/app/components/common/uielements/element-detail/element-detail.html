@@ -4,7 +4,7 @@
   headertipcode="richTextEditorTip"
   headertipenabled="$ctrl.editmode"
   image="{{$ctrl.profileimage}}"
-  imageaddenabled="!$ctrl.editmode"
+  imageaddenabled="!$ctrl.editmode && !$ctrl.profileimageadddisabled"
   imageenabled="$ctrl.profileimageenabled"
   imagefunction="$ctrl.profileimagefunction()"
   noimageicon="{{$ctrl.noprofileimageicon}}"
@@ -31,7 +31,6 @@
 <detailfooter
   actionitems="$ctrl.actionitems"
   autosaveenabled="$ctrl.autosaveenabled"
-  backpath="$ctrl.backpath"
   characters="$ctrl.characters"
   editfunction="$ctrl.editfunction()"
   editmode="$ctrl.editmode"

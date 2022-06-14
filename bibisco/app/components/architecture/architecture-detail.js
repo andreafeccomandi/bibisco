@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,20 +28,15 @@ function ArchitectureDetailController($location, $routeParams,
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
     self.mode = $routeParams.mode; 
-    let backpath = '/architecture/params/focus=architecture_' + $routeParams.id;
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: backpath
+      href: '/architecture/params/focus=architecture_' + $routeParams.id
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title
     });
-
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
 
     // Events enabled only for setting
     self.eventsenabled = ($routeParams.id === 'setting') ? true : false;

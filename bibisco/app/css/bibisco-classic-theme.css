@@ -28,3 +28,19 @@
 .input-group-addon > a {
 	color: #555;
 }
+
+.sidebar-container {
+	background-color: #f5f5f5;
+}
+
+.comment-box {
+    border-right: 3px solid #CAA22B;
+}
+
+.comment-box-connector {
+	background: repeating-linear-gradient(to right,#CAA22B 0,#CAA22B 10px,transparent 10px,transparent 12px)
+}
+
+tree-view ul li .node:hover {
+	color: #286090;
+}

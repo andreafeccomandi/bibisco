@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ function MainController($injector, $location, $timeout) {
     let LocaleService = $injector.get('LocaleService');
     let LoggerService = $injector.get('LoggerService');
     let ProjectService = $injector.get('ProjectService');
+    let SupporterEditionChecker = $injector.get('SupporterEditionChecker');
 
     let currentVersionInitialized = BibiscoPropertiesService.isCurrentVersionInitialized();
     let projectsDirectory = BibiscoPropertiesService.getProperty('projectsDirectory');
@@ -42,6 +43,11 @@ function MainController($injector, $location, $timeout) {
     LoggerService.info('*** Bibisco version: ' + BibiscoPropertiesService.getProperty(
       'version'));
     LoggerService.info('*** Current version initialized: ' + currentVersionInitialized);
+    if (currentVersionInitialized && SupporterEditionChecker.isTrialActive()) {
+      LoggerService.info('*** Remaining trial days: ' + SupporterEditionChecker.getRemainingTrialDays());
+    } else if (SupporterEditionChecker.isTrialExpired()) {
+      LoggerService.info('*** Trial expired! ');
+    }
     LoggerService.info('*** Actual user: ' + os.userInfo().username);
     LoggerService.info('*** Locale: ' + LocaleService.getCurrentLocale());
     LoggerService.info('*** OS: ' + ContextService.getOs());

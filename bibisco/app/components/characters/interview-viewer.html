@@ -1,16 +1,17 @@
-<div>
+<div class="richtextviewer-container">
   <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
     <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index
       | translate}}</div>
-    <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}}" ng-bind-html="question.text">
+    <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}}" ng-bind-html="question.text">
     </div>
   </div>
+
+  <siblingelementsnavigator
+    previouselementlabel="{{$ctrl.previouselementlabel}}"
+    previouselementlink="$ctrl.previouselementlink"
+    previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+    nextelementlabel="{{$ctrl.nextelementlabel}}"
+    nextelementlink="$ctrl.nextelementlink"
+    nextelementtooltip="{{$ctrl.nextelementtooltip}}">
+  </siblingelementsnavigator>
 </div>
-<siblingelementsnavigator
-  previouselementlabel="{{$ctrl.previouselementlabel}}"
-  previouselementlink="$ctrl.previouselementlink"
-  previouselementtooltip="{{$ctrl.previouselementtooltip}}"
-  nextelementlabel="{{$ctrl.nextelementlabel}}"
-  nextelementlink="$ctrl.nextelementlink"
-  nextelementtooltip="{{$ctrl.nextelementtooltip}}">
-</siblingelementsnavigator>

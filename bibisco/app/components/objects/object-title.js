@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: ItemTitleController
   });
 
-function ItemTitleController($routeParams, ObjectService) {
+function ItemTitleController($routeParams, $window, ObjectService) {
 
   var self = this;
 
@@ -29,7 +29,13 @@ function ItemTitleController($routeParams, ObjectService) {
     self.breadcrumbItems = [];
 
     if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject($routeParams.id);
+      let object = ObjectService.getObject(parseInt($routeParams.id));
+  
+      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+      if (!object) {
+        $window.history.back();
+        return;
+      }
 
       self.breadcrumbItems.push({
         label: 'objects',
@@ -47,7 +53,6 @@ function ItemTitleController($routeParams, ObjectService) {
 
       self.profileimageenabled = true;
       self.profileimage = object.profileimage;
-      self.exitpath = '/objects/' + object.$loki + '/view';
       self.name = object.name;
       self.pageheadertitle = 'object_change_name_title';
       
@@ -64,7 +69,6 @@ function ItemTitleController($routeParams, ObjectService) {
       });
 
       self.profileimageenabled = false;
-      self.exitpath = '/objects';
       self.name = null;
       self.pageheadertitle = 'object_create_title';
     }
@@ -72,8 +76,7 @@ function ItemTitleController($routeParams, ObjectService) {
 
   self.save = function(title) {
     if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject(
-        $routeParams.id);
+      let object = ObjectService.getObject(parseInt($routeParams.id));
       object.name = title;
       ObjectService.update(object);
     } else {

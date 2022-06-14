@@ -1,10 +1,17 @@
-<div class="top30 bibiscoNotSelectableText col-sm-{{$ctrl.sizecols}} col-sm-offset-{{$ctrl.offsetcols}}">
-  <button type="submit" class="btn btn-primary" 
-    uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}">
-    <span ng-if="$ctrl.saving">
-      <i class="fa fa-circle-o-notch fa-spin"></i>
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="row">
+    <hr />
+  </div>
+  <div class="row">
+    <span class="pull-right">
+      <button type="submit" class="btn btn-primary" 
+        uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}">
+        <span ng-if="$ctrl.saving">
+          <i class="fa fa-circle-o-notch fa-spin"></i>
+        </span>
+        <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+      <buttonback></buttonback>
     </span>
-    <span>{{"jsp.common.button.save" | translate}}</span>
-  </button>
-  <buttonback fixedpath="$ctrl.backpath"></buttonback>
+  </div>
 </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
   BibiscoDbConnectionService, LoggerService) {
   'use strict';
 
-  const version = '2.3.1-CE';
+  const version = '2.4.0-CE';
 
   return {
     getProperty: function(name) {
@@ -46,9 +46,38 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
         return properties.insert(property);
       }      
     },
+
+    // Version initialization started from version 2.3.0
     initializeCurrentVersion: function() {
       LoggerService.info('initializeCurrentVersion: ' + version);
       this.setProperty(version, true);
+
+      // version 2.4.0
+      if (!this.getProperty('zoomLevel')) {
+        this.setProperty('zoomLevel', 100);
+        LoggerService.debug('Added zoomLevel property');
+      }
+      if (!this.getProperty('linespacing')) {
+        this.setProperty('linespacing', 14);
+        LoggerService.debug('Added linespacing property');
+      }
+      if (!this.getProperty('paragraphspacing')) {
+        this.setProperty('paragraphspacing', 'medium');
+        LoggerService.debug('Added paragraphspacing property');
+      }
+      if (!this.getProperty('chaptertitleformat')) {
+        this.setProperty('chaptertitleformat', 'numbertitle');
+        LoggerService.debug('Added chaptertitleformat property');
+      }
+      if (!this.getProperty('chaptertitleposition')) {
+        this.setProperty('chaptertitleposition', 'left');
+        LoggerService.debug('Added chaptertitleposition property');
+      }
+      if (!this.getProperty('sceneseparator')) {
+        this.setProperty('sceneseparator', 'blank_line');
+        LoggerService.debug('Added sceneseparator property');
+      }
+
       BibiscoDbConnectionService.saveDatabase();
     },
     isCurrentVersionInitialized: function() {
@@ -58,6 +87,13 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
       let savedProjectsDirectory = this.getProperty('projectsDirectory');
       let savedBackupDirectory = this.getProperty('backupDirectory');
       return savedProjectsDirectory && savedBackupDirectory;
+    },
+    getCurrentVersionInitializationDate: function() {
+      let properties = BibiscoDbConnectionService.getBibiscoDb().getCollection('properties');
+      let property = properties.findOne({
+        'name': version
+      });
+      return property ? property.meta.created : null;
     }
   };
 });

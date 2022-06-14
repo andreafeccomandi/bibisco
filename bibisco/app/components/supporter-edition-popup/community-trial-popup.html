@@ -1,0 +1,24 @@
+<modal-component modal-instance="$uibModalInstance" 
+  class="ng-scope ng-isolate-scope supporter-edition-popup">
+  <div class="modal-body" id="modal-body">
+    <h3>{{"only_for_supporter_edition" | translate}}</h3>
+    <p class="heart"><i class="fa fa-heart fa-4x"></i></p>
+    <blockquote>
+      <div class="row">
+        <div class="col-sm-12">
+          <p class="text-left">{{"community_trial_popup_p1" | translate}}</p>
+          <p class="text-left" ng-bind-html="$ctrl.p2"></p>
+          <p class="text-left"><span class="label label-info">{{"note" | translate}}</span> {{"community_trial_popup_p3" | translate}}</div>
+        </div>
+      </div>
+    </blockquote>
+  </div>
+  <div class="modal-footer bibiscoNotSelectableText">
+    <button class="btn btn-primary" type="button" 
+      ng-click="$ctrl.getIt()">{{"only_for_supporter_edition_button" | translate}}</button>
+    <button class="btn btn-default" type="button" ng-disabled="$ctrl.showcountdown"
+      ng-click="$ctrl.cancel()">{{"common_continue" | translate}}
+      <span ng-if="$ctrl.showcountdown"> ({{$ctrl.countdown}})</span>
+    </button>
+  </div>
+</modal-component>

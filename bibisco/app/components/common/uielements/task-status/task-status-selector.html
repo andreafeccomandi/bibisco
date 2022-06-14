@@ -1,13 +1,15 @@
-<div class="btn-toolbar">
-  <div class="btn-group task-status-selector">
+<!-- Why <span> inside a <span>? To play well with page-header-buttonbar flex layout -->
+
+<div class="btn-toolbar" ng-if="!$ctrl.readonly">
+  <div class="btn-group">
     <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
       ng-click="$ctrl.changefunction({status: 'done'})"
       ng-class="{ 'active': $ctrl.status == 'done',
         'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
-        class="label bibiscoTaskStatus"
+        class="label bibiscoTaskStatus bibiscoBadge"
         ng-class="{ 'label-success': $ctrl.status == 'done', 'label-default': $ctrl.status != 'done' }">
-          {{'tag.bibiscothumbnail.taskstatus.completed' | translate}}
+        <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.completed' | translate}}</span>
       </span>
     </button>
     <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
@@ -15,9 +17,9 @@
       ng-class="{ 'active': $ctrl.status == 'tocomplete',
         'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
-        class="label bibiscoTaskStatus"
+        class="label bibiscoTaskStatus bibiscoBadge"
         ng-class="{ 'label-warning': $ctrl.status == 'tocomplete', 'label-default': $ctrl.status != 'tocomplete' }">
-          {{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}
+        <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}</span>
       </span>
     </button>
     <button type="button" class="btn btn-default" ng-disabled="$ctrl.disableselection"
@@ -25,10 +27,27 @@
       ng-class="{ 'active': $ctrl.status == 'todo',
         'task-status-btn-disabled': $ctrl.disableselection }">
       <span uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
-        class="label bibiscoTaskStatus"
+        class="label bibiscoTaskStatus bibiscoBadge"
         ng-class="{ 'label-danger': $ctrl.status == 'todo', 'label-default': $ctrl.status != 'todo' }">
-          {{'tag.bibiscothumbnail.taskstatus.todo' | translate}}
+        <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.todo' | translate}}</span>
       </span>
     </button>
   </div>
 </div>
+
+
+<span ng-if="$ctrl.readonly && $ctrl.status == 'done'" 
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.completed.description' | translate}}"
+  class="label label-success bibiscoBadge bibiscoTaskStatus right5">
+  <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.completed' | translate}}</span>
+</span>
+<span ng-if="$ctrl.readonly && $ctrl.status == 'tocomplete'" 
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.tocomplete.description' | translate}}"
+  class="label label-warning bibiscoBadge bibiscoTaskStatus right5">
+  <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.tocomplete' | translate}}</span>
+</span>
+<span ng-if="$ctrl.readonly && $ctrl.status == 'todo'" 
+  uib-tooltip="{{'tag.bibiscothumbnail.taskstatus.todo.description' | translate}}"
+  class="label label-danger bibiscoBadge bibiscoTaskStatus right5">
+  <span class="task-status-selector">{{'tag.bibiscothumbnail.taskstatus.todo' | translate}}</span>
+</span>

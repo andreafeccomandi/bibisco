@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,9 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
       self.actionitems.push({
         label: 'create_prologue',
         itemfunction: function() {
-          self.supporterEditionFilterAction('/chapters/new/prologue');
+          SupporterEditionChecker.filterAction(function() {
+            $location.path('/chapters/new/prologue');
+          });
         }
       });
     }
@@ -55,28 +57,24 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
       self.actionitems.push({
         label: 'create_epilogue',
         itemfunction: function() {
-          self.supporterEditionFilterAction('/chapters/new/epilogue');
+          SupporterEditionChecker.filterAction(function() {
+            $location.path('/chapters/new/epilogue');
+          });
         }
       });
     }
     self.actionitems.push({
       label: 'create_part',
       itemfunction: function() {
-        self.supporterEditionFilterAction('/parts/new');
+        SupporterEditionChecker.filterAction(function() {
+          $location.path('/parts/new');
+        });
       }
     });
 
     // supporters check
-    self.supporterEdition = false;
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      self.supporterEdition = true;
-    } 
     let wordsGoal = ProjectService.getProjectInfo().wordsGoal;
-    self.showwordsgoalcounter = self.supporterEdition && wordsGoal;
-
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
+    self.showwordsgoalcounter = SupporterEditionChecker.isSupporterOrTrial() && wordsGoal;
 
     // hotkeys
     self.hotkeys = ['ctrl+n', 'command+n'];
@@ -205,7 +203,6 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
     return partactionitems;
   };
 
-
   self.move = function(draggedObjectId, destinationObjectId) {
     ChapterService.move(draggedObjectId, destinationObjectId);
     self.cardgriditems = this.getCardGridItems();
@@ -223,40 +220,27 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
   };
 
   self.reducepart = function(id) {
-    if (self.supporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       $rootScope.partsExpansionStatus[id] = false; 
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
+    });
   };
 
   self.expandpart = function(id) {
-    if (self.supporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       $rootScope.partsExpansionStatus[id] = true; 
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
+    });
   };
 
   self.renamepart = function(id) {
-    self.supporterEditionFilterAction('/parts/'+id);
+    SupporterEditionChecker.filterAction(function() {
+      $location.path('/parts/'+id);
+    });
   };
 
   self.deletepart = function(id) {
-    if (self.supporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       ChapterService.removePart(id);
       self.cardgriditems = self.getCardGridItems();
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
-  };
-
-  self.supporterEditionFilterAction = function(path) {
-    if (!self.supporterEdition) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
-      $location.path(path);
-    }
+    });
   };
 }

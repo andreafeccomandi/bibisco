@@ -1,37 +1,44 @@
+<!-- HEADER -->
 <detailheader
-  breadcrumbitems="$ctrl.breadcrumbitems" editmode="false"
-  headertitle="{{$ctrl.title}}" taskstatusreadonly="true"
-  taskstatus="$ctrl.chapter.status">
+  breadcrumbitems="$ctrl.breadcrumbitems" 
+  buttonhotkey="$ctrl.hotkeys"
+  buttonlabel="jsp.chapter.a.createScene"
+  buttonfunction="$ctrl.createScene()"
+  buttonshow="$ctrl.scenescardgriditems"
+  buttonstyle="primary"
+  buttontooltip="{{'scene_create_tooltip'+$root.os}}"
+  characters="$ctrl.chapter.characters" 
+  editmode="false"
+  headertitle="{{$ctrl.title}}" 
+  taskstatusreadonly="true"
+  taskstatus="$ctrl.chapter.status" 
+  words="$ctrl.chapter.words">
 </detailheader>
 
-<div class="detail-content-no-header-subtitle">
-  <div class="container full-height">
-    <div class="row">
-      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'reason'" cardtitle="jsp.chapter.thumbnail.reason.title"
-          dimension="chapter"
-          dndenabled="false"
-          family="chapterinfo"
-          noimageicon="map-o"
-          selectfunction="$ctrl.selectChapterInfo(id)"
-          text="jsp.chapter.thumbnail.reason.description"
-          status="$ctrl.chapter.reason.status"></card>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <card cardid="'notes'" cardtitle="common_notes_title"
-          dimension="chapter"
-          dndenabled="false"
-          family="chapterinfo"
-          noimageicon="thumb-tack"
-          selectfunction="$ctrl.selectChapterInfo(id)"
-          text="common_notes_description"></card>
-      </div>
-    </div>
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-footer">
+  
+  <!-- REASON AND NOTES -->
+  <div class="card-grid-items-box">
+    <card cardid="'reason'" cardtitle="jsp.chapter.thumbnail.reason.title"
+      dimension="normal"
+      dndenabled="false"
+      family="chapterinfo"
+      hastext="true"
+      noimageicon="map-o"
+      selectfunction="$ctrl.selectChapterInfo(id)"
+      text="jsp.chapter.thumbnail.reason.description"
+      status="$ctrl.chapter.reason.status"></card>
+    <card cardid="'notes'" cardtitle="common_notes_title"
+      dimension="normal"
+      dndenabled="false"
+      hastext="true"
+      family="chapterinfo"
+      noimageicon="thumb-tack"
+      selectfunction="$ctrl.selectChapterInfo(id)"
+      text="common_notes_description"></card>
   </div>
-</div>
 
-<!-- SCENES -->
-<div class="container">
+  <!-- SCENES -->
   <cardgrid
     carddimension="chapter"
     dndenabled="true"
@@ -41,43 +48,30 @@
     emptylistbuttonlabel="jsp.chapter.a.createFirstScene"
     emptylistbuttonfunction="$ctrl.createScene()"
     emptylistbuttontooltip="{{'scene_firstcreate_tooltip'+$root.os}}"
+    hastext="true"
     items="$ctrl.scenescardgriditems"
-    pageheaderbuttonhotkey="$ctrl.hotkeys"
-    pageheaderbuttonlabel="jsp.chapter.a.createScene"
-    pageheaderbuttonfunction="$ctrl.createScene()"
-    pageheaderbuttontooltip="{{'scene_create_tooltip'+$root.os}}"
     pageheadertitle="jsp.chapter.scene.h2"
-    pageheadertipcode="scenesdndTip"
+    scrollable="false"
     selectfunction="$ctrl.selectScene(id)"
-    type="half-bottom-detail">
-  </cardgrid>
+    subheader="true"></cardgrid>
 </div>
 
+<!-- FOOTER -->
 <div class="detail-footer bibiscoNotSelectableText">
-  <div class="container">
-    <!-- <div class="row detail-footer-top">
-      <span class="pull-left">
-        <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.chapter.lastsave} }}</span>
-      </span>
-      <span class="pull-right">
-        <span class="label label-info">{{"common_words" | translate}}: {{($ctrl.chapter.words | number: 0)}}</span>
-        <span class="label label-info">{{"jsp.common.span.characters" | translate}}: {{($ctrl.chapter.characters | number: 0)}}</span>
-      </span>
-    </div> -->
-    <detailfootertop 
-      characters="$ctrl.chapter.characters" 
-      editmode="true", 
-      lastsave="$ctrl.chapter.lastsave" 
-      words="$ctrl.chapter.words",
-      wordscharactersenabled="true">
-    </detailfootertop>
-    <div class="row">
-      <span class="pull-right">
-        <dropdownmenu buttonlabel="jsp.common.button.more" 
-          items="$ctrl.actionitems" open="up" visible="true">
-        </dropdownmenu>
-        <buttonback fixedpath="$ctrl.backpath"></buttonback>
-      </span>
-    </div>
+  <detailfootertop 
+    wordscharactersenabled="false">
+  </detailfootertop>
+  <div class="row">
+    <span class="pull-right">
+      <contextualtipbutton ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 1" 
+        tipcode="scenesdndTip"></contextualtipbutton>
+      <dropdownmenu buttonlabel="jsp.common.button.more" 
+        items="$ctrl.actionitems" open="up" visible="true">
+      </dropdownmenu>
+      <button ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 0"  type="button" class="btn btn-primary"
+        ng-click="$ctrl.createScene()" uib-tooltip="{{'scene_create_tooltip'+$root.os | translate}}">
+        {{'jsp.chapter.a.createScene' | translate}}</button>
+      <buttonback></buttonback>
+    </span>
   </div>
 </div>

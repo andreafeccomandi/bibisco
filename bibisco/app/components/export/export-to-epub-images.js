@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ function ExportToEpubImagesController($location, $routeParams,
 
   self.$onInit = function() {
     
-    self.backpath = '/exporttoepub';
-
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -36,7 +34,7 @@ function ExportToEpubImagesController($location, $routeParams,
     });
     self.breadcrumbitems.push({
       label: 'jsp.export.title.epub',
-      href: self.backpath
+      href: '/exporttoepub'
     });
     self.breadcrumbitems.push({
       label: 'epub_cover_images'
@@ -58,6 +56,6 @@ function ExportToEpubImagesController($location, $routeParams,
   self.select = function(filename) {
     self.images = ProjectService.selectCoverImage(filename);
     self.selectedimage  = filename;
-    $location.path(self.backpath);
+    $location.path('/exporttoepub');
   };
 }

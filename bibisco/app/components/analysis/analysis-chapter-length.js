@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function AnalysisController($translate, AnalysisService, ChapterService) {
+function AnalysisController($translate, AnalysisService, BibiscoPropertiesService, ChapterService) {
 
   var self = this;
 
@@ -141,7 +141,7 @@ function AnalysisController($translate, AnalysisService, ChapterService) {
               labelString: self.translations.common_words.toLowerCase()
             },
             ticks: {
-              beginAtZero: true,
+              beginAtZero: true
             }
           }]
         }

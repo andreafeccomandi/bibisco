@@ -1,35 +1,27 @@
-<div class="main-section-header">
-<div class="container">
-  <div class="row">
-    <pageheader headertitle="jsp.export.h1">
-    </pageheader>
+<pageheader headertitle="jsp.export.h1"></pageheader>
+ 
+<div class="col-sm-10 col-sm-offset-1">
+  <div class="jumbotron jumbotron-buttonbox top50 bibiscoNotSelectableText">
+    <button ng-click="$ctrl.exportPdf()" 
+      type="button" 
+      class="btn btn-primary">{{"jsp.export.a.pdf" | translate}}</button>
+    <button ng-click="$ctrl.exportWord()" 
+      type="button" 
+      class="btn btn-default">{{"jsp.export.a.word" | translate}}</button>
+    <button ng-click="$ctrl.exportTxt()" 
+      type="button" 
+      class="btn btn-default">{{"jsp.export.a.txt" | translate}}</button>
+    <button ng-click="$ctrl.exportEPub()" 
+      type="button" 
+      class="btn btn-default">{{"jsp.export.a.epub" | translate}}</button>
+    <button ng-click="$ctrl.exportArchive()" 
+      type="button" 
+      class="btn btn-default"
+      uib-popover="{{'jsp.export.button.bibiscoExportAArchive.popover' | translate}}" 
+      popover-placement="bottom" 
+      popover-trigger="'mouseenter'">{{"jsp.export.a.archive" | translate}}</button>
   </div>
 </div>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
-    <div class="jumbotron top50 bibiscoNotSelectableText">
-        <button ng-click="$ctrl.exportPdf()" 
-          type="button" 
-          class="btn btn-primary">{{"jsp.export.a.pdf" | translate}}</button>
-        <button ng-click="$ctrl.exportWord()" 
-          type="button" 
-          class="btn btn-default">{{"jsp.export.a.word" | translate}}</button>
-        <button ng-click="$ctrl.exportTxt()" 
-          type="button" 
-          class="btn btn-default">{{"jsp.export.a.txt" | translate}}</button>
-        <button ng-click="$ctrl.exportEPub()" 
-          type="button" 
-          class="btn btn-default">{{"jsp.export.a.epub" | translate}}</button>
-        <button ng-click="$ctrl.exportArchive()" 
-          type="button" 
-          class="btn btn-default"
-          uib-popover="{{'jsp.export.button.bibiscoExportAArchive.popover' | translate}}" 
-          popover-placement="bottom" 
-          popover-trigger="'mouseenter'">{{"jsp.export.a.archive" | translate}}</button>
-      </div>
-      </div>
-    </div>
-</div>
-</div>
+
+<pagefooter></pagefooter>
 

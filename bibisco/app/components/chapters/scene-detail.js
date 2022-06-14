@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,20 +22,29 @@ angular.
     }
   });
 
-function SceneDetailController($injector, $location, $rootScope, $routeParams,
-  $scope, ChapterService, hotkeys, PopupBoxesService, ProjectService, SupporterEditionChecker) {
+function SceneDetailController($location, $rootScope, $routeParams,
+  $scope, $window, ChapterService, hotkeys, PopupBoxesService, ProjectService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
 
+    self.breadcrumbitems = [];
+    self.chapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
+    self.scene = ChapterService.getScene(parseInt($routeParams.sceneid));
+
+    // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
+    if (!self.chapter || !self.scene || self.chapter.$loki !== self.scene.chapterid) {
+      $window.history.back();
+      return;
+    }
+
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     
-    self.isSupporterEdition = self.checkSupporterEdition();
+    self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
     self.mode = $routeParams.mode;
     self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
     
-    self.chapter = ChapterService.getChapter($routeParams.chapterid);
-    self.scene = ChapterService.getScene($routeParams.sceneid);
+    
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
     self.deleteforbidden = false; //TODO
@@ -45,17 +54,16 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     self.totalwords = ChapterService.getTotalWordsAndCharacters().words;
     let projectInfo = ProjectService.getProjectInfo();
 
-    self.isSupporterEdition ? self.wordsGoal = projectInfo.wordsGoal : null;
-    self.isSupporterEdition ? self.wordsPerDayGoal = projectInfo.wordsPerDayGoal : null;
+    self.includeSupporterEditionItems ? self.wordsGoal = projectInfo.wordsGoal : null;
+    self.includeSupporterEditionItems ? self.wordsPerDayGoal = projectInfo.wordsPerDayGoal : null;
 
     // common element detail flags
     self.autosaveenabled;
     $rootScope.dirty = false;
     self.editmode = (self.mode === 'edit');
-    self.calculateBackPath();
 
     // breadcrumbs
-    self.breadcrumbitems = [];
+    
     self.breadcrumbitems.push({
       label: 'common_chapters',
       href: '/chapters/params/focus=chapters_' + self.chapter.$loki
@@ -88,7 +96,7 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
     // saved content
     self.content = self.scenerevision.text;
 
-    let chapterscenes = ChapterService.getScenes($routeParams.chapterid);
+    let chapterscenes = ChapterService.getScenes(parseInt($routeParams.chapterid));
     
     // previous scene
     let previousposition = self.scene.position - 1;
@@ -106,28 +114,18 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
 
   };
 
-  self.calculateBackPath = function() {
-    if (self.editmode && self.fromtimeline) {
-      self.backpath = '/timeline/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
-        .$loki + '/view';
-    } else if (!self.editmode && !self.fromtimeline) {
-      self.backpath = self.chapterpath;
-    } else if (!self.editmode && self.fromtimeline) {
-      self.backpath = '/timeline';
-    }
-  };
-
   self.changerevision = function(action, revision) {
+    let sceneid = parseInt($routeParams.sceneid);
     if (action === 'new-from-actual') {
-      self.scene = ChapterService.insertSceneRevisionFromActual($routeParams.sceneid);
+      self.scene = ChapterService.insertSceneRevisionFromActual(sceneid);
       self.edit();
     } else if (action === 'new-from-scratch') {
-      self.scene = ChapterService.insertSceneRevisionFromScratch($routeParams.sceneid);
+      self.scene = ChapterService.insertSceneRevisionFromScratch(sceneid);
       self.edit();
     } else if (action === 'change') {
-      self.scene = ChapterService.changeSceneRevision($routeParams.sceneid, revision);
+      self.scene = ChapterService.changeSceneRevision(sceneid, revision);
     } else if (action === 'delete') {
-      self.scene = ChapterService.deleteActualSceneRevision($routeParams.sceneid);
+      self.scene = ChapterService.deleteActualSceneRevision(sceneid);
     }
 
     self.scenerevision = self.scene.revisions[self.scene.revision];
@@ -158,32 +156,15 @@ function SceneDetailController($injector, $location, $rootScope, $routeParams,
   };
 
   self.moveSceneToAnotherChapter = function() {
-    if (self.isSupporterEdition) {
+    SupporterEditionChecker.filterAction(function() {
       $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
         .$loki + '/move');
-    } else {
-      SupporterEditionChecker.showSupporterMessage();
-    }
-    
-  };
-
-  self.checkSupporterEdition = function() {
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      return true;
-    } else {
-      return false;
-    }
-    
+    });
   };
 
   self.delete = function() {
     ChapterService.removeScene(self.scene.$loki);
-    if (self.fromtimeline) {
-      $location.path('/timeline/');
-    } else {
-      $location.path('/chapters/' + self.chapter.$loki);
-    }
+    $window.history.back();
   };
 
   self.save = function() {

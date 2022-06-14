@@ -1,34 +1,7 @@
-<div class="container-fluid">
-  <nav class="navbar navbar-inverse navbar-fixed-top bibiscoNotSelectableText">
-
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header navbar-right">
-      <button type="button" class="navbar-toggle collapsed" ng-click="$ctrl.toggleCollapse()" ng-show="$ctrl.visible">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <img class="navbar-brand" src="images/bibisco-circle-hr.png" />
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" uib-collapse="$ctrl.collapsed" ng-show="$ctrl.visible">
-      <ul class="nav navbar-nav" ng-show="$ctrl.visible">
-        <li><a ng-click="$ctrl.selectItem('projecthome')">{{ 'jsp.menu.project' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('architecture')">{{ 'jsp.menu.architecture' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('characters')">{{ 'jsp.menu.characters' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('locations')">{{ 'jsp.menu.locations' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('objects')">{{ 'jsp.menu.objects' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('relations/view')">{{ 'relations_menu' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('notes')">{{ 'jsp.menu.notes' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('chapters')">{{ 'jsp.menu.chapters' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('search')">{{ 'search_menu' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('timeline')">{{ 'timeline' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('analysis')">{{ 'jsp.menu.analysis' | translate}}</a></li>
-        <li><a ng-click="$ctrl.selectItem('export')">{{ 'jsp.menu.export' | translate}}</a></li>
-      </ul>
-    </div>
-    <!-- /.navbar-collapse -->
-  </nav>
+<div class="sidebar-container bibiscoNotSelectableText">
+  <div class="menu-container">
+    <tree-view nodes="$ctrl.menu"></tree-view>
+  </div>
+  <img class="brand" src="images/bibisco-circle-hr.png" />
 </div>
-<!-- /.container-fluid -->
+

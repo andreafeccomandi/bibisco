@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: ObjectEventController
   });
 
-function ObjectEventController($routeParams, ObjectService) {
+function ObjectEventController($routeParams, $window, ObjectService) {
 
   var self = this;
 
@@ -27,10 +27,16 @@ function ObjectEventController($routeParams, ObjectService) {
     
     self.edit = $routeParams.eventid !== undefined ? true : false;
       
-    let object = ObjectService.getObject($routeParams.id);
+    self.breadcrumbitems = [];
+    let object = ObjectService.getObject(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!object) {
+      $window.history.back();
+      return;
+    }
 
     // breadcrumb
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'objects',
       href: '/objects/params/focus=objects_' + object.$loki
@@ -55,8 +61,7 @@ function ObjectEventController($routeParams, ObjectService) {
     }
 
     self.profileimage = object.profileimage;
-    self.id=$routeParams.id;
+    self.id=parseInt($routeParams.id);
     self.eventid=$routeParams.eventid;
-    self.exitpath = '/objects/' + object.$loki + '/events';
   };
 }

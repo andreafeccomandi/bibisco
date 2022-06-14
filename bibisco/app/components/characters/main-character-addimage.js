@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,26 @@ angular.
     controller: MainCharacterAddImageController
   });
 
-function MainCharacterAddImageController($location, $routeParams, 
+function MainCharacterAddImageController($location, $routeParams, $window,
   BibiscoPropertiesService, MainCharacterService, PopupBoxesService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let mainCharacter = MainCharacterService.getMainCharacter($routeParams.id);
+    self.breadcrumbitems = [];
+    let mainCharacter = MainCharacterService.getMainCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!mainCharacter) {
+      $window.history.back();
+      return;
+    }
 
     // addprofile mode
     self.addprofile = $location.path().includes('addprofile');
 
     // breadcrumb
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=maincharacters_' + mainCharacter.$loki
@@ -46,8 +52,7 @@ function MainCharacterAddImageController($location, $routeParams,
       self.breadcrumbitems.push({
         label: 'add_profile_image_title'
       });
-  
-      self.exitpath = '/maincharacters/' + mainCharacter.$loki;
+
       self.customtitle = 'add_profile_image_title';
     }
     else {
@@ -59,15 +64,14 @@ function MainCharacterAddImageController($location, $routeParams,
         label: 'jsp.addImageForm.dialog.title'
       });
   
-      self.exitpath = '/maincharacters/' + mainCharacter.$loki + '/images';
       self.customtitle = null;
     }
   };
 
   self.save = function(name, path) {
-    let filename = MainCharacterService.addImage($routeParams.id, name, path);
+    let filename = MainCharacterService.addImage(parseInt($routeParams.id), name, path);
     if (self.addprofile) {
-      MainCharacterService.setProfileImage($routeParams.id, filename);
+      MainCharacterService.setProfileImage(parseInt($routeParams.id), filename);
       if (BibiscoPropertiesService.getProperty('addProfileImageTip') === 'true') {
         PopupBoxesService.showTip('addProfileImageTip');
       }

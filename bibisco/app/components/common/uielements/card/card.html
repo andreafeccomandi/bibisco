@@ -12,7 +12,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
   dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})" 
   family="{{$ctrl.family}}" tabindex="0">
 
-  <div class="row" style="margin-top: 0px;">
+  <div class="row top0">
       <div class="card-left-section card-left-section-{{$ctrl.dimension}}">
         
         <span ng-if="$ctrl.image" class="pull-left card-heading-image">
@@ -22,7 +22,8 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
         <div ng-if="!$ctrl.image" class="card-no-profile-bg img-circle">
           <i class="fa fa-{{$ctrl.noimageicon}} fa-inverse" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
         </div>
-      
+        
+        <taskstatus status="$ctrl.status"></taskstatus>
       </div>
 
       <div class="card-right-section">
@@ -32,10 +33,10 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
             </span>
             <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
               <wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
-              <taskstatus status="$ctrl.status"></taskstatus></strong>
+              </strong>
             </span>
         </div>
-        <div>
+        <div ng-if="$ctrl.hastext">
           <p class="card-text card-text-{{$ctrl.dimension}}">{{$ctrl.text | translate}}</p>
         </div>
       </div>

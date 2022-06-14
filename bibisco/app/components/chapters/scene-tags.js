@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($injector, $rootScope, $routeParams, $scope,
+function SceneTagsController($injector, $rootScope, $routeParams, $scope, $window,
   ChapterService, hotkeys, LocationService, MainCharacterService, 
   PopupBoxesService, SecondaryCharacterService, 
   StrandService, SupporterEditionChecker, UtilService) {
@@ -28,16 +28,18 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
 
   self.$onInit = function() {
 
-    self.chapter = ChapterService.getChapter($routeParams.chapterid);
-    self.scene = ChapterService.getScene($routeParams.sceneid);
-    self.backpath = '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view';
-    self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
-    if (self.fromtimeline) {
-      self.backpath = '/timeline' + self.backpath;
-    } 
+    self.breadcrumbitems = [];
+
+    self.chapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
+    self.scene = ChapterService.getScene(parseInt($routeParams.sceneid));
+
+    // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
+    if (!self.chapter || !self.scene || self.chapter.$loki !== self.scene.chapterid) {
+      $window.history.back();
+      return;
+    }
 
     // init breadcrumbs
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
       href: '/chapters/params/focus=chapters_' + self.chapter.$loki
@@ -49,7 +51,7 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: self.backpath
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
@@ -265,8 +267,7 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope,
 
     self.objects = [];
 
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
 
       // objects
       let objects = $injector.get('ObjectService').getObjects();

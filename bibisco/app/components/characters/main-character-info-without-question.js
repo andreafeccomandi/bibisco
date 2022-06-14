@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,28 +19,34 @@ angular.
     controller: MainCharacterInfoWithoutQuestion
   });
 
-function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
+function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $window,
   MainCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
+    self.breadcrumbitems = [];
+    self.maincharacter = MainCharacterService.getMainCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.maincharacter) {
+      $window.history.back();
+      return;
+    }
+
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
-    self.maincharacter = MainCharacterService.getMainCharacter($routeParams.id);
     self.type = $routeParams.info;
     self.mode = $routeParams.mode;
-    let backpath = '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info;
 
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: backpath
+      href: '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -48,10 +54,6 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams,
 
     self.headertitle = 'jsp.character.thumbnail.' + $routeParams.info + '.title';
     self.headersubtitle = 'jsp.character.thumbnail.' + $routeParams.info + '.description';
-
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
 
     self.calculatePreviousNextElements(self.type);
   };

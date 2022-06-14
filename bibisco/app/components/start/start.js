@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,15 @@ angular.
 
 function StartController($location, $rootScope, ProjectService, SupporterEditionChecker) {
   
-  // hide menu
   $rootScope.$emit('SHOW_START');
 
-  var self = this;
+  let self = this;
+
+  self.$onInit = function () {
+    if ($rootScope.actualPath === '/exitproject') {
+      ProjectService.close();
+    }
+  };
 
   self.projectsPresent = function() {
     return ProjectService.getProjectsCount() > 0;
@@ -51,10 +56,8 @@ function StartController($location, $rootScope, ProjectService, SupporterEdition
   };
 
   self.createSequel = function() {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
+    SupporterEditionChecker.filterAction(function() {
       $location.path('/createsequel');
-    }
+    });
   };
 }

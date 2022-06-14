@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ function ExportToEpubAddImageController(ProjectService) {
 
   self.$onInit = function() {
     
-    self.exitpath = '/exporttoepub/images';
-
     // breadcrumb
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -39,7 +37,7 @@ function ExportToEpubAddImageController(ProjectService) {
     });
     self.breadcrumbitems.push({
       label: 'epub_cover_images',
-      href: self.exitpath
+      href: '/exporttoepub/images'
     });
     self.breadcrumbitems.push({
       label: 'jsp.addImageForm.dialog.title'

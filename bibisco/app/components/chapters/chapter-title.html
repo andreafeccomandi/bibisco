@@ -1,36 +1,28 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbItems"></breadcrumb>
-  </div>
-  <div class="row">
-    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
-    </pageheader>
-  </div>
-  <div class="row top15">
-    <div class="col-sm-12">
-      <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
-        <textinputfield field="elementTitleForm.title" model="$ctrl.title"
-          name="title" autofocus maxlength="100"
-          required="false" label="jsp.chapterTitle.form.title" labelcols="3" inputcols="8">
-        </textinputfield>
-        
-        <div class="form-group" ng-if="$ctrl.showPartSelect">
-          <label class="col-sm-3 control-label" for="jsp.analysisCharacterScene.th.chapter">{{"part" | translate}}</label>
-          <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
-            <ui-select ng-model="$ctrl.selectedPart">
-              <ui-select-match>
-                <span ng-bind="$select.selected.title"></span>
-              </ui-select-match>
-              <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'title':$select.search}">
-                <span ng-bind-html="item.title"></span>
-              </ui-select-choices>
-            </ui-select>
-          </div>
-        </div>
-          
-        <formbuttons backpath="$ctrl.exitpath" form="elementTitleForm" offsetcols="3" sizecols="8">
-        </formbuttons>
+<breadcrumb items="$ctrl.breadcrumbItems"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}"></pageheader>
+
+<div class="top15 col-sm-12">
+  <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
+    <textinputfield field="elementTitleForm.title" model="$ctrl.title"
+      name="title" autofocus maxlength="100"
+      required="false" label="jsp.chapterTitle.form.title" labelcols="3" inputcols="8">
+    </textinputfield>
+    
+    <div class="form-group" ng-if="$ctrl.showPartSelect">
+      <label class="col-sm-3 control-label" for="jsp.analysisCharacterScene.th.chapter">{{"part" | translate}}</label>
+      <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
+        <ui-select ng-model="$ctrl.selectedPart">
+          <ui-select-match>
+            <span ng-bind="$select.selected.title"></span>
+          </ui-select-match>
+          <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'title':$select.search}">
+            <span ng-bind-html="item.title"></span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
     </div>
-    </form>
-  </div>
+      
+    <formbuttons form="elementTitleForm">
+    </formbuttons>
+  </form>
 </div>

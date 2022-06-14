@@ -6,11 +6,11 @@
     "node": true
   },
   "globals": {
-    "angular": 1,
-    "logger": 1,
-    "moment": 1,
-    "pdfMake": 1,
-    "validator": 1
+    "angular": "readonly",
+    "logger": "readonly",
+    "moment": "readonly",
+    "pdfMake": "readonly",
+    "validator": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": 2017,

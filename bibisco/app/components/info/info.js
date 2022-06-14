@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,21 @@ angular.
     }
   });
 
-function InfoController($location, $rootScope, $uibModal, BibiscoPropertiesService) {
+function InfoController($rootScope, $translate, $uibModal, BibiscoPropertiesService, SupporterEditionChecker) {
 
   var self = this;
   const { shell } = require('electron');
 
   self.$onInit = function () {
     self.version = BibiscoPropertiesService.getProperty('version');
-    self.hotkeys = ['esc'];
+
+    self.trialstatus;
+    if (SupporterEditionChecker.isTrialActive()) {
+      let remainingDays = SupporterEditionChecker.getRemainingTrialDays();
+      self.trialstatus = $translate.instant('trial_active', { remainingDays: remainingDays });
+    } else if (SupporterEditionChecker.isTrialExpired()) {
+      self.trialstatus = $translate.instant('trial_expired');
+    }
   };
 
   self.gotoWebsite = function() {
@@ -61,9 +68,5 @@ function InfoController($location, $rootScope, $uibModal, BibiscoPropertiesServi
     }, function () {
       $rootScope.$emit('CLOSE_POPUP_BOX');
     });
-  };
-
-  self.back = function () {
-    $location.path('/start');
   };
 }

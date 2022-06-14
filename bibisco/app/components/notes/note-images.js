@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,28 @@ angular.
     controller: NoteImagesController
   });
 
-function NoteImagesController($location, $routeParams, NoteService) {
+function NoteImagesController($location, $routeParams, $window, NoteService) {
 
   var self = this;
 
   self.$onInit = function() {
     
-    let note = NoteService.getNote($routeParams.id);
-    self.backpath = '/notes/' + note.$loki + '/view';
-
     self.breadcrumbnotes = [];
+    let note = NoteService.getNote(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!note) {
+      $window.history.back();
+      return;
+    }
+
     self.breadcrumbnotes.push({
       label: 'common_notes_title',
       href: '/notes/params/focus=notes_' + note.$loki
     });
     self.breadcrumbnotes.push({
       label: note.name,
-      href: self.backpath
+      href: '/notes/' + note.$loki + '/view'
     });
     self.breadcrumbnotes.push({
       label: 'jsp.projectFromScene.select.location.images'
@@ -47,7 +52,7 @@ function NoteImagesController($location, $routeParams, NoteService) {
   };
 
   self.delete = function(filename) {
-    let note = NoteService.deleteImage($routeParams.id, filename);
+    let note = NoteService.deleteImage(parseInt($routeParams.id), filename);
     self.images = note.images;
   };
 

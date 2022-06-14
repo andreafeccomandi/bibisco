@@ -1,44 +1,38 @@
-<div class="container">
-  <div class="row">
-    <pageheader headertitle="create_sequel_title">
-    </pageheader>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="createSequelForm" ng-submit="$ctrl.save(createSequelForm.$valid)"
-          class="form-horizontal" novalidate>
+<pageheader headertitle="create_sequel_title">
+</pageheader>
 
-        <textinputfield field="createSequelForm.projectName"
-          model="$ctrl.projectName" name="projectName" autofocus required
-          label="jsp.createProject.form.label.name"
-          labelcols="3" inputcols="8">
-        </textinputfield>
+<div class="col-sm-12">
+  <form name="createSequelForm" ng-submit="$ctrl.save(createSequelForm.$valid)"
+      class="form-horizontal" novalidate>
 
-        <div class="form-group">
-          <label class="col-sm-3 control-label" for="bibiscoCreateSequelSelectProject">{{"choose_project" | translate}}</label>
-          <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
-            <ui-select ng-model="$ctrl.selectedItem">
-              <ui-select-match>
-                <span ng-bind="$select.selected.title"></span>
-              </ui-select-match>
-              <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'title':$select.search}">
-                <span ng-bind-html="item.title"></span>
-              </ui-select-choices>
-            </ui-select>
+    <textinputfield field="createSequelForm.projectName"
+      model="$ctrl.projectName" name="projectName" autofocus required
+      label="jsp.createProject.form.label.name"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="bibiscoCreateSequelSelectProject">{{"choose_project" | translate}}</label>
+      <div class="col-sm-8" ng-class="{ 'has-error': $ctrl.hasError() }">
+        <ui-select ng-model="$ctrl.selectedItem">
+          <ui-select-match>
+            <span ng-bind="$select.selected.title"></span>
+          </ui-select-match>
+          <ui-select-choices repeat="item in $ctrl.selectItems | filter: {'title':$select.search}">
+            <span ng-bind-html="item.title"></span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="col-sm-8 col-sm-offset-3">
+        <div ng-if="$ctrl.hasError()">
+          <p class="text-danger bibiscoNotSelectableText">{{"validation.required" | translate}}</p>
           </div>
-          <div class="col-sm-8 col-sm-offset-3">
-            <div ng-if="$ctrl.hasError()">
-              <p class="text-danger bibiscoNotSelectableText">{{"validation.required" | translate}}</p>
-             </div>
-          </div>
-        </div>
-        <div class="top30 col-sm-9 col-sm-offset-3">
-          <button type="submit" class="btn btn-primary">
-            {{"jsp.common.button.save" | translate}}
-          </button>
-          <buttonback fixedpath="$ctrl.backpath"></buttonback>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
+
+    <formbuttons form="createSequelForm">
+    </formbuttons>
+  </form>
 </div>
+
+

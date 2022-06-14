@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,19 @@
  *
  */
 
-angular.module('bibiscoApp').service('DocxExporterService', function () {
+angular.module('bibiscoApp').service('DocxExporterService', function (FileSystemService) {
   'use strict';
 
   var htmlparser = require('htmlparser2');
   var docx = require('docx');
 
   let fontSize = 24; // font size, measured in half-points
-
-  let exportitlespacing = { before: 5500, after: 200, line: 350 };
-  let partitlespacing = { before: 5500, after: 200, line: 350 };
-  let h1marginspacing = { after: 400, before: 0, line: 350 };
-  let h2marginspacing1st = { after: 250, before: 0, line: 350 };
-  let h2marginspacing = { after: 250, before: 250, line: 350 };
-  let h3marginspacing1st = { after: 250, line: 350 };
-  let h3marginspacing = { after: 250, before: 250, line: 350 };
-  let paragraphspacing = { after: 250, line: 350 };
   
   return {
   
-    export: function (path, html, font, indent, hcountingactive, pagebreakonh1, callback) {
+    export: function (params, callback) {
 
-      let currentParagraph = null;
+      let currentParagraphOptions = null;
       let boldActive = false;
       let italicsActive = false;
       let underlineActive = false;
@@ -44,93 +35,119 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
       let h1counter = 0;
       let h2counter = 0;
       let h3counter = 0;
+      let spacingconfig = this.calculateSpacingconfig(params.exportconfig);
     
-      const numbering = new docx.Numbering();
-      const numberedAbstract = numbering.createAbstractNumbering();
-      numberedAbstract.createLevel(0, 'decimal', '%1. ', 'left');
-      const letterNumbering = numbering.createConcreteNumbering(numberedAbstract);
-
-      // Create document
-      let doc = new docx.Document();
+      // Create document children
+      let docChildren = [];
 
       var parser = new htmlparser.Parser({
 
         onopentag: function (name, attribs) {
 
           if (name === 'exporttitle') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.center();
-            currentParagraph.spacing(exportitlespacing);
+            currentParagraphOptions = {
+              children: [],
+              alignment: docx.AlignmentType.CENTER,
+              spacing: spacingconfig.exportitlespacing,
+            };
             boldActive = true;
 
           } else if (name === 'exportauthor') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.center();
+            currentParagraphOptions = {
+              children: [],
+              alignment: docx.AlignmentType.CENTER,
+            };
             boldActive = false;
 
           } else if (name === 'exportsubtitle') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.center();
+            currentParagraphOptions = {
+              children: [],
+              alignment: docx.AlignmentType.CENTER,
+            };
             boldActive = false;
 
           } else if (name === 'parttitle') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.pageBreak();
-            currentParagraph.center();
-            currentParagraph.spacing(partitlespacing);
+            currentParagraphOptions = {
+              children: [],
+              alignment: docx.AlignmentType.CENTER,
+              spacing: spacingconfig.partitlespacing,
+              pageBreakBefore: true
+            };
             boldActive = true;
 
           } else if (name === 'prologue' || name === 'epilogue') {
-            currentParagraph = new docx.Paragraph();
-            if (pagebreakonh1) {
-              currentParagraph.pageBreak();
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacingconfig.h1marginspacing,
+            };
+            if (params.exportconfig.pagebreakonh1) {
+              currentParagraphOptions.pageBreakBefore = true;
             }
+
             boldActive = true;
-            currentParagraph.spacing(h1marginspacing);
+            currentParagraphOptions.alignment = this.getAlignment(attribs);
 
           } else if (name === 'h1') {
             h1counter += 1;
-            currentParagraph = new docx.Paragraph();
-            if (pagebreakonh1) {
-              currentParagraph.pageBreak();
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacingconfig.h1marginspacing,
+            };
+            if (params.exportconfig.pagebreakonh1) {
+              currentParagraphOptions.pageBreakBefore = true;
             }
             boldActive = true;
-            if (hcountingactive) {
-              let currentText = new docx.TextRun(h1counter + ' ');
-              currentText.size(fontSize);
-              currentText.font(font);
-              currentText.bold();
-              currentParagraph.addRun(currentText);
+            if (params.exportconfig.hcountingactive) {
+              let currentText = new docx.TextRun({
+                text: h1counter + ' ',
+                bold: true,
+                font: params.exportconfig.font,
+                size: fontSize
+              });
+              currentParagraphOptions.children.push(currentText);
             }
-            currentParagraph.spacing(h1marginspacing);
+            currentParagraphOptions.alignment = this.getAlignment(attribs);
 
           } else if (name === 'h2') {
             h2counter += 1;
-            currentParagraph = new docx.Paragraph();
+            let spacing = h2counter ===1 ? spacingconfig.h2marginspacing1st : spacingconfig.h2marginspacing;
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacing,
+            };
             italicsActive = true;
-            if (hcountingactive) {
-              let currentText = new docx.TextRun(h1counter + '.' + h2counter + ' ');
-              currentText.size(fontSize);
-              currentText.font(font);
-              currentText.italic();
-              currentParagraph.addRun(currentText);
+            if (params.exportconfig.hcountingactive) {
+              let currentText =  new docx.TextRun({
+                text: h1counter + '.' + h2counter + ' ',
+                italics: true,
+                font: params.exportconfig.font,
+                size: fontSize
+              });
+
+              currentParagraphOptions.children.push(currentText);
             } 
-            currentParagraph.spacing(h2counter ===1 ? h2marginspacing1st : h2marginspacing);
 
           } else if (name === 'h3') {
             h3counter += 1;
-            currentParagraph = new docx.Paragraph();
-            if (hcountingactive) {
-              let currentText = new docx.TextRun(h1counter + '.' + h2counter + '.' + h3counter + ' ');
-              currentText.size(fontSize);
-              currentText.font(font);
-              currentParagraph.addRun(currentText);
+            let spacing = h3counter === 1 ? spacingconfig.h3marginspacing1st : spacingconfig.h3marginspacing;
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacing,
+            };
+            if (params.exportconfig.hcountingactive) {
+              let currentText = new docx.TextRun({
+                text: h1counter + '.' + h2counter + '.' + h3counter + ' ',
+                font: params.exportconfig.font,
+                size: fontSize
+              });
+              currentParagraphOptions.children.push(currentText);
             }
-            currentParagraph.spacing(h3counter === 1 ? h3marginspacing1st : h3marginspacing);
 
           } else if (name === 'question') {
-            currentParagraph = new docx.Paragraph();
-            currentParagraph.spacing(paragraphspacing);
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacingconfig.paragraphspacing,
+            };
             boldActive = true;
             italicsActive = true;
         
@@ -139,33 +156,24 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
           } else if (name === 'ol') {
             orderedListActive = true;
           } else if (name === 'p' || name === 'li') {
+            currentParagraphOptions = {
+              children: [],
+              spacing: spacingconfig.paragraphspacing,
+            };
 
-            currentParagraph = new docx.Paragraph();
-
-            // spacing
-            currentParagraph.spacing(paragraphspacing);
-            
             // alignment
-            if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
-              currentParagraph.left();
-            } else if (attribs.style.indexOf('text-align: center') > -1) {
-              currentParagraph.center();
-            } else if (attribs.style.indexOf('text-align: right') > -1) {
-              currentParagraph.right();
-            } else if (attribs.style.indexOf('text-align: justify') > -1) {
-              currentParagraph.justified();
-            }
+            currentParagraphOptions.alignment = this.getAlignment(attribs);
 
             // indent
-            if (indent) {
-              currentParagraph.indent({ firstLine: 600 });
+            if (params.exportconfig.indent) {
+              currentParagraphOptions.indent = { firstLine: 600 };
             }
 
             if (name === 'li') {
               if (unorderedListActive) {
-                currentParagraph.bullet();
+                currentParagraphOptions.bullet = { level: 0 };
               } else if (orderedListActive) {
-                currentParagraph.setNumbering(letterNumbering, 0);
+                currentParagraphOptions.numbering = { reference: 'letterNumbering', level: 0};
               }
             }
             
@@ -184,58 +192,62 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
 
           const NOT_SAFE_IN_XML_1_0 = /[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm;
           let sanitizedText = text.replace(NOT_SAFE_IN_XML_1_0, '');
-          if (currentParagraph) {
-            let currentText = new docx.TextRun(sanitizedText);
-            currentText.size(fontSize);
-            currentText.font(font);
+          if (currentParagraphOptions) {
+            
+            let currentTextOptions = {
+              text: sanitizedText,
+              font: params.exportconfig.font,
+              size: fontSize
+            };
  
             if (boldActive) {
-              currentText.bold();
+              currentTextOptions.bold = true;
             }
             if(italicsActive) {
-              currentText.italic();
+              currentTextOptions.italics = true;
             }
             if (underlineActive) {
-              currentText.underline();
+              currentTextOptions.underline = {};
             }
             if (strikeActive) {
-              currentText.strike();
+              currentTextOptions.strike = true;
             }
-            currentParagraph.addRun(currentText);
+
+            currentParagraphOptions.children.push(new docx.TextRun(currentTextOptions));
           }
         },
 
         onclosetag: function (name) {
 
           if (name === 'exporttitle' || name === 'exportauthor' || name === 'exportsubtitle' || name === 'parttitle') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;
             boldActive = false;
 
           } else if (name === 'prologue' || name === 'epilogue') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;
             boldActive = false;
 
           } else if (name === 'h1') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;
             boldActive = false;
             h2counter = 0;
 
           } else if (name === 'h2') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;;
             italicsActive = false;
             h3counter = 0;
 
           } else if (name === 'h3') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;
 
           } else if (name === 'question') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+            docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            currentParagraphOptions = null;
             boldActive = false;
             italicsActive = false;
 
@@ -243,10 +255,11 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
             unorderedListActive = false;
           } else if (name === 'ol') {
             orderedListActive = false;
-          } else if ( name === 'p' || 
-            name === 'li') {
-            doc.addParagraph(currentParagraph);
-            currentParagraph = null;
+          } else if ( name === 'p' || name === 'li') {
+            if (currentParagraphOptions) {
+              docChildren.push(new docx.Paragraph(currentParagraphOptions));
+            }
+            currentParagraphOptions = null;
           } else if (name === 'b') {
             boldActive = false;
           } else if (name === 'i') {
@@ -259,18 +272,113 @@ angular.module('bibiscoApp').service('DocxExporterService', function () {
         },
 
         onend: function() {
-          let exporter = new docx.LocalPacker(doc, undefined, undefined, numbering);
-          exporter.pack(path + '.docx');
-          if (callback) {
-            callback();
+          let doc = new docx.Document({
+            creator: params.exportconfig.author,
+            title: params.exportconfig.title,
+            numbering: {
+              config: [{
+                levels: [
+                  {
+                    level: 0,
+                    format: 'decimal',
+                    text: '%1. ',
+                    alignment: docx.AlignmentType.LEFT,
+                    style: {
+                      paragraph: {
+                        indent: { left: 720, hanging: 260 },
+                      },
+                      run: {
+                        font: params.exportconfig.font,
+                        size: fontSize
+                      }
+                    },
+                  }],
+                reference: 'letterNumbering'
+              }]
+            },
+            sections: [{
+              properties: {},
+              children: docChildren
+            }]});
+
+          docx.Packer.toBuffer(doc).then((buffer) => {
+            FileSystemService.writeFileSync(params.filepath + '.docx', buffer);
+            if (callback) {
+              callback();
+            }
+          });
+        },
+
+        getAlignment: function(attribs) {
+          if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
+            return docx.AlignmentType.LEFT;
+          } else if (attribs.style.indexOf('text-align: center') > -1) {
+            return docx.AlignmentType.CENTER;
+          } else if (attribs.style.indexOf('text-align: right') > -1) {
+            return docx.AlignmentType.RIGHT;
+          } else if (attribs.style.indexOf('text-align: justify') > -1) {
+            return docx.AlignmentType.JUSTIFIED;
           }
         }
+
       }, { decodeEntities: true });
 
       // replace all &nbsp; with white spaces
-      html = html.replace(/&nbsp;/g, ' ');
+      let html = params.html.replace(/&nbsp;/g, ' ');
       parser.write(html);
       parser.end();
+    },
+
+    calculateSpacingconfig: function(exportconfig) {
+
+      let linespacing;
+      switch(exportconfig.linespacing) {
+      case 10:
+        linespacing = 250;
+        break;
+      case 13:
+        linespacing = 325;
+        break;
+      case 14:
+        linespacing = 350;
+        break;
+      case 15:
+        linespacing = 375;
+        break;
+      case 20:
+        linespacing = 500;
+        break;
+      }
+
+      let paragraphspacing;
+      switch(exportconfig.paragraphspacing) {
+      case 'none':
+        paragraphspacing = 0;
+        break;
+      case 'small':
+        paragraphspacing = 125;
+        break;
+      case 'medium':
+        paragraphspacing = 250;
+        break;
+      case 'large':
+        paragraphspacing = 375;
+        break;
+      case 'double':
+        paragraphspacing = 500;
+        break;
+      }
+
+      return {
+        exportitlespacing: { before: 5500, after: 200, line: linespacing },
+        partitlespacing: { before: 5500, after: 200, line: linespacing },
+        h1marginspacing: { after: 400, before: 0, line: linespacing },
+        h2marginspacing1st: { after: paragraphspacing, before: 0, line: linespacing },
+        h2marginspacing: { after: paragraphspacing, before: paragraphspacing, line: linespacing },
+        h3marginspacing1st: { after: paragraphspacing, line: linespacing },
+        h3marginspacing: { after: paragraphspacing, before: paragraphspacing, line: linespacing },
+        paragraphspacing: { after: paragraphspacing, line: linespacing }
+      };
     }
   };
 });

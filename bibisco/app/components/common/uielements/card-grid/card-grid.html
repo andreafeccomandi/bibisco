@@ -1,51 +1,43 @@
-<div class="card-grid-header {{$ctrl.headerclass}}">
-	<div class="container">
-	<div class="row">
-		<pageheader
-				headertitle="{{$ctrl.pageheadertitle}}"
-				headersubtitle="{{$ctrl.pageheadersubtitle}}"
-				buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
-				buttonfunction="$ctrl.pageheaderbuttonfunction()"
-				buttonhotkey="$ctrl.pageheaderbuttonhotkey"
-				buttonshow="$ctrl.items && $ctrl.pageheaderbuttonlabel"
-				buttontooltip="{{$ctrl.pageheaderbuttontooltip}}"
-				characters="$ctrl.pageheadercharacters"
-				showwordsgoalcounter="$ctrl.showwordsgoalcounter"
-				tipcode="{{$ctrl.pageheadertipcode}}" 
-				tipenabled="$ctrl.tipenabled"
-				words="$ctrl.pageheaderwords">
-		</pageheader>
-	</div>
-</div>
-</div>
+<pageheader
+		headertitle="{{$ctrl.pageheadertitle}}"
+		headersubtitle="{{$ctrl.pageheadersubtitle}}"
+		characters="$ctrl.pageheadercharacters"
+		showwordsgoalcounter="$ctrl.showwordsgoalcounter"
+		subheader="$ctrl.subheader"
+		words="$ctrl.pageheaderwords">
+</pageheader>
+
 <div ng-show="!$ctrl.items">
-	<div class="card-grid-emptyitems {{$ctrl.emptygridclass}}">
-	<div class="container">
 	<jumbotronbutton text="{{$ctrl.emptylisttext}}"
 		buttonlabel="{{$ctrl.emptylistbuttonlabel}}"
 		buttonfunction="$ctrl.emptylistbuttonfunction()"
 		buttontooltip="{{$ctrl.emptylistbuttontooltip | translate}}"></jumbotronbutton>
-	</div>
+</div>
+
+<div ng-show="$ctrl.items" class="{{$ctrl.cardgriditemsboxcontainerclass}}">
+	<div class="card-grid-items-box">
+		<card ng-repeat="item in $ctrl.items track by $index"
+			cardid="item.id" cardtitle="{{item.title}}"
+			dimension="{{$ctrl.carddimension}}"
+			dndenabled="$ctrl.dndenabled"
+			dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
+			family="{{$ctrl.family}}"
+			hastext="$ctrl.hastext"
+			image="{{item.image}}"
+			noimageicon="{{item.noimageicon}}"
+			selectfunction="$ctrl.selectfunction({id})"
+			text="{{item.text}}" words="item.words" characters="item.characters"
+			status="item.status">
+		</card>
 	</div>
 </div>
-<div ng-show="$ctrl.items">
-<div class="card-grid-items {{$ctrl.gridclass}}">
-	<div class="container">
-	<div class="row">
-		<div ng-repeat="item in $ctrl.items track by $index" class="col-sm-4 col-md-4 col-lg-3">
-			<card cardid="item.id" cardtitle="{{item.title}}"
-				dimension="{{$ctrl.carddimension}}"
-				dndenabled="$ctrl.dndenabled"
-				dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
-				family="{{$ctrl.family}}"
-				image="{{item.image}}"
-				noimageicon="{{item.noimageicon}}"
-				selectfunction="$ctrl.selectfunction({id})"
-				text="{{item.text}}" words="item.words" characters="item.characters"
-				status="item.status">
-			</card>
-		</div>
-	</div>
-	</div>
-</div>
-</div>
+
+<pagefooter
+		buttonlabel="{{$ctrl.pageheaderbuttonlabel}}"
+		buttonfunction="$ctrl.pageheaderbuttonfunction()"
+		buttonhotkey="$ctrl.pageheaderbuttonhotkey"
+		buttonshow="$ctrl.items && $ctrl.pageheaderbuttonlabel"
+		buttontooltip="{{$ctrl.pageheaderbuttontooltip}}"
+		tipcode="{{$ctrl.pageheadertipcode}}" 
+		tipenabled="$ctrl.tipenabled">
+</pagefooter>

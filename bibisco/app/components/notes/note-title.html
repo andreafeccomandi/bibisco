@@ -1,13 +1,11 @@
-<div class="container">
-  <elementtitleform
-    breadcrumbnotes="$ctrl.breadcrumbnotes"
-    eventname="SHOW_ELEMENT_TITLE"
-    exitpath="{{$ctrl.exitpath}}"
-    pageheadertitle="{{$ctrl.pageheadertitle}}"
-    savefunction="$ctrl.save(title)"
-    titlelabel="note_title_form_name"
-    titlemandatory="true"
-    titlemaxlength="50"
-    titlevalue="{{$ctrl.name}}">
-  </elementtitleform>
-</div>
+<elementtitleform
+  breadcrumbitems="$ctrl.breadcrumbnotes"
+  eventname="SHOW_ELEMENT_TITLE"
+  pageheadertitle="{{$ctrl.pageheadertitle}}"
+  savefunction="$ctrl.save(title)"
+  titlelabel="note_title_form_name"
+  titlemandatory="true"
+  titlemaxlength="50"
+  titlevalue="{{$ctrl.name}}">
+</elementtitleform>
+

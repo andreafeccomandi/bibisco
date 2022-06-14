@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  *
  */
 
-angular.module('bibiscoApp').service('ExportService', function ($injector,
-  $translate, ArchitectureService, BibiscoPropertiesService, ChapterService, DatetimeService,
-  DocxExporterService, FileSystemService, LocaleService, LocationService, MainCharacterService, 
+angular.module('bibiscoApp').service('ExportService', function ($injector, $translate, 
+  $rootScope, ArchitectureService, BibiscoPropertiesService, ChapterService, ContextService, 
+  DatetimeService, DocxExporterService, FileSystemService, LocaleService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
   SupporterEditionChecker, TxtExporterService, UtilService) {
   'use strict';
@@ -34,6 +34,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
   const physionomy_questions_count = 24;
   const psychology_questions_count = 62;
   const sociology_questions_count = 10;
+
+  $rootScope.$on('LOCALE_CHANGED', function () {
+    translations = null;
+  });
   
   return {
 
@@ -63,192 +67,241 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let filename = name + '_' + type + '_' + timestampFormatted;
       return FileSystemService.concatPath(exportpath, filename);
     },
+    
 
     export: function (exportfilter, exportpath, exporter, callback) {
-
 
       // init moment
       this.initMoment();
 
-      // load translations
-      this.loadTranslations();
+      // chapter title in project language
+      let projectLanguage = ProjectService.getProjectInfo().language;
+      let translation = JSON.parse(FileSystemService.readFile(this.getResourceFilePath(projectLanguage)));
 
-      // font
-      let font = this.getFont();
-
-      // indent
-      let indent = (BibiscoPropertiesService.getProperty('indentParagraphEnabled') === 'true');
+      // chapter format
+      let chapterformat = {
+        chaptertitleformat: BibiscoPropertiesService.getProperty('chaptertitleformat'),
+        chaptertitleinprojectlanguage: translation.common_chapter,
+        chapterpositionstyle: this.calculateChapterPositionStyle(),
+        sceneseparator: this.calculateSceneSeparator()
+      };
 
       // export timestamp
       let timestamp = new Date();
 
       // files to export
       let files2export = [];
-      let hcountingactive = true;
-      let pagebreakonh1 = true;
 
-      // novel and project
-      if (exportfilter.id === 'novel_project') {
-        files2export.push({
-          filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
-          html: this.createNovelHtml()
-        });
-        files2export.push({
-          filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
-          html: this.createProjectHtml()
-        });
-      } 
       // novel
-      else if (exportfilter.id === 'novel') {
-        files2export.push({
-          filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
-          html: this.createNovelHtml()
-        });
-      } 
-      // project
-      else if (exportfilter.id === 'project') {
-        files2export.push({
-          filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
-          html: this.createProjectHtml()
-        });
+      if (exportfilter.id === 'novel_project' || exportfilter.id === 'novel' || exportfilter.id === 'project') {
+        if (exportfilter.id === 'novel_project' || exportfilter.id === 'novel') {
+          files2export.push({
+            filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
+            html: this.createNovelHtml(chapterformat),
+            exportconfig: this.calculateExportConfig({
+              hcountingactive: false,
+              pagebreakonh1: true
+            })
+          });
+        }
+        if (exportfilter.id === 'novel_project' || exportfilter.id === 'project') {
+          files2export.push({
+            filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
+            html: this.createProjectHtml(),
+            exportconfig: this.calculateExportConfig({
+              hcountingactive: true,
+              pagebreakonh1: true
+            })
+          });
+        }
       } 
       // prologue
       else if (exportfilter.type === 'prologue') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         let chapter = ChapterService.getChapter(exportfilter.id);
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
-          html: this.createChapter(chapter, 'prologue', false)
+          html: this.createChapter({
+            chapter: chapter,
+            chapterformat: chapterformat,
+            tag: 'prologue',
+            ignoretitleformat: true
+          }),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // epilogue
       else if (exportfilter.type === 'epilogue') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         let chapter = ChapterService.getChapter(exportfilter.id);
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
-          html: this.createChapter(chapter, 'epilogue', false)
+          html: this.createChapter({
+            chapter: chapter,
+            chapterformat: chapterformat,
+            tag: 'epilogue',
+            ignoretitleformat: true
+          }),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // chapter
       else if (exportfilter.type === 'chapter') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         let chapter = ChapterService.getChapter(exportfilter.id);
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
-          html: this.createChapter(chapter, 'h1', true)
+          html: this.createChapter({
+            chapter: chapter,
+            chapterformat: chapterformat,
+            tag: 'h1'
+          }),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // architecture
       else if (exportfilter.id === 'architecture') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'architecture', timestamp),
-          html: this.createArchitecture()
+          html: this.createArchitecture(),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       } 
       // strands
       else if (exportfilter.id === 'strands') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'strands', timestamp),
-          html: this.createStrands()
+          html: this.createStrands(),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       } 
       // main character
       else if (exportfilter.type === 'maincharacter') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'maincharacter', timestamp),
-          html: this.createMainCharacters(exportfilter.id)
+          html: this.createMainCharacters(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // secondary character
       else if (exportfilter.type === 'secondarycharacter') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'secondarycharacter', timestamp),
-          html: this.createSecondaryCharacters(exportfilter.id)
+          html: this.createSecondaryCharacters(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // location
       else if (exportfilter.type === 'location') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'location', timestamp),
-          html: this.createLocations(exportfilter.id)
+          html: this.createLocations(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // object
       else if (exportfilter.type === 'object') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'object', timestamp),
-          html: this.createObjects(exportfilter.id)
+          html: this.createObjects(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // note
       else if (exportfilter.type === 'note') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'note', timestamp),
-          html: this.createNotes(exportfilter.id)
+          html: this.createNotes(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
       // timeline
       else if (exportfilter.id === 'timeline') {
-        hcountingactive = false;
-        pagebreakonh1 = false;
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'timeline', timestamp),
-          html: this.createTimeline()
+          html: this.createTimeline(),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
         });
       }
 
-
-      exporter.export(files2export[0].filepath, files2export[0].html, font, indent, hcountingactive, pagebreakonh1,
-        function() { 
-          if (files2export.length === 2) {
-            exporter.export(files2export[1].filepath, files2export[1].html, font, indent, hcountingactive, pagebreakonh1,
-              function () {
-                shell.showItemInFolder(exportpath);
-                callback();
-              }); 
-          } else {
+      exporter.export(files2export[0], function () {
+        if (files2export.length === 2) {
+          exporter.export(files2export[1], function () {
             shell.showItemInFolder(exportpath);
             callback();
-          }          
-        });
+          });
+        } else {
+          shell.showItemInFolder(exportpath);
+          callback();
+        }
+      });
     },
 
-    getFont: function() {
-      let font = BibiscoPropertiesService.getProperty('font');
-      if (font === 'courier') {
-        return 'Courier';
-      } else if (font === 'times') {
-        return 'Times New Roman';
-      } else if (font === 'arial') {
-        return 'Arial';
+    getFont: function () {
+      let font;
+      let fontProperty = BibiscoPropertiesService.getProperty('font');
+      switch (fontProperty) {
+        case 'arial':
+          font = 'Arial';
+          break;
+        case 'baskerville':
+          font = 'Baskerville';
+          break;
+        case 'courier':
+          font = 'Courier';
+          break;
+        case 'garamond':
+          font = 'Garamond';
+          break;
+        case 'georgia':
+          font = 'Georgia';
+          break;
+        case 'palatino':
+          font = 'Palatino';
+          break;
+        case 'times':
+          font = 'Times New Roman';
+          break;
+        default:
+          break;
       }
+
+      return font;
     },
 
     createProjectHtml: function () {
       
-      let supporterEdition = false;
-      if (SupporterEditionChecker.check()) {
-        $injector.get('IntegrityService').ok();
-        supporterEdition = true;
-      }
+      let isSupporterOrTrial = SupporterEditionChecker.isSupporterOrTrial();
       
       let html = '';
       html += this.createAuthor();
@@ -259,12 +312,12 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       html += this.createMainCharacters();
       html += this.createSecondaryCharacters();
       html += this.createLocations();
-      if (supporterEdition) {
+      if (isSupporterOrTrial) {
         html += this.createObjects();
         html += this.createNotes();
       }
       html += this.createChaptersForProject();
-      if (supporterEdition) {
+      if (isSupporterOrTrial) {
         html += this.createTimeline();
       }
 
@@ -275,13 +328,13 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       return html;
     },
 
-    createNovelHtml: function() {
+    createNovelHtml: function(chapterformat) {
       let html = '';
 
       html += this.createAuthor();
       html += this.createTitle();
       html += this.createNovelSubtitle();
-      html += this.createChaptersForNovel();
+      html += this.createChaptersForNovel(chapterformat);
 
       // remove double white spaces
       html = html.replace(/&nbsp;/g, ' ');
@@ -303,30 +356,30 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     },
 
     createProjectSubtitle: function () {
-      return this.createTag('exportsubtitle', translations.export_project_subtitle);
+      return this.createTag('exportsubtitle', this.getTranslations().export_project_subtitle);
     },
 
     createArchitecture: function () {
       let html = '';
 
-      html += this.createTag('h1', translations.common_architecture);
+      html += this.createTag('h1', this.getTranslations().common_architecture);
 
       // premise
-      html += this.createTag('h2', translations.common_premise);
+      html += this.createTag('h2', this.getTranslations().common_premise);
       html += ArchitectureService.getPremise().text;
 
       // fabula
-      html += this.createTag('h2', translations.common_fabula);
+      html += this.createTag('h2', this.getTranslations().common_fabula);
       html += ArchitectureService.getFabula().text;
 
       // settings
-      html += this.createTag('h2', translations.common_setting);
+      html += this.createTag('h2', this.getTranslations().common_setting);
       html += ArchitectureService.getSetting().text;
       html += this.createEvents('architecture', 'setting');
 
       // global notes
-      if (SupporterEditionChecker.check()) {
-        html += this.createTag('h2', translations.common_notes_title);
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
+        html += this.createTag('h2', this.getTranslations().common_notes_title);
         html += ArchitectureService.getGlobalNotes().text;
       }
     
@@ -339,7 +392,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       // strands
       let strands = StrandService.getStrands();
       if (strands && strands.length > 0) {
-        html += this.createTag('h1', translations.common_strands);
+        html += this.createTag('h1', this.getTranslations().common_strands);
         for (let i = 0; i < strands.length; i++) {
           html += this.createTag('h2', strands[i].name);
           html += strands[i].description;
@@ -354,7 +407,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
       let mainCharacters = MainCharacterService.getMainCharacters();
       if (mainCharacters && mainCharacters.length > 0) {
-        html += this.createTag('h1', translations.common_main_characters);
+        html += this.createTag('h1', this.getTranslations().common_main_characters);
         for (let i = 0; i < mainCharacters.length; i++) {
           if (!filter || (filter && mainCharacters[i].$loki === filter)) {
             html += this.createMainCharacter(mainCharacters[i]);     
@@ -385,7 +438,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
     createMainCharacterInfoWithQuestions: function (mainCharacter, info, questionsCount) {
       
       let html = '';
-      html += this.createTag('h3', translations['common_' + info]);
+      html += this.createTag('h3', this.getTranslations()['common_' + info]);
       
       // freetext
       if (mainCharacter[info].freetextenabled) {
@@ -394,7 +447,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       // questions
       else {
         for (let i = 0; i < questionsCount; i++) {
-          let question = '(' + (i+1) + '/' + questionsCount + ') ' + translations['characterInfo_question_' + info + '_' + i];
+          let question = '(' + (i+1) + '/' + questionsCount + ') ' + this.getTranslations()['characterInfo_question_' + info + '_' + i];
           html += this.createTag('question', question);   
           html += mainCharacter[info].questions[i].text;
         }
@@ -404,7 +457,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     createMainCharacterInfoWithoutQuestions: function (mainCharacter, info) {
       let html = '';
-      html += this.createTag('h3', translations['common_characters_' + info]);
+      html += this.createTag('h3', this.getTranslations()['common_characters_' + info]);
       html += mainCharacter[info].text;
       return html; 
     },
@@ -413,7 +466,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let html = '';
       let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
       if (secondaryCharacters && secondaryCharacters.length > 0) {
-        html += this.createTag('h1', translations.common_secondary_characters);
+        html += this.createTag('h1', this.getTranslations().common_secondary_characters);
         for (let i = 0; i < secondaryCharacters.length; i++) {
           if (!filter || (filter && secondaryCharacters[i].$loki === filter)) {
             html += this.createTag('h2', secondaryCharacters[i].name);
@@ -429,7 +482,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let html = '';
       let locations = LocationService.getLocations();
       if (locations && locations.length > 0) {
-        html += this.createTag('h1', translations.common_locations);
+        html += this.createTag('h1', this.getTranslations().common_locations);
         for (let i = 0; i < locations.length; i++) {
           if (!filter || (filter && locations[i].$loki === filter)) {
             html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
@@ -445,7 +498,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let html = '';
       let objects = this.getObjectService().getObjects();
       if (objects && objects.length > 0) {
-        html += this.createTag('h1', translations.objects);
+        html += this.createTag('h1', this.getTranslations().objects);
         for (let i = 0; i < objects.length; i++) {
           if (!filter || (filter && objects[i].$loki === filter)) {
             html += this.createTag('h2', objects[i].name);
@@ -461,7 +514,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let html = '';
       let notes = this.getNoteService().getNotes();
       if (notes && notes.length > 0) {
-        html += this.createTag('h1', translations.common_notes_title);
+        html += this.createTag('h1', this.getTranslations().common_notes_title);
         for (let i = 0; i < notes.length; i++) {
           if (!filter || (filter && notes[i].$loki === filter)) {
             html += this.createTag('h2', notes[i].name);
@@ -477,25 +530,30 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
       let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
       if (chapters && chapters.length > 0) {
-        html += this.createTag('h1', translations.common_chapters);
+        html += this.createTag('h1', this.getTranslations().common_chapters);
         for (let i = 0; i < chapters.length; i++) {
           html += this.createTag('h2', ChapterService.getChapterPositionDescription(chapters[i].position) + ' ' + chapters[i].title);
-          html += this.createTag('h3', translations.common_chapter_reason);
+          html += this.createTag('h3', this.getTranslations().common_chapter_reason);
           html += chapters[i].reason.text;
-          html += this.createTag('h3', translations.common_chapter_notes);
+          html += this.createTag('h3', this.getTranslations().common_chapter_notes);
           html += chapters[i].notes.text;
         }
       }
       return html;
     },
 
-    createChaptersForNovel: function () {
+    createChaptersForNovel: function (chapterformat) {
       let html = '';
       
       // prologue
       let prologue = ChapterService.getPrologue();
       if (prologue) {
-        html += this.createChapter(prologue, 'prologue');
+        html += this.createChapter({
+          chapter: prologue,
+          chapterformat: chapterformat,
+          tag: 'prologue',
+          ignoretitleformat: true
+        });
       }
       
       // chapters and parts
@@ -513,40 +571,113 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
             html += this.createTag('parttitle', parts[lastPart].title);
           } 
 
-          html += this.createChapter(chapters[i]);
+          html += this.createChapter({
+            chapter: chapters[i],
+            chapterformat: chapterformat,
+            tag: 'h1'
+          });
         }
       }
 
       // epilogue
       let epilogue = ChapterService.getEpilogue();
       if (epilogue) {
-        html += this.createChapter(epilogue, 'epilogue');
+        html += this.createChapter({
+          chapter: epilogue,
+          chapterformat: chapterformat,
+          tag: 'epilogue',
+          ignoretitleformat: true
+        });
       }
 
       return html;
     },
 
-    createChapter: function(chapter, tag, positionintitle) {
-      let selectedtag = tag ? tag: 'h1';
-      let title = positionintitle ? ChapterService.getChapterPositionDescription(chapter.position) + ' ' + chapter.title : chapter.title;
-      let html = this.createTag(selectedtag, title);
+    calculateChapterPositionStyle: function() {
+      let chapterpositionstyle;
+      switch (BibiscoPropertiesService.getProperty('chaptertitleposition')) {
+        case 'left':
+          chapterpositionstyle = 'text-align: left';
+          break;
+        case 'center':
+          chapterpositionstyle = 'text-align: center';
+          break;
+      }
+      return chapterpositionstyle;
+    },
+
+    calculateSceneSeparator: function() {
+      let sceneseparator;
+      switch (BibiscoPropertiesService.getProperty('sceneseparator')) {
+        case 'blank_line':
+          sceneseparator = '';
+          break;
+        case 'three_asterisks':
+          sceneseparator = '***';
+          break;
+        case 'three_dots':
+          sceneseparator = '...';
+          break;
+      }
+      return sceneseparator;
+    },
+
+    calculateExportConfig: function(exportParams) {
+      return {
+        font: this.getFont(),
+        indent: (BibiscoPropertiesService.getProperty('indentParagraphEnabled') === 'true'),
+        linespacing: BibiscoPropertiesService.getProperty('linespacing'),
+        paragraphspacing: BibiscoPropertiesService.getProperty('paragraphspacing'),
+        hcountingactive: exportParams.hcountingactive,
+        pagebreakonh1: exportParams.pagebreakonh1,
+        title:  ProjectService.getProjectInfo().name,
+        author:  ProjectService.getProjectInfo().author
+      };
+    },
+
+    createChapter: function (chapterconfig) {
+
+      let chapter = chapterconfig.chapter;
+      let title = chapterconfig.ignoretitleformat ? chapter.title : this.calculateChapterTitle(chapterconfig.chapterformat.chaptertitleformat, chapter.title, chapter.position, chapterconfig.chapterformat.chaptertitleinprojectlanguage);
+      let html = this.createTag(chapterconfig.tag, title, [{ name: 'style', value: chapterconfig.chapterformat.chapterpositionstyle }]);
       let scenes = ChapterService.getScenes(chapter.$loki);
       for (let j = 0; j < scenes.length; j++) {
         html += scenes[j].revisions[scenes[j].revision].text;
-        html += this.createTag('p', '');
+        if (j < scenes.length - 1) {
+          html += this.createTag('p', chapterconfig.chapterformat.sceneseparator, [{ name: 'style', value: 'text-align: center' }]);
+        }
       }
 
       return html;
+    },
+
+    calculateChapterTitle: function(chaptertitleformat, title, position, chaptertitleinprojectlanguage) {
+      let chaptertitle;
+      switch (chaptertitleformat) {
+        case 'numbertitle':
+          chaptertitle = position + '. ' + title; 
+          break;
+        case 'number':
+          chaptertitle = position;
+          break;
+        case 'title':
+          chaptertitle = title;
+          break;
+        case 'labelnumber':
+          chaptertitle = chaptertitleinprojectlanguage + ' ' + position;
+          break;
+      }
+      return chaptertitle;
     },
 
     createEvents: function(type, id) {
       let html = '';
-      if (SupporterEditionChecker.check()) {
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
         let timelineHtml = '';
         let timeline = this.getTimelineService().getTimeline({type: type, id: id});
   
         if (timeline && timeline.length > 0) {
-          html += this.createTag('h3', translations.common_events); 
+          html += this.createTag('h3', this.getTranslations().common_events); 
           for (let i = 0; i < timeline.length; i++) {
             timelineHtml += this.createTag('li', 
               this.createTag('b', this.createTimelineDatetime(timeline[i]))
@@ -566,7 +697,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       let timeline = this.getTimelineService().getTimeline();
 
       if (timeline && timeline.length > 0) {
-        html += this.createTag('h1', translations.timeline_title); 
+        html += this.createTag('h1', this.getTranslations().timeline_title); 
         for (let i = 0; i < timeline.length; i++) {
           timelineHtml += this.createTag('li', 
             this.createTag('b', this.createTimelineDatetime(timeline[i]))
@@ -584,15 +715,15 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       
       if (timelineElement.time && timelineElement.timegregorian) {
         html += moment(timelineElement.time).format('dddd') + ' ' +
-        moment(timelineElement.time).format(translations.date_format_export_timeline) +
+        moment(timelineElement.time).format(this.getTranslations().date_format_export_timeline) +
         DatetimeService.calculateYear(new Date(timelineElement.time)) + ' ' +
-        moment(timelineElement.time).format(translations.time_format_export_timeline);
+        moment(timelineElement.time).format(this.getTranslations().time_format_export_timeline);
       } 
       else if (timelineElement.time && !timelineElement.timegregorian) {
         html += timelineElement.time;
       }
       else if (!timelineElement.time) {
-        html += translations.noinfoavailable;
+        html += this.getTranslations().noinfoavailable;
       }
 
       return html;
@@ -607,7 +738,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
       html += '(';
       if (timelineElement.type === 'scene') {
-        html += this.createTag('i', translations.common_chapter);
+        html += this.createTag('i', this.getTranslations().common_chapter);
         html += ': ';
         html += ChapterService.getChapterPositionDescription(timelineElement.chapterposition);
         if (timelineElement.chaptertitle) {
@@ -615,37 +746,37 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
         }
         if (timelineElement.characters) {
           html += ', ';
-          html += this.createTag('i', translations.common_characters);
+          html += this.createTag('i', this.getTranslations().common_characters);
           html += ': ' + timelineElement.characters;
         }
         if (timelineElement.locationname) {
           html += ', ';
-          html += this.createTag('i', translations.common_location); 
+          html += this.createTag('i', this.getTranslations().common_location); 
           html += ': ' + timelineElement.locationname;
         }  
         if (timelineElement.objects) {
           html += ', ';
-          html += this.createTag('i', translations.objects);
+          html += this.createTag('i', this.getTranslations().objects);
           html += ': ' + timelineElement.objects;
         }
       } 
       
       else if (timelineElement.type === 'architecture') {
-        html += this.createTag('i', translations.common_setting);
+        html += this.createTag('i', this.getTranslations().common_setting);
       } 
       
       else if (timelineElement.type === 'maincharacter' || timelineElement.type === 'secondarycharacter') {
-        html += this.createTag('i', translations.common_character);
+        html += this.createTag('i', this.getTranslations().common_character);
         html += ': ' + timelineElement.description;
       } 
       
       else if (timelineElement.type === 'location') {
-        html += this.createTag('i', translations.common_location);
+        html += this.createTag('i', this.getTranslations().common_location);
         html += ': ' + timelineElement.description;
       } 
       
       else if (timelineElement.type === 'object') {
-        html += this.createTag('i', translations.object);
+        html += this.createTag('i', this.getTranslations().object);
         html += ': ' + timelineElement.description;
       }
 
@@ -674,7 +805,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
 
     loadTranslations: function() {
       
-      let translationkeys = ['common_architecture',
+      let translationkeys = [
+        'chapter_title_format_example_title',
+        'common_architecture',
         'common_behaviors',
         'common_chapter_notes',
         'common_chapter_reason',
@@ -753,8 +886,81 @@ angular.module('bibiscoApp').service('ExportService', function ($injector,
       return TimelineService;
     },
 
+    getTranslations: function() {
+      if (!translations) {
+        this.loadTranslations();
+      }
+      return translations;
+    },
+
     initMoment: function() {
       moment.locale(LocaleService.getCurrentLocale());
-    }
+    },
+
+    calculateChapterTitleExample: function(chaptertitleformat) {
+
+      let chaptertitleexample;
+      switch (chaptertitleformat) {
+      case 'numbertitle':
+        chaptertitleexample = '4. ' + this.getTranslations().chapter_title_format_example_title;
+        break;
+      case 'number':
+        chaptertitleexample = '4';
+        break;
+      case 'labelnumber':
+        let projectLanguage = ProjectService.getProjectInfo().language;
+        let translation = JSON.parse(FileSystemService.readFile(this.getResourceFilePath(projectLanguage)));
+        chaptertitleexample = translation.common_chapter + ' 4';
+        break;
+      case 'title':
+        chaptertitleexample = this.getTranslations().chapter_title_format_example_title;
+        break;
+      }
+  
+      return chaptertitleexample;
+    },
+
+    getResourceFilePath: function(language) {
+
+      let resourceSuffix = 'en';
+      if (language === 'ca-es') {
+        resourceSuffix = 'ca-es';
+      } else if (language === 'cs') {
+        resourceSuffix = 'cs';
+      } else if (language === 'da-dk') {
+        resourceSuffix = 'da-dk';
+      } else if (language === 'de') {
+        resourceSuffix = 'de';
+      } else if (language.startsWith('es')) {
+        resourceSuffix = 'es';
+      } else if (language === 'fr') {
+        resourceSuffix = 'fr';
+      } else if (language === 'it') {
+        resourceSuffix = 'it';
+      } else if (language === 'nb-no') {
+        resourceSuffix = 'no';
+      } else if (language === 'nl') {
+        resourceSuffix = 'nl';
+      } else if (language === 'pl') {
+        resourceSuffix = 'pl';
+      } else if (language === 'ru') {
+        resourceSuffix = 'ru';
+      } else if (language === 'sr') {
+        resourceSuffix = 'sr';
+      } else if (language === 'sv') {
+        resourceSuffix = 'sv';
+      } else if (language === 'tr') {
+        resourceSuffix = 'tr';
+      } else if (language === 'pt-pt') {
+        resourceSuffix = 'pt-pt';
+      } else if (language === 'pt-br') {
+        resourceSuffix = 'pt-br';
+      } 
+
+      let resourcesDirPath = FileSystemService.concatPath(ContextService.getAppPath(), 'resources');
+      let resourcesFilePath = FileSystemService.concatPath(resourcesDirPath, 'locale-'+resourceSuffix+'.json');
+
+      return resourcesFilePath;
+    },
   };
 });

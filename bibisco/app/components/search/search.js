@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: SearchController
   });
 
-function SearchController($injector, $location, $rootScope, $scope, hotkeys) {
+function SearchController($injector, $location, $rootScope, $scope, $timeout, hotkeys) {
 
   var self = this;
   var SearchService = $injector.get('SearchService');
@@ -73,9 +73,13 @@ function SearchController($injector, $location, $rootScope, $scope, hotkeys) {
 
   self.search = function() {
     if ($rootScope.text2search) {
-      self.results = SearchService.search($rootScope.text2search, 
-        $rootScope.searchCasesensitiveactive, $rootScope.searchWholewordactive, 
-        $rootScope.searchOnlyscenes);
+      self.loading = true;
+      $timeout(function () {
+        self.results = SearchService.search($rootScope.text2search, 
+          $rootScope.searchCasesensitiveactive, $rootScope.searchWholewordactive, 
+          $rootScope.searchOnlyscenes);
+        self.loading = false;
+      },0);
     }
   };
 

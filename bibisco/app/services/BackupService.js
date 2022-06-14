@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,6 @@ angular.module('bibiscoApp').service('BackupService', function(BibiscoProperties
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'backups');
     },
-    getDynamicView: function() {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_backups');
-    },
     getBackup: function(id) {
       return this.getCollection().get(id);
     },
@@ -35,10 +31,10 @@ angular.module('bibiscoApp').service('BackupService', function(BibiscoProperties
       return backupsCount>0 ? this.getCollection().data[backupsCount-1] : null;
     },
     getBackupsCount: function() {
-      return this.getDynamicView().count();
+      return this.getBackups().length;
     },
     getBackups: function() {
-      return this.getDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
     insert: function(backup) {
       CollectionUtilService.insert(this.getCollection(), backup);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -69,11 +69,6 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
         $location.path('/project/author');
       }
     }, {
-      label: 'jsp.project.button.bibiscoProjectSuggestions',
-      itemfunction: function() {
-        $location.path('/tips');
-      }
-    }, {
       label: 'show_project_id',
       itemfunction: function() {
         let text = '<b>' + $translate.instant('project_id') + '</b>: '+ ProjectService.getProjectInfo().id;
@@ -82,14 +77,7 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
     });
 
     // supporters check
-    self.supporterEdition = false;
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      self.supporterEdition = true;
-    } 
-
-    // hotkeys
-    self.hotkeys = ['esc'];
+    self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
 
     // elements
     self.wordsTotal;
@@ -136,7 +124,7 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
     self.calculateSecondaryCharacters();
     self.calculateLocations();
 
-    if (self.supporterEdition) {
+    if (self.includeSupporterEditionItems) {
       self.calculateObjects();
     }
     self.calculateMotivational();
@@ -171,13 +159,10 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
     $location.path('/tips');
   };
 
-  self.back = function() {
-    ProjectService.close();
-    $location.path('/start');
-  };
-
   self.goals = function() {
-    self.supporterEditionFilterAction('/project/goals');
+    SupporterEditionChecker.filterAction(function() {
+      $location.path('/project/goals');
+    });
   };
 
   self.calculateMotivational = function() {
@@ -222,16 +207,9 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
   };
 
   self.wordsWrittenHistory = function() {
-    self.supporterEditionFilterAction('/project/history');
-  };
-
-  self.supporterEditionFilterAction = function(path) {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
-      $location.path(path);
-    }
+    SupporterEditionChecker.filterAction(function() {
+      $location.path('/project/history');
+    });
   };
 
   self.calculateDeadline = function() {
@@ -400,7 +378,6 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
 
   self.getObjectService = function () {
     if (!ObjectService) {
-      $injector.get('IntegrityService').ok();
       ObjectService = $injector.get('ObjectService');
     }
 

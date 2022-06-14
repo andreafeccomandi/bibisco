@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: SecondaryCharacterTitleController
   });
 
-function SecondaryCharacterTitleController($location, $routeParams,
+function SecondaryCharacterTitleController($location, $routeParams, $window,
   SecondaryCharacterService) {
 
   var self = this;
@@ -30,8 +30,13 @@ function SecondaryCharacterTitleController($location, $routeParams,
     self.breadcrumbItems = [];
     
     if ($routeParams.id !== undefined) {
-      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
-        $routeParams.id);
+      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
+  
+      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+      if (!secondarycharacter) {
+        $window.history.back();
+        return;
+      }
 
       self.breadcrumbItems.push({
         label: 'common_characters',
@@ -49,7 +54,6 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
       self.profileimageenabled = true;
       self.profileimage = secondarycharacter.profileimage;
-      self.exitpath = '/secondarycharacters/' + secondarycharacter.$loki + '/view';
       self.name = secondarycharacter.name;
       self.pageheadertitle =
         'jsp.character.dialog.title.updateTitle';
@@ -66,7 +70,6 @@ function SecondaryCharacterTitleController($location, $routeParams,
       });
 
       self.profileimageenabled = false;
-      self.exitpath = '/characters';
       self.name = null;
       self.pageheadertitle =
         'jsp.characters.dialog.title.createSecondaryCharacter';
@@ -75,8 +78,7 @@ function SecondaryCharacterTitleController($location, $routeParams,
 
   self.save = function(title) {
     if ($routeParams.id !== undefined) {
-      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(
-        $routeParams.id);
+      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
       secondarycharacter.name = title;
       SecondaryCharacterService.update(secondarycharacter);
     } else {

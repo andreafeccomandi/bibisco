@@ -1,110 +1,35 @@
-<div class="container">
-<div class="card-grid-header card-grid-header-full">
-	<div class="container">
-    <div class="row">
-      <pageheader
-          headertitle="jsp.chapters.h1"
-          buttonlabel="jsp.chapters.a.createChapter"
-          buttonfunction="$ctrl.create()"
-          buttonhotkey="$ctrl.hotkeys"
-          buttonshow="$ctrl.cardgriditems"
-          buttontooltip="{{'chapter_create_tooltip'+$root.os}}"
-          characters="$ctrl.pageheadercharacters"
-          dropdownopen="down" 
-          dropdownitems="$ctrl.actionitems"
-          showwordsgoalcounter="$ctrl.showwordsgoalcounter"
-          tipcode="chaptersdndTip" 
-          tipenabled="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 1 "
-          words="$ctrl.pageheaderwords">
-      </pageheader>
-    </div>
-  </div>
-</div>
+<pageheader
+    headertitle="jsp.chapters.h1"
+    characters="$ctrl.pageheadercharacters"
+    showwordsgoalcounter="$ctrl.showwordsgoalcounter"
+    words="$ctrl.pageheaderwords">
+</pageheader>
 
 <!-- NO PARTS, NO CHAPTERS -->
 <div ng-show="$ctrl.cardgriditems.partscount === 0 && 
   !($ctrl.cardgriditems.chapterscount > 0 || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue)">
-	<div class="card-grid-emptyitems card-grid-emptyitems-no-header-subtitle-full">
-	<div class="container">
-	<jumbotronbutton text="jsp.chapters.bibiscoEmptyThumbnailListBox.text"
-		buttonlabel="jsp.chapters.a.createFirstChapter"
-		buttonfunction="$ctrl.create()"
-		buttontooltip="{{'chapter_firstcreate_tooltip'+$root.os | translate}}"></jumbotronbutton>
-	</div>
+	<div>
+    <jumbotronbutton text="jsp.chapters.bibiscoEmptyThumbnailListBox.text"
+      buttonlabel="jsp.chapters.a.createFirstChapter"
+      buttonfunction="$ctrl.create()"
+      buttontooltip="{{'chapter_firstcreate_tooltip'+$root.os | translate}}"></jumbotronbutton>
 	</div>
 </div>
 
 <!-- NO PARTS AND CHAPTERS -->
 <div ng-show="$ctrl.cardgriditems.partscount === 0 && 
-  ($ctrl.cardgriditems.chapterscount > 0 || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue)">
-  <div class="card-grid-items card-grid-items-no-header-subtitle-full">
-    <div class="container">
-        <div class="row">
-          <div ng-if="$ctrl.cardgriditems.prologue" class="col-sm-4 col-md-4 col-lg-3">
-            <card cardid="$ctrl.cardgriditems.prologue.id" 
-              cardtitle="{{$ctrl.cardgriditems.prologue.title}}"
-              dimension="chapter"
-              dndenabled="false"
-              dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
-              family="{{$ctrl.cardgriditems.prologue.family}}"
-              image="{{$ctrl.cardgriditems.prologue.image}}"
-              noimageicon="{{$ctrl.cardgriditems.prologue.noimageicon}}"
-              selectfunction="$ctrl.select($ctrl.cardgriditems.prologue.id)"
-              text="{{$ctrl.cardgriditems.prologue.text}}" 
-              words="$ctrl.cardgriditems.prologue.words" 
-              characters="$ctrl.cardgriditems.prologue.characters"
-              status="$ctrl.cardgriditems.prologue.status">
-            </card>
-          </div>
-          <div ng-repeat="item in $ctrl.cardgriditems.whole.chapters track by $index" class="col-sm-4 col-md-4 col-lg-3">
-            <card cardid="item.id" cardtitle="{{item.title}}"
-              dimension="chapter"
-              dndenabled="true"
-              dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
-              family="{{item.family}}"
-              image="{{item.image}}"
-              noimageicon="{{item.noimageicon}}"
-              selectfunction="$ctrl.select(id)"
-              text="{{item.text}}" 
-              words="item.words" 
-              characters="item.characters"
-              status="item.status">
-            </card>
-          </div>
-          <div ng-if="$ctrl.cardgriditems.epilogue" class="col-sm-4 col-md-4 col-lg-3">
-            <card cardid="$ctrl.cardgriditems.epilogue.id" 
-              cardtitle="{{$ctrl.cardgriditems.epilogue.title}}"
-              dimension="chapter"
-              dndenabled="false"
-              dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
-              family="{{$ctrl.cardgriditems.epilogue.family}}"
-              image="{{$ctrl.cardgriditems.epilogue.image}}"
-              noimageicon="{{$ctrl.cardgriditems.epilogue.noimageicon}}"
-              selectfunction="$ctrl.select($ctrl.cardgriditems.epilogue.id)"
-              text="{{$ctrl.cardgriditems.epilogue.text}}" 
-              words="$ctrl.cardgriditems.epilogue.words" 
-              characters="$ctrl.cardgriditems.epilogue.characters"
-              status="$ctrl.cardgriditems.epilogue.status">
-            </card>
-          </div>
-        </div>
-    </div>
-  </div>  
-</div>
-
-<!-- PARTS -->
-<div ng-show="$ctrl.cardgriditems.partscount > 0">
-  <div class="card-grid-items card-grid-items-no-header-subtitle-full">
-    <div class="container">
-      <!-- PROLOGUE -->
-      <div ng-if="$ctrl.cardgriditems.prologue" class="row">
-        <div class="col-sm-4 col-md-4 col-lg-3">
+  ($ctrl.cardgriditems.chapterscount > 0 || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue)" 
+  class="full-height" >
+  <div class="scrollable-box-full-height-page-with-header">
+    <div class="card-grid-items-box">
+        <div ng-if="$ctrl.cardgriditems.prologue">
           <card cardid="$ctrl.cardgriditems.prologue.id" 
             cardtitle="{{$ctrl.cardgriditems.prologue.title}}"
             dimension="chapter"
             dndenabled="false"
             dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
             family="{{$ctrl.cardgriditems.prologue.family}}"
+            hastext="true"
             image="{{$ctrl.cardgriditems.prologue.image}}"
             noimageicon="{{$ctrl.cardgriditems.prologue.noimageicon}}"
             selectfunction="$ctrl.select($ctrl.cardgriditems.prologue.id)"
@@ -114,59 +39,30 @@
             status="$ctrl.cardgriditems.prologue.status">
           </card>
         </div>
-      </div>
-      <div ng-repeat="part in $ctrl.cardgriditems.parts track by $index">
-        <div class="col-sm-12 page-header">
-          <h2>{{part.title}}
-            <span class="pull-right page-header-buttonbar">
-              <dropdownmenu buttonlabel="jsp.common.button.more" 
-                dimension="xs" items="part.partactionitems" visible="true">
-              </dropdownmenu>
-              <button ng-if="$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
-                ng-click="$ctrl.reducepart(part.id)" id="btnreduce-{{part.id}}">
-                {{'reduce' | translate}}</button>
-              <button ng-if="!$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
-                ng-click="$ctrl.expandpart(part.id)" id="btnexpand-{{part.id}}">
-                {{'expand' | translate}}</button>
-            </span>
-          </h2>
+        <div ng-repeat="item in $ctrl.cardgriditems.whole.chapters track by $index">
+          <card cardid="item.id" cardtitle="{{item.title}}"
+            dimension="chapter"
+            dndenabled="true"
+            dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+            family="{{item.family}}"
+            hastext="true"
+            image="{{item.image}}"
+            noimageicon="{{item.noimageicon}}"
+            selectfunction="$ctrl.select(id)"
+            text="{{item.text}}" 
+            words="item.words" 
+            characters="item.characters"
+            status="item.status">
+          </card>
         </div>
-        <div class="row" ng-if="$root.partsExpansionStatus[part.id]" ng-attr-droppable="true" cardid="{{part.id}}" 
-        dropfunction="$ctrl.movetopart(draggedObjectId, part.id)" family="chapters">
-          <!-- PART WITH CHAPTERS-->
-          <div ng-if="part.chapters.length > 0" ng-repeat="item in part.chapters track by $index" 
-            class="col-sm-4 col-md-4 col-lg-3">
-            <card cardid="item.id" cardtitle="{{item.title}}"
-              dimension="chapter"
-              dndenabled="true"
-              dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
-              family="chapters"
-              image="{{item.image}}"
-              noimageicon="{{item.noimageicon}}"
-              selectfunction="$ctrl.select(id)"
-              text="{{item.text}}" words="item.words" characters="item.characters"
-              status="item.status">
-            </card>
-          </div>
-          <!-- PART WITHOUT CHAPTERS-->
-          <div ng-if="part.chapters.length === 0" class="col-sm-12">
-            <div class="well emptypart" ng-attr-droppable="true" cardid="{{part.id}}" 
-              dropfunction="$ctrl.movetopart(draggedObjectId, part.id)" family="chapters">
-              <h4>{{'jsp.chapters.bibiscoEmptyThumbnailListBox.text' | translate}}</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- EPILOGUE -->
-      <div ng-if="$ctrl.cardgriditems.epilogue" class="row">
-        <hr>
-        <div class="col-sm-4 col-md-4 col-lg-3">
+        <div ng-if="$ctrl.cardgriditems.epilogue">
           <card cardid="$ctrl.cardgriditems.epilogue.id" 
             cardtitle="{{$ctrl.cardgriditems.epilogue.title}}"
             dimension="chapter"
             dndenabled="false"
             dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
             family="{{$ctrl.cardgriditems.epilogue.family}}"
+            hastext="true"
             image="{{$ctrl.cardgriditems.epilogue.image}}"
             noimageicon="{{$ctrl.cardgriditems.epilogue.noimageicon}}"
             selectfunction="$ctrl.select($ctrl.cardgriditems.epilogue.id)"
@@ -176,11 +72,118 @@
             status="$ctrl.cardgriditems.epilogue.status">
           </card>
         </div>
-      </div>
     </div>
   </div>  
 </div>
 
-</div>
+<!-- PARTS -->
+<div ng-show="$ctrl.cardgriditems.partscount > 0" class="full-height">
+  <div class="scrollable-box-full-height-page-with-header">
 
+    <!-- PROLOGUE -->
+    <div ng-if="$ctrl.cardgriditems.prologue">
+      <card cardid="$ctrl.cardgriditems.prologue.id" 
+        cardtitle="{{$ctrl.cardgriditems.prologue.title}}"
+        dimension="chapter"
+        dndenabled="false"
+        dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+        family="{{$ctrl.cardgriditems.prologue.family}}"
+        hastext="true"
+        image="{{$ctrl.cardgriditems.prologue.image}}"
+        noimageicon="{{$ctrl.cardgriditems.prologue.noimageicon}}"
+        selectfunction="$ctrl.select($ctrl.cardgriditems.prologue.id)"
+        text="{{$ctrl.cardgriditems.prologue.text}}" 
+        words="$ctrl.cardgriditems.prologue.words" 
+        characters="$ctrl.cardgriditems.prologue.characters"
+        status="$ctrl.cardgriditems.prologue.status">
+      </card>
+    </div>
+    <div ng-if="!$ctrl.cardgriditems.prologue" class="topminus30"></div> <!-- SPACE REDUCER -->
+    
+    <!-- PARTS -->
+    <div ng-repeat="part in $ctrl.cardgriditems.parts track by $index" class="top30">
+      <div class="page-header page-subheader">
+        <h1>
+          <span class="page-header-truncate-title">{{part.title}}</span>
+          <span class="pull-right page-header-buttonbar">
+            <dropdownmenu buttonlabel="jsp.common.button.more" 
+              dimension="xs" items="part.partactionitems" visible="true">
+            </dropdownmenu>
+            <button ng-if="$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
+              ng-click="$ctrl.reducepart(part.id)" id="btnreduce-{{part.id}}">
+              {{'reduce' | translate}}</button>
+            <button ng-if="!$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
+              ng-click="$ctrl.expandpart(part.id)" id="btnexpand-{{part.id}}">
+              {{'expand' | translate}}</button>
+          </span>
+        </h1>
+      </div>
 
+      <div ng-if="$root.partsExpansionStatus[part.id]" ng-attr-droppable="true" cardid="{{part.id}}" 
+        dropfunction="$ctrl.movetopart(draggedObjectId, part.id)" family="chapters">
+
+        <!-- PART WITH CHAPTERS-->
+        <div  ng-if="part.chapters.length > 0" class="display-block">
+          <div class="card-grid-items-box">
+            <div ng-repeat="item in part.chapters track by $index">
+              <card cardid="item.id" cardtitle="{{item.title}}"
+                dimension="chapter"
+                dndenabled="true"
+                dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+                family="chapters"
+                hastext="true"
+                image="{{item.image}}"
+                noimageicon="{{item.noimageicon}}"
+                selectfunction="$ctrl.select(id)"
+                text="{{item.text}}" words="item.words" characters="item.characters"
+                status="item.status">
+              </card>
+            </div>
+          </div>
+        </div>  
+ 
+        <!-- PART WITHOUT CHAPTERS-->
+        <div ng-if="part.chapters.length === 0" class="display-block">
+          <div class="well emptypart" ng-attr-droppable="true" cardid="{{part.id}}" 
+            dropfunction="$ctrl.movetopart(draggedObjectId, part.id)" family="chapters">
+            <h4>{{'jsp.chapters.bibiscoEmptyThumbnailListBox.text' | translate}}</h4>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EPILOGUE -->
+    <div ng-if="$ctrl.cardgriditems.epilogue">
+      <hr>
+      <card cardid="$ctrl.cardgriditems.epilogue.id" 
+        cardtitle="{{$ctrl.cardgriditems.epilogue.title}}"
+        dimension="chapter"
+        dndenabled="false"
+        dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+        family="{{$ctrl.cardgriditems.epilogue.family}}"
+        hastext="true"
+        image="{{$ctrl.cardgriditems.epilogue.image}}"
+        noimageicon="{{$ctrl.cardgriditems.epilogue.noimageicon}}"
+        selectfunction="$ctrl.select($ctrl.cardgriditems.epilogue.id)"
+        text="{{$ctrl.cardgriditems.epilogue.text}}" 
+        words="$ctrl.cardgriditems.epilogue.words" 
+        characters="$ctrl.cardgriditems.epilogue.characters"
+        status="$ctrl.cardgriditems.epilogue.status">
+      </card>
+    </div>
+
+  </div> 
+</div> 
+
+<pagefooter
+    buttonlabel="jsp.chapters.a.createChapter"
+    buttonfunction="$ctrl.create()"
+    buttonhotkey="$ctrl.hotkeys"
+    buttonshow="$ctrl.cardgriditems"
+    buttontooltip="{{'chapter_create_tooltip'+$root.os}}"
+    dropdownopen="up" 
+    dropdownitems="$ctrl.actionitems"
+    tipcode="chaptersdndTip" 
+    tipenabled="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 1 ">
+</pagefooter>

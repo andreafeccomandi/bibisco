@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,29 @@ angular.
     controller: ObjectEventsController
   });
 
-function ObjectEventsController($location, $routeParams,
+function ObjectEventsController($location, $routeParams, $window,
   ObjectService) {
 
   var self = this;
 
   self.$onInit = function() {
     
-    let object = ObjectService.getObject($routeParams.id);
-    self.backpath = '/objects/ ' + object.$loki + '/view';
-
     self.breadcrumbitems = [];
+    let object = ObjectService.getObject(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!object) {
+      $window.history.back();
+      return;
+    }
+
     self.breadcrumbitems.push({
       label: 'objects',
       href: '/objects/params/focus=objects_' + object.$loki
     });
     self.breadcrumbitems.push({
       label: object.name,
-      href: self.backpath
+      href: '/objects/ ' + object.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'common_events'

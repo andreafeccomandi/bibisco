@@ -44,40 +44,37 @@
 </freetext>
 
 <div class="detail-footer bibiscoNotSelectableText">
-  <div class="container">
-    <detailfootertop 
-      autosaveenabled="$ctrl.autosaveenabled" 
-      characters="$ctrl.characters"
-      editmode="$ctrl.editmode"
-      lastsave="$ctrl.maincharacter.lastsave" 
-      words="$ctrl.words"
-      wordscharactersenabled="true">
-    </detailfootertop>
-    <div class="row">
-      <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
-        <interviewswitch ng-if="$ctrl.editmode"
-          freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
-        </interviewswitch>
-      </span>
-      <span class="pull-right">
-        <dropdownmenu buttonlabel="jsp.common.button.more" 
-          items="$ctrl.actionitems" 
-          open="up"
-          visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
-        </dropdownmenu>
-        <editsavebackbuttonbar 
-          autosaveenabled="$ctrl.autosaveenabled" 
-          backpath="$ctrl.backpath"
-          characters="$ctrl.characters"
-          editbuttonvisible="true" 
-          editfunction="$ctrl.edit()"
-          editmode="$ctrl.editmode"
-          savefunction="$ctrl.save()"
-          showprojectexplorer="$root.showprojectexplorer"
-          words="$ctrl.words">
-        </editsavebackbuttonbar>
-      </span>
-    </div>
+  <detailfootertop 
+    autosaveenabled="$ctrl.autosaveenabled" 
+    characters="$ctrl.characters"
+    editmode="$ctrl.editmode"
+    lastsave="$ctrl.maincharacter.lastsave" 
+    words="$ctrl.words"
+    wordscharactersenabled="true">
+  </detailfootertop>
+  <div class="row">
+    <span class="pull-left">
+      <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
+      <interviewswitch ng-if="$ctrl.editmode"
+        freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
+      </interviewswitch>
+    </span>
+    <span class="pull-right">
+      <dropdownmenu buttonlabel="jsp.common.button.more" 
+        items="$ctrl.actionitems" 
+        open="up"
+        visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
+      </dropdownmenu>
+      <editsavebackbuttonbar 
+        autosaveenabled="$ctrl.autosaveenabled" 
+        characters="$ctrl.characters"
+        editbuttonvisible="true" 
+        editfunction="$ctrl.edit()"
+        editmode="$ctrl.editmode"
+        savefunction="$ctrl.save()"
+        showprojectexplorer="$root.showprojectexplorer"
+        words="$ctrl.words">
+      </editsavebackbuttonbar>
+    </span>
   </div>
 </div>

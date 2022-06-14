@@ -1,59 +1,32 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
+<pageheader headertitle="{{$ctrl.title}}" headersubtitle="{{$ctrl.subtitle | translate}}"
+  image="{{$ctrl.profileimage}}" 
+  imageenabled="$ctrl.profileimageenabled" 
+  noimageicon="{{$ctrl.noprofileimageicon}}">
+</pageheader>
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer">
+  <div ng-if="$ctrl.timeline.length > 0">
+    <ul class="timeline timeline-scenes">
+      <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
+        deletefunction="$ctrl.delete(eventid)"
+        editfunction="$ctrl.editfunction({eventid})"
+        index="($index % 12)" element="timelineelement" mode="edit"></timelineelement>
+    </ul>
   </div>
-  <div class="row">
-    <pageheader headertitle="{{$ctrl.title}}"
-       buttonlabel="events_add_event"
-       buttonfunction="$ctrl.insertfunction()"
-       buttonhotkey="$ctrl.hotkeys"
-       buttonshow="$ctrl.timeline && $ctrl.timeline.length > 0"
-       buttonstyle="{{$ctrl.insertbuttonstyle}}"
-       buttontooltip="{{'events_add_event_tooltip'+$root.os | translate}}"
-       headersubtitle="{{$ctrl.subtitle | translate}}"
-       image="{{$ctrl.profileimage}}" 
-       imageenabled="$ctrl.profileimageenabled" 
-       noimageicon="{{$ctrl.noprofileimageicon}}">
-    </pageheader>
-  </div>
-  <div class="detail-content-with-header-subtitle">
-    <div class="container full-height">
-      <div ng-if="$ctrl.timeline.length > 0">
-        <div class="container">
-          <div class="row">
-            <ul class="timeline timeline-scenes">
-              <timelineelement ng-repeat="timelineelement in $ctrl.timeline track by $index" 
-                deletefunction="$ctrl.delete(eventid)"
-                editfunction="$ctrl.editfunction({eventid})"
-                index="($index % 12)" element="timelineelement" mode="edit"></timelineelement>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div ng-if="$ctrl.timeline.length == 0">
-        <jumbotronbutton text="{{'events_emptylist' | translate}}" 
-          buttonlabel="{{'events_add_first_event' | translate}}" 
-          buttonfunction="$ctrl.insertfunction()"
-          buttontooltip="{{'events_add_first_event_tooltip'+$root.os | translate}}"></jumbotronbutton>
-      </div>
-    </div>
+  <div ng-if="$ctrl.timeline.length == 0">
+    <jumbotronbutton text="{{'events_emptylist' | translate}}" 
+      buttonlabel="{{'events_add_first_event' | translate}}" 
+      buttonfunction="$ctrl.insertfunction()"
+      buttontooltip="{{'events_add_first_event_tooltip'+$root.os | translate}}"></jumbotronbutton>
   </div>
 </div>
-</div>
-<div class="detail-footer bibiscoNotSelectableText">
-  <div class="container">
-    <div class="row detail-footer-top">
-      <span class="pull-left" ng-if="$ctrl.lastsave">
-        <span class="label label-primary">{{"tag.bibiscoRichTextEditor.span.lastsave" | translate}}: {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
-      </span>
-    </div>
-    <div class="row">
-      <hr />
-    </div>
-    <div class="row">
-      <span class="pull-right">
-        <buttonback fixedpath="$ctrl.backpath"></buttonback>
-      </span>
-    </div>
-  </div>
-</div>
+
+<pagefooter 
+  buttonlabel="events_add_event"
+  buttonfunction="$ctrl.insertfunction()"
+  buttonhotkey="$ctrl.hotkeys"
+  buttonshow="$ctrl.timeline && $ctrl.timeline.length > 0"
+  buttonstyle="{{$ctrl.insertbuttonstyle}}"
+  buttontooltip="{{'events_add_event_tooltip'+$root.os | translate}}">
+</pagefooter>

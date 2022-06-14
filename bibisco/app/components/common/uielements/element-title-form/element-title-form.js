@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ angular.
     bindings: {
       breadcrumbitems: '<',
       eventname: '@',
-      exitpath: '@',
       noprofileimageicon: '@',
       pageheadertitle: '@',
       profileimage: '@',
@@ -33,7 +32,7 @@ angular.
     }
   });
 
-function ElementTitleFormController($location, $rootScope, $scope, PopupBoxesService) {
+function ElementTitleFormController($rootScope, $scope, $window, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -52,7 +51,7 @@ function ElementTitleFormController($location, $rootScope, $scope, PopupBoxesSer
       self.checkExit = {
         active: false
       };
-      $location.path(self.exitpath);
+      $window.history.back();
     }
   };
 

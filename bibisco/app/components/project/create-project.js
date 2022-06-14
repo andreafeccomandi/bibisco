@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,9 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
     self.projectName = null;
     self.projectAuthor = null;
     self.projectLanguage = LocaleService.getCurrentLocale();
+    if (self.projectLanguage === 'es') {
+      self.projectLanguage = 'es-es';
+    }
     self.projectLocales = {
       'ca-es': 'Català',
       'cs': 'Český',
@@ -62,7 +65,6 @@ function CreateProjectController($location, $rootScope, $scope, $timeout,
     self.checkExit = {
       active: true
     };
-    self.backpath = '/start';
   };
 
   $scope.$on('$locationChangeStart', function (event) {

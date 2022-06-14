@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('LocationService', function(
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, UuidService
-) {
+angular.module('bibiscoApp').service('LocationService', function($rootScope,
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService) {
   'use strict';
 
   return {
@@ -103,15 +102,11 @@ angular.module('bibiscoApp').service('LocationService', function(
       return location;
     },
     getCities: function() {
-      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'cities', 'city');
+      return CollectionUtilService.getDataSortedByField(this.getCollection(), 'city');
     },
     getCollection: function() {
       return ProjectDbConnectionService.getProjectDb().getCollection(
         'locations');
-    },
-    getDynamicView: function() {
-      return CollectionUtilService.getDynamicViewSortedByPosition(
-        this.getCollection(), 'all_locations');
     },
     getLocation: function(id) {
       if (id) {
@@ -121,22 +116,22 @@ angular.module('bibiscoApp').service('LocationService', function(
       }
     },
     getLocationsCount: function() {
-      return this.getDynamicView().count();
+      return this.getLocations().length;
     },
     getLocations: function() {
-      return this.getDynamicView().data();
+      return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
     getNations: function() {      
-      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'nations', 'nation');
+      return CollectionUtilService.getDataSortedByField(this.getCollection(), 'nation');
     },
     getStates: function() {
-      return CollectionUtilService.getDynamicViewSortedByField(this.getCollection(), 'states', 'state');
+      return CollectionUtilService.getDataSortedByField(this.getCollection(),  'state');
     },
     getUsedCities: function() {
       let usedcities = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = this.getCities().data();
+        let locations = this.getCities();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].city);
         }
@@ -150,7 +145,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       let usednations = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = this.getNations().data();
+        let locations = this.getNations();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].nation);
         }
@@ -164,7 +159,7 @@ angular.module('bibiscoApp').service('LocationService', function(
       let usedstates = [];
       if (this.getLocationsCount() > 0) {
         let set = new Set();
-        let locations = this.getStates().data();
+        let locations = this.getStates();
         for (let i = 0; i < locations.length; i++) {
           set.add(locations[i].state);
         }
@@ -178,10 +173,19 @@ angular.module('bibiscoApp').service('LocationService', function(
       let images = [];
       location.images = images;
       CollectionUtilService.insert(this.getCollection(), location);
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: location.$loki,
+        collection: 'locations'
+      });
     },
     move: function(sourceId, targetId) {
-      return CollectionUtilService.move(this.getCollection(), sourceId, targetId,
-        this.getDynamicView());
+      CollectionUtilService.move(this.getCollection(), sourceId, targetId);
+      // emit move event
+      $rootScope.$emit('MOVE_ELEMENT', {
+        id: sourceId,
+        collection: 'locations'
+      });
     },
     remove: function(id) {
       
@@ -194,6 +198,12 @@ angular.module('bibiscoApp').service('LocationService', function(
 
       // delete location
       CollectionUtilService.remove(this.getCollection(), id);
+
+      // emit remove event
+      $rootScope.$emit('DELETE_ELEMENT', {
+        id: id,
+        collection: 'locations'
+      });
     },
     setProfileImage: function (id, filename) {
       LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
@@ -205,6 +215,11 @@ angular.module('bibiscoApp').service('LocationService', function(
     },
     update: function(location) {
       CollectionUtilService.update(this.getCollection(), location);
+      // emit update event
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: location.$loki,
+        collection: 'locations'
+      });
     },
   };
 });

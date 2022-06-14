@@ -2,3 +2,5 @@
 bibiscoenv
 node_modules
 temp
+build
+binding.gyp

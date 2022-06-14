@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,68 +20,11 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
   return {
 
-    getDynamicView: function (collection,
-      dynamicViewName, filter) {
-      let dynamicView = collection.getDynamicView(dynamicViewName);
-      if (!dynamicView) {
-        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
-        dynamicView = collection.addDynamicView(dynamicViewName);
-        if (filter) {
-          dynamicView.applyFind(filter);
-        }
-      } else {
-        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
-      }
-
-      return dynamicView.data();
+    getData: function(collection) {
+      return collection.chain().data();
     },
 
-    getDynamicViewSortedByField: function(collection, dynamicViewName, field, filter) {
-      let dynamicView = collection.getDynamicView(dynamicViewName);
-      
-      // check if dynamicView exists
-      if (!dynamicView) {
-        dynamicView = this.addDynamicViewSortedByField(collection, dynamicViewName, field, filter);
-        LoggerService.debug('Created ' + dynamicViewName + ' dynamicView');
-      } 
-      
-      // check if sortCriteria is set
-      else if (dynamicView && !dynamicView.sortCriteria) {
-        collection.removeDynamicView(dynamicViewName);
-        dynamicView = this.addDynamicViewSortedByField(collection, dynamicViewName, field, filter);
-        LoggerService.debug('Recreated ' + dynamicViewName + ' dynamicView due to invalid sortCriteria');
-      }
-
-      // checks if a filter is specified and filterPipeline is set
-      // Please note: the location filter is required starting from version 2.3.0. 
-      // DynamicViews created with previous versions of bibisco do not have this filter, which must therefore be added.
-      else if (dynamicView && !this.checkPositionFilterIsPresent(dynamicView)) {
-        collection.removeDynamicView(dynamicViewName);
-        dynamicView = this.addDynamicViewSortedByField(collection, dynamicViewName, field, filter);
-        LoggerService.debug('Recreated ' + dynamicViewName + ' dynamicView due to invalid filterPipeline');
-      }
-      
-      // dynamicView exists and sortCriteria is ok
-      else {
-        LoggerService.debug('Loaded ' + dynamicViewName + ' dynamicView');
-      }
-
-      return dynamicView;
-    },
-
-    checkPositionFilterIsPresent: function(dynamicView) {
-      if (dynamicView && dynamicView.filterPipeline && dynamicView.filterPipeline.length > 0) {
-        for (let i = 0; i < dynamicView.filterPipeline.length; i++) {
-          const filter = dynamicView.filterPipeline[i];
-          if (filter.type === 'find' && filter.val.position) {
-            return true;
-          }
-        }
-      }
-      return false;
-    },
-
-    getDynamicViewSortedByPosition: function(collection, dynamicViewName, filter) {
+    getDataSortedByPosition: function(collection, filter) {
 
       // get only positions greater than zero; we use negative position for special records
       let positionfilter = {'$gt': 0};
@@ -91,8 +34,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
         filter = {'position': positionfilter};
       }
 
-      let dynamicView = this.getDynamicViewSortedByField(collection, dynamicViewName, 'position', filter);
-      let data = dynamicView.data();
+      let data = this.getDataSortedByField(collection, 'position', filter);
 
       // check collection position integrity
       let check = this.checkCollectionPositions(data);
@@ -100,21 +42,15 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
         this.fixCollectionPositions(data, collection.name, filter);
       }
 
-      return dynamicView;
+      return data;
     },
 
-    addDynamicViewSortedByField(collection, dynamicViewName, field, filter) {
+    getDataSortedByField: function(collection, field, filter) {
 
-      let dynamicView = collection.addDynamicView(dynamicViewName);
-      if (filter) {
-        dynamicView.applyFind(filter);
-      }
-      dynamicView.applySortCriteria([field]);
-      
-      // save database
-      ProjectDbConnectionService.saveDatabase();
+      let data = filter? collection.chain().find(filter).simplesort(field).data() : 
+        collection.chain().simplesort(field).data();
 
-      return dynamicView;
+      return data;
     },
 
     checkCollectionPositions: function (data) {
@@ -133,9 +69,11 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
     fixCollectionPositions: function (data, collectionName, filter) {
 
       LoggerService.info('Fixing collection ' + collectionName + ' ' +
-        JSON.stringify(filter) + '... ');
+        JSON.stringify(filter ? filter : '') + '... ');
+      
       if (data && data.length > 0) {
         for (let i = 0; i < data.length; i++) {
+          LoggerService.info('$loki: ' + data[i].$loki + ' position: ' + data[i].position + ' type: ' + typeof(data[i].position));
           // update position
           data[i].position = (i + 1);
         }
@@ -197,7 +135,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       element.status = 'todo';
       element.words = 0;
       element = collection.insert(element);
-
+      
       LoggerService.info('Insert element with $loki=' + element.$loki +
         ' in ' + collection.name);
 
@@ -219,6 +157,7 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       collection.update(element);
       LoggerService.info('Update element with $loki=' + element.$loki +
         ' in ' + collection.name);
+
       return element;
     },
 
@@ -247,20 +186,21 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
       }
       
       collection.remove(element);
+
       LoggerService.info('Removed element with $loki=' + id + ' from ' +
         collection.name);
     },
 
-    move: function (collection, sourceId, targetId, dynamicView, filter) {
-      this.executeMove(collection, sourceId, targetId, dynamicView, filter);
+    move: function (collection, sourceId, targetId, filter) {
+      this.executeMove(collection, sourceId, targetId, filter);
       ProjectDbConnectionService.saveDatabase();
     },
 
-    moveWithoutCommit: function (collection, sourceId, targetId, dynamicView, filter) {
-      this.executeMove(collection, sourceId, targetId, dynamicView, filter);
+    moveWithoutCommit: function (collection, sourceId, targetId, filter) {
+      this.executeMove(collection, sourceId, targetId, filter);
     },
 
-    executeMove: function(collection, sourceId, targetId, dynamicView, filter) {
+    executeMove: function(collection, sourceId, targetId, filter) {
 
       let source = collection.get(sourceId);
       let sourcePosition = source.position;
@@ -285,8 +225,6 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
         ' with $loki=' + sourceId + ' at position ' + sourcePosition +
         ' to element with $loki=' + targetId + ' at position ' +
         targetPosition);
-
-      return dynamicView.data();
     },
 
     shiftDown: function(collection, startPosition, endPosition, filter) {

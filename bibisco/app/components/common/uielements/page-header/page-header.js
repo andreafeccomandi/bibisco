@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
-      buttonhotkey: '<',
-      buttonlabel: '@',
-      buttonfunction: '&',
-      buttonshow: '<',
-      buttonstyle: '@', 
-      buttontooltip: '@',
-      button2hotkey: '<',
-      button2label: '@',
-      button2function: '&',
-      button2show: '<',
-      buttons2tyle: '@', 
-      button2tooltip: '@',
       characters: '<',
-      dropdownitems: '<',
-      dropdownopen: '@',
       image: '@',
       imageaddenabled: '<',
       imageenabled: '<',
@@ -41,61 +27,20 @@ angular.
       headersubtitle: '@',
       noimageicon: '@',
       showwordsgoalcounter: '<',
+      subheader: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       taskstatusreadonly: '<',
       taskstatusshow: '<',
-      tipcode: '@',
-      tipenabled: '<',
-      tipmodalstyle: '@?',
       words: '<'
     }
   });
 
 
-function PageHeaderController($injector, $rootScope, $scope, hotkeys, 
-  BibiscoPropertiesService, ImageService, SupporterEditionChecker, UuidService) {
+function PageHeaderController($rootScope, BibiscoPropertiesService, ImageService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function () {
-
-    self.buttonid = UuidService.generateUuid();
-    self.button2id = UuidService.generateUuid();
-    
-    if (!self.buttonstyle) {
-      self.buttonstyle = 'primary';
-    }
-    if (!self.button2style) {
-      self.button2style = 'default';
-    }
-
-    if (self.buttonhotkey) {
-      hotkeys.bindTo($scope)
-        .add({
-          combo: self.buttonhotkey,
-          description: self.buttonlabel,
-          callback: function ($event) {
-            if (!self.confirmdialogopen) {
-              $event.preventDefault();
-              self.buttonfunction();
-            }
-          }
-        });
-    }
-
-    if (self.button2hotkey) {
-      hotkeys.bindTo($scope)
-        .add({
-          combo: self.button2hotkey,
-          description: self.button2label,
-          callback: function ($event) {
-            if (!self.confirmdialogopen) {
-              $event.preventDefault();
-              self.button2function();
-            }
-          }
-        });
-    }
 
     if (self.image) {
       self.fullpathimage = ImageService.getImageFullPath(self.image);
@@ -103,17 +48,39 @@ function PageHeaderController($injector, $rootScope, $scope, hotkeys,
 
     self.theme = BibiscoPropertiesService.getProperty('theme');
     self.confirmdialogopen = false;
+
+    self.statusandbuttonsspace = self.calculateStatusAndButtonsSpace();
+  };
+
+  self.calculateStatusAndButtonsSpace = function() {
+    
+    let statusandbuttonsspace = 0;
+
+    if (self.imageenabled) {
+      statusandbuttonsspace += 115;
+    }
+    if (self.taskstatusshow) {
+      if (self.taskstatusreadonly) {
+        statusandbuttonsspace += 50;
+      } else {
+        statusandbuttonsspace += 220;
+      }
+    }
+    if (!isNaN(self.words)) {
+      statusandbuttonsspace += 130;
+    }
+    if (self.showwordsgoalcounter) {
+      statusandbuttonsspace += 130;
+    }
+
+    return statusandbuttonsspace; 
   };
 
   self.executeimagefunction = function () {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
+    SupporterEditionChecker.filterAction(function() {
       self.imagefunction();
-    }
+    });
   };
-
 
   $rootScope.$on('OPEN_POPUP_BOX', function () {
     self.confirmdialogopen = true;

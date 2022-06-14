@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,23 @@ angular.
     controller: SceneTitleController
   });
 
-function SceneTitleController($rootScope, $routeParams, ChapterService) {
+function SceneTitleController($rootScope, $routeParams, $window, ChapterService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    let chapter = ChapterService.getChapter($routeParams.chapterid);
+    self.breadcrumbItems = [];
+
+    let chapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
+
+    // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
+    if (!chapter) {
+      $window.history.back();
+      return;
+    }
 
     // common breadcrumb root
-    self.breadcrumbItems = [];
     self.breadcrumbItems.push({
       label: 'common_chapters',
       href: '/chapters/params/focus=chapters_' + chapter.$loki
@@ -39,17 +46,17 @@ function SceneTitleController($rootScope, $routeParams, ChapterService) {
     });
 
     if ($routeParams.sceneid !== undefined) {
-      let scene = ChapterService.getScene($routeParams.sceneid);
-      self.exitpath = '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view';
-      self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
-      if (self.fromtimeline) {
-        self.exitpath = '/timeline' + self.exitpath;
-      } 
-
+      let scene = ChapterService.getScene(parseInt($routeParams.sceneid));
+      // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
+      if (!scene  || chapter.$loki !== scene.chapterid) {
+        $window.history.back();
+        return;
+      }
+  
       // edit breadcrumb items
       self.breadcrumbItems.push({
         label: scene.title,
-        href: self.exitpath
+        href: '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view'
       });
       self.breadcrumbItems.push({
         label: 'jsp.scene.dialog.title.updateTitle'
@@ -65,7 +72,6 @@ function SceneTitleController($rootScope, $routeParams, ChapterService) {
         label: 'jsp.chapter.dialog.title.createScene'
       });
 
-      self.exitpath = '/chapters/' + chapter.$loki;
       self.name = null;
       self.pageheadertitle =
         'jsp.chapter.dialog.title.createScene';
@@ -74,7 +80,7 @@ function SceneTitleController($rootScope, $routeParams, ChapterService) {
 
   self.save = function(title) {
     if ($routeParams.sceneid !== undefined) {
-      let scene = ChapterService.getScene($routeParams.sceneid);
+      let scene = ChapterService.getScene(parseInt($routeParams.sceneid));
       scene.title = title;
       ChapterService.updateSceneTitle(scene);
     } else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ function PartTitleController($routeParams, ChapterService) {
     self.breadcrumbItems = [];
 
     if ($routeParams.id !== undefined) {
-      let part = ChapterService.getPart($routeParams.id);
+      let part = ChapterService.getPart(parseInt($routeParams.id));
 
       // edit breadcrumb items
       self.breadcrumbItems.push({
@@ -42,7 +42,6 @@ function PartTitleController($routeParams, ChapterService) {
         label: 'change_part_title_title'
       });
 
-      self.exitpath = '/chapters/';
       self.title = part.title;
       self.pageheadertitle = 'change_part_title_title';
     } else {
@@ -56,7 +55,6 @@ function PartTitleController($routeParams, ChapterService) {
         label: 'create_part_title'
       });
 
-      self.exitpath = '/chapters';
       self.name = null;
       self.pageheadertitle = 'create_part_title';
     }
@@ -64,7 +62,7 @@ function PartTitleController($routeParams, ChapterService) {
 
   self.save = function(title) {
     if ($routeParams.id !== undefined) {
-      let part = ChapterService.getPart($routeParams.id);
+      let part = ChapterService.getPart(parseInt($routeParams.id));
       part.title = title;
       ChapterService.updatePart(part);
     } else {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: MainCharacterDetailController
   });
 
-function MainCharacterDetailController($location, $rootScope, $routeParams,
+function MainCharacterDetailController($location, $rootScope, $routeParams, $window,
   CardUtilService, ChapterService, MainCharacterService, PopupBoxesService, 
   UtilService) {
 
@@ -27,16 +27,21 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.$onInit = function() {
 
-    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
-
-    self.maincharacter = self.getMainCharacter($routeParams.id.split('?')[0]);
-    self.deleteforbidden = self.isDeleteForbidden();
-    self.backpath = '/characters/params/focus=maincharacters_' + self.maincharacter.$loki;
-
     self.breadcrumbitems = [];
+    self.maincharacter = self.getMainCharacter(parseInt($routeParams.id.split('?')[0]));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.maincharacter) {
+      $window.history.back();
+      return;
+    }
+
+    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
+    
+    self.deleteforbidden = self.isDeleteForbidden();
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: self.backpath
+      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -60,9 +65,6 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
     });
 
     self.editmode = false;
-
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
   };
 
   self.changeStatus = function(status) {
@@ -76,7 +78,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams,
 
   self.delete = function() {
     MainCharacterService.remove(self.maincharacter.$loki);
-    $location.path('/characters');
+    $window.history.back();
   };
 
   self.getMainCharacter = function(id) {

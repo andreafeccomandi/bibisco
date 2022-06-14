@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,29 +19,30 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $rootScope, $routeParams, 
+function StrandDetailController($location, $routeParams, $window,
   ChapterService, StrandService, UtilService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    self.strand = self.getStrand($routeParams.id);
-    self.mode = $routeParams.mode;
-    let backpath = '/architecture/params/focus=strands_' + self.strand.$loki;
-
     self.breadcrumbitems = [];
+    self.strand = self.getStrand(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.strand) {
+      $window.history.back();
+      return;
+    }
+    
+    self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: backpath
+      href: '/architecture/params/focus=strands_' + self.strand.$loki
     });
     self.breadcrumbitems.push({
       label: self.strand.name
     });
-
-    if (self.mode === 'view') {
-      self.backpath = backpath;
-    }
 
     self.deleteforbidden = self.isDeleteForbidden();
   };
@@ -56,9 +57,8 @@ function StrandDetailController($location, $rootScope, $routeParams,
   };
 
   self.delete = function() {
-    StrandService.remove(self.strand
-      .$loki);
-    $location.path('/architecture');
+    StrandService.remove(self.strand.$loki);
+    $window.history.back();
   };
 
   self.edit = function () {

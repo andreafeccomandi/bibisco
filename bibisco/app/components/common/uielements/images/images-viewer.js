@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ angular.
     templateUrl: 'components/common/uielements/images/images-viewer.html',
     controller: ImagesViewerController,
     bindings: {
-      backpath: '<',
       breadcrumbitems: '<',
       deletefunction: '&',
       images: '<',
@@ -35,7 +34,7 @@ angular.
     }
   });
 
-function ImagesViewerController($injector, $rootScope, $translate, 
+function ImagesViewerController($injector, $rootScope, $timeout, $translate, 
   ImageService, SupporterEditionChecker) {
 
   var self = this;
@@ -65,11 +64,8 @@ function ImagesViewerController($injector, $rootScope, $translate,
   };
 
   self.executeselectfunction = function (filename) {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
+    SupporterEditionChecker.filterAction(function() {
       self.selectfunction(filename);
-    }
+    });
   };
 }

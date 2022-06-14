@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,30 @@ angular.
     controller: ChapterDetailController
   });
 
-function ChapterDetailController($location, $rootScope, $routeParams, $scope,
+function ChapterDetailController($location, $rootScope, $routeParams, $scope, $window,
   ChapterService,CardUtilService, hotkeys, PopupBoxesService) {
 
   var self = this;
 
   self.$onInit = function() {
 
-    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
+    self.breadcrumbitems = [];
+    
+    self.chapter = ChapterService.getChapter(parseInt($routeParams.id.split('?')[0]));
 
-    self.chapter = ChapterService.getChapter($routeParams.id.split('?')[0]);
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!self.chapter) {
+      $window.history.back();
+      return;
+    }
+    
+    $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     self.title = ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title;        
-    self.backpath = 'chapters/params/focus=chapters_' + self.chapter.$loki;
 
     // breadcrumbs
-    self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: self.backpath
+      href: 'chapters/params/focus=chapters_' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: self.title
@@ -57,9 +63,6 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
     // get scenes
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
-
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
 
     // hotkeys
     self.hotkeys = ['ctrl+n', 'command+n'];
@@ -111,7 +114,7 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope,
 
   self.delete = function() {
     ChapterService.remove(self.chapter.$loki);
-    $location.path('/chapters');
+    $window.history.back();
   };
 
   hotkeys.bindTo($scope)

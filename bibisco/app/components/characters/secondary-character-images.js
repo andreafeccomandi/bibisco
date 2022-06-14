@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,28 @@ angular.
     controller: SecondaryCharacterImagesController
   });
 
-function SecondaryCharacterImagesController($location, $routeParams, SecondaryCharacterService) {
+function SecondaryCharacterImagesController($location, $routeParams, $window, SecondaryCharacterService) {
 
   var self = this;
 
   self.$onInit = function() {
     
-    let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter($routeParams.id);
-    self.backpath = '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view';
-
     self.breadcrumbitems = [];
+    let secondaryCharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
+
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!secondaryCharacter) {
+      $window.history.back();
+      return;
+    }
+
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters/params/focus=secondarycharacters_' + secondaryCharacter.$loki
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
-      href: self.backpath
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'
@@ -48,7 +53,7 @@ function SecondaryCharacterImagesController($location, $routeParams, SecondaryCh
   };
 
   self.delete = function(filename) {
-    let secondaryCharacter = SecondaryCharacterService.deleteImage($routeParams.id, filename);
+    let secondaryCharacter = SecondaryCharacterService.deleteImage(parseInt($routeParams.id), filename);
     self.images = secondaryCharacter.images;
     self.selectedimage = secondaryCharacter.profileimage;
   };
@@ -58,7 +63,7 @@ function SecondaryCharacterImagesController($location, $routeParams, SecondaryCh
   };
 
   self.select = function(filename) {
-    SecondaryCharacterService.setProfileImage($routeParams.id, filename);
+    SecondaryCharacterService.setProfileImage(parseInt($routeParams.id), filename);
     self.selectedimage = filename;
   };
 }

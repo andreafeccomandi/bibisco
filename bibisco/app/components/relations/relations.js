@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ Actions on edges:
 - update: open modal on double click event; update entry in Datavis passing label from modal
 - delete: open modal on double click event; done by vis.js (self.network.deleteSelected())
 */
-function RelationsController($injector, $location, $rootScope, $routeParams, $scope, $timeout, $uibModal, hotkeys,
-  BibiscoPropertiesService, PopupBoxesService, ProjectService, 
-  RichTextEditorPreferencesService, UuidService) {
+function RelationsController($injector, $location, $rootScope, $routeParams, $scope, $timeout, 
+  $translate, $uibModal, hotkeys, BibiscoPropertiesService, PopupBoxesService, ProjectService, 
+  RichTextEditorPreferencesService, TextDimensionService, UuidService) {
 
   var self = this;
   var RelationsService = $injector.get('RelationsService');
@@ -173,6 +173,12 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     } else {
       self.initViewMode();
     }
+
+    self.editsavebackbuttonbarspace = self.calculateEditSaveBackButtonbarSpace();
+
+    if (self.editMode && BibiscoPropertiesService.getProperty('relationsTip') === 'true') {
+      PopupBoxesService.showTip('relationsTip', 'relationstip');
+    }
   };
 
   self.initViewMode = function() {
@@ -200,7 +206,6 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
   self.initEditMode = function() {
 
     // init flags    
-    self.backpath = '/relations/view';
     self.selectedNode = false;
     self.selectedEdge = false;
     $rootScope.dirty = false;
@@ -638,6 +643,18 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
     });
+  };
+
+  self.calculateEditSaveBackButtonbarSpace = function() {
+    let space = 0;
+    if (self.editMode) {
+      space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.save')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
+    } else {
+      space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.edit')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
+      space += TextDimensionService.calculateElementDimension($translate.instant('common_export_button')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
+    }
+    space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.back')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
+    return space+40;
   };
 
   $scope.$on('$locationChangeStart', function (event) {

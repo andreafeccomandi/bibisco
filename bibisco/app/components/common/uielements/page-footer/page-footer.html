@@ -1,0 +1,25 @@
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="row">
+    <hr />
+  </div>
+  <div class="row">
+    <span class="pull-right">
+      <contextualtipbutton ng-if="$ctrl.tipenabled" modalstyle="{{$ctrl.tipmodalstyle}}"
+        tipcode="{{$ctrl.tipcode}}"></contextualtipbutton>
+      <dropdownmenu buttonlabel="jsp.common.button.more" 
+        items="$ctrl.dropdownitems" 
+        open="{{$ctrl.dropdownopen}}"
+        visible="$ctrl.dropdownitems && $ctrl.dropdownitems.length > 0">
+      </dropdownmenu>
+      <button ng-if="$ctrl.buttonshow" type="button" class="btn btn-{{$ctrl.buttonstyle}}"
+        ng-click="$ctrl.buttonfunction()" id="{{$ctrl.buttonid}}"
+        uib-tooltip="{{$ctrl.buttontooltip | translate}}">
+        {{$ctrl.buttonlabel | translate}}</button>
+      <button ng-if="$ctrl.button2show" type="button" class="btn btn-{{$ctrl.button2style}}"
+        ng-click="$ctrl.button2function()" id="{{$ctrl.button2id}}"
+        uib-tooltip="{{$ctrl.button2tooltip | translate}}">
+        {{$ctrl.button2label | translate}}</button>
+      <buttonback></buttonback>
+    </span>
+  </div>
+</div>

@@ -1,16 +1,9 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
-  </div>
-  <div class="row">
-    <pageheader headertitle="{{$ctrl.pageheadertitle}}">
-    </pageheader>
-  </div>
-</div>
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}">
+  </pageheader>
 
-<div class="export-container">
-<div class="container">
-  <div class="row">
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header">
     <div class="col-sm-12">
       <form name="exportToEpubForm" class="form-horizontal" ng-submit="$ctrl.export(exportToEpubForm.$valid)" novalidate>
         <textinputfield field="exportToEpubForm.author" model="$ctrl.author"
@@ -45,6 +38,26 @@
             </div>
           </div>
         </div>
+        <formdivider labelcols="3" inputcols="8"></formdivider>
+        <buttongroupfield group="$ctrl.chaptertitleformatgroup" label="chapter_title_format"
+          onclickbutton="$ctrl.changechaptertitleformat(selected)"  
+          model="$ctrl.chaptertitleformat" labelcols="3" inputcols="8" form="exportToEpubForm">
+        </buttongroupfield>
+        <div class="form-group chapter-title-format-example">
+          <div class="col-sm-8 col-sm-offset-3">
+            <span class="label label-info">{{'example' | translate}}</span><span> {{$ctrl.chaptertitleexample}}</span>
+          </div>
+        </div>
+        <buttongroupfield group="$ctrl.chaptertitlepositiongroup" label="chapter_title_position"
+            model="$ctrl.chaptertitleposition" labelcols="3" inputcols="8" form="exportToEpubForm"></buttongroupfield>
+        <buttongroupfield group="$ctrl.sceneseparatorgroup" label="scene_separator"
+            model="$ctrl.sceneseparator" labelcols="3" inputcols="8" form="exportToEpubForm"></buttongroupfield>
+        <div class="form-group">
+          <div class="col-sm-8 col-sm-offset-3">
+            <a class="btn btn-xs btn-primary" ng-click="$ctrl.showothersettings()">{{'other_settings' | translate}}</a>
+          </div>
+        </div>
+        <formdivider labelcols="3" inputcols="8"></formdivider>
         <div class="form-group">
           <label class="col-sm-3 control-label" 
             for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
@@ -59,11 +72,8 @@
           </div>
         </div>
 
-        <formbuttons backpath="$ctrl.backpath" form="exportToEpubForm" 
-          saving="$ctrl.saving" offsetcols="3" sizecols="8">
+        <formbuttons form="exportToEpubForm" saving="$ctrl.saving">
         </formbuttons>
+      </form>
     </div>
-    </form>
-  </div>
-</div>
 </div>

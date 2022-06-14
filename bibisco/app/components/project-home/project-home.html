@@ -1,29 +1,13 @@
-<div class="main-section-header">
-  <div class="container">
-    <div class="row">
-      <pageheader ng-show="$ctrl.loadingDictionary" headertitle="{{$ctrl.project().name}}"></pageheader>
-      <pageheader ng-show="!$ctrl.loadingDictionary" headertitle="{{$ctrl.project().name}}" 
-        buttonlabel="goals_button"
-        buttonfunction="$ctrl.goals()" buttonshow="!$ctrl.showMotivational" buttonstyle="primary"
-        button2label="jsp.common.button.back"
-        button2function="$ctrl.back()" button2show="true" button2style="default" button2hotkey="$ctrl.hotkeys"
-        button2tooltip="{{'back_button_tooltip'+$root.os}}"
-        tipcode="backupTip" tipenabled="!$ctrl.showMotivational && !$ctrl.loadingDictionary" 
-        dropdownopen="down" dropdownitems="$ctrl.actionitems">
-      </pageheader>
-    </div>
-  </div>
-</div>
+<pageheader headertitle="{{$ctrl.project().name}}"></pageheader>
 
 <!-- LOADING DICTIONARY -->
-<div class="container top200" ng-show="$ctrl.loadingDictionary">
+<div class="top200" ng-show="$ctrl.loadingDictionary">
   <loadingbar message="loading_dictionary" onepercentmilliseconds="300" start="$ctrl.loadingDictionary"></loadingbar>
 </div>
 
 <!-- PROJECT HOME -->
-<div class="project-home-container" ng-show="!$ctrl.loadingDictionary">
-  <div class="container">
-    <div class="row" ng-if="$ctrl.showMotivational">
+<div class="scrollable-box-full-height-page-with-header" ng-show="!$ctrl.loadingDictionary">
+    <div ng-if="$ctrl.showMotivational">
       <div class="col-sm-9 col-sm-offset-1">
         <div class="jumbotron top50">
           <div class="project-motivational">
@@ -40,19 +24,18 @@
     </div>
 
     <div class="project-stats-table" ng-if="!$ctrl.showMotivational">
-      <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
           <table class="table">
             <tbody>
               <tr>
                 <td class="col-sm-5 text-right">
-                  <span class="project-stats-item">{{"common_words" | translate}}</span><span class="project-stats-number text-primary">{{($ctrl.wordsTotal | number: 0)}}</span>
+                  <span class="project-stats-item">{{"common_words" | translate}}</span> <span class="project-stats-number text-primary">{{($ctrl.wordsTotal | number: 0)}}</span>
                 </td>
                 <td class="col-sm-7 text-left">
-                    <span class="project-stats-detail-number">{{($ctrl.charactersTotal | number: 0)}}</span> {{"jsp.common.span.characters" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.
+                    <span class="project-stats-detail-number">{{($ctrl.charactersTotal | number: 0)}}</span> <span>{{"jsp.common.span.characters" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.</span>
                 </td>
               </tr>
-              <tr ng-if="$ctrl.wordsGoal && $ctrl.supporterEdition">
+              <tr ng-if="$ctrl.wordsGoal && $ctrl.includeSupporterEditionItems">
                   <td class="col-sm-5 text-right">
                       <span class="project-stats-item">{{"goals_total_words_goal" | translate}}</span><span class="project-stats-number text-primary">{{($ctrl.wordsGoal | number: 0)}}</span>
                   </td>
@@ -66,24 +49,24 @@
                         </div>
                       </div>
                       <div>
-                        <span class="project-stats-detail-number">{{$ctrl.wordsGoalPerc}}%</span> {{"goals_perc_of_the_goal" | translate}}, <span class="project-stats-detail-number">{{($ctrl.wordsRemaining | number: 0)}}</span> {{"goals_words_left" | translate}}
+                        <span class="project-stats-detail-number">{{$ctrl.wordsGoalPerc}}%</span> <span>{{"goals_perc_of_the_goal" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.wordsRemaining | number: 0)}}</span> <span>{{"goals_words_left" | translate}}</span>
                       </div> 
                     </td>
               </tr>
-              <tr ng-if="$ctrl.wordsPerDayGoal && $ctrl.supporterEdition">
+              <tr ng-if="$ctrl.wordsPerDayGoal && $ctrl.includeSupporterEditionItems">
                   <td class="col-sm-5 text-right">
                       <span class="project-stats-item">{{"goals_words_per_day_goal" | translate}}</span><span class="project-stats-number text-primary">{{($ctrl.wordsPerDayGoal | number: 0)}}</span>
                   </td>
                   <td class="col-sm-7 text-left">
-                    <span class="project-stats-detail-number">{{($ctrl.wordsWrittenToday | number: 0)}}</span> {{"goals_words_written_today" | translate}}, <span class="project-stats-detail-number">{{($ctrl.wordsWrittenYesterday | number: 0)}}</span> {{"goals_words_written_yesterday" | translate}}, <span class="project-stats-detail-number">{{($ctrl.averageLastSevenDays | number: 0)}}</span> {{"goals_words_written_average_last_7_days" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.
+                    <span class="project-stats-detail-number">{{($ctrl.wordsWrittenToday | number: 0)}}</span> <span>{{"goals_words_written_today" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.wordsWrittenYesterday | number: 0)}}</span> <span>{{"goals_words_written_yesterday" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.averageLastSevenDays | number: 0)}}</span> <span>{{"goals_words_written_average_last_7_days" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.</span>
                   </td>
               </tr>
-              <tr ng-if="$ctrl.deadline && $ctrl.supporterEdition">
+              <tr ng-if="$ctrl.deadline && $ctrl.includeSupporterEditionItems">
                   <td class="col-sm-5 text-right">
                       <span class="project-stats-item">{{"goals_deadline" | translate}}</span><span class="project-stats-number text-primary">{{'date_format' | translate:{date:$ctrl.deadline} }}</span>
                   </td>
                   <td class="col-sm-7 text-left">
-                    <span class="project-stats-detail-number">{{($ctrl.daysLeft | number: 0)}}</span> {{"goals_days_left" | translate}}
+                    <span class="project-stats-detail-number">{{($ctrl.daysLeft | number: 0)}}</span> <span>{{"goals_days_left" | translate}}</span>
                   </td>
               </tr>
               <tr>
@@ -164,7 +147,7 @@
                       </progressstatsbar>
                   </td>
               </tr>
-              <tr ng-if="$ctrl.supporterEdition">
+              <tr ng-if="$ctrl.includeSupporterEditionItems">
                   <td class="col-sm-5 text-right">
                       <span class="project-stats-item">{{'jsp.menu.objects' | translate}}</span><span class="project-stats-number text-primary">{{$ctrl.objects}}</span>
                   </td>
@@ -180,7 +163,11 @@
             </tbody>
           </table>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
+<pagefooter ng-if="!$ctrl.loadingDictionary" buttonlabel="goals_button"
+  buttonfunction="$ctrl.goals()" buttonshow="!$ctrl.showMotivational" buttonstyle="primary"
+  tipcode="backupTip" tipenabled="!$ctrl.showMotivational && !$ctrl.loadingDictionary" 
+  dropdownopen="up" dropdownitems="$ctrl.actionitems">
+</pagefooter>

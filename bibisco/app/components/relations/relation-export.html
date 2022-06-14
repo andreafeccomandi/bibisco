@@ -1,36 +1,27 @@
-<div class="container">
-  <div class="row">
-    <breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
-  </div>
-  <div class="row">
-    <pageheader headertitle="common_export">
-    </pageheader>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="relationExportForm" class="form-horizontal"
-        ng-submit="$ctrl.export(relationExportForm.$valid)" 
-         novalidate>
-        
-        <div class="form-group">
-          <label class="col-sm-3 control-label" 
-            for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
-          <div class="col-sm-8">
-            <directoryselect model='$ctrl.exportpath' 
-                field='relationExportForm.exportpath' 
-                name='exportpath' 
-                placeholder="{{'relations_export_diagram_label' | translate}}"
-                onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
-                forbiddendirectory='$ctrl.forbiddenDirectory' required>
-              </directoryselect>
-          </div>
-        </div>
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="common_export">
+</pageheader>
 
-        <formbuttons backpath="$ctrl.backpath" form="relationExportForm" 
-          saving="$ctrl.saving" offsetcols="1" sizecols="8">
-        </formbuttons>
+<div class="col-sm-12">
+  <form name="relationExportForm" class="form-horizontal"
+    ng-submit="$ctrl.export(relationExportForm.$valid)" 
+      novalidate>
+    
+    <div class="form-group">
+      <label class="col-sm-3 control-label" 
+        for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
+      <div class="col-sm-8">
+        <directoryselect model='$ctrl.exportpath' 
+            field='relationExportForm.exportpath' 
+            name='exportpath' 
+            placeholder="{{'relations_export_diagram_label' | translate}}"
+            onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+            forbiddendirectory='$ctrl.forbiddenDirectory' required>
+          </directoryselect>
+      </div>
     </div>
-    </form>
-  </div>
-</div>
+
+    <formbuttons form="relationExportForm" saving="$ctrl.saving">
+    </formbuttons>
+  </form>
 </div>

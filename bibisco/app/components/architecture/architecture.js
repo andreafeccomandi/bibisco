@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ArchitectureController($injector, $location, $rootScope, $routeParams, $scope,
+function ArchitectureController($location, $rootScope, $routeParams, $scope,
   ArchitectureService, CardUtilService, StrandService, SupporterEditionChecker) {
 
   var self = this;
@@ -36,9 +36,6 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
 
     self.architecturecardgriditems = self.getArchitectureCardGridItems();
     self.strandcardgriditems = self.getStrandCardGridItems();
-
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
 
     // hotkeys
     self.hotkeys = ['ctrl+n','command+n'];
@@ -95,11 +92,10 @@ function ArchitectureController($injector, $location, $rootScope, $routeParams, 
   };
 
   self.architectureItemSelect = function(id) {
-    if (id === 'globalnotes' && !SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else if (id === 'globalnotes' && SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      $location.path('/architectureitems/' + id + '/view');
+    if (id === 'globalnotes') {
+      SupporterEditionChecker.filterAction(function() {
+        $location.path('/architectureitems/' + id + '/view');
+      });
     } else {
       $location.path('/architectureitems/' + id + '/view');
     }

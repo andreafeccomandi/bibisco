@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,47 +25,100 @@ angular.
   });
 
 function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
-  BibiscoPropertiesService, hotkeys, RichTextEditorPreferencesService) {
+  BibiscoPropertiesService, hotkeys, RichTextEditorPreferencesService, SupporterEditionChecker) {
 
   var self = this;
   self.font;
   self.fontgroup;
 
   self.$onInit = function() {
+
+    let supporterSuffix = SupporterEditionChecker.isSupporter() ? '' : '_ce';
+
     self.context = self.resolve.context;
-    self.font = BibiscoPropertiesService.getProperty('font');
     self.fontgroup = [{
-      label: 'jsp.richTextEditorSettings.font.courier',
+      label: 'baskerville' + supporterSuffix,
+      value: 'baskerville',
+      buttonclass: 'bibiscoRichTextEditorSettings-baskerville'
+    }, {
+      label: 'courier',
       value: 'courier',
       buttonclass: 'bibiscoRichTextEditorSettings-courier'
     }, {
-      label: 'jsp.richTextEditorSettings.font.times',
-      value: 'times',
-      buttonclass: 'bibiscoRichTextEditorSettings-times'
+      label: 'garamond' + supporterSuffix,
+      value: 'garamond',
+      buttonclass: 'bibiscoRichTextEditorSettings-garamond'
     }, {
-      label: 'jsp.richTextEditorSettings.font.arial',
+      label: 'georgia' + supporterSuffix,
+      value: 'georgia',
+      buttonclass: 'bibiscoRichTextEditorSettings-georgia'
+    }, {
+      label: 'arial',
       value: 'arial',
       buttonclass: 'bibiscoRichTextEditorSettings-arial'
+    }, {
+      label: 'palatino' + supporterSuffix,
+      value: 'palatino',
+      buttonclass: 'bibiscoRichTextEditorSettings-palatino'
+    }, {
+      label: 'times',
+      value: 'times',
+      buttonclass: 'bibiscoRichTextEditorSettings-times'
     }];
+    self.setFont(BibiscoPropertiesService.getProperty('font'));
+
     self.fontsize = BibiscoPropertiesService.getProperty('font-size');
     self.fontsizegroup = [{
-      label: 'jsp.richTextEditorSettings.fontsize.big',
-      value: 'big'
+      label: 'common_small',
+      value: 'small'
     }, {
-      label: 'jsp.richTextEditorSettings.fontsize.medium',
+      label: 'common_medium',
       value: 'medium'
     }, {
-      label: 'jsp.richTextEditorSettings.fontsize.small',
-      value: 'small'
-    }];
-    self.indent = BibiscoPropertiesService.getProperty(
-      'indentParagraphEnabled');
+      label: 'common_big',
+      value: 'big'
+    },];
+    self.indent = BibiscoPropertiesService.getProperty('indentParagraphEnabled');
     self.indentgroup = [{
       label: 'jsp.common.button.enabled',
       value: 'true'
     }, {
       label: 'jsp.common.button.disabled',
       value: 'false'
+    }];
+    self.linespacing = BibiscoPropertiesService.getProperty('linespacing');
+    self.linespacinggroup = [{
+      label: '1',
+      value: 10
+    }, {
+      label: '1.3',
+      value: 13
+    }, {
+      label: '1.4',
+      value: 14
+    }, {
+      label: '1.5',
+      value: 15
+    }, {
+      label: '2',
+      value: 20
+    }];
+    self.paragraphspacing = BibiscoPropertiesService.getProperty('paragraphspacing');
+    self.paragraphspacinggroup = [{
+      label: '0',
+      value: 'none'
+    }, {
+      label: '0.5',
+      value: 'small'
+    }, {
+      label: '1',
+      value: 'medium'
+    }, {
+      label: '1.5',
+      value: 'large'
+    }, {
+      label: '2',
+      value: 'double'
     }];
     self.spellcheck = BibiscoPropertiesService.getProperty(
       'spellCheckEnabled');
@@ -97,12 +150,36 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
       });
   };
 
+  self.selectItem = function(value) {
+    if (value!=='courier' && value!=='times' && value!=='arial' ) {  
+      SupporterEditionChecker.filterAction(function() {
+        self.setFont(value);
+      }, function() {
+        self.setFont('courier');
+      });
+    } else {
+      self.setFont(value);
+    }
+  };
+
+  self.setFont = function(value) {
+    for (let i = 0; i < self.fontgroup.length; i++) {
+      const item = self.fontgroup[i];
+      if (item.value === value) {
+        self.font = item;
+        break;
+      }
+    }
+  };
+
   self.ok = function() {
 
     RichTextEditorPreferencesService.save({
-      font: self.font,
+      font: self.font.value,
       fontsize: self.fontsize,
       indentParagraphEnabled: self.indent,
+      linespacing: self.linespacing,
+      paragraphspacing: self.paragraphspacing,
       spellCheckEnabled: self.spellcheck,
       autoSaveEnabled: self.autosave
     });

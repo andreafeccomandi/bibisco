@@ -6,12 +6,30 @@
     <div class="row">
       <div class="col-sm-12">
         <form name="richTextEditorSettingsForm" class="form-horizontal" novalidate>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.fontgroup" label="jsp.richTextEditorSettings.font"
-            model="$ctrl.font" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
+          <div class="form-group" ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat'">
+            <label class="col-sm-4 control-label" 
+              for="exportpath">{{'jsp.richTextEditorSettings.font' | translate}}</label>
+            <div class="col-sm-7">
+              <ui-select ng-model="$ctrl.font" on-select="$ctrl.selectItem($select.selected.value)">
+                <ui-select-match placeholder="{{'common_select_or_search' | translate}}...">
+                  <span class="project-explorer-select {{$select.selected.buttonclass}} ">{{$select.selected.label | translate}}</span>
+                </ui-select-match>
+                <ui-select-choices 
+                  repeat="item in $ctrl.fontgroup | filter: $select.search">
+                  <span ng-bind-html="item.label | translate | highlight: $select.search" 
+                    class="{{item.buttonclass}}"></span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.fontsizegroup" label="jsp.richTextEditorSettings.fontSize"
             model="$ctrl.fontsize" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
             model="$ctrl.indent" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.linespacinggroup" label="linespacing"
+            model="$ctrl.linespacing" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.paragraphspacinggroup" label="paragraphspacing"
+            model="$ctrl.paragraphspacing" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
             model="$ctrl.spellcheck" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'relations'" group="$ctrl.autosavegroup" label="jsp.richTextEditorSettings.autoSave"
@@ -20,16 +38,9 @@
       </form>
     </div>
   </div>
-  <div  ng-if="$ctrl.context == 'richtexteditor'" class="row">
-    <div class="col-sm-10 col-sm-offset-1 bibiscoNotSelectableText">
-      <div class="well richtexteditor-settings-sample bibiscoRichTextEditor-bodyClass-{{$ctrl.font}}{{$ctrl.fontsize}} bibiscoRichTextEditor-bodyClass-indent-{{$ctrl.indent}}">
-        {{'jsp.richTextEditorSettings.sampletext' | translate}}
-      </div>
-    </div>
-  </div>
   <div class="modal-footer bibiscoNotSelectableText">
     <button class="btn btn-primary" type="button" 
-      uib-tooltip="{{'jsp.common.button.save.tooltip'+$root.os | translate}}"
+      uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}"
       ng-click="$ctrl.ok()">{{"jsp.common.button.save" | translate}}</button>
     <button class="btn btn-default" type="button" 
       uib-tooltip="{{'back_button_tooltip'+$root.os | translate}}"

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
     self.breadcrumbItems = [];
 
     if ($routeParams.id !== undefined) {
-      let strand = StrandService.getStrand($routeParams.id);
+      let strand = StrandService.getStrand(parseInt($routeParams.id));
 
       self.breadcrumbItems.push({
         label: 'common_architecture',
@@ -45,7 +45,6 @@ function StrandTitleController($location, $routeParams, StrandService) {
         label: 'jsp.architecture.strand.dialog.title.updateTitle'
       });
 
-      self.exitpath = '/strands/' + strand.$loki + '/view';
       self.name = strand.name;
       self.pageheadertitle = 'jsp.architecture.strand.dialog.title.updateTitle';
 
@@ -60,7 +59,6 @@ function StrandTitleController($location, $routeParams, StrandService) {
       self.breadcrumbItems.push({
         label: 'jsp.architecture.strand.dialog.title.createStrand'
       });
-      self.exitpath = '/architecture';
       self.name = null;
       self.pageheadertitle =
         'jsp.architecture.strand.dialog.title.createStrand';
@@ -69,8 +67,7 @@ function StrandTitleController($location, $routeParams, StrandService) {
 
   self.save = function(title) {
     if ($routeParams.id !== undefined) {
-      let strand = StrandService.getStrand(
-        $routeParams.id);
+      let strand = StrandService.getStrand(parseInt($routeParams.id));
       strand.name = title;
       StrandService.update(strand);
     } else {

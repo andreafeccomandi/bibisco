@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ angular.
     controller: ExportToFormat
   });
 
-function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, $timeout, $translate,
-  ChapterService, ExportService, FileSystemService, LocationService, MainCharacterService, 
-  PopupBoxesService, ProjectService, SecondaryCharacterService, SupporterEditionChecker) {
+function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, $timeout, $translate, $uibModal,  
+  BibiscoDbConnectionService,BibiscoPropertiesService, ChapterService, ExportService, FileSystemService, 
+  LocationService, MainCharacterService, PopupBoxesService, ProjectService, SecondaryCharacterService, 
+  SupporterEditionChecker) {
 
   var self = this;
   let ObjectService = null;
@@ -32,6 +33,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     // load translations
     self.translations = $translate.instant([
       'common_architecture',
+      'common_chapter',
       'common_chapters',
       'common_characters',
       'common_notes_title',
@@ -40,6 +42,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       'common_premise',
       'common_setting',
       'common_strands',
+      'chapter_title_format_chapter_label_number_suffix',
       'export_novel_project',
       'export_novel',
       'export_project',
@@ -49,12 +52,8 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
 
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
-    // supporters check
-    self.supporterEdition = false;
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
-      self.supporterEdition = true;
-    }
+    // supporters or trial check
+    self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
 
     self.exportAuthor;
     if ($routeParams.format === 'pdf') {
@@ -70,11 +69,10 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       self.pageheadertitle = 'jsp.export.title.archive';
       self.exportAuthor = false;
     }
-    self.backpath = '/export';
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_export',
-      href: self.backpath
+      href: '/export'
     });
     self.breadcrumbitems.push({
       label: self.pageheadertitle
@@ -85,6 +83,48 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     if (self.exportAuthor) {
       self.author = ProjectService.getProjectInfo().author;
     }
+
+    self.showchaptertitleformat= ($routeParams.format === 'pdf' || $routeParams.format === 'docx' || $routeParams.format === 'txt') ? true : false;
+    self.chaptertitleformat = BibiscoPropertiesService.getProperty('chaptertitleformat');
+    self.chaptertitleexample = ExportService.calculateChapterTitleExample(self.chaptertitleformat);
+    self.chaptertitleformatgroup = [{
+      label: 'chapter_title_format_number_title',
+      value: 'numbertitle'
+    }, {
+      label: 'chapter_title_format_only_number',
+      value: 'number'
+    }, {
+      label: 'chapter_title_format_only_title',
+      value: 'title'
+    }, {
+      label: '"' + self.translations.common_chapter + '" ' + self.translations.chapter_title_format_chapter_label_number_suffix,
+      value: 'labelnumber'
+    }];
+
+    self.showchaptertitleposition= ($routeParams.format === 'pdf' || $routeParams.format === 'docx' ) ? true : false;
+    self.chaptertitleposition = BibiscoPropertiesService.getProperty('chaptertitleposition');
+    self.chaptertitlepositiongroup = [{
+      label: 'common_left',
+      value: 'left'
+    }, {
+      label: 'common_center',
+      value: 'center'
+    }];
+
+    self.showsceneseparator = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' || $routeParams.format === 'txt' ) ? true : false;
+    self.sceneseparator = BibiscoPropertiesService.getProperty('sceneseparator');
+    self.sceneseparatorgroup = [{
+      label: 'blank_line',
+      value: 'blank_line'
+    }, {
+      label: 'three_asterisks',
+      value: 'three_asterisks'
+    }, {
+      label: 'three_dots',
+      value: 'three_dots'
+    }];
+
+    self.showothersettingsenabled = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' ) ? true : false;
 
     self.showExportFilter = $routeParams.format === 'archive' ? false : true;
     if (self.showExportFilter) {
@@ -144,10 +184,23 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     return timelineItem;
   };
 
+  self.changechaptertitleformat = function(selected) {
+    self.chaptertitleexample = ExportService.calculateChapterTitleExample(selected);
+  };
+
   self.selectItem = function(id) {
-    if (id!=='novel_project' && !self.supporterEdition) {
-      SupporterEditionChecker.showSupporterMessage();
-      self.exportFilter = self.items[0];
+    if (id!=='novel_project') {  
+      SupporterEditionChecker.filterAction(function() {
+        for (let i = 0; i < self.items.length; i++) {
+          const item = self.items[i];
+          if (item.id === id) {
+            self.exportFilter = item;
+          }
+          break;
+        }
+      }, function() {
+        self.exportFilter = self.items[0];
+      });
     } 
   };
   
@@ -267,7 +320,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
   self.getObjectsFamily = function () {
 
     let objectsfamily = [];
-    if (self.supporterEdition) {
+    if (self.includeSupporterEditionItems) {
       let family = self.translations.objects;
       let objects = self.getObjectService().getObjects();
       for (let i = 0; i < objects.length; i++) {
@@ -291,7 +344,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
   self.getNotesFamily = function () {
 
     let notesfamily = [];
-    if (self.supporterEdition) {
+    if (self.includeSupporterEditionItems) {
       let family = self.translations.common_notes_title;
       let notes = self.getNoteService().getNotes();
       for (let i = 0; i < notes.length; i++) {
@@ -339,6 +392,11 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
         if (self.exportAuthor) {
           ProjectService.updateProjectAuthor(self.author);
         }
+        BibiscoPropertiesService.setProperty('chaptertitleformat', self.chaptertitleformat);
+        BibiscoPropertiesService.setProperty('chaptertitleposition', self.chaptertitleposition);
+        BibiscoPropertiesService.setProperty('sceneseparator', self.sceneseparator);
+        BibiscoDbConnectionService.saveDatabase();
+
         if ($routeParams.format === 'pdf') {
           ExportService.exportPdf(self.exportFilter, self.exportpath, self.exportCallback);
         } else if ($routeParams.format === 'docx') {
@@ -354,7 +412,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
 
   self.exportCallback = function() {
     $timeout(function () {
-      $location.path(self.backpath);
+      $location.path('/export');
     }, 0);
   },
 
@@ -367,6 +425,29 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     }
     
     $scope.$apply();
+  };
+
+  self.showothersettings = function() {
+    let modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: 'static',
+      component: 'richtexteditorsettings',
+      resolve: {
+        context: function () {
+          return 'exporttoformat';
+        }
+      },
+      size: 'richtexteditorsettings'
+    });
+
+    $rootScope.$emit('OPEN_POPUP_BOX');
+
+    modalInstance.result.then(function() {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+    }, function () {
+      $rootScope.$emit('CLOSE_POPUP_BOX');
+
+    });
   };
 
   $scope.$on('$locationChangeStart', function (event) {

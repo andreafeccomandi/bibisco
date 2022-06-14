@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
       'objects'
     ]);
 
+    self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
     self.type;
     self.text;
     self.images;
@@ -118,8 +119,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
       family: family,
       selectfunction: self.showSetting
     }); 
-    if (SupporterEditionChecker.check()) {
-      $injector.get('IntegrityService').ok();
+    if (self.includeSupporterEditionItems) {
       architecturefamily.push({
         itemid: 'architecture_globalnotes',
         id: 'globalnotes',
@@ -204,7 +204,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   self.getObjectsFamily = function () {
 
     let objectsfamily = [];
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       let family = self.translations.objects;
       let objects = self.getObjectService().getObjects();
       for (let i = 0; i < objects.length; i++) {
@@ -229,7 +229,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   self.getNotesFamily = function () {
 
     let notesfamily = [];
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       let family = self.translations.common_notes_title;
       let notes = self.getNoteService().getNotes();
       for (let i = 0; i < notes.length; i++) {
@@ -298,7 +298,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     self.sectiontitle = 'jsp.architecture.thumbnail.setting.title';
     self.text = ArchitectureService.getSetting().text;
     self.images = null;
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       self.timeline = self.getTimelineService().getTimeline({type: 'architecture', id: 'setting'});
     } else {
       self.timeline = null;
@@ -308,7 +308,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   };
 
   self.showGlobalNotes = function () {
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       self.sectiontitle = 'common_notes_title';
       self.text = ArchitectureService.getGlobalNotes().text;
       self.images = null;
@@ -325,7 +325,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
 
   self.showMainCharacter = function (id) {
     self.maincharacter = MainCharacterService.getMainCharacter(id);
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       self.timeline = self.getTimelineService().getTimeline({type: 'maincharacter', id: id});
     } else {
       self.timeline = null;
@@ -338,7 +338,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     self.sectiontitle = secondarycharacter.name;
     self.text = secondarycharacter.description;
     self.images = secondarycharacter.images;
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       self.timeline = self.getTimelineService().getTimeline({type: 'secondarycharacter', id: id});
     } else {
       self.timeline = null;
@@ -352,7 +352,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     self.sectiontitle = LocationService.calculateLocationName(location);
     self.text = location.description;
     self.images = location.images;
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       self.timeline = self.getTimelineService().getTimeline({type: 'location', id: id});
     } else {
       self.timeline = null;
@@ -362,7 +362,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   };
 
   self.showObject = function (id) {
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       let object = self.getObjectService().getObject(id);
       self.sectiontitle = object.name;
       self.text = object.description;
@@ -374,11 +374,12 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   };
 
   self.showNote = function (id) {
-    if (SupporterEditionChecker.check()) {
+    if (self.includeSupporterEditionItems) {
       let note = self.getNoteService().getNote(id);
       self.sectiontitle = note.name;
       self.text = note.description;
       self.images = note.images;
+      self.timeline = null;
       self.type = 'simpletext';
       self.path = '/notes/' + id + '/edit';
     }

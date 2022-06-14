@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ angular.
     controller: SettingsController
   });
 
-function SettingsController($injector, $location, $rootScope, $scope,
+function SettingsController($location, $rootScope, $scope,
   $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
   FileSystemService, LocaleService, LoggerService, PopupBoxesService, 
   ProjectService, SupporterEditionChecker) {
   
+  const ipc = require('electron').ipcRenderer;
   var self = this;
 
   self.$onInit = function () {
@@ -32,9 +33,23 @@ function SettingsController($injector, $location, $rootScope, $scope,
     $rootScope.$emit('SHOW_SETTINGS', {
       item: 'settings'
     });
-    self.backpath = '/start';
 
     self.theme = BibiscoPropertiesService.getProperty('theme');
+
+    // zoom level
+    self.zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
+    self.zoomLevelGroup = [{
+      label: '100%',
+      value: 100
+    }, {
+      label: '115%',
+      value: 115
+    }, {
+      label: '130%',
+      value: 130
+    }];
+
+    // selected language
     self.selectedLanguage = LocaleService.getCurrentLocale();
     let currentProjectsDirectory = BibiscoPropertiesService.getProperty('projectsDirectory');
   
@@ -82,16 +97,13 @@ function SettingsController($injector, $location, $rootScope, $scope,
   };
 
   self.selectDarkTheme = function() {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
+    SupporterEditionChecker.filterAction(function() {
       $rootScope.$emit('SWITCH_DARK_THEME');
       $timeout(function () {
-        $injector.get('IntegrityService').ok();
         self.theme = 'dark';
         $scope.settingsForm.$setDirty();
       }, 0);
-    }
+    });
   };
 
   self.selectClassicTheme = function() {
@@ -101,6 +113,13 @@ function SettingsController($injector, $location, $rootScope, $scope,
       $scope.settingsForm.$setDirty();
     }, 0);
   };
+
+  self.selectZoomLevel = function(selected) {
+    $rootScope.$emit('CHANGE_ZOOM_LEVEL', {
+      level: selected
+    });
+  };
+
 
   self.selectLanguage = function(selectedLanguage) {
     self.selectedLanguage = selectedLanguage;
@@ -124,7 +143,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
   self.save = function(isValid, isDirty) {
     
     if (!isDirty) {
-      $location.path(self.backpath);
+      $location.path('/start');
     } else if (isValid) {
       self.checkExit = {
         active: false
@@ -146,6 +165,8 @@ function SettingsController($injector, $location, $rootScope, $scope,
       if (!self.forbiddenDirectory && !self.forbiddenBackupDirectory && !self.backupDirectoryEqualToProjectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
         BibiscoPropertiesService.setProperty('theme', self.theme);
+        LoggerService.debug('BibiscoPropertiesService.getProperty(\'zoomLevel\')'+BibiscoPropertiesService.getProperty('zoomLevel')+' - self.zoomLevel='+self.zoomLevel);
+        BibiscoPropertiesService.setProperty('zoomLevel', self.zoomLevel); 
         BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
         BibiscoPropertiesService.setProperty('projectsDirectory', ProjectService.createProjectsDirectory(self.selectedProjectsDirectory));
         BibiscoPropertiesService.setProperty('backupDirectory', self.selectedBackupDirectory);
@@ -159,6 +180,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
 
         LoggerService.info('Saved preferences: ' 
           + ' theme=' + self.theme  
+          + ' - zoomLevel=' + self.zoomLevel
           + ' - language=' + LocaleService.getCurrentLocale() 
           + ' - projects directory=' + self.selectedProjectsDirectory
           + ' - backup directory=' + self.selectedBackupDirectory
@@ -167,7 +189,7 @@ function SettingsController($injector, $location, $rootScope, $scope,
           + ' - auto backup on exit=' + self.autoBackupOnExit
         );
 
-        $location.path(self.backpath);
+        $location.path('/start');
       } 
     }
   };
@@ -179,6 +201,10 @@ function SettingsController($injector, $location, $rootScope, $scope,
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }
+    self.zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
+    $rootScope.$emit('CHANGE_ZOOM_LEVEL', {
+      level: self.zoomLevel
+    });
   };
 
   $scope.$on('$locationChangeStart', function (event) {

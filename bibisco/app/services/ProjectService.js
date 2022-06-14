@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  *
  */
 
-angular.module('bibiscoApp').service('ProjectService', function($injector, $interval,
+angular.module('bibiscoApp').service('ProjectService', function($injector, $interval, $rootScope,
   BibiscoDbConnectionService, BackupService, BibiscoPropertiesService, CollectionUtilService, 
-  ContextService, FileSystemService, LoggerService,
+  ContextService, FileSystemService, LoggerService, PopupBoxesService,
   UtilService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
@@ -99,15 +99,6 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
           projectdb.addCollection('wordswrittenperday');
           LoggerService.info('Added collection wordswrittenperday');
         }
-  
-        // clear location dynamic view for nations, states, cities
-        let locationCollection = projectdb.getCollection('locations');
-        for (let i = 0; i < 2; i++) { // do it twice because removeDynamicView function expects to remove only one dynamic view a time
-          locationCollection.removeDynamicView('nations');
-          locationCollection.removeDynamicView('states');
-          locationCollection.removeDynamicView('cities');
-        }
-        LoggerService.info('Removed dynamicViews nations, states, cities');
 
         // VERSION 2.3
 
@@ -129,18 +120,45 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
           LoggerService.info('Added collection parts');
         }
 
-        // clear all dynamic views sorted by position
+        // VERSION 2.4
+
+        // remove all dynamic views 
+        projectdb.getCollection('backups').removeDynamicView('all_backups');
         projectdb.getCollection('chapters').removeDynamicView('all_chapters');
-        projectdb.getCollection('locations').removeDynamicView('all_locations');
         projectdb.getCollection('maincharacters').removeDynamicView('all_maincharacters');
+        projectdb.getCollection('notes').removeDynamicView('all_notes');
         projectdb.getCollection('objects').removeDynamicView('all_objects');
-        projectdb.getCollection('scenes').removeDynamicView('all_scenes');
+        projectdb.getCollection('parts').removeDynamicView('all_parts'); 
         projectdb.getCollection('secondarycharacters').removeDynamicView('all_secondarycharacters');
         projectdb.getCollection('strands').removeDynamicView('all_strands');
-
-        LoggerService.info('Removed dynamicViews all_chapters, all_locations, all_maincharacters, ' + 
-          'all_notes, all_objects, all_parts, all_scenes, all_secondarycharacters. all_strands');
-
+        LoggerService.info('Removed dynamicViews all_backups, all_chapters, all_maincharacters, ' + 
+        'all_notes, all_objects, all_parts, all_secondarycharacters all_strands');
+        
+        // remove all scenes dynamic views
+        let scenesCollection = projectdb.getCollection('scenes');
+        let scenesCollectionDynamicViewsNames = [];
+        for (let i = 0; i < scenesCollection.DynamicViews.length; i++) {
+          scenesCollectionDynamicViewsNames.push(scenesCollection.DynamicViews[i].name);
+        }
+        for (let j = 0; j < 2; j++) { // do it twice because removeDynamicView function expects to remove only one dynamic view a time
+          for (let i = 0; i < scenesCollectionDynamicViewsNames.length; i++) {
+            scenesCollection.removeDynamicView(scenesCollectionDynamicViewsNames[i]);
+            if (j===0) { // log onluy tthe first time
+              LoggerService.info('Removed dynamicView ' + scenesCollectionDynamicViewsNames[i]);
+            }
+          }
+        }
+    
+        // remove all location dynamic views
+        let locationCollection = projectdb.getCollection('locations');
+        for (let i = 0; i < 2; i++) { // do it twice because removeDynamicView function expects to remove only one dynamic view a time
+          locationCollection.removeDynamicView('all_locations');
+          locationCollection.removeDynamicView('nations');
+          locationCollection.removeDynamicView('states');
+          locationCollection.removeDynamicView('cities');
+        }
+        LoggerService.info('Removed dynamicViews all_locations, nations, states, cities');
+        
         // update project version
         projectInfo.bibiscoVersion = actualversion;
         CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
@@ -264,29 +282,8 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         'project').get(1) : null;
     },
     getProjects: function() {
-     
       let collection = BibiscoDbConnectionService.getBibiscoDb().getCollection('projects');
-      let dynamicView = collection.getDynamicView('all_projects');
-      
-      // check if dynamicView exists
-      if (!dynamicView) {
-        dynamicView = collection.addDynamicView('all_projects').applySortCriteria(['name']);
-        LoggerService.debug('Created all_projects dynamicView');
-      } 
-      
-      // check if sortCriteria is set
-      else if (dynamicView && !dynamicView.sortCriteria) {
-        collection.removeDynamicView('all_projects');
-        dynamicView = collection.addDynamicView('all_projects').applySortCriteria(['name']);
-        LoggerService.debug('Created all_projects dynamicView');
-      }
-      
-      // dynamicView exists and sortCriteria is ok
-      else {
-        LoggerService.debug('Loaded all_projects dynamicView');
-      }
-
-      return dynamicView.data();
+      return CollectionUtilService.getDataSortedByField(collection, 'name');
     },
     import: function(projectId, projectName, callback) {
 
@@ -379,6 +376,12 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
     },
 
     close: function() {
+
+      // If there's no open project, I go out.
+      if (!this.getProjectInfo()) {
+        return;
+      }
+
       let autoBackupOnExit = BibiscoPropertiesService.getProperty('autoBackupOnExit') === 'true';
       LoggerService.info('ProjectService: close project - Auto backup on exit: ' + autoBackupOnExit);
       
@@ -387,9 +390,12 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
 
       // execute backup on close
       if (autoBackupOnExit && this.itsTimeToBackup(SOMETHING_CHANGED)) {
-        this.executeBackup(function() {
-          // close project
-          ProjectDbConnectionService.close();
+        this.executeBackup({
+          showWaitingModal: true,
+          callback: function() {
+            // close project
+            ProjectDbConnectionService.close();
+          }
         });
       } else {
         // close project
@@ -428,7 +434,9 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         }
         LoggerService.debug('Auto backup function - frequency=' + autoBackupFrequency + ' delta=' + delta);
         if (delta !== NEVER && self.itsTimeToBackup(delta)) {
-          self.executeBackup();
+          self.executeBackup({
+            showWaitingModal: false
+          });
         }
       }, FIVE_MINUTES);
     },
@@ -531,26 +539,30 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       return result;
     },
 
-    executeBackupIfSomethingChanged: function (callback) {
+    executeBackupIfSomethingChanged: function (options) {
 
       try {
         if (this.itsTimeToBackup(SOMETHING_CHANGED)) {
-          this.executeBackup(callback);
+          this.executeBackup(options);
         } else {
-          if (callback) {
-            callback();
+          if (options.callback) {
+            options.callback();
           }
         }
       } catch (error) {
         LoggerService.error(error);
-        if (callback) {
-          callback();
+        if (options.callback) {
+          options.callback();
         }
       }
     },
 
-    executeBackup: function (callback) {
-    
+    executeBackup: function (options) {
+
+      if (options.showWaitingModal) {
+        PopupBoxesService.waiting('backup_in_progress', 'BACKUP_DONE');
+      }
+
       let projectInfo = this.getProjectInfo();
       let backupPath = BibiscoPropertiesService.getProperty('backupDirectory');
       LoggerService.debug('Start executing backup for project ' + projectInfo.name + ' to directory ' + backupPath + ' ...');
@@ -563,8 +575,9 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
 
       if (maxBackupNumber===0) {
         LoggerService.debug('Max backup number set to zero. Exit.');
-        if (callback) {
-          callback();
+        if (options.callback) {
+          options.callback();
+          $rootScope.$emit('BACKUP_DONE');
         }
       } else {
         try {
@@ -580,12 +593,14 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
                 BackupService.removeOldestBackup();
               }
             }
-            if (callback) {
-              callback();
+            if (options.callback) {
+              options.callback();
             }
+            $rootScope.$emit('BACKUP_DONE');
           });
         } catch (err) {
           LoggerService.error(projectInfo.id + ' backup failed: ' + err);
+          $rootScope.$emit('BACKUP_DONE');
         }
       }
     },
@@ -766,14 +781,29 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
         globs: ['**/*.json']
       });
 
-    if (!fileList || fileList.length !== 1) {
+    if (!fileList) {
       throw 'Invalid archive';
     }
 
-    // calculate project id from file name
-    // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
-    let calculatedProjectId = (fileList[0].split('/')[0]).split('.')[0];
-    LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
+    let calculatedProjectId;
+    for (let i = 0; i < fileList.length; i++) {
+      const archiveFile = fileList[i];
+      // calculate project id from file name
+      // example: 55c41472-aa6d-41bc-930e-29c0014e9351/55c41472-aa6d-41bc-930e-29c0014e9351.json
+      calculatedProjectId = (archiveFile.split('/')[1]).split('.')[0];
+      LoggerService.debug('calculatedProjectId=' + calculatedProjectId);
+
+      // check if project directory name is in UUID format
+      if (validator.isUUID(calculatedProjectId, 4)) {
+        LoggerService.debug('calculatedProjectId is valid');
+        break;
+      } else {
+        LoggerService.debug('calculatedProjectId is not valid');
+      }
+    }
+    if (!calculatedProjectId) {
+      throw 'Invalid archive: no UUID v4 file found';
+    }
 
     // check project validity
     let projectInfo = checkProjectValidity(calculatedProjectId,
@@ -784,13 +814,12 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
 
     // check if project already exists in the installation of bibisco
     let projects = BibiscoDbConnectionService.getBibiscoDb().getCollection(
-      'projects').addDynamicView(
-      'project_by_id').applyFind({
+      'projects').chain().find({
       id: projectId
-    });
-    if (projects.count() === 1) {
+    }).data();
+    if (projects.length === 1) {
       isAlreadyPresent = true;
-      projectName = projects.data()[0].name;
+      projectName = projects[0].name;
     }
     isValidArchive = true;
 
@@ -813,11 +842,6 @@ function checkArchive(tempDirectoryPath, BibiscoDbConnectionService,
 
 function checkProjectValidity(projectDirectoryName, projectsDirectory,
   FileSystemService, ProjectDbConnectionService) {
-
-  // check if project directory name is in UUID format
-  if (!validator.isUUID(projectDirectoryName, 4)) {
-    throw 'Invalid archive: not UUID v4 file';
-  }
 
   // open imported archive db to get id and name
   let projectdb = ProjectDbConnectionService.open(

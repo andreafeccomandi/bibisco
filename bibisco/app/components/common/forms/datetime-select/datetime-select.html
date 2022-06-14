@@ -9,7 +9,7 @@
           <input type="hidden" name="{{$ctrl.name}}" class="form-control" 
             ng-required="{{$ctrl.required != null && $ctrl.required != 'false'}}"
             ng-model="$ctrl.timeshowed">
-          <input type="text" name="dateshowed" class="form-control" readonly 
+          <input type="text" name="dateshowed" class="form-control date-time-select-input" readonly 
           value="{{'date_format_scene_tags' | translate:{date:$ctrl.timeshowed} }}{{$ctrl.calculateYear()}} {{'time_format_scene_tags' | translate:{date:$ctrl.timeshowed} }}">
           <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
         </div>

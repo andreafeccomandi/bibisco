@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ angular.
       emptylistbuttonfunction: '&',
       emptylistbuttontooltip: '@',
       family: '@',
+      hastext: '<',
       items: '<',
       pageheaderbuttonfunction: '&',
       pageheaderbuttonhotkey: '<',
@@ -36,9 +37,10 @@ angular.
       pageheadertipcode: '@',
       pageheadercharacters: '<',
       pageheaderwords: '<',
+      scrollable: '<',
       selectfunction: '&',
       showwordsgoalcounter: '<',
-      type: '@'
+      subheader: '<'
     }
   });
 
@@ -49,16 +51,12 @@ function CardGridController() {
 
   self.$onInit = function() {
 
-    let headersubtitleclass;
-    if (self.pageheadersubtitle) {
-      headersubtitleclass = 'with-header-subtitle';
-    } else {
-      headersubtitleclass = 'no-header-subtitle';
+    self.cardgriditemsboxcontainerclass;
+    if (self.pageheadersubtitle && self.scrollable) {
+      self.cardgriditemsboxcontainerclass = 'scrollable-box-full-height-page-with-header-subtitle';
+    } else if (!self.pageheadersubtitle && self.scrollable){
+      self.cardgriditemsboxcontainerclass = 'scrollable-box-full-height-page-with-header';
     }
-    self.gridclass = 'card-grid-items-' + headersubtitleclass + '-' + self.type;
-    self.emptygridclass = 'card-grid-emptyitems-' + headersubtitleclass + '-' +
-      self.type;
-    self.headerclass = 'card-grid-header-' + self.type;
     self.tipenabled = (self.pageheadertipcode && self.items && self.items.length>1);
   };
 }

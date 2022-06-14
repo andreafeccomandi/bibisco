@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2021 Andrea Feccomandi
+ * Copyright (C) 2014-2022 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function NotesController($injector, $location, $rootScope, $routeParams, $scope,
+function NotesController($location, $rootScope, $routeParams, $scope,
   CardUtilService, NoteService, SupporterEditionChecker) {
 
   var self = this;
@@ -36,9 +36,6 @@ function NotesController($injector, $location, $rootScope, $routeParams, $scope,
     
     self.cardgriditems = this.getCardGridItems();
     
-    // focus element
-    CardUtilService.focusElementInPath($routeParams.params);
-
     // hotkeys
     self.hotkeys = ['ctrl+n', 'command+n'];
   };
@@ -48,7 +45,7 @@ function NotesController($injector, $location, $rootScope, $routeParams, $scope,
   };
 
   self.create = function() {
-    self.supporterEditionFilterAction(function () {
+    SupporterEditionChecker.filterAction(function () {
       $location.path('/notes/new');
     });
   };
@@ -78,17 +75,8 @@ function NotesController($injector, $location, $rootScope, $routeParams, $scope,
   };
 
   self.select = function(id) {
-    self.supporterEditionFilterAction(function() {
+    SupporterEditionChecker.filterAction(function() {
       $location.path('/notes/' + id + '/view');
     });
-  };
-
-  self.supporterEditionFilterAction = function(action) {
-    if (!SupporterEditionChecker.check()) {
-      SupporterEditionChecker.showSupporterMessage();
-    } else {
-      $injector.get('IntegrityService').ok();
-      action();
-    }
   };
 }
