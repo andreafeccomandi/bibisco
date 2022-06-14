@@ -111,7 +111,7 @@
     "shortid": "^2.2.16",
     "shx": "^0.3.2",
     "ui-select": "^0.19.6",
-    "validator": "^7.0.0",
+    "validator": "^13.7.0",
     "vis-network": "^7.10.2",
     "xo": "^0.16.0"
   },
