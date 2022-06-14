@@ -72,7 +72,7 @@
     "mout": "^1.1.0",
     "pdfmake": "^0.1.68",
     "request": "^2.88.2",
-    "sanitize-html": "^1.27.5",
+    "sanitize-html": "^2.3.2",
     "simple-spellchecker": "^1.0.1",
     "uuid": "^8.3.2",
     "walk-sync": "^0.3.1",
