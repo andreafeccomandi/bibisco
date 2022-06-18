@@ -42,3 +42,30 @@ To contribute to bibisco development you need to:
 * download [bibisco Individual Contributor Assignment Agreement](https://github.com/andreafeccomandi/bibisco/blob/master/bibisco-Individual-Contribution-Assignment-Agreement.pdf) or [bibisco Entity Contributor Assignment Agreement](https://github.com/andreafeccomandi/bibisco/blob/master/bibisco-Entity-Contribution-Assignment-Agreement.pdf)
 * sign the Agreement
 * email the signed agreement to info@bibisco.com
+
+### How to set up your developer enviorment.
+Follow the following instructions to set up the development enviorment for contributing to Babisco.
+
+#### Requirements:
+- NPM and [Node.Js](https://nodejs.org/en/download/) *(LTS version recommended)*
+
+#### Install Steps
+1. Fork and clone.
+    - Fork the repository and then clone it to your system.
+
+2. Once you have forked and cloned the repository, navigate to `/bibisco/app` directory which exists within the main repositories directory.
+
+Run this immediatly after cloning the repository.
+```
+cd ./bibisco/bibisco/app
+```
+
+3. Install dependencies.
+```
+npm install
+```
+
+4. Start the app.
+```
+npm start
+```
