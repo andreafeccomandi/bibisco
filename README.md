@@ -43,8 +43,8 @@ To contribute to bibisco development you need to:
 * sign the Agreement
 * email the signed agreement to info@bibisco.com
 
-### How to set up your developer enviorment.
-Follow the following instructions to set up the development enviorment for contributing to Babisco.
+### How to set up your developer environment.
+Follow the following instructions to set up the development environment for contributing to Babisco.
 
 #### Requirements:
 - NPM and [Node.Js](https://nodejs.org/en/download/) *(LTS version recommended)*
