@@ -97,7 +97,7 @@
     "bestzip": "^2.1.7",
     "bootstrap": "^3.4.1",
     "devtron": "^1.1.0",
-    "electron": "^16.2.5",
+    "electron": "^18.3.7",
     "electron-packager": "^14.2.1",
     "electron-rebuild": "^1.11.0",
     "eslint": "^4.19.1",
