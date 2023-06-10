@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ function MainCharacterEventsController($location, $routeParams, $window,
     }
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=maincharacters_' + mainCharacter.$loki
+      href: '/characters'
     });
     self.breadcrumbitems.push({
       label: mainCharacter.name,

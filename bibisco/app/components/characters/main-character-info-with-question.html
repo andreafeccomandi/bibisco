@@ -55,7 +55,13 @@
   <div class="row">
     <span class="pull-left">
       <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
-      <interviewswitch ng-if="$ctrl.editmode"
+      <button ng-if="!$ctrl.editmode && $ctrl.type === 'custom' && $ctrl.maincharacter[$ctrl.type].questions.length > 0" 
+        type="button" class="btn btn-default"   
+        ng-click="$ctrl.manageCustomQuestions()"
+        uib-tooltip="{{'custom_question_edit_tooltip' | translate}}">
+        {{'edit_custom_questions' | translate}}
+    </button>
+      <interviewswitch ng-if="$ctrl.editmode && $ctrl.type !== 'custom'"
         freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
       </interviewswitch>
     </span>
@@ -68,7 +74,7 @@
       <editsavebackbuttonbar 
         autosaveenabled="$ctrl.autosaveenabled" 
         characters="$ctrl.characters"
-        editbuttonvisible="true" 
+        editbuttonvisible="$ctrl.editbuttonenabled" 
         editfunction="$ctrl.edit()"
         editmode="$ctrl.editmode"
         savefunction="$ctrl.save()"

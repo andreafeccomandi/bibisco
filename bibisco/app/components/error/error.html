@@ -1,10 +1,20 @@
 <h1>
   {{"js.bibisco.loading.end.error" | translate}}
 </h1>
-<p>
-  <b>Cause</b>: {{$ctrl.cause}}
-</p>
-<p>
-  <b>Stacktrace</b>: {{$ctrl.stacktrace}}
-</p>
+
+<div ng-if="$ctrl.showPermissionErrorMessage" class="permissionerrordescription">
+  <p ng-bind-html="$ctrl.showPermissionErrorMessage"></p> 
+  <p ng-bind-html="$ctrl.showPermissionErrorPath"></p> 
+  <p>{{"directory_permission_solution" | translate}}</p>
+</div>
+<div ng-if="!$ctrl.showPermissionErrorMessage" class="genericoerrordescription">
+  <p>
+    <b>Cause</b>: {{$ctrl.cause}}
+  </p>
+  <p>
+    <b>Stacktrace</b>: {{$ctrl.stacktrace}}
+  </p>
+</div>
+
+
 <button class="btn btn-primary btn-lg top30 center-block" ng-click="$ctrl.goHome()">{{"jsp.common.button.back" | translate}}</button>

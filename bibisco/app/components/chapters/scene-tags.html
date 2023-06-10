@@ -21,12 +21,12 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         popover-placement="bottom" popover-trigger="'mouseenter'"
         ng-click="$ctrl.togglePov(pov.id)">
         {{'common_pointOfView_'+pov.id | translate}}
+        </button>
     </div>
   
     <div class="top30 col-sm-12" ng-if="$ctrl.showpovcharacter">
       <blockquote>
-        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
-      {{'jsp.scene.label.pointOfView.character' | translate}}</i>
+        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">{{'jsp.scene.label.pointOfView.character' | translate}}</i>
       </blockquote>
     </div>
 
@@ -36,6 +36,16 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         class="btn btn-sm scene-tags-button"
         ng-click="$ctrl.togglePovCharacter(character.id)">
         {{character.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createPovMainCharacter()">
+        {{'new_main_character' | translate}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createPovSecondaryCharacter()">
+        {{'new_secondary_character' | translate}}
       </button>
     </div>
     
@@ -53,6 +63,16 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         ng-click="$ctrl.toggleSceneCharacter(character.id)">
         {{character.name}}
       </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createSceneMainCharacter()">
+        {{'new_main_character' | translate}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createSceneSecondaryCharacter()">
+        {{'new_secondary_character' | translate}}
+      </button>
     </div>
 
     <!-- LOCATION -->
@@ -67,6 +87,11 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         ng-class="{ 'btn-info': location.selected, 'btn-unselected': !location.selected }"
         class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleLocation(location.id)">
         {{location.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createLocation()">
+        {{'new_location' | translate}}
       </button>
     </div>
 
@@ -83,6 +108,11 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         class="btn btn-sm scene-tags-button"
         ng-click="$ctrl.toggleObject(object.id)">
         {{object.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createObject()">
+        {{'new_object' | translate}}
       </button>
     </div>
 
@@ -118,8 +148,12 @@ breadcrumbitems="$ctrl.breadcrumbitems"
         class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleStrand(strand.id)">
         {{strand.name}}
       </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createStrand()">
+        {{'new_strand' | translate}}
+      </button>
     </div>
-
 </div>
 
 <div class="detail-footer bibiscoNotSelectableText">

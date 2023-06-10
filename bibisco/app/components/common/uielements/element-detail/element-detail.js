@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,13 @@ angular.
       changetitlelabel: '@',
       characters: '=',
       content: '=',
+      customactionnenabled: '<',
+      customactionfunction: '&',
+      customactionlabel: '@',
+      custombuttonenabled: '<',
+      custombuttonfunction: '&',
+      custombuttonlabel: '@',
+      custombuttontooltip: '@',
       deleteconfirmmessage: '@',
       deleteenabled: '<',
       deleteforbidden: '<',
@@ -54,6 +61,7 @@ angular.
       showeventslabel: '@',
       showimagesfunction: '&',
       showimageslabel: '@',
+      tags: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       words: '=',
@@ -77,6 +85,12 @@ function ElementDetailController($rootScope, PopupBoxesService) {
       self.actionitems.push({
         label: self.changetitlelabel,
         itemfunction: self.changetitlefunction
+      });
+    }
+    if (self.customactionnenabled) {
+      self.actionitems.push({
+        label: self.customactionlabel,
+        itemfunction: self.customactionfunction
       });
     }
     if (self.deleteenabled) {

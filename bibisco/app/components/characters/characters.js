@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,11 @@ angular.
     }
   });
 
-function CharactersController($location, $rootScope, $routeParams, $scope, 
-  CardUtilService, MainCharacterService, SecondaryCharacterService) {
+function CharactersController($injector, $location, $rootScope, $scope, 
+  MainCharacterService, SecondaryCharacterService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
     
@@ -33,7 +34,8 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
     $rootScope.$emit('SHOW_PAGE', {
       item: 'characters'
     });
-    
+
+    self.showGroupFilter = false;
     self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
     self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
 
@@ -50,11 +52,18 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
     $location.path('/secondarycharacters/new');
   };
 
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
+  };
+
   self.getMainCharacterCardGridItems = function() {
     let items;
     if (MainCharacterService.getMainCharactersCount() > 0) {
       let characters = MainCharacterService.getMainCharacters();
-      items = self.getGridItemsFromCharacters(characters);
+      items = self.getGridItemsFromCharacters(characters, 'maincharacter');
     }
     return items;
   };
@@ -63,22 +72,37 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
     let items;
     if (SecondaryCharacterService.getSecondaryCharactersCount() > 0) {
       let characters = SecondaryCharacterService.getSecondaryCharacters();
-      items = self.getGridItemsFromCharacters(characters);
+      items = self.getGridItemsFromCharacters(characters, 'secondarycharacter');
     }
     return items;
   };
 
-  self.getGridItemsFromCharacters = function(characters) {
+  self.getGridItemsFromCharacters = function(characters, type) {
     let items = [];
     for (let i = 0; i < characters.length; i++) {
-      items.push({
-        id: characters[i].$loki,
-        image: characters[i].profileimage, 
-        noimageicon: 'user',
-        position: characters[i].position,
-        status: characters[i].status,
-        title: characters[i].name
-      });
+      let tags = [];
+      let showOnActiveFilter = false;
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
+        let elementGroups = this.getGroupService().getElementGroups(type, characters[i].$loki);
+        for (let i = 0; i < elementGroups.length; i++) {
+          tags.push({key: elementGroups[i].$loki, label: elementGroups[i].name, color: elementGroups[i].color});
+          if ($rootScope.groupFilter && elementGroups[i].$loki === $rootScope.groupFilter.key) {
+            showOnActiveFilter = true;
+          }
+        }
+        self.showGroupFilter = true;
+      }
+      if (!$rootScope.groupFilter || $rootScope.groupFilter.key === 'all' || showOnActiveFilter) {
+        items.push({
+          id: characters[i].$loki,
+          image: characters[i].profileimage, 
+          noimageicon: 'user',
+          position: characters[i].position,
+          status: characters[i].status,
+          tags: tags,
+          title: characters[i].name
+        });
+      }
     }
     return items;
   };
@@ -100,6 +124,13 @@ function CharactersController($location, $rootScope, $routeParams, $scope,
   self.secondaryCharacterMove = function(draggedObjectId, destinationObjectId) {
     SecondaryCharacterService.move(draggedObjectId, destinationObjectId);
     self.secondarycharacterscardgriditems = this.getSecondaryCharacterCardGridItems();
+    $scope.$apply();
+  };
+
+  self.refreshCardGridItems = function() {
+    self.showGroupFilter = false;
+    self.maincharacterscardgriditems = self.getMainCharacterCardGridItems();
+    self.secondarycharacterscardgriditems = self.getSecondaryCharacterCardGridItems();
     $scope.$apply();
   };
 }

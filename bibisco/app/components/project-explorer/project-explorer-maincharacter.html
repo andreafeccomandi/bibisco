@@ -45,6 +45,14 @@
     info="$ctrl.maincharacter.sociology">
 </projectexplorermaincharacterinfo>
 
+<hr ng-if="$ctrl.isSupporterOrTrial">
+<projectexplorermaincharacterinfo ng-if="$ctrl.isSupporterOrTrial"
+    characterid="$ctrl.maincharacter.$loki"
+    label="common_custom"
+    type="'custom'" 
+    info="$ctrl.maincharacter.custom">
+</projectexplorermaincharacterinfo>
+
 <hr>
 <projectexplorersimpletext 
     text="$ctrl.maincharacter.lifebeforestorybeginning.text"

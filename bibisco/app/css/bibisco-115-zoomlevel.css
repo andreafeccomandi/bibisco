@@ -40,30 +40,54 @@ body {
 }
 
 .scrollable-box-full-height-page-with-header-relationsfooter {
-	height: calc(100% - 242px);
+	height: calc(100% - 280px);
 }
 
 .card-normal {
-    height: 170px;
+    height: 178px;
 }
 
 .card-left-section-normal {
-    height: 168px;
+    height: 176px;
 }
 
 .card:focus div.card-left-section-normal {
-	height: 166px;
+	height: 174px;
+}
+
+.card-normal-notags {
+    height: 158px;
+}
+
+.card-left-section-normal-notags {
+    height: 156px;
+}
+
+.card:focus div.card-left-section-normal-notags {
+	height: 154px;
 }
 
 .card-small {
-    height: 90px;
+    height: 105px;
 }
 
 .card-left-section-small {
-    height: 88px;
+    height: 103px;
 }
 
 .card:focus div.card-left-section-small {
+	height: 101px;
+}
+
+.card-small-notags {
+    height: 90px;
+}
+
+.card-left-section-small-notags {
+    height: 88px;
+}
+
+.card:focus div.card-left-section-small-notags {
 	height: 86px;
 }
 
@@ -75,10 +99,6 @@ body {
     font-size: 15px;
 }
 
-.card-text-normal {
-    -webkit-line-clamp: 5;
-}
-
 .card-no-profile-bg i {
     margin-top: 12px;
 }
@@ -88,23 +108,51 @@ body {
 }
 
 .card-heading-title-chapter {
-    width: 100px;
+    width: 70px;
 }
 
 .card-chapter {
-    height: 140px;
+    height: 168px;
+}
+
+.card-chapter-notags {
+    height: 146px;
 }
 
 .card-left-section-chapter {
-    height: 138px;
+    height: 166px;
+}
+
+.card-left-section-chapter-notags {
+    height: 144px;
 }
 
 .card:focus div.card-left-section-chapter {
-    height: 136px;
+    height: 164px;
+}
+
+.card:focus div.card-left-section-chapter-notags {
+    height: 142px;
 }
 
 .card-text-chapter {
     -webkit-line-clamp: 4;
+}
+
+div.card-small div.card-tags {
+    top: 75px;
+}
+
+div.card-normal div.card-tags {
+    top: 148px;
+}
+
+div.card-chapter div.card-tags {
+    top: 138px;
+}
+
+.card-left-section span.bibiscoTaskStatus {
+    bottom: 5px;
 }
 
 .detail-footer div.row {
@@ -137,11 +185,11 @@ h5 {
 }
 
 .page-header-no-profile-button {
-    margin-top: -38px;
+    margin-top: -39px;
 }
 
 .page-header-no-profile-bg {
-    margin-top: -98px;
+    margin-top: -95px;
 }
 
 .page-header-no-profile-icon {
@@ -293,6 +341,10 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
 
 .modal-richtexteditorsettings {
 	width: 700px;
+}
+
+.read-novel-scenes-separator {
+	height: 20px;
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,9 @@ angular.
   });
 
 
-function InterviewViewerController(RichTextEditorPreferencesService) {
+function InterviewViewerController($injector, $location, RichTextEditorPreferencesService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
@@ -52,5 +52,10 @@ function InterviewViewerController(RichTextEditorPreferencesService) {
 
     self.characters = characters;
     self.words = words;
+
+    if (self.type === 'custom') {
+      let CustomQuestionService = $injector.get('CustomQuestionService');
+      self.customQuestions = CustomQuestionService.getCustomQuestions();
+    }
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,9 @@ function TimelineElementController($location, LocaleService) {
   let self = this;
 
   self.$onInit = function () {
-    moment.locale(LocaleService.getCurrentLocale());
-    self.dayofweek = moment(self.element.time).format('dddd');
   };
 
   self.showScene = function() {
-    $location.path('/timeline/chapters/' + self.element.chapterid + '/scenes/' + self.element.sceneid + '/view');
+    $location.path('/timeline/chapters/' + self.element.chapterid + '/scenes/' + self.element.id + '/view');
   };
 }

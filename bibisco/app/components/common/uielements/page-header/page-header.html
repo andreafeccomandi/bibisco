@@ -15,7 +15,10 @@
           uib-tooltip="{{'add_profile_image_tooltip' | translate}}">+</button>
       </span>
 
-      <span class="page-header-truncate-title" style="width: calc(100% - {{$ctrl.statusandbuttonsspace}}px)">
+      <span class="page-header-truncate-title page-header-tags-{{$ctrl.tagscluster}}" style="width: calc(100% - {{$ctrl.statusandbuttonsspace}}px)">
+        <i ng-repeat="tag in $ctrl.tags track by $index" 
+          class="fa fa-tag fa-flip-horizontal" 
+          uib-tooltip="{{tag.label | translate}}"  style="color: {{tag.color}};"></i>
         {{$ctrl.headertitle | translate}}
       </span>
       <span class="pull-right page-header-buttonbar">
@@ -28,6 +31,7 @@
             words="$ctrl.words" characters="$ctrl.characters">
           </wordscharacterscounter>
           <wordsgoalcounter ng-if="$ctrl.showwordsgoalcounter"></wordsgoalcounter>
+          <groupfilter ng-if="$ctrl.showgroupfilter" changegroupfilterfunction="$ctrl.changegroupfilterfunction()"></groupfilter>
         </small>
       </span>
   </h1>

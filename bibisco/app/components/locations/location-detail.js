@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ angular.
     controller: LocationDetailController
   });
 
-function LocationDetailController($location, $routeParams, $window,
-  ChapterService, LocationService) {
+function LocationDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
+  ChapterService, LocationService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
 
@@ -40,13 +41,32 @@ function LocationDetailController($location, $routeParams, $window,
     
     self.breadcrumbitems.push({
       label: 'common_locations',
-      href: '/locations/params/focus=locations_' + self.location.$loki
+      href: '/locations'
     });
     self.breadcrumbitems.push({
       label: self.name
     });
   
     self.deleteforbidden = self.isDeleteForbidden();
+
+    // tags
+    self.tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let elementGroups = self.getGroupService().getElementGroups('location', self.location.$loki);
+      for (let i = 0; i < elementGroups.length; i++) {
+        let group = elementGroups[i];
+        self.tags.push({label: group.name, color: group.color});
+      }
+    }
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+m', 'command+m'],
+        description: 'groupsmembership',
+        callback: function () {
+          self.managegroupsmembership();
+        }
+      });
   };
 
   self.changeStatus = function(status) {
@@ -65,6 +85,13 @@ function LocationDetailController($location, $routeParams, $window,
 
   self.edit = function () {
     $location.path('/locations/ ' + self.location.$loki + '/edit');
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.getLocation = function(id) {
@@ -104,5 +131,12 @@ function LocationDetailController($location, $routeParams, $window,
   };
   self.addprofileimage = function() {
     $location.path('/locations/' + self.location.$loki + '/images/addprofile');
+  };
+
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/locations/' + self.location.$loki + '/groupsmembership');
+    });
   };
 }

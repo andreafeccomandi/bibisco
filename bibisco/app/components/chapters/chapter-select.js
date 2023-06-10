@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -40,12 +40,12 @@ function ChapterSelectController($location, $rootScope, $routeParams, $scope, $w
     $rootScope.$emit('MOVE_SCENE_SELECT_CHAPTER');
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/chapters/params/focus=chapters_' + self.sourceChapter.$loki
+      href: '/chapters/' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({
       label: ChapterService.getChapterPositionDescription(self.sourceChapter.position) + ' ' + self.sourceChapter.title,
-      href: '/chapters/' + self.sourceChapter.$loki + '/params/focus=scenes_' + self.scene.$loki
+      href: '/chapters/' + self.sourceChapter.$loki
     });
 
     self.breadcrumbitems.push({

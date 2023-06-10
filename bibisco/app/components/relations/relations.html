@@ -1,4 +1,7 @@
-<pageheader headertitle="{{'relations_title'| translate}}" dropdownopen="down" dropdownitems="$ctrl.actionitems">
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="{{$ctrl.mindmap.name}}" dropdownopen="down" 
+    dropdownitems="$ctrl.actionitems" 
+    taskstatus="$ctrl.mindmap.status" taskstatuschangefunction="$ctrl.changeStatus(status)"">
 </pageheader>
 
 <div ng-show="!$ctrl.editMode && $ctrl.emptyRelations">
@@ -10,8 +13,7 @@
 
 <div id="mynetwork" class="scrollable-box-full-height-page-with-header-relationsfooter" ng-show="!ctrl.emptyRelations"></div>
 
-<div ng-show="$ctrl.editMode || (!$ctrl.editMode && !$ctrl.emptyRelations)" 
-    class="bibiscoNotSelectableText relations-footer">
+<div class="bibiscoNotSelectableText relations-footer">
     <hr>
     <div class="row">
         <span class="pull-left">
@@ -23,25 +25,27 @@
                 tooltip-placement="right">AUTO</span>
             <span class="label label-primary" 
                 uib-tooltip="{{'tag.bibiscoRichTextEditor.span.lastsave' | translate}}">
-                <i class="fa fa-save" aria-hidden="true"></i> {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}
+                <i class="fa fa-save" aria-hidden="true"></i> {{'timestamp_format' | translate:{date:$ctrl.mindmap.lastsave} }}
             </span>  
         </span>
         <span class="pull-right">
-            <button type="button" class="relations-navigation-button invisible">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveUp()">
-                <i class="fa fa-arrow-circle-up"></i></button>
-            <button type="button" class="relations-navigation-button invisible">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button invisible">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button invisible">
-                <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.fit()">
-                <i class="fa fa-crosshairs"></i></button>
-            <button type="button" class="relations-navigation-button" 
-                ng-if="$ctrl.editMode" ng-click="$ctrl.help()">
-                <i class="fa fa-question-circle"></i></button>
+            <span ng-show="$ctrl.editMode || !$ctrl.emptyRelations">
+                <button type="button" class="relations-navigation-button invisible">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveUp()">
+                    <i class="fa fa-arrow-circle-up"></i></button>
+                <button type="button" class="relations-navigation-button invisible">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button invisible">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button invisible">
+                    <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.fit()">
+                    <i class="fa fa-crosshairs"></i></button>
+                <button type="button" class="relations-navigation-button" 
+                    ng-if="$ctrl.editMode" ng-click="$ctrl.help()">
+                    <i class="fa fa-question-circle"></i></button>
+            </span>
         
             <span class="pull-right" style="width: {{$ctrl.editsavebackbuttonbarspace}}px;">
                 <span class="pull-right" ng-if="$ctrl.editMode"> 
@@ -51,11 +55,16 @@
                         savefunction="$ctrl.save()">
                     </editsavebackbuttonbar>
                 </span>
-                <span class="pull-right" ng-if="!$ctrl.editMode && !$ctrl.emptyRelations"> 
-                    <button type="button" class="btn btn-primary" 
+                <span class="pull-right" ng-if="!$ctrl.editMode"> 
+                    <dropdownmenu 
+                        buttonlabel="jsp.common.button.more" 
+                        items="$ctrl.actionitems" 
+                        open="up"
+                        visible="true"></dropdownmenu>
+                    <button type="button" class="btn btn-primary" ng-if="!$ctrl.emptyRelations"
                         uib-tooltip="{{'edit_tooltip'+$root.os | translate}}"
                         ng-click="$ctrl.edit()">{{"jsp.common.button.edit" | translate}}</button>
-                    <button type="button" class="btn btn-default" 
+                    <button type="button" class="btn btn-default" ng-if="!$ctrl.emptyRelations"
                         ng-click="$ctrl.export()">{{"common_export_button" | translate}}</button>
                     <buttonback></buttonback>
                 </span>
@@ -64,21 +73,23 @@
     </div>
     <div>   
         <span class="pull-right">
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveLeft()">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveDown()">
-                <i class="fa fa-arrow-circle-down"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveRight()">
-                <i class="fa fa-arrow-circle-right"></i></button>
-            <button type="button" class="relations-navigation-button invisible">
-                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.zoomIn()">
-                <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-            <button type="button" class="relations-navigation-button" ng-click="$ctrl.zoomOut()">
-                <i class="fa fa-plus-circle"></i></button>
-            <button type="button" class="relations-navigation-button" 
-                ng-if="$ctrl.editMode" ng-click="$ctrl.opensettings()">
-                <i class="fa fa-cog"></i></button>
+            <span ng-show="$ctrl.editMode || !$ctrl.emptyRelations">
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveLeft()">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveDown()">
+                    <i class="fa fa-arrow-circle-down"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.moveRight()">
+                    <i class="fa fa-arrow-circle-right"></i></button>
+                <button type="button" class="relations-navigation-button invisible">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.zoomIn()">
+                    <i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                <button type="button" class="relations-navigation-button" ng-click="$ctrl.zoomOut()">
+                    <i class="fa fa-plus-circle"></i></button>
+                <button type="button" class="relations-navigation-button" 
+                    ng-if="$ctrl.editMode" ng-click="$ctrl.opensettings()">
+                    <i class="fa fa-cog"></i></button>
+            </span>
 
             <span class="pull-right" style="width: {{$ctrl.editsavebackbuttonbarspace}}px;">
             </span>

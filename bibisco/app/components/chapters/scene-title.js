@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: SceneTitleController
   });
 
-function SceneTitleController($rootScope, $routeParams, $window, ChapterService) {
+function SceneTitleController($location, $routeParams, $window, ChapterService) {
 
   var self = this;
 
@@ -38,7 +38,7 @@ function SceneTitleController($rootScope, $routeParams, $window, ChapterService)
     // common breadcrumb root
     self.breadcrumbItems.push({
       label: 'common_chapters',
-      href: '/chapters/params/focus=chapters_' + chapter.$loki
+      href: '/chapters'
     });
     self.breadcrumbItems.push({
       label: ChapterService.getChapterPositionDescription(chapter.position) + ' ' + chapter.title,
@@ -77,6 +77,7 @@ function SceneTitleController($rootScope, $routeParams, $window, ChapterService)
         'jsp.chapter.dialog.title.createScene';
     }
   };
+
 
   self.save = function(title) {
     if ($routeParams.sceneid !== undefined) {

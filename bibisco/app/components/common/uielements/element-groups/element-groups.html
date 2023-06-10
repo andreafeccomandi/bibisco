@@ -1,0 +1,27 @@
+<detailheader 
+    breadcrumbitems="$ctrl.breadcrumbitems" 
+    headertitle="groups">
+</detailheader>
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-footer">
+
+  TAGS
+
+</div>
+
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="row">
+    <hr />
+  </div>
+  <div class="row">
+    <span class="pull-right">
+      <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
+        uib-tooltip="{{'save_tooltip'+$root.os | translate}}"
+        ng-click="$ctrl.save()">
+        <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+    <buttonback></buttonback>
+    </span>
+  </div>
+</div>

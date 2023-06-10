@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,11 @@
  *
  */
 
-angular.module('bibiscoApp').service('MainCharacterService', function($rootScope,
+angular.module('bibiscoApp').service('MainCharacterService', function($injector, $rootScope,
   CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService) {
   'use strict';
+
+  let CustomQuestionService = null;
 
   return {
     addImage: function (id, name, path) {
@@ -43,6 +45,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         maincharacter.sociology.status === 'todo' &&
         maincharacter.psychology.status === 'todo' &&
         maincharacter.ideas.status === 'todo' &&
+        (maincharacter.custom.status === 'todo' || maincharacter.custom.status === null) &&
         maincharacter.lifebeforestorybeginning.status === 'todo' &&
         maincharacter.conflict.status === 'todo' &&
         maincharacter.evolutionduringthestory.status === 'todo'
@@ -54,6 +57,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         maincharacter.sociology.status === 'done' &&
         maincharacter.psychology.status === 'done' &&
         maincharacter.ideas.status === 'done' &&
+        (maincharacter.custom.status === 'done' || maincharacter.custom.status === null) &&
         maincharacter.lifebeforestorybeginning.status === 'done' &&
         maincharacter.conflict.status === 'done' &&
         maincharacter.evolutionduringthestory.status === 'done'
@@ -126,6 +130,9 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
       // ideas
       maincharacter.ideas = this.createInfoWithQuestions('ideas');
 
+      // custom questions
+      maincharacter.custom = this.createInfoWithQuestions('custom');
+
       // life before story beginning
       maincharacter.lifebeforestorybeginning = this.createInfoWithoutQuestions();
 
@@ -140,13 +147,15 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
       maincharacter.images = images;
 
       // insert character
-      maincharacter = CollectionUtilService.insert(this.getCollection(), maincharacter);
+      CollectionUtilService.insert(this.getCollection(), maincharacter);
 
       // emit insert event
       $rootScope.$emit('INSERT_ELEMENT', {
         id: maincharacter.$loki,
         collection: 'maincharacters'
       });
+
+      return maincharacter;
     },
 
     createInfoWithQuestions: function(type) {
@@ -154,7 +163,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
       let questionNumber;
       switch (type) {
       case 'personaldata':
-        questionNumber = 12;
+        questionNumber = 13;
         break;
       case 'physionomy':
         questionNumber = 24;
@@ -163,7 +172,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         questionNumber = 12;
         break;
       case 'sociology':
-        questionNumber = 10;
+        questionNumber = 11;
         break;
       case 'psychology':
         questionNumber = 62;
@@ -171,15 +180,21 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
       case 'ideas':
         questionNumber = 18;
         break;
+      case 'custom':
+        questionNumber = this.getCustomQuestionsNumber();
+        break;
       }
 
-      let questions = [questionNumber];
+      let questions = [];
       for (let i = 0; i < questionNumber; i++) {
         questions[i.toString()] = {
           characters: 0, 
           text: '', 
           words: 0
         };
+        if (type === 'custom') {
+          questions[i.toString()].questionid = this.getCustomQuestionService().getCustomQuestions()[i].$loki;
+        }
       }
 
       return {
@@ -187,7 +202,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         freetext: '',
         freetextenabled: false,
         questions: questions,
-        status: 'todo',
+        status: type === 'custom' ? null : 'todo',
         freetextwords: 0
       };
     },
@@ -200,7 +215,18 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         words: 0
       };
     },
-    
+
+    getCustomQuestionsNumber: function() {
+      return this.getCustomQuestionService().getCustomQuestionsCount();
+    },
+
+    getCustomQuestionService: function() {
+      if (!CustomQuestionService) {
+        CustomQuestionService = $injector.get('CustomQuestionService');
+      }
+      return CustomQuestionService;
+    },
+  
     move: function(sourceId, targetId) {
       CollectionUtilService.move(this.getCollection(), sourceId, targetId);
       // emit move event
@@ -210,7 +236,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
       });
     },
     remove: function(id) {
-      CollectionUtilService.remove(this.getCollection(), id);
+      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
+      $injector.get('GroupService').removeElementFromGroupsWithoutCommit('maincharacter', id);
+      ProjectDbConnectionService.saveDatabase(); 
+
       // emit remove event
       $rootScope.$emit('DELETE_ELEMENT', {
         id: id,
@@ -233,6 +262,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function($rootScope
         id: maincharacter.$loki,
         collection: 'maincharacters'
       });
+    },
+    updateWithoutCommit: function(maincharacter) {
+      maincharacter.status = this.calculateStatus(maincharacter);
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), maincharacter);
     }
   };
 });

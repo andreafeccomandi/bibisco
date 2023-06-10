@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ angular.
     controller: StrandDetailController
   });
 
-function StrandDetailController($location, $routeParams, $window,
-  ChapterService, StrandService, UtilService) {
+function StrandDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
+  ChapterService, StrandService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
 
@@ -38,13 +39,23 @@ function StrandDetailController($location, $routeParams, $window,
     self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/architecture/params/focus=strands_' + self.strand.$loki
+      href: '/architecture'
     });
     self.breadcrumbitems.push({
       label: self.strand.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
+
+    // tags
+    self.tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let elementGroups = self.getGroupService().getElementGroups('strand', self.strand.$loki);
+      for (let i = 0; i < elementGroups.length; i++) {
+        let group = elementGroups[i];
+        self.tags.push({label: group.name, color: group.color});
+      }
+    }
   };
 
   self.changeStatus = function(status) {
@@ -63,6 +74,13 @@ function StrandDetailController($location, $routeParams, $window,
 
   self.edit = function () {
     $location.path('/strands/ ' + self.strand.$loki + '/edit');
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.getStrand = function(id) {
@@ -91,5 +109,20 @@ function StrandDetailController($location, $routeParams, $window,
     }
 
     return deleteForbidden;
+  };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+m', 'command+m'],
+      description: 'groupsmembership',
+      callback: function () {
+        self.managegroupsmembership();
+      }
+    });
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/strands/' + self.strand.$loki + '/groupsmembership');
+    });
   };
 }

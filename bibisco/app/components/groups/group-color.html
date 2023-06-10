@@ -1,0 +1,14 @@
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffset="true"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}" image="{{$ctrl.profileimage}}" 
+  imageenabled="true" noimageicon="group">
+</pageheader>
+<div class="row top15">
+  <div class="col-sm-12">
+    <form name="groupColorForm" ng-submit="$ctrl.save(groupColorForm.$valid)" class="form-horizontal" novalidate>
+      <colorpickerfield form="groupColorForm" model="$ctrl.color" label="group_color"
+        labelcols="3" inputcols="8"></colorpickerfield>
+      <formbuttons form="groupColorForm">
+      </formbuttons>
+  </div>
+  </form>
+</div>

@@ -1,7 +1,9 @@
 <div class="richtextviewer-container">
-  <div ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
-    <div class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index
+  <div ng-if="$ctrl.maincharacter[$ctrl.type].questions.length > 0"
+    ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
+    <div ng-if="$ctrl.type !== 'custom'" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index
       | translate}}</div>
+    <div ng-if="$ctrl.type === 'custom'" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{$ctrl.customQuestions[$index].question}}</div>
     <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}}" ng-bind-html="question.text">
     </div>
   </div>

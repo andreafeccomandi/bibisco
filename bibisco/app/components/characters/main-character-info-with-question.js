@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: MainCharacterInfoWithQuestion
   });
 
-function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams, $window,
+function MainCharacterInfoWithQuestion($injector, $location, $rootScope, $routeParams, $window,
   MainCharacterService) {
 
   var self = this;
@@ -43,11 +43,11 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams, $win
 
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters'
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + $routeParams.id + '/params/focus=maincharactersdetails_' + $routeParams.info
+      href: '/maincharacters/' + $routeParams.id
     });
     self.breadcrumbitems.push({
       label: 'common_' + $routeParams.info
@@ -70,6 +70,15 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams, $win
     self.words;
 
     self.calculatePreviousNextElements(self.type);
+
+    self.editbuttonenabled = true;
+    if (self.type === 'custom') {
+      let CustomQuestionService = $injector.get('CustomQuestionService');
+      self.customQuestions = CustomQuestionService.getCustomQuestionsCount();
+      if (CustomQuestionService.getCustomQuestionsCount() === 0) {
+        self.editbuttonenabled = false;
+      }
+    }
   };
 
   self.edit = function () {
@@ -138,7 +147,16 @@ function MainCharacterInfoWithQuestion($location, $rootScope, $routeParams, $win
       self.previouselementlabel  = 'common_ideas';
       self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/view';
       break;
+    case 'custom':
+      self.nextelementlabel = 'jsp.character.thumbnail.conflict.title';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.previouselementlabel = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      break;
     }
   };
 
+  self.manageCustomQuestions = function() {
+    $location.path('/maincharacters/'+self.maincharacter.$loki+'/customquestions');
+  };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,14 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
     },];
     self.indent = BibiscoPropertiesService.getProperty('indentParagraphEnabled');
     self.indentgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    self.autocapitalize = BibiscoPropertiesService.getProperty('autocapitalizeEnabled');
+    self.autocapitalizegroup = [{
       label: 'jsp.common.button.enabled',
       value: 'true'
     }, {
@@ -179,6 +187,7 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
       fontsize: self.fontsize,
       indentParagraphEnabled: self.indent,
       linespacing: self.linespacing,
+      autocapitalizeEnabled: self.autocapitalize,
       paragraphspacing: self.paragraphspacing,
       spellCheckEnabled: self.spellcheck,
       autoSaveEnabled: self.autosave

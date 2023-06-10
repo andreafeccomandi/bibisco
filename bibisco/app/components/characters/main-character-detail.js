@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ angular.
     controller: MainCharacterDetailController
   });
 
-function MainCharacterDetailController($location, $rootScope, $routeParams, $window,
-  CardUtilService, ChapterService, MainCharacterService, PopupBoxesService, 
-  UtilService) {
+function MainCharacterDetailController($injector, $location, $rootScope, $routeParams, $scope, $window, hotkeys,
+  ChapterService, MainCharacterService, PopupBoxesService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
 
@@ -41,7 +41,7 @@ function MainCharacterDetailController($location, $rootScope, $routeParams, $win
     self.deleteforbidden = self.isDeleteForbidden();
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters'
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name
@@ -64,6 +64,16 @@ function MainCharacterDetailController($location, $rootScope, $routeParams, $win
       }
     });
 
+    // tags
+    self.tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let elementGroups = self.getGroupService().getElementGroups('maincharacter', self.maincharacter.$loki);
+      for (let i = 0; i < elementGroups.length; i++) {
+        let group = elementGroups[i];
+        self.tags.push({label: group.name, color: group.color});
+      }
+    }
+    
     self.editmode = false;
   };
 
@@ -81,6 +91,13 @@ function MainCharacterDetailController($location, $rootScope, $routeParams, $win
     $window.history.back();
   };
 
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
+  };
+
   self.getMainCharacter = function(id) {
     return MainCharacterService.getMainCharacter(id);
   };
@@ -94,8 +111,15 @@ function MainCharacterDetailController($location, $rootScope, $routeParams, $win
   };
 
   self.showInfoWithQuestion = function(id) {
-    $location.path('/maincharacters/' + self.maincharacter.$loki +
+    if (id==='custom') {
+      SupporterEditionChecker.filterAction(function () {
+        $location.path('/maincharacters/' + self.maincharacter.$loki +
       '/infowithquestion/' + id + '/view');
+      });
+    } else {
+      $location.path('/maincharacters/' + self.maincharacter.$loki +
+        '/infowithquestion/' + id + '/view');
+    }
   };
 
   self.showInfoWithoutQuestion = function (id) {
@@ -126,5 +150,20 @@ function MainCharacterDetailController($location, $rootScope, $routeParams, $win
 
   self.addprofileimage = function() {
     $location.path('/maincharacters/' + self.maincharacter.$loki + '/images/addprofile');
+  };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+m', 'command+m'],
+      description: 'groupsmembership',
+      callback: function () {
+        self.managegroupsmembership();
+      }
+    });
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/maincharacters/' + self.maincharacter.$loki + '/groupsmembership');
+    });
   };
 }

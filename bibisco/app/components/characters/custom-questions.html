@@ -1,0 +1,36 @@
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="common_custom"></pageheader>
+
+<div class="scrollable-box-full-height-page-with-header open-project-container">
+  <div class="col-sm-10 col-sm-offset-1">
+    <h4>{{"questions" | translate}}</h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="question in $ctrl.customquestions track by $index">
+          <td class="col-sm-8">{{ question.question }}</td>
+          <td class="col-sm-2 text-right">
+            <button ng-click="$ctrl.edit(question.$loki)" class="btn btn-sm btn-primary">{{"jsp.common.button.edit" | translate}}</button>
+          </td>
+          <td class="col-sm-2 text-left">
+            <button ng-click="$ctrl.delete(question.$loki)" 
+              class="btn btn-sm btn-default">
+              {{"jsp.common.button.delete" | translate}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<pagefooter 
+  buttonhotkey="$ctrl.hotkeys"
+  buttonshow="true" 
+  buttonlabel="custom_question_create" 
+  buttonfunction="$ctrl.createCustomQuestion()"
+  buttontooltip="{{'custom_question_create_tooltip'+$root.os}}">
+</pagefooter>

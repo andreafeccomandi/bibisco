@@ -1,0 +1,19 @@
+<cardgrid
+  carddimension="small"
+  dndenabled="true"
+  dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+  emptylisttext="group_emptylist"
+  emptylistbuttonlabel="group_create_first"
+  emptylistbuttonfunction="$ctrl.create()"
+  emptylistbuttontooltip="{{'group_firstcreate_tooltip'+$root.os}}"
+  family="groups"
+  items="$ctrl.cardgriditems"
+  pageheaderbuttonhotkey="$ctrl.hotkeys"
+  pageheaderbuttonlabel="group_create"
+  pageheaderbuttonfunction="$ctrl.create()"
+  pageheaderbuttontooltip="{{'group_create_tooltip'+$root.os}}"
+  pageheadersubtitle="group_description"
+  pageheadertitle="groups"
+  scrollable="true"
+  selectfunction="$ctrl.select(id)"></cardgrid>
+

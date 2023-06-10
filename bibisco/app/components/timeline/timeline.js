@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ angular.
 
 function TimelineController($injector, $rootScope) {
 
-  var self = this;
+  let self = this;
   self.$onInit = function() {
     
     // show menu item
@@ -30,6 +30,22 @@ function TimelineController($injector, $rootScope) {
     });
 
     let TimelineService = $injector.get('TimelineService');
-    self.timeline = TimelineService.getTimeline();   
+    self.fullTimeline = TimelineService.getTimeline();
+    self.applyFilterGroup();
+  };
+
+  self.applyFilterGroup = function() {
+    let GroupService = $injector.get('GroupService');
+    if ($rootScope.groupFilter && $rootScope.groupFilter.key !== 'all') {
+      self.timeline = [];
+      for (let i = 0; i < self.fullTimeline.length; i++) {
+        const element = self.fullTimeline[i];
+        if (GroupService.isElementInGroup(element.type, element.id, $rootScope.groupFilter.key)) {
+          self.timeline.push(element);
+        }
+      }
+    } else {
+      self.timeline = self.fullTimeline;
+    }
   };
 }

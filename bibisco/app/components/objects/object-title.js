@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,76 +14,50 @@
  */
 angular.
   module('bibiscoApp').
-  component('itemtitle', {
+  component('objecttitle', {
     templateUrl: 'components/objects/object-title.html',
-    controller: ItemTitleController
+    controller: ObjectTitleController
   });
 
-function ItemTitleController($routeParams, $window, ObjectService) {
-
-  var self = this;
+function ObjectTitleController($routeParams, $window, ObjectService) {
+  let self = this;
 
   self.$onInit = function() {
 
     // common bradcrumb root
-    self.breadcrumbItems = [];
+    self.breadcrumbitems = [];
 
-    if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject(parseInt($routeParams.id));
+    let object = ObjectService.getObject(parseInt($routeParams.id));
   
-      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
-      if (!object) {
-        $window.history.back();
-        return;
-      }
-
-      self.breadcrumbItems.push({
-        label: 'objects',
-        href: '/objects/params/focus=objects_' + object.$loki
-      });
-
-      // edit breadcrumb objects
-      self.breadcrumbItems.push({
-        label: object.name,
-        href: '/objects/' + object.$loki + '/view'
-      });
-      self.breadcrumbItems.push({
-        label: 'object_change_name_title'
-      });
-
-      self.profileimageenabled = true;
-      self.profileimage = object.profileimage;
-      self.name = object.name;
-      self.pageheadertitle = 'object_change_name_title';
-      
-    } else {
-
-      self.breadcrumbItems.push({
-        label: 'objects',
-        href: '/objects'
-      });
-
-      // create breadcrumb objects
-      self.breadcrumbItems.push({
-        label: 'object_create_title'
-      });
-
-      self.profileimageenabled = false;
-      self.name = null;
-      self.pageheadertitle = 'object_create_title';
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!object) {
+      $window.history.back();
+      return;
     }
+
+    self.breadcrumbitems.push({
+      label: 'objects',
+      href: '/objects'
+    });
+
+    // edit breadcrumb objects
+    self.breadcrumbitems.push({
+      label: object.name,
+      href: '/objects/' + object.$loki + '/view'
+    });
+    self.breadcrumbitems.push({
+      label: 'object_change_name_title'
+    });
+
+    self.profileimageenabled = true;
+    self.profileimage = object.profileimage;
+    self.name = object.name;
+    self.pageheadertitle = 'object_change_name_title';
   };
 
   self.save = function(title) {
-    if ($routeParams.id !== undefined) {
-      let object = ObjectService.getObject(parseInt($routeParams.id));
-      object.name = title;
-      ObjectService.update(object);
-    } else {
-      ObjectService.insert({
-        description: '',
-        name: title
-      });
-    }
+    let object = ObjectService.getObject(parseInt($routeParams.id));
+    object.name = title;
+    ObjectService.update(object);
   };
 }

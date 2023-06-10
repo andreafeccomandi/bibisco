@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
  *
  */
 
-angular.module('bibiscoApp').service('ChapterService', function ($rootScope, CollectionUtilService,
-  LoggerService, ProjectDbConnectionService, ProjectService) {
+angular.module('bibiscoApp').service('ChapterService', function ($injector, $rootScope, CollectionUtilService,
+  LoggerService, ProjectDbConnectionService, ProjectService, UtilService) {
   'use strict';
 
   return {
@@ -944,7 +944,71 @@ angular.module('bibiscoApp').service('ChapterService', function ($rootScope, Col
         id: sceneid,
         collection: 'scenes'
       });
-    }
+    },
+
+    getSceneGroups: function(id) {
+
+      let GroupService = $injector.get('GroupService');
+      let sceneGroups = [];
+      let scene = this.getScene(id);
+      let workingscenerevision = scene.revisions[scene.revision]; 
+
+      // characters
+      for (let i = 0; i < workingscenerevision.scenecharacters.length; i++) {
+        if (workingscenerevision.scenecharacters[i].startsWith('m_')) {
+          UtilService.array.append(sceneGroups,GroupService.getElementGroups('maincharacter', workingscenerevision.scenecharacters[i].substring(2)));
+        } else if (workingscenerevision.scenecharacters[i].startsWith('s_')) {
+          UtilService.array.append(sceneGroups,GroupService.getElementGroups('secondarycharacter', workingscenerevision.scenecharacters[i].substring(2)));
+        }
+      }
+
+      // locations
+      UtilService.array.append(sceneGroups, GroupService.getElementGroups('location', workingscenerevision.locationid));
+
+      // objects
+      for (let i = 0; i < workingscenerevision.sceneobjects.length; i++) {
+        UtilService.array.append(sceneGroups,GroupService.getElementGroups('object', workingscenerevision.sceneobjects[i]));
+      }
+
+      // strands
+      for (let i = 0; i < workingscenerevision.scenestrands.length; i++) {
+        UtilService.array.append(sceneGroups,GroupService.getElementGroups('strand', workingscenerevision.scenestrands[i]));
+      }
+
+      // remove duplicates
+      sceneGroups = UtilService.array.unique(sceneGroups, function(a, b) {
+        return a.$loki === b.$loki;
+      });
+
+      // sort by group position
+      sceneGroups.sort(function(a, b) {
+        return (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0);
+      });
+
+      return sceneGroups;
+    },
+
+    getChapterGroups: function(id) {
+
+      let chapterGroups = [];
+      let scenes = this.getScenes(id); 
+
+      for (let i = 0; i < scenes.length; i++) {
+        UtilService.array.append(chapterGroups, this.getSceneGroups(scenes[i].$loki));
+      }
+
+      // remove duplicates
+      chapterGroups = UtilService.array.unique(chapterGroups, function(a, b) {
+        return a.$loki === b.$loki;
+      });
+
+      // sort by group position
+      chapterGroups.sort(function(a, b) {
+        return (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0);
+      });
+
+      return chapterGroups;
+    },
   };
 });
 

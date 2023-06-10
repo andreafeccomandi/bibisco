@@ -2,6 +2,7 @@
   headertitle="{{$ctrl.title}}" 
   headertipcode="sceneTip"
   headertipenabled="!$ctrl.editmode"
+  tags="$ctrl.grouptags"
   taskstatus="$ctrl.scene.status" 
   taskstatuschangefunction="$ctrl.changeStatus(status)">
 </detailheader>
@@ -41,7 +42,7 @@
     <span class="pull-left">
       <projectexplorerbutton 
         showprojectexplorer="$root.showprojectexplorer" 
-        visible="$ctrl.editmode || $ctrl.scenerevision.words > 0">
+        visible="$ctrl.editmode || $ctrl.scenerevision.characters > 0">
       </projectexplorerbutton>
       <button ng-if="!$ctrl.editmode" 
         type="button" 
@@ -65,7 +66,7 @@
       </dropdownmenu>
       <editsavebackbuttonbar 
         autosaveenabled="$ctrl.autosaveenabled" 
-        editbuttonvisible="$ctrl.scenerevision.words > 0" 
+        editbuttonvisible="$ctrl.scenerevision.characters > 0" 
         editfunction="$ctrl.edit()"
         editmode="$ctrl.editmode" 
         savefunction="$ctrl.save()">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,11 @@ angular.
     }
   });
 
-function ChaptersController($injector, $location, $routeParams, $rootScope, $scope, 
-  CardUtilService, ChapterService, PopupBoxesService, ProjectService, SupporterEditionChecker) {
+function ChaptersController($location, $rootScope, $scope, hotkeys, ChapterService, 
+  PopupBoxesService, ProjectService, SupporterEditionChecker) {
   var self = this;
 
   self.$onInit = function() {
-
-    // show menu item
-    $rootScope.$emit('SHOW_PAGE', {
-      item: 'chapters'
-    });
 
     self.cardgriditems = self.getCardGridItems();
     self.partsExpansionStatus = [];
@@ -77,7 +72,23 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
     self.showwordsgoalcounter = SupporterEditionChecker.isSupporterOrTrial() && wordsGoal;
 
     // hotkeys
-    self.hotkeys = ['ctrl+n', 'command+n'];
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+n', 'command+n'],
+        description: 'chaptercreate',
+        callback: function ($event) {
+          $event.preventDefault();
+          self.create();
+        }
+      })
+      .add({
+        combo: ['ctrl+o', 'command+o'],
+        description: 'readnovel',
+        callback: function($event) {
+          $event.preventDefault();
+          self.showChaptersRead();
+        }
+      });
   };
   
   self.create = function() {
@@ -174,6 +185,14 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
       break;
     }
 
+    let tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let chapterGroups = ChapterService.getChapterGroups(chapter.$loki);
+      for (let i = 0; i < chapterGroups.length; i++) {
+        tags.push({label: chapterGroups[i].name, color: chapterGroups[i].color});
+      }
+    }
+
     return {
       characters: chapter.characters,
       family: family,
@@ -181,6 +200,7 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
       noimageicon: 'bookmark',
       position: chapter.position,
       status: chapter.status,
+      tags: tags,
       text: chapter.title,
       title: title,
       words: chapter.words
@@ -241,6 +261,13 @@ function ChaptersController($injector, $location, $routeParams, $rootScope, $sco
     SupporterEditionChecker.filterAction(function() {
       ChapterService.removePart(id);
       self.cardgriditems = self.getCardGridItems();
+    });
+  };
+
+  self.showChaptersRead = function() {
+    SupporterEditionChecker.filterAction(function() {
+      let chapters = ChapterService.getChaptersWithPrologueAndEpilogue();
+      $location.path('/chapters/read/'+chapters[0].$loki);
     });
   };
 }

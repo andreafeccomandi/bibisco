@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,11 @@ angular.
     controller: SceneTagsController
   });
 
-function SceneTagsController($injector, $rootScope, $routeParams, $scope, $window,
+function SceneTagsController($injector, $location, $rootScope, $routeParams, $scope, $window,
   ChapterService, hotkeys, LocationService, MainCharacterService, 
-  PopupBoxesService, SecondaryCharacterService, 
-  StrandService, SupporterEditionChecker, UtilService) {
+  PopupBoxesService, SecondaryCharacterService, StrandService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -42,12 +41,12 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope, $windo
     // init breadcrumbs
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
+      href: '/chapters'
     });
     
     self.breadcrumbitems.push({
       label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
-      href: '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki
+      href: '/chapters/' + self.chapter.$loki
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
@@ -310,7 +309,47 @@ function SceneTagsController($injector, $rootScope, $routeParams, $scope, $windo
     });
   };
 
+  self.createSceneMainCharacter = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/scenecharacters/maincharacters/new');
+  };
+
+  self.createSceneSecondaryCharacter = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/scenecharacters/secondarycharacters/new');
+  };
+
+  self.createPovMainCharacter = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/povcharacter/maincharacters/new');
+  };
+
+  self.createPovSecondaryCharacter = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/povcharacter/secondarycharacters/new');
+  };
+
+  self.createLocation = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/location/new');
+  };
+
+  self.createObject = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/objects/new');
+  };
+
+  self.createStrand = function() {
+    self.executeSave();
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags/strands/new');
+  };
+
   self.save = function() {
+    self.executeSave();
+    $window.history.back();
+  };
+
+  self.executeSave = function() {
     self.scene.revisions[self.scene.revision] = JSON.parse(JSON.stringify(self.workingscenerevision));
     ChapterService.updateScene(self.scene);
     $rootScope.dirty = false;

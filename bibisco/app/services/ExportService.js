@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function ($injector, $translate, 
-  $rootScope, ArchitectureService, BibiscoPropertiesService, ChapterService, ContextService, 
+  $rootScope, ArchitectureService, BibiscoPropertiesService, ChapterService, 
   DatetimeService, DocxExporterService, FileSystemService, LocaleService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
   SupporterEditionChecker, TxtExporterService, UtilService) {
@@ -24,16 +24,18 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
   const { shell } = require('electron');
   let dateFormat = require('dateformat');
   let translations;
+  let CustomQuestionService = null;
   let ObjectService = null;
   let NoteService = null;
+  let GroupService = null;
   let TimelineService = null;
 
   const behaviors_questions_count = 12;
   const ideas_questions_count = 18;
-  const personaldata_questions_count = 12;
+  const personaldata_questions_count = 13;
   const physionomy_questions_count = 24;
   const psychology_questions_count = 62;
-  const sociology_questions_count = 10;
+  const sociology_questions_count = 11;
 
   $rootScope.$on('LOCALE_CHANGED', function () {
     translations = null;
@@ -76,7 +78,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
 
       // chapter title in project language
       let projectLanguage = ProjectService.getProjectInfo().language;
-      let translation = JSON.parse(FileSystemService.readFile(this.getResourceFilePath(projectLanguage)));
+      let translation = JSON.parse(FileSystemService.readFile(LocaleService.getResourceFilePath(projectLanguage)));
 
       // chapter format
       let chapterformat = {
@@ -231,6 +233,17 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           })
         });
       }
+      // group
+      else if (exportfilter.type === 'group') {
+        files2export.push({
+          filepath: this.calculateExportFilePath(exportpath, 'group', timestamp),
+          html: this.createGroups(exportfilter.id),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: false
+          })
+        });
+      }
       // note
       else if (exportfilter.type === 'note') {
         files2export.push({
@@ -314,6 +327,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       html += this.createLocations();
       if (isSupporterOrTrial) {
         html += this.createObjects();
+        html += this.createGroups();
         html += this.createNotes();
       }
       html += this.createChaptersForProject();
@@ -396,6 +410,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         for (let i = 0; i < strands.length; i++) {
           html += this.createTag('h2', strands[i].name);
           html += strands[i].description;
+          html += this.createGroupMemberships('strand', strands[i].$loki);
         }
       }
     
@@ -405,12 +420,17 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
     createMainCharacters: function (filter) {
       let html = '';
 
+      let customQuestions = null;
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
+        customQuestions = this.getCustomQuestionService().getCustomQuestions();
+      }
+
       let mainCharacters = MainCharacterService.getMainCharacters();
       if (mainCharacters && mainCharacters.length > 0) {
         html += this.createTag('h1', this.getTranslations().common_main_characters);
         for (let i = 0; i < mainCharacters.length; i++) {
           if (!filter || (filter && mainCharacters[i].$loki === filter)) {
-            html += this.createMainCharacter(mainCharacters[i]);     
+            html += this.createMainCharacter(mainCharacters[i], customQuestions);     
           }     
         }
       }
@@ -418,7 +438,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return html;
     },
 
-    createMainCharacter: function (mainCharacter) {
+    createMainCharacter: function (mainCharacter, customQuestions) {
       let html = '';
       // mainCharacters[i].$loki
       html += this.createTag('h2', mainCharacter.name);
@@ -428,10 +448,14 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology',psychology_questions_count);
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas', ideas_questions_count);
       html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology', sociology_questions_count);
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
+        html += this.createMainCharacterCustomQuestions(mainCharacter, customQuestions);
+      }
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'lifebeforestorybeginning');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'conflict');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'evolutionduringthestory');
       html += this.createEvents('maincharacter', mainCharacter.$loki);
+      html += this.createGroupMemberships('maincharacter', mainCharacter.$loki);
       return html;
     },
 
@@ -455,6 +479,30 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return html;
     },
 
+    createMainCharacterCustomQuestions: function (mainCharacter, customQuestions) {
+      
+      let html = '';
+      html += this.createTag('h3', this.getTranslations()['common_custom']);
+      
+      // questions
+      if (customQuestions) {
+        // freetext
+        if (mainCharacter['custom'].freetextenabled) {
+          html += mainCharacter['custom'].freetext;
+        } 
+        // questions
+        else {      
+          for (let i = 0; i < customQuestions.length; i++) {
+            let question = '(' + (i+1) + '/' + customQuestions.length + ') ' + customQuestions[i].question;
+            html += this.createTag('question', question);   
+            html += mainCharacter['custom'].questions[i].text;
+          }
+        }
+      }
+        
+      return html;
+    },
+
     createMainCharacterInfoWithoutQuestions: function (mainCharacter, info) {
       let html = '';
       html += this.createTag('h3', this.getTranslations()['common_characters_' + info]);
@@ -472,6 +520,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
             html += this.createTag('h2', secondaryCharacters[i].name);
             html += secondaryCharacters[i].description;
             html += this.createEvents('secondarycharacter', secondaryCharacters[i].$loki);
+            html += this.createGroupMemberships('secondarycharacter', secondaryCharacters[i].$loki);
           }
         }
       }
@@ -488,6 +537,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
             html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
             html += locations[i].description;
             html += this.createEvents('location', locations[i].$loki);
+            html += this.createGroupMemberships('location', locations[i].$loki);
           }
         }
       }
@@ -504,6 +554,24 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
             html += this.createTag('h2', objects[i].name);
             html += objects[i].description;
             html += this.createEvents('object', objects[i].$loki);
+            html += this.createGroupMemberships('object', objects[i].$loki);
+          }
+        }
+      }
+      return html;
+    },
+
+    createGroups: function (filter) {
+      let html = '';
+      let groups = this.getGroupService().getGroups();
+      if (groups && groups.length > 0) {
+        html += this.createTag('h1', this.getTranslations().groups);
+        for (let i = 0; i < groups.length; i++) {
+          if (!filter || (filter && groups[i].$loki === filter)) {
+            html += this.createTag('h2', groups[i].name);
+            html += groups[i].description;
+            html += this.createEvents('group', groups[i].$loki);
+            html += this.createGroupMembers(groups[i]);
           }
         }
       }
@@ -691,6 +759,148 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return html;
     },
 
+    createGroupMemberships: function(type, id) {
+      let html = '';
+      if (SupporterEditionChecker.isSupporterOrTrial()) {
+        let groupmememberships = this.getGroupService().getElementGroups(type, id);
+        if (groupmememberships && groupmememberships.length>0) {
+          // sort by name
+          groupmememberships.sort(function(a, b) {
+            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+          });
+
+          html += this.createTag('h3', this.getTranslations().groups); 
+          let groupmembershipsHtml = '';
+          for (let i = 0; i < groupmememberships.length; i++) {
+            groupmembershipsHtml += groupmememberships[i].name;
+            groupmembershipsHtml += i < groupmememberships.length-1 ? ', ' : '';
+          }
+          html += this.createTag('p', groupmembershipsHtml);
+        }
+      }
+      return html;
+    },
+
+    createGroupMembers: function(group) {
+      let html = '';
+      
+      html += this.createTag('h3', this.getTranslations().group_members_title); 
+      let groupmembersHtml = '';
+      
+      // characters
+      let groupcharacternamesHtml = '';
+      let groupcharacternames = this.getGroupCharacters(group.groupcharacters);
+      if (groupcharacternames.length > 0) {
+        for (let i = 0; i < groupcharacternames.length; i++) {
+          groupcharacternamesHtml += groupcharacternames[i];
+          groupcharacternamesHtml += i < groupcharacternames.length-1 ? ', ' : '';
+        }
+        groupmembersHtml += this.createTag('li', this.getTranslations().common_characters + ' - ' + groupcharacternamesHtml);
+      }
+      
+      // locations
+      let grouplocationnamesHtml = '';
+      let grouplocationnames = this.getGroupLocations(group.grouplocations);
+      if (grouplocationnames.length > 0) {
+        for (let i = 0; i < grouplocationnames.length; i++) {
+          grouplocationnamesHtml += grouplocationnames[i];
+          grouplocationnamesHtml += i < grouplocationnames.length-1 ? ', ' : '';
+        }
+        groupmembersHtml += this.createTag('li', this.getTranslations().common_locations + ' - ' + grouplocationnamesHtml);
+      }
+
+      // objects
+      let groupobjectsnamesHtml = '';
+      let groupobjectnames = this.getGroupObjects(group.groupobjects);
+      if (groupobjectnames.length > 0) {
+        for (let i = 0; i < groupobjectnames.length; i++) {
+          groupobjectsnamesHtml += groupobjectnames[i];
+          groupobjectsnamesHtml += i < groupobjectnames.length-1 ? ', ' : '';
+        }
+        groupmembersHtml += this.createTag('li', this.getTranslations().objects + ' - ' + groupobjectsnamesHtml);
+      }
+
+      // narrative strands
+      let groupstrandsnamesHtml = '';
+      let groupstrandnames = this.getGroupStrands(group.groupstrands);
+      if (groupstrandnames.length > 0) {
+        for (let i = 0; i < groupstrandnames.length; i++) {
+          groupstrandsnamesHtml += groupstrandnames[i];
+          groupstrandsnamesHtml += i < groupstrandnames.length-1 ? ', ' : '';
+        }
+        groupmembersHtml += this.createTag('li', this.getTranslations().common_strands + ' - ' + groupstrandsnamesHtml);
+      }
+
+      html += this.createTag('ul', groupmembersHtml); 
+
+      return html;
+    },
+
+    getGroupCharacters: function(groupcharacters) {
+
+      let charactersnames = [];
+      for (let i = 0; i < groupcharacters.length; i++) {
+        const characterid = groupcharacters[i];
+        if (characterid.startsWith('m_' )) {
+          charactersnames.push(MainCharacterService.getMainCharacter(characterid.substring(2)).name);
+        } else if (characterid.startsWith('s_' )) {
+          charactersnames.push(SecondaryCharacterService.getSecondaryCharacter(characterid.substring(2)).name);
+        }
+      }
+  
+      // sort by name
+      charactersnames.sort(function(a, b) {
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
+      });
+
+      return charactersnames;
+    },
+
+    getGroupLocations: function(grouplocations) {
+
+      let locationsnames = [];
+      for (let i = 0; i < grouplocations.length; i++) {
+        locationsnames.push(LocationService.calculateLocationName(LocationService.getLocation(grouplocations[i])));
+      }
+  
+      // sort by name
+      locationsnames.sort(function(a, b) {
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
+      });
+
+      return locationsnames;
+    },
+
+    getGroupObjects: function(groupobjects) {
+
+      let objectssnames = [];
+      for (let i = 0; i < groupobjects.length; i++) {
+        objectssnames.push(this.getObjectService().getObject(groupobjects[i]).name);
+      }
+  
+      // sort by name
+      objectssnames.sort(function(a, b) {
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
+      });
+
+      return objectssnames;
+    },
+
+    getGroupStrands: function(groupstrands) {
+
+      let strandssnames = [];
+      for (let i = 0; i < groupstrands.length; i++) {
+        strandssnames.push(StrandService.getStrand(groupstrands[i]).name);
+      }
+  
+      // sort by name
+      strandssnames.sort(function(a, b) {
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
+      });
+
+      return strandssnames;
+    },
+
     createTimeline: function () {
       let html = '';
       let timelineHtml = '';
@@ -818,6 +1028,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         'common_characters_conflict',
         'common_characters_evolutionduringthestory',
         'common_characters_lifebeforestorybeginning',
+        'common_custom',
         'common_events',
         'common_fabula',
         'common_ideas',
@@ -833,7 +1044,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         'common_setting',
         'common_sociology',
         'common_strands',
+        'groups',
         'export_project_subtitle',
+        'group_members_title',
         'noinfoavailable',
         'object',
         'objects',
@@ -865,11 +1078,25 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return infoQuestionsTranslationKeys;
     },
 
+    getCustomQuestionService: function() {
+      if (!CustomQuestionService) {
+        CustomQuestionService = $injector.get('CustomQuestionService');
+      }
+      return CustomQuestionService;
+    },
+
     getObjectService: function () {
       if (!ObjectService) {
         ObjectService = $injector.get('ObjectService');
       }
       return ObjectService;
+    },
+
+    getGroupService: function () {
+      if (!GroupService) {
+        GroupService = $injector.get('GroupService');
+      }
+      return GroupService;
     },
 
     getNoteService: function () {
@@ -909,7 +1136,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         break;
       case 'labelnumber':
         let projectLanguage = ProjectService.getProjectInfo().language;
-        let translation = JSON.parse(FileSystemService.readFile(this.getResourceFilePath(projectLanguage)));
+        let translation = JSON.parse(FileSystemService.readFile(LocaleService.getResourceFilePath(projectLanguage)));
         chaptertitleexample = translation.common_chapter + ' 4';
         break;
       case 'title':
@@ -918,49 +1145,6 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       }
   
       return chaptertitleexample;
-    },
-
-    getResourceFilePath: function(language) {
-
-      let resourceSuffix = 'en';
-      if (language === 'ca-es') {
-        resourceSuffix = 'ca-es';
-      } else if (language === 'cs') {
-        resourceSuffix = 'cs';
-      } else if (language === 'da-dk') {
-        resourceSuffix = 'da-dk';
-      } else if (language === 'de') {
-        resourceSuffix = 'de';
-      } else if (language.startsWith('es')) {
-        resourceSuffix = 'es';
-      } else if (language === 'fr') {
-        resourceSuffix = 'fr';
-      } else if (language === 'it') {
-        resourceSuffix = 'it';
-      } else if (language === 'nb-no') {
-        resourceSuffix = 'no';
-      } else if (language === 'nl') {
-        resourceSuffix = 'nl';
-      } else if (language === 'pl') {
-        resourceSuffix = 'pl';
-      } else if (language === 'ru') {
-        resourceSuffix = 'ru';
-      } else if (language === 'sr') {
-        resourceSuffix = 'sr';
-      } else if (language === 'sv') {
-        resourceSuffix = 'sv';
-      } else if (language === 'tr') {
-        resourceSuffix = 'tr';
-      } else if (language === 'pt-pt') {
-        resourceSuffix = 'pt-pt';
-      } else if (language === 'pt-br') {
-        resourceSuffix = 'pt-br';
-      } 
-
-      let resourcesDirPath = FileSystemService.concatPath(ContextService.getAppPath(), 'resources');
-      let resourcesFilePath = FileSystemService.concatPath(resourcesDirPath, 'locale-'+resourceSuffix+'.json');
-
-      return resourcesFilePath;
-    },
+    }
   };
 });

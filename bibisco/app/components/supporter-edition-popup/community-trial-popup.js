@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,18 +45,9 @@ function CommunityTrialPopupController($rootScope, $scope, $translate, Supporter
   };
 
   self.cancel = function () {
-    self.showcountdown = true;
-    self.countdown = 5;
-    let downloadTimer = setInterval(function () {
-      if (self.countdown <= 1) {
-        clearInterval(downloadTimer);
-        self.dismiss({
-          $value: 'cancel'
-        });
-        $rootScope.trialmessageopen = false;
-      }
-      self.countdown -= 1;
-      $scope.$apply();
-    }, 1000);
+    self.dismiss({
+      $value: 'cancel'
+    });
+    $rootScope.trialmessageopen = false;
   };
 }

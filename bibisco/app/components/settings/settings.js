@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@ angular.
   });
 
 function SettingsController($location, $rootScope, $scope,
-  $timeout, BibiscoDbConnectionService, BibiscoPropertiesService,
+  $timeout, hotkeys, BibiscoDbConnectionService, BibiscoPropertiesService,
   FileSystemService, LocaleService, LoggerService, PopupBoxesService, 
   ProjectService, SupporterEditionChecker) {
   
   const ipc = require('electron').ipcRenderer;
-  var self = this;
+  const INTERNAL_PROJECTS_DIR = '_internal_bibisco2_projects_db_';
+  let self = this;
 
   self.$onInit = function () {
 
@@ -94,6 +95,17 @@ function SettingsController($location, $rootScope, $scope,
     self.checkExit = {
       active: true
     };
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['enter', 'enter'],
+        description: 'enter',
+        allowIn: ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'],
+        callback: function ($event) {
+          $event.preventDefault();
+          self.save($scope.settingsForm.$valid, $scope.settingsForm.$dirty);
+        }
+      });
   };
 
   self.selectDarkTheme = function() {
@@ -158,9 +170,9 @@ function SettingsController($location, $rootScope, $scope,
         self.forbiddenBackupDirectory = true;
       }
 
-      self.backupDirectoryEqualToProjectsDirectory = ((self.selectedBackupDirectory === self.selectedProjectsDirectory)
-      || (self.selectedBackupDirectory.includes('_internal_bibisco2_projects_db_')));
-      self.backupDirectoryCustomErrorMessage = self.backupDirectoryEqualToProjectsDirectory ? 'backup_directory_equal_to_projects_directory_error' : null;
+      // check if projects directory and backup directory are equals
+      self.backupDirectoryEqualToProjectsDirectory =  self.isProjectsDirectoryEqualsToBackupDirectory(self.selectedProjectsDirectory, self.selectedBackupDirectory);
+      self.backupDirectoryCustomErrorMessage = self.backupDirectoryEqualToProjectsDirectory? 'backup_directory_equal_to_projects_directory_error' : null;
 
       if (!self.forbiddenDirectory && !self.forbiddenBackupDirectory && !self.backupDirectoryEqualToProjectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
@@ -192,6 +204,16 @@ function SettingsController($location, $rootScope, $scope,
         $location.path('/start');
       } 
     }
+  };
+
+  self.isProjectsDirectoryEqualsToBackupDirectory = function(projectsDirectory, backupDirectory) {
+
+    let projectsDirectoryToCheck = projectsDirectory.endsWith(INTERNAL_PROJECTS_DIR) ? 
+      projectsDirectory : FileSystemService.concatPath(projectsDirectory, INTERNAL_PROJECTS_DIR);
+    let backupDirectoryToCheck = backupDirectory.endsWith(INTERNAL_PROJECTS_DIR) ? 
+      backupDirectory : FileSystemService.concatPath(backupDirectory, INTERNAL_PROJECTS_DIR);
+
+    return projectsDirectoryToCheck === backupDirectoryToCheck;
   };
 
   self.back = function() {

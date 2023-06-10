@@ -5,6 +5,7 @@
   imageenabled="true"
   imagefunction="$ctrl.addprofileimage()"
   noimageicon="user"
+  tags="$ctrl.tags"
   taskstatus="$ctrl.maincharacter.status" 
   taskstatusreadonly="true">
 </detailheader>
@@ -83,6 +84,15 @@
         selectfunction="$ctrl.showInfoWithoutQuestion(id)"
         text="jsp.character.thumbnail.lifebeforestorybeginning.description"
         status="$ctrl.maincharacter.lifebeforestorybeginning.status"></card>
+      <card cardid="'custom'" cardtitle="common_custom"
+        dimension="normal"
+        dndenabled="false"
+        family="maincharactersdetails"
+        hastext="true"
+        noimageicon="wrench"
+        selectfunction="$ctrl.showInfoWithQuestion(id)"
+        text="jsp.character.thumbnail.custom.description"
+        status="$ctrl.maincharacter.custom.status"></card>
   </div>
 
   <div class="top25">
@@ -120,6 +130,10 @@
 <detailfooter 
   actionitems="$ctrl.actionitems"
   autosaveenabled="false" 
+  custombuttonenabled="true"
+  custombuttonfunction="$ctrl.managegroupsmembership()"
+  custombuttonlabel="groups_button",
+  custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}",
   editmode="false" 
   eventname="SHOW_ELEMENT_DETAIL"
   eventsenabled="true"

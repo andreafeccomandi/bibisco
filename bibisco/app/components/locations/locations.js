@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,11 @@ angular.
     }
   });
 
-function LocationsController($location, $rootScope, $routeParams, $scope,
-  CardUtilService, LocationService) {
+function LocationsController($injector, $location, $rootScope, $scope, BibiscoPropertiesService, 
+  LocationService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
     
@@ -34,6 +35,8 @@ function LocationsController($location, $rootScope, $routeParams, $scope,
       item: 'locations'
     });
     
+    self.zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
+    self.showGroupFilter = false;
     self.cardgriditems = this.getCardGridItems();
 
     // hotkeys
@@ -54,19 +57,53 @@ function LocationsController($location, $rootScope, $routeParams, $scope,
       let locations = LocationService.getLocations();
       items = [];
       for (let i = 0; i < locations.length; i++) {
-        items.push({
-          id: locations[i].$loki,
-          image: locations[i].profileimage, 
-          noimageicon: 'image',
-          position: locations[i].position,
-          status: locations[i].status,
-          text: this.locationDescription(locations[i].nation,
-            locations[i].state, locations[i].city),
-          title: locations[i].location
-        });
+        let tags = [];
+        let showOnActiveFilter = false;
+        if (SupporterEditionChecker.isSupporterOrTrial()) {
+          let elementGroups = this.getGroupService().getElementGroups('location', locations[i].$loki);
+          for (let i = 0; i < elementGroups.length; i++) {
+            tags.push({label: elementGroups[i].name, color: elementGroups[i].color});
+            if ($rootScope.groupFilter && elementGroups[i].$loki === $rootScope.groupFilter.key) {
+              showOnActiveFilter = true;
+            }
+          }
+          self.showGroupFilter = true;
+        }
+        if (!$rootScope.groupFilter || $rootScope.groupFilter.key === 'all' || showOnActiveFilter) {
+          items.push({
+            id: locations[i].$loki,
+            image: locations[i].profileimage, 
+            noimageicon: 'map-marker',
+            position: locations[i].position,
+            status: locations[i].status,
+            tags: tags,
+            text: this.locationDescription(locations[i].nation,
+              locations[i].state, locations[i].city),
+            title: self.getTitle(locations[i].location)
+          });
+        }
       }
-    }
+    } 
     return items;
+  };
+
+  self.getTitle = function(title) {
+    let crop;
+    if (self.zoomLevel === 100) {
+      crop = 40;
+    } else if (self.zoomLevel === 115) {
+      crop = 40;
+    } else if (self.zoomLevel === 130) {
+      crop = 30;
+    }
+    return UtilService.string.truncate(title, crop);
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.move = function(draggedObjectId, destinationObjectId) {
@@ -101,5 +138,11 @@ function LocationsController($location, $rootScope, $routeParams, $scope,
     }
 
     return description;
+  };
+
+  self.refreshCardGridItems = function() {
+    self.showGroupFilter = false;
+    self.cardgriditems = this.getCardGridItems();
+    $scope.$apply();
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/page-header/page-header.html',
     controller: PageHeaderController,
     bindings: {
+      changegroupfilterfunction: '&',
       characters: '<',
       image: '@',
       imageaddenabled: '<',
@@ -26,12 +27,13 @@ angular.
       headertitle: '@',
       headersubtitle: '@',
       noimageicon: '@',
+      showgroupfilter: '<',
       showwordsgoalcounter: '<',
       subheader: '<',
+      tags: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       taskstatusreadonly: '<',
-      taskstatusshow: '<',
       words: '<'
     }
   });
@@ -50,6 +52,22 @@ function PageHeaderController($rootScope, BibiscoPropertiesService, ImageService
     self.confirmdialogopen = false;
 
     self.statusandbuttonsspace = self.calculateStatusAndButtonsSpace();
+
+    if (self.tags && self.tags.length > 19) {
+      self.tags = self.tags.slice(0,20);
+    } 
+    self.tagscluster = self.calculateTagsCluster(); 
+  };
+
+  self.calculateTagsCluster = function() {
+
+    if (self.tags && self.tags.length > 15) {
+      return '16-20';
+    } else if (self.tags && self.tags.length > 9) {
+      return '10-15';
+    } else {
+      return '0-9';
+    };
   };
 
   self.calculateStatusAndButtonsSpace = function() {
@@ -59,7 +77,7 @@ function PageHeaderController($rootScope, BibiscoPropertiesService, ImageService
     if (self.imageenabled) {
       statusandbuttonsspace += 115;
     }
-    if (self.taskstatusshow) {
+    if (self.taskstatus) {
       if (self.taskstatusreadonly) {
         statusandbuttonsspace += 50;
       } else {
@@ -71,6 +89,10 @@ function PageHeaderController($rootScope, BibiscoPropertiesService, ImageService
     }
     if (self.showwordsgoalcounter) {
       statusandbuttonsspace += 130;
+    }
+
+    if (self.showgroupfilter) {
+      statusandbuttonsspace += 400;
     }
 
     return statusandbuttonsspace; 

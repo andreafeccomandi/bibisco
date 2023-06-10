@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   
   let self = this;
   let ObjectService = null;
+  let GroupService = null;
   let NoteService = null;
   let TimelineService = null;
 
@@ -53,6 +54,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
       'common_premise',
       'common_setting',
       'common_strands',
+      'groups',
       'objects'
     ]);
 
@@ -75,6 +77,9 @@ function ProjectExplorerController($injector, $rootScope, $translate,
 
     // Objects
     self.items.push.apply(self.items, self.getObjectsFamily());
+
+    // Groups
+    self.items.push.apply(self.items, self.getGroupsFamily());
 
     // Notes
     self.items.push.apply(self.items, self.getNotesFamily());
@@ -226,6 +231,31 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     return objectsfamily;
   };
 
+  self.getGroupsFamily = function () {
+
+    let groupsfamily = [];
+    if (self.includeSupporterEditionItems) {
+      let family = self.translations.groups;
+      let groups = self.getGroupService().getGroups();
+      for (let i = 0; i < groups.length; i++) {
+        groupsfamily.push({
+          itemid: 'group_' + groups[i].$loki,
+          id: groups[i].$loki,
+          name: groups[i].name,
+          family: family,
+          selectfunction: self.showGroup
+        });
+      }
+    }
+
+    // sort by name
+    groupsfamily.sort(function (a, b) {
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
+    });
+
+    return groupsfamily;
+  };
+
   self.getNotesFamily = function () {
 
     let notesfamily = [];
@@ -373,6 +403,18 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     }
   };
 
+  self.showGroup = function (id) {
+    if (self.includeSupporterEditionItems) {
+      let group = self.getGroupService().getGroup(id);
+      self.sectiontitle = group.name;
+      self.text = group.description;
+      self.images = group.images;
+      self.timeline = self.getTimelineService().getTimeline({type: 'group', id: id});
+      self.type = 'simpletext';
+      self.path = '/groups/' + id + '/edit';
+    }
+  };
+
   self.showNote = function (id) {
     if (self.includeSupporterEditionItems) {
       let note = self.getNoteService().getNote(id);
@@ -399,6 +441,14 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     return ObjectService;
   };
 
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+
+    return GroupService;
+  };
+  
   self.getNoteService = function () {
     if (!NoteService) {
       NoteService = $injector.get('NoteService');

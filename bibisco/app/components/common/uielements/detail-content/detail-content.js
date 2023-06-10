@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,18 @@ angular.
   });
 
 
-function DetailContentController() {
+function DetailContentController($rootScope) {
 
+  let self = this;
+
+  self.dblclickontext = function (event) {
+    $rootScope.textSelected = event.target.innerText;
+    if ($rootScope.textSelected) {
+      $rootScope.textSelected = $rootScope.textSelected.replace(/[\n\r]/g, '');
+      $rootScope.textSelected = $rootScope.textSelected.trim();
+    }
+
+    console.log('$rootScope.textSelected=['+$rootScope.textSelected+']');
+    self.editfunction();
+  };
 }

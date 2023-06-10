@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
  *
  */
 
-angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
+angular.module('bibiscoApp').service('BibiscoPropertiesService', function (
   BibiscoDbConnectionService, LoggerService) {
   'use strict';
 
-  const version = '2.4.0-CE';
+  const version = '3.0.2-CE';
 
   return {
     getProperty: function(name) {
-      if (name==='version') {
+      if (name === 'version') {
         return version;
       }
       let properties = BibiscoDbConnectionService.getBibiscoDb().getCollection('properties');
@@ -38,13 +38,13 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
 
       if (property) {
         property.value = value;
-        return properties.update(property); 
+        return properties.update(property);
       } else {
         property = {};
         property.name = name;
         property.value = value;
         return properties.insert(property);
-      }      
+      }
     },
 
     // Version initialization started from version 2.3.0
@@ -80,15 +80,15 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function(
 
       BibiscoDbConnectionService.saveDatabase();
     },
-    isCurrentVersionInitialized: function() {
+    isCurrentVersionInitialized: function () {
       return this.getProperty(version) ? true : false;
     },
-    isPreviousVersionInstalled: function() {
+    isPreviousVersionInstalled: function () {
       let savedProjectsDirectory = this.getProperty('projectsDirectory');
       let savedBackupDirectory = this.getProperty('backupDirectory');
       return savedProjectsDirectory && savedBackupDirectory;
     },
-    getCurrentVersionInitializationDate: function() {
+    getCurrentVersionInitializationDate: function () {
       let properties = BibiscoDbConnectionService.getBibiscoDb().getCollection('properties');
       let property = properties.findOne({
         'name': version

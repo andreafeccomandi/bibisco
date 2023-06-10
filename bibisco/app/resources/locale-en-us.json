@@ -6,5 +6,12 @@
   "year_bc_scene_tags": "B.C",
   "time_format_scene_tags": "{{date|date:'h:mm a'}}",
   "date_format_export_timeline": "MM/DD/",
-  "time_format_export_timeline": "h:mm a"
+  "time_format_export_timeline": "h:mm a",
+  "group_color": "Color of the group",
+  "group_change_color_title": "Change the color of the group",
+  "group_change_color_label": "change the color of the group",
+  "group_color_tag_label": "color of the group",
+  "common_color": "Color",
+  "common_behaviors": "Behaviors, attitudes",
+  "common_characters_behaviors": "Behaviors, attitudes"
 }

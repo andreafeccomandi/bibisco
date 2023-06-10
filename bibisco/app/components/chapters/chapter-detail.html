@@ -10,6 +10,7 @@
   characters="$ctrl.chapter.characters" 
   editmode="false"
   headertitle="{{$ctrl.title}}" 
+  tags="$ctrl.grouptags"
   taskstatusreadonly="true"
   taskstatus="$ctrl.chapter.status" 
   words="$ctrl.chapter.words">
@@ -62,6 +63,12 @@
     wordscharactersenabled="false">
   </detailfootertop>
   <div class="row">
+    <span class="pull-left">
+      <button ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 0" 
+        type="button" class="btn btn-default"
+        ng-click="$ctrl.showChapterRead()">
+        {{'read_the_chapter'| translate}}</button>
+    </span>
     <span class="pull-right">
       <contextualtipbutton ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 1" 
         tipcode="scenesdndTip"></contextualtipbutton>

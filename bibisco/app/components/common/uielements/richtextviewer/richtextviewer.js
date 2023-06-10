@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/richtextviewer/richtextviewer.html',
     controller: RichTextViewerController,
     bindings: {
+      dblclickontext: '&',
       content: '<',
       nextelementlabel: '@',
       nextelementlink: '<',
@@ -29,13 +30,19 @@ angular.
   });
 
 
-function RichTextViewerController($injector, $location, RichTextEditorPreferencesService, SupporterEditionChecker) {
+function RichTextViewerController(RichTextEditorPreferencesService) {
 
-  var self = this;
+  let self = this;
   self.$onInit = function () {
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
     self.linespacingclass = RichTextEditorPreferencesService.getLinespacingClass();
     self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
+  };
+
+  self.dblclick = function (event) {
+    if (self.dblclickontext) {
+      self.dblclickontext({event: event});
+    }
   };
 }

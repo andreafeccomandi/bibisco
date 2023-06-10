@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('SecondaryCharacterService', function($rootScope,
+angular.module('bibiscoApp').service('SecondaryCharacterService', function($injector, $rootScope,
   CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService) {
   'use strict';
 
@@ -85,6 +85,8 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function($root
         id: secondarycharacter.$loki,
         collection: 'secondarycharacters'
       });
+
+      return secondarycharacter;
     },
     move: function(sourceId, targetId) {
       CollectionUtilService.move(this.getCollection(), sourceId, targetId);
@@ -95,7 +97,9 @@ angular.module('bibiscoApp').service('SecondaryCharacterService', function($root
       });
     },
     remove: function(id) {
-      CollectionUtilService.remove(this.getCollection(), id);
+      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
+      $injector.get('GroupService').removeElementFromGroupsWithoutCommit('secondarycharacter', id);
+      ProjectDbConnectionService.saveDatabase(); 
       // emit remove event
       $rootScope.$emit('DELETE_ELEMENT', {
         id: id,

@@ -5,6 +5,10 @@
   changetitlelabel="jsp.strand.button.updateTitle"
   characters="$ctrl.strand.characters"
   content="$ctrl.strand.description"
+  custombuttonenabled="true",
+  custombuttonfunction="$ctrl.managegroupsmembership()",
+  custombuttonlabel="groups_button",
+  custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}",
   deleteconfirmmessage="jsp.architecture.strand.delete.confirm"
   deleteenabled="true"
   deleteforbidden="$ctrl.deleteforbidden"
@@ -18,6 +22,7 @@
   imagesenabled="false"
   lastsave="$ctrl.strand.lastsave"
   savefunction="$ctrl.savefunction()"
+  tags="$ctrl.tags"
   taskstatus="$ctrl.strand.status"
   taskstatuschangefunction="$ctrl.changeStatus(status)"
   words="$ctrl.strand.words"

@@ -1,4 +1,6 @@
-<pageheader headertitle="{{'common_characters'| translate}}"></pageheader>
+<pageheader headertitle="{{'common_characters'| translate}}" 
+    changegroupfilterfunction="$ctrl.refreshCardGridItems()"
+    showgroupfilter="$ctrl.showGroupFilter"></pageheader>
 
 <div class="scrollable-box-full-height-page-with-header">
   <div class="topminus20"></div> <!-- SPACE REDUCER -->
@@ -13,6 +15,7 @@
     emptylistbuttonlabel="jsp.characters.a.createFirstMainCharacter"
     emptylistbuttonfunction="$ctrl.createMainCharacter()"
     emptylistbuttontooltip="{{'maincharacter_firstcreate_tooltip'+$root.os}}"
+    emptyselectedgrouptext="no_characters_in_selected_group"
     items="$ctrl.maincharacterscardgriditems"
     pageheadertitle="common_main_characters"
     pageheadersubtitle="jsp.characters.h1.small.main"
@@ -32,6 +35,7 @@
     emptylistbuttonlabel="jsp.characters.a.createFirstSecondaryCharacter"
     emptylistbuttonfunction="$ctrl.createSecondaryCharacter()"
     emptylistbuttontooltip="{{'secondarycharacter_firstcreate_tooltip'+$root.os}}"
+    emptyselectedgrouptext="no_characters_in_selected_group"
     items="$ctrl.secondarycharacterscardgriditems"
     pageheadertitle="common_secondary_characters"
     pageheadersubtitle="jsp.characters.h1.small.secondary"

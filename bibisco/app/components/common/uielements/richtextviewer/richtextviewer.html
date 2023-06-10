@@ -1,6 +1,7 @@
 <div class="richtextviewer-container">
-  <div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} bibiscoNotSelectableText richtextviewer" 
-      ng-bind-html="$ctrl.content | trusted">
+  <div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} richtextviewer" 
+    ng-dblclick="$ctrl.dblclick($event)"  
+    ng-bind-html="$ctrl.content | trusted">
   </div>
 
   <siblingelementsnavigator

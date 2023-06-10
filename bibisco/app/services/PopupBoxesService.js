@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -77,9 +77,10 @@ angular.module('bibiscoApp').service('PopupBoxesService', function ($location,
     },
 
     locationChangeConfirm: function (event, formDirty, checkExit, confirmFunction, denyFunction) {
-      if (checkExit && checkExit.active && formDirty) {
+      
+      let wannaGoPath = $location.path();
+      if (checkExit && checkExit.active && formDirty && wannaGoPath !== '/error') {
         event.preventDefault();
-        let wannaGoPath = $location.path();
         checkExit.active = false;
 
         this.confirm(function () {

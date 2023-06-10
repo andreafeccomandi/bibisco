@@ -1,0 +1,72 @@
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+
+<div class="page-header">
+    <h1>  
+        <span class="page-header-truncate-title read-novel-header">
+            {{$ctrl.projectname}}
+        </span>
+        <span class="pull-right page-header-buttonbar">
+            <small>
+            <span class="pull-right read-novel-chapter-selection">
+                <ui-select ng-model="$ctrl.selectedChapter" on-select="$ctrl.selectChapter()">
+                    <ui-select-match>
+                        <span class="read-novel-chapter-selection-item" ng-bind="$select.selected.title"></span>
+                    </ui-select-match>
+                    <ui-select-choices group-by="'part'" 
+                        repeat="item in $ctrl.chaptersToSelect | filter: {'title':$select.search}">
+                        <span class="read-novel-chapter-selection-item" ng-bind-html="item.title"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </span>
+            <span class="pull-right read-novel-fullscreen-button">
+                <button class="btn btn-default" 
+                    ng-if="$ctrl.chapterToRead.scenes.length > 0" 
+                    ng-click="$ctrl.fullscreen()"
+                    uib-tooltip="{{'full_screen_mode'+$root.os | translate}}">
+                    <i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+            </span>
+            </small>
+        </span>
+    </h1>
+</div>
+
+<div id="readnovelcontainer" class="scrollable-box-full-height-page-with-breadcrumb-header-readnovel"
+    ng-class="{ 'detail-content': !$root.fullscreen, 'detail-content-offset': !$root.fullscreen,
+    'fullscreen': $root.fullscreen, 'full-width': $root.fullscreen }" >
+    <h3 class="read-novel-chapter-title">{{$ctrl.chapterToRead.title}}</h3>
+    
+    <jumbotronbutton ng-if="$ctrl.chapterToRead.scenes.length === 0"
+        text="{{'common_empty_section' | translate}}"
+        buttonlabel="{{'jsp.chapter.a.createFirstScene' | translate}}"
+        buttonfunction="$ctrl.createFirstScene()">
+    </jumbotronbutton>
+    <jumbotronbutton ng-if="$ctrl.chapterToRead.scenes.length > 0 && $ctrl.chapterToRead.length.characters === 0"
+        text="{{'common_empty_section' | translate}}"
+        buttonlabel="{{'common.getstarted' | translate}}"
+        buttonfunction="$ctrl.editFirstScene()">
+    </jumbotronbutton>
+
+    <div>
+        <div ng-if="$ctrl.chapterToRead.scenes.length > 0 && $ctrl.chapterToRead.length.characters > 0" 
+            ng-repeat="scene in $ctrl.chapterToRead.scenes track by $index">
+            <richtextviewer 
+                dblclickontext="$ctrl.dblclickontext(event, scene.id)"
+                content="scene.text">
+            </richtextviewer>
+            <p class="read-novel-scenes-separator"></p>
+        </div>
+        <div class="richtextviewer-container">      
+            <siblingelementsnavigator
+                nextelementlabel="{{$ctrl.chapterToRead.nextlabel}}"
+                nextelementlink="$ctrl.chapterToRead.nextlink"
+                previouselementlabel="{{$ctrl.chapterToRead.previouslabel}}"
+                previouselementlink="$ctrl.chapterToRead.previouslink">
+            </siblingelementsnavigator>
+        </div>
+    </div>
+</div>
+
+<fullscreenexitmessage></fullscreenexitmessage>
+
+<pagefooter tipcode="readTip" tipenabled="true"></pagefooter>
+

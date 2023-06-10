@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ angular.
 
 function RichTextEditorController($document, $injector, $rootScope, 
   $scope, $timeout, $uibModal, $window, hotkeys, BibiscoPropertiesService, Chronicle, ContextService, 
-  PopupBoxesService, SanitizeHtmlService, SupporterEditionChecker, 
-  RichTextEditorPreferencesService, UuidService, WordCharacterCountService) {
+  FullScreenService, PopupBoxesService, ProjectService, SanitizeHtmlService, SupporterEditionChecker, 
+  RichTextEditorPreferencesService, UtilService, UuidService, WordCharacterCountService) {
 
   let self = this;
   const ipc = require('electron').ipcRenderer;
@@ -44,7 +44,6 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.checkExit = {
       active: true
     };
-    self.exitfullscreenmessage = false;
 
     // init OS
     if (ContextService.getOs() === 'darwin') {
@@ -53,12 +52,13 @@ function RichTextEditorController($document, $injector, $rootScope,
       self.os = '';
     }
 
-    // init styles and spell check
+    // init styles, spell check and autocapitalize
     self.fontclass = RichTextEditorPreferencesService.getFontClass();
     self.indentclass = RichTextEditorPreferencesService.getIndentClass();
     self.linespacingclass = RichTextEditorPreferencesService.getLinespacingClass();
     self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
     self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
+    self.autocapitalizeenabled = RichTextEditorPreferencesService.isAutocapitalizeEnabled();
 
     // init editor button states
     self.boldactive = false;
@@ -102,14 +102,14 @@ function RichTextEditorController($document, $injector, $rootScope,
     if (!self.totalwords) {self.totalwords = 0;};
     self.todayOffset = self.todaywords - self.words;
     self.totalOffset = self.totalwords - self.words;
+  
+    // word count mode
+    self.wordCountMode = ProjectService.getProjectInfo().wordCountMode;
 
     // init content
     if (!self.content || self.content === '') {
       self.content = '<p><br></p>';
-    } else {
-      // replace &nbsp; with spaces
-      self.content = self.content.replace(/&nbsp;/g, ' ');
-    }
+    } 
 
     // record changes on self.content
     self.chronicle = Chronicle.record('content', this, true);
@@ -124,10 +124,13 @@ function RichTextEditorController($document, $injector, $rootScope,
     self.richtexteditorcontainer = document.getElementById('richtexteditorcontainer');
     self.richtexteditor = document.getElementById('richtexteditor');
     self.lastcursorposition = 0;
-    self.focus();
+    self.focusOn1stParagraph();
 
     // manage search on open
     self.manageSearchOnOpen();
+
+    // manage selected text on open
+    self.manageTextSelectedOnOpen();
 
     // clear current match on project explorer selection
     $rootScope.$on('PROJECT_EXPLORER_SELECTED_ITEM', function () {
@@ -184,6 +187,17 @@ function RichTextEditorController($document, $injector, $rootScope,
     }
   };
 
+  self.manageTextSelectedOnOpen = function () {
+    if ($rootScope.textSelected) {
+      let matches = self.getSearchService().find(new DOMParser().parseFromString(self.content, 'text/html'), 
+        $rootScope.textSelected, false, false);
+      if (matches && matches.length > 0) {
+        self.selectMatch(matches[0].startIndex, matches[0].endIndex);
+      } 
+    }
+    $rootScope.textSelected = null;
+  };
+
   self.initFindReplace = function() {
     self.casesensitiveactive = false;
     self.currentmatch = 0;
@@ -204,7 +218,9 @@ function RichTextEditorController($document, $injector, $rootScope,
   });
 
   $rootScope.$on('INIT_RICH_TEXT_EDITOR', function () {
-    self.focus();
+    $timeout(function(){
+      self.focusOn1stParagraph();
+    }, 0);
   });
 
   $rootScope.$on('OPEN_POPUP_BOX', function () {
@@ -236,6 +252,23 @@ function RichTextEditorController($document, $injector, $rootScope,
     setTimeout(function () {
       self.richtexteditor.focus();
     }, 0);
+  };
+
+  self.focusOn1stParagraph = function() {
+
+    $timeout(function(){
+      let firstParagraph = self.richtexteditor.querySelector('p');
+      if (firstParagraph) {
+        let range = document.createRange();
+        let selection = window.getSelection();
+        range.selectNodeContents(firstParagraph);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        self.focus();
+      }
+    }, 0);
+
   };
 
   self.disablestylebuttons = function() {
@@ -362,7 +395,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       }
     })
     .add({
-      combo: ['ctrl+d', 'command+l'],
+      combo: ['f11', 'command+l'],
       description: 'fullscreen',
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
@@ -535,12 +568,12 @@ function RichTextEditorController($document, $injector, $rootScope,
   };
 
   self.print = function() {
-    var printMe = document.getElementById('richtexteditor');
-    var printIframe = document.createElement('iframe');
+    let printMe = document.getElementById('richtexteditor');
+    let printIframe = document.createElement('iframe');
     printIframe.name = 'print_iframe';
     document.body.appendChild(printIframe);
-    var printIframeWindow = window.frames['print_iframe'];
-    var printDocument = printIframeWindow.document;
+    let printIframeWindow = window.frames['print_iframe'];
+    let printDocument = printIframeWindow.document;
     printDocument.write('<html><body></body></html>');
     printDocument.body.innerHTML = printMe.innerHTML;
     printIframeWindow.print();
@@ -757,31 +790,8 @@ function RichTextEditorController($document, $injector, $rootScope,
 
   self.fullscreen = function () {
     SupporterEditionChecker.filterAction(function() {
-      self.executeFullScreen();
+      FullScreenService.fullScreen();
     });
-  };
-
-  self.executeFullScreen = function(callback) {
-    $rootScope.fullscreen = true;
-    $timeout(function () {
-      let isFullScreenEnabled = ipc.sendSync('isFullScreenEnabled');
-      if (isFullScreenEnabled) {
-        $rootScope.previouslyFullscreen = true;
-      } else {
-        ipc.send('enableFullScreen');
-        $rootScope.previouslyFullscreen = false;
-      }
-      self.exitfullscreenmessage = true;
-      self.focus();
-      $timeout(function () {
-        self.exitfullscreenmessage = false;
-      }, 2000);
-      if (callback) {
-        $timeout(function () {
-          callback();
-        }, 3000);
-      }
-    },0);
   };
 
   self.toggleCaseSensitive = function() {
@@ -1019,7 +1029,7 @@ function RichTextEditorController($document, $injector, $rootScope,
   self.opensettings = function() {
 
     self.currentmatch = 0;
-    var modalInstance = $uibModal.open({
+    let modalInstance = $uibModal.open({
       animation: true,
       backdrop: 'static',
       component: 'richtexteditorsettings',
@@ -1040,6 +1050,7 @@ function RichTextEditorController($document, $injector, $rootScope,
       self.linespacingclass = RichTextEditorPreferencesService.getLinespacingClass();
       self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
       self.spellcheckenabled = RichTextEditorPreferencesService.isSpellCheckEnabled();
+      self.autocapitalizeenabled = RichTextEditorPreferencesService.isAutocapitalizeEnabled();
       self.content = self.content + ' '; // force change text to enable/disabled spellcheck
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
       $rootScope.$emit('CLOSE_POPUP_BOX');
@@ -1062,7 +1073,7 @@ function RichTextEditorController($document, $injector, $rootScope,
   };
 
   self.countWordsAndCharacters = function() {
-    let result = WordCharacterCountService.count(self.content);
+    let result = WordCharacterCountService.count(self.content, self.wordCountMode);
     self.words = result.words;
     self.characters = result.characters;
     self.todaywords = self.words + self.todayOffset;
@@ -1081,5 +1092,63 @@ function RichTextEditorController($document, $injector, $rootScope,
   self.nextMatchByEnter = function(event) {
     event.preventDefault();
     self.nextMatch();
+  };
+
+  self.checkCapitalize = function(evt) {
+    if (self.autocapitalizeenabled && evt.which) {
+      let charStr = String.fromCharCode(evt.which);
+      if (!self.isWhiteSpace(charStr) && !self.isDeviceControl(charStr) && self.needToCapitalize()) {
+        evt.preventDefault();
+        self.insertTextAtCursor(charStr.toUpperCase());
+        return false;
+      }
+    }
+  };
+
+  self.needToCapitalize = function() {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const node = range.startContainer;
+    const offset = range.startOffset;
+    const text = node.textContent.slice(0, offset);
+  
+    let index = text.length - 1;
+    while (index > 0 && self.isWhiteSpace(text.charAt(index))) {
+      index--;
+    }
+    return index === -1 || text.charAt(index) === '.' 
+      || text.charAt(index) === '?' || text.charAt(index) === '!'
+      || text.charAt(index) === '¿' || text.charAt(index) === '¡';
+  },
+
+  self.insertTextAtCursor = function(text) {
+    let sel, range, textNode;
+    if (window.getSelection) {
+      sel = window.getSelection();
+      if (sel.getRangeAt && sel.rangeCount) {
+        range = sel.getRangeAt(0).cloneRange();
+        range.deleteContents();
+        textNode = document.createTextNode(text);
+        range.insertNode(textNode);
+  
+        // Move caret to the end of the newly inserted text node
+        range.setStart(textNode, textNode.length);
+        range.setEnd(textNode, textNode.length);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    } else if (document.selection && document.selection.createRange) {
+      range = document.selection.createRange();
+      range.pasteHTML(text);
+    }
+  },
+
+  self.isWhiteSpace = function(char) {
+    return UtilService.array.contains(UtilService.string.WHITE_SPACES, char);
+  };
+
+  self.isDeviceControl = function(char) {
+    const deviceControlRange = /^[\u0000-\u001F\u007F]$/;
+    return deviceControlRange.test(char);
   };
 }

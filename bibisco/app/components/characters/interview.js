@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,15 @@ angular.
     }
   });
 
-function InterviewController() {
+function InterviewController($location) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
     
+  };
+
+  self.createFirstCustomQuestion = function() {
+    $location.path('/maincharacters/'+self.maincharacter.$loki+'/customquestions');
   };
 }

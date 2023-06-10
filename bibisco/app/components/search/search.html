@@ -129,7 +129,7 @@
         </tr>
         <tr ng-if="!maincharacter.behaviors.freetextenabled"
           ng-repeat="question in maincharacter.behaviors.questions track by $index">
-          <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_behaviors' | translate}} #{{question.position + 1}}:</i>{{'characterInfo_question_behaviors_' + question.position | translate}}</a></td>
+          <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_behaviors' | translate}} #{{question.position + 1}}: </i>{{'characterInfo_question_behaviors_' + question.position | translate}}</a></td>
           <td class="text-right"><span class="label label-info search-results-occurrences">{{(question.occurrences | number: 0)}}</span></td>
         </tr>
         <tr ng-if="maincharacter.behaviors.freetextenabled && maincharacter.behaviors.freetext">
@@ -173,6 +173,11 @@
           <td class="text-right"><span
               class="label label-info search-results-occurrences">{{(maincharacter.lifebeforestorybeginning.occurrences | number: 0)}}</span></td>
         </tr>
+        <tr ng-repeat="question in maincharacter.custom.questions track by $index">
+          <td><a ng-click="$ctrl.gotoElement(question.path)"><i>{{'common_custom' | translate}} #{{question.position + 1}}:
+              </i>{{question.text}}</a></td>
+          <td class="text-right"><span class="label label-info search-results-occurrences">{{(question.occurrences | number: 0)}}</span></td>
+        </tr>
         <tr ng-if="maincharacter.conflict">
           <td><a ng-click="$ctrl.gotoElement(maincharacter.conflict.path)"><i>{{'common_characters_conflict' | translate}}</i></a></td>
           <td class="text-right"><span
@@ -206,6 +211,15 @@
               class="label label-default bibiscoBadge text-uppercase">{{'object' | translate}}</span></td>
           <td><a ng-click="$ctrl.gotoElement(object.path)">{{object.name}}</a></td>
           <td class="text-right"><span class="label label-info search-results-occurrences">{{(object.occurrences | number: 0)}}</span>
+          </td>
+        </tr>
+      </tbody>
+      <tbody ng-repeat="group in $ctrl.results.groups track by $index">
+        <tr>
+          <td class="text-right"><span
+              class="label label-default bibiscoBadge text-uppercase">{{'group' | translate}}</span></td>
+          <td><a ng-click="$ctrl.gotoElement(group.path)">{{group.name}}</a></td>
+          <td class="text-right"><span class="label label-info search-results-occurrences">{{(group.occurrences | number: 0)}}</span>
           </td>
         </tr>
       </tbody>

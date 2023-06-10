@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/card-grid/card-grid.html',
     controller: CardGridController,
     bindings: {
+      changegroupfilterfunction: '&',
       carddimension: '@',
       dndenabled: '@',
       dropfunction: '&',
@@ -25,6 +26,7 @@ angular.
       emptylistbuttonlabel: '@',
       emptylistbuttonfunction: '&',
       emptylistbuttontooltip: '@',
+      emptyselectedgrouptext: '@',
       family: '@',
       hastext: '<',
       items: '<',
@@ -39,6 +41,7 @@ angular.
       pageheaderwords: '<',
       scrollable: '<',
       selectfunction: '&',
+      showgroupfilter: '<',
       showwordsgoalcounter: '<',
       subheader: '<'
     }

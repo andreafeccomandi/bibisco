@@ -85,6 +85,7 @@
 .right5 { margin-right:5px; }
 
 .full-height { height:100%; }
+.full-width { width:100%; }
 
 .display-block { display: block; }
 
@@ -124,10 +125,16 @@
 	height: calc(100% - 300px);
 }
 
+.scrollable-box-full-height-page-with-breadcrumb-header-readnovel {
+    overflow-y: auto;
+    width: 100%;
+	height: calc(100% - 225px);
+}
+
 .scrollable-box-full-height-page-with-header-relationsfooter {
 	overflow-y: auto;
     width: 100%;
-	height: calc(100% - 222px);
+	height: calc(100% - 250px);
 }
  
 .line-vertical {
@@ -306,7 +313,7 @@ h6, label, th, td, p {
 	margin-bottom: 5px;
 }
 
-.project-explorer-text p {
+.project-explorer h5, .project-explorer-text p {
 	-webkit-touch-callout: text !important;
 	-webkit-user-select: text !important;
 	-khtml-user-select: text !important;
@@ -350,6 +357,17 @@ h6, label, th, td, p {
 .richtextviewer {
 	max-width: 822px;
     margin: 0 auto;
+	padding-right: 12px;
+}
+
+.richtextviewer p, .richtextviewer ul, .richtextviewer ol, .richtextviewer li  {
+	-webkit-touch-callout: text !important;
+	-webkit-user-select: text !important;
+	-khtml-user-select: text !important;
+	-moz-user-select: text !important;
+	-ms-user-select: text !important;
+	user-select: text !important;
+	-o-user-select: text !important;
 }
 
 /* RICH TEXT EDITOR */
@@ -581,6 +599,7 @@ h3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-bottom: 1px;
 }
 
 .page-header-profile {
@@ -588,36 +607,37 @@ h3 {
 }
 
 .page-header-profile img {
-	object-fit: cover;
-    width: 100px;
-    height: 100px;
-	margin-top: -72px;
-	margin-right: 5px;
+    object-fit: cover;
+    width: 96px;
+    height: 96px;
+    margin-top: -70px;
+    margin-right: 6px;
 }
 
 .page-header-no-profile {
 	display: inline-block;
-	width: 100px;
+	width: 96px;
+	margin-right: 6px;
 }
 
- .page-header-no-profile-bg {
-	height: 100px;
-	width: 100px;
-	background-color: #ddd;
-	border: 1px solid #ddd;
+.page-header-no-profile-bg {
+    height: 96px;
+    width: 96px;
+    background-color: #ddd;
+    border: 1px solid #ddd; 
 	border-radius: 4px;
-	margin-top: -95px;
-	margin-left: 0px;
-	margin-right: 0px;
-	position: absolute;
- }
+    margin-top: -90px;
+    margin-left: 0px;
+    margin-right: 0px;
+    position: absolute;
+}
 
  .page-header-no-profile-icon {
-	margin-top: -70px;
+    margin-top: -70px;
     margin-left: 0px;
-	position: absolute; 
-	width: 100px; 
-	text-align: center;
+    position: absolute;
+    width: 96px;
+    text-align: center;
 }
 
  .page-header-no-profile-icon i {
@@ -630,7 +650,7 @@ h3 {
     font-size: 30px !important;
     font-weight: bolder;
 	margin-top: -35px;
-    margin-left: 60px;
+    margin-left: 55px;
     padding-top: 0px !important;
     padding-bottom: 4px !important;
     padding-left: 8px !important;
@@ -695,15 +715,27 @@ h3 {
 }
 
 .card-normal {
-	height: 145px;
+	height: 160px;
+}
+
+.card-normal-notags {
+	height: 140px;
 }
 
 .card-small {
+	height: 100px;
+}
+
+.card-small-notags {
 	height: 90px;
 }
 
 .card-chapter {
-	height: 105px;
+	height: 150px;
+}
+
+.card-chapter-notags {
+	height: 125px;
 }
 
 .card-hover {
@@ -718,15 +750,27 @@ h3 {
 }
 
 .card:focus div.card-left-section-normal {
-	height: 141px;
+	height: 156px;
+}
+
+.card:focus div.card-left-section-normal-notags {
+	height: 136px;
 }
 
 .card:focus div.card-left-section-small {
+	height: 96px;
+}
+
+.card:focus div.card-left-section-notags {
 	height: 86px;
 }
 
 .card:focus div.card-left-section-chapter {
-	height: 101px;
+	height: 146px;
+}
+
+.card:focus div.card-left-section-chapter-notags {
+	height: 121px;
 }
 
 .card-left-section {
@@ -745,20 +789,32 @@ h3 {
 
 .card-left-section span.bibiscoTaskStatus {
 	position: absolute;
-	bottom: 7.5px;
+	bottom: 6px;
 	left: 5px;
 }
 
 .card-left-section-normal {
-	height: 143px;
+	height: 158px;
+}
+
+.card-left-section-normal-notags {
+	height: 138px;
 }
 
 .card-left-section-small {
+	height: 98px;
+}
+
+.card-left-section-small-notags {
 	height: 88px;
 }
 
 .card-left-section-chapter {
-	height: 103px;
+	height: 148px;
+}
+
+.card-left-section-chapter-notags {
+	height: 123px;
 }
 
 .card-no-profile-bg {
@@ -788,15 +844,23 @@ h3 {
 	margin-left: 10px;
 }
 
-.card-heading {
-	display: table-cell;
-    vertical-align: middle;
-}
-
 .card-heading-title {
 	display: table;
     margin-top: -5px;
 	margin-left: -5px;
+}
+
+.card-heading-title span {
+	display: table-cell;
+    vertical-align: middle;
+}
+
+.card-heading-title span strong {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	overflow-wrap: anywhere;
 }
 
 .card-heading-title-normal {
@@ -808,12 +872,19 @@ h3 {
 .card-heading-title-small {
 	width: 190px;
 	height: 60px;
+}
+
+.card-heading-title-text-small {
 	-webkit-line-clamp: 3;
 }
 
+.card-heading-title-text-normal {
+	-webkit-line-clamp: 2;
+}
+
 .card-heading-title-chapter {
-	width: 115px;
-	height: 35px;
+	width: 85px;
+	height: 30px;
 	-webkit-line-clamp: 1;
 }
 
@@ -831,14 +902,14 @@ h3 {
 	font-size: 13px;
 	line-height: 1.3;
 	overflow : hidden;
+	overflow-wrap: anywhere;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 4;
 	-webkit-box-orient: vertical;
 }
 
 .card-text-normal {
-	-webkit-line-clamp: 5;
+	-webkit-line-clamp: 4;
 }
 
 .card-text-small {
@@ -846,7 +917,7 @@ h3 {
 }
 
 .card-text-chapter {
-	-webkit-line-clamp: 3;
+	-webkit-line-clamp: 4;
 }
 
 /* CARD GRID */
@@ -878,6 +949,54 @@ h3 {
 .task-status-btn-disabled {
 	opacity: 1 !important;
 }
+
+/* TAG BADGE */
+div.card-tags {
+	position: absolute;
+	left: 55px;
+	width: 190px;
+	height: 29px;
+	border-top: 1px solid #DDD;
+}
+
+div.card-small div.card-tags {
+	top: 69px;
+}
+
+div.card-normal div.card-tags {
+	top: 129px;
+}
+
+div.card-chapter div.card-tags {
+	top: 119px;
+}
+
+div.card-tags div i {
+	font-size: 25px;
+	margin-left: -2px;
+	margin-top: 2px;
+}
+
+.card-tags-10-15 {
+	margin-left: -10px !important;
+}
+
+.card-tags-16-20 {
+	margin-left: -13px !important;
+}
+
+span.page-header-tags-10-15 i {
+	margin-right: -10px;
+}
+
+span.page-header-tags-16-20 i {
+	margin-right: -15px;
+}
+span.page-header-tags-16-20 i:last-child, span.page-header-tags-10-15 i:last-child {
+	margin-right: 0px;
+}
+
+
 
 /* WELCOME */
 
@@ -1062,6 +1181,21 @@ h3 {
 	width: 300px;
 	margin-top: -1px;
 }
+
+/* GROUP FILTER */
+.group-filter {
+	width: 300px;
+	margin-top: -1px;
+}
+
+.group-filter-item {
+	display: inline-block;
+	width: 275px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 
 /* TAGS */
 .scene-tags-button {
@@ -1371,19 +1505,19 @@ h3 {
 	text-overflow: ellipsis;
 }
 
-.list-item-color-0 {
+.list-item-color-0, .color-bluecola {
     background-color: #0084D1 !important;
 }
 
-.list-item-color-1 {
+.list-item-color-1, .color-midnightblue {
 	background-color: #004586 !important;
 }
 
-.list-item-color-2 {
+.list-item-color-2, .color-redorange {
    background-color: #FF420E !important;
 }
 
-.list-item-color-3 {
+.list-item-color-3, .color-ripemango {
     background-color: #FFD320 !important;
 }
 
@@ -1780,12 +1914,16 @@ h3 {
 
 .timeline-heading > p {
 	margin-bottom: 5px;
+	word-break: normal;
+	overflow-wrap: anywhere;
 }
 
 .timeline-body > p,
 .timeline-body > ul {
 	margin-bottom: -5px;
 	text-align: justify;
+	word-break: normal;
+	overflow-wrap: anywhere;
 }
 
 .timeline-body > p + p {
@@ -1801,6 +1939,10 @@ h3 {
 
 .modal-contextualtip {
     width: 400px;
+}
+
+.modal-richtexteditortip {
+	width: 650px;
 }
 
 .modal-relationstip {
@@ -1922,6 +2064,58 @@ tree-view tree-view {
 .chapter-title-format-example {
 	margin-top: -13px;
 	margin-bottom: 15px;
+}
+
+/* COLOR SELECTOR */
+.color-selector-item {
+	cursor: pointer;
+	font-size: 2.5em;
+	margin: 1px;
+}
+
+/* READ NOVEL */
+.read-novel-header {
+	width: calc(100% - 345px);
+}
+
+.read-novel-chapter-title {
+	margin-top: 0px;
+	padding-bottom: 10px;
+	word-wrap: break-word;
+}
+
+.read-novel-chapter-selection {
+	width: 300px;
+	padding-left: 4px;
+}
+
+.read-novel-chapter-selection-item {
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.read-novel-fullscreen-button {
+	width: 35px; 
+	margin-right: 3px;
+}
+
+.read-novel-scenes-separator {
+	height: 15px;
+}
+
+/* ERROR */
+.genericoerrordescription {
+	margin-top: 30px;
+}
+
+.permissionerrordescription {
+	margin-top: 30px;
+}
+
+.permissionerrordescription p {
+	font-size: 115%;
 }
 
 @media (max-width: 767px) {

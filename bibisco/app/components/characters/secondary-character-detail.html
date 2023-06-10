@@ -5,6 +5,10 @@
   changetitlelabel="jsp.character.button.updateTitle"
   characters="$ctrl.secondarycharacter.characters"
   content="$ctrl.secondarycharacter.description"
+  custombuttonenabled="true",
+  custombuttonfunction="$ctrl.managegroupsmembership()",
+  custombuttonlabel="groups_button",
+  custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}",
   deleteconfirmmessage="jsp.characters.delete.confirm"
   deleteenabled="true"
   deleteforbidden="$ctrl.deleteforbidden"
@@ -26,6 +30,7 @@
   showeventslabel="{{'character_events_tooltip'+$root.os}}"
   showimagesfunction="$ctrl.showimagesfunction()"
   showimageslabel="{{'character_images_tooltip'+$root.os}}"
+  tags="$ctrl.tags"
   taskstatus="$ctrl.secondarycharacter.status"
   taskstatuschangefunction="$ctrl.changeStatus(status)"
   words="$ctrl.secondarycharacter.words"

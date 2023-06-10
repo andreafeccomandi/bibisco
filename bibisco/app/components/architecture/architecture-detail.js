@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ function ArchitectureDetailController($location, $routeParams,
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
       label: 'common_architecture',
-      href: '/architecture/params/focus=architecture_' + $routeParams.id
+      href: '/architecture'
     });
     self.breadcrumbitems.push({
       label: self.architectureitem.title

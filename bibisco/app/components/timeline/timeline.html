@@ -1,4 +1,7 @@
-<pageheader headertitle="timeline_title"></pageheader>
+<pageheader 
+  changegroupfilterfunction="$ctrl.applyFilterGroup()"
+  headertitle="timeline_title" 
+  showgroupfilter="true"></pageheader>
 
 <div ng-show="$ctrl.timeline.length == 0">
   <jumbotronbutton text="jsp.chapter.bibiscoEmptyThumbnailListBox.text" >

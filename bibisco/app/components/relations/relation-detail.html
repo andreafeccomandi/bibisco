@@ -6,7 +6,15 @@
           <textinputfield field="$ctrl.relationDetailForm.name" model="$ctrl.name" name="name" maxlength="100"
             typeheadsource="$ctrl.usedrelations" autofocus required label="{{'relations_relation' | translate}}" labelcols="2" inputcols="9">
           </textinputfield>
-
+          <colorpickerfield form="$ctrl.relationDetailForm" model="$ctrl.color" label="common_color"
+            labelcols="2" inputcols="9"></colorpickerfield>
+          <buttongroupfield group="$ctrl.arrowsgroup" 
+            label="Arrow" form="$ctrl.relationDetailForm"
+            model="$ctrl.arrows" labelcols="2" inputcols="9"></buttongroupfield> 
+          <buttongroupfield group="$ctrl.dashesgroup" 
+            label="Line" form="$ctrl.relationDetailForm"
+            model="$ctrl.dashes" labelcols="2" inputcols="9"></buttongroupfield> 
+          </div>
         </form>
       </div>
     </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  */
 
 angular.module('bibiscoApp').service('DatetimeService', function (
-  $translate, UtilService) {
+  $translate, LocaleService, UtilService) {
   'use strict';
 
   return {
@@ -31,6 +31,11 @@ angular.module('bibiscoApp').service('DatetimeService', function (
         result = yearAsPaddedString + bc;
       }
       return result;
+    },
+
+    calculateDayOfWeek: function(datetime) {
+      moment.locale(LocaleService.getCurrentLocale());
+      return moment(datetime).format('dddd');
     }
   };
 });

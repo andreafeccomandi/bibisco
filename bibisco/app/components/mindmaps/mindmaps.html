@@ -1,0 +1,19 @@
+<cardgrid
+  carddimension="small"
+  dndenabled="true"
+  dropfunction="$ctrl.move(draggedObjectId, destinationObjectId)"
+  emptylisttext="mindmap_emptylist"
+  emptylistbuttonlabel="mindmap_create_first"
+  emptylistbuttonfunction="$ctrl.create()"
+  emptylistbuttontooltip="{{'mindmap_firstcreate_tooltip'+$root.os}}"
+  family="mindmaps"
+  items="$ctrl.cardgriditems"
+  pageheaderbuttonhotkey="$ctrl.hotkeys"
+  pageheaderbuttonlabel="mindmap_create"
+  pageheaderbuttonfunction="$ctrl.create()"
+  pageheaderbuttontooltip="{{'mindmap_create_tooltip'+$root.os}}"
+  pageheadersubtitle="common_mindmaps_description"
+  pageheadertitle="common_mindmaps_title"
+  scrollable="true"
+  selectfunction="$ctrl.select(id)"></cardgrid>
+

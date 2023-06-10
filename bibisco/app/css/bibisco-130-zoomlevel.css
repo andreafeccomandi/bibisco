@@ -20,27 +20,27 @@ body {
 }
 
 .scrollable-box-full-height-page-with-header {
-	height: calc(100% - 200px);
+    height: calc(100% - 200px);
 }
 
 .scrollable-box-full-height-page-with-header-subtitle {
-	height: calc(100% - 220px);
+    height: calc(100% - 220px);
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header {
-	height: calc(100% - 235px);
+    height: calc(100% - 235px);
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-footer {
-	height: calc(100% - 270px);
+    height: calc(100% - 270px);
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer {
-	height: calc(100% - 310px);
+    height: calc(100% - 310px);
 }
 
 .scrollable-box-full-height-page-with-header-relationsfooter {
-	height: calc(100% - 242px);
+    height: calc(100% - 280px);
 }
 
 .breadcrumb li span .breadcrumb-span-2-items {
@@ -55,20 +55,44 @@ body {
     height: 208px;
 }
 
+.card-normal-notags {
+    height: 190px;
+}
+
+.card-left-section-normal-notags {
+    height: 188px;
+}
+
 .card:focus div.card-left-section-normal {
-	height: 206px;
+    height: 206px;
+}
+
+.card:focus div.card-left-section-normal-notags {
+    height: 186px;
 }
 
 .card-small {
-    height: 90px;
+    height: 114px;
 }
 
 .card-left-section-small {
+    height: 112px;
+}
+
+.card-small-notags {
+    height: 90px;
+}
+
+.card-left-section-small-notags {
     height: 88px;
 }
 
 .card:focus div.card-left-section-small {
-	height: 86px;
+    height: 110px;
+}
+
+.card:focus div.card-left-section-small-notags {
+    height: 86px;
 }
 
 .card-heading-title-small {
@@ -92,7 +116,7 @@ body {
 }
 
 .card-heading-title-chapter {
-    width: 95px;
+    width: 60px;
 }
 
 .card-heading-title-normal {
@@ -100,19 +124,48 @@ body {
 }
 
 .card-chapter {
+    height: 205px;
+}
+
+.card-chapter-notags {
     height: 180px;
 }
 
 .card-left-section-chapter {
+    height: 203px;
+}
+
+.card-left-section-chapter-notags {
     height: 178px;
 }
 
 .card:focus div.card-left-section-chapter {
+    height: 201px;
+}
+
+.card:focus div.card-left-section-chapter-notags {
     height: 176px;
 }
 
 .card-text-chapter {
     -webkit-line-clamp: 5;
+}
+
+div.card-small div.card-tags {
+    top: 84px;
+}
+
+div.card-normal div.card-tags {
+    top: 180px;
+}
+
+div.card-chapter div.card-tags {
+    top: 175px;
+}
+
+
+.card-left-section span.bibiscoTaskStatus {
+    bottom: 4px;
 }
 
 .detail-footer div.row {
@@ -145,11 +198,11 @@ h5 {
 }
 
 .page-header-no-profile-button {
-    margin-top: -42px;
+    margin-top: -46px;
 }
 
 .page-header-no-profile-bg {
-    margin-top: -103px;
+    margin-top: -101px;
 }
 
 .page-header-no-profile-icon {
@@ -157,7 +210,7 @@ h5 {
 }
 
 .page-header-profile img {
-    margin-top: -90px;
+    margin-top: -88px;
 }
 
 .page-header-subtitle {
@@ -181,7 +234,7 @@ h5 {
 }
 
 .label {
-    padding: 0.3em 0.3em 0.3em;
+    padding: 0.3em;
 }
 
 div.richtexteditor-find-replace-toolbar button.btn-sm {
@@ -206,109 +259,110 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
 }
 
 .search-results-container {
-	overflow-y: auto;
-	height: calc(100% - 280px);
-	width: 100%;
+    overflow-y: auto;
+    height: calc(100% - 280px);
+    width: 100%;
 }
 
 .analysis-character-appearances table {
-	font-size: 16px;
+    font-size: 16px;
 }
 
 .analysis-items-distribution table {
-	font-size: 16px;
+    font-size: 16px;
 }
 
-.analysis-items-distribution table tr th, .analysis-items-distribution table tr td {
+.analysis-items-distribution table tr th,
+.analysis-items-distribution table tr td {
     width: 30px;
 }
 
 .bibiscoRichTextEditor-bodyClass-courierbig {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .bibiscoRichTextEditor-bodyClass-couriermedium {
-	font-size: 22px;
+    font-size: 22px;
 }
 
 .bibiscoRichTextEditor-bodyClass-couriersmall {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .bibiscoRichTextEditor-bodyClass-timesbig {
-	font-size: 25px;
+    font-size: 25px;
 }
 
 .bibiscoRichTextEditor-bodyClass-timesmedium {
-	font-size: 23px;
+    font-size: 23px;
 }
 
 .bibiscoRichTextEditor-bodyClass-timessmall {
-	font-size: 21px;
+    font-size: 21px;
 }
 
 .bibiscoRichTextEditor-bodyClass-arialbig {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .bibiscoRichTextEditor-bodyClass-arialmedium {
-	font-size: 22px;
+    font-size: 22px;
 }
 
 .bibiscoRichTextEditor-bodyClass-arialsmall {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .bibiscoRichTextEditor-bodyClass-georgiabig {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .bibiscoRichTextEditor-bodyClass-georgiamedium {
-	font-size: 22px;
+    font-size: 22px;
 }
 
 .bibiscoRichTextEditor-bodyClass-georgiasmall {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .bibiscoRichTextEditor-bodyClass-garamondbig {
-	font-size: 26px;
+    font-size: 26px;
 }
 
 .bibiscoRichTextEditor-bodyClass-garamondmedium {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .bibiscoRichTextEditor-bodyClass-garamondsmall {
-	font-size: 22px;
+    font-size: 22px;
 }
 
 .bibiscoRichTextEditor-bodyClass-baskervillebig {
-	font-size: 25px;
+    font-size: 25px;
 }
 
 .bibiscoRichTextEditor-bodyClass-baskervillemedium {
-	font-size: 23px;
+    font-size: 23px;
 }
 
 .bibiscoRichTextEditor-bodyClass-baskervillesmall {
-	font-size: 21px;
+    font-size: 21px;
 }
 
 .bibiscoRichTextEditor-bodyClass-palatinobig {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .bibiscoRichTextEditor-bodyClass-palatinomedium {
-	font-size: 22px;
+    font-size: 22px;
 }
 
 .bibiscoRichTextEditor-bodyClass-palatinosmall {
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .modal-richtexteditorsettings {
-	width: 700px;
+    width: 700px;
 }
 
 tree-view ul li .node div:first-child span {
@@ -319,15 +373,19 @@ tree-view ul li .node div:first-child span {
     padding: 8px 12px;
 }
 
-.timeline-element > li > .timeline-scene-datetime {
+.timeline-element>li>.timeline-scene-datetime {
     top: 8px;
 }
 
+.read-novel-scenes-separator {
+	height: 25px;
+}
+
 @media (max-height: 710px) {
-	.questionbuttonbar .btn-lg {
-		padding: 4px 12px;
+    .questionbuttonbar .btn-lg {
+        padding: 4px 12px;
         font-size: 18px;
-	}
+    }
 }
 
 @media (max-width: 1424px) {
@@ -338,18 +396,20 @@ tree-view ul li .node div:first-child span {
 
 @media (max-height: 800px) {
     .richtexteditor-settings-sample {
-		display: none;
-	}
+        display: none;
+    }
 }
 
 @media (max-width: 1424px) {
-	.richtexteditor-contenteditable-container-nofindreplace {
-		height: calc(100% - 90px);
-	}
-	.richtexteditor-contenteditable-container-findreplace {
-		height: calc(100% - 139px);
-	}
-	.richtexteditor-find-replace-toolbar input {
+    .richtexteditor-contenteditable-container-nofindreplace {
+        height: calc(100% - 90px);
+    }
+
+    .richtexteditor-contenteditable-container-findreplace {
+        height: calc(100% - 139px);
+    }
+
+    .richtexteditor-find-replace-toolbar input {
         width: 160px !important;
     }
 }

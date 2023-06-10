@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -86,20 +86,25 @@ angular.module('bibiscoApp', ['ngRoute',
   // global variables
   $rootScope.actualPath = null;
   $rootScope.dirty = false;
+  $rootScope.exitfullscreenmessage = false;
   $rootScope.fullscreen = false;
-  $rootScope.trialmessageopen = false;
+  $rootScope.groupFilter = null;
   $rootScope.keyDownFunction = null;
   $rootScope.keyUpFunction = null;
   $rootScope.partsExpansionStatus = [];
   $rootScope.previouslyFullscreen = false;
   $rootScope.previousPath = null;
   $rootScope.projectExplorerCache = new Map();
+  $rootScope.readNovelDblClickChapterId = null;
+  $rootScope.readNovelDblClickOffsetY = 0;
   $rootScope.richtexteditorSearchActiveOnOpen = false;
   $rootScope.searchCasesensitiveactive = false;
   $rootScope.searchOnlyscenes = false;
   $rootScope.searchWholewordactive = false;
   $rootScope.showprojectexplorer = false;
   $rootScope.text2search = null;
+  $rootScope.textSelected = null;
+  $rootScope.trialmessageopen = false;
   
   // location change success
   $rootScope.$on('$locationChangeSuccess', 
@@ -159,9 +164,6 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/architecture', {
         template: '<architecture></architecture>'
       }).
-      when('/architecture/params/:params', {
-        template: '<architecture></architecture>'
-      }).
       when('/architectureitems/:id/events', {
         template: '<architectureevents></architectureevents>'
       }).
@@ -177,9 +179,6 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/chapters', {
         template: '<chapters></chapters>'
       }).
-      when('/chapters/params/:params', {
-        template: '<chapters></chapters>'
-      }).
       when('/chapters/new', {
         template: '<chaptertitle></chaptertitle>'
       }).
@@ -189,10 +188,10 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/chapters/new/prologue', {
         template: '<chaptertitle></chaptertitle>'
       }).
-      when('/chapters/:id', {
-        template: '<chapterdetail></chapterdetail>'
+      when('/chapters/read/:chapterid', {
+        template: '<chaptersread></chaptersread>'
       }).
-      when('/chapters/:id/params/:params', {
+      when('/chapters/:id', {
         template: '<chapterdetail></chapterdetail>'
       }).
       when('/chapters/:id/title', {
@@ -204,6 +203,9 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/chapters/:chapterid/scenes/new', {
         template: '<scenetitle></scenetitle>'
       }).
+      when('/chapters/read/:chapterid/scenes/new', {
+        template: '<scenetitle></scenetitle>'
+      }).
       when('/chapters/:chapterid/scenes/:sceneid/move', {
         template: '<chapterselect></chapterselect>'
       }).
@@ -212,6 +214,27 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/chapters/:chapterid/scenes/:sceneid/tags', {
         template: '<scenetags></scenetags>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/scenecharacters/maincharacters/new', {
+        template: '<maincharactercreate></maincharactercreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/povcharacter/maincharacters/new', {
+        template: '<maincharactercreate></maincharactercreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/scenecharacters/secondarycharacters/new', {
+        template: '<secondarycharactercreate></secondarycharactercreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/povcharacter/secondarycharacters/new', {
+        template: '<secondarycharactercreate></secondarycharactercreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/location/new', {
+        template: '<locationcreate></locationcreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/objects/new', {
+        template: '<objectcreate></objectcreate>'
+      }).
+      when('/chapters/:chapterid/scenes/:sceneid/tags/strands/new', {
+        template: '<strandcreate></strandcreate>'
       }).
       when('/timeline/chapters/:chapterid/scenes/:sceneid/tags', {
         template: '<scenetags></scenetags>'
@@ -229,9 +252,6 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<scenedetail></scenedetail>'
       }).
       when('/characters', {
-        template: '<characters></characters>'
-      }).
-      when('/characters/params/:params', {
         template: '<characters></characters>'
       }).
       when('/createproject', {
@@ -258,6 +278,57 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/exporttoformat/:format', {
         template: '<exporttoformat></exporttoformat>'
       }).
+      when('/groups', {
+        template: '<groups></groups>'
+      }).
+      when('/groups/new', {
+        template: '<groupcreate></groupcreate>'
+      }).
+      when('/groups/:id/events', {
+        template: '<groupevents></groupevents>'
+      }).
+      when('/groups/:id/events/new', {
+        template: '<groupevent></groupevent>'
+      }).
+      when('/groups/:id/events/:eventid', {
+        template: '<groupevent></groupevent>'
+      }).
+      when('/groups/:id/images', {
+        template: '<groupimages></groupimages>'
+      }).
+      when('/groups/:id/images/addprofile', {
+        template: '<groupaddimage></groupaddimage>'
+      }).
+      when('/groups/:id/images/new', {
+        template: '<groupaddimage></groupaddimage>'
+      }).
+      when('/groups/:id/members', {
+        template: '<groupmembers></groupmembers>'
+      }).
+      when('/groups/:id/members/maincharacters/new', {
+        template: '<maincharactercreate></maincharactercreate>'
+      }).
+      when('/groups/:id/members/secondarycharacters/new', {
+        template: '<secondarycharactercreate></secondarycharactercreate>'
+      }).
+      when('/groups/:id/members/location/new', {
+        template: '<locationcreate></locationcreate>'
+      }).
+      when('/groups/:id/members/objects/new', {
+        template: '<objectcreate></objectcreate>'
+      }).
+      when('/groups/:id/members/strands/new', {
+        template: '<strandcreate></strandcreate>'
+      }).
+      when('/groups/:id/title', {
+        template: '<grouptitle></grouptitle>'
+      }).
+      when('/groups/:id/color', {
+        template: '<groupcolor></groupcolor>'
+      }).
+      when('/groups/:id/:mode', {
+        template: '<groupdetail></groupdetail>'
+      }).
       when('/importproject', {
         template: '<importproject></importproject>'
       }).
@@ -270,9 +341,6 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/locations', {
         template: '<locations></locations>'
       }).
-      when('/locations/params/:params', {
-        template: '<locations></locations>'
-      }).
       when('/locations/:id/events', {
         template: '<locationevents></locationevents>'
       }).
@@ -282,8 +350,14 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/locations/:id/events/:eventid', {
         template: '<locationevent></locationevent>'
       }).
+      when('/locations/:id/groupsmembership', {
+        template: '<locationgroupsmembership></locationgroupsmembership>'
+      }).
+      when('/locations/:id/groupsmembership/new', {
+        template: '<groupcreate></groupcreate>'
+      }).
       when('/locations/new', {
-        template: '<locationtitle></locationtitle>'
+        template: '<locationcreate></locationcreate>'
       }).
       when('/locations/:id/images', {
         template: '<locationimages></locationimages>'
@@ -304,13 +378,19 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<main></main>'
       }).
       when('/maincharacters/new', {
-        template: '<maincharactertitle></maincharactertitle>'
+        template: '<maincharactercreate></maincharactercreate>'
       }).
       when('/maincharacters/:id', {
         template: '<maincharacterdetail></maincharacterdetail>'
       }).
-      when('/maincharacters/:id/params/:params', {
-        template: '<maincharacterdetail></maincharacterdetail>'
+      when('/maincharacters/:id/customquestions', {
+        template: '<customquestions></customquestions>'
+      }).
+      when('/maincharacters/:id/customquestions/new', {
+        template: '<customquestion></customquestion>'
+      }).
+      when('/maincharacters/:id/customquestions/:questionid', {
+        template: '<customquestion></customquestion>'
       }).
       when('/maincharacters/:id/events', {
         template: '<maincharacterevents></maincharacterevents>'
@@ -320,6 +400,12 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/maincharacters/:id/events/:eventid', {
         template: '<maincharacterevent></maincharacterevent>'
+      }).
+      when('/maincharacters/:id/groupsmembership', {
+        template: '<maincharactergroupsmembership></maincharactergroupsmembership>'
+      }).
+      when('/maincharacters/:id/groupsmembership/new', {
+        template: '<groupcreate></groupcreate>'
       }).
       when('/maincharacters/:id/infowithoutquestion/:info/:mode', {
         template: '<maincharacterinfowithoutquestion></maincharacterinfowithoutquestion>'
@@ -342,10 +428,16 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/maincharacters/:id/title', {
         template: '<maincharactertitle></maincharactertitle>'
       }).
-      when('/notes', {
-        template: '<notes></notes>'
+      when('/mindmaps', {
+        template: '<mindmaps></mindmaps>'
       }).
-      when('/notes/params/:params', {
+      when('/mindmaps/new', {
+        template: '<mindmaptitle></mindmaptitle>'
+      }).
+      when('/mindmaps/:id/title', {
+        template: '<mindmaptitle></mindmaptitle>'
+      }).
+      when('/notes', {
         template: '<notes></notes>'
       }).
       when('/notes/new', {
@@ -366,11 +458,8 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/objects', {
         template: '<objects></objects>'
       }).
-      when('/objects/params/:params', {
-        template: '<objects></objects>'
-      }).
       when('/objects/new', {
-        template: '<itemtitle></itemtitle>'
+        template: '<objectcreate></objectcreate>'
       }).
       when('/objects/:id/events', {
         template: '<objectevents></objectevents>'
@@ -380,6 +469,12 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/objects/:id/events/:eventid', {
         template: '<objectevent></objectevent>'
+      }).
+      when('/objects/:id/groupsmembership', {
+        template: '<objectgroupsmembership></objectgroupsmembership>'
+      }).
+      when('/objects/:id/groupsmembership/new', {
+        template: '<groupcreate></groupcreate>'
       }).
       when('/objects/:id/images', {
         template: '<itemimages></itemimages>'
@@ -391,7 +486,7 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<itemaddimage></itemaddimage>'
       }).
       when('/objects/:id/title', {
-        template: '<itemtitle></itemtitle>'
+        template: '<objecttitle></objecttitle>'
       }).
       when('/objects/:id/:mode', {
         template: '<itemdetail></itemdetail>'
@@ -423,17 +518,23 @@ angular.module('bibiscoApp', ['ngRoute',
       when('/projecthome', {
         template: '<projecthome></projecthome>'
       }).
-      when('/relations/export', {
+      when('/relations/:id/export', {
         template: '<relationexport></relationexport>'
       }).
-      when('/relations/:mode', {
+      when('/relations/:id/:mode', {
         template: '<relations></relations>'
+      }).
+      when('/readnovel/beginning', {
+        template: '<readnovel></readnovel>'
+      }).
+      when('/readnovel/:chapterid', {
+        template: '<readnovel></readnovel>'
       }).
       when('/search', {
         template: '<search></search>'
       }).
       when('/secondarycharacters/new', {
-        template: '<secondarycharactertitle></secondarycharactertitle>'
+        template: '<secondarycharactercreate></secondarycharactercreate>'
       }).
       when('/secondarycharacters/:id/events', {
         template: '<secondarycharacterevents></secondarycharacterevents>'
@@ -443,6 +544,12 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/secondarycharacters/:id/events/:eventid', {
         template: '<secondarycharacterevent></secondarycharacterevent>'
+      }).
+      when('/secondarycharacters/:id/groupsmembership', {
+        template: '<secondarycharactergroupsmembership></secondarycharactergroupsmembership>'
+      }).
+      when('/secondarycharacters/:id/groupsmembership/new', {
+        template: '<groupcreate></groupcreate>'
       }).
       when('/secondarycharacters/:id/images', {
         template: '<secondarycharacterimages></secondarycharacterimages>'
@@ -469,7 +576,13 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<start></start>'
       }).
       when('/strands/new', {
-        template: '<strandtitle></strandtitle>'
+        template: '<strandcreate></strandcreate>'
+      }).
+      when('/strands/:id/groupsmembership', {
+        template: '<strandgroupsmembership></strandgroupsmembership>'
+      }).
+      when('/strands/:id/groupsmembership/new', {
+        template: '<groupcreate></groupcreate>'
       }).
       when('/strands/:id/title', {
         template: '<strandtitle></strandtitle>'
@@ -494,7 +607,7 @@ angular.module('bibiscoApp', ['ngRoute',
         suffix: '.json' // suffix, currently- extension of the translations
       })
       .registerAvailableLanguageKeys(['cs', 'de', 'en', 'en-us',
-        'es', 'fr', 'it', 'nl', 'pl', 'pt-br', 'pt-pt', 'ru', 'sl', 'sr', 'tr'
+        'es', 'fr', 'it', 'nl', 'pl', 'pt-br', 'pt-pt', 'ru', 'sl', 'sr', 'tr', 'uk'
       ], {
         'cs': 'cs',
         'de': 'de',
@@ -517,6 +630,7 @@ angular.module('bibiscoApp', ['ngRoute',
         'sl': 'sl',
         'sr': 'sr',
         'tr': 'tr',
+        'uk': 'uk',
         '*': 'en'
       }) // register available languages
       .determinePreferredLanguage() // is applied on first load
@@ -581,7 +695,7 @@ angular.module('bibiscoApp', ['ngRoute',
       ContextService = ContextService || $injector.get('ContextService');
       ContextService.setLastError({
         cause: cause,
-        stacktrace: exception.stack
+        exception: exception
       });
 
       // Redirect to error page

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ angular.
       noimageicon: '@',
       selectfunction: '&',
       status: '<',
+      tags: '<',
       text: '@',
       words: '<'
     }
@@ -42,5 +43,6 @@ function CardController(FileSystemService, ImageService) {
 
   self.$onInit = function () {
     self.projectImagesDirectory = ImageService.getProjectImagesDirectoryPath() + FileSystemService.getPathSeparator();
+    self.tagspresent = self.tags ? '' : '-notags';
   };
 }

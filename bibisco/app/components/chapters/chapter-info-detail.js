@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,11 @@ function ChapterInfoDetailController($location, $routeParams,  $window, ChapterS
 
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
+      href: '/chapters'
     });
     self.breadcrumbitems.push({
       label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
-      href: '/chapters/' + $routeParams.chapterid + '/params/focus=chapterinfo_' + $routeParams.type
+      href: '/chapters/' + $routeParams.chapterid
     });
     self.breadcrumbitems.push({
       label: self.title

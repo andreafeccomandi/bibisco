@@ -6,12 +6,12 @@
     <span ng-if="$ctrl.editmode && $ctrl.autosaveenabled == false" class="label label-default"
       uib-tooltip="{{'tag.bibiscoRichTextEditor.autosave.disabled' | translate}}"
       tooltip-placement="right">AUTO</span>
-    <span ng-if="$ctrl.editmode || $ctrl.words > 0" 
+    <span ng-if="$ctrl.editmode || $ctrl.characters > 0" 
       uib-tooltip="{{'tag.bibiscoRichTextEditor.span.lastsave' | translate}}"
       class="label label-primary"><i class="fa fa-save" aria-hidden="true"></i>  {{'timestamp_format' | translate:{date:$ctrl.lastsave} }}</span>
   </span>
   <span class="pull-right" ng-if="$ctrl.wordscharactersenabled">
-    <span ng-if="$ctrl.editmode || $ctrl.words > 0" 
+    <span ng-if="$ctrl.editmode || $ctrl.characters > 0" 
       uib-tooltip="{{'common_words' | translate}} ({{'jsp.common.span.characters' | translate}})"
       class="label label-info">{{($ctrl.words | number: 0)}} ({{($ctrl.characters | number: 0)}})</span>
     

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,62 +19,45 @@ angular.
     controller: StrandTitleController
   });
 
-function StrandTitleController($location, $routeParams, StrandService) {
+function StrandTitleController($routeParams, $window, StrandService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
+  
     // common bradcrumb root
-    self.breadcrumbItems = [];
+    self.breadcrumbitems = [];
 
-    if ($routeParams.id !== undefined) {
-      let strand = StrandService.getStrand(parseInt($routeParams.id));
+    let strand = StrandService.getStrand(parseInt($routeParams.id));
 
-      self.breadcrumbItems.push({
-        label: 'common_architecture',
-        href: '/architecture/params/focus=strands_' + strand.$loki
-      });
-
-      // edit breadcrumb items
-      self.breadcrumbItems.push({
-        label: strand.name,
-        href: '/strands/' + strand.$loki + '/view'
-      });
-      self.breadcrumbItems.push({
-        label: 'jsp.architecture.strand.dialog.title.updateTitle'
-      });
-
-      self.name = strand.name;
-      self.pageheadertitle = 'jsp.architecture.strand.dialog.title.updateTitle';
-
-    } else {
-
-      self.breadcrumbItems.push({
-        label: 'common_architecture',
-        href: '/architecture'
-      });
-
-      // create breadcrumb items
-      self.breadcrumbItems.push({
-        label: 'jsp.architecture.strand.dialog.title.createStrand'
-      });
-      self.name = null;
-      self.pageheadertitle =
-        'jsp.architecture.strand.dialog.title.createStrand';
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!strand) {
+      $window.history.back();
+      return;
     }
+
+    self.breadcrumbitems.push({
+      label: 'common_architecture',
+      href: '/architecture'
+    });
+
+    // edit breadcrumb items
+    self.breadcrumbitems.push({
+      label: strand.name,
+      href: '/strands/' + strand.$loki + '/view'
+    });
+    self.breadcrumbitems.push({
+      label: 'jsp.architecture.strand.dialog.title.updateTitle'
+    });
+
+    self.name = strand.name;
+    self.pageheadertitle = 'jsp.architecture.strand.dialog.title.updateTitle';
   };
 
   self.save = function(title) {
-    if ($routeParams.id !== undefined) {
-      let strand = StrandService.getStrand(parseInt($routeParams.id));
-      strand.name = title;
-      StrandService.update(strand);
-    } else {
-      StrandService.insert({
-        description: '',
-        name: title
-      });
-    }
+    let strand = StrandService.getStrand(parseInt($routeParams.id));
+    strand.name = title;
+    StrandService.update(strand);
   };
 }

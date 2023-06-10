@@ -1,0 +1,9 @@
+<div class="card-tags" ng-if="$ctrl.tags">
+    <div class="pull-right">
+        <i ng-repeat="tag in $ctrl.tags | limitTo: 20 track by $index" class="fa fa-tag" 
+            ng-class="{ 'card-tags-16-20': $ctrl.tags.length > 15,  'card-tags-10-15': $ctrl.tags.length <= 15 && $ctrl.tags.length > 9, 'card-tags-0-9': $ctrl.tags.length <= 9}"
+            style="color: {{tag.color}}" uib-tooltip="{{tag.label}}"></i>
+    </div>
+</div>
+
+

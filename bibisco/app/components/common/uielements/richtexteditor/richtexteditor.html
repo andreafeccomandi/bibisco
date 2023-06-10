@@ -203,6 +203,7 @@
     id="richtexteditor"
     ng-blur="$ctrl.blur()"
     ng-click="$ctrl.clickoneditor()"
+    ng-keypress="$ctrl.checkCapitalize($event)"
     ng-keyup="$ctrl.checkselectionstate()"
     ng-mouseup="$ctrl.checkselectionstate()"
     ng-paste="$ctrl.sanitizePaste($event)"
@@ -210,9 +211,7 @@
   </div>
 </div>
 
-<div ng-if="$ctrl.exitfullscreenmessage" class="exitfullscreenmessage">
-  <h1>{{'exit_full_screen_mode' | translate}}</h1>
-</div>
+<fullscreenexitmessage></fullscreenexitmessage>
 
 <div class="comment-box" ng-if="$ctrl.showComment" 
   style="top: {{$ctrl.commentPositionTop}}px; left: {{$ctrl.commentPositionLeft}}px;">

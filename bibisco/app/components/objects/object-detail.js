@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ angular.
     controller: ObjectDetailController
   });
 
-function ObjectDetailController($location, $routeParams, $window,
-  ChapterService, ObjectService, UtilService) {
+function ObjectDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
+  ChapterService, ObjectService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function () {
 
@@ -38,13 +39,23 @@ function ObjectDetailController($location, $routeParams, $window,
     self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'objects',
-      href: '/objects/params/focus=objects_' + self.object.$loki
+      href: '/objects'
     });
     self.breadcrumbitems.push({
       label: self.object.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
+
+    // tags
+    self.tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let elementGroups = self.getGroupService().getElementGroups('object', self.object.$loki);
+      for (let i = 0; i < elementGroups.length; i++) {
+        let group = elementGroups[i];
+        self.tags.push({label: group.name, color: group.color});
+      }
+    }
   };
 
   self.changeStatus = function (status) {
@@ -63,6 +74,13 @@ function ObjectDetailController($location, $routeParams, $window,
 
   self.edit = function () {
     $location.path('/objects/ ' + self.object.$loki + '/edit');
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.getObject = function (id) {
@@ -103,5 +121,18 @@ function ObjectDetailController($location, $routeParams, $window,
 
   self.addprofileimage = function() {
     $location.path('/objects/' + self.object.$loki + '/images/addprofile');
+  };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+m', 'command+m'],
+      description: 'groupsmembership',
+      callback: function () {
+        self.managegroupsmembership();
+      }
+    });
+
+  self.managegroupsmembership = function() {
+    $location.path('/objects/' + self.object.$loki + '/groupsmembership');
   };
 }

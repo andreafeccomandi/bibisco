@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ angular.
 
 function NoteDetailController($location, $routeParams, $window, NoteService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {
 
@@ -37,7 +37,7 @@ function NoteDetailController($location, $routeParams, $window, NoteService) {
     self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_notes_title',
-      href: '/notes/params/focus=notes_' + self.note.$loki
+      href: '/notes'
     });
     self.breadcrumbitems.push({
       label: self.note.name

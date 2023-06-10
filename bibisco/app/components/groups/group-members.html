@@ -1,0 +1,113 @@
+<detailheader 
+    breadcrumbitems="$ctrl.breadcrumbitems" 
+    headertitle="{{$ctrl.title}}">
+</detailheader>
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-footer">
+    
+    <!-- CHARACTERS -->
+    <div class="top15 col-sm-12">
+      <blockquote>
+        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+      {{'common_characters' | translate}}</i>
+      </blockquote>
+    </div>
+    <div class="col-sm-offset-1 col-sm-10">
+      <button ng-repeat="character in $ctrl.groupcharacters track by $index" type="button"
+        ng-class="{ 'btn-info': character.selected, 'btn-unselected': !character.selected }"
+        class="btn btn-sm scene-tags-button"
+        ng-click="$ctrl.toggleCharacter(character.id)">
+        {{character.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createMainCharacter()">
+        {{'new_main_character' | translate}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createSecondaryCharacter()">
+        {{'new_secondary_character' | translate}}
+      </button>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="top30 col-sm-12">
+      <blockquote>
+        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+      {{'common_locations' | translate}}</i>
+      </blockquote>
+    </div>
+    <div class="col-sm-offset-1 col-sm-10">
+      <button ng-repeat="location in $ctrl.grouplocations track by $index" type="button"
+        ng-class="{ 'btn-info': location.selected, 'btn-unselected': !location.selected }"
+        class="btn btn-sm scene-tags-button" ng-click="$ctrl.toggleLocation(location.id)">
+        {{location.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createLocation()">
+        {{'new_location' | translate}}
+      </button>
+    </div>
+
+    <!-- OBJECTS -->
+    <div class="top30 col-sm-12">
+      <blockquote>
+        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+          {{'objects' | translate}}</i>
+      </blockquote>
+    </div>
+    <div class="col-sm-offset-1 col-sm-10">
+      <button ng-repeat="object in $ctrl.groupobjects track by $index" type="button" 
+        ng-class="{ 'btn-info': object.selected, 'btn-unselected': !object.selected }" 
+        class="btn btn-sm scene-tags-button"
+        ng-click="$ctrl.toggleObject(object.id)">
+        {{object.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createObject()">
+        {{'new_object' | translate}}
+      </button>
+    </div>
+
+    <!-- STRANDS -->
+    <div class="top30 col-sm-12">
+      <blockquote>
+        <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+          {{'common_strands' | translate}}</i>
+      </blockquote>
+    </div>
+    <div class="col-sm-offset-1 col-sm-10">
+      <button ng-repeat="strand in $ctrl.groupstrands track by $index" type="button" 
+        ng-class="{ 'btn-info': strand.selected, 'btn-unselected': !strand.selected }" 
+        class="btn btn-sm scene-tags-button"
+        ng-click="$ctrl.toggleStrand(strand.id)">
+        {{strand.name}}
+      </button>
+      <button type="button"
+        class="btn btn-sm btn-default scene-tags-button"
+        ng-click="$ctrl.createStrand()">
+        {{'new_strand' | translate}}
+      </button>
+    </div>
+</div>
+
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="row">
+    <hr />
+  </div>
+  <div class="row">
+    <span class="pull-right">
+      <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
+        uib-tooltip="{{'save_tooltip'+$root.os | translate}}"
+        ng-click="$ctrl.save()">
+        <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+    <buttonback></buttonback>
+    </span>
+  </div>
+</div>
+

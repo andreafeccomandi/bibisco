@@ -2,7 +2,7 @@
 <li class="timeline-inverted">
     <div class="timeline-scene-badge list-item-color-{{$ctrl.index}}"></div>
     <div class="timeline-scene-datetime">
-        <h2 ng-if="$ctrl.element.time && $ctrl.element.timegregorian"><small>{{$ctrl.dayofweek}}</small> {{'date_format_scene_tags' | translate:{date:$ctrl.element.time} }}{{$ctrl.element.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.element.time} }}</small></h2>
+        <h2 ng-if="$ctrl.element.time && $ctrl.element.timegregorian"><small>{{$ctrl.element.dayofweek}}</small> {{'date_format_scene_tags' | translate:{date:$ctrl.element.time} }}{{$ctrl.element.sceneyear}} <small>{{'time_format_scene_tags'| translate:{date:$ctrl.element.time} }}</small></h2>
         <h2 ng-if="$ctrl.element.time && !$ctrl.element.timegregorian">{{$ctrl.element.time}}</h2>
         <h2 ng-if="!$ctrl.element.time"><small>{{'jsp.analysisCharacterScene.noInfoAvailable' | translate}}</small></h2>
     </div>
@@ -21,6 +21,7 @@
                 <p ng-if="$ctrl.element.type === 'maincharacter' || $ctrl.element.type === 'secondarycharacter'"><i>{{'common_character' | translate}}</i>: {{$ctrl.element.description}}</p>
                 <p ng-if="$ctrl.element.type === 'location'"><i>{{'jsp.scene.location.title' | translate}}</i>: {{$ctrl.element.description}}</p>
                 <p ng-if="$ctrl.element.type === 'object'"><i>{{'object' | translate}}</i>: {{$ctrl.element.description}}</p>
+                <p ng-if="$ctrl.element.type === 'group'"><i>{{'group' | translate}}</i>: {{$ctrl.element.description}}</p>
             </div>
             <div ng-if="$ctrl.mode === 'edit'">
                 <button class="btn btn-default btn-xs" 

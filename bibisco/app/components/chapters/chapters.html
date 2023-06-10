@@ -33,6 +33,7 @@
             image="{{$ctrl.cardgriditems.prologue.image}}"
             noimageicon="{{$ctrl.cardgriditems.prologue.noimageicon}}"
             selectfunction="$ctrl.select($ctrl.cardgriditems.prologue.id)"
+            tags="$ctrl.cardgriditems.prologue.tags"
             text="{{$ctrl.cardgriditems.prologue.text}}" 
             words="$ctrl.cardgriditems.prologue.words" 
             characters="$ctrl.cardgriditems.prologue.characters"
@@ -49,6 +50,7 @@
             image="{{item.image}}"
             noimageicon="{{item.noimageicon}}"
             selectfunction="$ctrl.select(id)"
+            tags="item.tags"
             text="{{item.text}}" 
             words="item.words" 
             characters="item.characters"
@@ -66,6 +68,7 @@
             image="{{$ctrl.cardgriditems.epilogue.image}}"
             noimageicon="{{$ctrl.cardgriditems.epilogue.noimageicon}}"
             selectfunction="$ctrl.select($ctrl.cardgriditems.epilogue.id)"
+            tags="$ctrl.cardgriditems.epilogue.tags"
             text="{{$ctrl.cardgriditems.epilogue.text}}" 
             words="$ctrl.cardgriditems.epilogue.words" 
             characters="$ctrl.cardgriditems.epilogue.characters"
@@ -92,6 +95,7 @@
         image="{{$ctrl.cardgriditems.prologue.image}}"
         noimageicon="{{$ctrl.cardgriditems.prologue.noimageicon}}"
         selectfunction="$ctrl.select($ctrl.cardgriditems.prologue.id)"
+        tags="$ctrl.cardgriditems.prologue.tags"
         text="{{$ctrl.cardgriditems.prologue.text}}" 
         words="$ctrl.cardgriditems.prologue.words" 
         characters="$ctrl.cardgriditems.prologue.characters"
@@ -135,6 +139,7 @@
                 image="{{item.image}}"
                 noimageicon="{{item.noimageicon}}"
                 selectfunction="$ctrl.select(id)"
+                tags="item.tags"
                 text="{{item.text}}" words="item.words" characters="item.characters"
                 status="item.status">
               </card>
@@ -166,6 +171,7 @@
         image="{{$ctrl.cardgriditems.epilogue.image}}"
         noimageicon="{{$ctrl.cardgriditems.epilogue.noimageicon}}"
         selectfunction="$ctrl.select($ctrl.cardgriditems.epilogue.id)"
+        tags="$ctrl.cardgriditems.epilogue.tags"
         text="{{$ctrl.cardgriditems.epilogue.text}}" 
         words="$ctrl.cardgriditems.epilogue.words" 
         characters="$ctrl.cardgriditems.epilogue.characters"
@@ -176,14 +182,32 @@
   </div> 
 </div> 
 
-<pagefooter
-    buttonlabel="jsp.chapters.a.createChapter"
-    buttonfunction="$ctrl.create()"
-    buttonhotkey="$ctrl.hotkeys"
-    buttonshow="$ctrl.cardgriditems"
-    buttontooltip="{{'chapter_create_tooltip'+$root.os}}"
-    dropdownopen="up" 
-    dropdownitems="$ctrl.actionitems"
-    tipcode="chaptersdndTip" 
-    tipenabled="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 1 ">
-</pagefooter>
+
+<div class="detail-footer bibiscoNotSelectableText">
+    <div class="row">
+      <hr />
+    </div>
+    <div class="row">
+      <span class="pull-left">
+          <button ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 0 || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue" 
+            type="button" class="btn btn-default"
+            ng-click="$ctrl.showChaptersRead()"
+            uib-tooltip="{{'read_your_novel_tooltip'+$root.os | translate}}">
+            {{'read_your_novel'| translate}}</button>
+      </span>
+      <span class="pull-right">
+        <contextualtipbutton ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 1" 
+          tipcode="chaptersdndTip"></contextualtipbutton>
+        <dropdownmenu buttonlabel="jsp.common.button.more" 
+          items="$ctrl.actionitems" open="up"
+          visible="$ctrl.actionitems && $ctrl.actionitems.length > 0">
+        </dropdownmenu>
+        <button ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 0  || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue" 
+            type="button" class="btn btn-primary"
+          ng-click="$ctrl.create()"
+          uib-tooltip="{{'chapter_create_tooltip'+$root.os | translate}}">
+          {{'jsp.chapters.a.createChapter' | translate}}</button>
+        <buttonback></buttonback>
+      </span>
+    </div>
+  </div>

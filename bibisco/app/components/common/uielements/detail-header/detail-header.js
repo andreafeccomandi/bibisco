@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ angular.
       imageenabled: '<',
       imagefunction: '&',
       noimageicon: '@',
+      tags: '<',
       taskstatus: '<',
       taskstatuschangefunction: '&',
       taskstatusreadonly: '<',

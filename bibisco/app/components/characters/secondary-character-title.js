@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,73 +19,45 @@ angular.
     controller: SecondaryCharacterTitleController
   });
 
-function SecondaryCharacterTitleController($location, $routeParams, $window,
-  SecondaryCharacterService) {
-
-  var self = this;
+function SecondaryCharacterTitleController($routeParams, $window, SecondaryCharacterService) {
+  let self = this;
 
   self.$onInit = function() {
 
     // common breadcrumb root
-    self.breadcrumbItems = [];
-    
-    if ($routeParams.id !== undefined) {
-      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
+    self.breadcrumbitems = [];
+
+    let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
   
-      // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
-      if (!secondarycharacter) {
-        $window.history.back();
-        return;
-      }
-
-      self.breadcrumbItems.push({
-        label: 'common_characters',
-        href: '/characters/params/focus=secondarycharacters_' + secondarycharacter.$loki
-      });
-
-      // edit breadcrumb items
-      self.breadcrumbItems.push({
-        label: secondarycharacter.name,
-        href: '/secondarycharacters/' + secondarycharacter.$loki + '/view'
-      });
-      self.breadcrumbItems.push({
-        label: 'jsp.character.dialog.title.updateTitle'
-      });
-
-      self.profileimageenabled = true;
-      self.profileimage = secondarycharacter.profileimage;
-      self.name = secondarycharacter.name;
-      self.pageheadertitle =
-        'jsp.character.dialog.title.updateTitle';
-    } else {
-
-      self.breadcrumbItems.push({
-        label: 'common_characters',
-        href: '/characters'
-      });
-
-      // create breadcrumb items
-      self.breadcrumbItems.push({
-        label: 'jsp.characters.dialog.title.createSecondaryCharacter'
-      });
-
-      self.profileimageenabled = false;
-      self.name = null;
-      self.pageheadertitle =
-        'jsp.characters.dialog.title.createSecondaryCharacter';
+    // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
+    if (!secondarycharacter) {
+      $window.history.back();
+      return;
     }
+
+    self.breadcrumbitems.push({
+      label: 'common_characters',
+      href: '/characters'
+    });
+
+    // edit breadcrumb items
+    self.breadcrumbitems.push({
+      label: secondarycharacter.name,
+      href: '/secondarycharacters/' + secondarycharacter.$loki + '/view'
+    });
+    self.breadcrumbitems.push({
+      label: 'jsp.character.dialog.title.updateTitle'
+    });
+
+    self.profileimageenabled = true;
+    self.profileimage = secondarycharacter.profileimage;
+    self.name = secondarycharacter.name;
+    self.pageheadertitle = 'jsp.character.dialog.title.updateTitle';
   };
 
   self.save = function(title) {
-    if ($routeParams.id !== undefined) {
-      let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
-      secondarycharacter.name = title;
-      SecondaryCharacterService.update(secondarycharacter);
-    } else {
-      SecondaryCharacterService.insert({
-        description: '',
-        name: title
-      });
-    }
+    let secondarycharacter = SecondaryCharacterService.getSecondaryCharacter(parseInt($routeParams.id));
+    secondarycharacter.name = title;
+    SecondaryCharacterService.update(secondarycharacter);
   };
 }

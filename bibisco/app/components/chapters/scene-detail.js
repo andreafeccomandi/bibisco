@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ angular.
 
 function SceneDetailController($location, $rootScope, $routeParams,
   $scope, $window, ChapterService, hotkeys, PopupBoxesService, ProjectService, SupporterEditionChecker) {
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -37,18 +37,17 @@ function SceneDetailController($location, $rootScope, $routeParams,
       $window.history.back();
       return;
     }
-
+    
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     
     self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
     self.mode = $routeParams.mode;
     self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
     
-    
+  
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.title = '#' + self.scene.position + ' ' + self.scene.title;
-    self.deleteforbidden = false; //TODO
-    self.chapterpath = '/chapters/' + self.chapter.$loki + '/params/focus=scenes_' + self.scene.$loki;
+    self.chapterpath = '/chapters/' + self.chapter.$loki;
 
     self.todaywords = ChapterService.getWordsWrittenLast30Days()[29].words;
     self.totalwords = ChapterService.getTotalWordsAndCharacters().words;
@@ -63,10 +62,9 @@ function SceneDetailController($location, $rootScope, $routeParams,
     self.editmode = (self.mode === 'edit');
 
     // breadcrumbs
-    
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: '/chapters/params/focus=chapters_' + self.chapter.$loki
+      href: '/chapters'
     });
     self.breadcrumbitems.push({
       label: ChapterService.getChapterPositionDescription(self.chapter.position) + ' ' + self.chapter.title,
@@ -76,6 +74,15 @@ function SceneDetailController($location, $rootScope, $routeParams,
       label: self.scene.title
     });
 
+    // groups
+    self.grouptags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let groups = ChapterService.getSceneGroups(parseInt($routeParams.sceneid));
+      for (let i = 0; i < groups.length; i++) {
+        self.grouptags.push({label: groups[i].name, color: groups[i].color});
+      }
+    }
+    
     // dropdown menu actions
     self.actionitems = [];
     self.actionitems.push({

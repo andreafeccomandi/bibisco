@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,13 @@ angular.
   component('secondarycharacterdetail', {
     templateUrl: 'components/characters/secondary-character-detail.html',
     controller: SecondaryCharacterDetailController
-  });
+  }); 
 
-function SecondaryCharacterDetailController($location, $routeParams, $window,
-  ChapterService, SecondaryCharacterService, UtilService) {
+function SecondaryCharacterDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
+  ChapterService, SecondaryCharacterService, SupporterEditionChecker, UtilService) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
 
@@ -38,13 +39,23 @@ function SecondaryCharacterDetailController($location, $routeParams, $window,
     self.mode = $routeParams.mode;
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=secondarycharacters_' + self.secondarycharacter.$loki
+      href: '/characters'
     });
     self.breadcrumbitems.push({
       label: self.secondarycharacter.name
     });
 
     self.deleteforbidden = self.isDeleteForbidden();
+
+    // tags
+    self.tags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let elementGroups = self.getGroupService().getElementGroups('secondarycharacter', self.secondarycharacter.$loki);
+      for (let i = 0; i < elementGroups.length; i++) {
+        let group = elementGroups[i];
+        self.tags.push({label: group.name, color: group.color});
+      }
+    }
   };
 
 
@@ -69,6 +80,13 @@ function SecondaryCharacterDetailController($location, $routeParams, $window,
 
   self.edit = function () {
     $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/edit');
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.getSecondaryCharacter = function(id) {
@@ -106,5 +124,20 @@ function SecondaryCharacterDetailController($location, $routeParams, $window,
     }
 
     return deleteForbidden;
+  };
+
+  hotkeys.bindTo($scope)
+    .add({
+      combo: ['ctrl+m', 'command+m'],
+      description: 'groupsmembership',
+      callback: function () {
+        self.managegroupsmembership();
+      }
+    });
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/groupsmembership');
+    });
   };
 }

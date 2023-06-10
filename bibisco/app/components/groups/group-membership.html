@@ -1,0 +1,49 @@
+<detailheader 
+    breadcrumbitems="$ctrl.breadcrumbitems" 
+    headertitle="{{$ctrl.title}}"
+    image="{{$ctrl.profileimage}}" 
+    imageenabled="$ctrl.imageenabled" 
+    noimageicon="{{$ctrl.noprofileimageicon}}">
+</detailheader>
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header-footer">
+    
+  <div class="top15 col-sm-12">
+    <blockquote>
+      <i class="page-header-subtitle page-subheader-truncate-title bibiscoNotSelectableText">
+    {{'groups' | translate}}</i>
+    </blockquote>
+  </div>
+  <div class="col-sm-offset-1 col-sm-10">
+    <button ng-repeat="group in $ctrl.groupsmembership track by $index" type="button"
+      ng-class="{ 'btn-info': group.selected, 'btn-unselected': !group.selected }"
+      class="btn btn-sm scene-tags-button"
+      ng-click="$ctrl.toggleGroup(group.id)">
+      {{group.name}}
+    </button>
+    <button type="button"
+      class="btn btn-sm btn-default scene-tags-button"
+      ng-click="$ctrl.createGroup()">
+      {{'new_group' | translate}}
+    </button>
+  </div>
+
+</div>
+
+<div class="detail-footer bibiscoNotSelectableText">
+  <div class="row">
+    <hr />
+  </div>
+  <div class="row">
+    <span class="pull-right">
+      <button type="button" class="btn btn-primary" ng-disabled="!$root.dirty"
+        uib-tooltip="{{'save_tooltip'+$root.os | translate}}"
+        ng-click="$ctrl.save()">
+        <span ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+        <span>{{"jsp.common.button.save" | translate}}</span>
+      </button>
+    <buttonback></buttonback>
+    </span>
+  </div>
+</div>
+

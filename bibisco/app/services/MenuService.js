@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
   'use strict';
 
   let ObjectService = null;
+  let GroupService = null;
+  let MindmapService = null;
   let NoteService = null;
 
   return {
@@ -34,7 +36,8 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
       this.pushCharacters(menu);
       this.pushLocations(menu);
       this.pushObjects(menu, includeSupporterEditionItems);
-      this.pushRelations(menu);
+      this.pushGroups(menu, includeSupporterEditionItems);
+      this.pushMindmaps(menu, includeSupporterEditionItems);
       this.pushNotes(menu, includeSupporterEditionItems); 
       this.pushChapters(menu);
       this.pushSearch(menu);
@@ -159,7 +162,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
           children.push({
             id: 'locations_' + locations[i].$loki,
             name: locations[i].location,
-            icon: 'image',
+            icon: 'map-marker',
             link: '/locations/' + locations[i].$loki + '/view'
           });
         }
@@ -199,14 +202,55 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
       });
     },
 
-    pushRelations: function(menu) {
+    pushGroups: function (menu, supporterEdition) {
+      let children = [];
+      if (supporterEdition) {
+        let groups = this.getGroupService().getGroups();
+        if (groups && groups.length > 0) {
+          for (let i = 0; i < groups.length; i++) {
+            children.push({
+              id: 'groups_' + groups[i].$loki,
+              name: groups[i].name,
+              icon: 'group',
+              link: '/groups/' + groups[i].$loki + '/view',
+              supportersonly: true
+            });
+          }
+        }
+      }
+
       menu.push({
-        id: 'relations',
-        name: $translate.instant('relations_title'),
-        icon: 'sitemap',
-        link: 'relations/view',
+        id: 'groups',
+        name: $translate.instant('groups'),
+        link: 'groups',
         supportersonly: true,
-        children: []
+        children: children
+      });
+    },
+
+    pushMindmaps: function (menu, supporterEdition) {
+      let children = [];
+      if (supporterEdition) {
+        let mindmaps = this.getMindmapService().getMindmaps();
+        if (mindmaps && mindmaps.length > 0) {
+          for (let i = 0; i < mindmaps.length; i++) {
+            children.push({
+              id: 'mindmaps_' + mindmaps[i].$loki,
+              name: mindmaps[i].name,
+              icon: 'sitemap',
+              link: '/relations/' + mindmaps[i].$loki + '/view',
+              supportersonly: true
+            });
+          }
+        }
+      }
+
+      menu.push({
+        id: 'mindmaps',
+        name: $translate.instant('common_mindmaps_title'),
+        link: 'mindmaps',
+        supportersonly: true,
+        children: children
       });
     },
 
@@ -397,11 +441,25 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
       return ObjectService;
     },
 
+    getGroupService: function () {
+      if (!GroupService) {
+        GroupService = $injector.get('GroupService');
+      }
+      return GroupService;
+    },
+
     getNoteService: function () {
       if (!NoteService) {
         NoteService = $injector.get('NoteService');
       }
       return NoteService;
+    },
+
+    getMindmapService: function () {
+      if (!MindmapService) {
+        MindmapService = $injector.get('MindmapService');
+      }
+      return MindmapService;
     },
   };
 });

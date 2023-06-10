@@ -4,8 +4,6 @@
     <a ng-if="item.href && !$ctrl.linkdisabled" ng-click="$ctrl.followlink(item.href)">
       <span style="{{item.style}}">{{item.label | translate}}</span>
     </a>
-    <span ng-if="!item.href || $ctrl.linkdisabled">
-      <span style="{{item.style}}">{{item.label | translate}}</span>
-    </span>
+    <span ng-if="!item.href || $ctrl.linkdisabled" style="{{item.style}}">{{item.label | translate}}</span>
   </li>
 </ol>

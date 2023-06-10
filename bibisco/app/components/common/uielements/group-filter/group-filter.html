@@ -1,0 +1,16 @@
+<span ng-if="$ctrl.showFilter" class="pull-right">
+    <ui-select class="group-filter" ng-model="$ctrl.groupselected" on-select="$ctrl.selectGroup()">
+        <ui-select-match>
+            <span class="group-filter-item">
+                <i ng-if="$select.selected.key === 'all'" class="fa fa-tags"></i> 
+                <i ng-if="$select.selected.key !== 'all'" class="fa fa-tag" style="color: {{$select.selected.color}}"></i> 
+                {{$select.selected.name}}</span>
+        </ui-select-match>
+        <ui-select-choices repeat="group in $ctrl.groups | filter: {'name':$select.search}">
+            <span class="group-filter-item">
+                <i ng-if="group.key === 'all'" class="fa fa-tags"></i> 
+                <i ng-if="group.key !== 'all'" class="fa fa-tag" style="color: {{group.color}}"></i> 
+                {{group.name}}</span>
+        </ui-select-choices>
+    </ui-select> 
+</span>

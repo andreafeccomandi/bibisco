@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,19 @@ angular.
     }
   });
 
-function QuestionSelectController($translate) {
+function QuestionSelectController($injector, $translate) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
     self.selectedItem;
     self.selectItems = [];
+
+    if (self.type === 'custom') {
+      let CustomQuestionService = $injector.get('CustomQuestionService');
+      self.customQuestions = CustomQuestionService.getCustomQuestions();
+    }
+
     for (let i = 0; i < self.questioncount; i++) {
       let questionItem = self.createQuestionItem(i);
       self.selectItems.push(questionItem);
@@ -52,9 +58,17 @@ function QuestionSelectController($translate) {
   };
 
   self.createQuestionItem = function (item) {
-    let description = $translate.instant('jsp.characterInfo.question') 
+    let description;
+
+    if (self.type === 'custom') {
+      description = ' (' + (item+1)  + '/' + self.questioncount
+      + '): ' + self.customQuestions[item].question;
+    } else {
+      description = $translate.instant('jsp.characterInfo.question') 
       + ' (' + (item+1)  + '/' + self.questioncount
       + '): ' + $translate.instant('characterInfo_question_' + self.type + '_' + item);
+    }
+    
     return {
       key: item,
       description: description

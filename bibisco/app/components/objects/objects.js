@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ angular.
     }
   });
 
-function ObjectsController($location, $rootScope, $routeParams, $scope,
-  CardUtilService, ObjectService, SupporterEditionChecker) {
+function ObjectsController($location, $rootScope, $scope, GroupService, ObjectService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
     
@@ -34,6 +33,7 @@ function ObjectsController($location, $rootScope, $routeParams, $scope,
       item: 'objects'
     });
     
+    self.showGroupFilter = false;
     self.cardgriditems = this.getCardGridItems();
 
     // hotkeys
@@ -56,14 +56,27 @@ function ObjectsController($location, $rootScope, $routeParams, $scope,
       let objects = ObjectService.getObjects();
       cardgriditems = [];
       for (let i = 0; i < objects.length; i++) {
-        cardgriditems.push({
-          id: objects[i].$loki,
-          image: objects[i].profileimage, 
-          noimageicon: 'magic',
-          position: objects[i].position,
-          status: objects[i].status,
-          title: objects[i].name
-        });
+        let tags = [];
+        let showOnActiveFilter = false;
+        let elementGroups = GroupService.getElementGroups('object', objects[i].$loki);
+        for (let i = 0; i < elementGroups.length; i++) {
+          tags.push({label: elementGroups[i].name, color: elementGroups[i].color});
+          if ($rootScope.groupFilter && elementGroups[i].$loki === $rootScope.groupFilter.key) {
+            showOnActiveFilter = true;
+          }
+        }       
+        self.showGroupFilter = true;
+        if (!$rootScope.groupFilter || $rootScope.groupFilter.key === 'all' || showOnActiveFilter) {
+          cardgriditems.push({
+            id: objects[i].$loki,
+            image: objects[i].profileimage, 
+            noimageicon: 'magic',
+            position: objects[i].position,
+            status: objects[i].status,
+            tags: tags,
+            title: objects[i].name
+          });
+        }
       }
     }
     return cardgriditems;
@@ -79,5 +92,11 @@ function ObjectsController($location, $rootScope, $routeParams, $scope,
     SupporterEditionChecker.filterAction(function() {
       $location.path('/objects/' + id + '/view');
     });    
+  };
+
+  self.refreshCardGridItems = function() {
+    self.showGroupFilter = false;
+    self.cardgriditems = this.getCardGridItems();
+    $scope.$apply();
   };
 }

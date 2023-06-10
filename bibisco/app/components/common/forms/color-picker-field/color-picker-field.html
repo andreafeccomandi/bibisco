@@ -1,0 +1,10 @@
+<div class="form-group text-left">
+    <label class="col-sm-{{$ctrl.labelcols}} control-label" 
+        for="bibiscoCreateSequelSelectProject">{{$ctrl.label | translate}}</label>
+    <div class="col-sm-{{$ctrl.inputcols}}">
+        <i ng-repeat="color in $ctrl.colorItems track by $index"
+        class="fa color-selector-item"  style="color: {{color.color}}"
+        ng-class="{ 'fa-check-square': color.selected, 'fa-square': !color.selected }"
+        ng-click="$ctrl.selectColor(color.color)"></i>
+    </div>
+</div>

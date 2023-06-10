@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: NoteTitleController
   });
 
-function NoteTitleController($routeParams, NoteService) {
+function NoteTitleController($routeParams, $window, NoteService) {
 
   var self = this;
 
@@ -39,7 +39,7 @@ function NoteTitleController($routeParams, NoteService) {
 
       self.breadcrumbnotes.push({
         label: 'common_notes_title',
-        href: '/notes/params/focus=notes_' + note.$loki
+        href: '/notes'
       });
 
       // edit breadcrumb notes

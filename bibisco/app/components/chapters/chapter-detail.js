@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ angular.
   });
 
 function ChapterDetailController($location, $rootScope, $routeParams, $scope, $window,
-  ChapterService,CardUtilService, hotkeys, PopupBoxesService) {
+  ChapterService, hotkeys, PopupBoxesService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -42,11 +42,20 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope, $w
     // breadcrumbs
     self.breadcrumbitems.push({
       label: 'common_chapters',
-      href: 'chapters/params/focus=chapters_' + self.chapter.$loki
+      href: 'chapters'
     });
     self.breadcrumbitems.push({
       label: self.title
     });
+
+    // groups
+    self.grouptags = [];
+    if (SupporterEditionChecker.isSupporterOrTrial()) {
+      let groups = ChapterService.getChapterGroups(parseInt(self.chapter.$loki));
+      for (let i = 0; i < groups.length; i++) {
+        self.grouptags.push({label: groups[i].name, color: groups[i].color});
+      }
+    }
 
     // action items
     self.actionitems = [];
@@ -65,7 +74,22 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope, $w
     self.scenescardgriditems = self.getScenesCardGridItems(self.chapter.$loki);
 
     // hotkeys
-    self.hotkeys = ['ctrl+n', 'command+n'];
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['ctrl+n', 'command+n'],
+        description: 'newscene',
+        callback: function () {
+          self.createScene();
+        }
+      })
+      .add({
+        combo: ['ctrl+o', 'command+o'],
+        description: 'readchapter',
+        callback: function($event) {
+          $event.preventDefault();
+          self.showChapterRead();
+        }
+      });
   };
 
   self.getScenesCardGridItems = function(chapterid) {
@@ -75,12 +99,21 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope, $w
       let scenes = ChapterService.getScenes(chapterid);
       items = [];
       for (let i = 0; i < scenes.length; i++) {
+        let tags = [];
+        if (SupporterEditionChecker.isSupporterOrTrial()) {
+          let sceneGroups = ChapterService.getSceneGroups(scenes[i].$loki);
+          for (let i = 0; i < sceneGroups.length; i++) {
+            tags.push({label: sceneGroups[i].name, color: sceneGroups[i].color});
+          }
+        }
+
         items.push({
           characters: scenes[i].characters,
           id: scenes[i].$loki,
           noimageicon: 'bookmark-o',
           position: scenes[i].position,
           status: scenes[i].status,
+          tags: tags,
           text: scenes[i].title,
           title: '#' + scenes[i].position,
           words: scenes[i].words
@@ -117,12 +150,9 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope, $w
     $window.history.back();
   };
 
-  hotkeys.bindTo($scope)
-    .add({
-      combo: ['ctrl+n', 'command+n'],
-      description: 'newscene',
-      callback: function () {
-        self.createScene();
-      }
+  self.showChapterRead = function() {
+    SupporterEditionChecker.filterAction(function() {
+      $location.path('/chapters/read/'+self.chapter.$loki);
     });
+  };
 }

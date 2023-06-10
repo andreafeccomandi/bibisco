@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,11 @@ angular.
     }
   });
 
-function ArchitectureController($location, $rootScope, $routeParams, $scope,
-  ArchitectureService, CardUtilService, StrandService, SupporterEditionChecker) {
+function ArchitectureController($injector, $location, $rootScope, $scope,
+  ArchitectureService, StrandService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
+  let GroupService = null;
 
   self.$onInit = function() {
 
@@ -107,16 +108,31 @@ function ArchitectureController($location, $rootScope, $routeParams, $scope,
       let strands = StrandService.getStrands();
       items = [];
       for (let i = 0; i < strands.length; i++) {
+        let tags = [];
+        if (SupporterEditionChecker.isSupporterOrTrial()) {
+          let elementGroups = self.getGroupService().getElementGroups('strand', strands[i].$loki);
+          for (let i = 0; i < elementGroups.length; i++) {
+            tags.push({label: elementGroups[i].name, color: elementGroups[i].color});
+          }  
+        }
         items.push({
           id: strands[i].$loki,
           noimageicon: 'code-fork',
           position: strands[i].position,
           status: strands[i].status,
+          tags: tags,
           title: strands[i].name
         });
       }
     }
     return items;
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+    return GroupService;
   };
 
   self.createStrand = function() {

@@ -3,42 +3,46 @@ Take a look at this: http://stackoverflow.com/questions/17946886/hover-sticks-to
 http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directive (workaround)
 -->
 
-<div class="card card-{{$ctrl.dimension}}" id="{{$ctrl.family}}_{{$ctrl.cardid}}" 
-  ng-class="{'card-hover': hover}" cardid="{{$ctrl.cardid}}"
-  ng-mouseenter="hover = true" ng-mouseleave="hover = false" 
+<div class="card card-{{$ctrl.dimension}}{{$ctrl.tagspresent}}" id="{{$ctrl.family}}_{{$ctrl.cardid}}" ng-class="{'card-hover': hover}"
+  cardid="{{$ctrl.cardid}}" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
   ng-click="$ctrl.selectfunction({id: $ctrl.cardid})"
-  ng-keypress="$event.which === 13 && $ctrl.selectfunction({id: $ctrl.cardid})"
-	ng-attr-draggable="{{$ctrl.dndenabled}}" ng-attr-droppable="{{$ctrl.dndenabled}}"
-  dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})" 
+  ng-keypress="$event.which === 13 && $ctrl.selectfunction({id: $ctrl.cardid})" ng-attr-draggable="{{$ctrl.dndenabled}}"
+  ng-attr-droppable="{{$ctrl.dndenabled}}" dropfunction="$ctrl.dropfunction({draggedObjectId, destinationObjectId})"
   family="{{$ctrl.family}}" tabindex="0">
 
   <div class="row top0">
-      <div class="card-left-section card-left-section-{{$ctrl.dimension}}">
-        
-        <span ng-if="$ctrl.image" class="pull-left card-heading-image">
-          <img src="{{$ctrl.projectImagesDirectory}}{{$ctrl.image}}" class="img-circle">
-        </span>
-            
-        <div ng-if="!$ctrl.image" class="card-no-profile-bg img-circle">
-          <i class="fa fa-{{$ctrl.noimageicon}} fa-inverse" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
-        </div>
-        
-        <taskstatus status="$ctrl.status"></taskstatus>
+    <div class="card-left-section card-left-section-{{$ctrl.dimension}}{{$ctrl.tagspresent}}">
+
+      <span ng-if="$ctrl.image" class="pull-left card-heading-image">
+        <img src="{{$ctrl.projectImagesDirectory}}{{$ctrl.image}}" class="img-circle">
+      </span>
+
+      <div ng-if="!$ctrl.image" class="card-no-profile-bg img-circle">
+        <i class="fa fa-{{$ctrl.noimageicon}} fa-inverse" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
       </div>
 
-      <div class="card-right-section">
-        <div>
-            <span class="pull-left card-heading-title card-heading-title-{{$ctrl.dimension}}">
-              <strong class="card-heading bibiscoNotSelectableText">{{$ctrl.cardtitle  | translate}}</strong>
-            </span>
-            <span class="pull-right"><strong class="card-heading bibiscoNotSelectableText">
-              <wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters"></wordscharacterscounter>
-              </strong>
-            </span>
-        </div>
-        <div ng-if="$ctrl.hastext">
-          <p class="card-text card-text-{{$ctrl.dimension}}">{{$ctrl.text | translate}}</p>
-        </div>
+      <cardtags tags="$ctrl.tags"></cardtags>
+
+      <taskstatus status="$ctrl.status"></taskstatus>
+    </div>
+
+    <div class="card-right-section">
+      <div>
+        <span class="pull-left card-heading-title card-heading-title-{{$ctrl.dimension}}">
+          <span>
+            <strong class="card-heading-title-text-{{$ctrl.dimension}}">{{$ctrl.cardtitle | translate}}</strong>
+          </span>
+        </span>
+        <span class="pull-right">
+          <strong>
+            <wordscharacterscounter ng-if="$ctrl.words != null" words="$ctrl.words" characters="$ctrl.characters">
+            </wordscharacterscounter>
+          </strong>
+        </span>
       </div>
+      <div ng-if="$ctrl.hastext">
+        <p class="card-text card-text-{{$ctrl.dimension}}">{{$ctrl.text | translate}}</p>
+      </div>
+    </div>
   </div>
 </div>

@@ -323,7 +323,27 @@
               "version": 0
           },
           "$loki": 32
-      }
+      },
+      {
+        "name": "readTip",
+        "value": "true",
+        "meta": {
+            "revision": 0,
+            "created": 1487541445286,
+            "version": 0
+        },
+        "$loki": 33
+    },
+    {
+      "name": "autocapitalizeEnabled",
+      "value": "true",
+      "meta": {
+          "revision": 0,
+          "created": 1487541445286,
+          "version": 0
+      },
+      "$loki": 34
+  }
       ],
       "idIndex": [
         1,
@@ -357,7 +377,9 @@
         29,
         30,
         31,
-        32
+        32,
+        33,
+        34
       ],
       "binaryIndices": {},
       "constraints": null,
@@ -376,7 +398,7 @@
       "disableChangesApi": true,
       "autoupdate": false,
       "ttl": null,
-      "maxId": 32,
+      "maxId": 34,
       "DynamicViews": [],
       "events": {
         "insert": [

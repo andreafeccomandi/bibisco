@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,21 +19,27 @@ angular.
     controller: RelationExportController
   });
 
-function RelationExportController($injector, $location, $rootScope, $scope, $timeout, 
-  ExportService, FileSystemService, PopupBoxesService) {
+function RelationExportController($injector, $location, $rootScope, $scope, $routeParams, $timeout, 
+  ExportService, FileSystemService, MindmapService, PopupBoxesService) {
 
-  var self = this;
-  var RelationsService = $injector.get('RelationsService');
+  let self = this;
+  let RelationsService = $injector.get('RelationsService');
   const { shell } = require('electron');
 
   self.$onInit = function() {
 
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
 
+    self.mindmap = MindmapService.getMindmap(parseInt($routeParams.id));
+
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
-      label: 'relations_title',
-      href: '/relations/view'
+      label: 'common_mindmaps_title',
+      href: '/mindmaps'
+    });
+    self.breadcrumbitems.push({
+      label: self.mindmap.name,
+      href: '/relations/'+self.mindmap.$loki+'/view'
     });
     self.breadcrumbitems.push({
       label: 'common_export',
@@ -66,12 +72,12 @@ function RelationExportController($injector, $location, $rootScope, $scope, $tim
     let style = document.createAttribute('style');      
     style.value = 'width: 2048px; height: 1080px; background-color: white;';                           
     div.setAttributeNode(style);   
-    document.body.appendChild(div);;
+    document.body.appendChild(div);
 
     // create network to export
     let exportnetwork = new vis.Network(div, {
-      nodes: new vis.DataSet(RelationsService.getRelationsNodes()),
-      edges: new vis.DataSet(RelationsService.getRelationsEdges())
+      nodes: new vis.DataSet(RelationsService.getRelationsNodes(self.mindmap.relationnodes)),
+      edges: new vis.DataSet(RelationsService.getRelationsEdges(self.mindmap.relationsedges))
     }, {
       edges: {
         arrows: 'to',
@@ -134,7 +140,7 @@ function RelationExportController($injector, $location, $rootScope, $scope, $tim
   
     // export image
     let dataURL = destinationCanvas.toDataURL('image/png');
-    let exportfilepath = ExportService.calculateExportFilePath(self.exportpath, 'relations', new Date());
+    let exportfilepath = ExportService.calculateExportFilePath(self.exportpath, self.mindmap.name, new Date());
     FileSystemService.writeBase64DataToFile(dataURL, exportfilepath+'.png');
     
     // remove dummy div
@@ -145,7 +151,7 @@ function RelationExportController($injector, $location, $rootScope, $scope, $tim
 
     // back to relations page
     $timeout(function () {
-      $location.path('/relations/view');
+      $location.path('/relations/'+self.mindmap.$loki+'/view');
     }, 0);
   };
 

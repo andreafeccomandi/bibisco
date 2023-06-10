@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, $wi
       // edit breadcrumb items
       self.breadcrumbItems.push({
         label: 'common_chapters',
-        href: '/chapters/params/focus=chapters_' + chapter.$loki
+        href: '/chapters'
       });
       self.breadcrumbItems.push({
         label: ChapterService.getChapterPositionDescription(chapter.position) + ' ' + chapter.title,

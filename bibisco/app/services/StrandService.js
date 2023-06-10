@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ angular.module('bibiscoApp').service('StrandService', function($rootScope,
         id: strand.$loki,
         collection: 'strands'
       });
+      return strand;
     },
     move: function(sourceId, targetId) {
       CollectionUtilService.move(this.getCollection(), sourceId, targetId);

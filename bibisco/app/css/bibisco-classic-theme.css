@@ -1,5 +1,5 @@
 ::-webkit-scrollbar-thumb {
-    height: 6px;
+    height: 30px;
     border: 4px solid rgba(0, 0, 0, 0);
 	background-clip: padding-box;
 	border-radius: 7px;

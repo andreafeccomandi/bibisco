@@ -1,12 +1,8 @@
-<div class="row">
-  <breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
-</div>
-<div class="row">
-  <pageheader headertitle="{{$ctrl.pageheadertitle}}" image="{{$ctrl.profileimage}}" 
-  imageenabled="$ctrl.profileimageenabled" 
-  noimageicon="{{$ctrl.noprofileimageicon}}">
-  </pageheader>
-</div>
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}" image="{{$ctrl.profileimage}}" 
+  imageenabled="$ctrl.profileimageenabled"  noimageicon="{{$ctrl.noprofileimageicon}}">
+</pageheader>
+
 <div class="row top15">
   <div class="col-sm-12">
     <form name="elementTitleForm" ng-submit="$ctrl.save(elementTitleForm.$valid)" class="form-horizontal" novalidate>
@@ -16,6 +12,6 @@
       </textinputfield>
       <formbuttons form="elementTitleForm">
       </formbuttons>
+    </form>
   </div>
-  </form>
 </div>

@@ -2,35 +2,16 @@
   <div class="modal-body" id="modal-body">
     <div class="row">
       <div class="col-sm-12">
-        <form name="$ctrl.nodeDetailForm" class="form-horizontal" novalidate>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">{{'relations_element_type' | translate}}</label>
-            <div class="col-sm-10">
-              <div class="btn-group pull-left">
-                <button type="button" class="btn btn-sm btn-default" ng-click="$ctrl.selectMaincharacter()"
-                  ng-class="{ 'active' : $ctrl.maincharacter}">
-                  {{'relations_element_type_main_character' | translate}}
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-click="$ctrl.selectSecondarycharacter()"
-                  ng-class="{ 'active' : $ctrl.secondarycharacter}">
-                  {{'relations_element_type_secondary_character' | translate}}
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-click="$ctrl.setLocation()"
-                  ng-class="{ 'active' : $ctrl.location}">
-                  {{'relations_element_type_location' | translate}}
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-click="$ctrl.setObject()"
-                  ng-class="{ 'active' : $ctrl.object}">
-                  {{'relations_element_type_object' | translate}}
-                </button>
-              </div>
-            </div>
-          </div>
-          
+        <form name="$ctrl.nodeDetailForm" class="form-horizontal" novalidate>          
           <textinputfield textinputfieldid="nodedetailid" field="$ctrl.nodeDetailForm.name" model="$ctrl.name" name="name" 
             maxlength="200" typeheadsource="$ctrl.items" autofocus required 
             label="{{'relations_element_name' | translate}}" labelcols="2" inputcols="9">
           </textinputfield>
+          <colorpickerfield form="$ctrl.nodeDetailForm" model="$ctrl.color" label="common_color"
+            labelcols="2" inputcols="9"></colorpickerfield>
+          <buttongroupfield group="$ctrl.shapegroup" 
+            label="Shape" form="$ctrl.nodeDetailForm"
+            model="$ctrl.shape" labelcols="2" inputcols="9"></buttongroupfield> 
         </form>
       </div>
     </div>

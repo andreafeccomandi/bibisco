@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  *
  */
 
-angular.module('bibiscoApp').service('ProjectService', function($injector, $interval, $rootScope,
+angular.module('bibiscoApp').service('ProjectService', function($injector, $interval, $rootScope, $timeout, 
   BibiscoDbConnectionService, BackupService, BibiscoPropertiesService, CollectionUtilService, 
-  ContextService, FileSystemService, LoggerService, PopupBoxesService,
+  ContextService, FileSystemService, LocaleService, LoggerService, PopupBoxesService,
   UtilService, ProjectDbConnectionService, UuidService
 ) {
   'use strict';
@@ -64,6 +64,21 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         }
       }
       return needToUpdate;
+    },
+
+    compareVersions: function(version1, version2) {
+      
+      version1 = version1.split('.');
+      version2 = version2.split('.');
+      
+      for(let i=0;i<3;i++){  
+        if(Number(version1[i])<Number(version2[i])){
+          return -1;
+        } else if(Number(version1[i])>Number(version2[i])){
+          return 1;
+        }
+      }
+      return 0;
     },
 
     checkProjectDbVersion: function() {
@@ -158,6 +173,75 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
           locationCollection.removeDynamicView('cities');
         }
         LoggerService.info('Removed dynamicViews all_locations, nations, states, cities');
+
+        // VERSION 3.0
+
+        // custom questions
+        if (!projectdb.getCollection('customquestions')) { 
+          projectdb.addCollection('customquestions');
+          LoggerService.info('Added collection custom questions');
+        }
+
+        // add questions: "what is their health status?","how is their relationship with their children?"
+        // add custom questions
+        let mainCharacters = projectdb.getCollection('maincharacters').chain().data();
+        let emptyAnswer = {characters: 0, text: '', words: 0};
+        for (let i = 0; i < mainCharacters.length; i++) {
+          
+          // "what is their health status?"
+          if (mainCharacters[i].personaldata.questions.length === 12) {
+            mainCharacters[i].personaldata.questions.push(emptyAnswer);
+            LoggerService.info('Added personaldata question for main character with $loki='+mainCharacters[i].$loki);
+          }
+          
+          // "how is their relationship with their children?"
+          if (mainCharacters[i].sociology.questions.length === 10) {
+            mainCharacters[i].sociology.questions.push(emptyAnswer);
+            LoggerService.info('Added sociology question for main character with $loki='+mainCharacters[i].$loki);
+          }
+
+          // custom questions
+          if (!mainCharacters[i].custom) {
+            mainCharacters[i].custom = {
+              freetextcharacters: 0,
+              freetext: '',
+              freetextenabled: false,
+              questions: [],
+              status: 'todo',
+              freetextwords: 0
+            };
+            LoggerService.info('Added custom section for main character with $loki='+mainCharacters[i].$loki);
+          }
+        }
+        
+        // groups
+        if (!projectdb.getCollection('groups')) { 
+          projectdb.addCollection('groups');
+          LoggerService.info('Added collection groups');
+        }
+
+        // mind maps
+        if (!projectdb.getCollection('mindmaps')) { 
+          projectdb.addCollection('mindmaps');
+          LoggerService.info('Added collection mindmaps');
+
+          let relationNodes = projectdb.getCollection('relationsnodes').count();
+          if (relationNodes > 0) {
+            let translation = JSON.parse(FileSystemService.readFile(LocaleService.getResourceFilePath(projectInfo.language)));
+            let mindmap = {
+              name: translation.first_mindmap,
+              relationnodes: 'relationsnodes',
+              relationsedges: 'relationsedges'
+            };
+            CollectionUtilService.insertWithoutCommit(projectdb.getCollection('mindmaps'), mindmap);
+            LoggerService.info('Inserted existing relationships into the first mind map');
+          } 
+        }
+
+        // maintain old type of wordcount for projects created with version <3.0.0
+        if (this.compareVersions(projectInfo.bibiscoVersion, '3.0.0') < 0) {
+          projectInfo.wordCountMode = 'hyphenated-contracted-possessive-2-word';
+        }
         
         // update project version
         projectInfo.bibiscoVersion = actualversion;
@@ -168,7 +252,6 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         // save project database
         ProjectDbConnectionService.saveDatabase();
       }
-
     },
 
     checkCollectionsIntegrity: function() {
@@ -191,7 +274,8 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         author: author,
         bibiscoVersion: BibiscoPropertiesService.getProperty(
           'version').split('-')[0],
-        lastScenetimeTag: ''
+        lastScenetimeTag: '',
+        wordCountMode : 'hyphenated-contracted-possessive-1-word',
       });
 
       let architectureCollection = projectdb.addCollection('architecture');
@@ -217,13 +301,16 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       projectdb.addCollection('maincharacters');
       projectdb.addCollection('secondarycharacters');
       projectdb.addCollection('locations');
+      projectdb.addCollection('mindmaps');
       projectdb.addCollection('notes');
       projectdb.addCollection('objects');
+      projectdb.addCollection('groups');
       projectdb.addCollection('parts');
       projectdb.addCollection('relationsnodes');
       projectdb.addCollection('relationsedges');
       projectdb.addCollection('wordswrittenperday');
       projectdb.addCollection('backups');
+      projectdb.addCollection('customquestions');
       
       // save project database
       ProjectDbConnectionService.saveDatabase();
@@ -387,6 +474,9 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       
       // destroy actual autobackup function promise if exists
       $interval.cancel(autobackupfunctionpromise);
+
+      // clear root properties
+      $rootScope.groupFilter = null;
 
       // execute backup on close
       if (autoBackupOnExit && this.itsTimeToBackup(SOMETHING_CHANGED)) {
@@ -559,12 +649,14 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
 
     executeBackup: function (options) {
 
+      let backupPath = BibiscoPropertiesService.getProperty('backupDirectory');
+      FileSystemService.canWriteDirectoryOrThrowException(backupPath);
+
       if (options.showWaitingModal) {
         PopupBoxesService.waiting('backup_in_progress', 'BACKUP_DONE');
       }
 
       let projectInfo = this.getProjectInfo();
-      let backupPath = BibiscoPropertiesService.getProperty('backupDirectory');
       LoggerService.debug('Start executing backup for project ' + projectInfo.name + ' to directory ' + backupPath + ' ...');
       let timestamp = new Date();
       let timestampFormatted = dateFormat(timestamp, 'yyyy_mm_dd_HH_MM_ss');
@@ -577,10 +669,18 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         LoggerService.debug('Max backup number set to zero. Exit.');
         if (options.callback) {
           options.callback();
-          $rootScope.$emit('BACKUP_DONE');
+          $timeout(function () {
+            $rootScope.$emit('BACKUP_DONE');
+          }, 1000);
         }
       } else {
         try {
+          // To prevent the waiting modal from ever closing, after 10 seconds 
+          // I close it regardless of the outcome of the operation
+          $timeout(function () {
+            $rootScope.$emit('BACKUP_DONE');
+          }, 10000);
+
           this.exportProject(projectInfo.id, completeBackupFilename, function(){
             BackupService.insert({
               filename: filename + '.bibisco2',
@@ -596,11 +696,15 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
             if (options.callback) {
               options.callback();
             }
-            $rootScope.$emit('BACKUP_DONE');
+            $timeout(function () {
+              $rootScope.$emit('BACKUP_DONE');
+            }, 1000);
           });
         } catch (err) {
           LoggerService.error(projectInfo.id + ' backup failed: ' + err);
-          $rootScope.$emit('BACKUP_DONE');
+          $timeout(function () {
+            $rootScope.$emit('BACKUP_DONE');
+          }, 1000);
         }
       }
     },
@@ -608,13 +712,6 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
     updateLastScenetimeTagWithoutCommit: function(time) {
       let projectInfo = this.getProjectInfo();
       projectInfo.lastScenetimeTag = time;
-      CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
-        .getCollection('project'), projectInfo);
-    },
-
-    updateLastRelationsSaveWithoutCommit: function(time) {
-      let projectInfo = this.getProjectInfo();
-      projectInfo.lastRelationsSave = time;
       CollectionUtilService.updateWithoutCommit(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
     },

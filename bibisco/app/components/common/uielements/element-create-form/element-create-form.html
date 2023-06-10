@@ -1,0 +1,30 @@
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffelementCreateFormset="$ctrl.profileimageenabled"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}" image="{{$ctrl.profileimage}}" 
+  imageenabled="$ctrl.profileimageenabled"  noimageicon="{{$ctrl.noprofileimageicon}}">
+</pageheader>
+
+<div class="row top15">
+  <div class="col-sm-12">
+    <form name="elementCreateForm" ng-submit="$ctrl.save(elementCreateForm.$valid)" class="form-horizontal" novalidate>
+      <textinputfield field="elementCreateForm.title" model="$ctrl.title"
+        name="title" autofocus maxlength="{{$ctrl.titlemaxlength}}"
+        required="{{$ctrl.titlemandatory}}" label="{{$ctrl.titlelabel}}" labelcols="3" inputcols="8">
+      </textinputfield>
+      <div ng-if="$ctrl.groupenabled && $ctrl.groupsmembership && $ctrl.groupsmembership.length > 0" class="form-group">
+        <label class="col-sm-3 control-label" for="{{$ctrl.label}}">{{'groups' | translate}}</label>
+        <div class="col-sm-8">
+          <button ng-repeat="group in $ctrl.groupsmembership track by $index" type="button"
+            ng-class="{ 'btn-info': group.selected, 'btn-unselected': !group.selected }"
+            class="btn btn-sm scene-tags-button"
+            ng-click="$ctrl.toggleGroup(group.id)">
+            {{group.name}}
+          </button>
+        </div>
+      </div>
+      <colorpickerfield ng-if="$ctrl.colorenabled" form="elementCreateForm" model="$ctrl.color" label="group_color"
+        labelcols="3" inputcols="8"></colorpickerfield>
+      <formbuttons form="elementCreateForm">
+      </formbuttons>
+    </form>
+  </div>
+</div>

@@ -6,6 +6,7 @@
           type="button" class="btn btn-default {{item.buttonclass}}"
           ng-click="$ctrl.change(item.value)"
           ng-class="{ 'active' : $ctrl.model == item.value }">
+          <i ng-if="item.icon" class="fa fa-{{item.icon}}"></i>
           {{item.label | translate}}
         </button>
     </div>

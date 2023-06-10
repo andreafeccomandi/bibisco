@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,54 +24,73 @@ How relations works.
 
 Actions on nodes:
 - insert: open modal on double click event; programmatically add entry to DataVis, passing: 
-	x and y coordinate from double click
-	id from UUIDService
-	label and group from modal
+  x and y coordinate from double click
+  id from UUIDService
+  label and group from modal
 - update: open modal on double click event; programmatically update entry in DataVis, passing: 
-	label and group from modal
+  label and group from modal
 - delete: open modal on double click event; done by vis.js (self.network.deleteSelected())
 - move: done by vis.js (self.network.disableEditMode()), programmatically update positions of all entries in DataVis on drag end event
 
 Actions on edges:
 - insert: always active (self.network.addEdgeMode()); on addEdge event (network.manipulation.addEdge):
-	1) add entry to DataVis, passing id from UUIDService
-	2) select edge on network by id (self.network.selectEdges([data.id]))
-	3) open modal
-	4) update entry in Datavis passing label from modal
+  1) add entry to DataVis, passing id from UUIDService
+  2) select edge on network by id (self.network.selectEdges([data.id]))
+  3) open modal
+  4) update entry in Datavis passing label from modal
 - update: open modal on double click event; update entry in Datavis passing label from modal
 - delete: open modal on double click event; done by vis.js (self.network.deleteSelected())
 */
-function RelationsController($injector, $location, $rootScope, $routeParams, $scope, $timeout, 
-  $translate, $uibModal, hotkeys, BibiscoPropertiesService, PopupBoxesService, ProjectService, 
+function RelationsController($injector, $location, $rootScope, $routeParams, $scope, $timeout,
+  $translate, $uibModal, $window, hotkeys, BibiscoPropertiesService, MindmapService, PopupBoxesService,
   RichTextEditorPreferencesService, TextDimensionService, UuidService) {
 
-  var self = this;
-  var RelationsService = $injector.get('RelationsService');
+  let self = this;
+  let RelationsService = $injector.get('RelationsService');
 
   self.$onInit = function () {
 
-    self.editMode = $routeParams.mode === 'view' ? false: true;
+    self.mindmap = MindmapService.getMindmap(parseInt($routeParams.id));
+    self.editMode = $routeParams.mode === 'view' ? false : true;
     self.autosaveenabled;
-    self.lastsave = ProjectService.getProjectInfo().lastRelationsSave;
 
     self.checkExit = {
       active: false
     };
 
-    let relationNodes = RelationsService.getRelationsNodes();
-    let relationEdges = RelationsService.getRelationsEdges();
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'mindmap_change_name_label',
+      itemfunction: self.changeTitle
+    });
+    self.actionitems.push({
+      label: 'jsp.common.button.delete',
+      itemfunction: self.delete
+    });
+
+    self.breadcrumbitems = [];
+    self.breadcrumbitems.push({
+      label: 'common_mindmaps_title',
+      href: '/mindmaps'
+    });
+    self.breadcrumbitems.push({
+      label: self.mindmap.name
+    });
+
+    let relationNodes = RelationsService.getRelationsNodes(self.mindmap.relationnodes);
+    let relationEdges = RelationsService.getRelationsEdges(self.mindmap.relationsedges);
 
     self.emptyRelations = false;
     if (!relationNodes || relationNodes.length === 0) {
       self.emptyRelations = true;
-    } 
+    }
     self.atLeast2NodesPresent = (relationNodes && relationNodes.length > 1) ? true : false;
 
     self.nodes = new vis.DataSet(relationNodes);
     self.edges = new vis.DataSet(relationEdges);
-    
+
     let container = document.getElementById('mynetwork');
-    
+
     let data = {
       nodes: self.nodes,
       edges: self.edges
@@ -101,10 +120,10 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
           bindToWindow: false
         },
         zoomView: false
-      }, 
+      },
       layout: {
         randomSeed: 2
-      }, 
+      },
       nodes: {
         font: {
           bold: 'true'
@@ -181,7 +200,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     }
   };
 
-  self.initViewMode = function() {
+  self.initViewMode = function () {
     // hotkeys
     hotkeys.bindTo($scope)
       .add({
@@ -198,12 +217,12 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
           $event.preventDefault();
           if (self.emptyRelations) {
             self.edit();
-          } 
+          }
         }
       });
   };
 
-  self.initEditMode = function() {
+  self.initEditMode = function () {
 
     // init flags    
     self.selectedNode = false;
@@ -220,16 +239,16 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
       },
       manipulation: {
         enabled: false,
-        addEdge: function(data, callback) {
+        addEdge: function (data, callback) {
           if ((data.from === data.to) || (self.isRelationAlreadyPresent(data.from, data.to))) {
             return false;
           }
           data.id = UuidService.generateUuid();
-          self.saveEdgeData(data, function() { 
+          self.saveEdgeData(data, function () {
             self.edges.add(data);
           });
           self.network.selectEdges([data.id]);
-          self.editEdge(data, function() { 
+          self.editEdge(data, function () {
             self.edges.update(data);
           });
         }
@@ -240,8 +259,8 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     self.network.on('click', function (params) {
       self.selectedNode = false;
       self.selectedEdge = false;
-      if (params.nodes.length === 1) { 
-        self.selectedNode = true;         
+      if (params.nodes.length === 1) {
+        self.selectedNode = true;
       } else if (params.edges.length === 1) {
         self.selectedNode = false;
         self.selectedEdge = true;
@@ -254,62 +273,62 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
     // double click event
     self.network.on('doubleClick', function (params) {
-      
+
       // edit node
       if (self.selectedNode) {
         self.updateNodePositions(); // not really necessary, just to make it more robust!
         let data = self.nodes.get(params.nodes[0]);
-        
-        self.editNode(data, function() { 
+
+        self.editNode(data, function () {
           self.nodes.update(data);
         }, 'edit');
-      } 
-      
+      }
+
       // edit edge
       else if (self.selectedEdge) {
         let data = self.edges.get(params.edges[0]);
-        self.editEdge(data, function() { 
+        self.editEdge(data, function () {
           self.edges.update(data);
         });
-      } 
-      
+      }
+
       // add node
       else {
         let data = {};
         data.id = UuidService.generateUuid();
         data.x = params.pointer.canvas.x;
         data.y = params.pointer.canvas.y;
-        self.editNode(data, function() { 
+        self.editNode(data, function () {
           self.nodes.add(data);
         }, 'add');
       }
     });
-    
+
     // drag end event
     self.network.on('dragEnd', function (params) {
       $rootScope.dirty = true;
       $scope.$apply();
-      $timeout(function(){
+      $timeout(function () {
         self.updateNodePositions(); // here is really necessary: I just dragged a node!
       }, 0);
     });
 
     // keydown
-    $rootScope.keyDownFunction = function(event) {
+    $rootScope.keyDownFunction = function (event) {
       self.keyCode = event.keyCode;
 
       // When SHIFT key is pressed it's possible to move nodes
       if (event.keyCode === 16) {
         self.network.disableEditMode();
-        let nodes =  self.network.body.nodes;
+        let nodes = self.network.body.nodes;
         for (node in nodes) {
-          nodes[node].options.fixed = {x: false, y: false};
+          nodes[node].options.fixed = { x: false, y: false };
         }
       }
     };
 
     // keyup
-    $rootScope.keyUpFunction = function(event) {
+    $rootScope.keyUpFunction = function (event) {
       self.keyCode = null;
       if (event.keyCode === 16) {
         self.network.addEdgeMode();
@@ -319,15 +338,15 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     self.initRelationsEditor();
   };
 
-  self.initRelationsEditor = function() {
+  self.initRelationsEditor = function () {
     self.network.addEdgeMode();
   };
 
   self.edit = function () {
-    $location.path('/relations/edit');
-  }; 
+    $location.path('/relations/' + $routeParams.id + '/edit');
+  };
 
-  self.setClassicThemeNodesEdgesFontColor = function() {
+  self.setClassicThemeNodesEdgesFontColor = function () {
     self.network.setOptions({
       edges: {
         font: {
@@ -342,7 +361,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     });
   };
 
-  self.setDarkThemeNodesEdgesFontColor = function() {
+  self.setDarkThemeNodesEdgesFontColor = function () {
     self.network.setOptions({
       edges: {
         font: {
@@ -355,20 +374,31 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
         }
       }
     });
-  }; 
+  };
 
-  self.export = function(exportpath) {
-    $location.path('/relations/export');
+  self.export = function () {
+    $location.path('/relations/' + parseInt($routeParams.id) + '/export');
   };
 
   self.save = function () {
     self.updateNodePositions(); // not really necessary, just to make it more robust!
-    RelationsService.updateRelations(self.nodes.get(), self.edges.get());
-    self.lastsave = ProjectService.getProjectInfo().lastRelationsSave;
+    RelationsService.updateRelations(self.mindmap.relationnodes, self.nodes.get(),
+      self.mindmap.relationsedges, self.edges.get());
+
+    self.mindmap.lastsave = new Date();
+    MindmapService.update(self.mindmap);
     $rootScope.dirty = false;
   };
 
-  self.updateNodePositions = function() {
+  self.delete = function () {
+    PopupBoxesService.confirm(function () {
+      MindmapService.remove(self.mindmap.$loki);
+      $window.history.back();
+    }, 'mindmap_delete_confirm');
+  };
+
+
+  self.updateNodePositions = function () {
     let positions = self.network.getPositions();
     if (positions) {
       self.nodes.get().forEach(node => {
@@ -376,7 +406,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
         node.y = positions[node.id].y;
         self.nodes.update(node);
       });
-    } 
+    }
   };
 
   self.editNode = function (data, callback, mode) {
@@ -392,14 +422,25 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
           } else if (mode === 'edit') {
             return data.label;
           }
-        }, 
-        group: function () {
+        },
+        color: function () {
           if (mode === 'add') {
-            return null;
+            return '#004586'; // blue
           } else if (mode === 'edit') {
-            return data.group;
+            return data.color;
           }
-        }, 
+        },
+        shape: function () {
+          if (mode === 'add') {
+            return 'icon|user';
+          } else if (mode === 'edit') {
+            if (data.shape === 'icon') {
+              return 'icon|' + data.icon.name;
+            } else {
+              return data.shape;
+            }
+          }
+        },
       },
       size: 'nodedetail',
     });
@@ -410,22 +451,25 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
       // edit node
       if (node.action === 'edit') {
-        data.label=node.name;
-        data.group=node.group;
-        if (data.group === 'objects') {
-          data.color='#7E0021'; // dark red
-          data.shape= 'triangle';
-        } else if (data.group === 'main_characters') {
-          data.color='#004586'; // blue
-          data.shape= 'dot';
-        } else if (data.group === 'secondary_characters') {
-          data.color='#0084D1'; // light blue
-          data.shape= 'dot';
-        } else if (data.group === 'locations') {
-          data.color='#579D1C'; // green
-          data.shape= 'square';
+        data.label = node.name;
+        data.color = node.color;
+        if (node.shape.startsWith('icon')) {
+          let iconname = node.shape.split('|')[1];
+          data.shape = 'icon';
+          data.icon = {
+            face: 'FontAwesome',
+            name: iconname,
+            code: self.getIconCode(iconname),
+            size: 50,
+            color: node.color
+          };
+        } else {
+          data.color = node.color; // blue
+          data.shape = node.shape;
+          data.icon = null;
         }
-        self.saveNodeData(data,callback);
+
+        self.saveNodeData(data, callback);
       }
 
       // delete
@@ -435,12 +479,12 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
         self.selectedEdge = false;
         if (self.nodes.get().length === 0) {
           self.emptyRelations = true;
-        } 
+        }
         if (self.nodes.get().length < 2) {
           self.atLeast2NodesPresent = false;
         }
         $rootScope.dirty = true;
-  
+
       }
 
       $rootScope.$emit('CLOSE_POPUP_BOX');
@@ -449,7 +493,23 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
     });
-  };  
+  };
+
+  self.getIconCode = function (name) {
+    switch (name) {
+    case 'user': return '\uf007';
+    case 'user-o': return '\uf2c0';
+    case 'group': return '\uf0c0';
+    case 'map-marker': return '\uf041';
+    case 'user': return '\uf007';
+    case 'magic': return '\uf0d0';
+    case 'heart': return '\uf004';
+    case 'star': return '\uf005';
+    case 'flag': return '\uf024';
+    }
+  };
+
+
 
   self.editEdge = function (data, callback, mode) {
 
@@ -460,7 +520,16 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
       resolve: {
         name: function () {
           return data.label;
-        }, 
+        },
+        color: function () {
+          return data.color || '#aecf00';
+        },
+        arrows: function () {
+          return data.arrows || 'to';
+        },
+        dashes: function () {
+          return data.dashes || false;
+        },
         usedrelations: function () {
           let usedrelations = [];
           let relations = self.edges.get();
@@ -476,7 +545,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
             }
           }
           return usedrelations;
-        }, 
+        },
       },
       size: 'relationdetail',
     });
@@ -487,8 +556,11 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
       // edit relation
       if (relation.action === 'edit') {
-        data.label=relation.name;
-        self.saveEdgeData(data,callback);
+        data.label = relation.name;
+        data.color = relation.color;
+        data.arrows = relation.arrows;
+        data.dashes = relation.dashes;
+        self.saveEdgeData(data, callback);
       }
 
       // delete
@@ -498,11 +570,11 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
         self.selectedEdge = false;
         $rootScope.dirty = true;
       }
-      
+
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
     }, function (relation) {
-      
+
       // press back or ESC button when adding relation
       if (!data.label) {
         self.network.deleteSelected();
@@ -514,59 +586,61 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
     });
-  };  
-
-  self.moveUp = function() {
-    self.move({x:0, y:50});
   };
 
-  self.moveDown = function() {
-    self.move({x:0, y:-50});
+  self.moveUp = function () {
+    self.move({ x: 0, y: 50 });
   };
 
-  self.moveLeft = function() {
-    self.move({x:50, y:0});
+  self.moveDown = function () {
+    self.move({ x: 0, y: -50 });
   };
 
-  self.moveRight = function() {
-    self.move({x:-50, y:0});
+  self.moveLeft = function () {
+    self.move({ x: 50, y: 0 });
   };
 
-  self.move = function(movement) {
+  self.moveRight = function () {
+    self.move({ x: -50, y: 0 });
+  };
+
+  self.move = function (movement) {
     self.network.moveTo({
       offset: movement,
-      animation: { 
+      animation: {
         duration: 100,
         easingFunction: 'linear'
       }
     });
   };
 
-  self.zoomIn = function() {
+  self.zoomIn = function () {
     self.zoom(-0.2);
   };
 
-  self.zoomOut = function() {
+  self.zoomOut = function () {
     self.zoom(0.2);
   };
 
-  self.zoom = function(scale) {
+  self.zoom = function (scale) {
     let actualScale = self.network.getScale();
-    let newScale = actualScale+scale;
-    self.network.moveTo({
-      scale: newScale,
-      animation: { 
-        duration: 100,
-        easingFunction: 'linear'
-      }
-    });
+    let newScale = actualScale + scale;
+    if (newScale > 0) {
+      self.network.moveTo({
+        scale: newScale,
+        animation: {
+          duration: 100,
+          easingFunction: 'linear'
+        }
+      });
+    }
   };
 
-  self.fit = function() {
+  self.fit = function () {
     self.network.fit();
   };
 
-  self.isRelationAlreadyPresent = function(from, to) {
+  self.isRelationAlreadyPresent = function (from, to) {
     let relationEdges = self.edges.get();
     if (!relationEdges || relationEdges.length === 0) {
       return false;
@@ -589,8 +663,8 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     }
     $rootScope.dirty = true;
   };
-  
-  self.saveEdgeData = function(data, callback) {
+
+  self.saveEdgeData = function (data, callback) {
     if (typeof data.to === 'object') data.to = data.to.id;
     if (typeof data.from === 'object') data.from = data.from.id;
     self.selectedNode = false;
@@ -599,7 +673,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     $rootScope.dirty = true;
   };
 
-  self.opensettings = function() {
+  self.opensettings = function () {
 
     var modalInstance = $uibModal.open({
       animation: true,
@@ -615,7 +689,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
     $rootScope.$emit('OPEN_POPUP_BOX');
 
-    modalInstance.result.then(function() {
+    modalInstance.result.then(function () {
       self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
@@ -625,7 +699,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     });
   };
 
-  self.help = function() {
+  self.help = function () {
 
     var modalInstance = $uibModal.open({
       animation: true,
@@ -636,7 +710,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
     $rootScope.$emit('OPEN_POPUP_BOX');
 
-    modalInstance.result.then(function() {
+    modalInstance.result.then(function () {
       $rootScope.$emit('CLOSE_POPUP_BOX');
       self.initRelationsEditor();
     }, function () {
@@ -645,20 +719,30 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     });
   };
 
-  self.calculateEditSaveBackButtonbarSpace = function() {
+  self.calculateEditSaveBackButtonbarSpace = function () {
     let space = 0;
     if (self.editMode) {
       space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.save')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     } else {
+      space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.more')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
       space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.edit')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
       space += TextDimensionService.calculateElementDimension($translate.instant('common_export_button')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     }
     space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.back')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
-    return space+40;
+    return space + 40;
+  };
+
+  self.changeTitle = function () {
+    $location.path('/mindmaps/' + self.mindmap.$loki + '/title');
+  };
+
+  self.changeStatus = function (status) {
+    self.mindmap.status = status;
+    MindmapService.update(self.mindmap);
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit, 
+    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit,
       null, self.initRelationsEditor);
   });
 

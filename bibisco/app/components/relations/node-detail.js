@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,37 +24,54 @@ angular.
     },
   });
 
-function NodeDetailController($injector, $scope, $timeout, hotkeys, LocationService, PopupBoxesService,
+function NodeDetailController($injector, $scope, hotkeys, LocationService, PopupBoxesService,
   MainCharacterService, SecondaryCharacterService) {
 
-  var self = this;
-  var ObjectService = null;
+  let self = this;
+  let ObjectService = null;
+  let GroupService = null;
 
   self.$onInit = function() {
 
     self.name = self.resolve.name;
+    self.color = self.resolve.color;
+    self.shape = self.resolve.shape;
     self.editMode = self.resolve.name ? true : false;
 
-    // init group
-    self.maincharacter = false;
-    self.secondarycharacter = false;
-    self.location = false;
-    self.object = false;
-    if (self.resolve.group) {
-      self.group = self.resolve.group;
-      if (self.group === 'main_characters') {
-        self.maincharacter = true;
-      } else if (self.group === 'secondary_characters') {
-        self.secondarycharacter = true;
-      } else if (self.group === 'locations') {
-        self.location = true;
-      } else if (self.group === 'objects') {
-        self.object = true;
-      }
-    } else {
-      self.group = 'main_characters';
-      self.maincharacter = true;
-    }
+    self.shapegroup = [{
+      icon: 'user',
+      value: 'icon|user'
+    }, {
+      icon: 'user-o',
+      value: 'icon|user-o'
+    }, {
+      icon: 'group',
+      value: 'icon|group'
+    }, {
+      icon: 'map-marker',
+      value: 'icon|map-marker'
+    }, {
+      icon: 'magic',
+      value: 'icon|magic'
+    }, {
+      icon: 'star',
+      value: 'icon|star'
+    }, {
+      icon: 'heart',
+      value: 'icon|heart'
+    }, {
+      icon: 'flag',
+      value: 'icon|flag'
+    },{
+      icon: 'circle',
+      value: 'dot'
+    }, {
+      icon: 'square',
+      value: 'square'
+    }, {
+      icon: 'play fa-rotate-270',
+      value: 'triangle'
+    }];
 
     self.items = [];
 
@@ -66,6 +83,9 @@ function NodeDetailController($injector, $scope, $timeout, hotkeys, LocationServ
 
     // Objects
     self.items.push.apply(self.items, self.getObjectsNames());
+
+    // Groups
+    self.items.push.apply(self.items, self.getGroupsNames());
     
     hotkeys.bindTo($scope)
       .add({
@@ -129,46 +149,23 @@ function NodeDetailController($injector, $scope, $timeout, hotkeys, LocationServ
     return ObjectService;
   };
 
-  self.selectMaincharacter = function() {
-    self.maincharacter = true;
-    self.secondarycharacter = false;
-    self.location = false;
-    self.object = false;
-    self.group = 'main_characters';
-    self.focusOnNameField();
+  self.getGroupsNames = function () {
+
+    let groupsnames = [];
+    let groups = self.getGroupService().getGroups();
+    for (let i = 0; i < groups.length; i++) {
+      groupsnames.push(groups[i].name);
+    }
+
+    return groupsnames;
   };
 
-  self.selectSecondarycharacter = function() {
-    self.maincharacter = false;
-    self.secondarycharacter = true;
-    self.location = false;
-    self.object = false;
-    self.group = 'secondary_characters';
-    self.focusOnNameField();
-  };
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
 
-  self.setLocation = function() {
-    self.maincharacter = false;
-    self.secondarycharacter = false;
-    self.location = true;
-    self.object = false;
-    self.group = 'locations';
-    self.focusOnNameField();
-  };
-
-  self.setObject = function() {
-    self.maincharacter = false;
-    self.secondarycharacter = false;
-    self.location = false;
-    self.object = true;
-    self.group = 'objects';
-    self.focusOnNameField();
-  };
-
-  self.focusOnNameField = function() {
-    $timeout(function () {
-      document.getElementById('nodedetailid').focus();
-    }, 0);
+    return GroupService;
   };
 
   self.save = function () {
@@ -178,7 +175,8 @@ function NodeDetailController($injector, $scope, $timeout, hotkeys, LocationServ
         $value: {
           action: 'edit',
           name: self.name, 
-          group: self.group
+          color: self.color,
+          shape: self.shape
         }
       });
     } 

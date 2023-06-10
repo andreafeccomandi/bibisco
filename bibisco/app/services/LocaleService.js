@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
  */
 
 angular.module('bibiscoApp').service('LocaleService', function($translate,
-  $rootScope, tmhDynamicLocale, LoggerService, BibiscoPropertiesService) {
+  $rootScope, tmhDynamicLocale, BibiscoPropertiesService, ContextService, 
+  FileSystemService, LoggerService) {
   'use strict';
 
   const ipc = require('electron').ipcRenderer;
@@ -92,9 +93,54 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
         'ru': 'Русский',
         'sl': 'Slovenski jezik',
         'sr': 'Srpski',
-        'tr': 'Türkçe'
+        'tr': 'Türkçe',
+        'uk': 'Українська'
       };
-    }     
+    },
+    getResourceFilePath: function(language) {
+
+      let resourceSuffix = 'en';
+      if (language === 'ca-es') {
+        resourceSuffix = 'ca-es';
+      } else if (language === 'cs') {
+        resourceSuffix = 'cs';
+      } else if (language === 'da-dk') {
+        resourceSuffix = 'da-dk';
+      } else if (language === 'de') {
+        resourceSuffix = 'de';
+      } else if (language.startsWith('es')) {
+        resourceSuffix = 'es';
+      } else if (language === 'fr') {
+        resourceSuffix = 'fr';
+      } else if (language === 'it') {
+        resourceSuffix = 'it';
+      } else if (language === 'nb-no') {
+        resourceSuffix = 'no';
+      } else if (language === 'nl') {
+        resourceSuffix = 'nl';
+      } else if (language === 'pl') {
+        resourceSuffix = 'pl';
+      } else if (language === 'ru') {
+        resourceSuffix = 'ru';
+      } else if (language === 'sr') {
+        resourceSuffix = 'sr';
+      } else if (language === 'sv') {
+        resourceSuffix = 'sv';
+      } else if (language === 'tr') {
+        resourceSuffix = 'tr';
+      } else if (language === 'uk') {
+        resourceSuffix = 'uk';
+      } else if (language === 'pt-pt') {
+        resourceSuffix = 'pt-pt';
+      } else if (language === 'pt-br') {
+        resourceSuffix = 'pt-br';
+      } 
+
+      let resourcesDirPath = FileSystemService.concatPath(ContextService.getAppPath(), 'resources');
+      let resourcesFilePath = FileSystemService.concatPath(resourcesDirPath, 'locale-'+resourceSuffix+'.json');
+
+      return resourcesFilePath;
+    },    
   };
 });
 

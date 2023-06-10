@@ -26,6 +26,8 @@
             model="$ctrl.fontsize" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
             model="$ctrl.indent" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
+          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.autocapitalizegroup" label="autocapitalize"
+            model="$ctrl.autocapitalize" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.linespacinggroup" label="linespacing"
             model="$ctrl.linespacing" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
           <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.paragraphspacinggroup" label="paragraphspacing"

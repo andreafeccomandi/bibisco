@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
 
   var self = this;
   let ObjectService = null;
+  let GroupService = null;
   let NoteService = null;
 
   self.$onInit = function() {
@@ -47,6 +48,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       'export_novel',
       'export_project',
       'export_timeline',
+      'groups',
       'objects',
     ]);
 
@@ -137,6 +139,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       self.items.push.apply(self.items, self.getCharactersFamily());
       self.items.push.apply(self.items, self.getLocationsFamily());
       self.items.push.apply(self.items, self.getObjectsFamily());
+      self.items.push.apply(self.items, self.getGroupsFamily());
       self.items.push.apply(self.items, self.getNotesFamily());
       self.items.push.apply(self.items, self.getTimelineItem());
       
@@ -341,6 +344,30 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     return objectsfamily;
   };
 
+  self.getGroupsFamily = function () {
+
+    let groupsfamily = [];
+    if (self.includeSupporterEditionItems) {
+      let family = self.translations.groups;
+      let groups = self.getGroupService().getGroups();
+      for (let i = 0; i < groups.length; i++) {
+        groupsfamily.push({
+          id: groups[i].$loki,
+          name: groups[i].name,
+          family: family,
+          type: 'group'
+        });
+      }
+    }
+
+    // sort by name
+    groupsfamily.sort(function (a, b) {
+      return (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : ((b.name.toUpperCase() > a.name.toUpperCase()) ? -1 : 0);
+    });
+
+    return groupsfamily;
+  };
+
   self.getNotesFamily = function () {
 
     let notesfamily = [];
@@ -371,6 +398,14 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     }
 
     return ObjectService;
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+
+    return GroupService;
   };
 
   self.getNoteService = function () {

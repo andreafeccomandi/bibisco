@@ -1,0 +1,53 @@
+<breadcrumb items="$ctrl.breadcrumbitems" imgoffset="$ctrl.profileimageenabled"></breadcrumb>
+<pageheader headertitle="{{$ctrl.pageheadertitle}}"
+  noimageicon="image"
+  image="{{$ctrl.profileimage}}"
+  imageenabled="$ctrl.profileimageenabled">
+</pageheader>
+
+<div class="col-sm-12">
+  <form name="locationCreateForm" ng-submit="$ctrl.save(locationCreateForm.$valid)" class="form-horizontal" novalidate>
+    <textinputfield field="locationCreateForm.nation"
+      model="$ctrl.nation" name="nation" autofocus
+      maxlength="30"
+      typeheadsource="$ctrl.usednations"
+      label="jsp.locationsTitleForm.label.nation"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <textinputfield field="locationCreateForm.state"
+      model="$ctrl.state" name="state"
+      maxlength="30"
+      typeheadsource="$ctrl.usedstates"
+      label="jsp.locationsTitleForm.label.state"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <textinputfield field="locationCreateForm.city"
+      model="$ctrl.city" name="city"
+      maxlength="30"
+      typeheadsource="$ctrl.usedcities"
+      label="jsp.locationsTitleForm.label.city"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <textinputfield field="locationCreateForm.location"
+      model="$ctrl.location" name="location" required
+      maxlength="50"
+      label="jsp.locationsTitleForm.label.location"
+      placeholder="jsp.locationsTitleForm.label.location.placeholder"
+      labelcols="3" inputcols="8">
+    </textinputfield>
+    <div class="form-group" ng-if="$ctrl.groupsmembership && $ctrl.groupsmembership.length > 0">
+      <label class="col-sm-3 control-label">{{'groups' | translate}}</label>
+      <div class="col-sm-8">
+        <button ng-repeat="group in $ctrl.groupsmembership track by $index" type="button"
+          ng-class="{ 'btn-info': group.selected, 'btn-unselected': !group.selected }"
+          class="btn btn-sm scene-tags-button"
+          ng-click="$ctrl.toggleGroup(group.id)">
+          {{group.name}}
+        </button>
+      </div>
+    </div>
+    <formbuttons form="locationCreateForm">
+    </formbuttons>
+  </form>
+</div>
+

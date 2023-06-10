@@ -2,7 +2,8 @@
   <div ng-if="$root.showprojectexplorer" class="detail-content-project-explorer full-height">
     <projectexplorer></projectexplorer>
   </div>
-  <div class="detail-content full-height" ng-class="{'detail-content-offset': !$root.showprojectexplorer}">
+  <div ng-if="$ctrl.maincharacter[$ctrl.type].questions.length > 0" 
+    class="detail-content full-height" ng-class="{'detail-content-offset': !$root.showprojectexplorer}">
     <interviewviewer ng-if="!$ctrl.editmode"
       characters="$ctrl.characters"
       maincharacter="$ctrl.maincharacter" 
@@ -22,5 +23,18 @@
       questionselected="$ctrl.questionselected"
       type="$ctrl.type"
       words="$ctrl.words"></intervieweditor>
+  </div>
+  
+  <div ng-if="$ctrl.maincharacter[$ctrl.type].questions.length === 0">
+    <jumbotronbutton text="{{'custom_questions_empty' | translate}}"
+      buttonlabel="{{'custom_question_create_first' | translate}}"
+      buttonfunction="$ctrl.createFirstCustomQuestion()"
+      buttontooltip="{{'custom_question_firstcreate_tooltip' | translate}}"
+      previouselementlabel="{{$ctrl.previouselementlabel}}"
+      previouselementlink="$ctrl.previouselementlink"
+      previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+      nextelementlabel="{{$ctrl.nextelementlabel}}"
+      nextelementlink="$ctrl.nextelementlink"
+      nextelementtooltip="{{$ctrl.nextelementtooltip}}"></jumbotronbutton>
   </div>
 </div>

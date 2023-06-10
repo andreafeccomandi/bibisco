@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2022 Andrea Feccomandi
+ * Copyright (C) 2014-2023 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $window,
-  MainCharacterService) {
+  MainCharacterService, SupporterEditionChecker) {
 
   var self = this;
 
@@ -42,11 +42,11 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $
 
     self.breadcrumbitems.push({
       label: 'common_characters',
-      href: '/characters/params/focus=maincharacters_' + self.maincharacter.$loki
+      href: '/characters'
     });
     self.breadcrumbitems.push({
       label: self.maincharacter.name,
-      href: '/maincharacters/' + self.maincharacter.$loki + '/params/focus=maincharactersdetails_' + $routeParams.info
+      href: '/maincharacters/' + self.maincharacter.$loki
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.thumbnail.' + $routeParams.info + '.title'
@@ -74,16 +74,16 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $
   self.calculatePreviousNextElements = function (type) {
     switch(type) {
     case 'lifebeforestorybeginning':
-      self.nextelementlabel = 'jsp.character.thumbnail.conflict.title';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.nextelementlabel = SupporterEditionChecker.isSupporterOrTrial() ? 'common_custom' : 'jsp.character.thumbnail.conflict.title';
+      self.nextelementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/view' : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
       self.previouselementlabel  = 'common_sociology';
       self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/view';
       break;
     case 'conflict':
       self.nextelementlabel = 'jsp.character.thumbnail.evolutionduringthestory.title';
       self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/evolutionduringthestory/view';
-      self.previouselementlabel  = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      self.previouselementlabel = SupporterEditionChecker.isSupporterOrTrial() ? 'common_custom' : 'jsp.character.thumbnail.lifebeforestorybeginning.title';
+      self.previouselementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/view' : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
       break;
     case 'evolutionduringthestory':
       self.previouselementlabel  = 'jsp.character.thumbnail.conflict.title';
