@@ -202,7 +202,8 @@
           items="$ctrl.actionitems" open="up"
           visible="$ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
-        <button ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 0  || $ctrl.cardgriditems.prologue || $ctrl.cardgriditems.epilogue" 
+        <button ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 0  || $ctrl.cardgriditems.prologue 
+            || $ctrl.cardgriditems.epilogue || $ctrl.cardgriditems.parts" 
             type="button" class="btn btn-primary"
           ng-click="$ctrl.create()"
           uib-tooltip="{{'chapter_create_tooltip'+$root.os | translate}}">

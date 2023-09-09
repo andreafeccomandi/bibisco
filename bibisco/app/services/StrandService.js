@@ -13,7 +13,7 @@
  *
  */
 
-angular.module('bibiscoApp').service('StrandService', function($rootScope,
+angular.module('bibiscoApp').service('StrandService', function($injector, $rootScope,
   CollectionUtilService, ProjectDbConnectionService
 ) {
   'use strict';
@@ -50,7 +50,13 @@ angular.module('bibiscoApp').service('StrandService', function($rootScope,
       });
     },
     remove: function(id) {
-      CollectionUtilService.remove(this.getCollection(), id);
+      // delete strand
+      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
+
+      // delete group memberships
+      $injector.get('GroupService').removeElementFromGroupsWithoutCommit('strand', id);
+      ProjectDbConnectionService.saveDatabase(); 
+
       // emit remove event
       $rootScope.$emit('DELETE_ELEMENT', {
         id: id,

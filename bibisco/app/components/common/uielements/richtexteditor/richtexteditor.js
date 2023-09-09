@@ -1099,47 +1099,29 @@ function RichTextEditorController($document, $injector, $rootScope,
       let charStr = String.fromCharCode(evt.which);
       if (!self.isWhiteSpace(charStr) && !self.isDeviceControl(charStr) && self.needToCapitalize()) {
         evt.preventDefault();
-        self.insertTextAtCursor(charStr.toUpperCase());
+        $document[0].execCommand('insertText', false, charStr.toUpperCase());
         return false;
       }
     }
   };
 
   self.needToCapitalize = function() {
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    const node = range.startContainer;
-    const offset = range.startOffset;
-    const text = node.textContent.slice(0, offset);
-  
-    let index = text.length - 1;
-    while (index > 0 && self.isWhiteSpace(text.charAt(index))) {
-      index--;
-    }
-    return index === -1 || text.charAt(index) === '.' 
-      || text.charAt(index) === '?' || text.charAt(index) === '!'
-      || text.charAt(index) === '¿' || text.charAt(index) === '¡';
-  },
-
-  self.insertTextAtCursor = function(text) {
-    let sel, range, textNode;
-    if (window.getSelection) {
-      sel = window.getSelection();
-      if (sel.getRangeAt && sel.rangeCount) {
-        range = sel.getRangeAt(0).cloneRange();
-        range.deleteContents();
-        textNode = document.createTextNode(text);
-        range.insertNode(textNode);
-  
-        // Move caret to the end of the newly inserted text node
-        range.setStart(textNode, textNode.length);
-        range.setEnd(textNode, textNode.length);
-        sel.removeAllRanges();
-        sel.addRange(range);
+    try {
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+      const node = range.startContainer;
+      const offset = range.startOffset;
+      const text = node.textContent.slice(0, offset);
+    
+      let index = text.length - 1;
+      while (index > 0 && self.isWhiteSpace(text.charAt(index))) {
+        index--;
       }
-    } else if (document.selection && document.selection.createRange) {
-      range = document.selection.createRange();
-      range.pasteHTML(text);
+      return index === -1 || text.charAt(index) === '.' 
+        || text.charAt(index) === '?' || text.charAt(index) === '!'
+        || text.charAt(index) === '¿' || text.charAt(index) === '¡';
+    } catch (error) {
+      return false;
     }
   },
 

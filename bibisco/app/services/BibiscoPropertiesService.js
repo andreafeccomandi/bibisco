@@ -17,7 +17,7 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function (
   BibiscoDbConnectionService, LoggerService) {
   'use strict';
 
-  const version = '3.0.2-CE';
+  const version = '3.0.3-CE';
 
   return {
     getProperty: function(name) {
