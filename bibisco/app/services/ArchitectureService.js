@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,9 @@ angular.module('bibiscoApp').service('ArchitectureService', function(
     },
     update: function(architectureItem) {
       CollectionUtilService.update(this.getCollection(), architectureItem);
+    },
+    updateWithoutCommit: function(architectureItem) {
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), architectureItem);
     }
   };
 });

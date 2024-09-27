@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ angular.
   });
 
 function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $window,
-  MainCharacterService, SupporterEditionChecker) {
+  MainCharacterService, NavigationService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -38,7 +38,7 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.type = $routeParams.info;
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
 
     self.breadcrumbitems.push({
       label: 'common_characters',
@@ -59,7 +59,11 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $
   };
 
   self.edit = function () {
-    $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/edit');
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithoutquestion/' + $routeParams.info + '/view').replace();
   };
 
   self.save = function () {
@@ -75,20 +79,44 @@ function MainCharacterInfoWithoutQuestion($location, $rootScope, $routeParams, $
     switch(type) {
     case 'lifebeforestorybeginning':
       self.nextelementlabel = SupporterEditionChecker.isSupporterOrTrial() ? 'common_custom' : 'jsp.character.thumbnail.conflict.title';
-      self.nextelementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/view' : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.nextelementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/'+self.mode : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/'+self.mode;
       self.previouselementlabel  = 'common_sociology';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/'+self.mode;
       break;
     case 'conflict':
       self.nextelementlabel = 'jsp.character.thumbnail.evolutionduringthestory.title';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/evolutionduringthestory/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/evolutionduringthestory/'+self.mode;
       self.previouselementlabel = SupporterEditionChecker.isSupporterOrTrial() ? 'common_custom' : 'jsp.character.thumbnail.lifebeforestorybeginning.title';
-      self.previouselementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/view' : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      self.previouselementlink = SupporterEditionChecker.isSupporterOrTrial() ? '/maincharacters/' + $routeParams.id + '/infowithquestion/custom/'+self.mode : '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/'+self.mode;
       break;
     case 'evolutionduringthestory':
+      self.nextelementlabel = 'jsp.character.thumbnail.notes.title';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/notes/'+self.mode;
       self.previouselementlabel  = 'jsp.character.thumbnail.conflict.title';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/'+self.mode;
+      break;
+    case 'notes':
+      self.previouselementlabel  = 'jsp.character.thumbnail.evolutionduringthestory.title';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/evolutionduringthestory/'+self.mode;
       break;
     }
+  };
+
+  self.addprofileimage = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images/addprofile');
+  };
+
+  self.showimagesfunction = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images');
+  };
+
+  self.showeventsfunction = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/events');
+  };
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/maincharacters/' + self.maincharacter.$loki + '/groupsmembership');
+    });
   };
 }

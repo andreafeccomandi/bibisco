@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ angular.module('bibiscoApp').directive('treeView',
                 '<i ng-click="$ctrl.toggleNode(node)" ng-show="node.children && node.children.length > 0" ng-class="!$ctrl.isCollapsed(node) ? \'has-child\' : \'has-child-open\'"></i>' +
                 '<i ng-click="$ctrl.toggleNode(node)" class="no-child fa-{{node.icon}}" ng-show="!node.children || node.children.length == 0"></i>' +
                 '<span ng-click="$ctrl.selectNode($event, node)" ng-bind="node.name" ng-class="{\'selected\' : node.selected}"></span>' +
+                '<span ng-if="$root.ed===\'ce\' && node.supportersfeature"><i class="fa fa-heart-o supportersFeaturesSymbol"></i></span>' +
                 '</div>' +
                 '</div>' +
                 '<tree-view uib-collapse="!$ctrl.isCollapsed(node)" tree-root="false"></tree-view>' +

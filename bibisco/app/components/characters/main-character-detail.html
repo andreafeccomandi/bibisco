@@ -1,9 +1,13 @@
-<detailheader breadcrumbitems="$ctrl.breadcrumbitems" editmode="false" 
+<detailheader breadcrumbitems="$ctrl.breadcrumbitems" 
+  dblclickfunction="$ctrl.changeTitle()"
+  editmode="false" 
+  groupseditfunction="$ctrl.managegroupsmembership()"
   headertitle="{{$ctrl.maincharacter.name}}" 
   image="{{$ctrl.maincharacter.profileimage}}"
   imageaddenabled="true"
   imageenabled="true"
-  imagefunction="$ctrl.addprofileimage()"
+  imageaddfunction="$ctrl.addprofileimage()"
+  imageseditfunction="$ctrl.showimagesfunction()"
   noimageicon="user"
   tags="$ctrl.tags"
   taskstatus="$ctrl.maincharacter.status" 
@@ -92,7 +96,8 @@
         noimageicon="wrench"
         selectfunction="$ctrl.showInfoWithQuestion(id)"
         text="jsp.character.thumbnail.custom.description"
-        status="$ctrl.maincharacter.custom.status"></card>
+        status="$ctrl.maincharacter.custom.status"
+        supportersonly="true"></card>
   </div>
 
   <div class="top25">
@@ -124,6 +129,15 @@
       selectfunction="$ctrl.showInfoWithoutQuestion(id)"
       text="jsp.character.thumbnail.evolutionduringthestory.description"
       status="$ctrl.maincharacter.evolutionduringthestory.status"></card>
+    <card cardid="'notes'" cardtitle="common_notes_title"
+      dimension="normal"
+      dndenabled="false"
+      family="maincharactersdetails"
+      hastext="true"
+      noimageicon="thumb-tack"
+      selectfunction="$ctrl.showInfoWithoutQuestion(id)"
+      text="common_notes_description"
+      supportersonly="true"></card>
   </div>
 </div>
 
@@ -134,14 +148,18 @@
   custombuttonfunction="$ctrl.managegroupsmembership()"
   custombuttonlabel="groups_button",
   custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}",
-  editmode="false" 
+  editbuttonvisible="false"
+  editmode="true" 
   eventname="SHOW_ELEMENT_DETAIL"
   eventsenabled="true"
   imagesenabled="true" 
+  lastsave="$ctrl.maincharacter.lastsave"
   showeventsfunction="$ctrl.showeventsfunction()"
   showeventslabel="{{'character_events_tooltip'+$root.os}}"
   showimagesfunction="$ctrl.showimagesfunction()" 
   showimageslabel="{{'character_images_tooltip'+$root.os}}"
   showprojectexplorer="false" 
+  tipcode="characteredittitleTip"
+  tipenabled="true"
   wordscharactersenabled="false">
 </detailfooter>

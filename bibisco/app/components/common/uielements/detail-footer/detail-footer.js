@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,18 @@ angular.
       actionitems: '<',
       autosaveenabled: '<',
       characters: '<',
+      content: '<',
       custombuttonenabled: '<',
       custombuttonfunction: '&',
       custombuttonlabel: '@',
       custombuttontooltip: '@',
+      editbuttonvisible: '<',
       editfunction: '&',
       editmode: '<',
       eventsenabled: '<',
-      hideprojectexplorerbutton: '<',
       imagesenabled: '<',
       lastsave: '<',
+      readfunction: '&',
       savefunction: '&',
       showeventsfunction: '&',
       showeventslabel: '@',
@@ -49,4 +51,11 @@ angular.
   });
 
 
-function DetailFooterController() {}
+function DetailFooterController(ImageService) {
+
+  let self = this;
+
+  self.$onInit = function() {
+    self.emptyContent = !(self.characters > 0 || ImageService.textContainsImages(self.content));
+  };
+}

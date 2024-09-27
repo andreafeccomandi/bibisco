@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ angular.
     templateUrl: 'components/common/uielements/siblingelementsnavigator/siblingelementsnavigator.html',
     controller: SiblingElementsNavigatorController,
     bindings: {
+      editmode: '<?',
       nextelementlabel: '@',
       nextelementlink: '<',
       nextelementtooltip: '@?',
@@ -28,23 +29,62 @@ angular.
   });
 
 
-function SiblingElementsNavigatorController($location, SupporterEditionChecker) {
+function SiblingElementsNavigatorController($location, $scope, hotkeys) {
 
-  var self = this;
+  let self = this;
   self.$onInit = function () {
+
+    // hotkeys
+    if (self.editmode) {
+      self.previouselementtooltiphotkey = 'previous_siblings_edit_hotkey';
+      self.nextelementtooltiphotkey = 'next_siblings_edit_hotkey';
+      hotkeys.bindTo($scope)
+        .add({
+          combo: ['ctrl+alt+right','command+alt+right'],
+          description: 'gotonext',
+          callback: function () {
+            self.gotonextlement();
+          }
+        })
+        .add({
+          combo: ['ctrl+alt+left','command+alt+left'],
+          description: 'gotoprevious',
+          callback: function() {
+            self.gotopreviouslement();
+          }
+        });
+    } else {     
+      self.previouselementtooltiphotkey = 'previous_siblings_view_hotkey';
+      self.nextelementtooltiphotkey = 'next_siblings_view_hotkey';
+      hotkeys.bindTo($scope)
+        .add({
+          combo: ['right','ctrl+alt+right','command+alt+right'],
+          description: 'gotonext',
+          callback: function () {
+            self.gotonextlement();
+          }
+        })
+        .add({
+          combo: ['left','ctrl+alt+left','command+alt+left'],
+          description: 'gotoprevious',
+          callback: function() {
+            self.gotopreviouslement();
+          }
+        });
+    }
+
   };
 
   self.gotopreviouslement = function () {
-    SupporterEditionChecker.filterAction(function() {
-      $location.path(self.previouselementlink);
-    });
+    if (self.previouselementlink) {
+      $location.path(self.previouselementlink).replace();
+    }
+    
   };
 
   self.gotonextlement = function () {
-    SupporterEditionChecker.filterAction(function() {
-      $location.path(self.nextelementlink);
-    });
+    if (self.nextelementlink) {
+      $location.path(self.nextelementlink).replace();
+    }
   };
-
-
 }

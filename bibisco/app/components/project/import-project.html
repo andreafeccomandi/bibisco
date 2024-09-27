@@ -8,7 +8,7 @@
       <div class="col-sm-8" ng-class="{ 'has-error': (importProjectForm.$submitted && importProjectForm.fileToImport.$invalid) || $ctrl.invalidArchive }">
         <div class="input-group" ng-class="{ 'has-error': importProjectForm.$submitted && importProjectForm.projectsDirectory.$invalid }">
           <input id="bibiscoImportProjectArchiveLabel" name="fileToImport" class="form-control" type="text" readonly="readonly" ng-model="$ctrl.fileToImport" required/>
-          <span class="input-group-btn"><fileselect filefilter="['bibisco2']" onselectfile="$ctrl.selectFileToImport(file)"></fileselect></span>
+          <span class="input-group-btn"><fileselect filefilter="['bibisco2']" defaultpath="$ctrl.backupDirectoryPath" onselectfile="$ctrl.selectFileToImport(file)"></fileselect></span>
         </div>
       </div>
       <div class="col-sm-8 col-sm-offset-3">

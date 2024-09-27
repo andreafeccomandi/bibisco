@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: GroupCreateController
   });
 
-function GroupCreateController($location, $routeParams, $window, GroupService, 
+function GroupCreateController($location, $routeParams, $window, BibiscoPropertiesService, GroupService, 
   ObjectService, LocationService, MainCharacterService, SecondaryCharacterService, StrandService) {
 
   let self = this;
@@ -29,6 +29,9 @@ function GroupCreateController($location, $routeParams, $window, GroupService,
     // common bradcrumb root
     self.breadcrumbitems = [];
 
+    self.showdetailaftercreation = false;
+    self.elementbasepath = null;
+
     // creation from groups
     self.creationFromGroups = $location.path().startsWith('/groups') ? true : false;
     if (self.creationFromGroups) {
@@ -36,6 +39,8 @@ function GroupCreateController($location, $routeParams, $window, GroupService,
         label: 'groups',
         href: '/groups'
       });
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
+      self.elementbasepath = '/groups/';
     }
 
     // creation from main characters
@@ -103,7 +108,7 @@ function GroupCreateController($location, $routeParams, $window, GroupService,
       });
       self.breadcrumbitems.push({
         label: locationName,
-        href: '/locations/ ' + location.$loki + '/view'
+        href: '/locations/ ' + location.$loki + '/default'
       });
       self.breadcrumbitems.push({
         label: 'groups_membership',
@@ -127,7 +132,7 @@ function GroupCreateController($location, $routeParams, $window, GroupService,
       });
       self.breadcrumbitems.push({
         label: self.object.name,
-        href: '/objects/ ' + self.object.$loki + '/view'
+        href: '/objects/ ' + self.object.$loki + '/default'
       });
       self.breadcrumbitems.push({
         label: 'groups_membership',
@@ -151,7 +156,7 @@ function GroupCreateController($location, $routeParams, $window, GroupService,
       });
       self.breadcrumbitems.push({
         label: self.strand.name,
-        href: '/strands/ ' + self.strand.$loki + '/view'
+        href: '/strands/ ' + self.strand.$loki + '/default'
       });
       self.breadcrumbitems.push({
         label: 'groups_membership',

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,17 @@ angular.
     templateUrl: 'components/common/forms/revision-select/revision-select.html',
     controller: RevisionSelectController,
     bindings: {
+      autosaveenabled: '<',
+      editmode: '<',
       revisionactive: '<',
       revisioncount: '<',
       revisionenabled: '<',
-      revisionfunction: '&'
+      revisionfunction: '&',
+      savefunction: '&',
     }
   });
 
-function RevisionSelectController($translate, PopupBoxesService) {
+function RevisionSelectController($rootScope, $translate, PopupBoxesService) {
 
   var self = this;
 
@@ -68,6 +71,24 @@ function RevisionSelectController($translate, PopupBoxesService) {
   };
 
   self.selectRevision = function() {
+    if (self.editmode && $rootScope.dirty) {
+      if (self.autosaveenabled) {
+        self.savefunction();
+        $rootScope.dirty = false;
+        $rootScope.$emit('CONTENT_SAVED');
+        self.executeSelectRevision();
+      } else {
+        PopupBoxesService.confirm(self.executeSelectRevision, 
+          'js.common.message.confirmExitWithoutSave', function() {
+            self.revisionselected = self.revisionactual;
+          });
+      }
+    } else {
+      self.executeSelectRevision();
+    }
+  };
+
+  self.executeSelectRevision = function() {
     if (self.revisionselected.key === 'new') {
       self.restoreRevisionActual();
       PopupBoxesService.confirm(self.createRevisionFromActual,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,17 +23,18 @@ angular.
       editbuttonvisible: '<',
       editfunction: '&',
       editmode: '<',
+      readfunction: '&',
       savefunction: '&',
     }
   });
 
 function EditSaveBackButtonbarController($interval, $rootScope, $scope, 
-  $timeout, hotkeys, RichTextEditorPreferencesService) {
+  $timeout, hotkeys, BibiscoPropertiesService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {
-    self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
+    self.autosaveenabled = BibiscoPropertiesService.getProperty('autoSaveEnabled') === 'true';
     self.saving = false;
     self.autosavefunctionpromise = $interval(function () {
       if (self.autosaveenabled && self.editmode && $rootScope.dirty) {
@@ -50,6 +51,10 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
     self.editfunction();
   };
 
+  self.enablereadmode = function () {
+    self.readfunction();
+  };
+
   self.save = function () {
     if ($rootScope.dirty) {
       self.saving = true;
@@ -58,6 +63,12 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
       }, 250);
     }
   };
+
+  $scope.$on('$locationChangeStart', function(event) {
+    if (self.editmode && self.autosaveenabled && $rootScope.dirty) {
+      self.executeSave();
+    }
+  });
 
   hotkeys.bindTo($scope)
     .add({
@@ -74,6 +85,14 @@ function EditSaveBackButtonbarController($interval, $rootScope, $scope,
       allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
       callback: function () {
         self.enableeditmode();
+      }
+    })
+    .add({
+      combo: ['ctrl+w', 'command+w'],
+      description: 'read',
+      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+      callback: function () {
+        self.enablereadmode();
       }
     });
 

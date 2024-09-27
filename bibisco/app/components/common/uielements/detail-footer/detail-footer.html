@@ -3,6 +3,7 @@
     <detailfootertop
       autosaveenabled="$ctrl.autosaveenabled"
       characters="$ctrl.characters"
+      content="$ctrl.content" 
       editmode="$ctrl.editmode"
       lastsave="$ctrl.lastsave"
       words="$ctrl.words"
@@ -10,14 +11,14 @@
     </detailfootertop>
     <div class="row">
       <span class="pull-left">
-        <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="!$ctrl.hideprojectexplorerbutton && ($ctrl.editmode || $ctrl.characters > 0)"></projectexplorerbutton>
-        <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{$ctrl.showimageslabel}}" visible="!$ctrl.editmode && $ctrl.imagesenabled"></imagesbutton>
-        <eventsbutton showeventsfunction="$ctrl.showeventsfunction()" showeventslabel="{{$ctrl.showeventslabel}}" visible="!$ctrl.editmode && $ctrl.eventsenabled"></eventsbutton>
-        <tagsbutton showtagsfunction="$ctrl.showtagsfunction()" showtagslabel="{{$ctrl.showtagslabel}}" visible="!$ctrl.editmode && $ctrl.tagsenabled"></tagsbutton>
+        <projectexplorerbutton></projectexplorerbutton>
+        <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{$ctrl.showimageslabel}}" visible="$ctrl.imagesenabled"></imagesbutton>
+        <eventsbutton showeventsfunction="$ctrl.showeventsfunction()" showeventslabel="{{$ctrl.showeventslabel}}" visible="$ctrl.eventsenabled"></eventsbutton>
+        <tagsbutton showtagsfunction="$ctrl.showtagsfunction()" showtagslabel="{{$ctrl.showtagslabel}}" visible="$ctrl.tagsenabled"></tagsbutton>
         <button type="button" class="btn btn-default" ng-click="$ctrl.custombuttonfunction()"
-          ng-if="!$ctrl.editmode && $ctrl.custombuttonenabled"
+          ng-if="$ctrl.custombuttonenabled"
           uib-tooltip="{{$ctrl.custombuttontooltip | translate}}">
-          {{$ctrl.custombuttonlabel | translate}}
+          {{$ctrl.custombuttonlabel | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker>
         </button>
       </span>
       <span class="pull-right">
@@ -26,13 +27,14 @@
         <dropdownmenu buttonlabel="jsp.common.button.more" 
           items="$ctrl.actionitems" 
           open="up"
-          visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
+          visible="$ctrl.actionitems && $ctrl.actionitems.length > 0">
         </dropdownmenu>
         <editsavebackbuttonbar 
           autosaveenabled="$ctrl.autosaveenabled"
-          editbuttonvisible="$ctrl.characters > 0"
+          editbuttonvisible="$ctrl.editbuttonvisible"
           editmode="$ctrl.editmode" 
           editfunction="$ctrl.editfunction()"
+          readfunction="$ctrl.readfunction()"
           savefunction="$ctrl.savefunction()">
         </editsavebackbuttonbar>
       </span>

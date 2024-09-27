@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,17 @@ angular.
   });
 
 function ImportProjectController($location, $rootScope, $scope, $timeout, 
-  $translate, hotkeys, PopupBoxesService, ProjectService) {
+  $translate, hotkeys, BibiscoPropertiesService, PopupBoxesService, ProjectService) {
 
   // hide menu
   $rootScope.$emit('SHOW_IMPORT_PROJECT');
 
-  var self = this;
+  let self = this;
   self.fileToImport = null;
   self.invalidArchive = false;
   self.projectName;
   self.projectId;
+  self.backupDirectoryPath = BibiscoPropertiesService.getProperty('backupDirectory');
 
   self.$onInit = function () {
     hotkeys.bindTo($scope)

@@ -8,11 +8,12 @@ body {
 
 .btn-sm {
     padding: 3px 8px;
+    line-height: inherit;
 }
 
 .form-control {
     font-size: 16px;
-    height: 36px;
+    height: 41px;
 }
 
 .dropdown-menu {
@@ -32,11 +33,11 @@ body {
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-footer {
-	height: calc(100% - 270px);
+	height: calc(100% - 252.5px);
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer {
-	height: calc(100% - 310px);
+	height: calc(100% - 294px);
 }
 
 .scrollable-box-full-height-page-with-header-relationsfooter {
@@ -208,24 +209,25 @@ h5 {
     font-size: 18px;
 }
 
-.richtexteditor-contenteditable-container-nofindreplace {
-    height: calc(100% - 42px);
-}
-
-.richtexteditor-contenteditable-container-findreplace {
-    height: calc(100% - 88px);
-}
-
 .label {
     padding: .4em 0.4em .3em;
+}
+
+.character-questions-richtexteditor-container {
+    height: calc(100% - 166px);
 }
 
 div.richtexteditor-find-replace-toolbar button.btn-sm {
     padding: 5px 8px;
 }
 
+.richtexteditor-find-replace-toolbar input {
+	height: 34.85px;
+}
+
 .richtexteditor-find-counter {
     font-size: 16px;
+    top: -4px;
 }
 
 .dropdown-header {
@@ -237,10 +239,12 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
     font-weight: bold;
 }
 
-.search-results-container {
-	overflow-y: auto;
+.search-results-container-no-replace-toolbar {
 	height: calc(100% - 270px);
-	width: 100%;
+}
+
+.search-results-container-with-replace-toolbar {
+	height: calc(100% - 326px);
 }
 
 .analysis-character-appearances table {
@@ -347,13 +351,27 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
 	height: 20px;
 }
 
+#richtexteditorcontainer span.comment-beginning:before {
+    font: normal normal normal 16px/1 FontAwesome;
+}
+
+.comment-btn-count {
+	width: 55px !important;
+}
+
+.revision-select {
+    height: 36.85px;
+}
 
 @media (max-height: 710px) {
 	.questionbuttonbar .btn-lg {
         font-size: 16px;
 	}
-}
 
+    .character-questions-richtexteditor-container {
+        height: calc(100% - 119px);
+    }
+}
 
 @media (max-height: 800px) {
     .richtexteditor-settings-sample {
@@ -362,13 +380,7 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
 }
 
 @media (max-width: 1423px) {
-	.richtexteditor-contenteditable-container-nofindreplace {
-		height: calc(100% - 74px);
-	}
-	.richtexteditor-contenteditable-container-findreplace {
-		height: calc(100% - 120px);
-	}
 	.richtexteditor-find-replace-toolbar input {
-		width: 165px !important;
+		width: 160px !important;
 	}
 }

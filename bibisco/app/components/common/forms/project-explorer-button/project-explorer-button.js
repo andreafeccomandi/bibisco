@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,33 @@ angular.
   module('bibiscoApp').
   component('projectexplorerbutton', {
     templateUrl: 'components/common/forms/project-explorer-button/project-explorer-button.html',
-    controller: ProjectExplorerButtonController,
-    bindings: {
-      showprojectexplorer: '=',
-      visible: '<'
-    }
+    controller: ProjectExplorerButtonController
   });
 
-function ProjectExplorerButtonController($rootScope, $scope, hotkeys) {
+function ProjectExplorerButtonController($rootScope, $scope, hotkeys, BibiscoDbConnectionService,
+  BibiscoPropertiesService, NavigationService) {
 
-  var self = this;
+  let self = this;
 
+  self.$onInit = function() {
+    let autoOpenProjectExplorerOnTextEdit = BibiscoPropertiesService.getProperty('autoOpenProjectExplorerOnTextEdit') === 'true';
+    if (!$rootScope.showprojectexplorer && autoOpenProjectExplorerOnTextEdit) {
+      self.toggleProjectExplorer();
+    }
+  };
+  
   self.toggleProjectExplorer = function () {
     $rootScope.showprojectexplorer = !$rootScope.showprojectexplorer;
 
     if ($rootScope.showprojectexplorer) {
-      $rootScope.projectExplorerCache.set($rootScope.actualPath , null);
+      NavigationService.setProjectExplorerCacheEntry($rootScope.actualPath , null);
+      BibiscoPropertiesService.setProperty('autoOpenProjectExplorerOnTextEdit', 'true');
+      BibiscoDbConnectionService.saveDatabase();
+      
     } else {
-      $rootScope.projectExplorerCache.delete($rootScope.actualPath);
+      NavigationService.deleteProjectExplorerCacheKey($rootScope.actualPath);
+      BibiscoPropertiesService.setProperty('autoOpenProjectExplorerOnTextEdit', 'false');
+      BibiscoDbConnectionService.saveDatabase();
     }
 
     $rootScope.$emit('TOGGLE_PROJECT_EXPLORER', {

@@ -74,6 +74,13 @@
     sectiontitle="'common_characters_evolutionduringthestory'">
 </projectexplorersimpletext>
 
+<hr>
+<projectexplorersimpletext 
+    text="$ctrl.maincharacter.notes.text" 
+    path="/maincharacters/{{$ctrl.maincharacter.$loki}}/infowithoutquestion/notes/edit"
+    sectiontitle="'common_characters_notes'">
+</projectexplorersimpletext>
+
 <hr ng-if="$ctrl.maincharacter.images && $ctrl.maincharacter.images.length>0">
 <projectexplorerimages images="$ctrl.maincharacter.images"></projectexplorerimages>
 <hr ng-if="$ctrl.timeline && $ctrl.timeline.length>0">

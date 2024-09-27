@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,11 @@ angular.
     controller: MenuController
   });
 
-function MenuController($location, $rootScope, MenuService, ProjectService) {
+function MenuController($interval, $rootScope, $timeout, $translate, MenuService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
+  const { shell } = require('electron');
+
   self.$onInit = function () {
 
     self.menu = null;
@@ -56,6 +58,16 @@ function MenuController($location, $rootScope, MenuService, ProjectService) {
       self.loadMenu();
     });
 
+    // TRANSFORM MAIN CHARACTER EVENT
+    $rootScope.$on('TRANSFORM_MAIN_CHARACTER', function (event, args) {
+      self.updateMenu('TRANSFORM_CHARACTER', args.maincharacterid, 'maincharacters', args.secondarycharacterid, 'secondarycharacters');
+    });
+
+    // TRANSFORM SECONDARY CHARACTER EVENT
+    $rootScope.$on('TRANSFORM_SECONDARY_CHARACTER', function (event, args) {
+      self.updateMenu('TRANSFORM_CHARACTER', args.secondarycharacterid, 'secondarycharacters', args.maincharacterid, 'maincharacters');
+    });
+
     // EXPORT SELECT DIRECTORY
     $rootScope.$on('EXPORT_SELECT_DIRECTORY', function () {
       self.loadMenu();
@@ -69,6 +81,9 @@ function MenuController($location, $rootScope, MenuService, ProjectService) {
     // SHOW START EVENT
     $rootScope.$on('SHOW_START', function () {
       self.menu = null;
+      if (!SupporterEditionChecker.isSupporter()) {
+        self.initCommunitySection();
+      }
     });
 
     // SHOW CREATE PROJECT EVENT
@@ -140,6 +155,49 @@ function MenuController($location, $rootScope, MenuService, ProjectService) {
     $rootScope.$on('SHOW_PAGE', function (event, args) {
       self.loadMenu();
     });
+
+    // OPEN COMMUNITY TRIAL POPUP
+    $rootScope.$on('OPEN_COMMUNITY_TRIAL_POPUP', function (event, args) {
+      self.initCommunitySection();
+    });
+
+    // OPEN SUPPORTER EDITION POPUP
+    $rootScope.$on('OPEN_SUPPORTER_EDITION_POPUP', function (event, args) {
+      self.initCommunitySection();
+    });
+
+    self.showCommunitySection = false;
+    if (!SupporterEditionChecker.isSupporter()) {
+      $timeout(function(){
+        self.initCommunitySection();
+      }, 0);
+
+      self.autorefreshfunctionpromise = $interval(function () {
+        self.initCommunitySection();
+      }, 3600000);
+    }
+  };
+
+  self.$onDestroy = function () {
+    $interval.cancel(self.autorefreshfunctionpromise);
+  };
+
+  self.download = function() {
+    let url = $translate.instant('supporter_edition_get_it_button_url');
+    shell.openExternal(url);
+  };
+
+  self.initCommunitySection = function() {
+    self.showCommunitySection = true;
+    self.showTrialActiveRemainingDaysText = false;
+    self.supportersFeaturesSymbolText = $translate.instant('menu_ce_supporters_features_symbol');
+    if (SupporterEditionChecker.isTrialActive()) {
+      let remainingDays = SupporterEditionChecker.getRemainingTrialDays();
+      self.trialActiveRemainingDays = remainingDays > 1 ? 
+        $translate.instant('menu_ce_trial_remaining_days', { remainingDays: remainingDays }) :
+        $translate.instant('menu_ce_trial_remaining_hours');
+      self.showTrialActiveRemainingDaysText = true;
+    } 
   };
 
   self.getNode = function(nodes, nodeId) {
@@ -192,7 +250,7 @@ function MenuController($location, $rootScope, MenuService, ProjectService) {
     }
   };
 
-  self.updateMenu = function(action, id, collection) {
+  self.updateMenu = function(action, id, collection, secondaryid, secondarycollection) {
 
     let nodeId = collection+'_'+id;
     let updatedMenu = MenuService.getMenu();
@@ -232,6 +290,22 @@ function MenuController($location, $rootScope, MenuService, ProjectService) {
       if (node) {
         // update parent node 
         let parentNodeBeforeUpdate = self.getParentNode(self.menu, nodeId);
+        parentNodeBeforeUpdate.children = self.getUpdatedChildren(parentNodeBeforeUpdate.children, 
+          self.getNode(updatedMenu, parentNodeBeforeUpdate.id).children);
+      }
+    } else if (action === 'TRANSFORM_CHARACTER') {
+      let node = self.getNode(self.menu, nodeId);
+      if (node) {
+        // update parent node 
+        let parentNodeBeforeUpdate = self.getParentNode(self.menu, nodeId);
+        parentNodeBeforeUpdate.children = self.getUpdatedChildren(parentNodeBeforeUpdate.children, 
+          self.getNode(updatedMenu, parentNodeBeforeUpdate.id).children);
+      }
+      let secondaryNodeId = secondarycollection+'_'+secondaryid;
+      let secondaryNode =  self.getNode(self.menu, secondaryNodeId);
+      if (secondaryNode) {
+        // update parent node 
+        let parentNodeBeforeUpdate = self.getParentNode(self.menu, secondaryNodeId);
         parentNodeBeforeUpdate.children = self.getUpdatedChildren(parentNodeBeforeUpdate.children, 
           self.getNode(updatedMenu, parentNodeBeforeUpdate.id).children);
       }

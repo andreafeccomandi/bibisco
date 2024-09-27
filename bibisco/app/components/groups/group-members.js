@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ angular.
   });
 
 function GroupMembersController($location, $rootScope, $routeParams, $scope, $translate, $window,
-  hotkeys, GroupService, LocationService, MainCharacterService, ObjectService,
-  PopupBoxesService, SecondaryCharacterService, StrandService, UtilService) {
+  hotkeys, BibiscoPropertiesService, GroupService, LocationService, MainCharacterService, NavigationService,
+  ObjectService, PopupBoxesService, SecondaryCharacterService, StrandService, UtilService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
     self.breadcrumbitems = [];
-    self.group = self.getGroup(parseInt($routeParams.id));
+    self.group = JSON.parse(JSON.stringify(self.getGroup(parseInt($routeParams.id))));
 
     // If we get to the page using the back button it's possible that the resource has been deleted. Let's go back again.
     if (!self.group) {
@@ -38,14 +38,14 @@ function GroupMembersController($location, $rootScope, $routeParams, $scope, $tr
     }
 
     // breadcrumb
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.breadcrumbitems.push({
       label: 'groups',
       href: '/groups'
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title'
@@ -249,6 +249,11 @@ function GroupMembersController($location, $rootScope, $routeParams, $scope, $tr
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    let autosave = BibiscoPropertiesService.getProperty('autoSaveEnabled') === 'true';
+    if (autosave && $rootScope.dirty) {
+      self.executeSave();
+    } else {
+      PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    }
   });
 }

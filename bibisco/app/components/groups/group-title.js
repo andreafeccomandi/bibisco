@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ function GroupTitleController($routeParams, $window, GroupService) {
     // edit breadcrumb groups
     self.breadcrumbitems.push({
       label: group.name,
-      href: '/groups/' + group.$loki + '/view'
+      href: '/groups/' + group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_change_name_title'

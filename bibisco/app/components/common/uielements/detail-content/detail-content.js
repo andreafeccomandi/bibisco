@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,32 @@ angular.
   });
 
 
-function DetailContentController($rootScope) {
+function DetailContentController($scope, $rootScope, hotkeys, ImageService) {
 
   let self = this;
+
+  self.$onInit = function() {
+
+    self.emptyContent = !(self.characters > 0 || ImageService.textContainsImages(self.content));
+
+    if (!self.editmode) {
+      hotkeys.bindTo($scope)
+        .add({
+          combo: ['up'],
+          description: 'scrollup',
+          callback: function () {
+            document.getElementById('richtextviewercontainer').scrollTop -= 100;
+          }
+        })
+        .add({
+          combo: ['down'],
+          description: 'scrolldown',
+          callback: function() {
+            document.getElementById('richtextviewercontainer').scrollTop += 100;
+          }
+        });
+    }
+  };
 
   self.dblclickontext = function (event) {
     $rootScope.textSelected = event.target.innerText;
@@ -49,8 +72,6 @@ function DetailContentController($rootScope) {
       $rootScope.textSelected = $rootScope.textSelected.replace(/[\n\r]/g, '');
       $rootScope.textSelected = $rootScope.textSelected.trim();
     }
-
-    console.log('$rootScope.textSelected=['+$rootScope.textSelected+']');
     self.editfunction();
   };
 }

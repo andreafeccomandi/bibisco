@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: NoteDetailController
   });
 
-function NoteDetailController($location, $routeParams, $window, NoteService) {
+function NoteDetailController($location, $routeParams, $window, NavigationService, NoteService) {
 
   let self = this;
 
@@ -34,7 +34,7 @@ function NoteDetailController($location, $routeParams, $window, NoteService) {
       return;
     }
     
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.breadcrumbitems.push({
       label: 'common_notes_title',
       href: '/notes'
@@ -61,7 +61,11 @@ function NoteDetailController($location, $routeParams, $window, NoteService) {
   };
 
   self.edit = function () {
-    $location.path('/notes/ ' + self.note.$loki + '/edit');
+    $location.path('/notes/ ' + self.note.$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/notes/ ' + self.note.$loki + '/view').replace();
   };
 
   self.getNote = function (id) {

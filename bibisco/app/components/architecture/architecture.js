@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,7 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
       id: 'globalnotes',
       noimageicon: 'thumb-tack',
       position: 4,
+      supportersonly: true,
       status: globalnotes.status,
       text: 'common_notes_description',
       title: 'common_notes_title'
@@ -95,10 +96,10 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
   self.architectureItemSelect = function(id) {
     if (id === 'globalnotes') {
       SupporterEditionChecker.filterAction(function() {
-        $location.path('/architectureitems/' + id + '/view');
+        $location.path('/architectureitems/' + id + '/default');
       });
     } else {
-      $location.path('/architectureitems/' + id + '/view');
+      $location.path('/architectureitems/' + id + '/default');
     }
   };
 
@@ -140,7 +141,7 @@ function ArchitectureController($injector, $location, $rootScope, $scope,
   };
 
   self.strandSelect = function(id) {
-    $location.path('/strands/' + id + '/view');
+    $location.path('/strands/' + id + '/default');
   };
 
   self.strandMove = function(draggedObjectId, destinationObjectId) {

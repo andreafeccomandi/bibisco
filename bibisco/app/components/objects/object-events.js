@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ function ObjectEventsController($location, $routeParams, $window,
     });
     self.breadcrumbitems.push({
       label: object.name,
-      href: '/objects/ ' + object.$loki + '/view'
+      href: '/objects/ ' + object.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'common_events'

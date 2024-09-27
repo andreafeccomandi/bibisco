@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -119,9 +119,9 @@ angular.module('bibiscoApp').service('FileSystemService', function(
         callbackId: callbackId
       });
     },
-    writeBase64DataToFile: function(dataURL, filePath) {
+    writeBase64DataToFileSync: function(dataURL, filePath) {
       const base64Data = dataURL.replace(/^data:image\/png;base64,/, '');
-      fs.writeFile(filePath, base64Data, 'base64', function (err) {
+      fs.writeFileSync(filePath, base64Data, 'base64', function (err) {
         console.log(err);
       });
     },

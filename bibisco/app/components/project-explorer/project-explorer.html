@@ -10,7 +10,15 @@
       </ui-select-choices>
     </ui-select>
     <hr>
-    <div>
+    <div id="projectexplorer">
+      <div ng-if="!$ctrl.type && !$ctrl.editmode" >
+        <p><i>{{'project_explorer_readmode_placeholder_1' | translate}}</i></p>
+        <p><i>{{'project_explorer_readmode_placeholder_2' | translate}}</i></p>
+      </div>
+      <div ng-if="!$ctrl.type && $ctrl.editmode" >
+        <p><i>{{'project_explorer_editmode_placeholder_1' | translate}}</i></p>
+        <p><i>{{'project_explorer_editmode_placeholder_2' | translate}}</i></p>
+      </div>
       <projectexplorersimpletext ng-if="$ctrl.type == 'simpletext'" 
         sectiontitle="$ctrl.sectiontitle"
         timeline="$ctrl.timeline"

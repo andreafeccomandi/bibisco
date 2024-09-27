@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,12 @@ angular.
       characters: '=',
       content: '=',
       maincharacter: '=',
+      nextelementlabel: '@',
+      nextelementlink: '<',
+      nextelementtooltip: '@?',
+      previouselementlabel: '@',
+      previouselementlink: '<',
+      previouselementtooltip: '@?',
       questionselected: '<',
       type: '<',
       words: '='
@@ -60,6 +66,6 @@ function QuestionEditorController($rootScope) {
     self.characters = question.characters;
     self.words = question.words;
 
-    $rootScope.$emit('INIT_RICH_TEXT_EDITOR');
+    $rootScope.$emit('INIT_RICH_TEXT_EDITOR_FOR_MAIN_CHARACTER_INTERVIEW');
   };
 }

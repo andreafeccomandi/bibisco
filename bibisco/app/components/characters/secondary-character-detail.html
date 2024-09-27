@@ -5,10 +5,14 @@
   changetitlelabel="jsp.character.button.updateTitle"
   characters="$ctrl.secondarycharacter.characters"
   content="$ctrl.secondarycharacter.description"
-  custombuttonenabled="true",
-  custombuttonfunction="$ctrl.managegroupsmembership()",
-  custombuttonlabel="groups_button",
-  custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}",
+  customactionnenabled="true"
+  customactionfunction="$ctrl.transformIntoMain()"
+  customactionlabel="transform_to_main_character"
+  customactionsupportersonly="true"
+  custombuttonenabled="true"
+  custombuttonfunction="$ctrl.managegroupsmembership()"
+  custombuttonlabel="groups_button"
+  custombuttontooltip="{{'groups_memberships_tooltip'+$root.os}}"
   deleteconfirmmessage="jsp.characters.delete.confirm"
   deleteenabled="true"
   deleteforbidden="$ctrl.deleteforbidden"
@@ -18,6 +22,7 @@
   editfunction="$ctrl.edit()"
   eventname="SHOW_ELEMENT_DETAIL"
   eventsenabled="true"
+  groupsmembershipfunction="$ctrl.managegroupsmembership()"
   headertitle="{{$ctrl.secondarycharacter.name}}"
   imagesenabled="true"
   lastsave="$ctrl.secondarycharacter.lastsave"
@@ -25,6 +30,7 @@
   profileimage="{{$ctrl.secondarycharacter.profileimage}}"
   profileimageenabled="true"
   profileimagefunction="$ctrl.addprofileimage()"
+  readfunction="$ctrl.read()"
   savefunction="$ctrl.savefunction()"
   showeventsfunction="$ctrl.showeventsfunction()"
   showeventslabel="{{'character_events_tooltip'+$root.os}}"

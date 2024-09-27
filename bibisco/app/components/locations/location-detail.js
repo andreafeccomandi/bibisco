@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
-  ChapterService, LocationService, SupporterEditionChecker) {
+  ChapterService, LocationService, NavigationService, SupporterEditionChecker) {
 
   let self = this;
   let GroupService = null;
@@ -36,7 +36,7 @@ function LocationDetailController($injector, $location, $routeParams, $scope, $w
       return;
     }
 
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.name = LocationService.calculateLocationName(self.location);
     
     self.breadcrumbitems.push({
@@ -61,7 +61,7 @@ function LocationDetailController($injector, $location, $routeParams, $scope, $w
 
     hotkeys.bindTo($scope)
       .add({
-        combo: ['ctrl+m', 'command+m'],
+        combo: ['ctrl+shift+m', 'command+shift+m'],
         description: 'groupsmembership',
         callback: function () {
           self.managegroupsmembership();
@@ -84,7 +84,11 @@ function LocationDetailController($injector, $location, $routeParams, $scope, $w
   };
 
   self.edit = function () {
-    $location.path('/locations/ ' + self.location.$loki + '/edit');
+    $location.path('/locations/ ' + self.location.$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/locations/ ' + self.location.$loki + '/view').replace();
   };
 
   self.getGroupService = function () {

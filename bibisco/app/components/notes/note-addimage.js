@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -41,14 +41,14 @@ function NoteAddImageController($routeParams, $window, NoteService) {
     });
     self.breadcrumbitems.push({
       label: note.name,
-      href: '/notes/' + note.$loki + '/view'
+      href: '/notes/' + note.$loki + '/default'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.projectFromScene.select.location.images',
+      label: 'common_images',
       href: '/notes/' + note.$loki + '/images'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.addImageForm.dialog.title'
+      label: 'add_image'
     });
   };
 

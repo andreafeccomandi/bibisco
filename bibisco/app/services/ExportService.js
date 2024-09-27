@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,24 @@
  */
 
 angular.module('bibiscoApp').service('ExportService', function ($injector, $translate, 
-  $rootScope, ArchitectureService, BibiscoPropertiesService, ChapterService, 
+  $rootScope, ArchitectureService, BibiscoPropertiesService, ChapterService, ContextService,
   DatetimeService, DocxExporterService, FileSystemService, LocaleService, LocationService, MainCharacterService, 
   PdfExporterService, ProjectService, SecondaryCharacterService, StrandService,
   SupporterEditionChecker, TxtExporterService, UtilService) {
   'use strict';
 
-  const { shell } = require('electron');
+  const ipc = require('electron').ipcRenderer;
   let dateFormat = require('dateformat');
   let translations;
+  let projecttranslations = [];
   let CustomQuestionService = null;
   let ObjectService = null;
   let NoteService = null;
   let GroupService = null;
   let TimelineService = null;
+  let footendnotemode = null;
+  let chapterendnotes = 0;
+  let bookendnotes = [];
 
   const behaviors_questions_count = 12;
   const ideas_questions_count = 18;
@@ -44,23 +48,38 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
   return {
 
     exportPdf: function (exportfilter, exportpath, callback) {
-      this.export(exportfilter, exportpath, PdfExporterService, callback);
+      footendnotemode = BibiscoPropertiesService.getProperty('pdfnoteexport');
+      this.export(exportfilter, exportpath, PdfExporterService, 'pdf', callback);
     },
 
     exportWord: function (exportfilter, exportpath, callback) {
-      this.export(exportfilter, exportpath, DocxExporterService, callback);
+      footendnotemode = BibiscoPropertiesService.getProperty('docxnoteexport');
+      this.export(exportfilter, exportpath, DocxExporterService, 'docx', callback);
     },
     
     exportTxt: function (exportfilter, exportpath, callback) {
-      this.export(exportfilter, exportpath, TxtExporterService, callback);
+      footendnotemode = BibiscoPropertiesService.getProperty('txtnoteexport');
+      this.export(exportfilter, exportpath, TxtExporterService, 'txt', callback);
     },
 
     exportArchive: function (exportpath, callback) {
       let archivefilepath = this.calculateExportFilePath(exportpath, 'archive', new Date());
       ProjectService.export(archivefilepath, function () {
-        shell.showItemInFolder(exportpath);
+        ipc.send('showItemInFolder', archivefilepath+'.bibisco2');
         callback();
       });
+    },
+
+    exportLogs: function (exportpath, callback) {
+      let loggerDirectory = FileSystemService.concatPath(ContextService.getUserDataPath(),'logs');
+      FileSystemService.copyDirectory(loggerDirectory, exportpath);
+      ipc.send('showItemInFolder',  FileSystemService.concatPath(exportpath, 'bibisco.log'));
+      callback();
+    },
+
+    initNotes: function() {
+      chapterendnotes = 0;
+      bookendnotes = [];
     },
 
     calculateExportFilePath: function (exportpath, type, timestamp) {
@@ -71,7 +90,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
     },
     
 
-    export: function (exportfilter, exportpath, exporter, callback) {
+    export: function (exportfilter, exportpath, exporter, fileext, callback) {
 
       // init moment
       this.initMoment();
@@ -84,9 +103,20 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       let chapterformat = {
         chaptertitleformat: BibiscoPropertiesService.getProperty('chaptertitleformat'),
         chaptertitleinprojectlanguage: translation.common_chapter,
-        chapterpositionstyle: this.calculateChapterPositionStyle(),
-        sceneseparator: this.calculateSceneSeparator()
+        chapterpositionstyle: this.calculateTitlePositionStyle(BibiscoPropertiesService.getProperty('chaptertitleposition')),
+        sceneseparator: this.calculateSceneSeparator(),
+        exportscenetitle: BibiscoPropertiesService.getProperty('exportscenetitle'),
+        scenetitleformat: BibiscoPropertiesService.getProperty('scenetitleformat'),
+        scenepositionstyle: this.calculateTitlePositionStyle(BibiscoPropertiesService.getProperty('scenetitleposition'))
       };
+
+      // TOC 
+      let tocformat = BibiscoPropertiesService.getProperty('tocformat');
+      let toctitle = BibiscoPropertiesService.getProperty('toctitle');
+
+
+      // init notes
+      this.initNotes();
 
       // export timestamp
       let timestamp = new Date();
@@ -99,7 +129,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         if (exportfilter.id === 'novel_project' || exportfilter.id === 'novel') {
           files2export.push({
             filepath:  this.calculateExportFilePath(exportpath, 'novel', timestamp),
-            html: this.createNovelHtml(chapterformat),
+            html: this.createNovelHtml(chapterformat, {tocformat: tocformat, toctitle: toctitle}),
             exportconfig: this.calculateExportConfig({
               hcountingactive: false,
               pagebreakonh1: true
@@ -107,9 +137,12 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           });
         }
         if (exportfilter.id === 'novel_project' || exportfilter.id === 'project') {
+          if (exportfilter.id === 'novel_project') {
+            this.initNotes();
+          }
           files2export.push({
             filepath:  this.calculateExportFilePath(exportpath, 'project', timestamp),
-            html: this.createProjectHtml(),
+            html: this.createProjectHtml({tocformat: tocformat, toctitle: toctitle}),
             exportconfig: this.calculateExportConfig({
               hcountingactive: true,
               pagebreakonh1: true
@@ -117,6 +150,17 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           });
         }
       } 
+      // part
+      else if (exportfilter.type === 'part') {
+        files2export.push({
+          filepath:  this.calculateExportFilePath(exportpath, 'chapter', timestamp),
+          html: this.createPart(exportfilter.id, chapterformat, {tocformat: tocformat, toctitle: toctitle}),
+          exportconfig: this.calculateExportConfig({
+            hcountingactive: false,
+            pagebreakonh1: true
+          })
+        });
+      }
       // prologue
       else if (exportfilter.type === 'prologue') {
         let chapter = ChapterService.getChapter(exportfilter.id);
@@ -126,7 +170,8 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
             chapter: chapter,
             chapterformat: chapterformat,
             tag: 'prologue',
-            ignoretitleformat: true
+            ignoretitleformat: true,
+            individualexport: true
           }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
@@ -143,7 +188,8 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
             chapter: chapter,
             chapterformat: chapterformat,
             tag: 'epilogue',
-            ignoretitleformat: true
+            ignoretitleformat: true,
+            individualexport: true
           }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
@@ -159,7 +205,8 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           html: this.createChapter({
             chapter: chapter,
             chapterformat: chapterformat,
-            tag: 'h1'
+            tag: 'h1',
+            individualexport: true
           }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
@@ -171,7 +218,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.id === 'architecture') {
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'architecture', timestamp),
-          html: this.createArchitecture(),
+          html: this.createArchitecture({
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -182,7 +231,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.id === 'strands') {
         files2export.push({
           filepath:  this.calculateExportFilePath(exportpath, 'strands', timestamp),
-          html: this.createStrands(),
+          html: this.createStrands({
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -193,7 +244,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'maincharacter') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'maincharacter', timestamp),
-          html: this.createMainCharacters(exportfilter.id),
+          html: this.createMainCharacters(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -204,7 +257,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'secondarycharacter') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'secondarycharacter', timestamp),
-          html: this.createSecondaryCharacters(exportfilter.id),
+          html: this.createSecondaryCharacters(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -215,7 +270,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'location') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'location', timestamp),
-          html: this.createLocations(exportfilter.id),
+          html: this.createLocations(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -226,7 +283,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'object') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'object', timestamp),
-          html: this.createObjects(exportfilter.id),
+          html: this.createObjects(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -237,7 +296,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'group') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'group', timestamp),
-          html: this.createGroups(exportfilter.id),
+          html: this.createGroups(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -248,7 +309,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       else if (exportfilter.type === 'note') {
         files2export.push({
           filepath: this.calculateExportFilePath(exportpath, 'note', timestamp),
-          html: this.createNotes(exportfilter.id),
+          html: this.createNotes(exportfilter.id, {
+            individualexport: true
+          }),
           exportconfig: this.calculateExportConfig({
             hcountingactive: false,
             pagebreakonh1: false
@@ -270,11 +333,13 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       exporter.export(files2export[0], function () {
         if (files2export.length === 2) {
           exporter.export(files2export[1], function () {
-            shell.showItemInFolder(exportpath);
+            let filename = files2export[1].filepath + '.' + fileext;
+            ipc.send('showItemInFolder', filename);
             callback();
           });
         } else {
-          shell.showItemInFolder(exportpath);
+          let filename = files2export[0].filepath + '.' + fileext;
+          ipc.send('showItemInFolder', filename);
           callback();
         }
       });
@@ -312,7 +377,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return font;
     },
 
-    createProjectHtml: function () {
+    createProjectHtml: function (tocconfig) {
       
       let isSupporterOrTrial = SupporterEditionChecker.isSupporterOrTrial();
       
@@ -320,6 +385,9 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       html += this.createAuthor();
       html += this.createTitle();
       html += this.createProjectSubtitle();
+      if (tocconfig.tocformat === 'beginning') {
+        html += this.createToc(tocconfig);
+      }
       html += this.createArchitecture();
       html += this.createStrands();
       html += this.createMainCharacters();
@@ -334,6 +402,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       if (isSupporterOrTrial) {
         html += this.createTimeline();
       }
+      html += this.createBookEndNotes();
+      if (tocconfig.tocformat === 'end') {
+        html += this.createToc(tocconfig);
+      }
 
       // remove double white spaces
       html = html.replace(/&nbsp;/g, ' ');
@@ -342,13 +414,66 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return html;
     },
 
-    createNovelHtml: function(chapterformat) {
+    createNovelHtml: function(chapterformat, tocconfig) {
       let html = '';
 
       html += this.createAuthor();
       html += this.createTitle();
       html += this.createNovelSubtitle();
+      if (tocconfig.tocformat === 'beginning') {
+        html += this.createToc(tocconfig);
+      }
       html += this.createChaptersForNovel(chapterformat);
+      html += this.createBookEndNotes();
+
+      if (tocconfig.tocformat === 'end') {
+        html += this.createToc(tocconfig);
+      }
+
+      // remove double white spaces
+      html = html.replace(/&nbsp;/g, ' ');
+      html = html.replace(/  +/g, ' ');
+
+      return html;
+    },
+
+    createPart: function(partId, chapterformat, tocconfig) {
+      let html = '';
+      html += this.createAuthor();
+      html += this.createTitle();
+      html += this.createNovelSubtitle();
+      if (tocconfig.tocformat === 'beginning') {
+        html += this.createToc(tocconfig);
+      }
+
+      // chapters and parts
+      let chapters = ChapterService.getChapters();
+      let parts = ChapterService.getParts();
+
+      let lastPart = -1;
+      let partLastChapterPosition = null;
+      if (chapters && chapters.length > 0) {
+        for (let i = 0; i < chapters.length; i++) {
+          if (lastPart===-1 || chapters[i].position>partLastChapterPosition) {
+            lastPart += 1;
+            partLastChapterPosition = ChapterService.getPartLastChapterPosition(parts[lastPart].$loki);
+            if (parts[lastPart].$loki === partId) {
+              html += this.createTag('parttitle', parts[lastPart].title);
+            }
+          } 
+          if (parts[lastPart].$loki === partId) {
+            html += this.createChapter({
+              chapter: chapters[i],
+              chapterformat: chapterformat,
+              tag: 'h1'
+            });
+          }
+        }
+      }
+      html += this.createBookEndNotes();
+      if (tocconfig.tocformat === 'end') {
+        html += this.createToc(tocconfig);
+      }
 
       // remove double white spaces
       html = html.replace(/&nbsp;/g, ' ');
@@ -369,11 +494,19 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return this.createTag('exportsubtitle', '');
     },
 
+    createToc: function(tocconfig) {
+      let attribs = [];
+      if (tocconfig.toctitle) {
+        attribs.push({name: 'toctitle', value: tocconfig.toctitle});
+      }
+      return this.createTag('toc','',attribs);
+    },
+
     createProjectSubtitle: function () {
       return this.createTag('exportsubtitle', this.getTranslations().export_project_subtitle);
     },
 
-    createArchitecture: function () {
+    createArchitecture: function (options) {
       let html = '';
 
       html += this.createTag('h1', this.getTranslations().common_architecture);
@@ -381,26 +514,34 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       // premise
       html += this.createTag('h2', this.getTranslations().common_premise);
       html += ArchitectureService.getPremise().text;
+      html += this.manageNotes(ArchitectureService.getPremise().text);
 
       // fabula
       html += this.createTag('h2', this.getTranslations().common_fabula);
       html += ArchitectureService.getFabula().text;
+      html += this.manageNotes(ArchitectureService.getFabula().text);
 
       // settings
       html += this.createTag('h2', this.getTranslations().common_setting);
       html += ArchitectureService.getSetting().text;
+      html += this.manageNotes(ArchitectureService.getSetting().text);
       html += this.createEvents('architecture', 'setting');
 
       // global notes
       if (SupporterEditionChecker.isSupporterOrTrial()) {
         html += this.createTag('h2', this.getTranslations().common_notes_title);
         html += ArchitectureService.getGlobalNotes().text;
+        html += this.manageNotes(ArchitectureService.getGlobalNotes().text);
+      }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
       }
     
       return html;
     },
 
-    createStrands: function () {
+    createStrands: function (options) {
       let html = '';
 
       // strands
@@ -410,14 +551,19 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         for (let i = 0; i < strands.length; i++) {
           html += this.createTag('h2', strands[i].name);
           html += strands[i].description;
+          html += this.manageNotes(strands[i].description);
           html += this.createGroupMemberships('strand', strands[i].$loki);
         }
+      }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
       }
     
       return html;
     },
 
-    createMainCharacters: function (filter) {
+    createMainCharacters: function (filter, options) {
       let html = '';
 
       let customQuestions = null;
@@ -425,41 +571,64 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         customQuestions = this.getCustomQuestionService().getCustomQuestions();
       }
 
+      let exportunansweredquestions = BibiscoPropertiesService.getProperty('exportunansweredquestions') === 'true';
       let mainCharacters = MainCharacterService.getMainCharacters();
       if (mainCharacters && mainCharacters.length > 0) {
         html += this.createTag('h1', this.getTranslations().common_main_characters);
         for (let i = 0; i < mainCharacters.length; i++) {
           if (!filter || (filter && mainCharacters[i].$loki === filter)) {
-            html += this.createMainCharacter(mainCharacters[i], customQuestions);     
+            html += this.createMainCharacter(mainCharacters[i], customQuestions, exportunansweredquestions);     
           }     
         }
+      }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
       }
 
       return html;
     },
 
-    createMainCharacter: function (mainCharacter, customQuestions) {
+    createMainCharacter: function (mainCharacter, customQuestions, exportunansweredquestions) {
       let html = '';
       // mainCharacters[i].$loki
       html += this.createTag('h2', mainCharacter.name);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'personaldata', personaldata_questions_count);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'physionomy', physionomy_questions_count);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'behaviors', behaviors_questions_count);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology',psychology_questions_count);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas', ideas_questions_count);
-      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology', sociology_questions_count);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'personaldata', personaldata_questions_count, exportunansweredquestions);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'physionomy', physionomy_questions_count, exportunansweredquestions);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'behaviors', behaviors_questions_count, exportunansweredquestions);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'psychology',psychology_questions_count, exportunansweredquestions);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'ideas', ideas_questions_count, exportunansweredquestions);
+      html += this.createMainCharacterInfoWithQuestions(mainCharacter, 'sociology', sociology_questions_count, exportunansweredquestions);
       if (SupporterEditionChecker.isSupporterOrTrial()) {
-        html += this.createMainCharacterCustomQuestions(mainCharacter, customQuestions);
+        html += this.createMainCharacterCustomQuestions(mainCharacter, customQuestions, exportunansweredquestions);
       }
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'lifebeforestorybeginning');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'conflict');
       html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'evolutionduringthestory');
+      html += this.createMainCharacterInfoWithoutQuestions(mainCharacter, 'notes');
+      html += this.createImages(mainCharacter.images);
       html += this.createEvents('maincharacter', mainCharacter.$loki);
       html += this.createGroupMemberships('maincharacter', mainCharacter.$loki);
       return html;
     },
 
-    createMainCharacterInfoWithQuestions: function (mainCharacter, info, questionsCount) {
+    createMainCharacterForTransformation: function (mainCharacter) {
+      let html = '';
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'personaldata', personaldata_questions_count);
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'physionomy', physionomy_questions_count);
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'behaviors', behaviors_questions_count);
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'psychology',psychology_questions_count);
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'ideas', ideas_questions_count);
+      html += this.createMainCharacterInfoWithQuestionsForTransformation(mainCharacter, 'sociology', sociology_questions_count);
+      html += this.createMainCharacterCustomQuestionsForTransformation(mainCharacter);
+      html += this.createMainCharacterInfoWithoutQuestionsForTransformation(mainCharacter, 'lifebeforestorybeginning');
+      html += this.createMainCharacterInfoWithoutQuestionsForTransformation(mainCharacter, 'conflict');
+      html += this.createMainCharacterInfoWithoutQuestionsForTransformation(mainCharacter, 'evolutionduringthestory');
+      html += this.createMainCharacterInfoWithoutQuestionsForTransformation(mainCharacter, 'notes');
+      return html;
+    },
+
+    createMainCharacterInfoWithQuestions: function (mainCharacter, info, questionsCount, exportunansweredquestions) {
       
       let html = '';
       html += this.createTag('h3', this.getTranslations()['common_' + info]);
@@ -467,19 +636,51 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       // freetext
       if (mainCharacter[info].freetextenabled) {
         html += mainCharacter[info].freetext;
+        html += this.manageNotes(mainCharacter[info].freetext);
       } 
       // questions
       else {
         for (let i = 0; i < questionsCount; i++) {
-          let question = '(' + (i+1) + '/' + questionsCount + ') ' + this.getTranslations()['characterInfo_question_' + info + '_' + i];
-          html += this.createTag('question', question);   
-          html += mainCharacter[info].questions[i].text;
+          if (exportunansweredquestions || mainCharacter[info].questions[i].words > 0) {
+            let question = '(' + (i+1) + '/' + questionsCount + ') ' + this.getTranslations()['characterInfo_question_' + info + '_' + i];
+            html += this.createTag('question', question);   
+            html += mainCharacter[info].questions[i].text;
+          }
         }
+
+        html += this.manageNotes(html);
       }
       return html;
     },
 
-    createMainCharacterCustomQuestions: function (mainCharacter, customQuestions) {
+    createMainCharacterInfoWithQuestionsForTransformation: function (mainCharacter, info, questionsCount) {
+      
+      let html = '';
+      
+      // freetext
+      if (mainCharacter[info].freetextenabled && mainCharacter[info].freetextwords > 0) {
+        html += mainCharacter[info].freetext;
+      } 
+      // questions
+      else {
+        for (let i = 0; i < questionsCount; i++) {
+          if (mainCharacter[info].questions[i].words > 0) {
+            let question = this.getTranslations()['characterInfo_question_' + info + '_' + i];
+            html += this.createTag('p', this.createTag('i', question));   
+            html += mainCharacter[info].questions[i].text;
+          }
+        }
+      }
+
+      if (html.length > 0) {
+        let infoTitle = this.createTag('p', this.createTag('b', this.getTranslations()['common_' + info]));
+        html = infoTitle + html; 
+      }
+
+      return html;
+    },
+
+    createMainCharacterCustomQuestions: function (mainCharacter, customQuestions, exportunansweredquestions) {
       
       let html = '';
       html += this.createTag('h3', this.getTranslations()['common_custom']);
@@ -493,11 +694,45 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         // questions
         else {      
           for (let i = 0; i < customQuestions.length; i++) {
-            let question = '(' + (i+1) + '/' + customQuestions.length + ') ' + customQuestions[i].question;
-            html += this.createTag('question', question);   
-            html += mainCharacter['custom'].questions[i].text;
+            if (exportunansweredquestions || mainCharacter['custom'].questions[i].words > 0) {
+              let question = '(' + (i+1) + '/' + customQuestions.length + ') ' + customQuestions[i].question;
+              html += this.createTag('question', question);   
+              html += mainCharacter['custom'].questions[i].text;
+            }
           }
         }
+      }
+        
+      return html;
+    },
+
+    createMainCharacterCustomQuestionsForTransformation: function (mainCharacter) {
+      
+      let html = '';
+
+      let customQuestions = this.getCustomQuestionService().getCustomQuestions();
+      
+      // questions
+      if (customQuestions) {
+        // freetext
+        if (mainCharacter['custom'].freetextenabled && mainCharacter['custom'].freetextwords > 0) {
+          html += mainCharacter['custom'].freetext;
+        } 
+        // questions
+        else {      
+          for (let i = 0; i < customQuestions.length; i++) {
+            if (mainCharacter['custom'].questions[i].words > 0) {
+              let question = customQuestions[i].question;
+              html += this.createTag('p', this.createTag('i', question));   
+              html += mainCharacter['custom'].questions[i].text;
+            }
+          }
+        }
+      }
+
+      if (html.length > 0) {
+        let infoTitle = this.createTag('p', this.createTag('b', this.getTranslations()['common_custom']));
+        html = infoTitle + html; 
       }
         
       return html;
@@ -507,10 +742,20 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       let html = '';
       html += this.createTag('h3', this.getTranslations()['common_characters_' + info]);
       html += mainCharacter[info].text;
+      html += this.manageNotes(mainCharacter[info].text);
       return html; 
     },
 
-    createSecondaryCharacters: function(filter) {
+    createMainCharacterInfoWithoutQuestionsForTransformation: function (mainCharacter, info) {
+      let html = '';
+      if (mainCharacter[info].words > 0) {
+        html += this.createTag('p', this.createTag('b', this.getTranslations()['common_characters_' + info]));
+        html += mainCharacter[info].text;
+      }
+      return html; 
+    },
+
+    createSecondaryCharacters: function(filter, options) {
       let html = '';
       let secondaryCharacters = SecondaryCharacterService.getSecondaryCharacters();
       if (secondaryCharacters && secondaryCharacters.length > 0) {
@@ -519,15 +764,22 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           if (!filter || (filter && secondaryCharacters[i].$loki === filter)) {
             html += this.createTag('h2', secondaryCharacters[i].name);
             html += secondaryCharacters[i].description;
+            html += this.manageNotes(secondaryCharacters[i].description);
+            html += this.createImages(secondaryCharacters[i].images);
             html += this.createEvents('secondarycharacter', secondaryCharacters[i].$loki);
             html += this.createGroupMemberships('secondarycharacter', secondaryCharacters[i].$loki);
           }
         }
       }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
+      }
+
       return html;
     },
 
-    createLocations: function(filter) {
+    createLocations: function(filter, options) {
       let html = '';
       let locations = LocationService.getLocations();
       if (locations && locations.length > 0) {
@@ -536,15 +788,22 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           if (!filter || (filter && locations[i].$loki === filter)) {
             html += this.createTag('h2', LocationService.calculateLocationName(locations[i]));
             html += locations[i].description;
+            html += this.manageNotes(locations[i].description);
+            html += this.createImages(locations[i].images);
             html += this.createEvents('location', locations[i].$loki);
             html += this.createGroupMemberships('location', locations[i].$loki);
           }
         }
       }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
+      }
+
       return html;
     },
 
-    createObjects: function (filter) {
+    createObjects: function (filter, options) {
       let html = '';
       let objects = this.getObjectService().getObjects();
       if (objects && objects.length > 0) {
@@ -553,15 +812,22 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           if (!filter || (filter && objects[i].$loki === filter)) {
             html += this.createTag('h2', objects[i].name);
             html += objects[i].description;
+            html += this.manageNotes(objects[i].description);
+            html += this.createImages(objects[i].images);
             html += this.createEvents('object', objects[i].$loki);
             html += this.createGroupMemberships('object', objects[i].$loki);
           }
         }
       }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
+      }
+
       return html;
     },
 
-    createGroups: function (filter) {
+    createGroups: function (filter, options) {
       let html = '';
       let groups = this.getGroupService().getGroups();
       if (groups && groups.length > 0) {
@@ -570,15 +836,22 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           if (!filter || (filter && groups[i].$loki === filter)) {
             html += this.createTag('h2', groups[i].name);
             html += groups[i].description;
+            html += this.manageNotes(groups[i].description);
+            html += this.createImages(groups[i].images);
             html += this.createEvents('group', groups[i].$loki);
             html += this.createGroupMembers(groups[i]);
           }
         }
       }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
+      }
+
       return html;
     },
 
-    createNotes: function (filter) {
+    createNotes: function (filter, options) {
       let html = '';
       let notes = this.getNoteService().getNotes();
       if (notes && notes.length > 0) {
@@ -587,9 +860,16 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           if (!filter || (filter && notes[i].$loki === filter)) {
             html += this.createTag('h2', notes[i].name);
             html += notes[i].description;
+            html += this.manageNotes(notes[i].description);
+            html += this.createImages(notes[i].images);
           }
         }
       }
+
+      if (options && options.individualexport) {
+        html += this.createBookEndNotes();
+      }
+
       return html;
     },
 
@@ -603,8 +883,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
           html += this.createTag('h2', ChapterService.getChapterPositionDescription(chapters[i].position) + ' ' + chapters[i].title);
           html += this.createTag('h3', this.getTranslations().common_chapter_reason);
           html += chapters[i].reason.text;
+          html += this.manageNotes(chapters[i].reason.text);
           html += this.createTag('h3', this.getTranslations().common_chapter_notes);
           html += chapters[i].notes.text;
+          html += this.manageNotes(chapters[i].notes.text);
         }
       }
       return html;
@@ -661,17 +943,17 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return html;
     },
 
-    calculateChapterPositionStyle: function() {
-      let chapterpositionstyle;
-      switch (BibiscoPropertiesService.getProperty('chaptertitleposition')) {
+    calculateTitlePositionStyle: function(titlePosition) {
+      let titlepositionstyle;
+      switch (titlePosition) {
         case 'left':
-          chapterpositionstyle = 'text-align: left';
+          titlepositionstyle = 'text-align: left';
           break;
         case 'center':
-          chapterpositionstyle = 'text-align: center';
+          titlepositionstyle = 'text-align: center';
           break;
       }
-      return chapterpositionstyle;
+      return titlepositionstyle;
     },
 
     calculateSceneSeparator: function() {
@@ -693,33 +975,52 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
     calculateExportConfig: function(exportParams) {
       return {
         font: this.getFont(),
+        fontsize: BibiscoPropertiesService.getProperty('exportfontsize'),
         indent: (BibiscoPropertiesService.getProperty('indentParagraphEnabled') === 'true'),
         linespacing: BibiscoPropertiesService.getProperty('linespacing'),
         paragraphspacing: BibiscoPropertiesService.getProperty('paragraphspacing'),
         hcountingactive: exportParams.hcountingactive,
         pagebreakonh1: exportParams.pagebreakonh1,
         title:  ProjectService.getProjectInfo().name,
-        author:  ProjectService.getProjectInfo().author
+        author:  ProjectService.getProjectInfo().author,
+        pagenumberposition: BibiscoPropertiesService.getProperty('pagenumberposition'),
+        pagenumberalignment: BibiscoPropertiesService.getProperty('pagenumberalignment'),
+        showfirstpagenumber: BibiscoPropertiesService.getProperty('showfirstpagenumber'),
+        pagenumberformat: BibiscoPropertiesService.getProperty('pagenumberformat'),
+        commonpagetranslation: this.getProjectTranslations().common_page,
+        commonoftranslation: this.getProjectTranslations().common_of,
+        toctranslation: this.getProjectTranslations().toc,
+        exporthighlightedtext: (BibiscoPropertiesService.getProperty('exporthighlightedtext') === 'true'),
+        footendnotemode: footendnotemode,
+        exportcomments: BibiscoPropertiesService.getProperty('exportcomments'),
       };
     },
 
     createChapter: function (chapterconfig) {
 
       let chapter = chapterconfig.chapter;
-      let title = chapterconfig.ignoretitleformat ? chapter.title : this.calculateChapterTitle(chapterconfig.chapterformat.chaptertitleformat, chapter.title, chapter.position, chapterconfig.chapterformat.chaptertitleinprojectlanguage);
+      let title = chapterconfig.ignoretitleformat ? chapter.title : this.calculateChapterTitleFormat(chapterconfig.chapterformat.chaptertitleformat, chapter.title, chapter.position, chapterconfig.chapterformat.chaptertitleinprojectlanguage);
       let html = this.createTag(chapterconfig.tag, title, [{ name: 'style', value: chapterconfig.chapterformat.chapterpositionstyle }]);
       let scenes = ChapterService.getScenes(chapter.$loki);
       for (let j = 0; j < scenes.length; j++) {
+        if (chapterconfig.chapterformat.exportscenetitle === 'true') {
+          let scenetitle = chapterconfig.ignoretitleformat ? scenes[j].title: this.calculateSceneTitleFormat(chapterconfig.chapterformat.scenetitleformat, scenes[j].title, chapter.position, (j+1));
+          html += this.createTag('h2', scenetitle, [{ name: 'style', value: chapterconfig.chapterformat.scenepositionstyle }]);
+        }
         html += scenes[j].revisions[scenes[j].revision].text;
         if (j < scenes.length - 1) {
           html += this.createTag('p', chapterconfig.chapterformat.sceneseparator, [{ name: 'style', value: 'text-align: center' }]);
         }
       }
+      html += this.manageNotes(html);
+      if (chapterconfig.individualexport) {
+        html += this.createBookEndNotes();
+      }
 
       return html;
     },
 
-    calculateChapterTitle: function(chaptertitleformat, title, position, chaptertitleinprojectlanguage) {
+    calculateChapterTitleFormat: function(chaptertitleformat, title, position, chaptertitleinprojectlanguage) {
       let chaptertitle;
       switch (chaptertitleformat) {
         case 'numbertitle':
@@ -738,6 +1039,57 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       return chaptertitle;
     },
 
+    calculateSceneTitleFormat: function(scenetitleformat, title, chapterposition, sceneposition) {
+      let scenetitle;
+      let position = chapterposition + '.' + sceneposition;
+      switch (scenetitleformat) {
+        case 'numbertitle':
+          scenetitle = position + ' ' + title; 
+          break;
+        case 'number':
+          scenetitle = position;
+          break;
+        case 'title':
+          scenetitle = title;
+          break;
+      }
+      return scenetitle;
+    },
+
+    createImages: function(images) {
+      let html = '';
+      if (images && images.length > 0) {
+        html += this.createTag('h3', this.getTranslations().common_images); 
+        for (let i = 0; i < images.length; i++) {
+          let imgAttribs = [];
+          imgAttribs.push({
+            name: 'filename',
+            value: images[i].filename
+          });
+  
+          // set width percentage of project images to 50%
+          imgAttribs.push({
+            name: 'widthperc',
+            value: 50
+          });
+  
+          // set alignment of project images to center
+          imgAttribs.push({
+            name: 'position',
+            value: 'center'
+          });
+  
+          html += this.createTag('img', '', imgAttribs);
+
+          let pAttribs = [];
+          pAttribs.push({name: 'style', value: 'text-align: center'});
+          html += this.createTag('p', '<i>'+images[i].name+'</i>', pAttribs);
+        }
+      }
+      return html;
+    },
+    
+    
     createEvents: function(type, id) {
       let html = '';
       if (SupporterEditionChecker.isSupporterOrTrial()) {
@@ -1028,10 +1380,12 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         'common_characters_conflict',
         'common_characters_evolutionduringthestory',
         'common_characters_lifebeforestorybeginning',
+        'common_characters_notes',
         'common_custom',
         'common_events',
         'common_fabula',
         'common_ideas',
+        'common_images',
         'common_location',
         'common_notes_title',
         'common_locations',
@@ -1051,8 +1405,10 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         'object',
         'objects',
         'date_format_export_timeline',
+        'toc',
         'time_format_export_timeline',
-        'timeline_title'];
+        'timeline_title'
+        ];
 
       translationkeys.push.apply(translationkeys, 
         this.addInfoQuestionsTranslationKeys('behaviors', behaviors_questions_count));
@@ -1124,6 +1480,14 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       moment.locale(LocaleService.getCurrentLocale());
     },
 
+    getProjectTranslations: function() {
+      let projectLanguage = ProjectService.getProjectInfo().language;
+      if (!projecttranslations[projectLanguage]) {
+        projecttranslations[projectLanguage] = JSON.parse(FileSystemService.readFile(LocaleService.getResourceFilePath(projectLanguage)));
+      }
+      return projecttranslations[projectLanguage];
+    },
+
     calculateChapterTitleExample: function(chaptertitleformat) {
 
       let chaptertitleexample;
@@ -1135,9 +1499,7 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
         chaptertitleexample = '4';
         break;
       case 'labelnumber':
-        let projectLanguage = ProjectService.getProjectInfo().language;
-        let translation = JSON.parse(FileSystemService.readFile(LocaleService.getResourceFilePath(projectLanguage)));
-        chaptertitleexample = translation.common_chapter + ' 4';
+        chaptertitleexample = this.getProjectTranslations().common_chapter + ' 4';
         break;
       case 'title':
         chaptertitleexample = this.getTranslations().chapter_title_format_example_title;
@@ -1145,6 +1507,85 @@ angular.module('bibiscoApp').service('ExportService', function ($injector, $tran
       }
   
       return chaptertitleexample;
-    }
+    },
+
+    calculatePageNumberFormatExample: function(pagenumberformat) {
+
+      let pagenumberformatexample;
+      switch (pagenumberformat) {
+      case 'number':
+        pagenumberformatexample = '23';
+        break;
+      case 'numberandcount': case 'pageandnumberandcount':
+        if (pagenumberformat === 'numberandcount') {
+          pagenumberformatexample = '23 ' + this.getProjectTranslations().common_of + ' 49';
+        } else if (pagenumberformat === 'pageandnumberandcount') {
+          pagenumberformatexample = this.getProjectTranslations().common_page + ' 23 ' + this.getProjectTranslations().common_of + ' 49';
+        }
+        break;
+      }
+  
+      return pagenumberformatexample;
+    },
+
+    manageNotes: function(inputHtml) {
+
+      if (footendnotemode === 'footnote') return '';
+
+      let notes = this.getNotesFromHtml(inputHtml);
+
+      if (notes.length === 0) return '';
+
+      if (footendnotemode === 'bookend') {
+        for (let i = 0; i < notes.length; i++) {
+          bookendnotes.push(notes[i]);
+        }
+        return '';
+      } 
+      
+      if (footendnotemode === 'chapterend') {
+        let result = '<note>_____________________</note>';
+        for (let i = 0; i < notes.length; i++) {
+          chapterendnotes++;
+          result += '<note><sup>' + chapterendnotes + '</sup> ' + notes[i] + '</note>';
+        }
+        return result;
+      }
+    },
+
+    createBookEndNotes: function() {
+
+      let html = '';
+      let bookendtitle = BibiscoPropertiesService.getProperty('bookendtitle');
+
+      if (bookendnotes.length > 0) {
+        html += '<h1>'+bookendtitle+'</h1>';
+        for (let i = 0; i < bookendnotes.length; i++) {
+          html += '<note><sup>' + (i+1) + '</sup> ' + bookendnotes[i] + '</note>';
+        }
+      }
+
+      return html;
+    },
+
+    getNotesFromHtml: function(inputHtml) {
+
+      let result = [];
+
+      // create a temporary element to parse the HTML code
+      let tempElement = document.createElement('div');
+      tempElement.innerHTML = inputHtml;
+  
+      // select all <img> elements with a "filename" attribute set
+      let notes = tempElement.querySelectorAll('span[data-isnote=true]');
+
+      if (notes.length > 0) {
+        for (let i = 0; i < notes.length; i++) {
+          result.push(notes[i].getAttribute('data-note'));
+        }
+      }
+
+      return result;
+    },
   };
 });

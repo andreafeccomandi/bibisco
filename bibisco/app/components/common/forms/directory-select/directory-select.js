@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: DirectorySelectController,
     bindings: {
       customerrormessage: '<?',
+      defaultpath: '<?',
       model: '=',
       field: '<',
       name: '@',
@@ -29,16 +30,33 @@ angular.
   });
 
 
-function DirectorySelectController(MainProcessCallbackExecutorService) {
+function DirectorySelectController($timeout, MainProcessCallbackExecutorService) {
 
   const ipc = require('electron').ipcRenderer;
-  var self = this;
+  let self = this;
+
+  self.dismissLoader = function() {
+    self.opening = false;
+  };
+
+  self.$onInit = function () {
+    self.opening = false;
+    ipc.on('SYSTEM_DIALOG_OPEN', self.dismissLoader);
+  };
+
+  self.$onDestroy = function () {
+    ipc.removeListener('SYSTEM_DIALOG_OPEN', self.dismissLoader);
+  };
 
   self.opendirectorydialog = function() {
-    let callbackId = MainProcessCallbackExecutorService.register(self.onselectdirectory);
-    ipc.send('selectdirectory', {
-      callbackId: callbackId
-    });
+    self.opening = true;
+    $timeout(function () {
+      let callbackId = MainProcessCallbackExecutorService.register(self.onselectdirectory);
+      ipc.send('selectdirectory', {
+        callbackId: callbackId,
+        defaultPath: self.defaultpath
+      });
+    }, 0);
   };
 
   // show errors

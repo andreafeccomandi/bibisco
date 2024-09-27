@@ -1,0 +1,37 @@
+<div class="metatext-box metatext-box-{{$ctrl.type}}" ng-if="$ctrl.showmetatext" 
+  style="top: {{$ctrl.positionTop}}px; left: {{$ctrl.positionLeft}}px;">
+  <i class="fa fa-{{$ctrl.icon}} text-primary"></i>
+  <div class="metatext-box-body metatext-box-body-{{$ctrl.type}}">
+    <textarea ng-if="!$ctrl.readonly" ng-model="$ctrl.text" ng-change="$ctrl.changefunction({metatext: $ctrl.text})"
+      placeholder="{{$ctrl.placeholder | translate}}" id="metatext"></textarea>
+    <div ng-if="$ctrl.readonly">{{$ctrl.text}}</div>  
+  </div>
+  <div class="metatext-box-footer bibiscoNotSelectableText">
+    <div class="row">
+      <div class="col-sm-6 text-left"><a ng-if="!$ctrl.readonly" ng-click="$ctrl.deletefunction()">{{'jsp.common.button.delete' | translate}}</a></div>
+      <div class="col-sm-6 text-right"><a ng-click="$ctrl.closeMetatextBox()">{{'jsp.common.button.close' | translate}}</a></div>
+    </div>
+  </div>
+</div>
+                                                                                                                                                                                                         
+<!-- DIRECT CONNECTOR-->
+<div ng-if="$ctrl.showmetatext && $ctrl.connectortype === 'direct'" class="metatext-box-connector metatext-box-connector-{{$ctrl.type}}" 
+  style="left:{{$ctrl.lineLeft}}px;top:{{$ctrl.lineTop}}px;width:{{$ctrl.lineWidth}}px;">
+</div>
+<div ng-if="$ctrl.showmetatext && $ctrl.connectortype === 'direct'" 
+  class="metatext-box-connector-edge metatext-box-connector-edge-{{$ctrl.type}} metatext-box-connector-edge-{{$ctrl.connectortype}}" 
+  style="left:{{$ctrl.lineLeft+$ctrl.lineWidth-5}}px;top:{{$ctrl.lineTop-5}}px;">
+</div>
+
+<!-- ELBOW CONNECTOR-->
+<div ng-if="$ctrl.showmetatext && $ctrl.connectortype === 'elbow'" class="metatext-box-connector metatext-box-connector-{{$ctrl.type}}" 
+  style="left:{{$ctrl.lineLeft}}px;top:{{$ctrl.lineTop}}px;width:{{$ctrl.lineWidth+12}}px;">
+</div>
+<div ng-if="$ctrl.showmetatext && $ctrl.connectortype === 'elbow'"
+  class="metatext-box-connector-vertical metatext-box-connector-{{$ctrl.type}}" 
+  style="left:{{$ctrl.lineLeft++$ctrl.lineWidth+10.6}}px;top:{{$ctrl.lineTop-5}}px;">
+</div>
+<div ng-if="$ctrl.showmetatext && $ctrl.connectortype === 'elbow'"
+  class="metatext-box-connector-edge metatext-box-connector-edge-{{$ctrl.type}} metatext-box-connector-edge-{{$ctrl.connectortype}}" 
+  style="left:{{$ctrl.lineLeft+$ctrl.lineWidth+8.6}}px;top:{{$ctrl.lineTop-13}}px;">
+</div>

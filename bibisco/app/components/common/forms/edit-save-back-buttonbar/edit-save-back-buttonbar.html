@@ -1,7 +1,13 @@
+
 <button ng-if="!$ctrl.editmode && $ctrl.editbuttonvisible" 
     type="button" class="btn btn-primary" 
     uib-tooltip="{{'edit_tooltip'+$root.os | translate}}"
     ng-click="$ctrl.enableeditmode()">{{"jsp.common.button.edit" | translate}}</button>
+
+<button ng-if="$ctrl.editmode" 
+    type="button" class="btn btn-default" 
+    uib-tooltip="{{'read_tooltip'+$root.os | translate}}"
+    ng-click="$ctrl.enablereadmode()">{{"read_btn" | translate}}</button>
 
 <button ng-if="$ctrl.editmode" type="button" class="btn btn-primary" 
     uib-tooltip="{{'save_tooltip'+$root.os | translate}}"

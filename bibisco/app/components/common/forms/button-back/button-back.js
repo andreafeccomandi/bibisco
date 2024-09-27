@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ angular.
     }
   });
 
-function ButtonBackController($rootScope, $scope, $window, hotkeys) {
+function ButtonBackController($rootScope, $scope, $window, hotkeys, ContextService) {
 
   let self = this;
   const ipc = require('electron').ipcRenderer;
@@ -66,7 +66,8 @@ function ButtonBackController($rootScope, $scope, $window, hotkeys) {
 
     if ($rootScope.fullscreen) {
       $rootScope.fullscreen = false;
-      if (!$rootScope.previouslyFullscreen) {
+      $rootScope.$emit('BACK_FROM_FULL_SCREEN_VIEW');
+      if (!$rootScope.previouslyFullscreen || ContextService.getOs().startsWith('win')) {
         ipc.send('exitFullScreen');
       }
     } else if (!self.buttonpaused) {

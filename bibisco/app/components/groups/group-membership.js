@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ angular.
   });
 
 function GroupMembershipController($location, $rootScope, $scope, $translate, $window,
-  hotkeys, GroupService, PopupBoxesService, UtilService) {
+  hotkeys, BibiscoPropertiesService, GroupService, LocationService, MainCharacterService, ObjectService,
+  PopupBoxesService, SecondaryCharacterService, StrandService, UtilService) {
 
   let self = this;
 
@@ -53,7 +54,7 @@ function GroupMembershipController($location, $rootScope, $scope, $translate, $w
       });
 
     // groups
-    self.workingroups = GroupService.getGroups();
+    self.workingroups = JSON.parse(JSON.stringify(GroupService.getGroups()));
 
     // init group membership
     self.initGroupsMembership();
@@ -146,6 +147,21 @@ function GroupMembershipController($location, $rootScope, $scope, $translate, $w
 
   self.executeSave = function() {
     GroupService.updateGroups(self.workingroups);
+
+    // update element lastsave
+    let service;
+    if (self.type === 'maincharacter') {
+      service = MainCharacterService;
+    } else if (self.type === 'secondarycharacter') {
+      service = SecondaryCharacterService;
+    } else if (self.type === 'location') {
+      service = LocationService;
+    } else if (self.type === 'object') {
+      service = ObjectService;
+    } else if (self.type === 'strand') {
+      service = StrandService;
+    }
+    service.updateLastSave(self.id, new Date());
     $rootScope.dirty = false;
   };
 
@@ -155,6 +171,11 @@ function GroupMembershipController($location, $rootScope, $scope, $translate, $w
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    let autosave = BibiscoPropertiesService.getProperty('autoSaveEnabled') === 'true';
+    if (autosave && $rootScope.dirty) {
+      self.executeSave();
+    } else {
+      PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    }
   });
 }

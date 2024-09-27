@@ -8,6 +8,7 @@
   buttonstyle="primary"
   buttontooltip="{{'scene_create_tooltip'+$root.os}}"
   characters="$ctrl.chapter.characters" 
+  dblclickfunction="$ctrl.changeTitle()"
   editmode="false"
   headertitle="{{$ctrl.title}}" 
   tags="$ctrl.grouptags"
@@ -66,10 +67,12 @@
     <span class="pull-left">
       <button ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 0" 
         type="button" class="btn btn-default"
-        ng-click="$ctrl.showChapterRead()">
-        {{'read_the_chapter'| translate}}</button>
+        ng-click="$ctrl.showChapterRead()" uib-tooltip="{{'read_the_chapter_tooltip'+$root.os | translate}}">
+        {{'read_the_chapter'| translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></button>
     </span>
     <span class="pull-right">
+      <contextualtipbutton ng-if="!$ctrl.scenescardgriditems || $ctrl.scenescardgriditems.length === 1" 
+        tipcode="chapteredittitleTip"></contextualtipbutton>
       <contextualtipbutton ng-if="$ctrl.scenescardgriditems && $ctrl.scenescardgriditems.length > 1" 
         tipcode="scenesdndTip"></contextualtipbutton>
       <dropdownmenu buttonlabel="jsp.common.button.more" 

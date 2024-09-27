@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,22 @@ angular.
     }
   });
 
-function ProjectExplorerSimpleTextController($location, ImageService) {
+function ProjectExplorerSimpleTextController($location, ImageService, WordCharacterCountService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {
+    self.initText();
   };
 
-  self.fullpath = function (filename) {
-    return ImageService.getImageFullPath(filename);
+  self.$onChanges = function () {
+    self.initText();
+  };
+
+  self.initText = function() {
+    let lenght = WordCharacterCountService.count(self.text);
+    self.text = ((lenght && lenght.characters > 0) || ImageService.textContainsImages(self.text)) ? 
+      ImageService.updateAllImageSrcToLocalPath(self.text) : null;
   };
 
   self.gotoElement = function() {

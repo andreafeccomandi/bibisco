@@ -4,7 +4,7 @@
   <div class="jumbotron jumbotron-buttonbox top50 bibiscoNotSelectableText">
     <button ng-click="$ctrl.exportPdf()" 
       type="button" 
-      class="btn btn-primary">{{"jsp.export.a.pdf" | translate}}</button>
+      class="btn btn-default">{{"jsp.export.a.pdf" | translate}}</button>
     <button ng-click="$ctrl.exportWord()" 
       type="button" 
       class="btn btn-default">{{"jsp.export.a.word" | translate}}</button>
@@ -13,7 +13,7 @@
       class="btn btn-default">{{"jsp.export.a.txt" | translate}}</button>
     <button ng-click="$ctrl.exportEPub()" 
       type="button" 
-      class="btn btn-default">{{"jsp.export.a.epub" | translate}}</button>
+      class="btn btn-default">{{"jsp.export.a.epub" | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></button>
     <button ng-click="$ctrl.exportArchive()" 
       type="button" 
       class="btn btn-default"

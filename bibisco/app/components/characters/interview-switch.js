@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,16 @@ angular.
     templateUrl: 'components/characters/interview-switch.html',
     controller: InterviewSwitchController,
     bindings: {
-      freetextenabled: '='
+      autosaveenabled: '=',
+      freetextenabled: '=',
+      savefunction: '&'
     }
   });
 
 
 function InterviewSwitchController($rootScope, PopupBoxesService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {};
 
@@ -43,9 +45,17 @@ function InterviewSwitchController($rootScope, PopupBoxesService) {
 
   self.switch = function(freetextenabled) {
     if ($rootScope.dirty === true) {
-      PopupBoxesService.confirm(function() {
+      if (self.autosaveenabled) {
+        self.savefunction();
+        self.saving = false;
+        $rootScope.dirty = false;
+        $rootScope.$emit('CONTENT_SAVED');
         self.executeSwitch(freetextenabled);
-      }, 'js.common.message.confirmExitWithoutSave');
+      } else {
+        PopupBoxesService.confirm(function() {
+          self.executeSwitch(freetextenabled);
+        }, 'js.common.message.confirmExitWithoutSave');
+      }
     } else {
       self.executeSwitch(freetextenabled);
     }

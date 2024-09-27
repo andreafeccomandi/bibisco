@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ angular.module('bibiscoApp', ['ngRoute',
   'ui.bootstrap',
   'ui.bootstrap.datetimepicker',
   'ui.select'
-]).controller('indexController', function ($injector, $rootScope, $scope) {
+]).controller('indexController', function ($interval, $injector, $rootScope, $scope, $timeout) {
 
   const ipc = require('electron').ipcRenderer;
 
@@ -35,14 +35,24 @@ angular.module('bibiscoApp', ['ngRoute',
   let BibiscoPropertiesService = $injector.get('BibiscoPropertiesService'); 
   let LoggerService = $injector.get('LoggerService'); 
   let ProjectService = $injector.get('ProjectService'); 
+  let NavigationService = $injector.get('NavigationService'); 
   let SupporterEditionChecker = $injector.get('SupporterEditionChecker'); 
 
   $scope.theme = BibiscoPropertiesService.getProperty('theme');
-  if ($scope.theme === 'dark' && SupporterEditionChecker.isTrialExpired()) {
+  if (($scope.theme === 'dark' || $scope.theme === 'darkhc' ) && SupporterEditionChecker.isTrialExpired()) {
     BibiscoPropertiesService.setProperty('theme', 'classic');
     BibiscoDbConnectionService.saveDatabase();
     $scope.theme = 'classic';
   }
+
+  if ($scope.theme === 'classic') {
+    Chart.defaults.global.defaultFontColor = '#333';
+  } else if ($scope.theme === 'dark' && !SupporterEditionChecker.isTrialExpired()) {
+    Chart.defaults.global.defaultFontColor = '#DDD';
+  } else if ($scope.theme === 'darkhc' && !SupporterEditionChecker.isTrialExpired()) {
+    Chart.defaults.global.defaultFontColor = '#FFF';
+  }
+
   $scope.zoomLevel = BibiscoPropertiesService.getProperty('zoomLevel');
   if ($scope.zoomLevel === 100) {
     Chart.defaults.global.defaultFontSize = 12;
@@ -59,10 +69,17 @@ angular.module('bibiscoApp', ['ngRoute',
 
   $rootScope.$on('SWITCH_CLASSIC_THEME', function () {
     $scope.theme = 'classic';
+    Chart.defaults.global.defaultFontColor = '#333';
   });
 
   $rootScope.$on('SWITCH_DARK_THEME', function () {
     $scope.theme = 'dark';
+    Chart.defaults.global.defaultFontColor = '#DDD';
+  });
+
+  $rootScope.$on('SWITCH_DARKHC_THEME', function () {
+    $scope.theme = 'darkhc';
+    Chart.defaults.global.defaultFontColor = '#FFF';
   });
 
   $rootScope.$on('CHANGE_ZOOM_LEVEL', function (event, args) {
@@ -81,17 +98,22 @@ angular.module('bibiscoApp', ['ngRoute',
   });
 
   let ContextService = $injector.get('ContextService');
-  $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
 
   // global variables
   $rootScope.actualPath = null;
+  $rootScope.bibiscoStarted = false;
+  $rootScope.cursorPositionCache = new Map();
   $rootScope.dirty = false;
+  $rootScope.ceSuffix = SupporterEditionChecker.isSupporter() ? '' : '_ce';
+  $rootScope.ed = SupporterEditionChecker.isSupporter() ? 'se' : 'ce';
   $rootScope.exitfullscreenmessage = false;
   $rootScope.fullscreen = false;
   $rootScope.groupFilter = null;
   $rootScope.keyDownFunction = null;
   $rootScope.keyUpFunction = null;
+  $rootScope.os = ContextService.getOs() === 'darwin' ? '_mac' : '';
   $rootScope.partsExpansionStatus = [];
+  $rootScope.popupBoxOpen = false;
   $rootScope.previouslyFullscreen = false;
   $rootScope.previousPath = null;
   $rootScope.projectExplorerCache = new Map();
@@ -105,12 +127,32 @@ angular.module('bibiscoApp', ['ngRoute',
   $rootScope.text2search = null;
   $rootScope.textSelected = null;
   $rootScope.trialmessageopen = false;
+
+  $rootScope.$on('OPEN_POPUP_BOX', function () {
+    $rootScope.popupBoxOpen = true;
+  });
+  $rootScope.$on('CLOSE_POPUP_BOX', function () {
+    $rootScope.popupBoxOpen = false;
+  });
+
+  if(SupporterEditionChecker.isTrialExpired()) {
+    $timeout(function() {
+      if (!$rootScope.popupBoxOpen) {
+        SupporterEditionChecker.showSupporterMessage();
+      }
+      $interval(function() {
+        if (!$rootScope.popupBoxOpen) {
+          SupporterEditionChecker.showSupporterMessage();
+        } 
+      }, 1200000); // 20 minutes in milliseconds: 1200000
+    }, 300000); // 5 minutes in milliseconds: 300000
+  } 
   
   // location change success
   $rootScope.$on('$locationChangeSuccess', 
     function (event, newUrl, oldUrl) {
       $rootScope.actualPath = newUrl.split('!')[1];
-      if ($rootScope.projectExplorerCache.get($rootScope.actualPath)) {
+      if (NavigationService.getProjectExplorerCacheEntry($rootScope.actualPath)) {
         $rootScope.showprojectexplorer = true;
       } else {
         $rootScope.showprojectexplorer = false;
@@ -277,6 +319,9 @@ angular.module('bibiscoApp', ['ngRoute',
       }).
       when('/exporttoformat/:format', {
         template: '<exporttoformat></exporttoformat>'
+      }).
+      when('/exportlogs', {
+        template: '<exportlogs></exportlogs>'
       }).
       when('/groups', {
         template: '<groups></groups>'
@@ -531,7 +576,7 @@ angular.module('bibiscoApp', ['ngRoute',
         template: '<readnovel></readnovel>'
       }).
       when('/search', {
-        template: '<search></search>'
+        template: '<globalsearch></globalsearch>'
       }).
       when('/secondarycharacters/new', {
         template: '<secondarycharactercreate></secondarycharactercreate>'

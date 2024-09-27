@@ -2,6 +2,9 @@
   <p class="text-danger bibiscoNotSelectableText" ng-message="required">{{"validation.required" | translate}}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="minlength">{{"validation.minlength" | translate:{ minlength: $ctrl.getMinLength() } }}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="maxlength">{{"validation.maxlength" | translate:{ maxlength: $ctrl.getMaxLength() } }}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="min">{{"validation.min" | translate:{ min: $ctrl.getMin() } }}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="max">{{"validation.max" | translate:{ max: $ctrl.getMax() } }}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="email">{{"validation.email" | translate}}</p>
+  <p class="text-danger bibiscoNotSelectableText" ng-message="url">{{"validation.url" | translate}}</p>
   <p class="text-danger bibiscoNotSelectableText" ng-message="pattern">{{"validation.number" | translate}}</p>
 </div>

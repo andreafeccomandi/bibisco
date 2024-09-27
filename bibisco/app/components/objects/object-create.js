@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: ObjectCreateController
   });
 
-function ObjectCreateController ($location, $routeParams, $window, ChapterService, GroupService, ObjectService) {
+function ObjectCreateController ($location, $routeParams, $window, BibiscoPropertiesService, 
+  ChapterService, GroupService, ObjectService) {
   let self = this;
 
   self.$onInit = function() {
@@ -28,6 +29,8 @@ function ObjectCreateController ($location, $routeParams, $window, ChapterServic
     self.breadcrumbitems = [];
 
     self.groupids = [];
+    self.showdetailaftercreation = false;
+    self.elementbasepath = null;
 
     // creation from objects
     self.creationFromObjects = $location.path().startsWith('/objects') ? true : false;
@@ -36,6 +39,8 @@ function ObjectCreateController ($location, $routeParams, $window, ChapterServic
         label: 'objects',
         href: '/objects'
       });
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
+      self.elementbasepath = '/objects/';
     }
 
     // creation from scene tags
@@ -86,7 +91,7 @@ function ObjectCreateController ($location, $routeParams, $window, ChapterServic
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
@@ -100,7 +105,7 @@ function ObjectCreateController ($location, $routeParams, $window, ChapterServic
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title',

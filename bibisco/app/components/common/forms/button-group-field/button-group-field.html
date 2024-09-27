@@ -1,14 +1,19 @@
 <div class="form-group">
   <label class="col-sm-{{$ctrl.labelcols}} control-label">{{$ctrl.label | translate}}</label>
   <div class="col-sm-{{$ctrl.inputcols}}">
-    <div class="btn-group pull-left">
-        <button ng-repeat="item in $ctrl.group track by $index"
-          type="button" class="btn btn-default {{item.buttonclass}}"
-          ng-click="$ctrl.change(item.value)"
-          ng-class="{ 'active' : $ctrl.model == item.value }">
-          <i ng-if="item.icon" class="fa fa-{{item.icon}}"></i>
-          {{item.label | translate}}
-        </button>
+    <div class="input-group">
+      <div class="btn-group pull-left">
+          <button ng-repeat="item in $ctrl.group track by $index"
+            type="button" class="btn btn-default {{item.buttonclass}}"
+            ng-click="$ctrl.change(item.value)"
+            ng-class="{ 'active' : $ctrl.model == item.value }">
+            <i ng-if="item.icon" class="fa fa-{{item.icon}}"></i>
+            {{item.label | translate}}
+          </button>
+      </div>
+    </div>
+    <div ng-if="$ctrl.note" class="input-field-note">
+      <span class="label label-info">{{$ctrl.notebadge | translate}}</span>&nbsp;&nbsp;{{$ctrl.note | translate}}
     </div>
   </div>
 </div>

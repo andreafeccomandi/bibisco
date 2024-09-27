@@ -3,8 +3,10 @@
   headertitle="{{$ctrl.headertitle}}"
   headersubtitle="{{$ctrl.headersubtitle}}"
   image="{{$ctrl.maincharacter.profileimage}}"
-  imageaddenabled="false"
+  imageaddenabled="true"
   imageenabled="true"
+  imageaddfunction="$ctrl.addprofileimage()"
+  imageseditfunction="$ctrl.showimagesfunction()"
   noimageicon="user"
   taskstatus="$ctrl.maincharacter[$ctrl.type].status"
   taskstatuschangefunction="$ctrl.changestatus(status)">
@@ -47,6 +49,7 @@
   <detailfootertop 
     autosaveenabled="$ctrl.autosaveenabled" 
     characters="$ctrl.characters"
+    content="$ctrl.content" 
     editmode="$ctrl.editmode"
     lastsave="$ctrl.maincharacter.lastsave" 
     words="$ctrl.words"
@@ -54,22 +57,34 @@
   </detailfootertop>
   <div class="row">
     <span class="pull-left">
-      <projectexplorerbutton showprojectexplorer="$root.showprojectexplorer" visible="true"></projectexplorerbutton>
-      <button ng-if="!$ctrl.editmode && $ctrl.type === 'custom' && $ctrl.maincharacter[$ctrl.type].questions.length > 0" 
+      <projectexplorerbutton></projectexplorerbutton>
+      <div class="character-info-question-images-events-groups-block">
+        <imagesbutton showimagesfunction="$ctrl.showimagesfunction()" showimageslabel="{{'character_images_tooltip'+$root.os}}" visible="true"></imagesbutton>
+        <eventsbutton showeventsfunction="$ctrl.showeventsfunction()" showeventslabel="{{'character_events_tooltip'+$root.os}}" visible="true"></eventsbutton>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.managegroupsmembership()"
+          uib-tooltip="{{'groups_memberships_tooltip'+$root.os | translate}}">
+          {{'groups_button' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker>
+        </button>
+      </div>
+      <button ng-if="$ctrl.type === 'custom' && $ctrl.maincharacter[$ctrl.type].questions.length > 0" 
         type="button" class="btn btn-default"   
         ng-click="$ctrl.manageCustomQuestions()"
         uib-tooltip="{{'custom_question_edit_tooltip' | translate}}">
         {{'edit_custom_questions' | translate}}
-    </button>
+      </button>
       <interviewswitch ng-if="$ctrl.editmode && $ctrl.type !== 'custom'"
-        freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled">
+        autosaveenabled="$ctrl.autosaveenabled" 
+        freetextenabled="$ctrl.maincharacter[$ctrl.type].freetextenabled"
+        savefunction="$ctrl.save()">
       </interviewswitch>
     </span>
     <span class="pull-right">
-      <dropdownmenu buttonlabel="jsp.common.button.more" 
+      <contextualtipbutton ng-if="$ctrl.editmode && $ctrl.maincharacter[$ctrl.type].freetextenabled === false && $ctrl.questionselected > 0" 
+        tipcode="interviewfreetextTip"></contextualtipbutton>
+      <dropdownmenu buttonlabel="jsp.common.button.more" class="character-info-question-images-events-groups-dropdown"
         items="$ctrl.actionitems" 
         open="up"
-        visible="!$ctrl.editmode && $ctrl.actionitems && $ctrl.actionitems.length > 0">
+        visible="$ctrl.actionitems && $ctrl.actionitems.length > 0">
       </dropdownmenu>
       <editsavebackbuttonbar 
         autosaveenabled="$ctrl.autosaveenabled" 
@@ -77,6 +92,7 @@
         editbuttonvisible="$ctrl.editbuttonenabled" 
         editfunction="$ctrl.edit()"
         editmode="$ctrl.editmode"
+        readfunction="$ctrl.read()"
         savefunction="$ctrl.save()"
         showprojectexplorer="$root.showprojectexplorer"
         words="$ctrl.words">

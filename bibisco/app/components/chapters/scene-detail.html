@@ -1,7 +1,6 @@
 <detailheader breadcrumbitems="$ctrl.breadcrumbitems" 
+  dblclickfunction="$ctrl.changetitle()"
   headertitle="{{$ctrl.title}}" 
-  headertipcode="sceneTip"
-  headertipenabled="!$ctrl.editmode"
   tags="$ctrl.grouptags"
   taskstatus="$ctrl.scene.status" 
   taskstatuschangefunction="$ctrl.changeStatus(status)">
@@ -13,12 +12,12 @@
   content="$ctrl.content" 
   editfunction="$ctrl.edit()"
   editmode="$ctrl.editmode"
-  previouselementlabel="previous_scene"
+  previouselementlabel="{{$ctrl.previouselementtooltip}}"
   previouselementlink="$ctrl.previouselementlink"
-  previouselementtooltip="{{$ctrl.previouselementtooltip}}"
-  nextelementlabel="next_scene"
+  previouselementtooltip="previous_scene"
+  nextelementlabel="{{$ctrl.nextelementtooltip}}"
   nextelementlink="$ctrl.nextelementlink"
-  nextelementtooltip="{{$ctrl.nextelementtooltip}}"
+  nextelementtooltip="next_scene"
   showprojectexplorer="$root.showprojectexplorer" 
   todaywords="$ctrl.todaywords"
   totalwords="$ctrl.totalwords"
@@ -29,7 +28,8 @@
   <detailfootertop 
     autosaveenabled="$ctrl.autosaveenabled" 
     characters="$ctrl.scenerevision.characters" 
-    editmode="$ctrl.editmode", 
+    content="$ctrl.content" 
+    editmode="$ctrl.editmode"
     lastsave="$ctrl.scene.lastsave" 
     todaywords="$ctrl.todaywords"
     totalwords="$ctrl.totalwords"
@@ -40,35 +40,38 @@
   </detailfootertop>
   <div class="row">
     <span class="pull-left">
-      <projectexplorerbutton 
-        showprojectexplorer="$root.showprojectexplorer" 
-        visible="$ctrl.editmode || $ctrl.scenerevision.characters > 0">
-      </projectexplorerbutton>
-      <button ng-if="!$ctrl.editmode" 
+      <projectexplorerbutton></projectexplorerbutton>
+      <button
         type="button" 
         class="btn btn-default" 
         uib-tooltip="{{'tags_tooltip'+$root.os | translate}}"
         ng-click="$ctrl.tags()">{{'jsp.scene.button.tags' | translate}}</button>
-      <revisionselect ng-if="!$ctrl.editmode" 
+      <revisionselect
         class="btn-group" 
+        autosaveenabled="$ctrl.autosaveenabled" 
+        editmode="$ctrl.editmode"
         revisionactive="$ctrl.scene.revision" 
         revisioncount="$ctrl.scene.revisions.length" 
         revisionenabled="true" 
-        revisionfunction="$ctrl.changerevision(action,revision)">
+        revisionfunction="$ctrl.changerevision(action,revision)"
+        savefunction="$ctrl.save()">
       </revisionselect>
     </span>
     <span class="pull-right">
+      <contextualtipbutton ng-if="$ctrl.editmode" modalstyle="richtexteditortip"
+        tipcode="{{$ctrl.tip}}"></contextualtipbutton>
       <dropdownmenu 
         buttonlabel="jsp.common.button.more" 
         items="$ctrl.actionitems" 
         open="up"
-        visible="!$ctrl.editmode">
+        visible="true">
       </dropdownmenu>
       <editsavebackbuttonbar 
         autosaveenabled="$ctrl.autosaveenabled" 
-        editbuttonvisible="$ctrl.scenerevision.characters > 0" 
+        editbuttonvisible="true" 
         editfunction="$ctrl.edit()"
         editmode="$ctrl.editmode" 
+        readfunction="$ctrl.read()"
         savefunction="$ctrl.save()">
       </editsavebackbuttonbar>
     </span>

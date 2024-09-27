@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function LocationCreateController($injector, $location, $rootScope, $routeParams, $scope, $window, hotkeys, 
-  ChapterService, LocationService, PopupBoxesService, SupporterEditionChecker) {
+  BibiscoPropertiesService, ChapterService, LocationService, PopupBoxesService, SupporterEditionChecker) {
   let self = this;
   let GroupService = null;
 
@@ -31,14 +31,16 @@ function LocationCreateController($injector, $location, $rootScope, $routeParams
 
     // common breadcrumb root
     self.breadcrumbitems = [];
+    self.showdetailaftercreation = false;
 
     // creation from locations
-    self.creationFromCharacters = $location.path().startsWith('/locations') ? true : false;
-    if (self.creationFromCharacters) {
+    self.creationFromLocations = $location.path().startsWith('/locations') ? true : false;
+    if (self.creationFromLocations) {
       self.breadcrumbitems.push({
         label: 'common_locations',
         href: '/locations'
       });
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
     }
 
     // creation from scene tags
@@ -89,6 +91,14 @@ function LocationCreateController($injector, $location, $rootScope, $routeParams
     self.usedstates = LocationService.getUsedStates();
     self.usedcities = LocationService.getUsedCities();
 
+    self.deregisterInsertElementListener = $rootScope.$on('INSERT_ELEMENT', function (event, args) {
+      if (self.showdetailaftercreation) {
+        $location.path('/locations/' + args.id + '/default').replace();
+      } else {
+        $window.history.back();
+      }     
+    });
+
     self.checkExit = {
       active: true
     };
@@ -118,7 +128,7 @@ function LocationCreateController($injector, $location, $rootScope, $routeParams
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
@@ -132,7 +142,7 @@ function LocationCreateController($injector, $location, $rootScope, $routeParams
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title',
@@ -204,8 +214,11 @@ function LocationCreateController($injector, $location, $rootScope, $routeParams
       self.checkExit = {
         active: false
       };
-      $window.history.back();
     }
+  };
+
+  self.$onDestroy = function () {
+    self.deregisterInsertElementListener();
   };
 
   $scope.$on('$locationChangeStart', function (event) {

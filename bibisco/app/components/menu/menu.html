@@ -1,6 +1,18 @@
 <div class="sidebar-container bibiscoNotSelectableText">
-  <div class="menu-container">
+  <div class="{{'menu-container'+$root.ceSuffix}}">
     <tree-view nodes="$ctrl.menu"></tree-view>
+  </div>
+  <div class="menu-ce-section" ng-if="$root.bibiscoStarted && $ctrl.showCommunitySection">
+    <hr>
+    <div class="menu-ce-section-text">
+      <i><span ng-bind-html="$ctrl.supportersFeaturesSymbolText"></span>
+      <span ng-if="$ctrl.showTrialActiveRemainingDaysText" ng-bind-html="$ctrl.trialActiveRemainingDays"></span>
+      <span ng-if="!$ctrl.showTrialActiveRemainingDaysText">{{'menu_ce_trial_expired' | translate}}</span>
+      </i>
+    </div>
+    <div class="menu-ce-section-button">
+      <button class="btn btn-download" ng-click="$ctrl.download()">{{'se_download_button' | translate}}</button>
+    </div>
   </div>
   <img class="brand" src="images/bibisco-circle-hr.png" />
 </div>

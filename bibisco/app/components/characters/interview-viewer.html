@@ -1,19 +1,30 @@
-<div class="richtextviewer-container">
-  <div ng-if="$ctrl.maincharacter[$ctrl.type].questions.length > 0"
-    ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
-    <div ng-if="$ctrl.type !== 'custom'" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index
-      | translate}}</div>
-    <div ng-if="$ctrl.type === 'custom'" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{$ctrl.customQuestions[$index].question}}</div>
-    <div class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}}" ng-bind-html="question.text">
+<div id="interviewviewercontainer" class="richtextviewer-container">
+  <div id="interviewviewer">
+    <div ng-if="$ctrl.maincharacter[$ctrl.type].questions.length > 0"
+      ng-repeat="question in $ctrl.maincharacter[$ctrl.type].questions track by $index" class="{{$ctrl.fontclass}}">
+      <div ng-if="$ctrl.type !== 'custom'" ng-dblclick="$ctrl.editquestion($index)" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{'characterInfo_question_'+$ctrl.type+'_'+$index
+        | translate}}</div>
+      <div ng-if="$ctrl.type === 'custom'" ng-dblclick="$ctrl.editquestion($index)" class="character-info-question">({{$index+1}}/{{$ctrl.maincharacter[$ctrl.type].questions.length}}) {{$ctrl.customQuestions[$index].question}}</div>
+      <div ng-dblclick="$ctrl.editquestion($index)" class="character-info-answer {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}}" ng-bind-html="question.text | trusted">
+      </div>
     </div>
   </div>
 
   <siblingelementsnavigator
     previouselementlabel="{{$ctrl.previouselementlabel}}"
     previouselementlink="$ctrl.previouselementlink"
-    previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+    previouselementtooltip="previous section"
     nextelementlabel="{{$ctrl.nextelementlabel}}"
     nextelementlink="$ctrl.nextelementlink"
-    nextelementtooltip="{{$ctrl.nextelementtooltip}}">
+    nextelementtooltip="next_section">
   </siblingelementsnavigator>
+
+  <metatext connectortype = "$ctrl.metatextConnectorType"
+    editorid = "interviewviewer"
+    editorcointainerid = "interviewviewercontainer"
+    icon = "$ctrl.metatextIcon"
+    id = "$ctrl.metatextId"
+    showmetatext = "$ctrl.showMetatext"
+    readonly = "true"
+    type = "$ctrl.metatextType">
 </div>

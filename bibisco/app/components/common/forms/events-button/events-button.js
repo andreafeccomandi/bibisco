@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,14 @@ function EventsButtonController($scope, $translate, hotkeys, SupporterEditionChe
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+k', 'command+k'],
+      combo: ['ctrl+shift+k', 'command+shift+k'],
       description: 'showevents',
       callback: function () {
-        self.showeventsfunction();
+        if (self.visible) {
+          SupporterEditionChecker.filterAction(function() {
+            self.showeventsfunction();
+          });
+        }
       }
     });
 

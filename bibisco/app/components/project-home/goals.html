@@ -11,8 +11,16 @@
               <input type="text" name="date" class="form-control" readonly focus-if="true"
                 ng-click="$ctrl.openCalendar($event)"
                 value="{{'date_format' | translate:{date:$ctrl.deadline} }}" class="bibiscoNotSelectableText">
-              <span class="input-group-addon"><a id="openCalendarBtn" role="button" uib-dropdown-toggle><i class="fa fa-calendar"></i></a></span>
-              <span class="input-group-addon"><a role="button" ng-click="$ctrl.clearDeadline()"><i class="fa fa-close"></i></a></span>
+              <span class="input-group-btn">
+                <button type="button" id="openCalendarBtn" role="button" uib-dropdown-toggle 
+                  class="btn btn-default dropdown-toggle goalsOpenCalendarBtn">
+                  <i class="fa fa-calendar"></i>
+                </button>
+                <button type="button" class="btn btn-default" uib-tooltip="{{'clear_text2replace' | translate}}"
+                  ng-click="$ctrl.clearDeadline()">
+                  <i class="fa fa-close"></i>
+                </button>
+              </span>
             </div>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" uib-dropdown>
               <datetimepicker data-ng-model="$ctrl.deadline"

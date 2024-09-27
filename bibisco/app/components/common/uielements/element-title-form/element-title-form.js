@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: ElementTitleFormController,
     bindings: {
       breadcrumbitems: '<',
+      elementbasepath: '@',
       exitpath: '@',
       eventname: '@',
       noprofileimageicon: '@',
@@ -33,12 +34,33 @@ angular.
     }
   });
 
-function ElementTitleFormController($location, $rootScope, $scope, $window, hotkeys, PopupBoxesService) {
+function ElementTitleFormController($location, $rootScope, $scope, $window, hotkeys, BibiscoPropertiesService, PopupBoxesService) {
   let self = this;
 
   self.$onInit = function() {
     $rootScope.$emit(self.eventname);
     self.title = self.titlevalue;
+
+    self.deregisterInsertElementListener = $rootScope.$on('INSERT_ELEMENT', function (event, args) {
+      if (self.exitpath) {
+        $location.path(self.exitpath);
+      } else {
+        let showElementAfterInsertion = BibiscoPropertiesService.getProperty('showElementAfterInsertion');
+        if (showElementAfterInsertion === 'true') {
+          $location.path(self.elementbasepath + args.id + '/default').replace();
+        } else {
+          $window.history.back();
+        }
+      }
+    });
+
+    self.deregisterUpdateElementListener = $rootScope.$on('UPDATE_ELEMENT', function (event, args) {
+      if (self.exitpath) {
+        $location.path(self.exitpath);
+      } else {
+        $window.history.back();
+      }
+    });
     
     self.checkExit = {
       active: true
@@ -65,14 +87,13 @@ function ElementTitleFormController($location, $rootScope, $scope, $window, hotk
       self.checkExit = {
         active: false
       };
-      if (self.exitpath) {
-        $location.path(self.exitpath);
-      } else {
-        $window.history.back();
-      }
     }
   };
 
+  self.$onDestroy = function () {
+    self.deregisterInsertElementListener();
+    self.deregisterUpdateElementListener();
+  };
 
   $scope.$on('$locationChangeStart', function (event) {
     PopupBoxesService.locationChangeConfirm(event, $scope.elementTitleForm.$dirty, self.checkExit);

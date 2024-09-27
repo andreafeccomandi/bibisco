@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ angular.
       customactionnenabled: '<',
       customactionfunction: '&',
       customactionlabel: '@',
+      customactionsupportersonly: '<',
       custombuttonenabled: '<',
       custombuttonfunction: '&',
       custombuttonlabel: '@',
@@ -41,6 +42,7 @@ angular.
       editfunction: '&',
       eventname: '@',
       eventsenabled: '<',
+      groupsmembershipfunction: '&',
       headertitle: '@',
       headersubtitle: '@',
       imagesenabled: '<',
@@ -56,6 +58,7 @@ angular.
       profileimageadddisabled: '<',
       profileimageenabled: '<',
       profileimagefunction: '&',
+      readfunction: '&',
       savefunction: '&',
       showeventsfunction: '&',
       showeventslabel: '@',
@@ -90,7 +93,8 @@ function ElementDetailController($rootScope, PopupBoxesService) {
     if (self.customactionnenabled) {
       self.actionitems.push({
         label: self.customactionlabel,
-        itemfunction: self.customactionfunction
+        itemfunction: self.customactionfunction,
+        supportersonly: self.customactionsupportersonly
       });
     }
     if (self.deleteenabled) {

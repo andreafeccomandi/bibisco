@@ -1,13 +1,14 @@
 <div ng-class="{'scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer': $ctrl.headersubtitle,
   'scrollable-box-full-height-page-with-breadcrumb-header-footer': !$ctrl.headersubtitle}">
-  <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && $ctrl.characters > 0)"
+  
+  <div ng-if="$root.showprojectexplorer" class="detail-content-project-explorer full-height">
+    <projectexplorer editmode="$ctrl.editmode"></projectexplorer>
+  </div>
+  <div ng-if="$ctrl.disableemptymessage || $ctrl.editmode || (!$ctrl.editmode && !$ctrl.emptyContent)"
       class="full-height">
-    <div ng-if="$root.showprojectexplorer" class="detail-content-project-explorer full-height">
-      <projectexplorer></projectexplorer>
-    </div>
     <div class="detail-content full-height" 
       ng-class="{'detail-content-offset': !$root.showprojectexplorer}">
-      <richtextviewer ng-if="!$ctrl.editmode && $ctrl.characters > 0"
+      <richtextviewer ng-if="!$ctrl.editmode && !$ctrl.emptyContent"
         content="$ctrl.content"
         dblclickontext="$ctrl.dblclickontext(event)"
         previouselementlabel="{{$ctrl.previouselementlabel}}"
@@ -21,12 +22,19 @@
         autosaveenabled="$ctrl.autosaveenabled"
         characters="$ctrl.characters"
         content="$ctrl.content"
+        previouselementlabel="{{$ctrl.previouselementlabel}}"
+        previouselementlink="$ctrl.previouselementlink"
+        previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+        nextelementlabel="{{$ctrl.nextelementlabel}}"
+        nextelementlink="$ctrl.nextelementlink"
+        nextelementtooltip="{{$ctrl.nextelementtooltip}}"
         todaywords="$ctrl.todaywords"
         totalwords="$ctrl.totalwords"
         words="$ctrl.words"></richtexteditor>
     </div>
   </div>
-  <div ng-if="!$ctrl.disableemptymessage && !$ctrl.editmode && $ctrl.characters == 0">
+  <div ng-if="!$ctrl.disableemptymessage && !$ctrl.editmode && $ctrl.emptyContent" 
+    ng-class="{'jumbotron-offset': $root.showprojectexplorer}">
       <jumbotronbutton text="{{'common_empty_section' | translate}}"
         buttonlabel="{{'common.getstarted' | translate}}"
         buttonfunction="$ctrl.editfunction()"

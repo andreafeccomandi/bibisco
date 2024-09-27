@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -43,17 +43,62 @@ angular.module('bibiscoApp').service('LocaleService', function($translate,
     document.documentElement.setAttribute('lang', data.language); 
 
     // context menu translations
-    let translations = $translate.instant([
-      'context_menu_add_dictionary',
+    $translate(['context_menu_add_dictionary',
+      'context_menu_bold',
+      'context_menu_italic',
+      'context_menu_underline',
+      'context_menu_strike',
+      'context_menu_highlight',
+      'context_menu_add_link',
+      'context_menu_edit_link',
+      'context_menu_remove_link',
+      'context_menu_add_note',
+      'context_menu_add_image',
+      'context_menu_edit_image',
+      'context_menu_delete_image',
+      'context_menu_comment',
       'context_menu_copy',
       'context_menu_cut',
-      'context_menu_paste'
-    ]);
-    ipc.send('setContextMenuStringTable', {
-      addToDictionary: translations.context_menu_add_dictionary,
-      cut: translations.context_menu_cut,
-      copy: translations.context_menu_copy,
-      paste: translations.context_menu_paste
+      'context_menu_paste']).then(function (translations) {
+      ipc.send('setContextMenuStringTable', {
+        addToDictionary: translations.context_menu_add_dictionary,
+        bold: translations.context_menu_bold,
+        italic: translations.context_menu_italic,
+        underline: translations.context_menu_underline,
+        strike: translations.context_menu_strike,
+        highlight: translations.context_menu_highlight,
+        addLink: translations.context_menu_add_link,
+        editLink: translations.context_menu_edit_link,
+        removeLink: translations.context_menu_remove_link,
+        comment: translations.context_menu_comment,
+        addNote: translations.context_menu_add_note,
+        addImage: translations.context_menu_add_image,
+        editImage: translations.context_menu_edit_image,
+        deleteImage: translations.context_menu_delete_image,
+        cut: translations.context_menu_cut,
+        copy: translations.context_menu_copy,
+        paste: translations.context_menu_paste
+      });
+
+    }, function (translationIds) {
+      ipc.send('setContextMenuStringTable', {
+        addToDictionary: 'Add to dictionary',
+        bold: 'Bold',
+        italic: 'Italic',
+        underline: 'Underline',
+        strike: 'Strikethrough',
+        highlight: 'Highlight',
+        addLink: 'Add link',
+        editLink: 'Edit link',
+        removeLink: 'Remove link',
+        addNote: 'Add note',
+        addImage: 'Add image',
+        editImage: 'Edit image',
+        deleteImage: 'Delete image',
+        cut: 'Cut',
+        copy: 'Copy',
+        paste: 'Paste'
+      });
     });
   });
 

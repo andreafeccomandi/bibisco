@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -66,26 +66,27 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         id: 'premise',
         name: $translate.instant('jsp.architecture.thumbnail.premise.title'),
         icon: 'compass',
-        link: '/architectureitems/premise/view'
+        link: '/architectureitems/premise/default'
       });
       children.push({
         id: 'fabula',
         name: $translate.instant('jsp.architecture.thumbnail.fabula.title'),
         icon: 'clock-o',
-        link: '/architectureitems/fabula/view'
+        link: '/architectureitems/fabula/default'
       });
       children.push({
         id: 'setting',
         name: $translate.instant('jsp.architecture.thumbnail.setting.title'),
         icon: 'globe',
-        link: '/architectureitems/setting/view'
+        link: '/architectureitems/setting/default'
       });
       if (includeSupporterEditionItems) {
         children.push({
           id: 'globalnotes',
           name: $translate.instant('common_notes_title'),
           icon: 'thumb-tack',
-          link: '/architectureitems/globalnotes/view',
+          link: '/architectureitems/globalnotes/default',
+          supportersfeature: true,
           supportersonly: true
         });
       }
@@ -108,7 +109,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
             id: 'strands_' + strands[i].$loki,
             name: strands[i].name,
             icon: 'code-fork',
-            link: '/strands/' + strands[i].$loki + '/view'
+            link: '/strands/' + strands[i].$loki + '/default'
           });
         }
       }
@@ -141,7 +142,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
             id: 'secondarycharacters_' + secondaryCharacters[i].$loki,
             name: secondaryCharacters[i].name,
             icon: 'user-o',
-            link: '/secondarycharacters/' + secondaryCharacters[i].$loki + '/view'
+            link: '/secondarycharacters/' + secondaryCharacters[i].$loki + '/default'
           });
         }
       }
@@ -163,7 +164,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
             id: 'locations_' + locations[i].$loki,
             name: locations[i].location,
             icon: 'map-marker',
-            link: '/locations/' + locations[i].$loki + '/view'
+            link: '/locations/' + locations[i].$loki + '/default'
           });
         }
       }
@@ -186,7 +187,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
               id: 'objects_' + objects[i].$loki,
               name: objects[i].name,
               icon: 'magic',
-              link: '/objects/' + objects[i].$loki + '/view',
+              link: '/objects/' + objects[i].$loki + '/default',
               supportersonly: true
             });
           }
@@ -198,6 +199,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         name: $translate.instant('objects'),
         link: 'objects',
         supportersonly: true,
+        supportersfeature: true,
         children: children
       });
     },
@@ -212,7 +214,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
               id: 'groups_' + groups[i].$loki,
               name: groups[i].name,
               icon: 'group',
-              link: '/groups/' + groups[i].$loki + '/view',
+              link: '/groups/' + groups[i].$loki + '/default',
               supportersonly: true
             });
           }
@@ -224,6 +226,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         name: $translate.instant('groups'),
         link: 'groups',
         supportersonly: true,
+        supportersfeature: true,
         children: children
       });
     },
@@ -238,7 +241,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
               id: 'mindmaps_' + mindmaps[i].$loki,
               name: mindmaps[i].name,
               icon: 'sitemap',
-              link: '/relations/' + mindmaps[i].$loki + '/view',
+              link: '/relations/' + mindmaps[i].$loki + '/default',
               supportersonly: true
             });
           }
@@ -250,6 +253,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         name: $translate.instant('common_mindmaps_title'),
         link: 'mindmaps',
         supportersonly: true,
+        supportersfeature: true,
         children: children
       });
     },
@@ -264,7 +268,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
               id: 'notes_' + notes[i].$loki,
               name: notes[i].name,
               icon: 'thumb-tack',
-              link: '/notes/' + notes[i].$loki + '/view',
+              link: '/notes/' + notes[i].$loki + '/default',
               supportersonly: true
             });
           }
@@ -276,6 +280,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         name: $translate.instant('common_notes_title'),
         link: 'notes',
         supportersonly: true,
+        supportersfeature: true,
         children: children
       });
     },
@@ -346,7 +351,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
             id: 'scenes_' + scenes[i].$loki,
             name: scenes[i].title,
             icon: 'bookmark-o',
-            link: '/chapters/' + chapter.$loki + '/scenes/' + scenes[i].$loki + '/view'
+            link: '/chapters/' + chapter.$loki + '/scenes/' + scenes[i].$loki + '/default'
           });
         }
       }
@@ -354,13 +359,13 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         id: 'chapterreason_' + chapter.$loki,
         name: $translate.instant('jsp.chapter.thumbnail.reason.title'),
         icon: 'map-o',
-        link: '/chapters/' + chapter.$loki + '/chapterinfos/reason/view'
+        link: '/chapters/' + chapter.$loki + '/chapterinfos/reason/default'
       });
       children.push({
         id: 'chapternotes_' + chapter.$loki,
         name: $translate.instant('common_notes_title'),
         icon: 'thumb-tack',
-        link: '/chapters/' + chapter.$loki + '/chapterinfos/notes/view'
+        link: '/chapters/' + chapter.$loki + '/chapterinfos/notes/default'
 
       });
 
@@ -379,6 +384,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         icon: 'search',
         link: 'search',
         supportersonly: true,
+        supportersfeature: true,
         children: []
       });
     },
@@ -390,6 +396,7 @@ angular.module('bibiscoApp').service('MenuService', function ($injector,
         icon: 'calendar',
         link: 'timeline',
         supportersonly: true,
+        supportersfeature: true,
         children: []
       });
     },

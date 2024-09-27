@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -138,11 +138,11 @@ function ChapterDetailController($location, $rootScope, $routeParams, $scope, $w
   };
 
   self.selectChapterInfo = function(type) {
-    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type + '/view');
+    $location.path('/chapters/' + self.chapter.$loki + '/chapterinfos/' + type + '/default');
   };
 
   self.selectScene = function(id) {
-    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id + '/view');
+    $location.path('/chapters/' + self.chapter.$loki + '/scenes/' + id + '/default');
   };
 
   self.delete = function() {

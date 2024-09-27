@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,13 @@ angular.
     bindings: {
       changegroupfilterfunction: '&',
       characters: '<',
+      dblclickfunction: '&?',
+      groupseditfunction: '&?',
       image: '@',
       imageaddenabled: '<',
+      imageaddfunction: '&',
+      imageseditfunction: '&',
       imageenabled: '<',
-      imagefunction: '&',
       headertitle: '@',
       headersubtitle: '@',
       noimageicon: '@',
@@ -98,9 +101,15 @@ function PageHeaderController($rootScope, BibiscoPropertiesService, ImageService
     return statusandbuttonsspace; 
   };
 
-  self.executeimagefunction = function () {
+  self.executeimageaddfunction = function () {
     SupporterEditionChecker.filterAction(function() {
-      self.imagefunction();
+      self.imageaddfunction();
+    });
+  };
+
+  self.executeimageseditfunction = function () {
+    SupporterEditionChecker.filterAction(function() {
+      self.imageseditfunction();
     });
   };
 

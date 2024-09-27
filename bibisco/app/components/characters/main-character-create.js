@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function MainCharacterCreateController($injector, $location, $routeParams, $window, 
-  ChapterService, MainCharacterService, SupporterEditionChecker) {
+  BibiscoPropertiesService, ChapterService, MainCharacterService, SupporterEditionChecker) {
   let self = this;
   let GroupService = null;
 
@@ -30,6 +30,7 @@ function MainCharacterCreateController($injector, $location, $routeParams, $wind
     self.breadcrumbitems = [];
 
     self.groupids = [];
+    self.showdetailaftercreation = false;
 
     // creation from characters
     self.creationFromCharacters = $location.path().startsWith('/maincharacters') ? true : false;
@@ -38,6 +39,10 @@ function MainCharacterCreateController($injector, $location, $routeParams, $wind
         label: 'common_characters',
         href: '/characters'
       });
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
+      self.showdetailaftercreationfunction = function(id) {
+        $location.path('/maincharacters/'+id).replace();
+      } ;
     }
 
     // creation from scene tags
@@ -88,7 +93,7 @@ function MainCharacterCreateController($injector, $location, $routeParams, $wind
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags',
@@ -103,7 +108,7 @@ function MainCharacterCreateController($injector, $location, $routeParams, $wind
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title',

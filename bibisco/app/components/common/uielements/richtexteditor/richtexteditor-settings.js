@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
 
     let supporterSuffix = SupporterEditionChecker.isSupporter() ? '' : '_ce';
 
-    self.context = self.resolve.context;
     self.fontgroup = [{
       label: 'baskerville' + supporterSuffix,
       value: 'baskerville',
@@ -137,15 +136,6 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
       label: 'jsp.common.button.disabled',
       value: 'false'
     }];
-    self.autosave = BibiscoPropertiesService.getProperty(
-      'autoSaveEnabled');
-    self.autosavegroup = [{
-      label: 'jsp.common.button.enabled',
-      value: 'true'
-    }, {
-      label: 'jsp.common.button.disabled',
-      value: 'false'
-    }];
 
     hotkeys.bindTo($scope)
       .add({
@@ -189,8 +179,7 @@ function RichtexteditorSettingsController($scope, BibiscoDbConnectionService,
       linespacing: self.linespacing,
       autocapitalizeEnabled: self.autocapitalize,
       paragraphspacing: self.paragraphspacing,
-      spellCheckEnabled: self.spellcheck,
-      autoSaveEnabled: self.autosave
+      spellCheckEnabled: self.spellcheck
     });
 
     BibiscoDbConnectionService.saveDatabase();

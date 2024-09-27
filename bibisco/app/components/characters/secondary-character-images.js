@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ function SecondaryCharacterImagesController($location, $routeParams, $window, Se
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
-      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'common_characters_images'

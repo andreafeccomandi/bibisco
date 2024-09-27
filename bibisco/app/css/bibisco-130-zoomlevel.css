@@ -12,7 +12,7 @@ body {
 
 .form-control {
     font-size: 18px;
-    height: 39px;
+    height: 44px;
 }
 
 .dropdown-menu {
@@ -32,11 +32,11 @@ body {
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-footer {
-    height: calc(100% - 270px);
+    height: calc(100% - 258px);
 }
 
 .scrollable-box-full-height-page-with-breadcrumb-header-subtitle-footer {
-    height: calc(100% - 310px);
+    height: calc(100% - 303px);
 }
 
 .scrollable-box-full-height-page-with-header-relationsfooter {
@@ -225,24 +225,25 @@ h5 {
     height: calc(100% - 17px);
 }
 
-.richtexteditor-contenteditable-container-nofindreplace {
-    height: calc(100% - 54px);
-}
-
-.richtexteditor-contenteditable-container-findreplace {
-    height: calc(100% - 103px);
-}
-
 .label {
     padding: 0.3em;
+}
+
+.character-questions-richtexteditor-container {
+    height: calc(100% - 167px);
 }
 
 div.richtexteditor-find-replace-toolbar button.btn-sm {
     padding: 5px 8px;
 }
 
+.richtexteditor-find-replace-toolbar input {
+	height: 39px;
+}
+
 .richtexteditor-find-counter {
     font-size: 18px;
+    top: -4px;
 }
 
 .dropdown-header {
@@ -254,14 +255,12 @@ div.richtexteditor-find-replace-toolbar button.btn-sm {
     font-weight: bold;
 }
 
-.project-explorer {
-    height: calc(100% - 10px);
+.search-results-container-no-replace-toolbar {
+	height: calc(100% - 280px);
 }
 
-.search-results-container {
-    overflow-y: auto;
-    height: calc(100% - 280px);
-    width: 100%;
+.search-results-container-with-replace-toolbar {
+	height: calc(100% - 339px);
 }
 
 .analysis-character-appearances table {
@@ -381,10 +380,27 @@ tree-view ul li .node div:first-child span {
 	height: 25px;
 }
 
+
+#richtexteditorcontainer span.comment-beginning:before {
+    font: normal normal normal 18px/1 FontAwesome;
+}
+
+.comment-btn-count {
+	width: 62px !important;
+}
+
+.revision-select {
+    height: 39.71px;
+}
+
 @media (max-height: 710px) {
     .questionbuttonbar .btn-lg {
         padding: 4px 12px;
         font-size: 18px;
+    }
+
+    .character-questions-richtexteditor-container {
+        height: calc(100% - 121px);
     }
 }
 
@@ -401,14 +417,6 @@ tree-view ul li .node div:first-child span {
 }
 
 @media (max-width: 1424px) {
-    .richtexteditor-contenteditable-container-nofindreplace {
-        height: calc(100% - 90px);
-    }
-
-    .richtexteditor-contenteditable-container-findreplace {
-        height: calc(100% - 139px);
-    }
-
     .richtexteditor-find-replace-toolbar input {
         width: 160px !important;
     }

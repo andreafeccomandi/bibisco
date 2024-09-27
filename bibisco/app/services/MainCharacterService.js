@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  *
  */
 
-angular.module('bibiscoApp').service('MainCharacterService', function($injector, $rootScope,
-  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService) {
+angular.module('bibiscoApp').service('MainCharacterService', function($injector, $rootScope, ChapterService,
+  CollectionUtilService, ImageService, LoggerService, ProjectDbConnectionService, ProjectService, 
+  WordCharacterCountService) {
   'use strict';
 
   let CustomQuestionService = null;
@@ -110,7 +111,32 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
     getMainCharacters: function() {
       return CollectionUtilService.getDataSortedByPosition(this.getCollection());
     },
+
     insert: function(maincharacter) {
+
+      maincharacter = this.executeInsert(maincharacter);
+
+      // insert character
+      CollectionUtilService.insert(this.getCollection(), maincharacter);
+
+      // emit insert event
+      $rootScope.$emit('INSERT_ELEMENT', {
+        id: maincharacter.$loki,
+        collection: 'maincharacters'
+      });
+
+      return maincharacter;
+    },
+
+    insertWithoutCommit: function(maincharacter) {
+
+      maincharacter = this.executeInsert(maincharacter);
+      CollectionUtilService.insertWithoutCommit(this.getCollection(), maincharacter);
+
+      return maincharacter;
+    },
+
+    executeInsert: function(maincharacter) {
 
       // personal data
       maincharacter.personaldata = this.createInfoWithQuestions('personaldata');
@@ -134,26 +160,20 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
       maincharacter.custom = this.createInfoWithQuestions('custom');
 
       // life before story beginning
-      maincharacter.lifebeforestorybeginning = this.createInfoWithoutQuestions();
+      maincharacter.lifebeforestorybeginning = this.createInfoWithoutQuestions('todo');
 
       // conflict
-      maincharacter.conflict = this.createInfoWithoutQuestions();
+      maincharacter.conflict = this.createInfoWithoutQuestions('todo');
 
       // evolutionduringthestory
-      maincharacter.evolutionduringthestory = this.createInfoWithoutQuestions();
+      maincharacter.evolutionduringthestory = this.createInfoWithoutQuestions('todo');
+
+      // notes
+      maincharacter.notes = this.createInfoWithoutQuestions(null);
 
       // images
       let images = [];
       maincharacter.images = images;
-
-      // insert character
-      CollectionUtilService.insert(this.getCollection(), maincharacter);
-
-      // emit insert event
-      $rootScope.$emit('INSERT_ELEMENT', {
-        id: maincharacter.$loki,
-        collection: 'maincharacters'
-      });
 
       return maincharacter;
     },
@@ -207,10 +227,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
       };
     },
 
-    createInfoWithoutQuestions: function () {
+    createInfoWithoutQuestions: function (status) {
       return {
         characters: 0, 
-        status: 'todo',
+        status: status,
         text: '',
         words: 0
       };
@@ -236,8 +256,7 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
       });
     },
     remove: function(id) {
-      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
-      $injector.get('GroupService').removeElementFromGroupsWithoutCommit('maincharacter', id);
+      this.executeRemoveWithoutCommit(id);
       ProjectDbConnectionService.saveDatabase(); 
 
       // emit remove event
@@ -245,6 +264,10 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
         id: id,
         collection: 'maincharacters'
       });
+    },
+    executeRemoveWithoutCommit: function(id) {
+      CollectionUtilService.removeWithoutCommit(this.getCollection(), id);
+      $injector.get('GroupService').removeElementFromGroupsWithoutCommit('maincharacter', id);
     },
     setProfileImage: function (id, filename) {
       LoggerService.info('Set profile image file: ' + filename + ' for element with $loki='
@@ -254,6 +277,64 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
       maincharacter.profileimage = filename;
       CollectionUtilService.update(this.getCollection(), maincharacter);
     },
+    transformIntoSecondary: function(id) {
+      let maincharacter = this.getMainCharacter(id);
+
+      // load SecondaryCharacterService via $injector to avoid circular dependency
+      let SecondaryCharacterService = $injector.get('SecondaryCharacterService');
+      
+      // create the cloned secondarycharacter
+      let secondarycharacter = SecondaryCharacterService.insertWithoutCommit({
+        description: '',
+        name: maincharacter.name
+      });
+
+      // populate secondarycharacter description with maincharacter answered questions
+      let ExportService = $injector.get('ExportService');
+      secondarycharacter.description = ExportService.createMainCharacterForTransformation(maincharacter);
+      let wordCountMode = ProjectService.getProjectInfo().wordCountMode;
+      let count = WordCharacterCountService.count(secondarycharacter.description, wordCountMode);
+      secondarycharacter.words = count.words; 
+      secondarycharacter.characters = count.characters; 
+
+      // populate secondarycharacter status
+      secondarycharacter.status = maincharacter.status;
+
+      // populate secondarycharacter events and images
+      secondarycharacter.events = maincharacter.events;
+      secondarycharacter.images = maincharacter.images;
+      secondarycharacter.profileimage = maincharacter.profileimage;
+      SecondaryCharacterService.updateWithoutCommit(secondarycharacter);
+
+      // populate groups
+      let GroupService = $injector.get('GroupService');
+      let elementGroups = GroupService.getElementGroups('maincharacter', id);
+      let groupids = [];
+      for (let i = 0; i < elementGroups.length; i++) {
+        groupids.push(elementGroups[i].$loki);        
+      }
+      GroupService.addElementToGroupsWithoutCommit('secondarycharacter', secondarycharacter.$loki, groupids);
+
+      // update scene tags
+      ChapterService.replaceCharacterInSceneTagsWithoutCommit('m_'+id, 's_'+secondarycharacter.$loki);
+
+      // remove main character
+      this.executeRemoveWithoutCommit(id);
+
+      // save database
+      ProjectDbConnectionService.saveDatabase(); 
+      
+      // emit TRANSFORM MAIN CHARACTER event
+      $rootScope.$emit('TRANSFORM_MAIN_CHARACTER', {
+        maincharacterid: id,
+        secondarycharacterid: secondarycharacter.$loki
+      });
+      
+      LoggerService.info('Transformed main character with $loki='
+        + id + ' into secondary character with $loki=' + secondarycharacter.$loki);
+
+      return secondarycharacter;
+    },
     update: function(maincharacter) {
       maincharacter.status = this.calculateStatus(maincharacter);
       CollectionUtilService.update(this.getCollection(), maincharacter);
@@ -262,6 +343,11 @@ angular.module('bibiscoApp').service('MainCharacterService', function($injector,
         id: maincharacter.$loki,
         collection: 'maincharacters'
       });
+    },
+    updateLastSave: function(id, lastsave) {
+      let maincharacter = this.getMainCharacter(id);
+      maincharacter.lastsave = lastsave;
+      this.update(maincharacter);
     },
     updateWithoutCommit: function(maincharacter) {
       maincharacter.status = this.calculateStatus(maincharacter);

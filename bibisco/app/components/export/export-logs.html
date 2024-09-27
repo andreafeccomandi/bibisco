@@ -1,0 +1,27 @@
+<breadcrumb items="$ctrl.breadcrumbitems"></breadcrumb>
+<pageheader headertitle="{{'download_logs_title' | translate}}"></pageheader>
+
+<div class="scrollable-box-full-height-page-with-breadcrumb-header">
+<div class="col-sm-12">
+  <form name="exportLogs" class="form-horizontal"
+    ng-submit="$ctrl.export(exportLogs.$valid)" novalidate>
+      <div class="form-group">
+        <label class="col-sm-3 control-label" 
+        for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
+        <div class="col-sm-8">
+          <directoryselect model='$ctrl.exportpath' 
+            defaultpath="$ctrl.exportdefaultpath"
+            field='exportLogs.exportpath' 
+            name='exportpath' 
+            placeholder='jsp.export.dialog.exportProjectDirectory.label'
+            onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+            forbiddendirectory='$ctrl.forbiddenDirectory' required>
+          </directoryselect>
+        </div>
+      </div>
+
+    <formbuttons form="exportLogs" saving="$ctrl.saving">
+    </formbuttons>
+  </form>
+</div>
+</div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ function SecondaryCharacterAddImageController($location, $routeParams, $window,
     });
     self.breadcrumbitems.push({
       label: secondaryCharacter.name,
-      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/view'
+      href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/default'
     });
 
     if (self.addprofile) {
@@ -62,7 +62,7 @@ function SecondaryCharacterAddImageController($location, $routeParams, $window,
         href: '/secondarycharacters/ ' + secondaryCharacter.$loki + '/images'
       });
       self.breadcrumbitems.push({
-        label: 'jsp.addImageForm.dialog.title'
+        label: 'add_image'
       });
   
       self.customtitle = null;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,15 @@ angular.
       maincharacter: '<',
       nextelementlabel: '@',
       nextelementlink: '<',
-      nextelementtooltip: '@?',
       previouselementlabel: '@',
       previouselementlink: '<',
-      previouselementtooltip: '@?',
       type: '<',
       words: '='
     }
   });
 
 
-function InterviewViewerController($injector, $location, RichTextEditorPreferencesService) {
+function InterviewViewerController($injector, $location, $scope, $window, hotkeys, ImageService, RichTextEditorPreferencesService) {
 
   let self = this;
 
@@ -43,6 +41,9 @@ function InterviewViewerController($injector, $location, RichTextEditorPreferenc
     self.paragraphspacingclass = RichTextEditorPreferencesService.getParagraphspacingClass();
 
     let questions = self.maincharacter[self.type].questions;
+    for (let i  = 0; i < questions.length; i++) {
+      questions[i].text = ImageService.updateAllImageSrcToLocalPath(questions[i].text);
+    }
     let characters = 0;
     let words = 0;
     for (let i = 0; i < questions.length; i++) {
@@ -57,5 +58,93 @@ function InterviewViewerController($injector, $location, RichTextEditorPreferenc
       let CustomQuestionService = $injector.get('CustomQuestionService');
       self.customQuestions = CustomQuestionService.getCustomQuestions();
     }
+
+    // init meta text
+    self.showMetatext = false;
+    self.metatextType = null;
+    self.metatextConnectorType = null;
+    self.metatextId = null;
+    self.metatextIcon = null;
+
+    // click event listener
+    self.interviewviewer = document.getElementById('interviewviewer');
+    self.interviewviewer.addEventListener('click', function(event) {
+      let target = event.target;
+        
+      // click on anchor
+      if (target.tagName === 'A') {
+        event.preventDefault();
+        let url = target.getAttribute('href');
+        shell.openExternal(url);
+      }
+    
+      if (target.tagName === 'SPAN') {
+        // click on comment
+        let commentId = target.getAttribute('data-commentid');
+        if (commentId) {
+          self.showCommentBox(commentId);
+        }
+    
+        //click on note
+        let noteId = target.getAttribute('data-noteid');
+        if (noteId) {
+          self.showNoteBox(noteId);
+        }
+      }
+    });
+    
+    // mousewheel event listener
+    angular.element(self.interviewviewer).bind('mousewheel', function(){
+      self.closeMetatextBox();
+    });
+
+    // resize event listener
+    angular.element($window).bind('resize', function () {
+      self.closeMetatextBox();
+    });
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['up'],
+        description: 'scrollup',
+        callback: function () {
+          document.getElementById('interviewviewercontainer').scrollTop -= 100;
+        }
+      })
+      .add({
+        combo: ['down'],
+        description: 'scrolldown',
+        callback: function() {
+          document.getElementById('interviewviewercontainer').scrollTop += 100;
+        }
+      });
+  };
+
+  self.closeMetatextBox = function() {
+    self.showMetatext = false;
+    self.metatextType = null;
+    self.metatextConnectorType = null;
+    self.metatextId = null;
+    self.metatextIcon = null;
+  };
+
+  self.showCommentBox = function(commentId) {
+    self.showMetatext = true;
+    self.metatextType = 'comment';
+    self.metatextConnectorType = 'direct';
+    self.metatextId = commentId;
+    self.metatextIcon = 'comment';
+  };
+
+  self.showNoteBox = function(noteId) {
+    self.showMetatext = true;
+    self.metatextType = 'note';
+    self.metatextConnectorType = 'elbow';
+    self.metatextId = noteId;
+    self.metatextIcon = 'asterisk';
+  };
+
+  self.editquestion = function(index) {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/infowithquestion/' + self.type +'/edit/question/' + index);
   };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemService) {
   'use strict';
 
-  var htmlparser = require('htmlparser2');
+  let htmlparser = require('htmlparser2');
   
   /*
    * needed module to wrap the text to given lenght
@@ -24,7 +24,7 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
    * 
    */
   
-  var wrap = require('word-wrap');
+  let wrap = require('word-wrap');
 
   return {
 
@@ -46,8 +46,11 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
       let wrapValue = 80;
       let firstLine = '';
       let wrappedContent = '';
+      let footnotesCounter = 0;
+      let closeComment = false;
+      let comment = null;
 
-      var parser = new htmlparser.Parser({
+      let parser = new htmlparser.Parser({
 
         onopentag: function (name, attribs) {
 
@@ -78,11 +81,14 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
             }
           } else if (name === 'question') {
             currentText = '';
+          } else if (name === 'span') {
+            currentText += this.manageFootendnote(attribs);
+            currentText += this.manageComment(attribs);
           } else if ( name === 'ol' ) {
             listType = name;
             // beware of nested ordered lists... this could be tricky
             listCounter = 0;
-          } else if (name === 'p' || name === 'li') {
+          } else if (name === 'p' || name === 'li' || name === 'note') {
             currentText = '';
           }
           
@@ -141,10 +147,17 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
             }
             currentText = '';
             firstLine = '';
-          } else if (name === 'p') {
+          } else if (name === 'p' || name === 'note') {
             content += currentText + '\n';
             currentText = '';
-          }  else if (name === 'b') {
+          } else if (name === 'span') {
+            if (closeComment) {
+              content += currentText + '['+comment+']]';
+              closeComment = false;
+              comment = null;
+              currentText = '';
+            }
+          } else if (name === 'b') {
             
           } else if (name === 'i') {
             
@@ -164,10 +177,36 @@ angular.module('bibiscoApp').service('TxtExporterService', function (FileSystemS
           if (callback) {
             callback();
           }
-        }
+        },
+
+        manageFootendnote: function(attribs) {
+
+          const footendnotemode = params.exportconfig.footendnotemode;
+          if (attribs.class && attribs.class.indexOf('footendnote') > -1) {
+            footnotesCounter++;
+            if (footendnotemode === 'chapterend' || footendnotemode === 'bookend') {
+              return '('+footnotesCounter.toString()+') ';
+            }
+          }
+
+          return '';
+        },
+
+        manageComment: function(attribs) {
+          let result = '';
+          if (params.exportconfig.exportcomments === 'true' && attribs['data-iscomment'] && attribs['data-iscomment'] === 'true') {
+            if (attribs.class.indexOf('comment-beginning') > -1) {
+              result = '[';
+            }
+            if (attribs.class.indexOf('comment-end') > -1) {
+              comment = attribs['data-comment'];
+              closeComment = true;
+            }
+          }
+          return result;
+        },
+
       }, { decodeEntities: true });
-      
-      
 
       parser.write(params.html);
 

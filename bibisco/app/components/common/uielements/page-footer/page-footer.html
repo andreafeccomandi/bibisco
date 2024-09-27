@@ -14,7 +14,7 @@
       <button ng-if="$ctrl.buttonshow" type="button" class="btn btn-{{$ctrl.buttonstyle}}"
         ng-click="$ctrl.buttonfunction()" id="{{$ctrl.buttonid}}"
         uib-tooltip="{{$ctrl.buttontooltip | translate}}">
-        {{$ctrl.buttonlabel | translate}}</button>
+        {{$ctrl.buttonlabel | translate}}<sefeaturemarker ng-if="$root.ed==='ce' && $ctrl.supportersonly"></sefeaturemarker></button>
       <button ng-if="$ctrl.button2show" type="button" class="btn btn-{{$ctrl.button2style}}"
         ng-click="$ctrl.button2function()" id="{{$ctrl.button2id}}"
         uib-tooltip="{{$ctrl.button2tooltip | translate}}">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,29 +24,39 @@ angular.
     },
   });
 
-function CommunityTrialPopupController($rootScope, $scope, $translate, SupporterEditionChecker) {
+function CommunityTrialPopupController($rootScope, $translate, SupporterEditionChecker) {
    
   let self = this;
   const { shell } = require('electron');
 
   self.$onInit = function () {
     self.remainingTrialDays = SupporterEditionChecker.getRemainingTrialDays();
-    self.p2 = $translate.instant('community_trial_popup_p2', { remainingDays: self.remainingTrialDays });
+    self.p2 = self.remainingTrialDays > 1 ? 
+      $translate.instant('community_trial_popup_p2', { remainingDays: self.remainingTrialDays }) :
+      $translate.instant('community_trial_popup_p2_hours');
     self.showcountdown = false;
     self.countdown;
     $rootScope.trialmessageopen = true;
+    $rootScope.$emit('OPEN_COMMUNITY_TRIAL_POPUP');
   };
 
   self.getIt = function () {
     self.close({
-      $value: 'ok'
+      $value: 'download'
     });
     $rootScope.trialmessageopen = false;
   };
 
-  self.cancel = function () {
+  self.tryIt = function () {
     self.dismiss({
-      $value: 'cancel'
+      $value: 'tryit'
+    });
+    $rootScope.trialmessageopen = false;
+  };
+
+  self.closepopup = function () {
+    self.close({
+      $value: 'close'
     });
     $rootScope.trialmessageopen = false;
   };

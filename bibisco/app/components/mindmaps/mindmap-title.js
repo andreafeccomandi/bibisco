@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ function MindmapTitleController($routeParams, $window, MindmapService) {
       // edit breadcrumb mindmaps
       self.breadcrumbitems.push({
         label: mindmap.name,
-        href: '/mindmaps/' + mindmap.$loki + '/view'
+        href: '/mindmaps/' + mindmap.$loki + '/default'
       });
       self.breadcrumbitems.push({
         label: 'mindmap_change_name_title'
@@ -65,6 +65,9 @@ function MindmapTitleController($routeParams, $window, MindmapService) {
       self.breadcrumbitems.push({
         label: 'mindmap_create_title'
       });
+
+      self.elementbasepath = '/relations/';
+
       self.name = null;
       self.pageheadertitle =
         'mindmap_create_title';

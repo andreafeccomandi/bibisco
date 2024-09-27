@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 const electron = require('electron');
 const app = electron.app;
 const ipc = electron.ipcMain;
+const shell = electron.shell;
+const globalShortcut = electron.globalShortcut;
 const Menu = electron.Menu;
 const MenuItem = electron.MenuItem;
 const SpellChecker = require('simple-spellchecker');
@@ -76,9 +78,13 @@ ipc.on('unzip', function (event, arg) {
 
 // context info
 ipc.on('getcontextinfo', function (event) {
+  let documentsPath = fs.existsSync(app.getPath('documents')) ? app.getPath('documents') : null;
+  let downloadsPath = fs.existsSync(app.getPath('downloads')) ? app.getPath('downloads') : null;
   let contextInfo = {
     os: process.platform,
     appPath: __dirname,
+    documentsPath: documentsPath,
+    downloadsPath: downloadsPath,
     userDataPath: app.getPath('userData')
   };
   event.returnValue = contextInfo;
@@ -172,9 +178,13 @@ const { unzip } = require('zlib');
 const { Logger } = require('winston');
 
 ipc.on('selectdirectory', function (event, arg) {
-  dialog.showOpenDialog({
+  let options = {
     properties: ['openDirectory', 'createDirectory']
-  }).then(function (result) {
+  };
+  if (arg.defaultPath) {
+    options.defaultPath = arg.defaultPath;
+  }
+  dialog.showOpenDialog(options).then(function (result) {
     if (!result.canceled) {
       let params = [];
       params.push({directory: result.filePaths[0]});
@@ -187,6 +197,7 @@ ipc.on('selectdirectory', function (event, arg) {
   }).catch(err => {
     logger.error(err);
   });
+  mainWindow.webContents.send('SYSTEM_DIALOG_OPEN');
 });
 
 ipc.on('selectfile', function (event, arg) {
@@ -199,10 +210,14 @@ ipc.on('selectfile', function (event, arg) {
       extensions: arg.filefilter
     }];
   }
-  dialog.showOpenDialog({
+  let options = {
     filters: filters,
     properties: ['openFile']
-  }).then(function (result) {
+  };
+  if (arg.defaultPath) {
+    options.defaultPath = arg.defaultPath;
+  }
+  dialog.showOpenDialog(options).then(function (result) {
     if (result.filePaths[0]) {
       let params = [];
       params.push({ file: result.filePaths[0] });
@@ -213,6 +228,12 @@ ipc.on('selectfile', function (event, arg) {
         });
     }
   });
+  mainWindow.webContents.send('SYSTEM_DIALOG_OPEN');
+});
+
+
+ipc.on('showItemInFolder', function(event, fullPath) {
+  shell.showItemInFolder(fullPath);
 });
 
 
@@ -265,8 +286,23 @@ function createMainWindow() {
   win.webContents.on('context-menu', (event, menuInfo) => {
 
     // show context menu only on content editable
-    if (menuInfo.isEditable && menuInfo.inputFieldType === 'none') {
+    //if (menuInfo.isEditable && menuInfo.inputFieldType === 'none') {
+    if (menuInfo.isEditable && menuInfo.formControlType === 'none') {
       const menu = new Menu();
+      
+      let textSelected = false;
+      try {
+        textSelected = menuInfo.selectionText && menuInfo.selectionText.trim().length > 0;
+      } catch (error) {
+        logger.error(error);
+      } 
+
+      let imageSelected = false;
+      try {
+        imageSelected = menuInfo.mediaType === 'image';
+      } catch (error) {
+        logger.error(error);
+      }
 
       // suggestions
       if (menuInfo.misspelledWord) {
@@ -286,9 +322,7 @@ function createMainWindow() {
           });
 
           // separator
-          menu.append(new MenuItem({
-            type: 'separator'
-          }));
+          menu.append(new MenuItem({type: 'separator'}));
         }
       }
 
@@ -304,24 +338,151 @@ function createMainWindow() {
             }
           })
         );
+        
+        // separator
+        menu.append(new MenuItem({type: 'separator'}));
+      }
+
+      if (textSelected) {
+        // bold
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.bold : 'Bold',
+          accelerator: 'CommandOrControl+B',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'BOLD')
+        }));
+
+        // italic
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.italic : 'Italic',
+          accelerator: 'CommandOrControl+I',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'ITALIC')
+        }));
+
+        // underline
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.underline : 'Underline',
+          accelerator: 'CommandOrControl+U',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'UNDERLINE')
+        }));
+
+        // strike
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.strike : 'Strike',
+          accelerator: 'CommandOrControl+5',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'STRIKE')
+        }));
+
+        // highlight
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.highlight : 'Highlight',
+          accelerator: 'CommandOrControl+6',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'HIGHLIGHT')
+        }));
+
+        // separator
+        menu.append(new MenuItem({type: 'separator'}));
+      }
+
+      // link
+      if (menuInfo.linkURL) {
+
+        // edit link
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.editLink : 'Edit link',
+            accelerator: 'CommandOrControl+K',
+            click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'EDIT_LINK')
+          })
+        );
+
+        // remove link
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.removeLink : 'Remove link',
+            click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'REMOVE_LINK')
+          })
+        );
+
+        // separator
+        menu.append(new MenuItem({type: 'separator'}));
+      
+      } else if (textSelected && !imageSelected) {
+
+        // add link
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.addLink : 'Add link', 
+            accelerator: 'CommandOrControl+K',
+            click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'ADD_LINK')
+          })
+        );
+
+        // separator
+        menu.append(new MenuItem({type: 'separator'}));
+
+        // comment
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.comment : 'Comment',
+          accelerator: 'CommandOrControl+Shift+O',
+          enabled: menuInfo.editFlags.canCut && textSelected,
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'COMMENT')
+        }));
+
+        // note
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.addNote : 'Add note',
+          accelerator: 'CommandOrControl+N',
+          enabled: menuInfo.editFlags.canCut && textSelected,
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'ADD_NOTE')
+        }));
+  
+        // separator
+        menu.append(new MenuItem({type: 'separator'}));
+      }
+
+      // image
+      if (!imageSelected && !textSelected) {
+        menu.append(new MenuItem({
+          label: contextMenuStringTable ? contextMenuStringTable.addImage : 'Add image',
+          accelerator: 'CommandOrControl+Shift+I',
+          click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'ADD_IMAGE')
+        }));
+
+        menu.append(new MenuItem({type: 'separator'}));
+      } else if (imageSelected) {
+        const parts = menuInfo.srcURL.split('/');
+        const fileName = parts[parts.length - 1];
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.editImage : 'Edit image',
+            click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'EDIT_IMAGE', fileName)
+          })
+        );
+        menu.append(
+          new MenuItem({
+            label: contextMenuStringTable ? contextMenuStringTable.deleteImage : 'Delete image',
+            click: () => win.webContents.send('EXECUTE_EDITOR_COMMAND', 'DELETE_IMAGE', fileName)
+          })
+        );
+        menu.append(new MenuItem({type: 'separator'}));
       }
 
       // cut
       menu.append(new MenuItem({
         label: contextMenuStringTable ? contextMenuStringTable.cut : 'Cut',
         accelerator: 'CommandOrControl+X',
-        enabled: menuInfo.editFlags.canCut,
+        enabled: menuInfo.editFlags.canCut && (textSelected || imageSelected),
         click: () => win.webContents.cut()
       }));
-
+        
       // copy
       menu.append(new MenuItem({
         label: contextMenuStringTable ? contextMenuStringTable.copy : 'Copy',
         accelerator: 'CommandOrControl+C',
-        enabled: menuInfo.editFlags.canCopy,
+        enabled: menuInfo.editFlags.canCopy && (textSelected || imageSelected),
         click: () => win.webContents.copy()
       }));
-
+      
       // paste
       menu.append(new MenuItem({
         label: contextMenuStringTable ? contextMenuStringTable.paste : 'Paste',
@@ -329,7 +490,7 @@ function createMainWindow() {
         enabled: menuInfo.editFlags.canPaste,
         click: () => win.webContents.paste()
       }));
-
+    
       // show menu
       menu.popup();
     }
@@ -392,6 +553,15 @@ app.on('ready', function() {
   } else {
     mainWindow.removeMenu();
   }
+});
+
+app.on('browser-window-focus', function () {
+  globalShortcut.register('CommandOrControl+R', () => {
+    // shortcut disabled
+  });
+  globalShortcut.register('F5', () => {
+    // shortcut disabled
+  });
 });
 
 function initLogger(isDev) {

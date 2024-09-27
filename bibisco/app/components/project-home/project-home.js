@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
   let self = this;
   self.loadingDictionary = false;
   let ObjectService = null;
+  let GroupService = null;
 
   // dictionary loaded
   const ipc = require('electron').ipcRenderer;
@@ -113,6 +114,10 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
     self.objectsTodo;
     self.objectsTocomplete;
     self.objectsCompleted;    
+    self.groups;
+    self.groupsTodo;
+    self.groupsTocomplete;
+    self.groupsCompleted;   
     self.showMotivational;
     
     self.calculateWords();
@@ -126,6 +131,7 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
 
     if (self.includeSupporterEditionItems) {
       self.calculateObjects();
+      self.calculateGroups();
     }
     self.calculateMotivational();
     
@@ -171,7 +177,8 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
 
     if (self.wordsTotal > 0 || self.wordsGoal || self.deadline || self.chapters > 0 
       || self.scenes > 0 || self.narrativeStrands > 0 || self.mainCharacters > 0 
-      || self.secondaryCharacters > 0 || self.locations > 0 || self.objects > 0) {
+      || self.secondaryCharacters > 0 || self.locations > 0 || self.objects > 0 
+      || self.groups > 0) {
         
       self.showMotivational = false;
     }
@@ -382,5 +389,37 @@ function ProjectHomeController($injector, $location, $rootScope, $scope, $transl
     }
 
     return ObjectService;
+  };
+
+  self.calculateGroups = function() {
+    self.groups = this.getGroupService().getGroupsCount();
+    self.groupsTodo = 0;
+    self.groupsTocomplete = 0;
+    self.groupsCompleted = 0;
+
+    if (self.groups > 0) {
+      let groups = this.getGroupService().getGroups();
+      for (let i = 0; i < groups.length; i++) {
+        if (groups[i].status === 'todo') {
+          self.groupsTodo += 1;
+        } else if (groups[i].status === 'tocomplete') {
+          self.groupsTocomplete += 1;
+        } else if (groups[i].status === 'done') {
+          self.groupsCompleted += 1;
+        }
+      }
+    }
+  };
+
+  self.getGroupService = function () {
+    if (!GroupService) {
+      GroupService = $injector.get('GroupService');
+    }
+
+    return GroupService;
+  };
+
+  self.editProjectTitle = function() {
+    $location.path('/project/title');
   };
 }

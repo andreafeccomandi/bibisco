@@ -1,0 +1,41 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope"> 
+	<div class="modal-header ng-scope">
+		<h3 class="modal-title">{{$ctrl.title | translate}}</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="linkDetailForm" class="form-horizontal" novalidate>
+
+					<div class="form-group">
+						<textinputfield field="linkDetailForm.linktext" model="$ctrl.linktext"
+							name="linktext" autofocus maxlength="100"
+							required label="link_text" labelcols="3" inputcols="8">
+						</textinputfield>
+						
+						<urlinputfield field="linkDetailForm.linkhref" model="$ctrl.linkhref"
+							name="linkhref" maxlength="100" 
+							required label="link_href" labelcols="3" inputcols="8">
+						</urlinputfield>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	 
+	<div class="modal-footer bibiscoNotSelectableText">
+		<div class="row">
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-6 text-center">
+				<button class="btn btn-primary" type="button"  id="linkDetailOkBtn"
+					uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}"
+					ng-click="$ctrl.save()">{{"jsp.common.button.save" | translate}}</button>
+					
+				<button class="btn btn-default" type="button"  id="linkDetailCancelBtn"
+					uib-tooltip="{{'back_button_tooltip'+$root.os | translate}}"
+					ng-click="$ctrl.back()"> {{"jsp.common.button.back" | translate}}</button>
+			</div>
+		</div>
+	</div>
+</modal-component>

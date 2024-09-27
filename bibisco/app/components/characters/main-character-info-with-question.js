@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ angular.
   });
 
 function MainCharacterInfoWithQuestion($injector, $location, $rootScope, $routeParams, $window,
-  MainCharacterService) {
+  MainCharacterService, NavigationService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -38,7 +38,7 @@ function MainCharacterInfoWithQuestion($injector, $location, $rootScope, $routeP
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
 
     self.type = $routeParams.info;
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.editmode = (self.mode !== 'view');
 
     self.breadcrumbitems.push({
@@ -79,10 +79,31 @@ function MainCharacterInfoWithQuestion($injector, $location, $rootScope, $routeP
         self.editbuttonenabled = false;
       }
     }
+
+    // action items
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'jsp.character.thumbnail.images.title',
+      itemfunction: self.showimagesfunction
+    });
+    self.actionitems.push({
+      label: 'events_button_title',
+      itemfunction: self.showeventsfunction,
+      supportersonly: true
+    });
+    self.actionitems.push({
+      label: 'groups_button',
+      itemfunction: self.managegroupsmembership,
+      supportersonly: true
+    });
   };
 
   self.edit = function () {
-    $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/edit');
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/maincharacters/' + $routeParams.id + '/infowithquestion/' + $routeParams.info + '/view').replace();
   };
 
   self.save = function () {
@@ -115,48 +136,68 @@ function MainCharacterInfoWithQuestion($injector, $location, $rootScope, $routeP
     switch(type) {
     case 'personaldata':
       self.nextelementlabel = 'common_physionomy';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/'+self.mode;
       break;
     case 'physionomy':
       self.nextelementlabel = 'common_behaviors';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/'+self.mode;
       self.previouselementlabel  = 'common_personaldata';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/personaldata/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/personaldata/'+self.mode;
       break;
     case 'behaviors':
       self.nextelementlabel = 'common_psychology';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/'+self.mode;
       self.previouselementlabel  = 'common_physionomy';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/physionomy/'+self.mode;
       break;
     case 'psychology':
       self.nextelementlabel = 'common_ideas';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/'+self.mode;
       self.previouselementlabel  = 'common_behaviors';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/behaviors/'+self.mode;
       break;
     case 'ideas':
       self.nextelementlabel = 'common_sociology';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/sociology/'+self.mode;
       self.previouselementlabel  = 'common_psychology';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/psychology/'+self.mode;
       break;
     case 'sociology':
       self.nextelementlabel = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/'+self.mode;
       self.previouselementlabel  = 'common_ideas';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithquestion/ideas/'+self.mode;
       break;
     case 'custom':
       self.nextelementlabel = 'jsp.character.thumbnail.conflict.title';
-      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/view';
+      self.nextelementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/conflict/'+self.mode;
       self.previouselementlabel = 'jsp.character.thumbnail.lifebeforestorybeginning.title';
-      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/view';
+      self.previouselementlink = '/maincharacters/' + $routeParams.id + '/infowithoutquestion/lifebeforestorybeginning/'+self.mode;
       break;
     }
   };
 
   self.manageCustomQuestions = function() {
     $location.path('/maincharacters/'+self.maincharacter.$loki+'/customquestions');
+  };
+
+  self.addprofileimage = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images/addprofile');
+  };
+
+  self.showimagesfunction = function() {
+    $location.path('/maincharacters/' + self.maincharacter.$loki + '/images');
+  };
+
+  self.showeventsfunction = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/maincharacters/' + self.maincharacter.$loki + '/events');
+    });
+  };
+
+  self.managegroupsmembership = function() {
+    SupporterEditionChecker.filterAction(function () {
+      $location.path('/maincharacters/' + self.maincharacter.$loki + '/groupsmembership');
+    });
   };
 }

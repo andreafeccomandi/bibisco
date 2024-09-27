@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ function ItemAddImageController($location, $routeParams, $window,
     });
     self.breadcrumbitems.push({
       label: object.name,
-      href: '/objects/' + object.$loki + '/view'
+      href: '/objects/' + object.$loki + '/default'
     });
 
     if (self.addprofile) {
@@ -57,11 +57,11 @@ function ItemAddImageController($location, $routeParams, $window,
     }
     else {
       self.breadcrumbitems.push({
-        label: 'jsp.projectFromScene.select.location.images',
+        label: 'common_images',
         href: '/objects/' + object.$loki + '/images'
       });
       self.breadcrumbitems.push({
-        label: 'jsp.addImageForm.dialog.title'
+        label: 'add_image'
       });
 
       self.customtitle = null;

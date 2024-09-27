@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,29 +24,46 @@ angular.
     },
   });
 
-function SupporterEditionPopupController($translate) {
+function SupporterEditionPopupController($rootScope, $scope, $translate, hotkeys) {
    
-  var self = this;
+  let self = this;
   const { shell } = require('electron');
 
   self.$onInit = function () {
-    
+    $rootScope.$emit('OPEN_SUPPORTER_EDITION_POPUP');
+    self.cta = $translate.instant('supporters_edition_cta');
+    self.showcountdown = false;
+    self.countdown;
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: ['esc', 'esc'],
+        description: 'esc',
+        callback: function ($event) {
+          $event.preventDefault();
+        }
+      });;
   };
 
-  self.getIt = function () {
+  self.getIt = function() {
     self.close({
       $value: 'ok'
     });
   };
 
   self.cancel = function () {
-    self.dismiss({
-      $value: 'cancel'
-    });
+    self.showcountdown = true;
+    self.countdown = 10;
+    let downloadTimer = setInterval(function () {
+      if (self.countdown <= 1) {
+        clearInterval(downloadTimer);
+        self.dismiss({
+          $value: 'cancel'
+        });
+      }
+      self.countdown -= 1;
+      $scope.$apply();
+    }, 1000);
   };
-
-  self.takeALook = function () {
-    let url = $translate.instant('supporter_edition_take_a_look_button_url'); 
-    shell.openExternal(url);
-  };
+    
 }

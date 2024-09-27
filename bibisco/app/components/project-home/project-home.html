@@ -1,4 +1,4 @@
-<pageheader headertitle="{{$ctrl.project().name}}"></pageheader>
+<pageheader headertitle="{{$ctrl.project().name}}" dblclickfunction="$ctrl.editProjectTitle()"></pageheader>
 
 <!-- LOADING DICTIONARY -->
 <div class="top200" ng-show="$ctrl.loadingDictionary">
@@ -32,7 +32,7 @@
                   <span class="project-stats-item">{{"common_words" | translate}}</span> <span class="project-stats-number text-primary">{{($ctrl.wordsTotal | number: 0)}}</span>
                 </td>
                 <td class="col-sm-7 text-left">
-                    <span class="project-stats-detail-number">{{($ctrl.charactersTotal | number: 0)}}</span> <span>{{"jsp.common.span.characters" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.</span>
+                    <span class="project-stats-detail-number">{{($ctrl.charactersTotal | number: 0)}}</span> <span>{{"jsp.common.span.characters" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></a>.</span>
                 </td>
               </tr>
               <tr ng-if="$ctrl.wordsGoal && $ctrl.includeSupporterEditionItems">
@@ -58,7 +58,7 @@
                       <span class="project-stats-item">{{"goals_words_per_day_goal" | translate}}</span><span class="project-stats-number text-primary">{{($ctrl.wordsPerDayGoal | number: 0)}}</span>
                   </td>
                   <td class="col-sm-7 text-left">
-                    <span class="project-stats-detail-number">{{($ctrl.wordsWrittenToday | number: 0)}}</span> <span>{{"goals_words_written_today" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.wordsWrittenYesterday | number: 0)}}</span> <span>{{"goals_words_written_yesterday" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.averageLastSevenDays | number: 0)}}</span> <span>{{"goals_words_written_average_last_7_days" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}</a>.</span>
+                    <span class="project-stats-detail-number">{{($ctrl.wordsWrittenToday | number: 0)}}</span> <span>{{"goals_words_written_today" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.wordsWrittenYesterday | number: 0)}}</span> <span>{{"goals_words_written_yesterday" | translate}},</span> <span class="project-stats-detail-number">{{($ctrl.averageLastSevenDays | number: 0)}}</span> <span>{{"goals_words_written_average_last_7_days" | translate}}, <a ng-click="$ctrl.wordsWrittenHistory()">{{"goals_show_history" | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></a>.</span>
                   </td>
               </tr>
               <tr ng-if="$ctrl.deadline && $ctrl.includeSupporterEditionItems">
@@ -160,6 +160,19 @@
                     </progressstatsbar>
                   </td>
               </tr>
+              <tr ng-if="$ctrl.includeSupporterEditionItems">
+                <td class="col-sm-5 text-right">
+                    <span class="project-stats-item">{{'jsp.menu.groups' | translate}}</span><span class="project-stats-number text-primary">{{$ctrl.groups}}</span>
+                </td>
+                <td class="col-sm-7 text-left">
+                    <progressstatsbar 
+                    completed="$ctrl.groupsCompleted",
+                    tocomplete="$ctrl.groupsTocomplete",
+                    todo="$ctrl.groupsTodo",
+                    total="$ctrl.groups">
+                  </progressstatsbar>
+                </td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -169,5 +182,5 @@
 <pagefooter ng-if="!$ctrl.loadingDictionary" buttonlabel="goals_button"
   buttonfunction="$ctrl.goals()" buttonshow="!$ctrl.showMotivational" buttonstyle="primary"
   tipcode="backupTip" tipenabled="!$ctrl.showMotivational && !$ctrl.loadingDictionary" 
-  dropdownopen="up" dropdownitems="$ctrl.actionitems">
+  dropdownopen="up" dropdownitems="$ctrl.actionitems" supportersonly="true">
 </pagefooter>

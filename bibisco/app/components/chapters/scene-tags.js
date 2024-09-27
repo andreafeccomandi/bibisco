@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function SceneTagsController($injector, $location, $rootScope, $routeParams, $scope, $window,
-  ChapterService, hotkeys, LocationService, MainCharacterService, 
+  BibiscoPropertiesService, ChapterService, hotkeys, LocationService, MainCharacterService, 
   PopupBoxesService, SecondaryCharacterService, StrandService, SupporterEditionChecker, UtilService) {
 
   let self = this;
@@ -50,7 +50,7 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags'
@@ -356,6 +356,11 @@ function SceneTagsController($injector, $location, $rootScope, $routeParams, $sc
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    let autosave = BibiscoPropertiesService.getProperty('autoSaveEnabled') === 'true';
+    if (autosave && $rootScope.dirty) {
+      self.executeSave();
+    } else {
+      PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit);
+    }
   });
 }

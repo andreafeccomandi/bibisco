@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ angular.module('bibiscoApp').service('RichTextEditorPreferencesService',
     let linespacing = BibiscoPropertiesService.getProperty('linespacing');
     let paragraphspacing = BibiscoPropertiesService.getProperty('paragraphspacing');
     let spellCheckEnabled = BibiscoPropertiesService.getProperty('spellCheckEnabled');
-    let autoSaveEnabled = BibiscoPropertiesService.getProperty('autoSaveEnabled');
 
     return {
       getFont: function() {
@@ -47,9 +46,6 @@ angular.module('bibiscoApp').service('RichTextEditorPreferencesService',
       getParagraphspacingClass: function() {
         return 'bibiscoRichTextEditor-bodyClass-paragraphspacing-' + paragraphspacing;
       },
-      isAutoSaveEnabled: function() {
-        return autoSaveEnabled === 'true';
-      },
       isIndentParagraphEnabled: function() {
         return indentParagraphEnabled === 'true';
       },
@@ -66,7 +62,6 @@ angular.module('bibiscoApp').service('RichTextEditorPreferencesService',
         linespacing = properties.linespacing;
         paragraphspacing = properties.paragraphspacing;
         spellCheckEnabled = properties.spellCheckEnabled;
-        autoSaveEnabled = properties.autoSaveEnabled;
         autocapitalizeEnabled = properties.autocapitalizeEnabled;
 
         BibiscoPropertiesService.setProperty('font', properties.font);
@@ -75,7 +70,6 @@ angular.module('bibiscoApp').service('RichTextEditorPreferencesService',
         BibiscoPropertiesService.setProperty('linespacing', properties.linespacing);  
         BibiscoPropertiesService.setProperty('paragraphspacing', properties.paragraphspacing);  
         BibiscoPropertiesService.setProperty('spellCheckEnabled', properties.spellCheckEnabled);
-        BibiscoPropertiesService.setProperty('autoSaveEnabled', properties.autoSaveEnabled);
         BibiscoPropertiesService.setProperty('autocapitalizeEnabled', properties.autocapitalizeEnabled);
       }
     };

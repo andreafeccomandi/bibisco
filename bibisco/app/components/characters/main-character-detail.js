@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ angular.
     controller: MainCharacterDetailController
   });
 
-function MainCharacterDetailController($injector, $location, $rootScope, $routeParams, $scope, $window, hotkeys,
-  ChapterService, MainCharacterService, PopupBoxesService, SupporterEditionChecker, UtilService) {
+function MainCharacterDetailController($injector, $location, $rootScope, $routeParams, $scope, $timeout, $window, 
+  hotkeys, ChapterService, MainCharacterService, PopupBoxesService, ProjectService, SupporterEditionChecker, 
+  UtilService) {
 
   let self = this;
   let GroupService = null;
@@ -52,6 +53,11 @@ function MainCharacterDetailController($injector, $location, $rootScope, $routeP
     self.actionitems.push({
       label: 'jsp.character.button.updateTitle',
       itemfunction: self.changeTitle
+    });
+    self.actionitems.push({
+      label: 'transform_to_secondary_character',
+      itemfunction: self.transformToSecondary,
+      supportersonly: true
     });
     self.actionitems.push({
       label: 'jsp.common.button.delete',
@@ -114,17 +120,24 @@ function MainCharacterDetailController($injector, $location, $rootScope, $routeP
     if (id==='custom') {
       SupporterEditionChecker.filterAction(function () {
         $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithquestion/' + id + '/view');
+      '/infowithquestion/' + id + '/default');
       });
     } else {
       $location.path('/maincharacters/' + self.maincharacter.$loki +
-        '/infowithquestion/' + id + '/view');
+        '/infowithquestion/' + id + '/default');
     }
   };
 
   self.showInfoWithoutQuestion = function (id) {
-    $location.path('/maincharacters/' + self.maincharacter.$loki +
-      '/infowithoutquestion/' + id + '/view');
+    if (id==='notes') {
+      SupporterEditionChecker.filterAction(function () {
+        $location.path('/maincharacters/' + self.maincharacter.$loki +
+          '/infowithoutquestion/' + id + '/default');
+      });
+    } else {
+      $location.path('/maincharacters/' + self.maincharacter.$loki +
+        '/infowithoutquestion/' + id + '/default');
+    }
   };
 
   self.isDeleteForbidden = function () {
@@ -154,7 +167,7 @@ function MainCharacterDetailController($injector, $location, $rootScope, $routeP
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+m', 'command+m'],
+      combo: ['ctrl+shift+m', 'command+shift+m'],
       description: 'groupsmembership',
       callback: function () {
         self.managegroupsmembership();
@@ -164,6 +177,31 @@ function MainCharacterDetailController($injector, $location, $rootScope, $routeP
   self.managegroupsmembership = function() {
     SupporterEditionChecker.filterAction(function () {
       $location.path('/maincharacters/' + self.maincharacter.$loki + '/groupsmembership');
+    });
+  };
+
+  self.transformToSecondary = function() {
+
+    let executeTransformationFunction = function() {
+      $timeout(function() {            
+        let secondarycharacter = MainCharacterService.transformIntoSecondary(self.maincharacter.$loki);
+        $location.path('/secondarycharacters/' + secondarycharacter.$loki + '/default');
+      });   
+    };
+
+    let backupAndExecuteTransformationFunction = function() {
+      ProjectService.executeBackup({
+        backupFileSuffix: 'BEFORE_MAIN_2_SECONDARY',
+        showWaitingModal: true,
+        callback: executeTransformationFunction
+      });
+    };
+
+    SupporterEditionChecker.filterAction(function () {
+      PopupBoxesService.confirm(function() {
+        PopupBoxesService.confirm(backupAndExecuteTransformationFunction, 
+          'backup_before_transformation_confirm', executeTransformationFunction);
+      }, 'transformation_main_to_secondary_confirm');
     });
   };
 }

@@ -17,7 +17,11 @@
               </button>
               <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkTheme()" 
                 ng-class="{ 'active' : $ctrl.theme === 'dark' }">
-                {{'theme_dark' | translate}}
+                {{'theme_dark' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker>
+              </button>
+              <button type="button" class="btn btn-default" ng-click="$ctrl.selectDarkhcTheme()" 
+                ng-class="{ 'active' : $ctrl.theme === 'darkhc' }">
+                {{'theme_darkhc' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker>
               </button>
             </div>
           </div>
@@ -39,11 +43,14 @@
           label="jsp.changeProjectsDirectory.label"
           labelcols="3" inputcols="8"
           onselectdirectory="$ctrl.selectProjectsDirectory(directory)"
-          forbiddenDirectory="$ctrl.forbiddenDirectory">
+          forbiddenDirectory="$ctrl.forbiddenDirectory"
+          note="jsp.changeProjectsDirectory.p.1" notebadge="important_note">
         </directoryinputfield>
-        <div class="col-sm-8 col-sm-offset-3 settings-note">
-          <p><span class="label label-info">{{"important_note" | translate}}</span>&nbsp;&nbsp;{{"jsp.changeProjectsDirectory.p.1" | translate}}</p>
-        </div>
+
+        <buttongroupfield group="$ctrl.autosavegroup" 
+          label="jsp.richTextEditorSettings.autoSave" form="settingsForm"
+          model="$ctrl.autoSaveEnabled" labelcols="3" inputcols="7"
+          note="autosave_note" notebadge="important_note"></buttongroupfield>
 
         <directoryinputfield
           field="settingsForm.backupDirectory"
@@ -66,14 +73,42 @@
         <numberinputfield field="settingsForm.maxBackupNumber" id="maxbackupnumber"
           model="$ctrl.maxBackupNumber" name="maxBackupNumber" 
           label="max_backup_number" min="1" max="20" maxlength="2" required
-          labelcols="3" inputcols="1">
+          labelcols="3" inputcols="7" note="max_backup_number_note" notebadge="important_note">
         </numberinputfield>
-        <div class="col-sm-8 col-sm-offset-3 settings-note">
-          <p><span class="label label-info">{{"important_note" | translate}}</span>&nbsp;&nbsp;{{"max_backup_number_note" | translate}}</p>
-        </div>
 
-        <formbuttons form="settingsForm">
-        </formbuttons>
+        <buttongroupfield group="$ctrl.defaultElementOpeningModeGroup" 
+          label="default_element_opening_mode" form="settingsForm"
+          model="$ctrl.defaultElementOpeningMode" labelcols="3" inputcols="7"
+          note="default_element_opening_mode_note" notebadge="important_note">
+        </buttongroupfield>
+
+        <buttongroupfield group="$ctrl.showElementAfterInsertionGroup" 
+          label="show_element_after_insertion" form="settingsForm"
+          model="$ctrl.showElementAfterInsertion" labelcols="3" inputcols="7"
+          note="show_element_after_insertion_note" notebadge="important_note">
+        </buttongroupfield>
+
+        <div class="detail-footer bibiscoNotSelectableText">
+          <div class="row">
+            <hr />
+          </div>
+          <div class="row">
+            <span class="pull-right">
+              <dropdownmenu buttonlabel="jsp.common.button.more" 
+                items="$ctrl.actionitems" open="up"
+                visible="true">
+              </dropdownmenu>
+              <button type="submit" class="btn btn-primary" 
+                uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}">
+                <span ng-if="$ctrl.saving">
+                  <i class="fa fa-circle-o-notch fa-spin"></i>
+                </span>
+                <span>{{"jsp.common.button.save" | translate}}</span>
+              </button>
+              <buttonback></buttonback>
+            </span>
+          </div>
+        </div>
 
       </form>
     </div>

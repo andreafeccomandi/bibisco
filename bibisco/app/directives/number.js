@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.module('bibiscoApp').directive('number', function () {
     restrict: 'A',
     link: function (scope, element, attrs, ctrl) {
       ctrl.$parsers.push(function (input) {
-        if (input === undefined) return '';
+        if (input === undefined || input === null) return '';
         let inputNumber = input.toString().replace(/[^0-9]/g, '');
         if (inputNumber !== input) {
           ctrl.$setViewValue(inputNumber);

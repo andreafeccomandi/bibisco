@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,19 @@
  *
  */
 
-angular.module('bibiscoApp').service('ContextService', function() {
+angular.module('bibiscoApp').service('ContextService', function(FileSystemService) {
   'use strict';
 
   const ipc = require('electron').ipcRenderer;
+  const path = require('path');
   let contextInfo = ipc.sendSync('getcontextinfo');
-  var appPath = contextInfo.appPath; 
+  let appPath = contextInfo.appPath; 
+  let documentsPath = contextInfo.documentsPath;
+  let downloadsPath = contextInfo.downloadsPath;
   let userDataPath = contextInfo.userDataPath;
-  var os = contextInfo.os;
-  var path = require('path');
-  var lastError;
+
+  let os = contextInfo.os;
+  let lastError;
 
   return {
     getAppPath: function() {
@@ -39,6 +42,12 @@ angular.module('bibiscoApp').service('ContextService', function() {
     },
     getDictionaryDirectoryPath() {
       return path.join(userDataPath, 'bibiscoDictionaries');
+    },
+    getDocumentsDirectoryPath() {
+      return documentsPath;
+    },
+    getDownloadsDirectoryPath() {
+      return downloadsPath;
     },
     getTempDirectoryPath() {
       return path.join(userDataPath, 'temp');

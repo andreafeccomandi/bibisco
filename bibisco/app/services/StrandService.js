@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -70,6 +70,14 @@ angular.module('bibiscoApp').service('StrandService', function($injector, $rootS
         id: strand.$loki,
         collection: 'strands'
       });
+    },
+    updateLastSave: function(id, lastsave) {
+      let strand = this.getStrand(id);
+      strand.lastsave = lastsave;
+      this.update(strand);
+    },
+    updateWithoutCommit: function(strand) {
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), strand);
     }
   };
 });

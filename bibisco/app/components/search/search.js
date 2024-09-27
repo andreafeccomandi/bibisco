@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,21 @@
  */
 angular.
   module('bibiscoApp').
-  component('search', {
+  component('globalsearch', {
     templateUrl: 'components/search/search.html',
     controller: SearchController
   });
 
 function SearchController($injector, $location, $rootScope, $scope, $timeout, hotkeys) {
 
-  var self = this;
-  var SearchService = $injector.get('SearchService');
+  let self = this;
+  let SearchService = $injector.get('SearchService');
   
   self.$onInit = function() {
 
     self.results = null;   
+    self.replacetoolbar = false;
+    self.text2replace = null;
     
     // show menu item
     $rootScope.$emit('SHOW_PAGE', {
@@ -83,8 +85,46 @@ function SearchController($injector, $location, $rootScope, $scope, $timeout, ho
     }
   };
 
+  self.replace = function() {
+    if ($rootScope.text2search && self.text2replace) {
+      $timeout(function () {
+        SearchService.globalReplace($rootScope.text2search, 
+          $rootScope.searchCasesensitiveactive, $rootScope.searchWholewordactive, 
+          $rootScope.searchOnlyscenes, self.text2replace);
+      },0);
+    }
+  };
+
+  $rootScope.$on('START_GLOBAL_REPLACE', function () {
+    self.loading = true;
+  });
+
+  $rootScope.$on('END_GLOBAL_REPLACE', function () {
+    self.results = SearchService.search($rootScope.text2search, 
+      $rootScope.searchCasesensitiveactive, $rootScope.searchWholewordactive, 
+      $rootScope.searchOnlyscenes);
+    self.loading = false;
+  });
+
   self.gotoElement = function (path) {
     $rootScope.richtexteditorSearchActiveOnOpen = true;
     $location.path(path);
   };  
+
+  self.showreplacetoolbar = function() {
+    self.replacetoolbar = true;
+  };
+
+  self.hidereplacetoolbar = function() {
+    self.replacetoolbar = false;
+  };
+
+  self.clearText2search = function() {
+    $rootScope.text2search = null;
+    self.results = null;
+  };
+
+  self.clearText2replace = function() {
+    self.text2replace = null;
+  };
 }

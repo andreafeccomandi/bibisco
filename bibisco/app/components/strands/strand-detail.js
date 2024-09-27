@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function StrandDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
-  ChapterService, StrandService, SupporterEditionChecker, UtilService) {
+  ChapterService, NavigationService, StrandService, SupporterEditionChecker, UtilService) {
 
   let self = this;
   let GroupService = null;
@@ -36,7 +36,7 @@ function StrandDetailController($injector, $location, $routeParams, $scope, $win
       return;
     }
     
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.breadcrumbitems.push({
       label: 'common_architecture',
       href: '/architecture'
@@ -73,7 +73,11 @@ function StrandDetailController($injector, $location, $routeParams, $scope, $win
   };
 
   self.edit = function () {
-    $location.path('/strands/ ' + self.strand.$loki + '/edit');
+    $location.path('/strands/ ' + self.strand.$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/strands/ ' + self.strand.$loki + '/view').replace();
   };
 
   self.getGroupService = function () {
@@ -113,7 +117,7 @@ function StrandDetailController($injector, $location, $routeParams, $scope, $win
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+m', 'command+m'],
+      combo: ['ctrl+shift+m', 'command+shift+m'],
       description: 'groupsmembership',
       callback: function () {
         self.managegroupsmembership();

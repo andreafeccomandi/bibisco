@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ angular.
     controller: ElementCreateFormController,
     bindings: {
       breadcrumbitems: '<',
+      elementbasepath: '@',
       eventname: '@',
       colorenabled: '<',
       groupenabled: '<',
@@ -28,13 +29,15 @@ angular.
       profileimage: '@',
       profileimageenabled: '<',
       savefunction: '&',
+      showdetailaftercreation: '<',
+      showdetailaftercreationfunction: '&?',
       titlelabel: '@',
       titlemandatory: '<',
       titlemaxlength: '@'
     }
   });
 
-function ElementCreateFormController($injector, $rootScope, $scope, $window, hotkeys, 
+function ElementCreateFormController($injector, $location, $rootScope, $scope, $window, hotkeys, 
   PopupBoxesService, SupporterEditionChecker, UtilService) {
   let self = this;
   let GroupService = null;
@@ -48,6 +51,18 @@ function ElementCreateFormController($injector, $rootScope, $scope, $window, hot
       self.initGroupsMembership();
     }
     self.color = null;
+
+    self.deregisterInsertElementListener = $rootScope.$on('INSERT_ELEMENT', function (event, args) {
+      if (self.showdetailaftercreation) {
+        if (self.showdetailaftercreationfunction) {
+          self.showdetailaftercreationfunction({id: args.id});
+        } else {
+          $location.path(self.elementbasepath + args.id + '/default').replace();
+        }
+      } else {
+        $window.history.back();
+      }
+    });
     
     self.checkExit = {
       active: true
@@ -120,10 +135,12 @@ function ElementCreateFormController($injector, $rootScope, $scope, $window, hot
       self.checkExit = {
         active: false
       };
-      $window.history.back();
     }
   };
 
+  self.$onDestroy = function () {
+    self.deregisterInsertElementListener();
+  };
 
   $scope.$on('$locationChangeStart', function (event) {
     PopupBoxesService.locationChangeConfirm(event, $scope.elementCreateForm.$dirty, self.checkExit);

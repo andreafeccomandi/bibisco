@@ -1,15 +1,15 @@
-<div ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink" class="row top30 bibiscoNotSelectableText">
+<div ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink" class="row top15 siblingselementnavigator bibiscoNotSelectableText">
     <div class="col-sm-6">
       <span class="pull-right">
         <a ng-if="$ctrl.previouselementlink" 
-          uib-tooltip="{{$ctrl.previouselementtooltip | translate}}"
+          uib-tooltip="{{$ctrl.previouselementtooltip | translate}} {{$ctrl.previouselementtooltiphotkey+$root.os | translate}}"
           ng-click="$ctrl.gotopreviouslement()">&xlarr; {{$ctrl.previouselementlabel | translate}}</a>
       </span>
     </div>
     <div class="col-sm-6">
       <span class="pull-left">
         <a ng-if="$ctrl.nextelementlink" 
-          uib-tooltip="{{$ctrl.nextelementtooltip | translate}}"
+          uib-tooltip="{{$ctrl.nextelementtooltip | translate}} {{$ctrl.nextelementtooltiphotkey+$root.os | translate}}"
           ng-click="$ctrl.gotonextlement()">{{$ctrl.nextelementlabel | translate}} &xrarr;</a>
       </span>
     </div>

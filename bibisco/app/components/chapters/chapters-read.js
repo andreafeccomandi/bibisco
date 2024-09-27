@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,10 @@ function ChaptersReadController($location, $rootScope, $routeParams, $scope, $ti
   let self = this;
   const ipc = require('electron').ipcRenderer;
 
+
   self.$onInit = function () {
 
+    self.readnovelcontainer = document.getElementById('readnovelcontainer');
     let chapter = ChapterService.getChapter(parseInt($routeParams.chapterid));
     
     // If I come fron scene's creation it means that I created it from the reading page, 
@@ -80,25 +82,40 @@ function ChaptersReadController($location, $rootScope, $routeParams, $scope, $ti
         }
       }
       self.chaptersToSelect.push(chapterItem);
+
+      hotkeys.bindTo($scope)
+        .add({
+          combo: ['f11', 'command+l'],
+          description: 'fullscreen',
+          allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+          callback: function () {
+            self.fullscreen();
+          }
+        })
+        .add({
+          combo: ['up'],
+          description: 'scrollup',
+          callback: function () {
+            self.readnovelcontainer.scrollTop -= 100;
+          }
+        })
+        .add({
+          combo: ['down'],
+          description: 'scrolldown',
+          callback: function() {
+            self.readnovelcontainer.scrollTop += 100;
+          }
+        });
     }
 
     $timeout(function () {
       if (self.chapterToRead.id === $rootScope.readNovelDblClickChapterId) {
-        self.readnovelcontainer = document.getElementById('readnovelcontainer');
-        self.readnovelcontainer.scrollTop = 
+        let readnovelcontainer = document.getElementById('readnovelcontainer');
+        readnovelcontainer.scrollTop = 
                 self.readnovelcontainer.scrollTop + $rootScope.readNovelDblClickOffsetY;
       }
       $rootScope.readNovelDblClickOffsetY = 0;
       $rootScope.readNovelDblClickChapterId = null;
-    });
-
-    hotkeys.bindTo($scope).add({
-      combo: ['f11', 'command+l'],
-      description: 'fullscreen',
-      allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
-      callback: function () {
-        self.fullscreen();
-      }
     });
   };
 

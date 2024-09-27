@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ angular.
     controller: GroupDetailController
   });
 
-function GroupDetailController($location, $rootScope, $routeParams, $scope, $window, hotkeys, GroupService) {
+function GroupDetailController($location, $rootScope, $routeParams, $scope, $window, hotkeys, GroupService, NavigationService) {
 
   let self = this;
 
@@ -35,7 +35,7 @@ function GroupDetailController($location, $rootScope, $routeParams, $scope, $win
     }
 
     // breadcrumb
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.breadcrumbitems.push({
       label: 'groups',
       href: '/groups'
@@ -77,7 +77,11 @@ function GroupDetailController($location, $rootScope, $routeParams, $scope, $win
   };
 
   self.edit = function () {
-    $location.path('/groups/' + self.group.$loki + '/edit');
+    $location.path('/groups/' + self.group.$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/groups/' + self.group.$loki + '/view').replace();
   };
 
   self.getGroup = function (id) {
@@ -93,7 +97,7 @@ function GroupDetailController($location, $rootScope, $routeParams, $scope, $win
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+m', 'command+m'],
+      combo: ['ctrl+shift+m', 'command+shift+m'],
       description: 'groupmembers',
       callback: function () {
         self.managegroupmembers();

@@ -1,230 +1,371 @@
-<div class="btn-toolbar bibiscoNotSelectableText richtexteditor-toolbar">
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.undo()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.undo'+$ctrl.os | translate}}">
-      <i class="fa fa-rotate-left" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.redo()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.redo'+$ctrl.os | translate}}">
-      <i class="fa fa-rotate-right" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.print()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.print'+$ctrl.os | translate}}">
-      <i class="fa fa-print" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.copy()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.copy'+$ctrl.os | translate}}">
-      <i class="fa fa-copy" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.cut()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.cut'+$ctrl.os | translate}}">
-      <i class="fa fa-cut" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.paste()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.paste'+$ctrl.os | translate}}">
-      <i class="fa fa-paste" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group" data-toggle="buttons-checkbox">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.bold()"
-      ng-class="{ 'active': $ctrl.boldactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.bold'+$ctrl.os | translate}}">
-      <i class="fa fa-bold" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.italic()"
-      ng-class="{ 'active': $ctrl.italicactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.italic'+$ctrl.os | translate}}">
-      <i class="fa fa-italic" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.underline()"
-      ng-class="{ 'active': $ctrl.underlineactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.underline'+$ctrl.os | translate}}">
-      <i class="fa fa-underline" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.strikethrough()"
-      ng-class="{ 'active': $ctrl.strikethroughactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.strike'+$ctrl.os | translate}}">
-      <i class="fa fa-strikethrough" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.highlight()"
-      ng-class="{ 'active': $ctrl.highlightactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.highlightText'+$ctrl.os | translate}}">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.leftguillemet()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.angledbracketleft'+$ctrl.os | translate}}">
-      <strong>&laquo;</strong>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.rightguillemet()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.angledbracketright'+$ctrl.os | translate}}">
-      <strong>&raquo;</strong>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.emdash()"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.longdash'+$ctrl.os | translate}}">
-      <strong>&mdash;</strong>
-    </button>
-  </div>
-  <div class="btn-group" data-toggle="buttons-checkbox">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.orderedlist()"
-      ng-class="{ 'active': $ctrl.orderedlistactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.numberedlist' | translate}}">
-      <i class="fa fa-list-ol" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.unorderedlist()"
-      ng-class="{ 'active': $ctrl.unorderedlistactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.bulletedlist' | translate}}">
-      <i class="fa fa-list" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group" data-toggle="buttons-checkbox">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.alignleft()"
-      ng-class="{ 'active': $ctrl.alignleftactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyleft'+$ctrl.os | translate}}">
-      <i class="fa fa-align-left" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.aligncenter()"
-      ng-class="{ 'active': $ctrl.aligncenteractive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifycenter'+$ctrl.os | translate}}">
-      <i class="fa fa-align-center" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.alignright()"
-      ng-class="{ 'active': $ctrl.alignrightactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyright'+$ctrl.os | translate}}">
-      <i class="fa fa-align-right" aria-hidden="true"></i>
-    </button>
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.justify()"
-      ng-class="{ 'active': $ctrl.justifyactive == true }"
-      uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyblock'+$ctrl.os | translate}}">
-      <i class="fa fa-align-justify" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.toggleFindReplaceToolbar()" 
-      ng-class="{ 'btn-info': $ctrl.showfindreplacetoolbar, 'btn-unselected': !$ctrl.showfindreplacetoolbar }" 
-      uib-tooltip="{{'find_replace'+$ctrl.os | translate}}">
-      <i class="fa fa-search" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.fullscreen()"
-      uib-tooltip="{{'full_screen_mode'+$ctrl.os | translate}}">
-      <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-    </button>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-default btn-sm" ng-click="$ctrl.opensettings()"
-      uib-tooltip="{{'jsp.start.button.settings' | translate}}">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-    </button>
-  </div>
-</div>
-
-<div ng-if="$ctrl.showfindreplacetoolbar"
-  class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
-  <form class="form-inline">
-      
-      <div class="form-group" ng-keypress="$event.which === 13 && $ctrl.nextMatchByEnter($event)">
-        <div class="input-group">
-          <span class="input-group-btn">
-            <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
-              uib-tooltip="{{'common_case_sensitive' | translate}}"
-              ng-click="$ctrl.toggleCaseSensitive()"
-              ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
-              <strong id="richtexteditorcasesensitiveicon">Aa</strong>
-            </button>
-            <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
-              uib-tooltip="{{'common_whole_word' | translate}}"
-              ng-click="$ctrl.toggleWholeWord()"
-              ng-class="{ 'active': $ctrl.wholewordactive == true }">
-              <strong id="richtexteditorwholewordicon">|ab|</strong>
-            </button>
-          </span>
-          <input type="text" class="form-control input-sm" maxlength="30"
-            id="richtexteditortexttofind"
-            ng-change="$ctrl.texttofindChange()" 
-            ng-model="$ctrl.texttofind" placeholder="{{'common_find' | translate}}">
-          </input>
-          <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
-          <span class="input-group-btn">
-            <button class="btn btn-default btn-sm" 
-              ng-disabled="$ctrl.totalmatch == 0"
-              uib-tooltip="{{'previous_match_tooltip' | translate}}"
-              ng-click="$ctrl.previousMatch()">
-              <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
-            <button class="btn btn-default btn-sm" 
-              ng-disabled="$ctrl.totalmatch == 0"
-              uib-tooltip="{{'next_match_tooltip' | translate}}"
-              ng-click="$ctrl.nextMatch()">
-              <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
-          </span>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <input type="text" class="form-control input-sm" maxlength="30"
-            ng-click="$ctrl.clearCurrentMatch()"
-            ng-model="$ctrl.texttoreplace" placeholder="{{'common_replace' | translate}}">
-          <span class="input-group-btn">
-            <button class="btn btn-default btn-sm"
-              ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
-              uib-tooltip="{{'common_replaceone' | translate}}"
-              ng-click="$ctrl.replaceNext()"
-              ><i class="fa fa-reply" aria-hidden="true"></i>
-            </button>
-            <button class="btn btn-default btn-sm"
-              ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
-              uib-tooltip="{{'common_replaceall' | translate}}"
-              ng-click="$ctrl.replaceAll()">
-              <i class="fa fa-reply-all" aria-hidden="true"></i>
-            </button>
-          </span>
-        </div>
+<div style="display: flex; flex-direction: column; height: 100%;">
+  <div class="btn-toolbar bibiscoNotSelectableText richtexteditor-toolbar" style="flex: 0;">
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.undo()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.undo'+$ctrl.os | translate}}">
+        <i class="fa fa-rotate-left" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.redo()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.redo'+$ctrl.os | translate}}">
+        <i class="fa fa-rotate-right" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.print()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.print'+$ctrl.os | translate}}">
+        <i class="fa fa-print" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.copy()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.copy'+$ctrl.os | translate}}">
+        <i class="fa fa-copy" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.cut()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.cut'+$ctrl.os | translate}}">
+        <i class="fa fa-cut" aria-hidden="true"></i>
+      </button>
+      <div class="btn-group richtexteditor-paste" uib-dropdown>
+        <button id="paste-button" class="btn btn-default btn-sm" ng-click="$ctrl.paste()"
+          uib-tooltip="{{'tag.bibiscoRichTextEditor.paste'+$ctrl.os | translate}}">
+          <i class="fa fa-paste" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-default btn-sm richtexteditor-dropdown-select" uib-dropdown-toggle>
+          <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu role="menu" aria-labelledby="paste-button">
+          <li role="menuitem">
+            <a ng-click="$ctrl.pastewithoutformat()">{{'paste_unformatted_text'+$ctrl.os | translate}}</a>
+          </li>
+        </ul>
       </div>
     </div>
-  </form>
-</div>
+    <div class="btn-group" data-toggle="buttons-checkbox">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.bold()"
+        ng-class="{ 'active': $ctrl.boldactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.bold'+$ctrl.os | translate}}">
+        <i class="fa fa-bold" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.italic()"
+        ng-class="{ 'active': $ctrl.italicactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.italic'+$ctrl.os | translate}}">
+        <i class="fa fa-italic" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.underline()"
+        ng-class="{ 'active': $ctrl.underlineactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.underline'+$ctrl.os | translate}}">
+        <i class="fa fa-underline" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.strikethrough()"
+        ng-class="{ 'active': $ctrl.strikethroughactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.strike'+$ctrl.os | translate}}">
+        <i class="fa fa-strikethrough" aria-hidden="true"></i>
+      </button>
+    </div>
 
-<div id="richtexteditorcontainer" 
-  ng-class="{ 'richtexteditor-contenteditable-container-findreplace': $ctrl.showfindreplacetoolbar, 
-  'richtexteditor-contenteditable-container-nofindreplace': !$ctrl.showfindreplacetoolbar,
-  'fullscreen': $root.fullscreen }" 
-  class="richtexteditor-contenteditable-container"
-  onload="">
-  <div contenteditable="{{$ctrl.contenteditable}}" 
-    ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
-    spellcheck="{{$ctrl.spellcheckenabled}}"
-    class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} mousetrap"
-    id="richtexteditor"
-    ng-blur="$ctrl.blur()"
-    ng-click="$ctrl.clickoneditor()"
-    ng-keypress="$ctrl.checkCapitalize($event)"
-    ng-keyup="$ctrl.checkselectionstate()"
-    ng-mouseup="$ctrl.checkselectionstate()"
-    ng-paste="$ctrl.sanitizePaste($event)"
-    ng-scroll="$ctrl.scroll">
+    <div class="btn-group richtexteditor-highlight" uib-dropdown>
+      <button id="highlight-button" class="btn btn-default btn-sm" ng-click="$ctrl.highlight()"
+        ng-class="{ 'active': $ctrl.highlightactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.highlightText'+$ctrl.os | translate}}">
+        <span style="background-color: {{$ctrl.selectedHighlightColor}}"></span>
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm richtexteditor-dropdown-select" uib-dropdown-toggle>
+        <span class="caret"></span>
+      </button>
+      <ul uib-dropdown-menu role="menu" aria-labelledby="highlight-button">
+        <li role="menuitem">
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_YELLOW)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_YELLOW}}"></i></a>
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_ORANGE)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_ORANGE}}"></i></a>
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_RED)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_RED}}"></i></a>
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_PINK)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_PINK}}"></i></a>
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_LIME)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_LIME}}"></i></a>
+          <a ng-click="$ctrl.changeHighlightColor($ctrl.HIGHLIGHT_AQUA)"><i class="fa fa-circle" aria-hidden="true" style="color: {{$ctrl.HIGHLIGHT_AQUA}};"></i></a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-group" data-toggle="buttons-checkbox">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.removeformat()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.removeformat'+$ctrl.os | translate}}">
+        <i class="fa fa-eraser" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="btn-group richtexteditor-specialcharacters" uib-dropdown>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.leftguillemet()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.angledbracketleft'+$ctrl.os | translate}}">
+        <strong>&laquo;</strong>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.rightguillemet()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.angledbracketright'+$ctrl.os | translate}}">
+        <strong>&raquo;</strong>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.emdash()"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.longdash'+$ctrl.os | translate}}">
+        <strong>&mdash;</strong>
+      </button>
+      <button class="btn btn-default btn-sm richtexteditor-dropdown-select" uib-dropdown-toggle>
+        <span class="caret"></span>
+      </button>
+      <ul uib-dropdown-menu role="menu" aria-labelledby="paste-button">
+        <li role="menuitem">
+          <div class="btn-group">
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.ndash()" uib-tooltip="{{'bibiscoRichTextEditor_ndash'+$ctrl.os | translate}}"><strong>&ndash;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.ldquo()" uib-tooltip="{{'bibiscoRichTextEditor_ldquo'+$ctrl.os | translate}}"><strong>&ldquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.rdquo()" uib-tooltip="{{'bibiscoRichTextEditor_rdquo'+$ctrl.os | translate}}"><strong>&rdquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.bdquo()" uib-tooltip="{{'bibiscoRichTextEditor_bdquo'+$ctrl.os | translate}}"><strong>&bdquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.lsquo()" uib-tooltip="{{'bibiscoRichTextEditor_lsquo'+$ctrl.os | translate}}"><strong>&lsquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.rsquo()" uib-tooltip="{{'bibiscoRichTextEditor_rsquo'+$ctrl.os | translate}}"><strong>&rsquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.sbquo()" uib-tooltip="{{'bibiscoRichTextEditor_sbquo'+$ctrl.os | translate}}"><strong>&sbquo;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.prime()" uib-tooltip="{{'bibiscoRichTextEditor_prime'+$ctrl.os | translate}}"><strong>&prime;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.doubleprime()" uib-tooltip="{{'bibiscoRichTextEditor_doubleprime'+$ctrl.os | translate}}"><strong>&Prime;</strong></button>
+            <button class="btn btn-default btn-sm" ng-click="$ctrl.hellip()" uib-tooltip="{{'bibiscoRichTextEditor_hellip'+$ctrl.os | translate}}"><strong>&hellip;</strong></button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-group" data-toggle="buttons-checkbox">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.orderedlist()"
+        ng-class="{ 'active': $ctrl.orderedlistactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.numberedlist' | translate}}">
+        <i class="fa fa-list-ol" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.unorderedlist()"
+        ng-class="{ 'active': $ctrl.unorderedlistactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.bulletedlist' | translate}}">
+        <i class="fa fa-list" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group" data-toggle="buttons-checkbox">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.alignleft()"
+        ng-class="{ 'active': $ctrl.alignleftactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyleft'+$ctrl.os | translate}}">
+        <i class="fa fa-align-left" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.aligncenter()"
+        ng-class="{ 'active': $ctrl.aligncenteractive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.justifycenter'+$ctrl.os | translate}}">
+        <i class="fa fa-align-center" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.alignright()"
+        ng-class="{ 'active': $ctrl.alignrightactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyright'+$ctrl.os | translate}}">
+        <i class="fa fa-align-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.justify()"
+        ng-class="{ 'active': $ctrl.justifyactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.justifyblock'+$ctrl.os | translate}}">
+        <i class="fa fa-align-justify" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.addImage()"
+        id="richtexteditorBtnAddImage"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.addimage'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i id="richtexteditor-addimage-btn-icon" class="fa fa-picture-o" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.addLink()"
+        id="richtexteditorBtnAddLink"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.addlink'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-link" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group" data-toggle="buttons-checkbox">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.subscript()"
+        ng-class="{ 'active': $ctrl.subscriptactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.subscript'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-subscript" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.superscript()"
+        ng-class="{ 'active': $ctrl.superscriptactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.superscript'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-superscript" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.smalltext()"
+        ng-class="{ 'active': $ctrl.smalltextactive == true }"
+        uib-tooltip="{{'tag.bibiscoRichTextEditor.smalltext'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i id="richtexteditor-smalltext-btn-icon" class="fa fa-font" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.toggleFindReplaceToolbar()" 
+        ng-class="{ 'btn-info': $ctrl.showfindreplacetoolbar, 'btn-unselected': !$ctrl.showfindreplacetoolbar }" 
+        uib-tooltip="{{'find_replace'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.comment()" 
+        ng-class="{ 'metatext-btn-count' : $ctrl.commentsNumber > 0, 'active': $ctrl.showMetatext == true && $ctrl.metatextType == 'comment'}"
+        uib-tooltip="{{'comment'+$ctrl.os | translate}}">
+        <i class="fa fa-comment" aria-hidden="true"></i>
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <span ng-if="$ctrl.commentsNumber > 0">{{$ctrl.commentsNumber}}</span>
+      </button>
+      <button class="btn btn-default btn-sm" 
+        ng-if="$ctrl.commentsNumber > 0"
+        uib-tooltip="{{'previous_comment_tooltip'+$ctrl.os | translate}}"
+        ng-click="$ctrl.previousComment()">
+        <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+      <button class="btn btn-default btn-sm" 
+        ng-if="$ctrl.commentsNumber > 0"
+        uib-tooltip="{{'next_comment_tooltip'+$ctrl.os | translate}}"
+        ng-click="$ctrl.nextComment()">
+        <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+    </div>
+    <div class="btn-group">
+      <button id="notebtn" class="btn btn-default btn-sm" ng-click="$ctrl.note()"
+        ng-class="{ 'metatext-btn-count' : $ctrl.notesNumber > 0, 'active': $ctrl.showMetatext == true && $ctrl.metatextType == 'note'}"
+        uib-tooltip="{{'footendnote'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-asterisk" aria-hidden="true"></i>
+        <span ng-if="$ctrl.notesNumber > 0">{{$ctrl.notesNumber}}</span>
+      </button>
+      <button class="btn btn-default btn-sm" 
+        ng-if="$ctrl.notesNumber > 0"
+        uib-tooltip="{{'previous_note_tooltip'+$ctrl.os | translate}}"
+        ng-click="$ctrl.previousNote()">
+        <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+      <button class="btn btn-default btn-sm" 
+        ng-if="$ctrl.notesNumber > 0"
+        uib-tooltip="{{'next_note_tooltip'+$ctrl.os | translate}}"
+        ng-click="$ctrl.nextNote()">
+        <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.fullscreen()"
+        uib-tooltip="{{'full_screen_mode'+$ctrl.os | translate}}">
+        <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>
+        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm" ng-click="$ctrl.opensettings()"
+        uib-tooltip="{{'jsp.start.button.settings' | translate}}">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div ng-if="$ctrl.showfindreplacetoolbar" style="flex: 0;"
+    class="bibiscoNotSelectableText richtexteditor-toolbar richtexteditor-find-replace-toolbar">
+    <form class="form-inline">
+        
+        <div class="form-group" ng-keypress="$event.which === 13 && $ctrl.nextMatchByEnter($event)">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
+                uib-tooltip="{{'common_case_sensitive' | translate}}"
+                ng-click="$ctrl.toggleCaseSensitive()"
+                ng-class="{ 'active': $ctrl.casesensitiveactive == true }">
+                <strong id="richtexteditorcasesensitiveicon">Aa</strong>
+              </button>
+              <button class="btn btn-default btn-sm" data-toggle="buttons-checkbox"
+                uib-tooltip="{{'common_whole_word' | translate}}"
+                ng-click="$ctrl.toggleWholeWord()"
+                ng-class="{ 'active': $ctrl.wholewordactive == true }">
+                <strong id="richtexteditorwholewordicon">|ab|</strong>
+              </button>
+            </span>
+            <input type="text" class="form-control input-sm" maxlength="30"
+              id="richtexteditortexttofind"
+              ng-change="$ctrl.texttofindChange()" 
+              ng-model="$ctrl.texttofind" placeholder="{{'common_find' | translate}}">
+            </input>
+            <span class="richtexteditor-find-counter">{{$ctrl.currentmatch}}/{{$ctrl.totalmatch}}</span>
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" 
+                ng-disabled="$ctrl.totalmatch == 0"
+                uib-tooltip="{{'previous_match_tooltip'+$root.os | translate}}"
+                ng-click="$ctrl.previousMatch()">
+                <i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+              <button class="btn btn-default btn-sm" 
+                ng-disabled="$ctrl.totalmatch == 0"
+                uib-tooltip="{{'next_match_tooltip'+$root.os | translate}}"
+                ng-click="$ctrl.nextMatch()">
+                <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control input-sm" maxlength="30"
+              id="richtexteditortexttoreplace"
+              ng-click="$ctrl.clearCurrentMatch()"
+              ng-model="$ctrl.texttoreplace" placeholder="{{'common_replace' | translate}}">
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm"
+                ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
+                uib-tooltip="{{'common_replaceone' | translate}}"
+                ng-click="$ctrl.replaceNext()"
+                ><i class="fa fa-reply" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-default btn-sm"
+                ng-disabled="$ctrl.totalmatch == 0 || !$ctrl.texttoreplace"
+                uib-tooltip="{{'common_replaceall' | translate}}"
+                ng-click="$ctrl.replaceAll()">
+                <i class="fa fa-reply-all" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </form>
+  </div>
+
+
+  <div id="richtexteditorcontainer" style="flex: 1;"
+    ng-class="{'fullscreen': $root.fullscreen }" 
+    class="richtexteditor-contenteditable-container"
+    onload="">
+    <div contenteditable="{{$ctrl.contenteditable}}" 
+      ng-model="$ctrl.content" ng-change="$ctrl.contentChanged()"
+      spellcheck="{{$ctrl.spellcheckenabled}}"
+      class="richtexteditor-contenteditable {{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} mousetrap"
+      id="richtexteditor"
+      ng-blur="$ctrl.blur()"
+      ng-click="$ctrl.clickoneditor()"
+      ng-keypress="$ctrl.checkCapitalize($event)"
+      ng-keyup="$ctrl.checkselectionstate($event)"
+      ng-mouseup="$ctrl.checkselectionstate($event)"
+      ng-paste="$ctrl.sanitizePaste($event)"
+      ng-scroll="$ctrl.scroll">
+    </div>
+  </div>
+
+  <fullscreenexitmessage></fullscreenexitmessage>
+
+  <div style="flex: 0;">
+    <siblingelementsnavigator ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink"
+      editmode="true"
+      previouselementlabel="{{$ctrl.previouselementlabel}}"
+      previouselementlink="$ctrl.previouselementlink"
+      previouselementtooltip="{{$ctrl.previouselementtooltip}}"
+      nextelementlabel="{{$ctrl.nextelementlabel}}"
+      nextelementlink="$ctrl.nextelementlink"
+      nextelementtooltip="{{$ctrl.nextelementtooltip}}">
+    </siblingelementsnavigator>
   </div>
 </div>
 
-<fullscreenexitmessage></fullscreenexitmessage>
-
-<div class="comment-box" ng-if="$ctrl.showComment" 
-  style="top: {{$ctrl.commentPositionTop}}px; left: {{$ctrl.commentPositionLeft}}px;">
-  <i class="fa fa-comment text-primary"></i>
-  <div class="comment-box-body">
-    <textarea ng-model="$ctrl.commentText" ng-change="$ctrl.commentChanged()"
-      placeholder="{{'comment_placeholder' | translate}}"></textarea>
-  </div>
-  <div class="comment-box-footer bibiscoNotSelectableText">
-    <a ng-click="$ctrl.deleteComment()">{{'jsp.common.button.delete' | translate}}</a>
-  </div>
-</div>
-                                                                                                                                                                                                         
-<div ng-if="$ctrl.showComment" class="comment-box-connector" 
-  style="left:{{$ctrl.commentLineLeft}}px;top:{{$ctrl.commentLineTop}}px;width:{{$ctrl.commentLineWidth}}px;">
-</div>
+<metatext changefunction = "$ctrl.metatextChangeFunction(metatext)"
+  closefunction = "$ctrl.closeMetatextBox()"
+  connectortype = "$ctrl.metatextConnectorType"
+  deletefunction = "$ctrl.metatextDeleteFunction()"
+  editorid = "richtexteditor"
+  editorcointainerid = "richtexteditorcontainer"
+  icon = "$ctrl.metatextIcon"
+  id = "$ctrl.metatextId"
+  placeholder= "$ctrl.metatextPlaceholder"
+  showmetatext = "$ctrl.showMetatext"
+  readonly = "false"
+  type = "$ctrl.metatextType">
+</metatext>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ angular.
       button2tooltip: '@',
       dropdownitems: '<',
       dropdownopen: '@',
+      supportersonly: '<',
       tipcode: '@',
       tipenabled: '<',
       tipmodalstyle: '@?'
@@ -40,7 +41,7 @@ angular.
 
 
 function PageFooterController($rootScope, $scope, hotkeys, BibiscoPropertiesService, UuidService) {
-  var self = this;
+  let self = this;
 
   self.$onInit = function () {
 

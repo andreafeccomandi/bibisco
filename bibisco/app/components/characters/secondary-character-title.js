@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ function SecondaryCharacterTitleController($routeParams, $window, SecondaryChara
     // edit breadcrumb items
     self.breadcrumbitems.push({
       label: secondarycharacter.name,
-      href: '/secondarycharacters/' + secondarycharacter.$loki + '/view'
+      href: '/secondarycharacters/' + secondarycharacter.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.character.dialog.title.updateTitle'

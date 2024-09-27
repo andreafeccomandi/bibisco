@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ function CustomQuestionsController($location, $rootScope, $routeParams, $timeout
     });
     self.breadcrumbitems.push({
       label: 'common_custom',
-      href: '/maincharacters/' + self.maincharacter.$loki + '/infowithquestion/custom/view'
+      href: '/maincharacters/' + self.maincharacter.$loki + '/infowithquestion/custom/default'
     });
     self.breadcrumbitems.push({
       label: 'questions',

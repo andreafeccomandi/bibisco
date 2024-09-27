@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ function SceneTitleController($location, $routeParams, $window, ChapterService) 
       href: '/chapters/' + chapter.$loki
     });
 
+    self.elementbasepath = '/chapters/' + chapter.$loki + '/scenes/';
+
     if ($routeParams.sceneid !== undefined) {
       let scene = ChapterService.getScene(parseInt($routeParams.sceneid));
       // If we get to the page using the back button it's possible that the scene has been deleted or moved to another chapter. Let's go back again.
@@ -56,7 +58,7 @@ function SceneTitleController($location, $routeParams, $window, ChapterService) 
       // edit breadcrumb items
       self.breadcrumbItems.push({
         label: scene.title,
-        href: '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/view'
+        href: '/chapters/' + chapter.$loki + '/scenes/' + scene.$loki + '/default'
       });
       self.breadcrumbItems.push({
         label: 'jsp.scene.dialog.title.updateTitle'

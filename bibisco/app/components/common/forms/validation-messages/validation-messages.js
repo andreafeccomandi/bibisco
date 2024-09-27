@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,20 @@ function ValidationMessagesController() {
     } else {
       return false;
     }
+  };
+
+  // max
+  this.getMax = function() {
+    var element = angular.element(document.querySelector('input[name=' + this
+      .field.$name + ']'));
+    return element.attr('max');
+  };
+
+  // min
+  this.getMin = function() {
+    var element = angular.element(document.querySelector('input[name=' + this
+      .field.$name + ']'));
+    return element.attr('min');
   };
 
   // maxlength

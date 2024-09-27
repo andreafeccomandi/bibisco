@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ angular.
     controller: SecondaryCharacterDetailController
   }); 
 
-function SecondaryCharacterDetailController($injector, $location, $routeParams, $scope, $window, hotkeys,
-  ChapterService, SecondaryCharacterService, SupporterEditionChecker, UtilService) {
+function SecondaryCharacterDetailController($injector, $location, $routeParams, $scope, $timeout, $window, 
+  hotkeys, ChapterService, NavigationService, PopupBoxesService, ProjectService, SecondaryCharacterService, 
+  SupporterEditionChecker, UtilService) {
 
   let self = this;
   let GroupService = null;
@@ -36,7 +37,7 @@ function SecondaryCharacterDetailController($injector, $location, $routeParams, 
       return;
     }
 
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.breadcrumbitems.push({
       label: 'common_characters',
       href: '/characters'
@@ -79,7 +80,11 @@ function SecondaryCharacterDetailController($injector, $location, $routeParams, 
   };
 
   self.edit = function () {
-    $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/edit');
+    $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/secondarycharacters/ ' + self.secondarycharacter.$loki + '/view').replace();
   };
 
   self.getGroupService = function () {
@@ -128,7 +133,7 @@ function SecondaryCharacterDetailController($injector, $location, $routeParams, 
 
   hotkeys.bindTo($scope)
     .add({
-      combo: ['ctrl+m', 'command+m'],
+      combo: ['ctrl+shift+m', 'command+shift+m'],
       description: 'groupsmembership',
       callback: function () {
         self.managegroupsmembership();
@@ -138,6 +143,31 @@ function SecondaryCharacterDetailController($injector, $location, $routeParams, 
   self.managegroupsmembership = function() {
     SupporterEditionChecker.filterAction(function () {
       $location.path('/secondarycharacters/' + self.secondarycharacter.$loki + '/groupsmembership');
+    });
+  };
+
+  self.transformIntoMain = function() {
+
+    let executeTransformationFunction = function() {
+      $timeout(function() {            
+        let maincharacter = SecondaryCharacterService.transformIntoMain(self.secondarycharacter.$loki);
+        $location.path('/maincharacters/' + maincharacter.$loki);
+      });   
+    };
+
+    let backupAndExecuteTransformationFunction = function() {
+      ProjectService.executeBackup({
+        backupFileSuffix: 'BEFORE_SECONDARY_2_MAIN',
+        showWaitingModal: true,
+        callback: executeTransformationFunction
+      });
+    };
+
+    SupporterEditionChecker.filterAction(function () {
+      PopupBoxesService.confirm(function() {
+        PopupBoxesService.confirm(backupAndExecuteTransformationFunction, 
+          'backup_before_transformation_confirm', executeTransformationFunction);
+      }, 'transformation_secondary_to_main_confirm');
     });
   };
 }

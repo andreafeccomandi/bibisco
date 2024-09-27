@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function (
   BibiscoDbConnectionService, LoggerService) {
   'use strict';
 
-  const version = '3.0.3-CE';
+  const version = '4.0.0-CE';
 
   return {
     getProperty: function(name) {
@@ -78,6 +78,120 @@ angular.module('bibiscoApp').service('BibiscoPropertiesService', function (
         LoggerService.debug('Added sceneseparator property');
       }
 
+      // version 4.0.0
+      if (!this.getProperty('imageEditTip')) {
+        this.setProperty('imageEditTip', 'true');
+        LoggerService.debug('Added imageEditTip property');
+      }
+      if (!this.getProperty('pagenumberposition')) {
+        this.setProperty('pagenumberposition', 'footer');
+        LoggerService.debug('Added pagenumberposition property');
+      }
+      if (!this.getProperty('pagenumberalignment')) {
+        this.setProperty('pagenumberalignment', 'center');
+        LoggerService.debug('Added pagenumberalignment property');
+      }
+      if (!this.getProperty('showfirstpagenumber')) {
+        this.setProperty('showfirstpagenumber', 'false');
+        LoggerService.debug('Added showfirstpagenumber property');
+      }
+      if (!this.getProperty('pagenumberformat')) {
+        this.setProperty('pagenumberformat', 'number');
+        LoggerService.debug('Added pagenumberformat property');
+      }
+      if (!this.getProperty('tocformat')) {
+        this.setProperty('tocformat', 'none');
+        LoggerService.debug('Added tocformat property');
+      }
+      if (!this.getProperty('toctitle')) {
+        this.setProperty('toctitle', '');
+        LoggerService.debug('Added toctitle property');
+      }
+      if (!this.getProperty('exporthighlightedtext')) {
+        this.setProperty('exporthighlightedtext', 'false');
+        LoggerService.debug('Added exporthighlightedtext property');
+      }
+      if (!this.getProperty('exportpath')) {
+        this.setProperty('exportpath', '');
+        LoggerService.debug('Added exportpath property');
+      }
+      if (!this.getProperty('footendnoteTip')) {
+        this.setProperty('footendnoteTip', 'true');
+        LoggerService.debug('Added footendnoteTip property');
+      }
+      if (!this.getProperty('docxnoteexport')) {
+        this.setProperty('docxnoteexport', 'footnote');
+        LoggerService.debug('Added docxnoteexport property');
+      }
+      if (!this.getProperty('pdfnoteexport')) {
+        this.setProperty('pdfnoteexport', 'chapterend');
+        LoggerService.debug('Added pdfnoteexport property');
+      }
+      if (!this.getProperty('txtnoteexport')) {
+        this.setProperty('txtnoteexport', 'chapterend');
+        LoggerService.debug('Added txtnoteexport property');
+      }
+      if (!this.getProperty('epubnoteexport')) {
+        this.setProperty('epubnoteexport', 'chapterend');
+        LoggerService.debug('Added epubnoteexport property');
+      }
+      if (!this.getProperty('bookendtitle')) {
+        this.setProperty('bookendtitle', '');
+        LoggerService.debug('Added bookendtitle property');
+      }
+      if (!this.getProperty('exportcomments')) {
+        this.setProperty('exportcomments', 'false');
+        LoggerService.debug('Added exportcomments property');
+      }
+      if (!this.getProperty('exportscenetitle')) {
+        this.setProperty('exportscenetitle', 'false');
+        LoggerService.debug('Added exportscenetitle property');
+      }
+      if (!this.getProperty('scenetitleformat')) {
+        this.setProperty('scenetitleformat', 'title');
+        LoggerService.debug('Added scenetitleformat property');
+      }
+      if (!this.getProperty('scenetitleposition')) {
+        this.setProperty('scenetitleposition', 'left');
+        LoggerService.debug('Added scenetitleposition property');
+      }
+      if (!this.getProperty('exportunansweredquestions')) {
+        this.setProperty('exportunansweredquestions', 'false');
+        LoggerService.debug('Added exportunansweredquestions property');
+      }
+      if (!this.getProperty('exportfontsize')) {
+        this.setProperty('exportfontsize', 12);
+        LoggerService.debug('Added exportfontsize property');
+      }
+      if (!this.getProperty('chapteredittitleTip')) {
+        this.setProperty('chapteredittitleTip', 'true');
+        LoggerService.debug('Added chapteredittitleTip property');
+      }
+      if (!this.getProperty('characteredittitleTip')) {
+        this.setProperty('characteredittitleTip', 'true');
+        LoggerService.debug('Added characteredittitleTip property');
+      }
+      if (!this.getProperty('interviewfreetextTip')) {
+        this.setProperty('interviewfreetextTip', 'true');
+        LoggerService.debug('Added interviewfreetextTip property');
+      }
+      if (!this.getProperty('shortcutTip')) {
+        this.setProperty('shortcutTip', 'true');
+        LoggerService.debug('Added shortcutTip property');
+      }
+      if (!this.getProperty('autoOpenProjectExplorerOnTextEdit')) {
+        this.setProperty('autoOpenProjectExplorerOnTextEdit', 'true');
+        LoggerService.debug('Added autoOpenProjectExplorerOnTextEdit property');
+      }
+      if (!this.getProperty('defaultElementOpeningMode')) {
+        this.setProperty('defaultElementOpeningMode', 'edit');
+        LoggerService.debug('Added defaultElementOpeningMode property');
+      }
+      if (!this.getProperty('showElementAfterInsertion')) {
+        this.setProperty('showElementAfterInsertion', 'true');
+        LoggerService.debug('Added showElementAfterInsertion property');
+      }
+      
       BibiscoDbConnectionService.saveDatabase();
     },
     isCurrentVersionInitialized: function () {

@@ -108,17 +108,17 @@
     <div ng-repeat="part in $ctrl.cardgriditems.parts track by $index" class="top30">
       <div class="page-header page-subheader">
         <h1>
-          <span class="page-header-truncate-title">{{part.title}}</span>
+          <span class="page-header-truncate-title" ng-dblclick="$ctrl.renamepart(part.id)">{{part.title}}</span>
           <span class="pull-right page-header-buttonbar">
             <dropdownmenu buttonlabel="jsp.common.button.more" 
               dimension="xs" items="part.partactionitems" visible="true">
             </dropdownmenu>
             <button ng-if="$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
               ng-click="$ctrl.reducepart(part.id)" id="btnreduce-{{part.id}}">
-              {{'reduce' | translate}}</button>
+              {{'reduce' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></button>
             <button ng-if="!$root.partsExpansionStatus[part.id]" type="button" class="btn btn-sm btn-default"
               ng-click="$ctrl.expandpart(part.id)" id="btnexpand-{{part.id}}">
-              {{'expand' | translate}}</button>
+              {{'expand' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></button>
           </span>
         </h1>
       </div>
@@ -193,9 +193,11 @@
             type="button" class="btn btn-default"
             ng-click="$ctrl.showChaptersRead()"
             uib-tooltip="{{'read_your_novel_tooltip'+$root.os | translate}}">
-            {{'read_your_novel'| translate}}</button>
+            {{'read_your_novel'| translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></button>
       </span>
       <span class="pull-right">
+        <contextualtipbutton ng-if="!$ctrl.cardgriditems || 2 > $ctrl.cardgriditems.chapterscount" 
+          tipcode="shortcutTip"></contextualtipbutton>
         <contextualtipbutton ng-if="$ctrl.cardgriditems && $ctrl.cardgriditems.chapterscount > 1" 
           tipcode="chaptersdndTip"></contextualtipbutton>
         <dropdownmenu buttonlabel="jsp.common.button.more" 

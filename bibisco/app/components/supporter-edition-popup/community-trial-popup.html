@@ -14,11 +14,14 @@
     </blockquote>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
-    <button class="btn btn-primary" type="button" 
-      ng-click="$ctrl.getIt()">{{"only_for_supporter_edition_button" | translate}}</button>
-    <button class="btn btn-default" type="button" ng-disabled="$ctrl.showcountdown"
-      ng-click="$ctrl.cancel()">{{"common_tryit" | translate}}
+    <button class="btn btn-download" type="button" 
+      ng-click="$ctrl.getIt()">{{"se_download_button" | translate}}</button>
+    <button class="btn btn-primary" type="button" ng-disabled="$ctrl.showcountdown"
+      ng-click="$ctrl.tryIt()">{{"common_tryit" | translate}}
       <span ng-if="$ctrl.showcountdown"> ({{$ctrl.countdown}})</span>
+    </button>
+    <button class="btn btn-default" type="button"
+      ng-click="$ctrl.closepopup()">{{"jsp.common.button.close" | translate}}
     </button>
   </div>
 </modal-component>

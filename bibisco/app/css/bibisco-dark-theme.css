@@ -17,6 +17,10 @@ hr {
 	border-color: #666 !important;
 }
 
+.panel-title {
+    color: #DDD !important;
+}
+
 .card {
 	border: 1px solid #555;
 }
@@ -127,10 +131,54 @@ table, .table {
 	background-color: rgb(21, 21, 21);
 }
 
-.comment-box-connector {
-	background: repeating-linear-gradient(to right,#FFC 0,#FFC 10px,transparent 10px,transparent 12px)
+.metatext-box-comment {
+    border-right: 3px solid #CAA22B;
+}
+
+.metatext-box-note {
+    border-right: 3px solid #2a9fd6;
+}
+
+div.metatext-box-body textarea::placeholder {
+    color: #888 !important; 
+}
+
+.metatext-box-connector-comment {
+	background: repeating-linear-gradient(to right,#CAA22B 0,#CAA22B 10px,transparent 10px,transparent 12px)
+}
+
+.metatext-box-connector-note {
+	background: repeating-linear-gradient(to right,#2a9fd6 0,#2a9fd6 10px,transparent 10px,transparent 12px)
+}
+
+.metatext-box-connector-edge-comment {
+    border-left: 10px solid #CAA22B;
+}
+
+.metatext-box-connector-edge-note {
+    border-bottom: 8px solid #2a9fd6;
+}
+
+.comment-btn-count span {
+    color: #ddd !important;
+}
+
+#richtextviewercontainer span.comment-enabled, #interviewviewercontainer span.comment-enabled {
+    color: #000;
+}
+
+#richtexteditorcontainer span.comment-enabled {
+    color: #000;
+}
+
+.richtexteditor-contenteditable-container {
+	border-color: #666;
 }
 
 tree-view ul li .node:hover {
 	color: #2a9fd6;
+}
+
+.menu-ce-section hr {
+	border-top: 1px solid #666;
 }

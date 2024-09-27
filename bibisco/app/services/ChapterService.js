@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -549,8 +549,7 @@ angular.module('bibiscoApp').service('ChapterService', function ($injector, $roo
     },
 
     update: function (chapter) {
-      this.updateChapterStatusWordsCharactersWithoutCommit(chapter.$loki);
-      CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
+      this.updateWithoutCommit(chapter);
 
       // save database
       ProjectDbConnectionService.saveDatabase();
@@ -560,6 +559,11 @@ angular.module('bibiscoApp').service('ChapterService', function ($injector, $roo
         id: chapter.$loki,
         collection: 'chapters'
       });
+    },
+
+    updateWithoutCommit: function (chapter) {
+      this.updateChapterStatusWordsCharactersWithoutCommit(chapter.$loki);
+      CollectionUtilService.updateWithoutCommit(this.getCollection(), chapter);
     },
 
     updateChapterStatusWordsCharactersWithoutCommit: function (id) {
@@ -1009,6 +1013,24 @@ angular.module('bibiscoApp').service('ChapterService', function ($injector, $roo
 
       return chapterGroups;
     },
+
+    replaceCharacterInSceneTagsWithoutCommit: function(idToRemove, idToAdd) {
+      let scenes = this.getAllScenes();
+      for (let i = 0; i < scenes.length; i++) {
+        const scene = scenes[i];
+        for (let j = 0; j < scene.revisions.length; j++) {
+          const revision = scene.revisions[j];
+          if (revision.povcharacterid === idToRemove) {
+            revision.povcharacterid = idToAdd;
+          }
+          let index = revision.scenecharacters.indexOf(idToRemove);
+          if (index !== -1) {
+            revision.scenecharacters[index] = idToAdd;
+          }
+        }
+        CollectionUtilService.updateWithoutCommit(this.getScenesCollection(), scene);
+      }
+    }
   };
 });
 

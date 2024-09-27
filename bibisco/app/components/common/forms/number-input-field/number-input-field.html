@@ -1,23 +1,28 @@
 <div class="form-group">
   <label class="col-sm-{{$ctrl.labelcols}} control-label" for="{{$ctrl.label}}">{{$ctrl.label | translate}}</label>
   <div class="col-sm-{{$ctrl.inputcols}}" ng-class="{ 'has-error': $ctrl.hasError() }">
-    <div ng-class="{ 'input-group' : $ctrl.btnenabled }">
+    <div ng-class="{ 'input-group' : $ctrl.btnenabled || $ctrl.addon }">
       <input id="{{$ctrl.id}}"
-        class="form-control" type="text" name="{{$ctrl.name}}" number
+        class="form-control" type="number" name="{{$ctrl.name}}" 
         spellcheck="false" ng-pattern="/^[0-9]{1,12}$/"
         ng-model="$ctrl.model" id="{{$ctrl.label}}"
         ng-required="{{$ctrl.required != null && $ctrl.required != 'false'}}"
         ng-attr-minlength="{{$ctrl.minlength}}"
         ng-attr-maxlength="{{$ctrl.maxlength}}"
+        min="{{$ctrl.min}}" max="{{$ctrl.max}}"
         ng-attr-placeholder="{{$ctrl.placeholder | translate}}"
         focus-if="{{$ctrl.autofocus != null}}">
         <span ng-if="$ctrl.btnenabled" class="input-group-btn">
             <button class="btn btn-default" type="button" ng-click="$ctrl.btnfunction()"
             uib-tooltip="{{$ctrl.btntooltip | translate}}">{{$ctrl.btnlabel | translate}}</button>
         </span>
+        <span ng-if="$ctrl.addon" class="input-group-addon">{{$ctrl.addon}}</span>
+    </div>
+    <div ng-if="$ctrl.note" class="input-field-note">
+      <span class="label label-info">{{$ctrl.notebadge | translate}}</span>&nbsp;&nbsp;{{$ctrl.note | translate}}
     </div>
   </div>
-  <div class="col-sm-{{$ctrl.inputcols}} col-sm-offset-{{$ctrl.labelcols}}">
+  <div class="col-sm-{{12-$ctrl.labelcols}} col-sm-offset-{{$ctrl.labelcols}}">
     <validationmessages field="$ctrl.field"></validationmessages>
   </div>
 </div>

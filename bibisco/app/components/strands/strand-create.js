@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: StrandCreateController
   });
 
-function StrandCreateController($injector, $location, $routeParams, $window, ChapterService, StrandService) {
+function StrandCreateController($injector, $location, $routeParams, $window, 
+  BibiscoPropertiesService, ChapterService, StrandService) {
 
   let self = this;
   let GroupService = null;
@@ -30,6 +31,8 @@ function StrandCreateController($injector, $location, $routeParams, $window, Cha
     self.breadcrumbitems = [];
 
     self.groupids = [];
+    self.showdetailaftercreation = false;
+    self.elementbasepath = null;
 
     // creation from scene tags
     self.creationFromSceneTags = $location.path().includes('tags') ? true : false;
@@ -58,10 +61,17 @@ function StrandCreateController($injector, $location, $routeParams, $window, Cha
       self.createBreadcrumbitemsForGroupMembers();
     }
 
-    self.breadcrumbitems.push({
-      label: 'common_architecture',
-      href: '/architecture'
-    });
+    // creation from architecture
+    self.creationFromArchitecture = $location.path().startsWith('/strands') ? true : false;
+    if (self.creationFromArchitecture) {
+      self.breadcrumbitems.push({
+        label: 'common_architecture',
+        href: '/architecture'
+      });
+
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
+      self.elementbasepath = '/strands/';
+    }
 
     // create breadcrumb items
     self.breadcrumbitems.push({
@@ -83,10 +93,11 @@ function StrandCreateController($injector, $location, $routeParams, $window, Cha
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
-      label: 'jsp.scene.title.tags'
+      label: 'jsp.scene.title.tags',
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/tags'
     });
   };
 
@@ -97,7 +108,7 @@ function StrandCreateController($injector, $location, $routeParams, $window, Cha
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title',

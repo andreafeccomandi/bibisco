@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,10 @@
  *
  */
 
-angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemService) {
+angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemService, ImageService, LoggerService) {
   'use strict';
 
-  var htmlparser = require('htmlparser2');
+  let htmlparser = require('htmlparser2');
 
   pdfMake.fonts = {
     Arial: {
@@ -63,11 +63,25 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
     }
   };
 
-
   return {
 
     export: function (params, callback) {
 
+      const DEFAULT_FONT_SIZE = 12;
+      const SMALL_FONT_SIZE = 10;
+      const A4_PAGE_WIDTH = 595.35;
+      const A4_PAGE_HEIGHT = 841.995;
+      const A4_PAGE_HORIZONTAL_MARGIN = 60;
+      const A4_PAGE_VERTICAL_MARGIN = 100;
+      const MAX_IMAGE_WIDTH = A4_PAGE_WIDTH - 2*A4_PAGE_HORIZONTAL_MARGIN;
+      const MAX_IMAGE_HEIGHT = Math.floor(A4_PAGE_HEIGHT - 2*A4_PAGE_VERTICAL_MARGIN);
+      const HEADER_MARGIN_TOP = 30;
+      const FOOTER_MARGIN_TOP = 50;
+      const PAGE_MARGINS = [A4_PAGE_HORIZONTAL_MARGIN, A4_PAGE_VERTICAL_MARGIN, A4_PAGE_HORIZONTAL_MARGIN, A4_PAGE_VERTICAL_MARGIN];
+      const HEADER_MARGINS = [A4_PAGE_HORIZONTAL_MARGIN, HEADER_MARGIN_TOP, A4_PAGE_HORIZONTAL_MARGIN, 0];
+      const FOOTER_MARGINS = [A4_PAGE_HORIZONTAL_MARGIN, FOOTER_MARGIN_TOP, A4_PAGE_HORIZONTAL_MARGIN, 0];
+      const COMMENT_HIGHLIGHT_COLOR = '#f1e4bd';
+      
       let content = [];
       let currentList = [];
       let currentText;
@@ -75,6 +89,11 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
       let italicsActive = false;
       let underlineActive = false;
       let strikeActive = false;
+      let smallActive = false;
+      let subActive = false;
+      let supActive = false;
+      let highlightColor = null;
+      let linkUrl = null;
       let lineHeight = this.calculateLineHeight(params.exportconfig.linespacing);
       let alignment;
       let h1counter = 0;
@@ -82,10 +101,15 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
       let h3counter = 0;
       let leadingIndent = params.exportconfig.indent ? 30 : 0;
       let leadingIndentEnabled = true;
+      let exporthighlightedtext = params.exportconfig.exporthighlightedtext;
+      let footnotesCounter = 0;
+      let exportcomments = params.exportconfig.exportcomments;
+      let closeComment = false;
+      let comment = null;
 
-      // margins order: [left, top, right, bottom]
+      let regularFontSize = parseInt(params.exportconfig.fontsize);
+      let smallFontSize = this.calculateSmallFontSize(regularFontSize);
       let paragraphMarginBottom = this.calculateParagraphMarginBottom(params.exportconfig.paragraphspacing);
-      let pageMargins = [60, 100, 60, 100];
       let exportitleMargins = [0, 280, 0, paragraphMarginBottom];
       let parttitleMargins = [0, 280, 0, paragraphMarginBottom];
       let h1Margins = [0, 0, 0, 10+paragraphMarginBottom];
@@ -103,15 +127,18 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           if (name === 'exporttitle') {
             currentText = [];
             boldActive = true;
+            leadingIndentEnabled = false;
           } else if (name === 'exportauthor') {
             currentText = [];
             boldActive = false;
+            leadingIndentEnabled = false;
           } else if (name === 'exportsubtitle') {
             currentText = [];
             boldActive = false;
           } else if (name === 'parttitle') {
             currentText = [];
             boldActive = true;
+            leadingIndentEnabled = false;
           } else if (name === 'prologue' || name === 'epilogue') {
             currentText = [];
             boldActive = true;
@@ -143,6 +170,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
                 preserveLeadingSpaces: true
               });
             }
+            alignment = this.calculateAlignment(attribs);
           } else if (name === 'h3') {
             h3counter += 1;
             currentText = [];
@@ -153,6 +181,17 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
                 preserveLeadingSpaces: true
               });
             }
+          } else if (name === 'toc') {
+            let toctitle = attribs.toctitle ? attribs.toctitle : '';
+            content.push({
+              toc: {
+                title: {
+                  text: toctitle, 
+                  pageBreak: 'before',
+                  margin: h1Margins
+                }
+              }
+            });
           } else if (name === 'question') {
             currentText = [];
             boldActive = true;
@@ -162,10 +201,18 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           } else if (name === 'p' || name === 'li') {
             currentText = [];
             alignment = this.calculateAlignment(attribs);
-            if (name === 'li') {
+            if (alignment === 'center'|| name === 'li') {
               leadingIndentEnabled = false;
+            } else {
+              leadingIndentEnabled = true;
             }
-
+          } else if (name === 'note') {
+            leadingIndentEnabled = false;     
+            alignment = 'justify';     
+          } else if (name === 'span') {
+            this.manageFootendnote(attribs);
+            this.manageComment(attribs);
+            this.manageHighlightColor(attribs);
           } else if (name === 'b') {
             boldActive = true;
           } else if (name === 'i') {
@@ -174,28 +221,94 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             underlineActive = true;
           } else if (name === 'strike') {
             strikeActive = true;
+          } else if (name === 'small') {
+            smallActive = true;
+          } else if (name === 'sub') {
+            subActive = true;
+            smallActive = true;
+          } else if (name === 'sup') {
+            supActive = true;
+            smallActive = true;
+          } else if (name === 'a') {
+            linkUrl = attribs.href;
+          } else if (name === 'img') {
+            try {
+              let img = images[attribs.filename];
+              
+              let resizedWidth = MAX_IMAGE_WIDTH * img.widthpercent / 100;
+              let resizedHeight = resizedWidth / img.widthheightratio;
+              let resizedHeightRatio= img.img.height / resizedHeight;
+              let resizedHeightPart = MAX_IMAGE_HEIGHT * resizedHeightRatio;
+              let remainingHeight = img.img.height;
+              let initialY = 0;
+                            
+              while (remainingHeight > 0) {
+
+                let height = remainingHeight > resizedHeightPart ? resizedHeightPart : remainingHeight;
+
+                let canvas = document.createElement('canvas');;
+                canvas.width = img.img.width;
+                canvas.height = height;
+                let ctx = canvas.getContext('2d');
+
+                //ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+                ctx.drawImage(img.img, 0, initialY, img.img.width, height, 0, 0, img.img.width, height);
+
+                // push image to content
+                content.push({
+                  image: canvas.toDataURL('image/png', 1),
+                  width: resizedWidth,
+                  alignment: img.alignment,
+                  margin: paragraphMargins
+                });
+
+                remainingHeight -= height; 
+                initialY += resizedHeightPart;
+              }
+
+            } catch (error) {
+              LoggerService.error('Error reading image file: ' + error);
+            }
           }
         },
 
         ontext: function (text) {
-          let decoration = null;
-          // Is not possible to have more than one decoration at the same time
-          if (underlineActive) {
-            decoration = 'underline';
+          let decoration = [];
+          let fontSize = regularFontSize;
+
+          if (underlineActive || linkUrl) {
+            decoration.push('underline');
           }
           if (strikeActive) {
-            decoration = 'lineThrough';
+            decoration.push('lineThrough');
+          }
+          if (smallActive) {
+            fontSize = smallFontSize;
           }
 
-          currentText.push({
+          let textElement = {
             text: text,
             bold: boldActive,
             italics: italicsActive,
             decoration: decoration,
             preserveLeadingSpaces: true,
             lineHeight: lineHeight,
-            leadingIndent: leadingIndentEnabled ? leadingIndent : 0
-          });
+            leadingIndent: leadingIndentEnabled ? leadingIndent : 0,
+            sup: supActive,
+            sub: subActive,
+            fontSize: fontSize
+          };
+
+          if (highlightColor) {
+            textElement.background = highlightColor;
+          }
+        
+          if (linkUrl) {
+            textElement.link = linkUrl;
+            textElement.color = 'blue';
+          }
+
+          currentText.push(textElement);
         },
 
         onclosetag: function (name) {
@@ -228,17 +341,20 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
               text: currentText,
               alignment: 'center',
               margin: parttitleMargins,
-              pageBreak: 'before'
+              pageBreak: 'before',
+              tocItem: true
             });
             currentText = [];
             boldActive = false;
+            leadingIndentEnabled = true;
           } else if (name === 'prologue' || name === 'epilogue') {
             let pageBreak = params.exportconfig.pagebreakonh1 ? 'before' : null;
             content.push({
               text: currentText,
               alignment: alignment,
               margin: h1Margins,
-              pageBreak: pageBreak
+              pageBreak: pageBreak,
+              tocItem: currentText && currentText.length > 0 ? true : false
             });
             currentText = [];
             boldActive = false;
@@ -249,7 +365,8 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
               text: currentText,
               alignment: alignment,
               margin: h1Margins,
-              pageBreak: pageBreak
+              pageBreak: pageBreak,
+              tocItem: currentText && currentText.length > 0 ? true : false
             });
             currentText = [];
             leadingIndentEnabled = true;
@@ -258,7 +375,9 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           } else if (name === 'h2') {
             content.push({
               text: currentText,
-              margin: h2counter === 1 ? h2Margins1st : h2Margins
+              alignment: alignment,
+              margin: h2counter === 1 ? h2Margins1st : h2Margins,
+              tocItem: currentText && currentText.length > 0 ? true : false
             });
             currentText = [];
             leadingIndentEnabled = true;
@@ -268,6 +387,7 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             content.push({
               text: currentText,
               margin: h3counter === 1 ? h3Margins1st : h3Margins,
+              tocItem: currentText && currentText.length > 0 ? true : false
             });
             currentText = [];
             leadingIndentEnabled = true;
@@ -297,14 +417,25 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             });
             currentText = [];
             leadingIndentEnabled = true;
-          } else if (name === 'p') {
+          } else if (name === 'p' || name === 'note') {
             content.push({
               text: currentText,
               alignment: alignment,
               margin: paragraphMargins
             });
             currentText = [];
-          }  else if (name === 'b') {
+          } else if (name === 'span') {
+            if (closeComment) {
+              currentText.push({
+                text: '[['+comment+']]',
+                italics: true,
+                background: COMMENT_HIGHLIGHT_COLOR
+              });
+              closeComment = false;
+              comment = null;
+            }
+            highlightColor = null;
+          } else if (name === 'b') {
             boldActive = false;
           } else if (name === 'i') {
             italicsActive = false;
@@ -312,16 +443,85 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
             underlineActive = false;
           } else if (name === 'strike') {
             strikeActive = false;
+          } else if (name === 'small') {
+            smallActive = false;
+          } else if (name === 'sub') {
+            subActive = false;
+            smallActive = false;
+          } else if (name === 'sup') {
+            supActive = false;
+            smallActive = false;
+          } else if (name === 'a') {
+            linkUrl = null;
           }
         },
 
         onend: function() {
-          var docDefinition = {
+          let docDefinition = {
             content: content,
             defaultStyle: {
               font: params.exportconfig.font
             },
-            pageMargins: pageMargins,
+            pageMargins: PAGE_MARGINS,
+          };
+
+          if(params.exportconfig.pagenumberposition === ('header') || params.exportconfig.pagenumberposition === ('footer')) {
+            
+            let margin;
+            switch (params.exportconfig.pagenumberposition) {
+            case 'header':
+              margin = HEADER_MARGINS;
+              break;
+            case 'footer':
+              margin = FOOTER_MARGINS;
+              break;
+            }
+
+            let paginationFunction = function(currentPage, pageCount) { 
+              let text;
+              if (currentPage === 1 && params.exportconfig.showfirstpagenumber === 'false') {
+                text = '';
+              } else {
+                switch (params.exportconfig.pagenumberformat) {
+                case 'number':
+                  text = currentPage;
+                  break;
+                case 'numberandcount':
+                  text = currentPage + ' ' + params.exportconfig.commonoftranslation + ' ' + pageCount;
+                  break;
+                case 'pageandnumberandcount':
+                  text = params.exportconfig.commonpagetranslation + ' ' + currentPage + ' ' + params.exportconfig.commonoftranslation + ' ' + pageCount;
+                  break;
+                }
+              }
+
+              let alignment;
+              switch (params.exportconfig.pagenumberalignment) {
+              case 'left':
+                alignment = 'left';
+                break;
+              case 'center':
+                alignment = 'center';
+                break;
+              case 'right':
+                alignment = 'right';
+                break;
+              case 'even_odd':
+                alignment = (currentPage % 2) ? 'left' : 'right';
+                break;
+              }
+              
+              return {
+                margin: margin,
+                columns: [{alignment: alignment, text: text}]
+              };
+            };
+
+            if (params.exportconfig.pagenumberposition === ('header')) {
+              docDefinition.header = paginationFunction;
+            } else if (params.exportconfig.pagenumberposition === ('footer')) {
+              docDefinition.footer = paginationFunction;
+            }
           };
           
           let document = pdfMake.createPdf(docDefinition);
@@ -333,26 +533,111 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
           });
         },
 
+        manageFootendnote: function(attribs) {
+
+          const footendnotemode = params.exportconfig.footendnotemode;
+          if (attribs.class && attribs.class.indexOf('footendnote') > -1) {
+            footnotesCounter++;
+            if (footendnotemode === 'chapterend' || footendnotemode === 'bookend') {
+              let textElement = {
+                text: footnotesCounter.toString(),
+                bold: boldActive,
+                italics: italicsActive,
+                decoration: [],
+                preserveLeadingSpaces: true,
+                lineHeight: lineHeight,
+                leadingIndent: leadingIndentEnabled ? leadingIndent : 0,
+                sup: true,
+                fontSize: SMALL_FONT_SIZE
+              };      
+              currentText.push(textElement);
+            }
+          }
+        },
+
+        manageComment: function(attribs) {
+
+          if (exportcomments === 'true' && attribs['data-iscomment'] && attribs['data-iscomment'] === 'true') {
+            highlightColor = COMMENT_HIGHLIGHT_COLOR;
+            if (attribs.class.indexOf('comment-end') > -1) {
+              comment = attribs['data-comment'];
+              closeComment = true;
+            }
+          }
+        },
+
         calculateAlignment: function(attribs) {
 
           let alignment;
-          if (!attribs.style || attribs.style.indexOf('text-align: left') > -1) {
+          let style = attribs.style;
+          if (!style) {
+            return 'left';
+          }
+          style = style.replace(/\s/g, '');
+          if (style.indexOf('text-align:left') > -1) {
             alignment = 'left';
-          } else if (attribs.style.indexOf('text-align: center') > -1) {
+          } else if (style.indexOf('text-align:center') > -1) {
             alignment = 'center';
-          } else if (attribs.style.indexOf('text-align: right') > -1) {
+          } else if (style.indexOf('text-align:right') > -1) {
             alignment = 'right';
-          } else if (attribs.style.indexOf('text-align: justify') > -1) {
+          } else if (style.indexOf('text-align:justify') > -1) {
             alignment = 'justify';
           }
           return alignment;
-        }
+        },
+
+        manageHighlightColor: function(attribs) {
+
+          let style = attribs.style;
+          if (!exporthighlightedtext || !style) {
+            return;
+          }
+          style = style.replace(/\s/g, '');
+          if (style.indexOf('background-color:rgb(0,255,255)') > -1) { // aqua
+            highlightColor='#00FFFF';
+          } else if (style.indexOf('background-color:rgb(0,255,0)') > -1) { // lime
+            highlightColor='#00FF00';
+          } else if (style.indexOf('background-color:rgb(255,165,0)') > -1) { // orange
+            highlightColor='#FFA500';      
+          } else if (style.indexOf('background-color:rgb(255,133,250)') > -1) { // pink
+            highlightColor='#FF85FA';
+          } else if (style.indexOf('background-color:rgb(255,0,0)') > -1) { // red
+            highlightColor='#FF0000';
+          } else if (style.indexOf('background-color:rgb(255,255,0)') > -1) { // yellow
+            highlightColor='#FFFF00';
+          }
+        },
 
       }, { decodeEntities: true });
 
-      parser.write(params.html);
+      let images = [];
+      ImageService.getImagesFromHtml(params.html, function(result) {
+        images = result;
+        parser.write(params.html);
+        parser.end();
+      });
+    },
 
-      parser.end();
+    calculateSmallFontSize: function(regularFontSize) {
+      let smallFontSize;
+      switch(regularFontSize) {
+      case 8:
+        smallFontSize = 6.7;
+        break;
+      case 10:
+        smallFontSize = 8.3;
+        break;
+      case 12:
+        smallFontSize = 10;
+        break;
+      case 14:
+        smallFontSize = 11.7;
+        break;
+      case 16:
+        smallFontSize = 13.3;
+        break;
+      }
+      return smallFontSize;
     },
 
     calculateLineHeight: function(linespacing) {
@@ -397,6 +682,6 @@ angular.module('bibiscoApp').service('PdfExporterService', function (FileSystemS
         break;
       }
       return paragraphMarginBottom;
-    }
+    }, 
   };
 });

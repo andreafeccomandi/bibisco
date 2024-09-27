@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ function NoteTitleController($routeParams, $window, NoteService) {
       // edit breadcrumb notes
       self.breadcrumbnotes.push({
         label: note.name,
-        href: '/notes/' + note.$loki + '/view'
+        href: '/notes/' + note.$loki + '/default'
       });
       self.breadcrumbnotes.push({
         label: 'note_change_name_title'
@@ -65,6 +65,10 @@ function NoteTitleController($routeParams, $window, NoteService) {
       self.breadcrumbnotes.push({
         label: 'note_create_title'
       });
+
+
+      self.elementbasepath = '/notes/';
+
       self.name = null;
       self.pageheadertitle =
         'note_create_title';

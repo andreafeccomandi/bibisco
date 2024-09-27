@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ angular.
     controller: ChapterInfoDetailController
   });
 
-function ChapterInfoDetailController($location, $routeParams,  $window, ChapterService) {
+function ChapterInfoDetailController($location, $routeParams,  $window, ChapterService, NavigationService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -35,7 +35,7 @@ function ChapterInfoDetailController($location, $routeParams,  $window, ChapterS
       return;
     }
 
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
 
     self.chapterinfo;
     if ($routeParams.type === 'reason') {
@@ -68,7 +68,11 @@ function ChapterInfoDetailController($location, $routeParams,  $window, ChapterS
   };
 
   self.edit = function () {
-    $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/edit');
+    $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/chapters/' + $routeParams.chapterid + '/chapterinfos/' + $routeParams.type + '/view').replace();
   };
 
   self.savefunction = function() {

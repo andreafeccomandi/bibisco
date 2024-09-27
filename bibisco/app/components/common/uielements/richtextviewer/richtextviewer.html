@@ -1,10 +1,11 @@
-<div class="richtextviewer-container">
+<div id="richtextviewercontainer" class="richtextviewer-container">
   <div class="{{$ctrl.fontclass}} {{$ctrl.indentclass}} {{$ctrl.linespacingclass}} {{$ctrl.paragraphspacingclass}} richtextviewer" 
+    id="richtextviewer"
     ng-dblclick="$ctrl.dblclick($event)"  
     ng-bind-html="$ctrl.content | trusted">
   </div>
 
-  <siblingelementsnavigator
+  <siblingelementsnavigator ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink"
     previouselementlabel="{{$ctrl.previouselementlabel}}"
     previouselementlink="$ctrl.previouselementlink"
     previouselementtooltip="{{$ctrl.previouselementtooltip}}"
@@ -12,4 +13,14 @@
     nextelementlink="$ctrl.nextelementlink"
     nextelementtooltip="{{$ctrl.nextelementtooltip}}">
   </siblingelementsnavigator>
+
+  <metatext connectortype = "$ctrl.metatextConnectorType"
+    editorid = "richtextviewer"
+    editorcointainerid = "richtextviewercontainer"
+    icon = "$ctrl.metatextIcon"
+    id = "$ctrl.metatextId"
+    showmetatext = "$ctrl.showMetatext"
+    readonly = "true"
+    type = "$ctrl.metatextType">
+</metatext>
 </div>

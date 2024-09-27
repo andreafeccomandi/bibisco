@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ Actions on edges:
 - delete: open modal on double click event; done by vis.js (self.network.deleteSelected())
 */
 function RelationsController($injector, $location, $rootScope, $routeParams, $scope, $timeout,
-  $translate, $uibModal, $window, hotkeys, BibiscoPropertiesService, MindmapService, PopupBoxesService,
-  RichTextEditorPreferencesService, TextDimensionService, UuidService) {
+  $translate, $uibModal, $window, hotkeys, BibiscoPropertiesService, MindmapService, NavigationService, PopupBoxesService,
+  TextDimensionService, UuidService) {
 
   let self = this;
   let RelationsService = $injector.get('RelationsService');
@@ -51,7 +51,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
   self.$onInit = function () {
 
     self.mindmap = MindmapService.getMindmap(parseInt($routeParams.id));
-    self.editMode = $routeParams.mode === 'view' ? false : true;
+    self.editMode = NavigationService.calculateMode($routeParams.mode) === 'view' ? false : true;
     self.autosaveenabled;
 
     self.checkExit = {
@@ -185,6 +185,8 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     self.theme = BibiscoPropertiesService.getProperty('theme');
     if (self.theme === 'dark') {
       self.setDarkThemeNodesEdgesFontColor();
+    } else if (self.theme === 'darkhc') {
+      self.setDarkhcThemeNodesEdgesFontColor();
     }
 
     if (self.editMode) {
@@ -194,8 +196,7 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     }
 
     self.editsavebackbuttonbarspace = self.calculateEditSaveBackButtonbarSpace();
-
-    if (self.editMode && BibiscoPropertiesService.getProperty('relationsTip') === 'true') {
+    if (($routeParams.mode) === 'edit'  && BibiscoPropertiesService.getProperty('relationsTip') === 'true') {
       PopupBoxesService.showTip('relationsTip', 'relationstip');
     }
   };
@@ -343,7 +344,11 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
   };
 
   self.edit = function () {
-    $location.path('/relations/' + $routeParams.id + '/edit');
+    $location.path('/relations/' + $routeParams.id + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/relations/' + $routeParams.id + '/view').replace();
   };
 
   self.setClassicThemeNodesEdgesFontColor = function () {
@@ -376,23 +381,41 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     });
   };
 
+  self.setDarkhcThemeNodesEdgesFontColor = function () {
+    self.network.setOptions({
+      edges: {
+        font: {
+          color: '#FFF',
+        }
+      },
+      nodes: {
+        font: {
+          color: '#FFF',
+        }
+      }
+    });
+  };
+
   self.export = function () {
     $location.path('/relations/' + parseInt($routeParams.id) + '/export');
   };
 
   self.save = function () {
-    self.updateNodePositions(); // not really necessary, just to make it more robust!
-    RelationsService.updateRelations(self.mindmap.relationnodes, self.nodes.get(),
-      self.mindmap.relationsedges, self.edges.get());
-
-    self.mindmap.lastsave = new Date();
-    MindmapService.update(self.mindmap);
-    $rootScope.dirty = false;
+    if (self.mindmap) {
+      self.updateNodePositions(); // not really necessary, just to make it more robust!
+      RelationsService.updateRelations(self.mindmap.relationnodes, self.nodes.get(),
+        self.mindmap.relationsedges, self.edges.get());
+  
+      self.mindmap.lastsave = new Date();
+      MindmapService.update(self.mindmap);
+      $rootScope.dirty = false;
+    }
   };
 
   self.delete = function () {
     PopupBoxesService.confirm(function () {
       MindmapService.remove(self.mindmap.$loki);
+      self.mindmap = null; // we need it to manage autosave on exit
       $window.history.back();
     }, 'mindmap_delete_confirm');
   };
@@ -673,32 +696,6 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
     $rootScope.dirty = true;
   };
 
-  self.opensettings = function () {
-
-    var modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'richtexteditorsettings',
-      resolve: {
-        context: function () {
-          return 'relations';
-        }
-      },
-      size: 'richtexteditorsettings',
-    });
-
-    $rootScope.$emit('OPEN_POPUP_BOX');
-
-    modalInstance.result.then(function () {
-      self.autosaveenabled = RichTextEditorPreferencesService.isAutoSaveEnabled();
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-      self.initRelationsEditor();
-    }, function () {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-      self.initRelationsEditor();
-    });
-  };
-
   self.help = function () {
 
     var modalInstance = $uibModal.open({
@@ -721,12 +718,13 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
 
   self.calculateEditSaveBackButtonbarSpace = function () {
     let space = 0;
+    space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.more')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
+    space += TextDimensionService.calculateElementDimension($translate.instant('common_export_button')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     if (self.editMode) {
+      space += TextDimensionService.calculateElementDimension($translate.instant('read_btn')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
       space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.save')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     } else {
-      space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.more')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
       space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.edit')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
-      space += TextDimensionService.calculateElementDimension($translate.instant('common_export_button')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     }
     space += TextDimensionService.calculateElementDimension($translate.instant('jsp.common.button.back')) + TextDimensionService.BUTTON_STANDARD_MARGIN;
     return space + 40;
@@ -742,8 +740,12 @@ function RelationsController($injector, $location, $rootScope, $routeParams, $sc
   };
 
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit,
-      null, self.initRelationsEditor);
+    if (BibiscoPropertiesService.getProperty('autoSaveEnabled') === 'true' && $rootScope.dirty) {
+      self.save();
+    } else {
+      PopupBoxesService.locationChangeConfirm(event, $rootScope.dirty, self.checkExit,
+        null, self.initRelationsEditor);
+    }
   });
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ angular.
     controller: SecondaryCharacterCreateController
   });
 
-function SecondaryCharacterCreateController($injector, $location, $routeParams, $window, ChapterService, SecondaryCharacterService, SupporterEditionChecker) {
+function SecondaryCharacterCreateController($injector, $location, $routeParams, $window, 
+  BibiscoPropertiesService, ChapterService, SecondaryCharacterService, SupporterEditionChecker) {
   let self = this;
   let GroupService = null;
 
@@ -29,6 +30,8 @@ function SecondaryCharacterCreateController($injector, $location, $routeParams, 
     self.breadcrumbitems = [];
 
     self.groupids = [];
+    self.showdetailaftercreation = false;
+    self.elementbasepath = null;
 
     // creation from characters
     self.creationFromCharacters = $location.path().startsWith('/secondarycharacters') ? true : false;
@@ -37,6 +40,8 @@ function SecondaryCharacterCreateController($injector, $location, $routeParams, 
         label: 'common_characters',
         href: '/characters'
       });
+      self.showdetailaftercreation = BibiscoPropertiesService.getProperty('showElementAfterInsertion') === 'true';
+      self.elementbasepath = '/secondarycharacters/';
     }
 
     // creation from scene tags
@@ -87,7 +92,7 @@ function SecondaryCharacterCreateController($injector, $location, $routeParams, 
     });
     self.breadcrumbitems.push({
       label: self.scene.title,
-      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/view'
+      href: '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'jsp.scene.title.tags',
@@ -102,7 +107,7 @@ function SecondaryCharacterCreateController($injector, $location, $routeParams, 
     });
     self.breadcrumbitems.push({
       label: self.group.name,
-      href: '/groups/' + self.group.$loki + '/view'
+      href: '/groups/' + self.group.$loki + '/default'
     });
     self.breadcrumbitems.push({
       label: 'group_members_title',

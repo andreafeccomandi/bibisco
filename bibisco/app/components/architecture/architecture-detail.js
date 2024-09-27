@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,14 @@ angular.
     controller: ArchitectureDetailController
   });
 
-function ArchitectureDetailController($location, $routeParams, 
-  ArchitectureService) {
+function ArchitectureDetailController($location, $routeParams, ArchitectureService, NavigationService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
     self.architectureitem = self.getArchitectureItem($routeParams.id);
-    self.mode = $routeParams.mode; 
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
 
     self.breadcrumbitems = [];
     self.breadcrumbitems.push({
@@ -48,7 +47,11 @@ function ArchitectureDetailController($location, $routeParams,
   };
 
   self.edit = function () {
-    $location.path('/architectureitems/' + $routeParams.id + '/edit');
+    $location.path('/architectureitems/' + $routeParams.id + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path('/architectureitems/' + $routeParams.id + '/view').replace();
   };
 
   self.getArchitectureItem = function(id) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ angular.
     controller: ExportToEpub
   });
 
-function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibModal, BibiscoPropertiesService,
-  BibiscoDbConnectionService, EPubExporterService, ExportService, FileSystemService, ProjectService) {
+function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, BibiscoPropertiesService,
+  BibiscoDbConnectionService, ContextService, EPubExporterService, ExportService, FileSystemService, 
+  PopupBoxesService, ProjectService) {
 
-  var self = this;
+  let self = this;
 
   self.$onInit = function() {
 
@@ -45,7 +46,11 @@ function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibM
     });
 
     self.saving = false;
-    self.exportpath;
+    
+    self.exportpath = BibiscoPropertiesService.getProperty('exportpath');
+    self.exportpathchanged = false;
+    self.exportdefaultpath = self.exportpath ? self.exportpath : ContextService.getDownloadsDirectoryPath();
+
     let projectInfo = ProjectService.getProjectInfo();
     self.author = projectInfo.author;
     self.publisher = projectInfo.publisher;
@@ -92,9 +97,104 @@ function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibM
       value: 'three_dots'
     }];
 
+    self.exportscenetitle = BibiscoPropertiesService.getProperty('exportscenetitle');
+    self.exportscenetitlegroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.scenetitleposition = BibiscoPropertiesService.getProperty('scenetitleposition');
+    self.scenetitlepositiongroup = [{
+      label: 'common_left',
+      value: 'left'
+    }, {
+      label: 'common_center',
+      value: 'center'
+    }];
+
+    self.scenetitleformat = BibiscoPropertiesService.getProperty('scenetitleformat');
+    self.scenetitleexample = ExportService.calculateChapterTitleExample(self.scenetitleformat);
+    self.scenetitleformatgroup = [{
+      label: 'chapter_title_format_number_title',
+      value: 'numbertitle'
+    }, {
+      label: 'chapter_title_format_only_number',
+      value: 'number'
+    }, {
+      label: 'chapter_title_format_only_title',
+      value: 'title'
+    }];
+
+    self.footendnotemode = BibiscoPropertiesService.getProperty('epubnoteexport');
+    self.footendnotegroup = [{
+      label: 'note_export_chapterendnote',
+      value: 'chapterend'
+    },{
+      label: 'note_export_bookendnote',
+      value: 'bookend'
+    }];
+    self.bookendtitle = BibiscoPropertiesService.getProperty('bookendtitle');
+
+    self.indent = BibiscoPropertiesService.getProperty('indentParagraphEnabled');
+    self.indentgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    self.linespacing = BibiscoPropertiesService.getProperty('linespacing');
+    self.linespacinggroup = [{
+      label: '1',
+      value: 10
+    }, {
+      label: '1.3',
+      value: 13
+    }, {
+      label: '1.4',
+      value: 14
+    }, {
+      label: '1.5',
+      value: 15
+    }, {
+      label: '2',
+      value: 20
+    }];
+    self.paragraphspacing = BibiscoPropertiesService.getProperty('paragraphspacing');
+    self.paragraphspacinggroup = [{
+      label: '0',
+      value: 'none'
+    }, {
+      label: '0.5',
+      value: 'small'
+    }, {
+      label: '1',
+      value: 'medium'
+    }, {
+      label: '1.5',
+      value: 'large'
+    }, {
+      label: '2',
+      value: 'double'
+    }];
+
+    self.advancedsettings = false;
+
     self.checkExit = {
       active: true
     };
+  };
+
+
+  self.showadvancedsettings = function() {
+    self.advancedsettings = true;
+  };
+  
+  self.hideadvancedsettings = function() {
+    self.advancedsettings = false;
   };
 
   self.updateEpubMetadata = function() {
@@ -112,6 +212,15 @@ function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibM
     BibiscoPropertiesService.setProperty('chaptertitleformat', self.chaptertitleformat);
     BibiscoPropertiesService.setProperty('chaptertitleposition', self.chaptertitleposition);
     BibiscoPropertiesService.setProperty('sceneseparator', self.sceneseparator);
+    BibiscoPropertiesService.setProperty('exportscenetitle', self.exportscenetitle);
+    BibiscoPropertiesService.setProperty('scenetitleformat', self.scenetitleformat);
+    BibiscoPropertiesService.setProperty('scenetitleposition', self.scenetitleposition);
+    BibiscoPropertiesService.setProperty('exportpath', self.exportpath);
+    BibiscoPropertiesService.setProperty('epubnoteexport', self.footendnotemode);
+    BibiscoPropertiesService.setProperty('bookendtitle', self.bookendtitle);
+    BibiscoPropertiesService.setProperty('indentParagraphEnabled', self.indent);
+    BibiscoPropertiesService.setProperty('linespacing', self.linespacing);
+    BibiscoPropertiesService.setProperty('paragraphspacing', self.paragraphspacing);
     BibiscoDbConnectionService.saveDatabase();
   };
 
@@ -151,6 +260,7 @@ function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibM
   };
 
   self.selectProjectsDirectory = function (directory) {
+    self.exportpathchanged = true;
     self.exportpath = directory;
     if (FileSystemService.canWriteDirectory(directory)) {
       self.forbiddenDirectory = false;
@@ -165,30 +275,7 @@ function ExportToEpub($location, $rootScope, $scope, $timeout, $translate, $uibM
     self.chaptertitleexample = ExportService.calculateChapterTitleExample(selected);
   };
 
-  self.showothersettings = function() {
-    let modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'richtexteditorsettings',
-      resolve: {
-        context: function () {
-          return 'exporttoepub';
-        }
-      },
-      size: 'richtexteditorsettings'
-    });
-
-    $rootScope.$emit('OPEN_POPUP_BOX');
-
-    modalInstance.result.then(function() {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-    }, function () {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-
-    });
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
-    //PopupBoxesService.locationChangeConfirm(event, self.exportpath, self.checkExit);
+    PopupBoxesService.locationChangeConfirm(event, $scope.exportToEpubForm.$dirty || self.exportpathchanged, self.checkExit);
   });
 }

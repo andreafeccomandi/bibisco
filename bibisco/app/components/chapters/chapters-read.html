@@ -59,8 +59,10 @@
             <siblingelementsnavigator
                 nextelementlabel="{{$ctrl.chapterToRead.nextlabel}}"
                 nextelementlink="$ctrl.chapterToRead.nextlink"
+                nextelementtooltip="next_chapter"
                 previouselementlabel="{{$ctrl.chapterToRead.previouslabel}}"
-                previouselementlink="$ctrl.chapterToRead.previouslink">
+                previouselementlink="$ctrl.chapterToRead.previouslink"
+                previouselementtooltip="previous_chapter">
             </siblingelementsnavigator>
         </div>
     </div>
@@ -68,5 +70,5 @@
 
 <fullscreenexitmessage></fullscreenexitmessage>
 
-<pagefooter tipcode="readTip" tipenabled="true"></pagefooter>
+<pagefooter tipcode="readTip" tipenabled="!$ctrl.chapterToRead.previouslink"></pagefooter>
 

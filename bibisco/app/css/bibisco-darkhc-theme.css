@@ -1,0 +1,235 @@
+body {
+    color: #FFF;
+}
+
+hr {
+    border-color: #666;
+}
+
+a, .text-primary, .text-primary:hover {
+    color: #2a9fd6;
+}
+
+.btn-primary, .btn-primary.active, .btn-primary:active  {
+    color: #ffffff !important;
+    background-color: #222 !important;
+    border-color: #FFF !important;
+}
+
+button.active {
+    border-color: #FFF !important;
+}
+
+.btn-default, .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
+    color: #ffffff !important;
+    background-color: #333 !important;
+    border-color: #FFF !important;
+}
+
+.btn-unselected {
+    background-color: #222 !important;
+	border-color: #222 !important;
+}
+
+div.btn-group button.btn-default {
+	border-color: #666 !important;
+}
+
+div.btn-group button.btn-default.active {
+	border-color: #FFF !important;
+}
+
+.panel-title {
+    color: #FFF !important;
+}
+
+.page-header-subtitle {
+    color: #FFF;
+}
+
+.card {
+	border: 1px solid #555;
+}
+
+.card-left-section {
+    background-color: #555;
+}
+
+.card-no-profile-bg {
+    background-color: #2180ac;
+    border: 1px solid #2180ac;
+}
+
+.card-hover {
+	background-color: #222222;
+}
+
+.page-header h1 {
+    border-bottom: 1px solid #666;
+}
+
+.page-header-no-profile-bg {
+    background-color: #888;
+    border: 1px solid #888;
+}
+
+.ui-select-bootstrap .ui-select-choices-row>span {
+    color: #FFF;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #fff;
+}
+
+h4, .h4 {
+    font-size: 18px;
+}
+
+h5, .h5 {
+    font-size: 14px;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+    color: #FFF;
+}
+
+.jumbotron h1, .jumbotron h2, .jumbotron h3, .jumbotron h4, .jumbotron h5, .jumbotron h6 {
+    color: #fff;
+}
+
+.btn {
+    color: #fff !important;
+}
+
+table, .table {
+    color: #fff;
+}
+
+.dropdown-menu>li>a {
+    color: #fff;
+}
+
+.dropdown-header {
+    color: #fff;
+}
+
+.nav-tabs a, .nav-pills a, .breadcrumb a, .pager a {
+    color: #fff;
+}
+
+.breadcrumb>.active {
+    color: #aaa;
+}
+
+.datetimepicker .minute:hover, .datetimepicker .hour:hover, .datetimepicker .day:hover, .datetimepicker .switch:hover, .datetimepicker .left:hover, .datetimepicker .right:hover {
+    background: #444;
+}
+
+.datetimepicker span:hover {
+    background: #333;
+}
+
+.datetimepicker .current, .datetimepicker .current:hover, .datetimepicker .current.disabled, .datetimepicker .current.disabled:hover {
+    background-color: #555;
+}
+
+.form-control {
+    color: #fff;
+    background-color: #222;
+    border-color: #fff;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #333;
+    opacity: 1;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 30px;
+    border: 4px solid rgba(255, 255, 255, 0);
+	background-clip: padding-box;
+	border-radius: 7px;
+    -webkit-border-radius: 7px;
+	background-color: rgba(255, 255, 255, 0.45);
+	box-shadow: inset -1px -1px 0px rgba(255, 255, 255, 0.35), inset 1px 1px 0px rgba(255, 255, 255, 0.35);
+    -webkit-box-shadow: inset -1px -1px 0px rgba(255, 255, 255, 0.35), inset 1px 1px 0px rgba(255, 255, 255, 0.35);
+}
+
+.fullscreen {
+  background-color: black;
+  border-color: black !important;
+}
+
+.exitfullscreenmessage {
+	background: #333;
+	opacity: 0.8;
+	color: lightgrey;
+}
+
+.sidebar-container {
+	background-color: rgb(21, 21, 21);
+}
+
+.metatext-box-comment {
+    border-right: 3px solid #CAA22B;
+}
+
+.metatext-box-note {
+    border-right: 3px solid #2a9fd6;
+}
+
+div.metatext-box-body textarea::placeholder {
+    color: #666 !important; 
+}
+
+.metatext-box-connector-comment {
+	background: repeating-linear-gradient(to right,#CAA22B 0,#CAA22B 10px,transparent 10px,transparent 12px)
+}
+
+.metatext-box-connector-note {
+	background: repeating-linear-gradient(to right,#2a9fd6 0,#2a9fd6 10px,transparent 10px,transparent 12px)
+}
+
+.metatext-box-connector-edge-comment {
+    border-left: 10px solid #CAA22B;
+}
+
+.metatext-box-connector-edge-note {
+    border-bottom: 8px solid #2a9fd6;
+}
+
+.comment-btn-count span, .richtexteditor-find-counter, .input-group input, .input-group-addon a {
+    color: #fff !important;
+}
+
+#richtextviewercontainer span.comment-enabled, #interviewviewercontainer span.comment-enabled {
+    color: #000;
+}
+
+#richtexteditorcontainer span.comment-enabled {
+    color: #000;
+}
+
+.richtexteditor-contenteditable-container {
+	border-color: #666;
+}
+
+#richtextviewercontainer span.comment-enabled, #interviewviewercontainer span.comment-enabled {
+    color: #000;
+}
+
+#searchtext, #richtexteditortexttofind, #richtexteditortexttoreplace, span.input-group-addon, .input-group input {
+    border-color: #fff;
+}
+
+tree-view ul li .node:hover {
+	color: #2a9fd6;
+}
+
+.label-primary {
+    background-color: #1E7099;
+}
+
+::-webkit-input-placeholder, span.ui-select-placeholder.text-muted {
+    color: #ccc !important;
+}

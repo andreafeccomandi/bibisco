@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ angular.
   });
 
 function SceneDetailController($location, $rootScope, $routeParams,
-  $scope, $window, ChapterService, hotkeys, PopupBoxesService, ProjectService, SupporterEditionChecker) {
+  $scope, $window, BibiscoPropertiesService, ChapterService, hotkeys, ImageService, NavigationService, 
+  PopupBoxesService, ProjectService, SupporterEditionChecker) {
+  
   let self = this;
 
   self.$onInit = function() {
@@ -41,7 +43,7 @@ function SceneDetailController($location, $rootScope, $routeParams,
     $rootScope.$emit('SHOW_ELEMENT_DETAIL');
     
     self.includeSupporterEditionItems = SupporterEditionChecker.isSupporterOrTrial();
-    self.mode = $routeParams.mode;
+    self.mode = NavigationService.calculateMode($routeParams.mode); 
     self.fromtimeline = $rootScope.actualPath.indexOf('timeline') !== -1;
     
   
@@ -91,7 +93,8 @@ function SceneDetailController($location, $rootScope, $routeParams,
     });
     self.actionitems.push({
       label: 'jsp.scene.button.moveSceneToAnotherChapter',
-      itemfunction: self.moveSceneToAnotherChapter
+      itemfunction: self.moveSceneToAnotherChapter,
+      supportersonly: true
     });
     self.actionitems.push({
       label: 'jsp.common.button.delete',
@@ -103,32 +106,35 @@ function SceneDetailController($location, $rootScope, $routeParams,
     // saved content
     self.content = self.scenerevision.text;
 
+    // empty content
+    self.emptyContent = !(self.scenerevision.characters > 0 || ImageService.textContainsImages(self.scenerevision.text));
+
     let chapterscenes = ChapterService.getScenes(parseInt($routeParams.chapterid));
     
     // previous scene
     let previousposition = self.scene.position - 1;
     if (previousposition > 0) {
-      self.previouselementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[previousposition-1].$loki+'/view';
+      self.previouselementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[previousposition-1].$loki+'/'+self.mode;
       self.previouselementtooltip='#' + previousposition + ' ' + chapterscenes[previousposition-1].title;
     }
 
     // next scene
     let nextposition = self.scene.position + 1;
     if (nextposition <= chapterscenes.length) {
-      self.nextelementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[nextposition-1].$loki+'/view';
+      self.nextelementlink='/chapters/'+$routeParams.chapterid+'/scenes/'+chapterscenes[nextposition-1].$loki+'/'+self.mode;
       self.nextelementtooltip='#' + nextposition + ' ' + chapterscenes[nextposition-1].title;
     }
 
+    // calculate tip
+    self.tip = BibiscoPropertiesService.getProperty('richTextEditorTip') === 'true' ? 'richTextEditorTip' : 'sceneTip';
   };
 
   self.changerevision = function(action, revision) {
     let sceneid = parseInt($routeParams.sceneid);
     if (action === 'new-from-actual') {
       self.scene = ChapterService.insertSceneRevisionFromActual(sceneid);
-      self.edit();
     } else if (action === 'new-from-scratch') {
       self.scene = ChapterService.insertSceneRevisionFromScratch(sceneid);
-      self.edit();
     } else if (action === 'change') {
       self.scene = ChapterService.changeSceneRevision(sceneid, revision);
     } else if (action === 'delete') {
@@ -137,6 +143,14 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
     self.scenerevision = self.scene.revisions[self.scene.revision];
     self.content = self.scenerevision.text;
+    if (self.content === '') {
+      self.content = '<p><br></p>';
+    }
+    self.emptyContent = !(self.scenerevision.characters > 0 || ImageService.textContainsImages(self.scenerevision.text));
+
+    if (self.mode === 'view' && (action === 'new-from-actual' || action === 'new-from-scratch')) {
+      self.edit();
+    }
   };
 
   self.changeStatus = function(status) {
@@ -159,7 +173,12 @@ function SceneDetailController($location, $rootScope, $routeParams,
 
   self.edit = function () {
     $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
-      .$loki + '/edit');
+      .$loki + '/edit').replace();
+  };
+
+  self.read = function () {
+    $location.path(self.getRootPath() + '/chapters/' + self.chapter.$loki + '/scenes/' + self.scene
+      .$loki + '/view').replace();
   };
 
   self.moveSceneToAnotherChapter = function() {

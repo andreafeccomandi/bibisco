@@ -48,13 +48,14 @@
           {{"jsp.welcome.step2.p.missing.projectsdirectory.1" | translate}}&nbsp;[&nbsp;<b><i>{{$ctrl.previousProjectsDirectory}}</i></b>&nbsp;]{{"jsp.welcome.step2.p.missing.projectsdirectory.2" | translate}}</p>
         <p ng-show="!$ctrl.repairingProjectsDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">{{"jsp.welcome.step2.p.1" | translate}}</p>
         <directoryselect model="$ctrl.selectedProjectsDirectory"
+          defaultpath="$ctrl.documentsDefaultPath"
           field="welcomeForm.projectsDirectory" name="projectsDirectory"
           onselectdirectory="$ctrl.selectProjectsDirectory(directory)"
           forbiddendirectory="$ctrl.forbiddenDirectory"
           customerrormessage="$ctrl.projectsDirectoryCustomErrorMessage">
         </directoryselect>
         <div class="welcomeWizardNotes">
-          <p class="bibiscoNotSelectableText"><span class="label label-info">{{"jsp.welcome.step2.label.2" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
+          <p class="bibiscoNotSelectableText"><span class="label label-info">{{"common_note" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.2" | translate}}</p>
           <p class="bibiscoNotSelectableText"><span class="label label-success">{{"jsp.welcome.step2.label.3" | translate}}</span>&nbsp;&nbsp;{{"jsp.welcome.step2.p.3" | translate}}</p>
         </div>
       </div>
@@ -63,6 +64,7 @@
           {{"missing_backup_directory" | translate}}&nbsp;[&nbsp;<b><i>{{$ctrl.previousBackupDirectory}}</i></b>&nbsp;]{{"jsp.welcome.step2.p.missing.projectsdirectory.2" | translate}}</p>
         <p ng-show="!$ctrl.repairingBackupDirectory" class="bibiscoNotSelectableText welcomeWizardLabel">{{"jsp.welcome.step3.p.1" | translate}}</p>
         <directoryselect model="$ctrl.selectedBackupDirectory"
+          defaultpath="$ctrl.documentsDefaultPath"
           field="welcomeForm.backupDirectory" name="backupDirectory"
           onselectdirectory="$ctrl.selectBackupDirectory(directory)"
           forbiddendirectory="$ctrl.forbiddenBackupDirectory"

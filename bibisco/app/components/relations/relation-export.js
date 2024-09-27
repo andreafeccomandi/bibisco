@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ angular.
   });
 
 function RelationExportController($injector, $location, $rootScope, $scope, $routeParams, $timeout, 
-  ExportService, FileSystemService, MindmapService, PopupBoxesService) {
+  BibiscoPropertiesService, BibiscoDbConnectionService, ContextService, ExportService, 
+  FileSystemService, MindmapService, PopupBoxesService) {
 
   let self = this;
   let RelationsService = $injector.get('RelationsService');
-  const { shell } = require('electron');
+  const ipc = require('electron').ipcRenderer;
 
   self.$onInit = function() {
 
@@ -39,14 +40,16 @@ function RelationExportController($injector, $location, $rootScope, $scope, $rou
     });
     self.breadcrumbitems.push({
       label: self.mindmap.name,
-      href: '/relations/'+self.mindmap.$loki+'/view'
+      href: '/relations/'+self.mindmap.$loki+'/default'
     });
     self.breadcrumbitems.push({
       label: 'common_export',
     });
 
     self.saving = false;
-    self.exportpath;
+    self.exportpath = BibiscoPropertiesService.getProperty('exportpath');
+    self.exportpathchanged = false;
+    self.exportdefaultpath = self.exportpath ? self.exportpath : ContextService.getDownloadsDirectoryPath();
 
     self.checkExit = {
       active: true
@@ -141,17 +144,19 @@ function RelationExportController($injector, $location, $rootScope, $scope, $rou
     // export image
     let dataURL = destinationCanvas.toDataURL('image/png');
     let exportfilepath = ExportService.calculateExportFilePath(self.exportpath, self.mindmap.name, new Date());
-    FileSystemService.writeBase64DataToFile(dataURL, exportfilepath+'.png');
+    FileSystemService.writeBase64DataToFileSync(dataURL, exportfilepath+'.png');
     
     // remove dummy div
     document.body.removeChild(div);
 
     // show item in folder
-    shell.showItemInFolder(self.exportpath);
+    ipc.send('showItemInFolder', exportfilepath+'.png');
 
     // back to relations page
     $timeout(function () {
-      $location.path('/relations/'+self.mindmap.$loki+'/view');
+      BibiscoPropertiesService.setProperty('exportpath', self.exportpath);
+      BibiscoDbConnectionService.saveDatabase();
+      $location.path('/relations/'+self.mindmap.$loki+'/default');
     }, 0);
   };
 

@@ -6,7 +6,7 @@
       "data": [
         {
           "name": "font",
-          "value": "courier",
+          "value": "garamond",
           "meta": {
             "revision": 0,
             "created": 1487541445275,
@@ -343,7 +343,287 @@
           "version": 0
       },
       "$loki": 34
-  }
+    },
+    {
+      "name": "imageEditTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 35
+    },
+    {
+      "name": "pagenumberposition",
+      "value": "footer",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 36
+    },
+    {
+      "name": "pagenumberalignment",
+      "value": "center",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 37
+    },
+    {
+      "name": "showfirstpagenumber",
+      "value": "false",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 38
+    },
+    {
+      "name": "pagenumberformat",
+      "value": "number",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 39
+    },
+    {
+      "name": "tocformat",
+      "value": "none",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 40
+    },
+    {
+      "name": "toctitle",
+      "value": "",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 41
+    },
+    {
+      "name": "exporthighlightedtext",
+      "value": "false",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 42
+    },
+    {
+      "name": "exportpath",
+      "value": "",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 43
+    },
+    {
+      "name": "footendnoteTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 44
+    },
+    {
+      "name": "docxnoteexport",
+      "value": "footnote",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 45
+    },
+    {
+      "name": "pdfnoteexport",
+      "value": "chapterend",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 46
+    },
+    {
+      "name": "txtnoteexport",
+      "value": "chapterend",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 47
+    },
+    {
+      "name": "epubnoteexport",
+      "value": "chapterend",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 48
+    },
+    {
+      "name": "bookendtitle",
+      "value": "",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 49
+    },
+    {
+      "name": "exportcomments",
+      "value": "false",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 50
+    },
+    {
+      "name": "exportscenetitle",
+      "value": "false",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 51
+    },
+    {
+      "name": "scenetitleformat",
+      "value": "title",
+      "meta": {
+          "revision": 0,
+          "created": 1487541445286,
+          "version": 0
+      },
+      "$loki": 52
+  },
+  {
+      "name": "scenetitleposition",
+      "value": "left",
+      "meta": {
+          "revision": 0,
+          "created": 1487541445286,
+          "version": 0
+      },
+      "$loki": 53
+  },
+    {
+      "name": "exportunansweredquestions",
+      "value": "false",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 54
+    },
+    {
+      "name": "exportfontsize",
+      "value": 12,
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 55
+    },
+    {
+      "name": "chapteredittitleTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 56
+    },
+    {
+      "name": "characteredittitleTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 57
+    },
+    {
+      "name": "interviewfreetextTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 58
+    },
+    {
+      "name": "shortcutTip",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 59
+    },
+    {
+      "name": "autoOpenProjectExplorerOnTextEdit",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 60
+    },
+    {
+      "name": "defaultElementOpeningMode",
+      "value": "edit",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 61
+    },
+    {
+      "name": "showElementAfterInsertion",
+      "value": "true",
+      "meta": {
+        "revision": 0,
+        "created": 1487541445286,
+        "version": 0
+      },
+      "$loki": 62
+    }
       ],
       "idIndex": [
         1,
@@ -379,7 +659,35 @@
         31,
         32,
         33,
-        34
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
       ],
       "binaryIndices": {},
       "constraints": null,
@@ -398,7 +706,7 @@
       "disableChangesApi": true,
       "autoupdate": false,
       "ttl": null,
-      "maxId": 34,
+      "maxId": 62,
       "DynamicViews": [],
       "events": {
         "insert": [

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,19 @@ angular.
   module('bibiscoApp').
   component('projectexplorer', {
     templateUrl: 'components/project-explorer/project-explorer.html',
-    controller: ProjectExplorerController
+    controller: ProjectExplorerController,
+    bindings: {
+      editmode: '<'
+    }
   });
 
 function ProjectExplorerController($injector, $rootScope, $translate, 
-  ArchitectureService, ChapterService, LocationService, MainCharacterService, 
+  ArchitectureService, ChapterService, LocationService, MainCharacterService, NavigationService,
   SecondaryCharacterService, SupporterEditionChecker, StrandService) {
   
   let self = this;
+  const { shell } = require('electron');
+
   let ObjectService = null;
   let GroupService = null;
   let NoteService = null;
@@ -87,7 +92,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
     // Chapters
     self.items.push.apply(self.items, self.getChaptersFamily());
     
-    let cacheElement = $rootScope.projectExplorerCache.get($rootScope.actualPath);
+    let cacheElement = NavigationService.getProjectExplorerCacheEntry($rootScope.actualPath);
     if (cacheElement) {
       for (let i = 0; i < self.items.length; i++) {
         if (self.items[i].itemid === cacheElement) {
@@ -97,6 +102,19 @@ function ProjectExplorerController($injector, $rootScope, $translate,
         }
       }
     }
+
+    // click event listener
+    self.projectexplorer = document.getElementById('projectexplorer');
+    self.projectexplorer.addEventListener('click', function(event) {
+      let target = event.target;
+        
+      // click on anchor
+      if (target.tagName === 'A') {
+        event.preventDefault();
+        let url = target.getAttribute('href');
+        shell.openExternal(url);
+      }
+    });
   };
 
   self.getArchitectureFamily = function() {
@@ -303,7 +321,7 @@ function ProjectExplorerController($injector, $rootScope, $translate,
   self.selectItem = function() {
     self.selectedItem.selectfunction(self.selectedItem.id);
     $rootScope.$emit('PROJECT_EXPLORER_SELECTED_ITEM');
-    $rootScope.projectExplorerCache.set($rootScope.actualPath, self.selectedItem.itemid);
+    NavigationService.setProjectExplorerCacheEntry($rootScope.actualPath, self.selectedItem.itemid);
   };
 
   self.showPremise = function() {

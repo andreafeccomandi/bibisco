@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
  *
  */
 
-angular.module('bibiscoApp').service('CollectionUtilService', function(
+angular.module('bibiscoApp').service('CollectionUtilService', function($injector,
   LoggerService, ProjectDbConnectionService
 ) {
   'use strict';
+
+  let SanitizeHtmlService;
 
   return {
 
@@ -154,11 +156,36 @@ angular.module('bibiscoApp').service('CollectionUtilService', function(
 
     executeUpdate: function(collection, element) {
       element.lastsave = (new Date()).toJSON();
-      collection.update(element);
-      LoggerService.info('Update element with $loki=' + element.$loki +
+      let clonedElement = JSON.parse(JSON.stringify(element));
+      clonedElement = this.sanitizeHtml(clonedElement);
+      collection.update(clonedElement);
+      LoggerService.info('Update element with $loki=' + clonedElement.$loki +
         ' in ' + collection.name);
 
       return element;
+    },
+
+    sanitizeHtml: function(obj) {
+      let htmlRegex = /<[a-z][\s\S]*>/i;
+      if (obj && typeof obj === 'object') {
+        for (let key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            if (typeof obj[key] === 'string' && htmlRegex.test(obj[key])) {
+              obj[key] = this.getSanitizeHtmlService().sanitize(obj[key]);
+            } else if (typeof obj[key] === 'object') {
+              obj[key] = this.sanitizeHtml(obj[key]);
+            }
+          }
+        }
+      }
+      return obj;
+    },
+
+    getSanitizeHtmlService: function() {
+      if (!SanitizeHtmlService) {
+        SanitizeHtmlService = $injector.get('SanitizeHtmlService'); 
+      }
+      return SanitizeHtmlService;
     },
 
     remove: function(collection, id, filter) {

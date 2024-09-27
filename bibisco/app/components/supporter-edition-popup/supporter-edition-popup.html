@@ -9,18 +9,17 @@
           <img class="img-circle" src="images/andrea.jpg">
         </div>
         <div class="col-sm-9">
-          <p class="text-left"><i>I'm not a big company.</i></p>
-          <p class="text-left"><i>bibisco is a personal and open 
-            source project and needs the help of everyone.</i></p>
-          <small class="text-left">Andrea Feccomandi, author of bibisco</small>
+          <p class="text-left"><i ng-bind-html="$ctrl.cta"></i></p>
+          <small class="text-left">Andrea Feccomandi, {{"author_of_bibisco" | translate}}</small>
         </div>
       </div>
     </blockquote>
   </div>
   <div class="modal-footer bibiscoNotSelectableText">
-    <button class="btn btn-primary" type="button" 
-      ng-click="$ctrl.getIt()">{{"only_for_supporter_edition_button" | translate}}</button>
-    <button class="btn btn-default" type="button" 
-      ng-click="$ctrl.cancel()">{{"jsp.common.button.close" | translate}}</button>
+    <button class="btn btn-download" type="button" 
+      ng-click="$ctrl.getIt()">{{"se_download_button" | translate}}</button>
+    <button class="btn btn-default" type="button" ng-disabled="$ctrl.showcountdown"
+      ng-click="$ctrl.cancel()">{{"jsp.common.button.close" | translate}}
+      <span ng-if="$ctrl.showcountdown"> ({{$ctrl.countdown}})</span>
   </div>
 </modal-component>

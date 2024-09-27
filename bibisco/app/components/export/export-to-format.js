@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ angular.
     controller: ExportToFormat
   });
 
-function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, $timeout, $translate, $uibModal,  
-  BibiscoDbConnectionService,BibiscoPropertiesService, ChapterService, ExportService, FileSystemService, 
-  LocationService, MainCharacterService, PopupBoxesService, ProjectService, SecondaryCharacterService, 
-  SupporterEditionChecker) {
+function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, $timeout, $translate,
+  BibiscoDbConnectionService,BibiscoPropertiesService, ChapterService, ContextService, ExportService, 
+  FileSystemService, LocationService, MainCharacterService, PopupBoxesService, ProjectService, 
+  SecondaryCharacterService, SupporterEditionChecker) {
 
   var self = this;
   let ObjectService = null;
@@ -50,6 +50,8 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       'export_timeline',
       'groups',
       'objects',
+      'parts',
+      'toc'
     ]);
 
     $rootScope.$emit('EXPORT_SELECT_DIRECTORY');
@@ -81,12 +83,15 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     });
 
     self.saving = false;
-    self.exportpath;
+    
+    self.exportpath = BibiscoPropertiesService.getProperty('exportpath');
+    self.exportpathchanged = false;
+    self.exportdefaultpath = self.exportpath ? self.exportpath : ContextService.getDownloadsDirectoryPath();
+
     if (self.exportAuthor) {
       self.author = ProjectService.getProjectInfo().author;
     }
 
-    self.showchaptertitleformat= ($routeParams.format === 'pdf' || $routeParams.format === 'docx' || $routeParams.format === 'txt') ? true : false;
     self.chaptertitleformat = BibiscoPropertiesService.getProperty('chaptertitleformat');
     self.chaptertitleexample = ExportService.calculateChapterTitleExample(self.chaptertitleformat);
     self.chaptertitleformatgroup = [{
@@ -103,7 +108,6 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       value: 'labelnumber'
     }];
 
-    self.showchaptertitleposition= ($routeParams.format === 'pdf' || $routeParams.format === 'docx' ) ? true : false;
     self.chaptertitleposition = BibiscoPropertiesService.getProperty('chaptertitleposition');
     self.chaptertitlepositiongroup = [{
       label: 'common_left',
@@ -113,7 +117,6 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       value: 'center'
     }];
 
-    self.showsceneseparator = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' || $routeParams.format === 'txt' ) ? true : false;
     self.sceneseparator = BibiscoPropertiesService.getProperty('sceneseparator');
     self.sceneseparatorgroup = [{
       label: 'blank_line',
@@ -126,13 +129,269 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       value: 'three_dots'
     }];
 
-    self.showothersettingsenabled = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' ) ? true : false;
+    self.exportscenetitle = BibiscoPropertiesService.getProperty('exportscenetitle');
+    self.exportscenetitlegroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.scenetitleposition = BibiscoPropertiesService.getProperty('scenetitleposition');
+    self.scenetitlepositiongroup = [{
+      label: 'common_left',
+      value: 'left'
+    }, {
+      label: 'common_center',
+      value: 'center'
+    }];
+
+    self.scenetitleformat = BibiscoPropertiesService.getProperty('scenetitleformat');
+    self.scenetitleexample = ExportService.calculateChapterTitleExample(self.scenetitleformat);
+    self.scenetitleformatgroup = [{
+      label: 'chapter_title_format_number_title',
+      value: 'numbertitle'
+    }, {
+      label: 'chapter_title_format_only_number',
+      value: 'number'
+    }, {
+      label: 'chapter_title_format_only_title',
+      value: 'title'
+    }];
+
+    self.exporthighlightedtext = BibiscoPropertiesService.getProperty('exporthighlightedtext');
+    self.exporthighlightedtextgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.pagenumberposition = BibiscoPropertiesService.getProperty('pagenumberposition');
+    self.pagenumberpositiongroup = [{
+      label: 'page_number_position_none',
+      value: 'none'
+    }, {
+      label: 'page_number_position_header',
+      value: 'header'
+    }, {
+      label: 'page_number_position_footer',
+      value: 'footer'
+    }];
+
+    self.pagenumberalignment = BibiscoPropertiesService.getProperty('pagenumberalignment');
+    self.pagenumberalignmentgroup = [{
+      label: 'common_left',
+      value: 'left'
+    }, {
+      label: 'common_center',
+      value: 'center'
+    }, {
+      label: 'common_right',
+      value: 'right'
+    }, {
+      label: 'page_number_alignment_even_odd',
+      value: 'even_odd'
+    }];
+
+    self.showfirstpagenumber = BibiscoPropertiesService.getProperty('showfirstpagenumber');
+    self.showfirstpagenumbergroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.pagenumberformat = BibiscoPropertiesService.getProperty('pagenumberformat');
+    self.pagenumberformatgroup = [{
+      label: 'page_number_format_number',
+      value: 'number'
+    }, {
+      label: 'page_number_format_numberandcount',
+      value: 'numberandcount'
+    }, {
+      label: 'page_number_format_pagenumberandcount',
+      value: 'pageandnumberandcount'
+    }];
+    self.pagenumberformatexample = ExportService.calculatePageNumberFormatExample(self.pagenumberformat);
+
+    self.tocformat = BibiscoPropertiesService.getProperty('tocformat');
+    self.tocformatgroup = [{
+      label: 'toc_none',
+      value: 'none'
+    }, {
+      label: 'toc_beginning',
+      value: 'beginning'
+    }, {
+      label: 'toc_end',
+      value: 'end'
+    }];
+    self.toctitle = BibiscoPropertiesService.getProperty('toctitle');
+    self.showtocnote= $routeParams.format === 'docx' ? true : false;
+
+    self.footendnotemode = null;
+    self.footendnotegroup = [];
+    switch ($routeParams.format) {
+    case 'pdf':
+      self.footendnotemode = BibiscoPropertiesService.getProperty('pdfnoteexport');
+      break;
+    case 'docx':
+      self.footendnotemode = BibiscoPropertiesService.getProperty('docxnoteexport');
+      self.footendnotegroup.push({
+        label: 'note_export_footnote',
+        value: 'footnote'
+      });
+      break;
+    case 'txt':
+      self.footendnotemode = BibiscoPropertiesService.getProperty('txtnoteexport');
+      break;
+    default:
+      break;
+    }
+    self.footendnotegroup.push({
+      label: 'note_export_chapterendnote',
+      value: 'chapterend'
+    },{
+      label: 'note_export_bookendnote',
+      value: 'bookend'
+    });
+    self.bookendtitle = BibiscoPropertiesService.getProperty('bookendtitle');
+  
+
+    self.pagenumberpositiongroup = [{
+      label: 'page_number_position_none',
+      value: 'none'
+    }, {
+      label: 'page_number_position_header',
+      value: 'header'
+    }, {
+      label: 'page_number_position_footer',
+      value: 'footer'
+    }];
+
+    self.exportcomments = BibiscoPropertiesService.getProperty('exportcomments');
+    self.exportcommentsgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.exportunansweredquestions = BibiscoPropertiesService.getProperty('exportunansweredquestions');
+    self.exportunansweredquestionsgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.font;
+    let supporterSuffix = SupporterEditionChecker.isSupporter() ? '' : '_ce';
+    self.fontgroup = [{
+      label: 'baskerville' + supporterSuffix,
+      value: 'baskerville',
+      buttonclass: 'bibiscoRichTextEditorSettings-baskerville'
+    }, {
+      label: 'courier',
+      value: 'courier',
+      buttonclass: 'bibiscoRichTextEditorSettings-courier'
+    }, {
+      label: 'garamond' + supporterSuffix,
+      value: 'garamond',
+      buttonclass: 'bibiscoRichTextEditorSettings-garamond'
+    }, {
+      label: 'georgia' + supporterSuffix,
+      value: 'georgia',
+      buttonclass: 'bibiscoRichTextEditorSettings-georgia'
+    }, {
+      label: 'arial',
+      value: 'arial',
+      buttonclass: 'bibiscoRichTextEditorSettings-arial'
+    }, {
+      label: 'palatino' + supporterSuffix,
+      value: 'palatino',
+      buttonclass: 'bibiscoRichTextEditorSettings-palatino'
+    }, {
+      label: 'times',
+      value: 'times',
+      buttonclass: 'bibiscoRichTextEditorSettings-times'
+    }];
+    self.setFont(BibiscoPropertiesService.getProperty('font'));
+
+    self.exportfontsize = BibiscoPropertiesService.getProperty('exportfontsize');
+    self.exportfontsizegroup = [{
+      label: '8',
+      value: 8
+    }, {
+      label: '10',
+      value: 10
+    }, {
+      label: '12',
+      value: 12
+    }, {
+      label: '14',
+      value: 14
+    }, {
+      label: '16',
+      value: 16
+    }];
+    self.indent = BibiscoPropertiesService.getProperty('indentParagraphEnabled');
+    self.indentgroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    self.linespacing = BibiscoPropertiesService.getProperty('linespacing');
+    self.linespacinggroup = [{
+      label: '1',
+      value: 10
+    }, {
+      label: '1.3',
+      value: 13
+    }, {
+      label: '1.4',
+      value: 14
+    }, {
+      label: '1.5',
+      value: 15
+    }, {
+      label: '2',
+      value: 20
+    }];
+    self.paragraphspacing = BibiscoPropertiesService.getProperty('paragraphspacing');
+    self.paragraphspacinggroup = [{
+      label: '0',
+      value: 'none'
+    }, {
+      label: '0.5',
+      value: 'small'
+    }, {
+      label: '1',
+      value: 'medium'
+    }, {
+      label: '1.5',
+      value: 'large'
+    }, {
+      label: '2',
+      value: 'double'
+    }];
+
+    self.isexporttopdfordocx = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' ) ? true : false;
+    self.isexporttopdfordocxortxt = ($routeParams.format === 'pdf' || $routeParams.format === 'docx' || $routeParams.format === 'txt') ? true : false;
 
     self.showExportFilter = $routeParams.format === 'archive' ? false : true;
     if (self.showExportFilter) {
       // export items
       self.items = [];
       self.items.push.apply(self.items, self.getGeneralItems());
+      self.items.push.apply(self.items, self.getPartsFamily());
       self.items.push.apply(self.items, self.getChaptersFamily());
       self.items.push.apply(self.items, self.getArchitectureItem());
       self.items.push.apply(self.items, self.getStrandsItem());
@@ -144,14 +403,36 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
       self.items.push.apply(self.items, self.getTimelineItem());
       
       self.exportFilter = self.items[0];
+      self.initExportingFlags();
     }
+
+    self.advancedsettings = false;
 
     self.checkExit = {
       active: true
     };
   };
 
-  self.getGeneralItems= function () {
+  self.showadvancedsettings = function() {
+    self.advancedsettings = true;
+  };
+  
+  self.hideadvancedsettings = function() {
+    self.advancedsettings = false;
+  };
+
+
+  self.initExportingFlags = function () {
+    self.exportingNovel = self.exportFilter.id === 'novel_project' || self.exportFilter.id === 'novel' || 
+      self.exportFilter.type === 'part' || self.exportFilter.type === 'chapter' || 
+      self.exportFilter.type === 'prologue' || self.exportFilter.type === 'epilogue' ? true : false;
+    self.showToc = self.exportFilter.id === 'novel_project' || self.exportFilter.id === 'novel' || 
+      self.exportFilter.type === 'part' || self.exportFilter.id === 'project' ? true : false;
+    self.showExportunansweredquestions = self.exportFilter.id === 'novel_project' || self.exportFilter.id === 'project' ||
+      self.exportFilter.type === 'maincharacter' ? true: false;
+  };
+
+  self.getGeneralItems = function () {
   
     let generalItems = [];
     let family = null;
@@ -191,6 +472,11 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     self.chaptertitleexample = ExportService.calculateChapterTitleExample(selected);
   };
 
+  self.changepagenumberformat = function(selected) {
+    self.pagenumberformatexample = ExportService.calculatePageNumberFormatExample(selected);
+  };
+
+
   self.selectItem = function(id) {
     if (id!=='novel_project') {  
       SupporterEditionChecker.filterAction(function() {
@@ -205,6 +491,25 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
         self.exportFilter = self.items[0];
       });
     } 
+    self.initExportingFlags();
+  };
+
+  self.getPartsFamily = function () {
+  
+    let partsfamily = [];
+    let family = self.translations.parts;
+
+    let parts = ChapterService.getParts();
+    for (let i = 0; i < parts.length; i++) {
+      partsfamily.push({
+        id: parts[i].$loki,
+        name: parts[i].title,
+        family: family,
+        type: 'part',
+      });
+    }
+
+    return partsfamily;
   };
   
   self.getChaptersFamily = function () {
@@ -416,6 +721,28 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     return NoteService;
   };
 
+  self.selectFontItem = function(value) {
+    if (value!=='courier' && value!=='times' && value!=='arial' ) {  
+      SupporterEditionChecker.filterAction(function() {
+        self.setFont(value);
+      }, function() {
+        self.setFont('courier');
+      });
+    } else {
+      self.setFont(value);
+    }
+  };
+
+  self.setFont = function(value) {
+    for (let i = 0; i < self.fontgroup.length; i++) {
+      const item = self.fontgroup[i];
+      if (item.value === value) {
+        self.font = item;
+        break;
+      }
+    }
+  };
+
   self.export = function(isValid) {
     if (isValid && !self.forbiddenDirectory) {
       self.checkExit = {
@@ -430,6 +757,33 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
         BibiscoPropertiesService.setProperty('chaptertitleformat', self.chaptertitleformat);
         BibiscoPropertiesService.setProperty('chaptertitleposition', self.chaptertitleposition);
         BibiscoPropertiesService.setProperty('sceneseparator', self.sceneseparator);
+        BibiscoPropertiesService.setProperty('pagenumberposition', self.pagenumberposition);
+        BibiscoPropertiesService.setProperty('pagenumberalignment', self.pagenumberalignment);
+        BibiscoPropertiesService.setProperty('showfirstpagenumber', self.showfirstpagenumber);
+        BibiscoPropertiesService.setProperty('pagenumberformat', self.pagenumberformat);
+        BibiscoPropertiesService.setProperty('tocformat', self.tocformat);
+        BibiscoPropertiesService.setProperty('toctitle', self.toctitle);
+        BibiscoPropertiesService.setProperty('exporthighlightedtext', self.exporthighlightedtext);
+        BibiscoPropertiesService.setProperty('exportpath', self.exportpath);
+        if ($routeParams.format === 'pdf') {
+          BibiscoPropertiesService.setProperty('pdfnoteexport', self.footendnotemode);
+        } else if ($routeParams.format === 'docx') {
+          BibiscoPropertiesService.setProperty('docxnoteexport', self.footendnotemode);
+        } else if ($routeParams.format === 'txt') {
+          BibiscoPropertiesService.setProperty('txtnoteexport', self.footendnotemode);
+        } 
+        BibiscoPropertiesService.setProperty('bookendtitle', self.bookendtitle);
+        BibiscoPropertiesService.setProperty('exportcomments', self.exportcomments);
+        BibiscoPropertiesService.setProperty('exportscenetitle', self.exportscenetitle);
+        BibiscoPropertiesService.setProperty('scenetitleformat', self.scenetitleformat);
+        BibiscoPropertiesService.setProperty('scenetitleposition', self.scenetitleposition);
+        BibiscoPropertiesService.setProperty('exportunansweredquestions', self.exportunansweredquestions);
+        BibiscoPropertiesService.setProperty('font', self.font.value);
+        BibiscoPropertiesService.setProperty('exportfontsize', self.exportfontsize);
+        BibiscoPropertiesService.setProperty('indentParagraphEnabled', self.indent);
+        BibiscoPropertiesService.setProperty('linespacing', self.linespacing);
+        BibiscoPropertiesService.setProperty('paragraphspacing', self.paragraphspacing);
+
         BibiscoDbConnectionService.saveDatabase();
 
         if ($routeParams.format === 'pdf') {
@@ -452,6 +806,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
   },
 
   self.selectProjectsDirectory = function (directory) {
+    self.exportpathchanged = true;
     self.exportpath = directory;
     if (FileSystemService.canWriteDirectory(directory)) {
       self.forbiddenDirectory = false;
@@ -462,30 +817,7 @@ function ExportToFormat($injector, $location, $routeParams, $rootScope, $scope, 
     $scope.$apply();
   };
 
-  self.showothersettings = function() {
-    let modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: 'static',
-      component: 'richtexteditorsettings',
-      resolve: {
-        context: function () {
-          return 'exporttoformat';
-        }
-      },
-      size: 'richtexteditorsettings'
-    });
-
-    $rootScope.$emit('OPEN_POPUP_BOX');
-
-    modalInstance.result.then(function() {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-    }, function () {
-      $rootScope.$emit('CLOSE_POPUP_BOX');
-
-    });
-  };
-
   $scope.$on('$locationChangeStart', function (event) {
-    PopupBoxesService.locationChangeConfirm(event, self.exportpath, self.checkExit);
+    PopupBoxesService.locationChangeConfirm(event, $scope.exportToFormatForm.$dirty || self.exportpathchanged, self.checkExit);
   });
 }

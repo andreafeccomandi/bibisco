@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,20 @@ angular.
 
 function InfoController($rootScope, $translate, $uibModal, BibiscoPropertiesService, SupporterEditionChecker) {
 
-  var self = this;
+  let self = this;
   const { shell } = require('electron');
 
   self.$onInit = function () {
     self.version = BibiscoPropertiesService.getProperty('version');
 
+    self.isCommunityEdition = !SupporterEditionChecker.isSupporter();
+
     self.trialstatus;
     if (SupporterEditionChecker.isTrialActive()) {
       let remainingDays = SupporterEditionChecker.getRemainingTrialDays();
-      self.trialstatus = $translate.instant('trial_active', { remainingDays: remainingDays });
+      self.trialstatus = remainingDays > 1 ? 
+        $translate.instant('trial_active_days', { remainingDays: remainingDays }) :
+        $translate.instant('trial_active_hours');
     } else if (SupporterEditionChecker.isTrialExpired()) {
       self.trialstatus = $translate.instant('trial_expired');
     }
@@ -43,6 +47,11 @@ function InfoController($rootScope, $translate, $uibModal, BibiscoPropertiesServ
     shell.openExternal('https://bibisco.com');
   };
 
+  self.download = function() {
+    let url = $translate.instant('supporter_edition_get_it_button_url');
+    shell.openExternal(url);
+  };
+ 
   self.writeEmail = function () {
     shell.openExternal('mailto:info@bibisco.com');
   };

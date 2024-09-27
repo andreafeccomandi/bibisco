@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ angular.
 
 
 function WelcomeController($location, $rootScope, $scope,
-  BibiscoDbConnectionService, BibiscoPropertiesService, DictionaryService,
+  BibiscoDbConnectionService, BibiscoPropertiesService, ContextService, DictionaryService,
   FileSystemService, LocaleService, LoggerService, ProjectService) {
   
   let self = this;
@@ -32,6 +32,9 @@ function WelcomeController($location, $rootScope, $scope,
 
   self.$onInit = function () {
     $rootScope.$emit('SHOW_WELCOME');
+
+    //documents default path
+    self.documentsDefaultPath = ContextService.getDocumentsDirectoryPath();
 
     // check if current version is initialized
     let currentVersionInitialized = BibiscoPropertiesService.isCurrentVersionInitialized();

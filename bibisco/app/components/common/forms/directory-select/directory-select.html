@@ -5,7 +5,11 @@
   <span class="input-group-btn">
       <button class="btn btn-default" type="button"
         ng-click="$ctrl.opendirectorydialog()">
-        {{"jsp.common.button.select" | translate}}</button>
+        {{"jsp.common.button.select" | translate}}
+        <span ng-if="$ctrl.opening">
+          <i class="fa fa-circle-o-notch fa-spin"></i>
+      </span>
+    </button>
   </span>
 </div>
 <validationmessages field="$ctrl.field"></validationmessages>

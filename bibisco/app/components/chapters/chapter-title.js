@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ angular.
   });
 
 function ChapterTitleController($location, $rootScope, $scope, $routeParams, $window,
-  ChapterService, PopupBoxesService) {
+  BibiscoPropertiesService, ChapterService, PopupBoxesService) {
   var self = this;
 
   self.$onInit = function() {
@@ -105,6 +105,18 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, $wi
       self.title = '';
       self.pageheadertitle = label;
     }
+
+    self.deregisterInsertElementListener = $rootScope.$on('INSERT_ELEMENT', function (event, args) {
+      let showElementAfterInsertion = BibiscoPropertiesService.getProperty('showElementAfterInsertion');
+      if (showElementAfterInsertion === 'true') {
+        $location.path('/chapters/' + args.id).replace();
+      } else {
+        $window.history.back();
+      }
+    });
+    self.deregisterUpdateElementListener = $rootScope.$on('UPDATE_ELEMENT', function (event, args) {
+      $window.history.back();
+    });
   };
 
   self.save = function(isValid) {
@@ -132,10 +144,13 @@ function ChapterTitleController($location, $rootScope, $scope, $routeParams, $wi
       self.checkExit = {
         active: false
       };
-      $window.history.back();
     }
   };
 
+  self.$onDestroy = function () {
+    self.deregisterInsertElementListener();
+    self.deregisterUpdateElementListener();
+  };
 
   $scope.$on('$locationChangeStart', function (event) {
     PopupBoxesService.locationChangeConfirm(event, $scope.elementTitleForm.$dirty, self.checkExit);

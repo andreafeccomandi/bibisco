@@ -6,32 +6,113 @@
   <form name="exportToFormatForm" class="form-horizontal"
     ng-submit="$ctrl.export(exportToFormatForm.$valid)" novalidate>
       <textinputfield ng-if="$ctrl.exportAuthor" field="exportToFormatForm.author" model="$ctrl.author"
-        name="author" autofocus required="true" label="Author" labelcols="3" inputcols="8">
+        name="author" autofocus required="true" label="common_author" labelcols="3" inputcols="8">
       </textinputfield>
-      <buttongroupfield ng-if="$ctrl.showchaptertitleformat" group="$ctrl.chaptertitleformatgroup" label="chapter_title_format"
-        onclickbutton="$ctrl.changechaptertitleformat(selected)"  
-        model="$ctrl.chaptertitleformat" labelcols="3" inputcols="8" form="exportToFormatForm">
-      </buttongroupfield>
-      <div ng-if="$ctrl.showchaptertitleformat" class="form-group chapter-title-format-example">
+      <div ng-if="!$ctrl.advancedsettings && $ctrl.isexporttopdfordocxortxt" class="form-group">
         <div class="col-sm-8 col-sm-offset-3">
-          <span class="label label-info">{{'example' | translate}}</span><span> {{$ctrl.chaptertitleexample}}</span>
+          <a class="btn btn-xs btn-primary" ng-click="$ctrl.showadvancedsettings()">{{'show_advanced_settings' | translate}}</a>
         </div>
       </div>
-      <buttongroupfield ng-if="$ctrl.showchaptertitleposition" group="$ctrl.chaptertitlepositiongroup" label="chapter_title_position"
-          model="$ctrl.chaptertitleposition" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
-      <buttongroupfield ng-if="$ctrl.showsceneseparator" group="$ctrl.sceneseparatorgroup" label="scene_separator"
-          model="$ctrl.sceneseparator" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
-     
-      <div class="form-group" ng-if="$ctrl.showothersettingsenabled" >
+      <div ng-if="$ctrl.advancedsettings && $ctrl.isexporttopdfordocxortxt" class="form-group">
         <div class="col-sm-8 col-sm-offset-3">
-          <a class="btn btn-xs btn-primary" ng-click="$ctrl.showothersettings()">{{'other_settings' | translate}}</a>
+          <a class="btn btn-xs btn-default" ng-click="$ctrl.hideadvancedsettings()">{{'hide_advanced_settings' | translate}}</a>
+        </div>
+      </div>
+      <div ng-if="$ctrl.advancedsettings">
+      <formdivider ng-if="$ctrl.exportingNovel" labelcols="3" inputcols="8"></formdivider>
+      <buttongroupfield 
+        ng-if="$ctrl.exportingNovel" group="$ctrl.chaptertitleformatgroup" label="chapter_title_format"
+        onclickbutton="$ctrl.changechaptertitleformat(selected)"  
+        model="$ctrl.chaptertitleformat" labelcols="3" inputcols="8" form="exportToFormatForm"
+        note="{{$ctrl.chaptertitleexample}}" notebadge="example">
+      </buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.exportingNovel" group="$ctrl.chaptertitlepositiongroup" label="chapter_title_position"
+          model="$ctrl.chaptertitleposition" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.exportingNovel" group="$ctrl.sceneseparatorgroup" label="scene_separator"
+          model="$ctrl.sceneseparator" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.exportingNovel" group="$ctrl.exportscenetitlegroup" label="export_scene_title"
+          model="$ctrl.exportscenetitle" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.exportingNovel && $ctrl.exportscenetitle === 'true'" group="$ctrl.scenetitleformatgroup" label="scene_title_format"
+          model="$ctrl.scenetitleformat" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.exportingNovel && $ctrl.exportscenetitle === 'true'" group="$ctrl.scenetitlepositiongroup" label="scene_title_position"
+        model="$ctrl.scenetitleposition" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+
+      <formdivider ng-if="$ctrl.isexporttopdfordocx" labelcols="3" inputcols="8"></formdivider>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.exporthighlightedtextgroup" label="export_highlighted_text"
+          model="$ctrl.exporthighlightedtext" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocxortxt"
+        group="$ctrl.footendnotegroup" label="note_export_mode"
+        model="$ctrl.footendnotemode" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <textinputfield ng-if="$ctrl.isexporttopdfordocxortxt && $ctrl.footendnotemode === 'bookend'" 
+        field="exportToFormatForm.bookendtitle" model="$ctrl.bookendtitle"
+        name="bookendtitle" autofocus label="bookend_title" labelcols="3" inputcols="8">
+      </textinputfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocxortxt"
+        group="$ctrl.exportcommentsgroup" label="export_comments"
+        model="$ctrl.exportcomments" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.showExportunansweredquestions" group="$ctrl.exportunansweredquestionsgroup" label="export_only_answered_questions"
+        model="$ctrl.exportunansweredquestions" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>  
+      
+      <formdivider ng-if="$ctrl.isexporttopdfordocx" labelcols="3" inputcols="8"></formdivider>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.pagenumberpositiongroup" label="page_number_position"
+          model="$ctrl.pagenumberposition" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.pagenumberposition !== 'none'" group="$ctrl.pagenumberalignmentgroup" label="page_number_alignment"
+          model="$ctrl.pagenumberalignment" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.pagenumberposition !== 'none'" group="$ctrl.showfirstpagenumbergroup" label="show_first_page_number"
+          model="$ctrl.showfirstpagenumber" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.pagenumberposition !== 'none'" group="$ctrl.pagenumberformatgroup" label="page_number_format"
+          onclickbutton="$ctrl.changepagenumberformat(selected)"  
+          model="$ctrl.pagenumberformat" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <div ng-if="$ctrl.isexporttopdfordocx && $ctrl.pagenumberposition !== 'none'" class="form-group chapter-title-format-example">
+        <div class="col-sm-8 col-sm-offset-3">
+          <span class="label label-info">{{'example' | translate}}</span><span> {{$ctrl.pagenumberformatexample}}</span>
         </div>
       </div>
       
-      <formdivider ng-if="$ctrl.showothersettingsenabled" labelcols="3" inputcols="8"></formdivider>
+      <formdivider ng-if="$ctrl.isexporttopdfordocx && $ctrl.showToc" labelcols="3" inputcols="8"></formdivider>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.showToc" group="$ctrl.tocformatgroup" label="toc_position"
+        model="$ctrl.tocformat" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <div ng-if="$ctrl.showtocnote && $ctrl.showToc" class="form-group chapter-title-format-example">
+        <div class="col-sm-8 col-sm-offset-3">
+          <span class="label label-info">{{'common_note' | translate}}</span><span> {{'toc_note' | translate}}</span>
+        </div>
+      </div>
+      <textinputfield ng-if="$ctrl.isexporttopdfordocx && $ctrl.showToc && $ctrl.tocformat !== 'none'" 
+        field="exportToFormatForm.toctitle" model="$ctrl.toctitle"
+        name="toctitle" autofocus label="toc_title" labelcols="3" inputcols="8">
+      </textinputfield>
+
+      <formdivider ng-if="$ctrl.isexporttopdfordocx" labelcols="3" inputcols="8"></formdivider>
+      <div class="form-group" ng-if="$ctrl.isexporttopdfordocx">
+        <label class="col-sm-3 control-label" 
+          for="exportpath">{{'jsp.richTextEditorSettings.font' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></label>
+        <div class="col-sm-8">
+          <ui-select ng-model="$ctrl.font" on-select="$ctrl.selectFontItem($select.selected.value)">
+            <ui-select-match placeholder="{{'common_select_or_search' | translate}}...">
+              <span class="project-explorer-select {{$select.selected.buttonclass}} ">{{$select.selected.label | translate}}</span>
+            </ui-select-match>
+            <ui-select-choices 
+              repeat="item in $ctrl.fontgroup | filter: $select.search">
+              <span ng-bind-html="item.label | translate | highlight: $select.search" 
+                class="{{item.buttonclass}}"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.exportfontsizegroup" label="font_size"
+        model="$ctrl.exportfontsize" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
+        model="$ctrl.indent" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.linespacinggroup" label="linespacing"
+        model="$ctrl.linespacing" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      <buttongroupfield ng-if="$ctrl.isexporttopdfordocx" group="$ctrl.paragraphspacinggroup" label="paragraphspacing"
+        model="$ctrl.paragraphspacing" labelcols="3" inputcols="8" form="exportToFormatForm"></buttongroupfield>
+      </div>
+            
+      <formdivider labelcols="3" inputcols="8"></formdivider>
       <div ng-if="$ctrl.showExportFilter" class="form-group">
         <label class="col-sm-3 control-label" 
-          for="exportpath">{{'export_filter' | translate}}</label>
+          for="exportpath">{{'export_filter' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></label>
         <div class="col-sm-8">
           <ui-select ng-model="$ctrl.exportFilter" on-select="$ctrl.selectItem($select.selected.id)">
             <ui-select-match placeholder="{{'common_select_or_search' | translate}}...">
@@ -49,11 +130,12 @@
         for="exportpath">{{'jsp.export.dialog.title.exportProjectDirectory' | translate}}</label>
         <div class="col-sm-8">
           <directoryselect model='$ctrl.exportpath' 
-          field='exportToFormatForm.exportpath' 
-          name='exportpath' 
-          placeholder='jsp.export.dialog.exportProjectDirectory.label'
-          onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
-          forbiddendirectory='$ctrl.forbiddenDirectory' required>
+            defaultpath="$ctrl.exportdefaultpath"
+            field='exportToFormatForm.exportpath' 
+            name='exportpath' 
+            placeholder='jsp.export.dialog.exportProjectDirectory.label'
+            onselectdirectory='$ctrl.selectProjectsDirectory(directory)'
+            forbiddendirectory='$ctrl.forbiddenDirectory' required>
           </directoryselect>
         </div>
       </div>

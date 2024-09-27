@@ -1,25 +1,31 @@
 <div class="page-header" ng-class="{ 'page-subheader' : $ctrl.subheader}">
   <h1>
-      <span ng-if="$ctrl.imageenabled && $ctrl.image" class="page-header-profile"> 
+      <span ng-if="$ctrl.imageenabled && $ctrl.image" 
+        ng-dblclick="$ctrl.executeimageseditfunction()"class="page-header-profile"> 
         <img src="{{$ctrl.fullpathimage}}" class="img-rounded">
       </span> 
 
-      <span ng-if="$ctrl.imageenabled && !$ctrl.image" class="page-header-no-profile">
+      <span ng-if="$ctrl.imageenabled && !$ctrl.image" 
+        ng-dblclick="$ctrl.executeimageaddfunction()"
+        class="page-header-no-profile">
         <div class="page-header-no-profile-bg"></div>
         <span class="page-header-no-profile-icon">
           <i class="fa fa-{{$ctrl.noimageicon}}" ng-class="{'fa-inverse': $ctrl.theme === 'dark'}"></i>
         </span>
         <button class="btn btn-default btn-sm page-header-no-profile-button" 
-          ng-if="$ctrl.imageaddenabled"
-          ng-click="$ctrl.executeimagefunction()"
-          uib-tooltip="{{'add_profile_image_tooltip' | translate}}">+</button>
+          ng-if="$ctrl.imageaddenabled" id="page-header-add-profile-image-se-marker"
+          ng-click="$ctrl.executeimageaddfunction()"
+          uib-tooltip="{{'add_profile_image_tooltip' | translate}}">
+          <sefeaturemarker insidebutton="true" ng-if="$root.ed==='ce'"></sefeaturemarker>+</button>
       </span>
 
-      <span class="page-header-truncate-title page-header-tags-{{$ctrl.tagscluster}}" style="width: calc(100% - {{$ctrl.statusandbuttonsspace}}px)">
+      <span ng-class="{ 'editable-title': $ctrl.dblclickfunction}"
+        class="page-header-truncate-title page-header-tags-{{$ctrl.tagscluster}}" 
+        style="width: calc(100% - {{$ctrl.statusandbuttonsspace}}px)">
         <i ng-repeat="tag in $ctrl.tags track by $index" 
-          class="fa fa-tag fa-flip-horizontal" 
+          class="fa fa-tag fa-flip-horizontal" ng-dblclick="$ctrl.groupseditfunction()"
           uib-tooltip="{{tag.label | translate}}"  style="color: {{tag.color}};"></i>
-        {{$ctrl.headertitle | translate}}
+        <span ng-dblclick="$ctrl.dblclickfunction()">{{$ctrl.headertitle | translate}}</span>
       </span>
       <span class="pull-right page-header-buttonbar">
         <small>

@@ -1,0 +1,52 @@
+<modal-component modal-instance="$uibModalInstance" class="ng-scope ng-isolate-scope"> 
+	<div class="modal-header ng-scope">
+		<h3 class="modal-title">{{$ctrl.title | translate}}</h3>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<form name="imageDetailForm" class="form-horizontal" novalidate>
+
+					<div class="form-group">
+						<fileinputfield field="imageDetailForm.imagepath"  
+							fileinputfieldid="imageDetailFile"
+							ng-if="!$ctrl.editMode"
+							model="$ctrl.imagepath" name="imagepath" required
+							filefilter="['bmp','gif','jpg','jpeg','png']"
+							label="common_file" 
+							labelcols="4" inputcols="7">
+						</fileinputfield>
+						
+						<numberinputfield textinputfieldid="imageDetailWidth" field="imageDetailForm.width" 
+							model="$ctrl.width" name="width" min="0" max="100"
+							maxlength="3" addon="%" autofocus required 
+							label="{{'width' | translate}}" labelcols="4" inputcols="3">
+						</numberinputfield>
+						<div class="col-sm-8 col-sm-offset-4 add-images-input-notes">
+							<p>{{"image_width_percentage" | translate}}</p>
+						</div>
+
+						<buttongroupfield group="$ctrl.imagepositiongroup" label="image_position"
+          					model="$ctrl.imageposition" labelcols="4" inputcols="7" form="imageDetailForm"></buttongroupfield>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	 
+	<div class="modal-footer bibiscoNotSelectableText">
+		<div class="row">
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-6 text-center">
+				<button class="btn btn-primary" type="button"  id="imageDetailOkBtn"
+					uib-tooltip="{{'jsp.common.button.save.tooltip' | translate}}"
+					ng-click="$ctrl.save()">{{"jsp.common.button.save" | translate}}</button>
+					
+				<button class="btn btn-default" type="button"  id="imageDetailCancelBtn"
+					uib-tooltip="{{'back_button_tooltip'+$root.os | translate}}"
+					ng-click="$ctrl.back()"> {{"jsp.common.button.back" | translate}}</button>
+			</div>
+		</div>
+	</div>
+</modal-component>

@@ -1,49 +1,89 @@
 <pageheader headertitle="{{'search_title' | translate}}"></pageheader>
 
-<div class="col-sm-9 col-sm-offset-1">
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-btn">
-        <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_case_sensitive' | translate}}"
-          ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $root.searchCasesensitiveactive == true }">
-          <strong id="searchcasesensitiveicon">Aa</strong>
-        </button>
-        <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_whole_word' | translate}}"
-          ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $root.searchWholewordactive == true }">
-          <strong id="searchwholewordicon">|ab|</strong>
-        </button>
-      </span>
-      <input type="text" class="form-control" maxlength="50" id="searchtext" 
-        placeholder="{{'text_to_search' | translate}}"
-        ng-model="$root.text2search">
-      </input>
-      <span class="input-group-btn">
-        <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
-          ng-click="$ctrl.toggleSearchOnlyScenes()" ng-class="{ 'active': $root.searchOnlyscenes == true }">
-          <strong id="searchonlyscenes">{{'common_scenes_low' | translate}}</strong>
-        </button>
-        <button class="btn btn-default" uib-tooltip="{{'search_whole_project' | translate}}"
-          ng-click="$ctrl.toggleSearchAll()" ng-class="{ 'active': $root.searchOnlyscenes == false }">
-          <strong id="searchall">{{'jsp.menu.project' | translate}}</strong>
-        </button>
-      </span>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-1">
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_case_sensitive' | translate}}"
+            ng-click="$ctrl.toggleCaseSensitive()" ng-class="{ 'active': $root.searchCasesensitiveactive == true }">
+            <strong id="searchcasesensitiveicon">Aa</strong>
+          </button>
+          <button class="btn btn-default" data-toggle="buttons-checkbox" uib-tooltip="{{'common_whole_word' | translate}}"
+            ng-click="$ctrl.toggleWholeWord()" ng-class="{ 'active': $root.searchWholewordactive == true }">
+            <strong id="searchwholewordicon">|ab|</strong>
+          </button>
+        </span>
+        <input type="text" class="form-control" maxlength="50" id="searchtext" 
+          placeholder="{{'text_to_search' | translate}}"
+          ng-model="$root.text2search">
+        </input>
+        <span class="input-group-btn">
+          <button class="btn btn-default" uib-tooltip="{{'clear_text2search' | translate}}"
+            ng-click="$ctrl.clearText2search()">
+            <i class="fa fa-close"></i>
+          </button>
+          <button class="btn btn-default" uib-tooltip="{{'search_only_scenes' | translate}}"
+            ng-click="$ctrl.toggleSearchOnlyScenes()" ng-class="{ 'active': $root.searchOnlyscenes == true }">
+            <strong id="searchonlyscenes">{{'common_scenes_low' | translate}}</strong>
+          </button>
+          <button class="btn btn-default" uib-tooltip="{{'search_whole_project' | translate}}"
+            ng-click="$ctrl.toggleSearchAll()" ng-class="{ 'active': $root.searchOnlyscenes == false }">
+            <strong id="searchall">{{'jsp.menu.project' | translate}}</strong>
+          </button>
+        </span>
+      </div>
     </div>
+  </div>
+  <div class="col-sm-3 pull-left">
+    <button class="btn btn-primary search-inline-button"
+    ng-disabled="!$root.text2search"
+    uib-tooltip="{{'search_button_tooltip' | translate}}"
+    ng-click="$ctrl.search()">{{'search_button' | translate}}</button>
+    <button class="btn btn-default" ng-if="$root.text2search && $ctrl.results && $ctrl.results.occurrences > 0 && !$ctrl.replacetoolbar"
+      uib-tooltip="{{'show_replace_toolbar_tooltip' | translate}}"
+      ng-click="$ctrl.showreplacetoolbar()">
+      <i class="fa fa-chevron-down"></i></button>
+    <button class="btn btn-default" ng-if="$root.text2search && $ctrl.results && $ctrl.results.occurrences > 0 && $ctrl.replacetoolbar"
+      uib-tooltip="{{'hide_replace_toolbar_tooltip' | translate}}"
+      ng-click="$ctrl.hidereplacetoolbar()">
+      <i class="fa fa-chevron-up"></i></button>
   </div>
 </div>
 
-<div class="col-sm-1 pull-left">
-  <button class="btn btn-primary search-inline-button"
-  ng-disabled="!$root.text2search"
-  uib-tooltip="{{'search_button_tooltip' | translate}}"
-  ng-click="$ctrl.search()">{{'search_button' | translate}}</button>
+<div class="row" ng-if="$root.text2search && $ctrl.replacetoolbar">
+  <div class="col-sm-8 col-sm-offset-1">
+    <div class="form-group">
+      <div class="input-group">
+        <input type="text" class="form-control" maxlength="50" id="replaxetext" 
+          placeholder="{{'text_to_replace' | translate}}"
+          ng-model="$ctrl.text2replace">
+        </input>
+        <span class="input-group-btn">
+          <button class="btn btn-default" uib-tooltip="{{'clear_text2replace' | translate}}"
+            ng-click="$ctrl.clearText2replace()">
+            <i class="fa fa-close"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 pull-left">
+    <button class="btn btn-default search-inline-button"
+      ng-disabled="!$ctrl.text2replace"
+      uib-tooltip="{{'replace_button_tooltip' | translate}}"
+      ng-click="$ctrl.replace()">{{'common_replaceall' | translate}}</button>
+  </div>
 </div>
+
 
 <fullpageloader ng-if="$ctrl.loading"></fullpageloader>
 <div ng-if="!$ctrl.loading" class="col-sm-12">
   <h4 class="search-results-title"><b>{{($ctrl.results.occurrences | number: 0)}}</b> {{'search_results' | translate}}</h4>
 </div>
 
-<div ng-if="!$ctrl.loading" class="search-results-container">
+<div ng-if="!$ctrl.loading" class="search-results-container"
+  ng-class="{ 'search-results-container-no-replace-toolbar': !$ctrl.replacetoolbar, 'search-results-container-with-replace-toolbar': $ctrl.replacetoolbar }">
   <div class="col-sm-12">
     <table class="table table-hover">
       <thead>
@@ -187,6 +227,11 @@
           <td><a ng-click="$ctrl.gotoElement(maincharacter.evolutionduringthestory.path)"><i>{{'common_characters_evolutionduringthestory' | translate}}</i></a></td>
           <td class="text-right"><span
               class="label label-info search-results-occurrences">{{(maincharacter.evolutionduringthestory.occurrences | number: 0)}}</span></td>
+        </tr>
+        <tr ng-if="maincharacter.notes">
+          <td><a ng-click="$ctrl.gotoElement(maincharacter.notes.path)"><i>{{'common_notes_title' | translate}}</i></a></td>
+          <td class="text-right"><span
+              class="label label-info search-results-occurrences">{{(maincharacter.notes.occurrences | number: 0)}}</span></td>
         </tr>
       </tbody>
       <tbody ng-repeat="secondarycharacter in $ctrl.results.secondarycharacters track by $index">

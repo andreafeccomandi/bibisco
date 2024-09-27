@@ -6,9 +6,9 @@
     <div class="row">
       <div class="col-sm-12">
         <form name="richTextEditorSettingsForm" class="form-horizontal" novalidate>
-          <div class="form-group" ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat'">
+          <div class="form-group">
             <label class="col-sm-4 control-label" 
-              for="exportpath">{{'jsp.richTextEditorSettings.font' | translate}}</label>
+              for="exportpath">{{'jsp.richTextEditorSettings.font' | translate}}<sefeaturemarker ng-if="$root.ed==='ce'"></sefeaturemarker></label>
             <div class="col-sm-7">
               <ui-select ng-model="$ctrl.font" on-select="$ctrl.selectItem($select.selected.value)">
                 <ui-select-match placeholder="{{'common_select_or_search' | translate}}...">
@@ -22,20 +22,18 @@
               </ui-select>
             </div>
           </div>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.fontsizegroup" label="jsp.richTextEditorSettings.fontSize"
+          <buttongroupfield group="$ctrl.fontsizegroup" label="font_size"
             model="$ctrl.fontsize" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
+          <buttongroupfield group="$ctrl.indentgroup" label="jsp.richTextEditorSettings.indentParagraph"
             model="$ctrl.indent" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.autocapitalizegroup" label="autocapitalize"
+          <buttongroupfield group="$ctrl.autocapitalizegroup" label="autocapitalize"
             model="$ctrl.autocapitalize" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.linespacinggroup" label="linespacing"
+          <buttongroupfield group="$ctrl.linespacinggroup" label="linespacing"
             model="$ctrl.linespacing" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'exporttoformat' || $ctrl.context == 'exporttoepub'" group="$ctrl.paragraphspacinggroup" label="paragraphspacing"
+          <buttongroupfield group="$ctrl.paragraphspacinggroup" label="paragraphspacing"
             model="$ctrl.paragraphspacing" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor'" group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
+          <buttongroupfield group="$ctrl.spellcheckgroup" label="jsp.richTextEditorSettings.spellCheck"
             model="$ctrl.spellcheck" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
-          <buttongroupfield ng-if="$ctrl.context == 'richtexteditor' || $ctrl.context == 'relations'" group="$ctrl.autosavegroup" label="jsp.richTextEditorSettings.autoSave"
-            model="$ctrl.autosave" labelcols="4" inputcols="7" form="richTextEditorSettingsForm"></buttongroupfield>
       </div>
       </form>
     </div>

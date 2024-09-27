@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,16 @@ function SettingsController($location, $rootScope, $scope,
       item: 'settings'
     });
 
+    // action items
+    self.actionitems = [];
+    self.actionitems.push({
+      label: 'download_logs_label',
+      itemfunction: function() {
+        $location.path('/exportlogs');
+      }
+    });
+    
+
     self.theme = BibiscoPropertiesService.getProperty('theme');
 
     // zoom level
@@ -61,7 +71,16 @@ function SettingsController($location, $rootScope, $scope,
 
     self.selectedBackupDirectory = BibiscoPropertiesService.getProperty('backupDirectory');
 
-    self.maxBackupNumber = BibiscoPropertiesService.getProperty('maxBackupNumber');
+    self.autoSaveEnabled = BibiscoPropertiesService.getProperty('autoSaveEnabled');
+    self.autosavegroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+
+    self.maxBackupNumber = parseInt(BibiscoPropertiesService.getProperty('maxBackupNumber'));
 
     self.autoBackupOnExit = BibiscoPropertiesService.getProperty('autoBackupOnExit');
     self.autoBackupOnExitGroup = [{
@@ -90,8 +109,28 @@ function SettingsController($location, $rootScope, $scope,
       value: 'FOUR_HOURS'
     }];
 
+    self.defaultElementOpeningMode = BibiscoPropertiesService.getProperty('defaultElementOpeningMode');
+    self.defaultElementOpeningModeGroup = [{
+      label: 'jsp.common.button.edit',
+      value: 'edit'
+    }, {
+      label: 'read_btn',
+      value: 'view'
+    }];
+    
+    self.showElementAfterInsertion = BibiscoPropertiesService.getProperty('showElementAfterInsertion');
+    self.showElementAfterInsertionGroup = [{
+      label: 'jsp.common.button.enabled',
+      value: 'true'
+    }, {
+      label: 'jsp.common.button.disabled',
+      value: 'false'
+    }];
+    
+
     self.forbiddenDirectory = false;
     self.backupDirectoryCustomErrorMessage = null;
+    
     self.checkExit = {
       active: true
     };
@@ -113,6 +152,16 @@ function SettingsController($location, $rootScope, $scope,
       $rootScope.$emit('SWITCH_DARK_THEME');
       $timeout(function () {
         self.theme = 'dark';
+        $scope.settingsForm.$setDirty();
+      }, 0);
+    });
+  };
+
+  self.selectDarkhcTheme = function() {
+    SupporterEditionChecker.filterAction(function() {
+      $rootScope.$emit('SWITCH_DARKHC_THEME');
+      $timeout(function () {
+        self.theme = 'darkhc';
         $scope.settingsForm.$setDirty();
       }, 0);
     });
@@ -177,14 +226,16 @@ function SettingsController($location, $rootScope, $scope,
       if (!self.forbiddenDirectory && !self.forbiddenBackupDirectory && !self.backupDirectoryEqualToProjectsDirectory) {
         LocaleService.setCurrentLocale(self.selectedLanguage);
         BibiscoPropertiesService.setProperty('theme', self.theme);
-        LoggerService.debug('BibiscoPropertiesService.getProperty(\'zoomLevel\')'+BibiscoPropertiesService.getProperty('zoomLevel')+' - self.zoomLevel='+self.zoomLevel);
         BibiscoPropertiesService.setProperty('zoomLevel', self.zoomLevel); 
         BibiscoPropertiesService.setProperty('locale', LocaleService.getCurrentLocale());
         BibiscoPropertiesService.setProperty('projectsDirectory', ProjectService.createProjectsDirectory(self.selectedProjectsDirectory));
         BibiscoPropertiesService.setProperty('backupDirectory', self.selectedBackupDirectory);
+        BibiscoPropertiesService.setProperty('autoSaveEnabled', self.autoSaveEnabled);   
         BibiscoPropertiesService.setProperty('maxBackupNumber', self.maxBackupNumber);   
         BibiscoPropertiesService.setProperty('autoBackupFrequency', self.autoBackupFrequency);   
         BibiscoPropertiesService.setProperty('autoBackupOnExit', self.autoBackupOnExit);   
+        BibiscoPropertiesService.setProperty('defaultElementOpeningMode', self.defaultElementOpeningMode);   
+        BibiscoPropertiesService.setProperty('showElementAfterInsertion', self.showElementAfterInsertion);   
         BibiscoDbConnectionService.saveDatabase();
 
         // sync bibisco db with projects directory
@@ -196,9 +247,12 @@ function SettingsController($location, $rootScope, $scope,
           + ' - language=' + LocaleService.getCurrentLocale() 
           + ' - projects directory=' + self.selectedProjectsDirectory
           + ' - backup directory=' + self.selectedBackupDirectory
+          + ' - auto save enabled=' + self.autoSaveEnabled
           + ' - max backup number=' + self.maxBackupNumber
           + ' - auto backup frequency=' + self.autoBackupFrequency
           + ' - auto backup on exit=' + self.autoBackupOnExit
+          + ' - default element opening mode=' + self.defaultElementOpeningMode
+          + ' - show element after insertion=' + self.showElementAfterInsertion
         );
 
         $location.path('/start');
@@ -220,6 +274,8 @@ function SettingsController($location, $rootScope, $scope,
     self.theme = BibiscoPropertiesService.getProperty('theme');
     if (self.theme === 'dark') {
       $rootScope.$emit('SWITCH_DARK_THEME');
+    } else if (self.theme === 'darkhc') {
+      $rootScope.$emit('SWITCH_DARKHC_THEME');
     } else {
       $rootScope.$emit('SWITCH_CLASSIC_THEME');
     }

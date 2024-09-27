@@ -5,13 +5,13 @@
 		tooltip-placement="bottom"
 		class="btn btn-primary">{{$ctrl.buttonlabel  | translate}}</button>
 </div>
-<div class="bibiscoEmptyListBox">
-	<siblingelementsnavigator
+<div class="jumbotronsiblingelementsnavigator bibiscoEmptyListBox">
+	<siblingelementsnavigator ng-if="$ctrl.previouselementlink || $ctrl.nextelementlink"
 		previouselementlabel="{{$ctrl.previouselementlabel}}"
 		previouselementlink="$ctrl.previouselementlink"
 		previouselementtooltip="{{$ctrl.previouselementtooltip}}"
 		nextelementlabel="{{$ctrl.nextelementlabel}}"
 		nextelementlink="$ctrl.nextelementlink"
 		nextelementtooltip="{{$ctrl.nextelementtooltip}}">
-		</siblingelementsnavigator>
+	</siblingelementsnavigator>
 </div>

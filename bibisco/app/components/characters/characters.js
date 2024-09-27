@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ function CharactersController($injector, $location, $rootScope, $scope,
   };
 
   self.secondaryCharacterSelect = function(id) {
-    $location.path('/secondarycharacters/' + id + '/view');
+    $location.path('/secondarycharacters/' + id + '/default');
   };
 
   self.mainCharacterMove = function(draggedObjectId, destinationObjectId) {

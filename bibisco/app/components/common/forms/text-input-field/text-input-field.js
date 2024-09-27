@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -18,26 +18,27 @@ angular.
     templateUrl: 'components/common/forms/text-input-field/text-input-field.html',
     controller: TextInputFieldController,
     bindings: {
-      model: '=',
-      field: '<',
-      textinputfieldid: '@',
-      label: '@',
-      placeholder: '@',
-      name: '@',
-      required: '@',
-      minlength: '@',
-      maxlength: '@',
+      addon: '@',
       autofocus: '@',
-      typeheadsource: '<',
+      field: '<',
+      inputcols: '@',
+      label: '@',
       labelcols: '@',
-      inputcols: '@'
+      maxlength: '@',
+      minlength: '@',
+      model: '=',
+      name: '@',
+      placeholder: '@',
+      required: '@',
+      textinputfieldid: '@',
+      typeheadsource: '<'
     }
   });
 
 
 function TextInputFieldController() {
 
-  var self = this;
+  let self = this;
 
   // show errors
   self.hasError = function() {

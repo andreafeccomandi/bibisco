@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2023 Andrea Feccomandi
+ * Copyright (C) 2014-2024 Andrea Feccomandi
  *
  * Licensed under the terms of GNU GPL License;
  * you may not use this file except in compliance with the License.
@@ -241,6 +241,20 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
         // maintain old type of wordcount for projects created with version <3.0.0
         if (this.compareVersions(projectInfo.bibiscoVersion, '3.0.0') < 0) {
           projectInfo.wordCountMode = 'hyphenated-contracted-possessive-2-word';
+        }
+
+        // VERSION 3.1
+        for (let i = 0; i < mainCharacters.length; i++) {
+          // notes section
+          if (!mainCharacters[i].notes) {
+            mainCharacters[i].notes = {
+              characters: 0,
+              status: null,
+              text: '',
+              words: 0
+            };
+            LoggerService.info('Added notes section for main character with $loki='+mainCharacters[i].$loki);
+          }
         }
         
         // update project version
@@ -662,6 +676,9 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       let timestampFormatted = dateFormat(timestamp, 'yyyy_mm_dd_HH_MM_ss');
       let name = UtilService.string.slugify(projectInfo.name, '_');
       let filename = name + '_' + projectInfo.id + '_' + timestampFormatted;
+      if (options.backupFileSuffix) {
+        filename = filename + '_' + options.backupFileSuffix;
+      }
       let completeBackupFilename = FileSystemService.concatPath(backupPath, filename);
       let maxBackupNumber = Number(BibiscoPropertiesService.getProperty('maxBackupNumber'));
 
@@ -760,6 +777,11 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       LoggerService.info('Update element with $loki=' + project.$loki +
         ' in projects (bibiscodb)');
       BibiscoDbConnectionService.saveDatabase();
+
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: projectInfo.id,
+        collection: 'project'
+      });
     },
 
     updateProjectAuthor: function (author) {
@@ -767,6 +789,11 @@ angular.module('bibiscoApp').service('ProjectService', function($injector, $inte
       projectInfo.author = author;
       CollectionUtilService.update(ProjectDbConnectionService.getProjectDb()
         .getCollection('project'), projectInfo);
+
+      $rootScope.$emit('UPDATE_ELEMENT', {
+        id: projectInfo.id,
+        collection: 'project'
+      });
     },
 
     selectCoverImage: function (filename) {

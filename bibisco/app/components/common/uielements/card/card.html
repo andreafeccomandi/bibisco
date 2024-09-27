@@ -30,7 +30,7 @@ http://stackoverflow.com/questions/16923111/change-class-on-mouseover-in-directi
       <div>
         <span class="pull-left card-heading-title card-heading-title-{{$ctrl.dimension}}">
           <span>
-            <strong class="card-heading-title-text-{{$ctrl.dimension}}">{{$ctrl.cardtitle | translate}}</strong>
+            <strong class="card-heading-title-text-{{$ctrl.dimension}}">{{$ctrl.cardtitle | translate}} <i ng-if="$root.ed==='ce' && $ctrl.supportersonly" class="fa fa-heart-o supportersFeaturesSymbol"></i></strong>
           </span>
         </span>
         <span class="pull-right">
