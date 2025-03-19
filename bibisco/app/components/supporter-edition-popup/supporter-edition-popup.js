@@ -52,18 +52,8 @@ function SupporterEditionPopupController($rootScope, $scope, $translate, hotkeys
   };
 
   self.cancel = function () {
-    self.showcountdown = true;
-    self.countdown = 10;
-    let downloadTimer = setInterval(function () {
-      if (self.countdown <= 1) {
-        clearInterval(downloadTimer);
-        self.dismiss({
-          $value: 'cancel'
-        });
-      }
-      self.countdown -= 1;
-      $scope.$apply();
-    }, 1000);
-  };
-    
+    self.dismiss({
+        $value: 'cancel'
+    });
+};
 }
