@@ -17,7 +17,6 @@ const electron = require('electron');
 const app = electron.app;
 const ipc = electron.ipcMain;
 const shell = electron.shell;
-const globalShortcut = electron.globalShortcut;
 const Menu = electron.Menu;
 const MenuItem = electron.MenuItem;
 const SpellChecker = require('simple-spellchecker');
@@ -280,6 +279,19 @@ function createMainWindow() {
     // dereference the window
     // for multiple windows store them in an array
     mainWindow = null;
+  });
+
+  // Prevent Ctrl+R and F5 from reloading the window, without blocking global shortcuts
+  // in other applications. Uses a local event handler instead of globalShortcut.
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.type === 'keyDown') {
+      if ((input.control || input.meta) && input.key === 'r') {
+        event.preventDefault();
+      }
+      if (input.key === 'F5') {
+        event.preventDefault();
+      }
+    }
   });
 
   // context menu
@@ -553,15 +565,6 @@ app.on('ready', function() {
   } else {
     mainWindow.removeMenu();
   }
-});
-
-app.on('browser-window-focus', function () {
-  globalShortcut.register('CommandOrControl+R', () => {
-    // shortcut disabled
-  });
-  globalShortcut.register('F5', () => {
-    // shortcut disabled
-  });
 });
 
 function initLogger(isDev) {
